@@ -7,44 +7,38 @@ const PROVIDERS = [
   {
     id: 'anthropic',
     label: 'Claude',
-    tagline: 'by Anthropic',
+    company: 'Anthropic',
     placeholder: 'sk-ant-api03-...',
     color: '#cc785c',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.5"/>
-    </svg>`,
+    iconPath: 'Assets/Icons/Claude.png',
+    fallback: 'C',
   },
   {
     id: 'openai',
     label: 'ChatGPT',
-    tagline: 'by OpenAI',
+    company: 'OpenAI',
     placeholder: 'sk-proj-...',
     color: '#10a37f',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4" stroke-linecap="round"/>
-    </svg>`,
+    iconPath: 'Assets/Icons/ChatGPT.png',
+    fallback: 'GPT',
   },
   {
     id: 'google',
-    label: 'Google',
-    tagline: 'Gemini models',
+    label: 'Gemini',
+    company: 'Google',
     placeholder: 'AIza...',
     color: '#4285f4',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7h-7" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
+    iconPath: 'Assets/Icons/Gemini.png',
+    fallback: 'G',
   },
   {
     id: 'openrouter',
     label: 'OpenRouter',
-    tagline: 'All models, one key',
+    company: '',
     placeholder: 'sk-or-v1-...',
     color: '#9b59b6',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/>
-      <path d="M7 12l10-5M7 12l10 5"/>
-    </svg>`,
+    iconPath: 'Assets/Icons/OpenRouter.png',
+    fallback: 'OR',
   },
 ];
 
@@ -95,21 +89,42 @@ function tryAdvanceFromName() {
 function buildProviderGrid() {
   providerGrid.innerHTML = '';
   PROVIDERS.forEach(p => {
-    const card = document.createElement('div');
+    const card = document.createElement('button');
+    const isSelected = state.selectedProviders.has(p.id);
+
+    card.type = 'button';
     card.className = 'provider-card';
     card.dataset.id = p.id;
+    card.title = `${p.label}${p.company ? ` by ${p.company}` : ''}`;
+    card.setAttribute('aria-label', card.title);
+    card.setAttribute('aria-pressed', String(isSelected));
     card.style.setProperty('--p-color', p.color);
     card.innerHTML = `
-      <div class="p-check">
+      <span class="p-check" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M5 12l5 5L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
         </svg>
-      </div>
-      <div class="p-icon">${p.icon}</div>
-      <div class="p-info">
-        <span class="p-label">${p.label}</span>
-        <span class="p-tagline">${p.tagline}</span>
-      </div>`;
+      </span>
+      <span class="p-icon" aria-hidden="true">
+        <img class="p-icon-image" src="${p.iconPath}" alt="" />
+        <span class="p-icon-fallback">${p.fallback}</span>
+      </span>`;
+
+    if (isSelected) {
+      card.classList.add('selected');
+    }
+
+    const image = card.querySelector('.p-icon-image');
+    image.addEventListener('error', () => {
+      card.classList.add('icon-missing');
+    });
+    image.addEventListener('load', () => {
+      card.classList.remove('icon-missing');
+    });
+    if (image.complete && image.naturalWidth === 0) {
+      card.classList.add('icon-missing');
+    }
+
     card.addEventListener('click', () => toggleProvider(p.id, card));
     providerGrid.appendChild(card);
   });
@@ -119,9 +134,11 @@ function toggleProvider(id, card) {
   if (state.selectedProviders.has(id)) {
     state.selectedProviders.delete(id);
     card.classList.remove('selected');
+    card.setAttribute('aria-pressed', 'false');
   } else {
     state.selectedProviders.add(id);
     card.classList.add('selected');
+    card.setAttribute('aria-pressed', 'true');
   }
   renderKeyFields();
   updateKeysContinue();
@@ -154,7 +171,7 @@ function renderKeyFields() {
           autocomplete="off"
           spellcheck="false"
         />
-        <button class="key-eye" data-target="key-${p.id}" title="Show/hide">
+        <button type="button" class="key-eye" data-target="key-${p.id}" title="Show/hide">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/>
             <circle cx="12" cy="12" r="3" stroke-width="1.8"/>
@@ -163,6 +180,7 @@ function renderKeyFields() {
       </div>`;
 
     const input = row.querySelector('.key-input');
+    input.value = state.apiKeys[p.id] || '';
     input.addEventListener('input', () => {
       state.apiKeys[p.id] = input.value.trim();
       updateKeysContinue();

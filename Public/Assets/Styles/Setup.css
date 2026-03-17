@@ -193,22 +193,26 @@ body {
 
 /* ── Provider grid ── */
 #provider-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
     width: 100%;
 }
 
 .provider-card {
     position: relative;
+    width: 82px;
+    height: 82px;
     background: var(--bg-secondary);
     border: 1.5px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 14px 14px 12px;
+    border-radius: 24px;
+    padding: 0;
+    appearance: none;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    justify-content: center;
     transition:
         border-color 0.22s var(--ease-smooth),
         background 0.22s var(--ease-smooth),
@@ -223,29 +227,36 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+.provider-card:focus-visible {
+    outline: none;
+    border-color: var(--p-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-color) 22%, transparent);
+}
+
 .provider-card.selected {
     border-color: var(--p-color);
-    background: color-mix(in srgb, var(--p-color) 8%, var(--bg-secondary));
-    box-shadow: 0 0 0 1px var(--p-color), 0 4px 18px rgba(0, 0, 0, 0.25);
+    background: color-mix(in srgb, var(--p-color) 10%, var(--bg-secondary));
+    box-shadow: 0 0 0 1px var(--p-color), 0 10px 28px color-mix(in srgb, var(--p-color) 18%, transparent);
 }
 
 .p-check {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 18px;
-    height: 18px;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: 1.5px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
+    background: color-mix(in srgb, var(--bg-primary) 74%, transparent);
     transition: background 0.2s, border-color 0.2s, transform 0.3s var(--ease-spring);
 }
 
 .p-check svg {
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
     stroke: transparent;
     transition: stroke 0.2s;
 }
@@ -261,36 +272,64 @@ body {
 }
 
 .p-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: var(--radius-sm);
-    background: color-mix(in srgb, var(--p-color) 15%, transparent);
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--p-color) 12%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--p-color) 18%, transparent);
+}
+
+.p-icon-image {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+}
+
+.p-icon-fallback {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: var(--p-color);
 }
 
-.p-icon svg {
-    width: 16px;
-    height: 16px;
+.provider-card.icon-missing .p-icon-image {
+    display: none;
 }
 
-.p-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.provider-card.icon-missing .p-icon-fallback {
+    display: inline-flex;
 }
 
-.p-label {
-    font-size: 13.5px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
+/* ── Responsive layout ── */
+@media (max-width: 640px) {
+    #provider-grid {
+        gap: 12px;
+    }
 
-.p-tagline {
-    font-size: 11px;
-    color: var(--text-muted);
+    .provider-card {
+        width: 74px;
+        height: 74px;
+        border-radius: 20px;
+    }
+
+    .p-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .p-icon-image {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 /* ── API key fields ── */
