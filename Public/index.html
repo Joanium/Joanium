@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -72,6 +72,15 @@
         </svg>
       </button>
 
+      <!-- Theme toggle -->
+      <button class="sidebar-btn theme-toggle" id="theme-toggle-btn" data-tip="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            stroke-linecap="round"/>
+        </svg>
+      </button>
+
       <!-- Settings -->
       <button class="sidebar-btn" data-tip="Settings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -86,17 +95,30 @@
 
     </aside>
 
+    <!-- ── Theme Panel ── -->
+    <div id="theme-panel">
+      <button class="theme-option active" data-theme="dark">
+        <span class="theme-swatch swatch-dark"></span>
+        Dark
+      </button>
+      <button class="theme-option" data-theme="light">
+        <span class="theme-swatch swatch-light"></span>
+        Light
+      </button>
+      <button class="theme-option" data-theme="midnight">
+        <span class="theme-swatch swatch-midnight"></span>
+        Midnight
+      </button>
+      <button class="theme-option" data-theme="forest">
+        <span class="theme-swatch swatch-forest"></span>
+        Forest
+      </button>
+    </div>
+
     <!-- ── Main ── -->
     <main id="main">
 
-      <!-- Top bar -->
-      <div id="topbar">
-        <div class="plan-badge">
-          <span class="plan-name">Free plan</span>
-          <span class="plan-sep">·</span>
-          <span class="plan-cta">Upgrade</span>
-        </div>
-      </div>
+
 
       <!-- Welcome screen -->
       <section id="welcome">
@@ -134,8 +156,8 @@
               <!-- Attach -->
               <button class="icon-btn" title="Attach file">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round"
-                    stroke-linejoin="round" />
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                    stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </button>
               <!-- Voice -->
@@ -148,7 +170,8 @@
               <!-- Send -->
               <button class="send-btn" id="send-btn" title="Send">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                  <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" />
                 </svg>
               </button>
             </div>
@@ -160,8 +183,8 @@
         <div class="chips">
           <button class="chip" data-prompt="Write a professional email for me">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 3a2.85 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke-linecap="round"
-                stroke-linejoin="round" />
+              <path d="M17 3a2.85 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             Write
           </button>
@@ -180,7 +203,8 @@
           </button>
           <button class="chip" data-prompt="Help me with something personal or life-related">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"
+              <path
+                d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"
                 stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             Life stuff
@@ -188,7 +212,8 @@
           <button class="chip" data-prompt="Surprise me with something interesting">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="10" />
-              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"
+                stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             openworld's choice
           </button>
