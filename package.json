@@ -1,0 +1,35 @@
+{
+  "name": "openworld",
+  "version": "0.1.0",
+  "description": "An Electron app that connects and controls your world",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "lint": "eslint src/"
+  },
+  "keywords": ["electron", "automation", "integration"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^30.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.0.0",
+    "eslint": "^9.0.0"
+  },
+  "build": {
+    "appId": "com.openworld.app",
+    "productName": "openworld",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "config.js"
+    ]
+  }
+}
