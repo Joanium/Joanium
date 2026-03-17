@@ -1,0 +1,1 @@
+export const systemPrompt = `user's name ${state.userName}`
