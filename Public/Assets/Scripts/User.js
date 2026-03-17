@@ -22,10 +22,30 @@ const settingsSaveBtn = document.getElementById('settings-save');
 const settingsSaveFeedback = document.getElementById('settings-save-feedback');
 
 const PROVIDER_META = {
-  anthropic: { color: '#cc785c', placeholder: 'sk-ant-api03-...' },
-  openai: { color: '#10a37f', placeholder: 'sk-proj-...' },
-  google: { color: '#4285f4', placeholder: 'AIza...' },
-  openrouter: { color: '#9b59b6', placeholder: 'sk-or-v1-...' },
+  anthropic: {
+    color: '#cc785c',
+    placeholder: 'sk-ant-api03-...',
+    iconPath: 'Assets/Icons/Claude.png',
+    fallback: 'C',
+  },
+  openai: {
+    color: '#10a37f',
+    placeholder: 'sk-proj-...',
+    iconPath: 'Assets/Icons/ChatGPT.png',
+    fallback: 'GPT',
+  },
+  google: {
+    color: '#4285f4',
+    placeholder: 'AIza...',
+    iconPath: 'Assets/Icons/Gemini.png',
+    fallback: 'G',
+  },
+  openrouter: {
+    color: '#9b59b6',
+    placeholder: 'sk-or-v1-...',
+    iconPath: 'Assets/Icons/OpenRouter.png',
+    fallback: 'OR',
+  },
 };
 
 const settingsState = {
@@ -164,46 +184,66 @@ function renderSettingsProviders() {
       const nextKey = settingsState.pendingProviderKeys[provider.provider] ?? '';
       const isConnected = currentKey.length > 0;
       const inputId = `settings-key-${provider.provider}`;
+      const iconPath = meta.iconPath ?? '';
+      const fallback = meta.fallback ?? provider.label?.slice(0, 2) ?? '?';
 
       return `
-        <article class="settings-provider-card" style="--p-color:${meta.color ?? 'var(--accent)'}">
-          <div class="settings-provider-head">
-            <div class="settings-provider-title">
-              <span class="settings-provider-dot" style="background:${meta.color ?? 'var(--accent)'}"></span>
-              <div>
-                <h4>${escapeHtml(provider.label)}</h4>
-              </div>
-            </div>
-            <span class="settings-provider-status ${isConnected ? 'connected' : 'disconnected'}">
-              ${isConnected ? 'Connected' : 'Not connected'}
+        <article
+          class="settings-provider-row"
+          style="--p-color:${meta.color ?? 'var(--accent)'}"
+        >
+          <div class="spr-icon" aria-hidden="true">
+            <img
+              class="spr-icon-img"
+              src="${escapeHtml(iconPath)}"
+              alt=""
+              draggable="false"
+            />
+            <span class="spr-icon-fallback">${escapeHtml(fallback)}</span>
+          </div>
+
+          <div class="spr-meta">
+            <span class="spr-name">${escapeHtml(provider.label)}</span>
+            <span class="spr-status ${isConnected ? 'connected' : 'disconnected'}">
+              ${isConnected ? '● Connected' : '○ Not connected'}
             </span>
           </div>
 
-          <label class="settings-field">
-            <span class="settings-field-label">API key</span>
-            <div class="key-input-wrap">
-              <input
-                class="key-input settings-provider-input"
-                id="${escapeHtml(inputId)}"
-                type="password"
-                data-provider-input="${escapeHtml(provider.provider)}"
-                placeholder="${escapeHtml(getProviderPlaceholder(provider.provider))}"
-                value="${escapeHtml(nextKey)}"
-                autocomplete="off"
-                spellcheck="false"
-              />
-              <button type="button" class="key-eye" data-target="${escapeHtml(inputId)}" title="Show/hide">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/>
-                  <circle cx="12" cy="12" r="3" stroke-width="1.8"/>
-                </svg>
-              </button>
-            </div>
-          </label>
+          <div class="key-input-wrap spr-key-wrap">
+            <input
+              class="key-input spr-key-input"
+              id="${escapeHtml(inputId)}"
+              type="password"
+              data-provider-input="${escapeHtml(provider.provider)}"
+              placeholder="${escapeHtml(getProviderPlaceholder(provider.provider))}"
+              value="${escapeHtml(nextKey)}"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button
+              type="button"
+              class="key-eye"
+              data-target="${escapeHtml(inputId)}"
+              title="Show / hide"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/>
+                <circle cx="12" cy="12" r="3" stroke-width="1.8"/>
+              </svg>
+            </button>
+          </div>
         </article>`;
     })
     .join('');
 
+  /* Icon fallback */
+  settingsProvidersList.querySelectorAll('.spr-icon-img').forEach((img) => {
+    if (img.complete && img.naturalWidth === 0) img.closest('.spr-icon')?.classList.add('icon-missing');
+    img.addEventListener('error', () => img.closest('.spr-icon')?.classList.add('icon-missing'));
+    img.addEventListener('load', () => img.closest('.spr-icon')?.classList.remove('icon-missing'));
+  });
+
+  /* Key inputs */
   settingsProvidersList.querySelectorAll('[data-provider-input]').forEach((input) => {
     input.addEventListener('input', () => {
       settingsState.pendingProviderKeys[input.dataset.providerInput] = input.value;
@@ -211,6 +251,7 @@ function renderSettingsProviders() {
     });
   });
 
+  /* Eye toggles */
   settingsProvidersList.querySelectorAll('.key-eye').forEach((button) => {
     button.addEventListener('click', () => {
       const input = document.getElementById(button.dataset.target);
