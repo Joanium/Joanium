@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "An Electron app that connects and controls your world",
   "type": "module",
-  "main": "src/main.js",
+  "main": "App.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
@@ -27,9 +27,10 @@
       "output": "dist"
     },
     "files": [
-      "src/**/*",
-      "assets/**/*",
-      "config.js"
+      "App.js",
+      "Packages/**/*",
+      "Public/**/*",
+      "Data/**/*"
     ]
   }
 }

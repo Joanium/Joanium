@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openworld — Setup</title>
+  <link rel="stylesheet" href="Assets/Styles/Main.css" />
+  <style>
+    /* ══════════════════════════════════════════
+       SETUP — page-specific styles
+    ══════════════════════════════════════════ */
+
+    body {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* ── Progress dots ── */
+    .progress-track {
+      position: fixed;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      z-index: 50;
+      animation: fadeIn 0.6s var(--ease-out-expo) both;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.4s var(--ease-smooth), transform 0.4s var(--ease-spring), width 0.3s var(--ease-spring);
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.35);
+    }
+
+    .dot.done {
+      background: var(--accent);
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    /* ── Logo lockup ── */
+    .setup-logo {
+      position: fixed;
+      top: 22px;
+      left: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      animation: slideInLeft 0.5s var(--ease-out-expo) both;
+    }
+
+    .setup-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .setup-logo-name {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Steps wrapper ── */
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      width: 100%;
+      max-width: 440px;
+      padding: 0 24px;
+      position: absolute;
+      transition: opacity 0.32s var(--ease-smooth), transform 0.32s var(--ease-out-expo);
+    }
+
+    .step.entering {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+
+    .step.leaving {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.97);
+      pointer-events: none;
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* ── Headings ── */
+    .step-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .step-title {
+      font-size: 30px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+      text-align: center;
+      line-height: 1.2;
+      margin-top: -8px;
+    }
+
+    .step-sub {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.7;
+      margin-top: -12px;
+      max-width: 340px;
+    }
+
+    /* ── Name input ── */
+    .name-field {
+      width: 100%;
+      position: relative;
+    }
+
+    .name-field input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    .name-field input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .name-field input:focus {
+      border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+      box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    /* ── Primary button ── */
+    .btn-primary {
+      width: 100%;
+      padding: 13px 24px;
+      border-radius: var(--radius-lg);
+      border: none;
+      background: var(--text-muted);
+      color: var(--bg-primary);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      pointer-events: none;
+    }
+
+    .btn-primary.ready {
+      background: var(--accent);
+      box-shadow: 0 4px 20px var(--accent-glow);
+      pointer-events: all;
+    }
+
+    .btn-primary.ready:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 6px 28px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary.ready:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* ── Provider grid ── */
+    #provider-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .provider-card {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 14px 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition:
+        border-color 0.22s var(--ease-smooth),
+        background 0.22s var(--ease-smooth),
+        transform 0.15s var(--ease-spring),
+        box-shadow 0.22s;
+    }
+
+    .provider-card:hover {
+      border-color: var(--p-color);
+      background: var(--bg-tertiary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .provider-card.selected {
+      border-color: var(--p-color);
+      background: color-mix(in srgb, var(--p-color) 8%, var(--bg-secondary));
+      box-shadow: 0 0 0 1px var(--p-color), 0 4px 18px rgba(0,0,0,0.25);
+    }
+
+    .p-check {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.3s var(--ease-spring);
+    }
+
+    .p-check svg {
+      width: 10px;
+      height: 10px;
+      stroke: transparent;
+      transition: stroke 0.2s;
+    }
+
+    .provider-card.selected .p-check {
+      background: var(--p-color);
+      border-color: var(--p-color);
+      transform: scale(1.15);
+    }
+
+    .provider-card.selected .p-check svg {
+      stroke: #fff;
+    }
+
+    .p-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--p-color) 15%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--p-color);
+    }
+
+    .p-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .p-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .p-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .p-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── API key fields ── */
+    #keys-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .keys-heading {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .key-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      animation: messageIn 0.3s var(--ease-out-expo) both;
+    }
+
+    .key-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--p-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .key-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--p-color);
+    }
+
+    .key-input-wrap {
+      position: relative;
+    }
+
+    .key-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 40px 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .key-input::placeholder { color: var(--text-muted); }
+
+    .key-input:focus {
+      border-color: var(--p-color);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-color) 18%, transparent);
+    }
+
+    .key-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+
+    .key-eye:hover { color: var(--text-secondary); }
+    .key-eye svg { width: 14px; height: 14px; }
+
+    /* ── Done screen ── */
+    .done-anim {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      animation: iconPop 0.5s var(--ease-spring) both, glowPulse 3s ease-in-out infinite 0.5s;
+    }
+
+    .done-anim svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    #done-title {
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+      text-align: center;
+    }
+
+    .done-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    /* reuse app keyframes */
+    @keyframes fadeIn  { from { opacity:0 } to { opacity:1 } }
+    @keyframes messageIn {
+      from { opacity:0; transform: translateY(8px) }
+      to   { opacity:1; transform: translateY(0) }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="setup-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.5"/>
+    </svg>
+    <span class="setup-logo-name">openworld</span>
+  </div>
+
+  <!-- Progress dots -->
+  <div class="progress-track">
+    <div class="dot active" id="dot-1"></div>
+    <div class="dot" id="dot-2"></div>
+    <div class="dot" id="dot-3"></div>
+  </div>
+
+  <!-- ── Step 1: Name ── -->
+  <div class="step visible" id="step-name">
+    <span class="step-eyebrow">Welcome</span>
+    <h1 class="step-title">What should we call you?</h1>
+    <p class="step-sub">This is how openworld will greet you every time you open the app.</p>
+    <div class="name-field">
+      <input
+        type="text"
+        id="name-input"
+        placeholder="Your name"
+        maxlength="40"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+    <button class="btn-primary" id="name-continue">Continue →</button>
+  </div>
+
+  <!-- ── Step 2: Providers ── -->
+  <div class="step" id="step-providers" style="display:none; max-width: 500px; gap: 20px;">
+    <span class="step-eyebrow">Connect</span>
+    <h1 class="step-title">Choose your AI providers</h1>
+    <p class="step-sub">Select one or more. You can always add more later in Settings.</p>
+    <div id="provider-grid"></div>
+    <div id="keys-section"></div>
+    <button class="btn-primary" id="keys-continue">Finish setup →</button>
+  </div>
+
+  <!-- ── Step 3: Done ── -->
+  <div class="step" id="step-done" style="display:none; gap: 20px;">
+    <div class="done-anim">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.4"/>
+      </svg>
+    </div>
+    <h1 class="step-title" id="done-title">You're all set!</h1>
+    <p class="done-sub">Launching openworld…</p>
+  </div>
+
+  <script src="Assets/Scripts/Setup.js"></script>
+</body>
+</html>

@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  openworld — central app config
-//  All references to the app name come from here.
-//  To rename the app, change APP_NAME. That's it.
-// ─────────────────────────────────────────────
-
 const APP_NAME = "openworld";
 
 const config = {
