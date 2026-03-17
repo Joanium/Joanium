@@ -27,7 +27,7 @@ const themeOptions = document.querySelectorAll('.theme-option');
 /* ══════════════════════════════════════════
    THEME SYSTEM
 ══════════════════════════════════════════ */
-const THEMES = ['dark', 'light', 'midnight', 'forest'];
+const THEMES = ['dark', 'light', 'midnight', 'forest', 'pinky'];
 
 function applyTheme(theme, animate = true) {
   if (!THEMES.includes(theme)) theme = 'dark';

@@ -106,6 +106,30 @@
   --shadow-color: rgba(0,0,0,0.55);
 }
 
+[data-theme="pinky"] {
+  --bg-primary:    #1a0f14;
+  --bg-secondary:  #231219;
+  --bg-tertiary:   #2d1a22;
+  --bg-hover:      #3a2130;
+  --bg-input:      #261520;
+
+  --border:        #4a2535;
+  --border-subtle: #351a28;
+
+  --text-primary:  #f5d6e8;
+  --text-secondary:#c28aa8;
+  --text-muted:    #7a4560;
+
+  --accent:        #ff6eb4;
+  --accent-glow:   rgba(255,110,180,0.20);
+  --accent-dim:    rgba(255,110,180,0.09);
+  --accent-hover:  #ff8ec6;
+
+  --mesh-a: rgba(255,110,180,0.06);
+  --mesh-b: rgba(200,60,140,0.04);
+  --shadow-color: rgba(0,0,0,0.55);
+}
+
 /* ══════════════════════════════════════════
    SHARED TOKENS
 ══════════════════════════════════════════ */
@@ -383,8 +407,6 @@ body::before {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-
-
 
 /* ══════════════════════════════════════════
    WELCOME SCREEN
@@ -696,6 +718,67 @@ body::before {
 }
 
 /* ══════════════════════════════════════════
+   FOOTER CREDIT
+══════════════════════════════════════════ */
+.footer-credit {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  text-align: center;
+  letter-spacing: 0.3px;
+  animation: chipIn 0.5s var(--ease-out-expo) 0.72s both;
+  transition: color var(--transition-theme);
+  user-select: none;
+}
+
+.footer-credit .credit-heart {
+  display: inline-block;
+  animation: heartBeat 1.6s ease-in-out infinite;
+}
+
+.footer-credit .credit-name {
+  color: var(--accent);
+  font-weight: 500;
+  transition: color var(--transition-theme);
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1);    }
+  14%       { transform: scale(1.25); }
+  28%       { transform: scale(1);    }
+  42%       { transform: scale(1.18); }
+  56%       { transform: scale(1);    }
+}
+
+/* Setup page footer credit (fixed bottom) */
+.setup-footer-credit {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  text-align: center;
+  letter-spacing: 0.3px;
+  z-index: 10;
+  white-space: nowrap;
+  animation: fadeIn 0.6s var(--ease-out-expo) 0.5s both;
+  transition: color var(--transition-theme);
+  user-select: none;
+}
+
+.setup-footer-credit .credit-heart {
+  display: inline-block;
+  animation: heartBeat 1.6s ease-in-out infinite;
+}
+
+.setup-footer-credit .credit-name {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════════
    CHAT VIEW
 ══════════════════════════════════════════ */
 #chat-view {
@@ -888,6 +971,7 @@ body::before {
 .swatch-light    { background: linear-gradient(135deg, #f5f4f1 50%, #b85c3a 50%); }
 .swatch-midnight { background: linear-gradient(135deg, #0d1117 50%, #4da6ff 50%); }
 .swatch-forest   { background: linear-gradient(135deg, #111a14 50%, #5dba6e 50%); }
+.swatch-pinky    { background: linear-gradient(135deg, #1a0f14 50%, #ff6eb4 50%); }
 
 /* ══════════════════════════════════════════
    SCROLLBAR
