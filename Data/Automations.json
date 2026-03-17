@@ -1,0 +1,27 @@
+{
+  "automations": [
+    {
+      "id": "auto_1773764771595_x6jc0",
+      "name": "Open Folder",
+      "description": "open a folder",
+      "enabled": true,
+      "trigger": {
+        "type": "on_startup"
+      },
+      "actions": [
+        {
+          "type": "run_command",
+          "command": "npm -version",
+          "value": "npm -version"
+        },
+        {
+          "type": "open_site",
+          "url": "https://joeljolly.vercel.app",
+          "value": "https://joeljolly.vercel.app"
+        }
+      ],
+      "createdAt": "2026-03-17T16:26:11.595Z",
+      "lastRun": "2026-03-17T16:26:41.676Z"
+    }
+  ]
+}

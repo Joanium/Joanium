@@ -815,13 +815,13 @@ document.addEventListener('click', (event) => {
 sidebarBtns.forEach((button) => {
   button.addEventListener('click', () => {
     const view = button.dataset.view;
-
+ 
     if (view === 'chat') {
       startNewChat();
       sidebarBtns.forEach((item) => item.classList.remove('active'));
       return;
     }
-
+ 
     if (view === 'library') {
       if (libraryBackdrop?.classList.contains('open')) {
         closeLibrary();
@@ -831,7 +831,13 @@ sidebarBtns.forEach((button) => {
       }
       return;
     }
-
+ 
+    // ── NEW: Navigate to the Automations page ──
+    if (view === 'automations') {
+      window.electronAPI?.launchAutomations?.();
+      return;
+    }
+ 
     sidebarBtns.forEach((item) => item.classList.remove('active'));
     button.classList.add('active');
     closeLibrary();

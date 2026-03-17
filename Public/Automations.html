@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>openworld — Automations</title>
+  <link rel="stylesheet" href="Assets/Styles/Themes.css" />
+  <link rel="stylesheet" href="Assets/Styles/Root.css" />
+  <link rel="stylesheet" href="Assets/Styles/Main.css" />
+  <link rel="stylesheet" href="Assets/Styles/Automations.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── Titlebar ── -->
+  <div id="titlebar">
+    <div id="titlebar-drag">
+      <svg class="titlebar-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.5"/>
+      </svg>
+      <span class="titlebar-name">openworld</span>
+    </div>
+    <div id="titlebar-controls">
+      <button id="btn-minimize" title="Minimize">
+        <svg viewBox="0 0 12 12"><rect y="5.5" width="12" height="1" fill="currentColor"/></svg>
+      </button>
+      <button id="btn-maximize" title="Maximize / Restore">
+        <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+      <button id="btn-close" title="Close">
+        <svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Body wrap ── -->
+  <div id="body-wrap">
+
+    <!-- ── Sidebar ── -->
+    <aside id="sidebar">
+      <div class="sidebar-logo" title="openworld">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <button class="sidebar-btn" data-view="chat" data-tip="New chat" title="New chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <button class="sidebar-btn" data-view="library" data-tip="Library" title="Library">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M4 4h4v16H4zM10 4h10v7H10zM10 15h10v5H10z" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button class="sidebar-btn active" data-view="automations" data-tip="Automations" title="Automations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="sidebar-spacer"></div>
+
+      <button class="sidebar-btn theme-toggle" id="theme-toggle-btn" data-tip="Switch theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <button class="sidebar-avatar" id="sidebar-avatar-btn" data-tip="Account" title="Account">OW</button>
+    </aside>
+
+    <!-- ── Theme Panel ── -->
+    <div id="theme-panel">
+      <button class="theme-option active" data-theme="dark"><span class="theme-swatch swatch-dark"></span>Dark</button>
+      <button class="theme-option" data-theme="light"><span class="theme-swatch swatch-light"></span>Light</button>
+      <button class="theme-option" data-theme="midnight"><span class="theme-swatch swatch-midnight"></span>Midnight</button>
+      <button class="theme-option" data-theme="forest"><span class="theme-swatch swatch-forest"></span>Forest</button>
+      <button class="theme-option" data-theme="pinky"><span class="theme-swatch swatch-pinky"></span>Pinky</button>
+    </div>
+
+    <!-- ── Avatar Panel ── -->
+    <div id="avatar-panel">
+      <div class="ap-header">
+        <div class="ap-badge" id="avatar-panel-badge">OW</div>
+        <div class="ap-user-info">
+          <span class="ap-name" id="avatar-panel-name">User</span>
+          <span class="ap-subtitle">openworld account</span>
+        </div>
+      </div>
+      <div class="ap-divider"></div>
+      <button id="avatar-settings-btn" class="ap-settings-btn" type="button">
+        <span class="ap-settings-copy">
+          <span class="ap-settings-title">Settings</span>
+          <span class="ap-settings-subtitle">Back to main app</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── Main content ── -->
+    <main id="main" class="automations-main">
+      <div class="automations-scroll">
+
+        <!-- Page header -->
+        <div class="auto-page-header">
+          <div class="auto-page-header-copy">
+            <h2>Automations</h2>
+            <p>Schedule actions to run automatically — open sites, folders, or run commands.</p>
+          </div>
+          <button class="add-automation-btn" id="add-automation-header-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
+            </svg>
+            Add Automation
+          </button>
+        </div>
+
+        <!-- Empty state -->
+        <div id="auto-empty" class="auto-empty" hidden>
+          <div class="auto-empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>No automations yet</h3>
+          <p>Create your first automation to start scheduling tasks — open a website, a folder, or run a terminal command on a schedule.</p>
+          <button class="auto-empty-btn" id="add-automation-empty-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px;height:14px">
+              <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
+            </svg>
+            Create your first automation
+          </button>
+        </div>
+
+        <!-- Grid of automation cards -->
+        <div id="auto-grid" class="auto-grid" hidden></div>
+
+      </div>
+    </main>
+
+  </div><!-- /body-wrap -->
+</div><!-- /app -->
+
+<!-- ════════════════════════════════════════
+     ADD / EDIT AUTOMATION MODAL
+═════════════════════════════════════════ -->
+<div id="automation-modal-backdrop">
+  <div id="automation-modal" role="dialog" aria-modal="true" aria-labelledby="auto-modal-title-text">
+
+    <div class="auto-modal-header">
+      <div class="auto-modal-title-group">
+        <div class="auto-modal-eyebrow">Automation</div>
+        <h2 id="auto-modal-title-text">New Automation</h2>
+      </div>
+      <button class="settings-modal-close" id="auto-modal-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="auto-modal-body">
+
+      <!-- Name -->
+      <div class="auto-field">
+        <label class="auto-field-label" for="auto-name">
+          Name <span class="field-required">*</span>
+        </label>
+        <input
+          class="auto-input"
+          id="auto-name"
+          type="text"
+          placeholder="My automation"
+          maxlength="80"
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="auto-field">
+        <label class="auto-field-label" for="auto-desc">
+          Description <span class="field-optional">optional</span>
+        </label>
+        <textarea
+          class="auto-textarea"
+          id="auto-desc"
+          placeholder="What does this automation do?"
+          maxlength="300"
+        ></textarea>
+      </div>
+
+      <!-- Trigger -->
+      <div class="auto-section">
+        <div class="auto-section-label">Trigger</div>
+        <div class="trigger-options">
+
+          <!-- On startup -->
+          <div class="trigger-option selected" data-trigger="on_startup">
+            <div class="trigger-radio"></div>
+            <div>
+              <div class="trigger-option-text">On app startup</div>
+              <div class="trigger-option-sub">Runs every time openworld is launched</div>
+            </div>
+          </div>
+
+          <!-- Hourly -->
+          <div class="trigger-option" data-trigger="hourly">
+            <div class="trigger-radio"></div>
+            <div>
+              <div class="trigger-option-text">Every hour</div>
+              <div class="trigger-option-sub">Runs at the top of each hour while the app is open</div>
+            </div>
+          </div>
+
+          <!-- Daily -->
+          <div class="trigger-option" data-trigger="daily">
+            <div class="trigger-radio"></div>
+            <div style="flex:1">
+              <div class="trigger-option-text">Every day at a set time</div>
+              <div class="trigger-sub-inputs hidden" id="daily-sub-inputs">
+                <span class="trigger-sub-label">at</span>
+                <input type="time" class="trigger-time-input" id="daily-time" value="09:00">
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly -->
+          <div class="trigger-option" data-trigger="weekly">
+            <div class="trigger-radio"></div>
+            <div style="flex:1">
+              <div class="trigger-option-text">Every week on a specific day</div>
+              <div class="trigger-sub-inputs hidden" id="weekly-sub-inputs">
+                <select class="trigger-day-select" id="weekly-day">
+                  <option value="monday">Monday</option>
+                  <option value="tuesday">Tuesday</option>
+                  <option value="wednesday">Wednesday</option>
+                  <option value="thursday">Thursday</option>
+                  <option value="friday">Friday</option>
+                  <option value="saturday">Saturday</option>
+                  <option value="sunday">Sunday</option>
+                </select>
+                <span class="trigger-sub-label">at</span>
+                <input type="time" class="trigger-time-input" id="weekly-time" value="09:00">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="auto-section">
+        <div class="auto-section-label">Actions</div>
+        <div id="actions-list" class="actions-list"></div>
+        <button class="add-action-btn" id="add-action-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
+          </svg>
+          Add another action
+        </button>
+      </div>
+
+    </div>
+
+    <div class="auto-modal-footer">
+      <button class="auto-btn-cancel" id="auto-cancel-btn" type="button">Cancel</button>
+      <button class="auto-btn-save"   id="auto-save-btn"   type="button">Save Automation</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     DELETE CONFIRM
+═════════════════════════════════════════ -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Delete automation?</h3>
+    <p>
+      "<strong id="confirm-automation-name"></strong>" will be permanently deleted and can't be recovered.
+    </p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel-btn" id="confirm-cancel">Cancel</button>
+      <button class="confirm-delete-btn" id="confirm-delete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="Assets/Scripts/Automations.js"></script>
+</body>
+</html>

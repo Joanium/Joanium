@@ -7,20 +7,26 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import { AutomationEngine } from './Packages/Automation/AutomationEngine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /* ── Paths ── */
-const DATA_DIR = path.join(__dirname, 'Data');
-const USER_FILE = path.join(DATA_DIR, 'User.json');
-const MODELS_FILE = path.join(DATA_DIR, 'Models.json');
+const DATA_DIR                 = path.join(__dirname, 'Data');
+const USER_FILE                = path.join(DATA_DIR, 'User.json');
+const MODELS_FILE              = path.join(DATA_DIR, 'Models.json');
 const CUSTOM_INSTRUCTIONS_FILE = path.join(DATA_DIR, 'CustomInstructions.md');
-const MEMORY_FILE = path.join(DATA_DIR, 'Memory.md');
-const CHATS_DIR = path.join(DATA_DIR, 'Chats');
-const PRELOAD = path.join(__dirname, 'Packages', 'Electron', 'Preload.js');
-const SETUP_PAGE = path.join(__dirname, 'Public', 'Setup.html');
-const MAIN_PAGE = path.join(__dirname, 'Public', 'index.html');
+const MEMORY_FILE              = path.join(DATA_DIR, 'Memory.md');
+const CHATS_DIR                = path.join(DATA_DIR, 'Chats');
+const AUTOMATIONS_FILE         = path.join(DATA_DIR, 'Automations.json');
+const PRELOAD                  = path.join(__dirname, 'Packages', 'Electron', 'Preload.js');
+const SETUP_PAGE               = path.join(__dirname, 'Public', 'Setup.html');
+const MAIN_PAGE                = path.join(__dirname, 'Public', 'index.html');
+const AUTOMATIONS_PAGE         = path.join(__dirname, 'Public', 'Automations.html');
+
+/* ── Automation engine (singleton) ── */
+const automationEngine = new AutomationEngine(AUTOMATIONS_FILE);
 
 /* ══════════════════════════════════════════
    HELPERS
@@ -41,16 +47,10 @@ const ensureDataDir = () => {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 };
 
-const readJSON = (f) => JSON.parse(fs.readFileSync(f, 'utf-8'));
-const writeJSON = (f, d) => {
-  ensureDataDir();
-  fs.writeFileSync(f, JSON.stringify(d, null, 2), 'utf-8');
-};
-const readText = (f) => fs.readFileSync(f, 'utf-8');
-const writeText = (f, text) => {
-  ensureDataDir();
-  fs.writeFileSync(f, text, 'utf-8');
-};
+const readJSON  = (f) => JSON.parse(fs.readFileSync(f, 'utf-8'));
+const writeJSON = (f, d) => { ensureDataDir(); fs.writeFileSync(f, JSON.stringify(d, null, 2), 'utf-8'); };
+const readText  = (f) => fs.readFileSync(f, 'utf-8');
+const writeText = (f, text) => { ensureDataDir(); fs.writeFileSync(f, text, 'utf-8'); };
 
 function mergeUserData(existing = {}, updates = {}) {
   return {
@@ -71,11 +71,8 @@ function mergeUserData(existing = {}, updates = {}) {
 }
 
 function readUserData() {
-  try {
-    return mergeUserData(readJSON(USER_FILE));
-  } catch {
-    return mergeUserData();
-  }
+  try   { return mergeUserData(readJSON(USER_FILE)); }
+  catch { return mergeUserData(); }
 }
 
 function writeUserData(updates = {}) {
@@ -85,19 +82,13 @@ function writeUserData(updates = {}) {
 }
 
 function readCustomInstructions() {
-  try {
-    return readText(CUSTOM_INSTRUCTIONS_FILE);
-  } catch {
-    return '';
-  }
+  try   { return readText(CUSTOM_INSTRUCTIONS_FILE); }
+  catch { return ''; }
 }
 
 function readMemory() {
-  try {
-    return readText(MEMORY_FILE);
-  } catch {
-    return '';
-  }
+  try   { return readText(MEMORY_FILE); }
+  catch { return ''; }
 }
 
 const isFirstRun = () => {
@@ -112,19 +103,19 @@ let win = null;
 
 function createWindow(page) {
   win = new BrowserWindow({
-    width: 1100,
-    height: 720,
+    width:    1100,
+    height:   720,
     minWidth: 1100,
     minHeight: 720,
-    frame: false,
+    frame:    false,
     titleBarStyle: 'hidden',
     backgroundColor: '#1a1a1a',
     show: false,
     webPreferences: {
-      preload: PRELOAD,
+      preload:          PRELOAD,
       contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: false,
+      nodeIntegration:  false,
+      sandbox:          false,
     },
   });
 
@@ -141,8 +132,12 @@ function createWindow(page) {
    LIFECYCLE
 ══════════════════════════════════════════ */
 app.whenReady().then(() => {
-  // Ensure Chats directory exists
+  // Ensure directories exist
   if (!fs.existsSync(CHATS_DIR)) fs.mkdirSync(CHATS_DIR, { recursive: true });
+  ensureDataDir();
+
+  // Boot automation engine
+  automationEngine.start();
 
   createWindow(isFirstRun() ? SETUP_PAGE : MAIN_PAGE);
   app.on('activate', () => {
@@ -152,6 +147,7 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
+  automationEngine.stop();
   if (process.platform !== 'darwin') app.quit();
 });
 
@@ -159,17 +155,13 @@ app.on('window-all-closed', () => {
    IPC — SETUP
 ══════════════════════════════════════════ */
 ipcMain.handle('save-user', (_e, userData) => {
-  try {
-    const user = writeUserData(userData);
-    return { ok: true, user };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  try   { return { ok: true, user: writeUserData(userData) }; }
+  catch (err) { return { ok: false, error: err.message }; }
 });
 
 ipcMain.handle('save-api-keys', (_e, keysMap) => {
   try {
-    const user = readUserData();
+    const user     = readUserData();
     const nextKeys = { ...(user.api_keys ?? {}) };
 
     Object.entries(keysMap ?? {}).forEach(([providerId, apiKey]) => {
@@ -178,63 +170,38 @@ ipcMain.handle('save-api-keys', (_e, keysMap) => {
         if (trimmed) nextKeys[providerId] = trimmed;
         return;
       }
-
       if (apiKey === null) delete nextKeys[providerId];
     });
 
     const nextUser = mergeUserData(user, { api_keys: nextKeys });
     writeJSON(USER_FILE, nextUser);
     return { ok: true, user: nextUser };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  } catch (err) { return { ok: false, error: err.message }; }
 });
 
 ipcMain.handle('save-user-profile', (_e, profile) => {
   try {
     const updates = {};
-
-    if (typeof profile?.name === 'string') {
-      updates.name = profile.name.trim();
-    }
-
-    const user = writeUserData(updates);
-    return { ok: true, user };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+    if (typeof profile?.name === 'string') updates.name = profile.name.trim();
+    return { ok: true, user: writeUserData(updates) };
+  } catch (err) { return { ok: false, error: err.message }; }
 });
 
-ipcMain.handle('get-custom-instructions', () => {
-  return readCustomInstructions();
-});
+ipcMain.handle('get-custom-instructions', () => readCustomInstructions());
 
 ipcMain.handle('save-custom-instructions', (_e, content) => {
-  try {
-    writeText(CUSTOM_INSTRUCTIONS_FILE, String(content ?? '').replace(/\r\n/g, '\n'));
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  try   { writeText(CUSTOM_INSTRUCTIONS_FILE, String(content ?? '').replace(/\r\n/g, '\n')); return { ok: true }; }
+  catch (err) { return { ok: false, error: err.message }; }
 });
 
-ipcMain.handle('get-memory', () => {
-  return readMemory();
-});
+ipcMain.handle('get-memory', () => readMemory());
 
 ipcMain.handle('save-memory', (_e, content) => {
-  try {
-    writeText(MEMORY_FILE, String(content ?? '').replace(/\r\n/g, '\n'));
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  try   { writeText(MEMORY_FILE, String(content ?? '').replace(/\r\n/g, '\n')); return { ok: true }; }
+  catch (err) { return { ok: false, error: err.message }; }
 });
 
-ipcMain.handle('launch-main', () => {
-  win?.loadFile(MAIN_PAGE);
-  return { ok: true };
-});
+ipcMain.handle('launch-main', () => { win?.loadFile(MAIN_PAGE); return { ok: true }; });
 
 /* ══════════════════════════════════════════
    IPC — RUNTIME READS
@@ -242,17 +209,12 @@ ipcMain.handle('launch-main', () => {
 ipcMain.handle('get-user', () => readUserData());
 
 ipcMain.handle('get-models', () => {
-  const models = readJSON(MODELS_FILE);
+  const models  = readJSON(MODELS_FILE);
   const apiKeys = readUserData().api_keys ?? {};
-  return models.map(provider => ({
-    ...provider,
-    api: apiKeys[provider.provider] ?? null,
-  }));
+  return models.map(provider => ({ ...provider, api: apiKeys[provider.provider] ?? null }));
 });
 
-ipcMain.handle('get-api-key', (_e, providerId) => {
-  return readUserData()?.api_keys?.[providerId] ?? null;
-});
+ipcMain.handle('get-api-key', (_e, providerId) => readUserData()?.api_keys?.[providerId] ?? null);
 
 /* ══════════════════════════════════════════
    IPC — CHAT STORAGE
@@ -260,12 +222,9 @@ ipcMain.handle('get-api-key', (_e, providerId) => {
 ipcMain.handle('save-chat', (_e, chatData) => {
   try {
     if (!fs.existsSync(CHATS_DIR)) fs.mkdirSync(CHATS_DIR, { recursive: true });
-    const filename = chatData.id + '.json';
-    writeJSON(path.join(CHATS_DIR, filename), chatData);
+    writeJSON(path.join(CHATS_DIR, chatData.id + '.json'), chatData);
     return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  } catch (err) { return { ok: false, error: err.message }; }
 });
 
 ipcMain.handle('get-chats', () => {
@@ -273,28 +232,64 @@ ipcMain.handle('get-chats', () => {
     if (!fs.existsSync(CHATS_DIR)) return [];
     return fs.readdirSync(CHATS_DIR)
       .filter(f => f.endsWith('.json'))
-      .map(f => {
-        try { return readJSON(path.join(CHATS_DIR, f)); }
-        catch { return null; }
-      })
+      .map(f => { try { return readJSON(path.join(CHATS_DIR, f)); } catch { return null; } })
       .filter(Boolean)
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-  } catch (err) {
-    return [];
-  }
+  } catch { return []; }
 });
 
-ipcMain.handle('load-chat', (_e, chatId) => {
-  return readJSON(path.join(CHATS_DIR, chatId + '.json'));
-});
+ipcMain.handle('load-chat',   (_e, chatId) => readJSON(path.join(CHATS_DIR, chatId + '.json')));
 
 ipcMain.handle('delete-chat', (_e, chatId) => {
+  try   { fs.unlinkSync(path.join(CHATS_DIR, chatId + '.json')); return { ok: true }; }
+  catch (err) { return { ok: false, error: err.message }; }
+});
+
+/* ══════════════════════════════════════════
+   IPC — AUTOMATIONS
+══════════════════════════════════════════ */
+
+/** Navigate to the Automations page */
+ipcMain.handle('launch-automations', () => {
+  win?.loadFile(AUTOMATIONS_PAGE);
+  return { ok: true };
+});
+
+/** Return all automations */
+ipcMain.handle('get-automations', () => {
+  try   { return { ok: true, automations: automationEngine.getAll() }; }
+  catch (err) { return { ok: false, error: err.message, automations: [] }; }
+});
+
+/**
+ * Create or update an automation.
+ * The caller sends a full automation object; if `id` already exists it is
+ * replaced, otherwise it is appended.
+ */
+ipcMain.handle('save-automation', (_e, automation) => {
   try {
-    fs.unlinkSync(path.join(CHATS_DIR, chatId + '.json'));
+    const saved = automationEngine.saveAutomation(automation);
+    automationEngine.reload();
+    return { ok: true, automation: saved };
+  } catch (err) { return { ok: false, error: err.message }; }
+});
+
+/** Permanently remove an automation by id */
+ipcMain.handle('delete-automation', (_e, id) => {
+  try {
+    automationEngine.deleteAutomation(id);
+    automationEngine.reload();
     return { ok: true };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  } catch (err) { return { ok: false, error: err.message }; }
+});
+
+/** Enable / disable an automation without changing anything else */
+ipcMain.handle('toggle-automation', (_e, id, enabled) => {
+  try {
+    automationEngine.toggleAutomation(id, enabled);
+    automationEngine.reload();
+    return { ok: true };
+  } catch (err) { return { ok: false, error: err.message }; }
 });
 
 /* ══════════════════════════════════════════
@@ -302,4 +297,4 @@ ipcMain.handle('delete-chat', (_e, chatId) => {
 ══════════════════════════════════════════ */
 ipcMain.on('window-minimize', () => win?.minimize());
 ipcMain.on('window-maximize', () => win?.isMaximized() ? win.unmaximize() : win.maximize());
-ipcMain.on('window-close', () => win?.close());
+ipcMain.on('window-close',    () => win?.close());
