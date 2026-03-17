@@ -727,12 +727,12 @@
 
 .footer-credit .credit-heart {
   display: inline-block;
-  animation: heartBeat 1.6s ease-in-out infinite;
 }
 
 .footer-credit .credit-name {
   color: var(--accent);
   font-weight: 500;
+  text-decoration: none;
   transition: color var(--transition-theme);
 }
 
@@ -779,12 +779,12 @@
 
 .setup-footer-credit .credit-heart {
   display: inline-block;
-  animation: heartBeat 1.6s ease-in-out infinite;
 }
 
 .setup-footer-credit .credit-name {
   color: var(--accent);
   font-weight: 500;
+  text-decoration: none;
 }
 
 /* ══════════════════════════════════════════
