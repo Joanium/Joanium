@@ -119,6 +119,17 @@ loadProviders().then(async () => {
   const user = await settings.loadUser();
   sidebar.setUser(user?.name ?? '');
   await refreshSystemPrompt();
+
+  // Load a chat that was selected from the Automations library
+  const pendingChatId = localStorage.getItem('ow-pending-chat');
+  if (pendingChatId) {
+    localStorage.removeItem('ow-pending-chat');
+    await loadChat(pendingChatId, {
+      updateModelLabel,
+      buildModelDropdown,
+      notifyModelSelectionChanged,
+    });
+  }
 });
 
 console.log(`[${APP_NAME}] loaded`);

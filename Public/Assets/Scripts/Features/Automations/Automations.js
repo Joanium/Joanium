@@ -16,7 +16,10 @@ const settings = initSettingsModal();
 
 // Library on Automations page: selecting a chat launches the main window
 const library = initLibraryModal({
-  onChatSelect: () => window.electronAPI?.launchMain(),
+  onChatSelect: (chatId) => {
+    if (chatId) localStorage.setItem('ow-pending-chat', chatId);
+    window.electronAPI?.launchMain();
+  },
 });
 
 /* ══════════════════════════════════════════
