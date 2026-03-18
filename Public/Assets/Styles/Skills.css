@@ -95,7 +95,10 @@
   box-shadow: 0 0 28px var(--accent-glow);
 }
 
-.page-empty-icon svg { width: 26px; height: 26px; }
+.page-empty-icon svg {
+  width: 26px;
+  height: 26px;
+}
 
 .page-empty h3 {
   font-size: 17px;
@@ -139,8 +142,8 @@
   cursor: pointer;
   transition:
     border-color var(--transition-fast),
-    transform    var(--transition-fast),
-    box-shadow   var(--transition-mid);
+    transform var(--transition-fast),
+    box-shadow var(--transition-mid);
   animation: messageIn 0.35s var(--ease-out-expo) both;
 }
 
@@ -169,9 +172,15 @@
   flex-shrink: 0;
 }
 
-.skill-icon svg { width: 20px; height: 20px; }
+.skill-icon svg {
+  width: 20px;
+  height: 20px;
+}
 
-.skill-card-title-group { flex: 1; min-width: 0; }
+.skill-card-title-group {
+  flex: 1;
+  min-width: 0;
+}
 
 .skill-name {
   font-size: 15px;
@@ -259,7 +268,10 @@
     transform var(--transition-fast);
 }
 
-.skill-read-btn svg { width: 13px; height: 13px; }
+.skill-read-btn svg {
+  width: 13px;
+  height: 13px;
+}
 
 .skill-read-btn:hover {
   background: var(--accent-dim);
@@ -286,7 +298,10 @@
   transition: opacity 0.22s ease;
 }
 
-#skill-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+#skill-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 #skill-modal {
   position: relative;
@@ -303,7 +318,9 @@
   overflow: hidden;
 }
 
-#skill-modal-backdrop.open #skill-modal { transform: translateY(0) scale(1); }
+#skill-modal-backdrop.open #skill-modal {
+  transform: translateY(0) scale(1);
+}
 
 .skill-modal-header {
   display: flex;
@@ -335,7 +352,10 @@
   flex-shrink: 0;
 }
 
-.skill-modal-icon svg { width: 17px; height: 17px; }
+.skill-modal-icon svg {
+  width: 17px;
+  height: 17px;
+}
 
 .skill-modal-name {
   font-size: 18px;
@@ -355,15 +375,55 @@
   scrollbar-color: var(--border) transparent;
 }
 
-.skill-modal-content { font-size: 13.5px; line-height: 1.8; color: var(--text-primary); }
-.skill-modal-content h1 { font-size: 20px; font-weight: 600; margin: 0 0 12px; }
-.skill-modal-content h2 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
-.skill-modal-content h3 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; color: var(--text-secondary); }
-.skill-modal-content p  { margin-bottom: 12px; color: var(--text-secondary); }
-.skill-modal-content p:last-child { margin-bottom: 0; }
-.skill-modal-content li { margin: 4px 0 4px 20px; color: var(--text-secondary); }
-.skill-modal-content strong { color: var(--text-primary); font-weight: 600; }
-.skill-modal-content em { font-style: italic; color: var(--text-muted); }
+.skill-modal-content {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.skill-modal-content h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.skill-modal-content h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}
+
+.skill-modal-content h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 16px 0 6px;
+  color: var(--text-secondary);
+}
+
+.skill-modal-content p {
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.skill-modal-content p:last-child {
+  margin-bottom: 0;
+}
+
+.skill-modal-content li {
+  margin: 4px 0 4px 20px;
+  color: var(--text-secondary);
+}
+
+.skill-modal-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.skill-modal-content em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 .skill-modal-content code {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -372,6 +432,7 @@
   padding: 2px 6px;
   border-radius: 5px;
 }
+
 .skill-modal-content pre {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
@@ -380,6 +441,7 @@
   overflow-x: auto;
   margin: 12px 0;
 }
+
 .skill-modal-content pre code {
   background: none;
   border: none;
@@ -389,5 +451,28 @@
 }
 
 /* ── Keyframes ── */
-@keyframes fadeIn    { from { opacity: 0; }                                          to { opacity: 1; } }
-@keyframes messageIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
