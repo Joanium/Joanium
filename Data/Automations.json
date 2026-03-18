@@ -4,7 +4,7 @@
       "id": "auto_1773813739800_nkrrl",
       "name": "Open sites",
       "description": "Open sites",
-      "enabled": false,
+      "enabled": true,
       "trigger": {
         "type": "on_startup"
       },
@@ -22,7 +22,7 @@
           "url": "instagram.com"
         }
       ],
-      "lastRun": "2026-03-18T06:03:00.764Z"
+      "lastRun": "2026-03-18T08:02:09.984Z"
     }
   ]
 }

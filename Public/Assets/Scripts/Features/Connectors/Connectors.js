@@ -1,12 +1,9 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Connectors.js
-//  Gmail: one-click OAuth via Google Cloud credentials.
-//  GitHub: Personal Access Token (unchanged).
+//  openworld — Public/Assets/Scripts/Features/Connectors/Connectors.js
+//  Renders connector cards and handles connect / disconnect flows.
+//  Imported and used by User.js (settings modal connectors tab).
 // ─────────────────────────────────────────────
 
-/* ══════════════════════════════════════════
-   CONNECTOR DEFINITIONS
-══════════════════════════════════════════ */
 const CONNECTORS = [
   {
     id:          'gmail',
@@ -15,7 +12,7 @@ const CONNECTORS = [
     description: 'Read emails, get AI summaries in chat, and send emails via automations.',
     helpUrl:     'https://console.cloud.google.com/apis/credentials',
     helpText:    'Create OAuth credentials in Google Cloud →',
-    oauthFlow:   true,   // ← triggers the one-click sign-in window
+    oauthFlow:   true,
     capabilities: [
       'Ask "read my unread emails" in chat',
       'AI-powered email summaries',
@@ -77,12 +74,12 @@ const CONNECTORS = [
 ];
 
 /* ══════════════════════════════════════════
-   STATE
+   MODULE STATE
 ══════════════════════════════════════════ */
 const cxState = {
   loaded:   false,
-  statuses: {},   // { gmail: { enabled, connectedAt, accountInfo } }
-  pending:  {},   // { connectorId: { fieldKey: value } }
+  statuses: {},
+  pending:  {},
 };
 
 /* ══════════════════════════════════════════
@@ -103,7 +100,7 @@ function setConnectBtnState(id, loading, label) {
 }
 
 /* ══════════════════════════════════════════
-   RENDER
+   CARD BUILDER
 ══════════════════════════════════════════ */
 function buildCard(def) {
   const status      = cxState.statuses[def.id] ?? { enabled: false };
@@ -113,7 +110,7 @@ function buildCard(def) {
   card.className = `cx-card${isConnected ? ' cx-connected' : ''}`;
   card.id        = `cx-card-${def.id}`;
 
-  /* ── Header ── */
+  /* Header */
   card.innerHTML = `
     <div class="cx-card-header">
       <div class="cx-icon">${def.icon}</div>
@@ -126,7 +123,7 @@ function buildCard(def) {
       </span>
     </div>`;
 
-  /* ── Capabilities ── */
+  /* Capabilities */
   const caps = document.createElement('div');
   caps.className = 'cx-capabilities';
   def.capabilities.forEach(cap => {
@@ -137,21 +134,20 @@ function buildCard(def) {
   });
   card.appendChild(caps);
 
-  /* ── Account info when connected ── */
+  /* Connected account info */
   if (isConnected && status.accountInfo) {
-    const info     = document.createElement('div');
+    const info    = document.createElement('div');
     info.className = 'cx-account-info';
-    const display  = status.accountInfo.email || status.accountInfo.username || 'Connected';
-    const initial  = display[0].toUpperCase();
+    const display = status.accountInfo.email || status.accountInfo.username || 'Connected';
     info.innerHTML = `
-      <div class="cx-account-avatar">${initial}</div>
+      <div class="cx-account-avatar">${display[0].toUpperCase()}</div>
       <span>${display}</span>`;
     card.appendChild(info);
   }
 
-  /* ── Suggested automations ── */
+  /* Suggested automations */
   if (def.automations?.length) {
-    const autoSec = document.createElement('div');
+    const autoSec   = document.createElement('div');
     autoSec.className = 'cx-auto-section';
     autoSec.innerHTML = `<div class="cx-auto-label">Suggested Automations</div>`;
     def.automations.forEach(a => {
@@ -163,31 +159,31 @@ function buildCard(def) {
     card.appendChild(autoSec);
   }
 
-  /* ── Status message ── */
-  const statusEl     = document.createElement('div');
+  /* Status message */
+  const statusEl   = document.createElement('div');
   statusEl.className = 'cx-status-msg';
   statusEl.id        = `cx-status-${def.id}`;
   card.appendChild(statusEl);
 
-  /* ── Credential fields (hidden when connected) ── */
-  const fieldsWrap     = document.createElement('div');
+  /* Credential fields (hidden when connected) */
+  const fieldsWrap   = document.createElement('div');
   fieldsWrap.className = 'cx-fields';
   fieldsWrap.id        = `cx-fields-${def.id}`;
   if (isConnected) fieldsWrap.style.display = 'none';
 
   def.fields.forEach(field => {
-    const wrap       = document.createElement('div');
-    wrap.className   = 'cx-field-wrap';
+    const wrap  = document.createElement('div');
+    wrap.className = 'cx-field-wrap';
 
-    const label      = document.createElement('label');
-    label.className  = 'cx-field-label';
+    const label    = document.createElement('label');
+    label.className = 'cx-field-label';
     label.textContent = field.label;
-    label.htmlFor    = `cx-field-${def.id}-${field.key}`;
+    label.htmlFor   = `cx-field-${def.id}-${field.key}`;
 
-    const input      = document.createElement('input');
-    input.id         = `cx-field-${def.id}-${field.key}`;
-    input.type       = field.type;
-    input.className  = 'cx-field-input';
+    const input    = document.createElement('input');
+    input.id       = `cx-field-${def.id}-${field.key}`;
+    input.type     = field.type;
+    input.className = 'cx-field-input';
     input.placeholder = field.placeholder;
     input.autocomplete = 'off';
     input.spellcheck   = false;
@@ -196,74 +192,65 @@ function buildCard(def) {
       cxState.pending[def.id][field.key] = input.value.trim();
     });
 
-    wrap.appendChild(label);
-    wrap.appendChild(input);
-
+    wrap.append(label, input);
     if (field.hint) {
-      const hint       = document.createElement('div');
+      const hint = document.createElement('div');
       hint.className   = 'cx-field-hint';
       hint.textContent = field.hint;
       wrap.appendChild(hint);
     }
-
     fieldsWrap.appendChild(wrap);
   });
   card.appendChild(fieldsWrap);
 
-  /* ── Actions row ── */
-  const actions     = document.createElement('div');
+  /* Action row */
+  const actions   = document.createElement('div');
   actions.className = 'cx-actions';
 
-  const helpLink       = document.createElement('a');
+  const helpLink   = document.createElement('a');
   helpLink.className   = 'cx-help-link';
   helpLink.textContent = def.helpText;
   helpLink.href        = '#';
   helpLink.addEventListener('click', e => {
     e.preventDefault();
-    const a   = document.createElement('a');
-    a.href    = def.helpUrl;
-    a.target  = '_blank';
-    a.rel     = 'noopener noreferrer';
+    const a = Object.assign(document.createElement('a'), { href: def.helpUrl, target: '_blank', rel: 'noopener noreferrer' });
     a.click();
   });
   actions.appendChild(helpLink);
 
-  const btnGroup     = document.createElement('div');
+  const btnGroup   = document.createElement('div');
   btnGroup.className = 'cx-btn-group';
 
   if (isConnected) {
-    const updateBtn       = document.createElement('button');
+    const updateBtn = document.createElement('button');
     updateBtn.className   = 'cx-secondary-btn';
     updateBtn.textContent = 'Update credentials';
-    updateBtn.addEventListener('click', () => {
-      fieldsWrap.style.display = '';
-      updateBtn.style.display  = 'none';
-    });
+    updateBtn.addEventListener('click', () => { fieldsWrap.style.display = ''; updateBtn.style.display = 'none'; });
     btnGroup.appendChild(updateBtn);
 
-    const disconnectBtn       = document.createElement('button');
+    const disconnectBtn = document.createElement('button');
     disconnectBtn.className   = 'cx-disconnect-btn';
     disconnectBtn.textContent = 'Disconnect';
     disconnectBtn.addEventListener('click', () => handleDisconnect(def.id));
     btnGroup.appendChild(disconnectBtn);
   } else {
-    const connectBtn       = document.createElement('button');
+    const connectBtn = document.createElement('button');
     connectBtn.id          = `cx-connect-btn-${def.id}`;
     connectBtn.className   = 'cx-connect-btn';
-    connectBtn.textContent = def.oauthFlow
-      ? `Sign in with Google`
-      : `Connect ${def.name}`;
+    connectBtn.textContent = def.oauthFlow ? 'Sign in with Google' : `Connect ${def.name}`;
     connectBtn.addEventListener('click', () => handleConnect(def.id, def));
     btnGroup.appendChild(connectBtn);
   }
 
   actions.appendChild(btnGroup);
   card.appendChild(actions);
-
   return card;
 }
 
-export function renderConnectorsPanel() {
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
+function renderPanel() {
   const list = document.getElementById('connector-list');
   if (!list) return;
   list.innerHTML = '';
@@ -271,82 +258,59 @@ export function renderConnectorsPanel() {
 }
 
 /* ══════════════════════════════════════════
-   CONNECT / DISCONNECT
+   CONNECT HANDLERS
 ══════════════════════════════════════════ */
-
 async function handleConnect(id, def) {
-  if (def.oauthFlow) {
-    await handleOAuthConnect(id, def);
-  } else {
-    await handleTokenConnect(id, def);
-  }
+  def.oauthFlow ? await handleOAuthConnect(id, def) : await handleTokenConnect(id, def);
 }
 
-/* ── Gmail: one-click OAuth window ── */
 async function handleOAuthConnect(id, def) {
   const credentials = cxState.pending[id] ?? {};
-  const missing     = def.fields.filter(f => !credentials[f.key]?.trim());
-
+  const missing = def.fields.filter(f => !credentials[f.key]?.trim());
   if (missing.length) {
-    setStatus(id, `Please fill in: ${missing.map(f => f.label).join(', ')}`, 'error');
-    return;
+    setStatus(id, `Please fill in: ${missing.map(f => f.label).join(', ')}`, 'error'); return;
   }
 
   setConnectBtnState(id, true, 'Opening Google sign-in…');
-  setStatus(id, 'A sign-in window will open — grant access and come back.', '');
+  setStatus(id, 'A sign-in window will open — grant access and come back.');
 
   try {
-    const result = await window.electronAPI?.gmailOAuthStart?.(
-      credentials.clientId,
-      credentials.clientSecret,
-    );
-
+    const result = await window.electronAPI?.gmailOAuthStart?.(credentials.clientId, credentials.clientSecret);
     if (!result?.ok) throw new Error(result?.error ?? 'OAuth failed');
 
-    cxState.statuses[id] = {
-      enabled:     true,
-      connectedAt: new Date().toISOString(),
-      accountInfo: { email: result.email },
-    };
-    cxState.pending[id] = {};
+    cxState.statuses[id] = { enabled: true, connectedAt: new Date().toISOString(), accountInfo: { email: result.email } };
+    cxState.pending[id]  = {};
     setStatus(id, `Connected as ${result.email} ✓`, 'success');
-    setTimeout(() => renderConnectorsPanel(), 1000);
+    setTimeout(renderPanel, 1000);
   } catch (err) {
     setStatus(id, `Failed: ${err.message}`, 'error');
-    setConnectBtnState(id, false, `Sign in with Google`);
+    setConnectBtnState(id, false, 'Sign in with Google');
   }
 }
 
-/* ── GitHub (and future token-based connectors) ── */
 async function handleTokenConnect(id, def) {
   const credentials = cxState.pending[id] ?? {};
-  const missing     = def.fields.filter(f => !credentials[f.key]?.trim());
-
+  const missing = def.fields.filter(f => !credentials[f.key]?.trim());
   if (missing.length) {
-    setStatus(id, `Please fill in: ${missing.map(f => f.label).join(', ')}`, 'error');
-    return;
+    setStatus(id, `Please fill in: ${missing.map(f => f.label).join(', ')}`, 'error'); return;
   }
 
   setConnectBtnState(id, true, 'Connecting…');
-  setStatus(id, '', '');
+  setStatus(id, '');
 
   try {
     await window.electronAPI?.saveConnector?.(id, credentials);
-
     const validation = await window.electronAPI?.validateConnector?.(id);
     if (!validation?.ok) throw new Error(validation?.error ?? 'Connection failed');
 
     cxState.statuses[id] = {
       enabled:     true,
       connectedAt: new Date().toISOString(),
-      accountInfo: {
-        email:    validation.email    ?? null,
-        username: validation.username ?? null,
-      },
+      accountInfo: { email: validation.email ?? null, username: validation.username ?? null },
     };
     cxState.pending[id] = {};
     setStatus(id, 'Connected successfully!', 'success');
-    setTimeout(() => renderConnectorsPanel(), 900);
+    setTimeout(renderPanel, 900);
   } catch (err) {
     await window.electronAPI?.removeConnector?.(id).catch(() => {});
     cxState.statuses[id] = { enabled: false };
@@ -360,60 +324,38 @@ async function handleDisconnect(id) {
     await window.electronAPI?.removeConnector?.(id);
     cxState.statuses[id] = { enabled: false, accountInfo: null };
     cxState.pending[id]  = {};
-    renderConnectorsPanel();
+    renderPanel();
   } catch (err) {
     setStatus(id, `Could not disconnect: ${err.message}`, 'error');
   }
 }
 
 /* ══════════════════════════════════════════
-   LOAD PANEL DATA
+   LOAD PANEL  (called by User.js on tab switch)
 ══════════════════════════════════════════ */
 export async function loadConnectorsPanel() {
   const list = document.getElementById('connector-list');
   if (!list) return;
-
-  if (!cxState.loaded) {
-    list.innerHTML = '<div class="cx-loading">Loading connectors…</div>';
-  }
+  if (!cxState.loaded) list.innerHTML = '<div class="cx-loading">Loading connectors…</div>';
 
   try {
     const statuses = await window.electronAPI?.getConnectors?.() ?? {};
-
     cxState.statuses = {};
-    for (const [name, s] of Object.entries(statuses)) {
+    for (const [name, s] of Object.entries(statuses))
       cxState.statuses[name] = { ...s, accountInfo: null };
-    }
 
-    /* Fetch account info for connected connectors */
     await Promise.all(
       Object.entries(cxState.statuses)
         .filter(([, s]) => s.enabled)
         .map(async ([name]) => {
           const v = await window.electronAPI?.validateConnector?.(name).catch(() => null);
-          if (v?.ok) {
-            cxState.statuses[name].accountInfo = {
-              email:    v.email    ?? null,
-              username: v.username ?? null,
-            };
-          }
+          if (v?.ok) cxState.statuses[name].accountInfo = { email: v.email ?? null, username: v.username ?? null };
         }),
     );
 
     cxState.loaded = true;
-    renderConnectorsPanel();
+    renderPanel();
   } catch (err) {
     if (list) list.innerHTML = `<div class="cx-loading">Could not load connectors: ${err.message}</div>`;
   }
-}
-
-/* ══════════════════════════════════════════
-   INIT
-══════════════════════════════════════════ */
-export function initConnectors() {
-  document.querySelectorAll('[data-settings-tab="connectors"]').forEach(tab => {
-    tab.addEventListener('click', () => {
-      if (!cxState.loaded) loadConnectorsPanel();
-    });
-  });
 }

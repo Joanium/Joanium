@@ -1,155 +1,70 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import { fileURLToPath } from 'url';
-import path from 'path';
+// ─────────────────────────────────────────────
+//  openworld — App.js  (main process entry point)
+//
+//  This file is intentionally thin. All business logic
+//  lives in Packages/Main/. Add features by:
+//    1. Creating a service in Packages/Main/Services/
+//    2. Creating an IPC handler file in Packages/Main/IPC/
+//    3. Registering it below.
+// ─────────────────────────────────────────────
+
+import { app, BrowserWindow } from 'electron';
 import fs from 'fs';
+
+// ── Infrastructure ────────────────────────────────────────────────────
+import Paths                from './Packages/Main/Paths.js';
+import { create as createWindow } from './Packages/Main/Window.js';
+import { isFirstRun }       from './Packages/Main/Services/UserService.js';
 import { AutomationEngine } from './Packages/Automation/AutomationEngine.js';
-import { ConnectorEngine } from './Packages/Connectors/ConnectorEngine.js';
-import * as GmailAPI from './Packages/Automation/Gmail.js';
-import * as GithubAPI from './Packages/Automation/Github.js';
-import { startGmailOAuthFlow } from './Packages/Automation/Gmail.js';
-import { buildSystemPrompt } from './Packages/System/SystemPrompt.js';
+import { ConnectorEngine }  from './Packages/Connectors/ConnectorEngine.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-/* ── Paths ── */
-const DATA_DIR = path.join(__dirname, 'Data');
-const USER_FILE = path.join(DATA_DIR, 'User.json');
-const MODELS_FILE = path.join(DATA_DIR, 'Models.json');
-const CUSTOM_INSTRUCTIONS_FILE = path.join(DATA_DIR, 'CustomInstructions.md');
-const MEMORY_FILE = path.join(DATA_DIR, 'Memory.md');
-const CHATS_DIR = path.join(DATA_DIR, 'Chats');
-const AUTOMATIONS_FILE = path.join(DATA_DIR, 'Automations.json');
-const CONNECTORS_FILE = path.join(DATA_DIR, 'Connectors.json');
-const PRELOAD = path.join(__dirname, 'Packages', 'Electron', 'Preload.js');
-const SETUP_PAGE = path.join(__dirname, 'Public', 'Setup.html');
-const MAIN_PAGE = path.join(__dirname, 'Public', 'index.html');
-const AUTOMATIONS_PAGE = path.join(__dirname, 'Public', 'Automations.html');
-
-/* ── Engines (singletons) ── */
-const connectorEngine = new ConnectorEngine(CONNECTORS_FILE);
-const automationEngine = new AutomationEngine(AUTOMATIONS_FILE, connectorEngine);
-
-/* ── System-prompt cache (5 min TTL) ── */
-let _sysPromptCache = null;
-let _sysPromptTime = 0;
-const SYS_PROMPT_TTL = 5 * 60_000;
-
-function invalidateSysPromptCache() { _sysPromptCache = null; _sysPromptTime = 0; }
+// ── IPC handler modules ───────────────────────────────────────────────
+import * as SetupIPC      from './Packages/Main/IPC/SetupIPC.js';
+import * as UserIPC       from './Packages/Main/IPC/UserIPC.js';
+import * as SystemIPC     from './Packages/Main/IPC/SystemIPC.js';
+import * as ChatIPC       from './Packages/Main/IPC/ChatIPC.js';
+import * as AutomationIPC from './Packages/Main/IPC/AutomationIPC.js';
+import * as ConnectorIPC  from './Packages/Main/IPC/ConnectorIPC.js';
+import * as GmailIPC      from './Packages/Main/IPC/GmailIPC.js';
+import * as GithubIPC     from './Packages/Main/IPC/GithubIPC.js';
+import * as WindowIPC     from './Packages/Main/IPC/WindowIPC.js';
 
 /* ══════════════════════════════════════════
-   HELPERS
+   ENGINES  (singletons shared across IPC modules)
 ══════════════════════════════════════════ */
-const DEFAULT_USER = {
-  name: '',
-  setup_complete: false,
-  created_at: null,
-  api_keys: {},
-  preferences: {
-    theme: 'dark',
-    default_provider: null,
-    default_model: null,
-  },
-};
-
-const ensureDataDir = () => {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-};
-
-const readJSON = (f) => JSON.parse(fs.readFileSync(f, 'utf-8'));
-const writeJSON = (f, d) => { ensureDataDir(); fs.writeFileSync(f, JSON.stringify(d, null, 2), 'utf-8'); };
-const readText = (f) => fs.readFileSync(f, 'utf-8');
-const writeText = (f, text) => { ensureDataDir(); fs.writeFileSync(f, text, 'utf-8'); };
-
-function mergeUserData(existing = {}, updates = {}) {
-  return {
-    ...DEFAULT_USER,
-    ...existing,
-    ...updates,
-    api_keys: {
-      ...DEFAULT_USER.api_keys,
-      ...(existing.api_keys ?? {}),
-      ...(updates.api_keys ?? {}),
-    },
-    preferences: {
-      ...DEFAULT_USER.preferences,
-      ...(existing.preferences ?? {}),
-      ...(updates.preferences ?? {}),
-    },
-  };
-}
-
-function readUserData() {
-  try { return mergeUserData(readJSON(USER_FILE)); }
-  catch { return mergeUserData(); }
-}
-
-function writeUserData(updates = {}) {
-  const nextUser = mergeUserData(readUserData(), updates);
-  writeJSON(USER_FILE, nextUser);
-  return nextUser;
-}
-
-function readCustomInstructions() {
-  try { return readText(CUSTOM_INSTRUCTIONS_FILE); }
-  catch { return ''; }
-}
-
-function readMemory() {
-  try { return readText(MEMORY_FILE); }
-  catch { return ''; }
-}
-
-const isFirstRun = () => {
-  try { return readJSON(USER_FILE).setup_complete !== true; }
-  catch { return true; }
-};
+const connectorEngine  = new ConnectorEngine(Paths.CONNECTORS_FILE);
+const automationEngine = new AutomationEngine(Paths.AUTOMATIONS_FILE, connectorEngine);
 
 /* ══════════════════════════════════════════
-   WINDOW
+   IPC REGISTRATION
+   Each module gets exactly the dependencies it needs.
 ══════════════════════════════════════════ */
-let win = null;
-
-function createWindow(page) {
-  win = new BrowserWindow({
-    width: 1100,
-    height: 720,
-    minWidth: 1100,
-    minHeight: 720,
-    frame: false,
-    titleBarStyle: 'hidden',
-    backgroundColor: '#1a1a1a',
-    show: false,
-    webPreferences: {
-      preload: PRELOAD,
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: false,
-    },
-  });
-
-  win.loadFile(page);
-  win.once('ready-to-show', () => win.show());
-
-  win.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url);
-    return { action: 'deny' };
-  });
-}
+SetupIPC.register();
+UserIPC.register();
+SystemIPC.register(connectorEngine);
+ChatIPC.register();
+AutomationIPC.register(automationEngine);
+ConnectorIPC.register(connectorEngine);
+GmailIPC.register(connectorEngine);
+GithubIPC.register(connectorEngine);
+WindowIPC.register();
 
 /* ══════════════════════════════════════════
-   LIFECYCLE
+   APP LIFECYCLE
 ══════════════════════════════════════════ */
 app.whenReady().then(() => {
-  if (!fs.existsSync(CHATS_DIR)) fs.mkdirSync(CHATS_DIR, { recursive: true });
-  ensureDataDir();
+  // Ensure required directories exist before anything else
+  if (!fs.existsSync(Paths.DATA_DIR))  fs.mkdirSync(Paths.DATA_DIR,  { recursive: true });
+  if (!fs.existsSync(Paths.CHATS_DIR)) fs.mkdirSync(Paths.CHATS_DIR, { recursive: true });
 
   automationEngine.start();
 
-  createWindow(isFirstRun() ? SETUP_PAGE : MAIN_PAGE);
+  const startPage = isFirstRun() ? Paths.SETUP_PAGE : Paths.MAIN_PAGE;
+  createWindow(startPage);
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0)
-      createWindow(isFirstRun() ? SETUP_PAGE : MAIN_PAGE);
+      createWindow(isFirstRun() ? Paths.SETUP_PAGE : Paths.MAIN_PAGE);
   });
 });
 
@@ -157,366 +72,3 @@ app.on('window-all-closed', () => {
   automationEngine.stop();
   if (process.platform !== 'darwin') app.quit();
 });
-
-/* ══════════════════════════════════════════
-   IPC — SETUP
-══════════════════════════════════════════ */
-ipcMain.handle('save-user', (_e, userData) => {
-  try { return { ok: true, user: writeUserData(userData) }; }
-  catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('save-api-keys', (_e, keysMap) => {
-  try {
-    const user = readUserData();
-    const nextKeys = { ...(user.api_keys ?? {}) };
-
-    Object.entries(keysMap ?? {}).forEach(([providerId, apiKey]) => {
-      if (typeof apiKey === 'string') {
-        const trimmed = apiKey.trim();
-        if (trimmed) nextKeys[providerId] = trimmed;
-        return;
-      }
-      if (apiKey === null) delete nextKeys[providerId];
-    });
-
-    const nextUser = mergeUserData(user, { api_keys: nextKeys });
-    writeJSON(USER_FILE, nextUser);
-    return { ok: true, user: nextUser };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('save-user-profile', (_e, profile) => {
-  try {
-    const updates = {};
-    if (typeof profile?.name === 'string') updates.name = profile.name.trim();
-    invalidateSysPromptCache();
-    return { ok: true, user: writeUserData(updates) };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('get-custom-instructions', () => readCustomInstructions());
-
-ipcMain.handle('save-custom-instructions', (_e, content) => {
-  try {
-    writeText(CUSTOM_INSTRUCTIONS_FILE, String(content ?? '').replace(/\r\n/g, '\n'));
-    invalidateSysPromptCache();
-    return { ok: true };
-  }
-  catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('get-memory', () => readMemory());
-
-ipcMain.handle('save-memory', (_e, content) => {
-  try {
-    writeText(MEMORY_FILE, String(content ?? '').replace(/\r\n/g, '\n'));
-    invalidateSysPromptCache();
-    return { ok: true };
-  }
-  catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('launch-main', () => { win?.loadFile(MAIN_PAGE); return { ok: true }; });
-
-/* ══════════════════════════════════════════
-   IPC — RUNTIME READS
-══════════════════════════════════════════ */
-ipcMain.handle('get-user', () => readUserData());
-
-ipcMain.handle('get-models', () => {
-  const models = readJSON(MODELS_FILE);
-  const apiKeys = readUserData().api_keys ?? {};
-  return models.map(provider => ({ ...provider, api: apiKeys[provider.provider] ?? null }));
-});
-
-ipcMain.handle('get-api-key', (_e, providerId) => readUserData()?.api_keys?.[providerId] ?? null);
-
-/* ══════════════════════════════════════════
-   IPC — SYSTEM PROMPT
-   Builds a full context-aware system prompt and caches it for 5 min.
-══════════════════════════════════════════ */
-ipcMain.handle('get-system-prompt', async () => {
-  const now = Date.now();
-  if (_sysPromptCache && now - _sysPromptTime < SYS_PROMPT_TTL) return _sysPromptCache;
-
-  try {
-    const user = readUserData();
-    const customInstructions = readCustomInstructions();
-    const memory = readMemory();
-
-    const githubCreds = connectorEngine.getCredentials('github');
-    const gmailCreds = connectorEngine.getCredentials('gmail');
-
-    let githubUsername = null;
-    let githubRepos = [];
-
-    if (githubCreds?.token) {
-      try {
-        const ghUser = await GithubAPI.getUser(githubCreds);
-        githubUsername = ghUser.login;
-        githubRepos = await GithubAPI.getRepos(githubCreds, 20);
-      } catch (e) {
-        console.warn('[SystemPrompt] GitHub fetch failed:', e.message);
-      }
-    }
-
-    _sysPromptCache = await buildSystemPrompt({
-      userName: user.name,
-      customInstructions,
-      memory,
-      githubUsername,
-      githubRepos,
-      gmailEmail: gmailCreds?.email ?? null,
-    });
-    _sysPromptTime = now;
-
-    return _sysPromptCache;
-  } catch (err) {
-    console.error('[SystemPrompt] build error:', err);
-    return 'You are a helpful AI assistant.';
-  }
-});
-
-/* ══════════════════════════════════════════
-   IPC — CHAT STORAGE
-══════════════════════════════════════════ */
-ipcMain.handle('save-chat', (_e, chatData) => {
-  try {
-    if (!fs.existsSync(CHATS_DIR)) fs.mkdirSync(CHATS_DIR, { recursive: true });
-    writeJSON(path.join(CHATS_DIR, chatData.id + '.json'), chatData);
-    return { ok: true };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('get-chats', () => {
-  try {
-    if (!fs.existsSync(CHATS_DIR)) return [];
-    return fs.readdirSync(CHATS_DIR)
-      .filter(f => f.endsWith('.json'))
-      .map(f => { try { return readJSON(path.join(CHATS_DIR, f)); } catch { return null; } })
-      .filter(Boolean)
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-  } catch { return []; }
-});
-
-ipcMain.handle('load-chat', (_e, chatId) => readJSON(path.join(CHATS_DIR, chatId + '.json')));
-
-ipcMain.handle('delete-chat', (_e, chatId) => {
-  try { fs.unlinkSync(path.join(CHATS_DIR, chatId + '.json')); return { ok: true }; }
-  catch (err) { return { ok: false, error: err.message }; }
-});
-
-/* ══════════════════════════════════════════
-   IPC — AUTOMATIONS
-══════════════════════════════════════════ */
-ipcMain.handle('launch-automations', () => {
-  win?.loadFile(AUTOMATIONS_PAGE);
-  return { ok: true };
-});
-
-ipcMain.handle('get-automations', () => {
-  try { return { ok: true, automations: automationEngine.getAll() }; }
-  catch (err) { return { ok: false, error: err.message, automations: [] }; }
-});
-
-ipcMain.handle('save-automation', (_e, automation) => {
-  try {
-    const saved = automationEngine.saveAutomation(automation);
-    automationEngine.reload();
-    return { ok: true, automation: saved };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('delete-automation', (_e, id) => {
-  try {
-    automationEngine.deleteAutomation(id);
-    automationEngine.reload();
-    return { ok: true };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('toggle-automation', (_e, id, enabled) => {
-  try {
-    automationEngine.toggleAutomation(id, enabled);
-    automationEngine.reload();
-    return { ok: true };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-/* ══════════════════════════════════════════
-   IPC — CONNECTORS
-══════════════════════════════════════════ */
-ipcMain.handle('get-connectors', () => {
-  try { return connectorEngine.getAll(); }
-  catch (err) { console.error('[connectors] get-connectors error:', err); return {}; }
-});
-
-ipcMain.handle('save-connector', (_e, name, credentials) => {
-  try {
-    const result = connectorEngine.saveConnector(name, credentials);
-    invalidateSysPromptCache();
-    return { ok: true, ...result };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('remove-connector', (_e, name) => {
-  try {
-    connectorEngine.removeConnector(name);
-    invalidateSysPromptCache();
-    return { ok: true };
-  }
-  catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('validate-connector', async (_e, name) => {
-  try {
-    const creds = connectorEngine.getCredentials(name);
-    if (!creds) return { ok: false, error: 'No credentials stored' };
-
-    if (name === 'gmail') {
-      const email = await GmailAPI.validateCredentials(creds);
-      connectorEngine.updateCredentials('gmail', { email });
-      return { ok: true, email };
-    }
-
-    if (name === 'github') {
-      const user = await GithubAPI.getUser(creds);
-      connectorEngine.updateCredentials('github', { username: user.login });
-      return { ok: true, username: user.login, avatar: user.avatar_url };
-    }
-
-    return { ok: false, error: 'Unknown connector' };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-/* ══════════════════════════════════════════
-   IPC — GMAIL OAUTH (easy one-click flow)
-   User provides Client ID + Secret from Google Cloud Console.
-   A BrowserWindow opens → user signs in → tokens stored automatically.
-══════════════════════════════════════════ */
-ipcMain.handle('gmail-oauth-start', async (_e, clientId, clientSecret) => {
-  try {
-    if (!clientId?.trim() || !clientSecret?.trim())
-      return { ok: false, error: 'Client ID and Client Secret are required' };
-
-    const tokens = await startGmailOAuthFlow(clientId.trim(), clientSecret.trim());
-    connectorEngine.saveConnector('gmail', tokens);
-    invalidateSysPromptCache();
-    return { ok: true, email: tokens.email };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
-});
-
-/* ══════════════════════════════════════════
-   IPC — GMAIL
-══════════════════════════════════════════ */
-ipcMain.handle('gmail-get-brief', async (_e, maxResults = 15) => {
-  try {
-    const creds = connectorEngine.getCredentials('gmail');
-    if (!creds?.accessToken) return { ok: false, error: 'Gmail not connected' };
-    const brief = await GmailAPI.getEmailBrief(creds, maxResults);
-    return { ok: true, ...brief };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('gmail-get-unread', async (_e, maxResults = 20) => {
-  try {
-    const creds = connectorEngine.getCredentials('gmail');
-    if (!creds?.accessToken) return { ok: false, error: 'Gmail not connected' };
-    const emails = await GmailAPI.getUnreadEmails(creds, maxResults);
-    return { ok: true, emails };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('gmail-send', async (_e, to, subject, body) => {
-  try {
-    const creds = connectorEngine.getCredentials('gmail');
-    if (!creds?.accessToken) return { ok: false, error: 'Gmail not connected' };
-    await GmailAPI.sendEmail(creds, to, subject, body);
-    return { ok: true };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('gmail-search', async (_e, query, maxResults = 10) => {
-  try {
-    const creds = connectorEngine.getCredentials('gmail');
-    if (!creds?.accessToken) return { ok: false, error: 'Gmail not connected' };
-    const emails = await GmailAPI.searchEmails(creds, query, maxResults);
-    return { ok: true, emails };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-/* ══════════════════════════════════════════
-   IPC — GITHUB
-══════════════════════════════════════════ */
-ipcMain.handle('github-get-repos', async () => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const repos = await GithubAPI.getRepos(creds);
-    return { ok: true, repos };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-file', async (_e, owner, repo, filePath) => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const file = await GithubAPI.getFileContent(creds, owner, repo, filePath);
-    return { ok: true, ...file };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-tree', async (_e, owner, repo, branch) => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const tree = await GithubAPI.getRepoTree(creds, owner, repo, branch);
-    return { ok: true, tree: tree?.tree ?? [] };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-issues', async (_e, owner, repo, state = 'open') => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const issues = await GithubAPI.getIssues(creds, owner, repo, state);
-    return { ok: true, issues };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-prs', async (_e, owner, repo, state = 'open') => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const prs = await GithubAPI.getPullRequests(creds, owner, repo, state);
-    return { ok: true, prs };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-notifications', async () => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const notifications = await GithubAPI.getNotifications(creds);
-    return { ok: true, notifications };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-ipcMain.handle('github-get-commits', async (_e, owner, repo) => {
-  try {
-    const creds = connectorEngine.getCredentials('github');
-    if (!creds?.token) return { ok: false, error: 'GitHub not connected' };
-    const commits = await GithubAPI.getCommits(creds, owner, repo);
-    return { ok: true, commits };
-  } catch (err) { return { ok: false, error: err.message }; }
-});
-
-/* ══════════════════════════════════════════
-   IPC — FRAMELESS WINDOW CONTROLS
-══════════════════════════════════════════ */
-ipcMain.on('window-minimize', () => win?.minimize());
-ipcMain.on('window-maximize', () => win?.isMaximized() ? win.unmaximize() : win.maximize());
-ipcMain.on('window-close', () => win?.close());
