@@ -1,0 +1,351 @@
+/* ══════════════════════════════════════════
+   openworld — Connectors.css
+   Styles for the Connectors settings panel
+   (Gmail, GitHub connector cards)
+══════════════════════════════════════════ */
+
+/* ── Panel wrapper ── */
+.connector-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            16px;
+}
+
+/* ── Connector card ── */
+.cx-card {
+  background:    var(--bg-tertiary);
+  border:        1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding:       20px;
+  display:       flex;
+  flex-direction: column;
+  gap:           14px;
+  transition:
+    border-color var(--transition-fast),
+    transform    var(--transition-fast),
+    box-shadow   var(--transition-mid);
+}
+
+.cx-card:hover {
+  transform:    translateY(-1px);
+  box-shadow:   0 16px 36px rgba(0, 0, 0, 0.1);
+}
+
+.cx-card.cx-connected {
+  border-color: color-mix(in srgb, #22c55e 28%, var(--border));
+}
+
+/* ── Header ── */
+.cx-card-header {
+  display:     flex;
+  align-items: center;
+  gap:         14px;
+}
+
+.cx-icon {
+  width:           44px;
+  height:          44px;
+  border-radius:   13px;
+  background:      var(--bg-secondary);
+  border:          1px solid var(--border);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       22px;
+  flex-shrink:     0;
+}
+
+.cx-info {
+  flex:      1;
+  min-width: 0;
+}
+
+.cx-info h4 {
+  font-size:     15px;
+  font-weight:   600;
+  color:         var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.cx-info p {
+  font-size:   12px;
+  color:       var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── Status badge ── */
+.cx-badge {
+  padding:       4px 10px;
+  border-radius: 999px;
+  font-size:     11px;
+  font-weight:   600;
+  flex-shrink:   0;
+  white-space:   nowrap;
+}
+
+.cx-badge--on {
+  background: rgba(34, 197, 94, 0.1);
+  color:      #22c55e;
+  border:     1px solid rgba(34, 197, 94, 0.25);
+}
+
+.cx-badge--off {
+  background: var(--bg-secondary);
+  color:      var(--text-muted);
+  border:     1px solid var(--border);
+}
+
+/* ── Capabilities ── */
+.cx-capabilities {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       6px;
+}
+
+.cx-cap-tag {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           4px;
+  padding:       3px 9px;
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-subtle);
+  border-radius: 999px;
+  font-size:     11.5px;
+  color:         var(--text-muted);
+}
+
+/* ── Connected account info ── */
+.cx-account-info {
+  display:       flex;
+  align-items:   center;
+  gap:           10px;
+  padding:       10px 14px;
+  background:    color-mix(in srgb, #22c55e 6%, var(--bg-secondary));
+  border:        1px solid color-mix(in srgb, #22c55e 20%, var(--border-subtle));
+  border-radius: 12px;
+  font-size:     13px;
+  color:         var(--text-secondary);
+}
+
+.cx-account-avatar {
+  width:           30px;
+  height:          30px;
+  border-radius:   50%;
+  background:      var(--accent-dim);
+  border:          1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       13px;
+  font-weight:     600;
+  color:           var(--accent);
+  flex-shrink:     0;
+}
+
+/* ── Suggested automations ── */
+.cx-auto-section {
+  background:    var(--bg-secondary);
+  border:        1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding:       12px 14px;
+  display:       flex;
+  flex-direction: column;
+  gap:           8px;
+}
+
+.cx-auto-label {
+  font-size:      10.5px;
+  font-weight:    700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  margin-bottom:  2px;
+}
+
+.cx-auto-item {
+  font-size:   12.5px;
+  color:       var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cx-auto-item strong {
+  color:       var(--text-primary);
+  font-weight: 600;
+}
+
+/* ── Status message ── */
+.cx-status-msg {
+  font-size:    12.5px;
+  min-height:   0;
+  border-radius: 10px;
+  transition:   all var(--transition-fast);
+}
+
+.cx-status-msg:not(:empty) {
+  padding: 8px 12px;
+}
+
+.cx-status-msg.error {
+  color:      #f87171;
+  background: rgba(248, 113, 113, 0.08);
+  border:     1px solid rgba(248, 113, 113, 0.2);
+}
+
+.cx-status-msg.success {
+  color:      #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+  border:     1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* ── Fields ── */
+.cx-fields {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
+}
+
+.cx-field-wrap {
+  display:        flex;
+  flex-direction: column;
+  gap:            5px;
+}
+
+.cx-field-label {
+  font-size:   12px;
+  font-weight: 600;
+  color:       var(--text-secondary);
+}
+
+.cx-field-input {
+  width:          100%;
+  background:     var(--bg-input);
+  border:         1px solid var(--border);
+  border-radius:  12px;
+  padding:        11px 14px;
+  font-family:    var(--font-mono);
+  font-size:      12.5px;
+  color:          var(--text-primary);
+  outline:        none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow   var(--transition-fast);
+}
+
+.cx-field-input::placeholder { color: var(--text-muted); }
+
+.cx-field-input:focus {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  box-shadow:   0 0 0 3px var(--accent-glow);
+}
+
+.cx-field-hint {
+  font-size:   11px;
+  color:       var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ── Actions row ── */
+.cx-actions {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             12px;
+}
+
+.cx-btn-group {
+  display: flex;
+  gap:     8px;
+}
+
+.cx-help-link {
+  font-size:   12px;
+  color:       var(--accent);
+  text-decoration: none;
+  cursor:      pointer;
+  transition:  color var(--transition-fast);
+}
+
+.cx-help-link:hover { text-decoration: underline; }
+
+/* Connect button */
+.cx-connect-btn {
+  padding:       9px 20px;
+  border-radius: 999px;
+  border:        none;
+  background:    var(--accent);
+  color:         #fff;
+  font-family:   var(--font-ui);
+  font-size:     13px;
+  font-weight:   600;
+  cursor:        pointer;
+  transition:
+    transform  var(--transition-fast),
+    box-shadow var(--transition-mid),
+    filter     var(--transition-fast);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.cx-connect-btn:hover {
+  transform:  translateY(-1px);
+  filter:     brightness(1.06);
+  box-shadow: 0 6px 22px var(--accent-glow);
+}
+
+.cx-connect-btn:disabled {
+  opacity:    0.55;
+  cursor:     not-allowed;
+  transform:  none;
+  box-shadow: none;
+}
+
+/* Secondary / update button */
+.cx-secondary-btn {
+  padding:       9px 16px;
+  border-radius: 999px;
+  border:        1px solid var(--border);
+  background:    transparent;
+  color:         var(--text-secondary);
+  font-family:   var(--font-ui);
+  font-size:     12.5px;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:
+    background var(--transition-fast),
+    color      var(--transition-fast);
+}
+
+.cx-secondary-btn:hover {
+  background: var(--bg-hover);
+  color:      var(--text-primary);
+}
+
+/* Disconnect button */
+.cx-disconnect-btn {
+  padding:       9px 16px;
+  border-radius: 999px;
+  border:        1px solid var(--border);
+  background:    transparent;
+  color:         var(--text-secondary);
+  font-family:   var(--font-ui);
+  font-size:     12.5px;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:
+    background   var(--transition-fast),
+    color        var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.cx-disconnect-btn:hover {
+  background:   rgba(220, 60, 60, 0.1);
+  color:        #f87171;
+  border-color: rgba(220, 60, 60, 0.25);
+}
+
+/* Loading state */
+.cx-loading {
+  padding:     20px;
+  font-size:   13px;
+  color:       var(--text-muted);
+  text-align:  center;
+}

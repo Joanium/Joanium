@@ -35,6 +35,27 @@ contextBridge.exposeInMainWorld('electronAPI', {
   deleteAutomation:   (id)                 => ipcRenderer.invoke('delete-automation', id),
   toggleAutomation:   (id, enabled)        => ipcRenderer.invoke('toggle-automation', id, enabled),
 
+  /* ── Connectors (credential management) ── */
+  getConnectors:          ()                       => ipcRenderer.invoke('get-connectors'),
+  saveConnector:          (name, credentials)      => ipcRenderer.invoke('save-connector', name, credentials),
+  removeConnector:        (name)                   => ipcRenderer.invoke('remove-connector', name),
+  validateConnector:      (name)                   => ipcRenderer.invoke('validate-connector', name),
+
+  /* ── Gmail ── */
+  gmailGetBrief:          (maxResults)             => ipcRenderer.invoke('gmail-get-brief', maxResults),
+  gmailGetUnread:         (maxResults)             => ipcRenderer.invoke('gmail-get-unread', maxResults),
+  gmailSend:              (to, subject, body)      => ipcRenderer.invoke('gmail-send', to, subject, body),
+  gmailSearch:            (query, maxResults)      => ipcRenderer.invoke('gmail-search', query, maxResults),
+
+  /* ── GitHub ── */
+  githubGetRepos:         ()                       => ipcRenderer.invoke('github-get-repos'),
+  githubGetFile:          (owner, repo, filePath)  => ipcRenderer.invoke('github-get-file', owner, repo, filePath),
+  githubGetTree:          (owner, repo, branch)    => ipcRenderer.invoke('github-get-tree', owner, repo, branch),
+  githubGetIssues:        (owner, repo, state)     => ipcRenderer.invoke('github-get-issues', owner, repo, state),
+  githubGetPRs:           (owner, repo, state)     => ipcRenderer.invoke('github-get-prs', owner, repo, state),
+  githubGetNotifications: ()                       => ipcRenderer.invoke('github-get-notifications'),
+  githubGetCommits:       (owner, repo)            => ipcRenderer.invoke('github-get-commits', owner, repo),
+
   /* ── Frameless window controls ── */
   minimize: () => ipcRenderer.send('window-minimize'),
   maximize: () => ipcRenderer.send('window-maximize'),
