@@ -2,12 +2,12 @@
 import '../Shared/WindowControls.js';
 
 // Modals / shared
-import { initSidebar }       from '../Shared/Sidebar.js';
-import { initAboutModal }    from '../Shared/Modals/AboutModal.js';
-import { initLibraryModal }  from '../Shared/Modals/LibraryModal.js';
+import { initSidebar } from '../Shared/Sidebar.js';
+import { initAboutModal } from '../Shared/Modals/AboutModal.js';
+import { initLibraryModal } from '../Shared/Modals/LibraryModal.js';
 import { initSettingsModal } from '../Shared/Modals/SettingsModal.js';
 
-const about    = initAboutModal();
+const about = initAboutModal();
 const settings = initSettingsModal();
 
 const library = initLibraryModal({
@@ -18,15 +18,15 @@ const library = initLibraryModal({
 });
 
 const sidebar = initSidebar({
-  activePage:    'usage',
-  onNewChat:     () => window.electronAPI?.launchMain(),
-  onLibrary:     () => library.isOpen() ? library.close() : library.open(),
+  activePage: 'usage',
+  onNewChat: () => window.electronAPI?.launchMain(),
+  onLibrary: () => library.isOpen() ? library.close() : library.open(),
   onAutomations: () => window.electronAPI?.launchAutomations?.(),
-  onSkills:      () => window.electronAPI?.launchSkills?.(),
-  onPersonas:    () => window.electronAPI?.launchPersonas?.(),
-  onUsage:       () => { /* already here */ },
-  onSettings:    () => settings.open(),
-  onAbout:       () => about.open(),
+  onSkills: () => window.electronAPI?.launchSkills?.(),
+  onPersonas: () => window.electronAPI?.launchPersonas?.(),
+  onUsage: () => { /* already here */ },
+  onSettings: () => settings.open(),
+  onAbout: () => about.open(),
 });
 
 window.addEventListener('ow:user-profile-updated', e => sidebar.setUser(e.detail?.name ?? ''));
@@ -65,7 +65,7 @@ function tokenCost(model, inputTokens, outputTokens) {
 // ─────────────────────────────────────────────
 
 let _records = [];
-let _range   = 'today';
+let _range = 'today';
 
 // ─────────────────────────────────────────────
 //  RANGE FILTER
@@ -74,8 +74,8 @@ let _range   = 'today';
 function sinceDate(range) {
   const now = new Date();
   if (range === 'today') return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (range === '7')  { const d = new Date(now); d.setDate(d.getDate() - 6);  d.setHours(0,0,0,0); return d; }
-  if (range === '30') { const d = new Date(now); d.setDate(d.getDate() - 29); d.setHours(0,0,0,0); return d; }
+  if (range === '7') { const d = new Date(now); d.setDate(d.getDate() - 6); d.setHours(0, 0, 0, 0); return d; }
+  if (range === '30') { const d = new Date(now); d.setDate(d.getDate() - 29); d.setHours(0, 0, 0, 0); return d; }
   return null;
 }
 
@@ -94,51 +94,51 @@ function computeStats(records) {
   const byModel = {}, byProvider = {}, byDay = {}, byHour = {}, byDow = {};
 
   for (const r of records) {
-    const inp  = r.inputTokens  ?? 0;
-    const out  = r.outputTokens ?? 0;
+    const inp = r.inputTokens ?? 0;
+    const out = r.outputTokens ?? 0;
     const cost = tokenCost(r.model, inp, out);
-    totalInput  += inp;
+    totalInput += inp;
     totalOutput += out;
-    totalCost   += cost;
+    totalCost += cost;
 
     // by model
     if (!byModel[r.model])
       byModel[r.model] = { name: r.modelName ?? r.model, input: 0, output: 0, calls: 0, cost: 0 };
-    byModel[r.model].input  += inp;
+    byModel[r.model].input += inp;
     byModel[r.model].output += out;
-    byModel[r.model].calls  += 1;
-    byModel[r.model].cost   += cost;
+    byModel[r.model].calls += 1;
+    byModel[r.model].cost += cost;
 
     // by provider
     const prov = r.provider ?? 'unknown';
     if (!byProvider[prov])
       byProvider[prov] = { input: 0, output: 0, calls: 0, cost: 0 };
-    byProvider[prov].input  += inp;
+    byProvider[prov].input += inp;
     byProvider[prov].output += out;
-    byProvider[prov].calls  += 1;
-    byProvider[prov].cost   += cost;
+    byProvider[prov].calls += 1;
+    byProvider[prov].cost += cost;
 
     // by day
     const day = r.timestamp.slice(0, 10);
     if (!byDay[day])
       byDay[day] = { input: 0, output: 0, calls: 0, cost: 0 };
-    byDay[day].input  += inp;
+    byDay[day].input += inp;
     byDay[day].output += out;
-    byDay[day].calls  += 1;
-    byDay[day].cost   += cost;
+    byDay[day].calls += 1;
+    byDay[day].cost += cost;
 
     // by hour (0–23)
     const hour = new Date(r.timestamp).getHours();
     if (!byHour[hour]) byHour[hour] = { calls: 0, tokens: 0 };
-    byHour[hour].calls  += 1;
+    byHour[hour].calls += 1;
     byHour[hour].tokens += inp + out;
 
     // by day of week (0=Sun … 6=Sat)
     const dow = new Date(r.timestamp).getDay();
     if (!byDow[dow]) byDow[dow] = { calls: 0, tokens: 0, cost: 0 };
-    byDow[dow].calls  += 1;
+    byDow[dow].calls += 1;
     byDow[dow].tokens += inp + out;
-    byDow[dow].cost   += cost;
+    byDow[dow].cost += cost;
   }
 
   return { totalInput, totalOutput, totalCost, count: records.length, byModel, byProvider, byDay, byHour, byDow };
@@ -150,7 +150,7 @@ function computeStats(records) {
 
 function fmtTokens(n) {
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(2) + 'M';
-  if (n >= 1_000)     return (n / 1_000).toFixed(1) + 'K';
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + 'K';
   return String(n);
 }
 
@@ -165,8 +165,8 @@ function fmtTime(iso) {
   const d = new Date(iso);
   const now = new Date();
   const diff = now - d;
-  if (diff < 60_000)     return 'just now';
-  if (diff < 3_600_000)  return Math.floor(diff / 60_000) + 'm ago';
+  if (diff < 60_000) return 'just now';
+  if (diff < 3_600_000) return Math.floor(diff / 60_000) + 'm ago';
   if (diff < 86_400_000) return Math.floor(diff / 3_600_000) + 'h ago';
   return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
 }
@@ -192,9 +192,9 @@ function buildDayList(range) {
 }
 
 function renderChart(byDay, range) {
-  const wrap    = document.getElementById('chart-wrap');
+  const wrap = document.getElementById('chart-wrap');
   const titleEl = document.getElementById('chart-title');
-  const metaEl  = document.getElementById('chart-meta');
+  const metaEl = document.getElementById('chart-meta');
   if (!wrap) return;
 
   const days = buildDayList(range === 'all' ? '30' : range);
@@ -204,21 +204,21 @@ function renderChart(byDay, range) {
 
   const values = days.map(d => (byDay[d]?.input ?? 0) + (byDay[d]?.output ?? 0));
   const maxVal = Math.max(...values, 1);
-  const barW   = Math.max(4, Math.floor(cW / days.length) - 3);
+  const barW = Math.max(4, Math.floor(cW / days.length) - 3);
   const barGap = (cW - barW * days.length) / Math.max(days.length - 1, 1);
 
   let barsHTML = '', labelsHTML = '';
   const totalShown = values.reduce((a, b) => a + b, 0);
-  if (metaEl)  metaEl.textContent  = fmtTokens(totalShown) + ' total';
+  if (metaEl) metaEl.textContent = fmtTokens(totalShown) + ' total';
   if (titleEl) titleEl.textContent = range === 'all' ? 'Last 30 days (tokens)' :
     range === 'today' ? 'Today (tokens)' : `Last ${range} days (tokens)`;
 
   days.forEach((date, i) => {
-    const x    = PL + i * (barW + barGap);
-    const inp  = byDay[date]?.input  ?? 0;
-    const out  = byDay[date]?.output ?? 0;
-    const inH  = inp > 0 ? Math.max(1, (inp  / maxVal) * cH) : 0;
-    const outH = out > 0 ? Math.max(1, (out  / maxVal) * cH) : 0;
+    const x = PL + i * (barW + barGap);
+    const inp = byDay[date]?.input ?? 0;
+    const out = byDay[date]?.output ?? 0;
+    const inH = inp > 0 ? Math.max(1, (inp / maxVal) * cH) : 0;
+    const outH = out > 0 ? Math.max(1, (out / maxVal) * cH) : 0;
 
     barsHTML += `
       <rect x="${x}" y="${PT + cH - inH}" width="${barW}" height="${inH}" rx="2"
@@ -272,7 +272,7 @@ function renderInsights(stats, records) {
   const insights = [];
 
   // Most used model
-  const topModel = Object.entries(stats.byModel).sort(([,a],[,b]) => b.calls - a.calls)[0];
+  const topModel = Object.entries(stats.byModel).sort(([, a], [, b]) => b.calls - a.calls)[0];
   if (topModel) {
     insights.push({
       icon: '🏆',
@@ -282,7 +282,7 @@ function renderInsights(stats, records) {
   }
 
   // Peak hour
-  const peakHourEntry = Object.entries(stats.byHour).sort(([,a],[,b]) => b.calls - a.calls)[0];
+  const peakHourEntry = Object.entries(stats.byHour).sort(([, a], [, b]) => b.calls - a.calls)[0];
   if (peakHourEntry) {
     const h = parseInt(peakHourEntry[0]);
     const label = h === 0 ? '12 AM' : h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`;
@@ -294,7 +294,7 @@ function renderInsights(stats, records) {
   }
 
   // Busiest day
-  const busiestDay = Object.entries(stats.byDay).sort(([,a],[,b]) => b.calls - a.calls)[0];
+  const busiestDay = Object.entries(stats.byDay).sort(([, a], [, b]) => b.calls - a.calls)[0];
   if (busiestDay) {
     const dayLabel = new Date(busiestDay[0] + 'T12:00:00').toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' });
     insights.push({
@@ -310,7 +310,7 @@ function renderInsights(stats, records) {
     const outPct = Math.round((stats.totalOutput / total) * 100);
     const verdict = outPct > 60 ? 'Output-heavy — the AI is doing a lot of writing.'
       : outPct < 30 ? 'Input-heavy — you\'re sending long prompts or documents.'
-      : 'Balanced mix of input and output tokens.';
+        : 'Balanced mix of input and output tokens.';
     insights.push({
       icon: '⚖️',
       title: 'Token ratio',
@@ -319,7 +319,7 @@ function renderInsights(stats, records) {
   }
 
   // Most expensive model
-  const priciest = Object.entries(stats.byModel).sort(([,a],[,b]) => b.cost - a.cost)[0];
+  const priciest = Object.entries(stats.byModel).sort(([, a], [, b]) => b.cost - a.cost)[0];
   if (priciest && priciest[1].cost > 0) {
     insights.push({
       icon: '💸',
@@ -333,7 +333,7 @@ function renderInsights(stats, records) {
     const avg = Math.round(total / stats.count);
     const verdict = avg > 4000 ? 'Long conversations — lots of context per call.'
       : avg < 500 ? 'Short, snappy exchanges.'
-      : 'Medium-length conversations.';
+        : 'Medium-length conversations.';
     insights.push({
       icon: '📊',
       title: 'Avg tokens per call',
@@ -349,6 +349,82 @@ function renderInsights(stats, records) {
       icon: '🔀',
       title: 'Multi-provider',
       text: `You're using <strong>${provCount} providers</strong> this period: ${provNames}.`,
+    });
+  }
+
+  // ── 4 NEW INSIGHTS ──────────────────────────────────────────────────────
+
+  // 1. Most cost-efficient model (lowest cost per 1K tokens, among models with >0 cost)
+  const efficientModels = Object.entries(stats.byModel)
+    .filter(([, v]) => v.cost > 0 && (v.input + v.output) > 0);
+  if (efficientModels.length > 0) {
+    const [, bestEff] = efficientModels.sort(([, a], [, b]) => {
+      const ratioA = a.cost / ((a.input + a.output) / 1_000);
+      const ratioB = b.cost / ((b.input + b.output) / 1_000);
+      return ratioA - ratioB;
+    })[0];
+    const costPer1K = (bestEff.cost / ((bestEff.input + bestEff.output) / 1_000)).toFixed(6);
+    insights.push({
+      icon: '🎯',
+      title: 'Most efficient model',
+      text: `<strong>${bestEff.name}</strong> gives the best value at $${costPer1K} per 1K tokens — lowest cost-per-token this period.`,
+    });
+  }
+
+  // 2. Weekend vs weekday activity
+  const WEEKEND_DAYS = [0, 6]; // Sun, Sat
+  let weekendCalls = 0, weekdayCalls = 0;
+  for (const [dow, data] of Object.entries(stats.byDow)) {
+    if (WEEKEND_DAYS.includes(parseInt(dow))) weekendCalls += data.calls;
+    else weekdayCalls += data.calls;
+  }
+  if (weekendCalls + weekdayCalls > 0) {
+    const heavier = weekendCalls > weekdayCalls ? 'weekends' : 'weekdays';
+    const ratio = weekendCalls > weekdayCalls
+      ? (weekendCalls / Math.max(weekdayCalls, 1)).toFixed(1)
+      : (weekdayCalls / Math.max(weekendCalls, 1)).toFixed(1);
+    const weekendVerdict = weekendCalls === 0 ? 'No weekend usage — strictly a weekday user.'
+      : weekdayCalls === 0 ? 'Weekend-only usage — you save AI for your free time.'
+        : `You use AI <strong>${ratio}×</strong> more on <strong>${heavier}</strong>. ${heavier === 'weekends' ? 'Weekend warrior! 🏄' : 'Strictly business. 💼'}`;
+    insights.push({
+      icon: '📆',
+      title: 'Weekend vs weekday',
+      text: weekendVerdict,
+    });
+  }
+
+  // 3. Provider cost leader (most expensive provider)
+  const costLeader = Object.entries(stats.byProvider)
+    .filter(([, v]) => v.cost > 0)
+    .sort(([, a], [, b]) => b.cost - a.cost)[0];
+  if (costLeader) {
+    const [leaderId, leaderData] = costLeader;
+    const shareOfTotal = stats.totalCost > 0
+      ? Math.round((leaderData.cost / stats.totalCost) * 100)
+      : 100;
+    insights.push({
+      icon: '🏦',
+      title: 'Top spending provider',
+      text: `<strong>${providerLabel(leaderId)}</strong> accounts for <strong>${shareOfTotal}%</strong> of your total spend (${fmtCost(leaderData.cost)}) across ${leaderData.calls} call${leaderData.calls !== 1 ? 's' : ''}.`,
+    });
+  }
+
+  // 4. Output verbosity — avg output tokens per call
+  if (stats.count > 0 && stats.totalOutput > 0) {
+    const avgOut = Math.round(stats.totalOutput / stats.count);
+    const verbosity = avgOut > 800 ? 'Very verbose — the AI writes long, detailed responses.'
+      : avgOut > 300 ? 'Moderately detailed responses.'
+        : 'Concise replies — short and to the point.';
+    const topOutputModel = Object.entries(stats.byModel)
+      .filter(([, v]) => v.calls > 0)
+      .sort(([, a], [, b]) => (b.output / b.calls) - (a.output / a.calls))[0];
+    const modelNote = topOutputModel
+      ? ` <strong>${topOutputModel[1].name}</strong> is your most verbose model.`
+      : '';
+    insights.push({
+      icon: '✍️',
+      title: 'Response verbosity',
+      text: `Avg <strong>${fmtTokens(avgOut)}</strong> output tokens per call. ${verbosity}${modelNote}`,
     });
   }
 
@@ -374,9 +450,9 @@ function renderHeatmap(byHour) {
   const maxCalls = Math.max(...Object.values(byHour).map(v => v.calls), 1);
 
   wrap.innerHTML = Array.from({ length: 24 }, (_, h) => {
-    const data    = byHour[h] ?? { calls: 0 };
+    const data = byHour[h] ?? { calls: 0 };
     const opacity = data.calls > 0 ? Math.max(0.08, data.calls / maxCalls) : 0.04;
-    const label   = h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`;
+    const label = h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`;
     return `
       <div class="heatmap-cell" title="${label}: ${data.calls} call${data.calls !== 1 ? 's' : ''}" style="--cell-opacity:${opacity.toFixed(2)}">
         ${data.calls > 0 ? `<div class="heatmap-count">${data.calls}</div>` : ''}
@@ -398,7 +474,7 @@ function renderDow(byDow) {
 
   wrap.innerHTML = DAYS.map((day, i) => {
     const data = byDow[i] ?? { calls: 0, cost: 0 };
-    const pct  = Math.round((data.calls / maxCalls) * 100);
+    const pct = Math.round((data.calls / maxCalls) * 100);
     return `
       <div class="dow-row">
         <span class="dow-label">${day}</span>
@@ -420,7 +496,7 @@ function renderCostTable(byModel) {
   if (!el) return;
 
   const sorted = Object.entries(byModel)
-    .sort(([,a],[,b]) => b.cost - a.cost)
+    .sort(([, a], [, b]) => b.cost - a.cost)
     .slice(0, 10);
 
   if (!sorted.length) {
@@ -428,8 +504,8 @@ function renderCostTable(byModel) {
     return;
   }
 
-  const totalCost = sorted.reduce((sum, [,v]) => sum + v.cost, 0);
-  const maxCost   = sorted[0][1].cost;
+  const totalCost = sorted.reduce((sum, [, v]) => sum + v.cost, 0);
+  const maxCost = sorted[0][1].cost;
 
   el.innerHTML = sorted.map(([modelId, v], i) => {
     const share = totalCost > 0 ? Math.round((v.cost / totalCost) * 100) : 0;
@@ -458,51 +534,59 @@ function renderSummary(stats, records) {
   const grid = document.getElementById('summary-grid');
   if (!grid) return;
 
-  const avgPerMsg    = stats.count > 0 ? Math.round((stats.totalInput + stats.totalOutput) / stats.count) : 0;
+  const avgPerMsg = stats.count > 0 ? Math.round((stats.totalInput + stats.totalOutput) / stats.count) : 0;
   const uniqueModels = new Set(records.map(r => r.model)).size;
+  const avgCostPerCall = stats.count > 0 ? stats.totalCost / stats.count : 0;
 
   const cards = [
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`,
       label: 'Total tokens',
       value: fmtTokens(stats.totalInput + stats.totalOutput),
-      sub:   `${fmtTokens(stats.totalInput)} in · ${fmtTokens(stats.totalOutput)} out`,
-      cls:   '',
+      sub: `${fmtTokens(stats.totalInput)} in · ${fmtTokens(stats.totalOutput)} out`,
+      cls: '',
     },
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
       label: 'API calls',
       value: stats.count.toLocaleString(),
-      sub:   `avg ${fmtTokens(avgPerMsg)} tokens each`,
-      cls:   '',
+      sub: `avg ${fmtTokens(avgPerMsg)} tokens each`,
+      cls: '',
     },
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>`,
       label: 'Est. cost',
       value: fmtCost(stats.totalCost),
-      sub:   'based on published pricing',
-      cls:   'cost-card',
+      sub: 'based on published pricing',
+      cls: 'cost-card',
     },
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v4H4zM4 12h16v4H4z" stroke-linejoin="round"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v4H4zM4 12h16v4H4z" stroke-linejoin="round"/></svg>`,
       label: 'Input tokens',
       value: fmtTokens(stats.totalInput),
-      sub:   `${stats.totalInput > 0 ? Math.round(stats.totalInput / (stats.totalInput + stats.totalOutput + 0.001) * 100) : 0}% of total`,
-      cls:   '',
+      sub: `${stats.totalInput > 0 ? Math.round(stats.totalInput / (stats.totalInput + stats.totalOutput + 0.001) * 100) : 0}% of total`,
+      cls: '',
     },
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
       label: 'Output tokens',
       value: fmtTokens(stats.totalOutput),
-      sub:   `${stats.totalOutput > 0 ? Math.round(stats.totalOutput / (stats.totalInput + stats.totalOutput + 0.001) * 100) : 0}% of total`,
-      cls:   '',
+      sub: `${stats.totalOutput > 0 ? Math.round(stats.totalOutput / (stats.totalInput + stats.totalOutput + 0.001) * 100) : 0}% of total`,
+      cls: '',
     },
     {
-      icon:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
       label: 'Models used',
       value: uniqueModels.toString(),
-      sub:   `across ${Object.keys(stats.byProvider).length} provider${Object.keys(stats.byProvider).length !== 1 ? 's' : ''}`,
-      cls:   '',
+      sub: `across ${Object.keys(stats.byProvider).length} provider${Object.keys(stats.byProvider).length !== 1 ? 's' : ''}`,
+      cls: '',
+    },
+    {
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      label: 'Avg cost / call',
+      value: fmtCost(avgCostPerCall),
+      sub: stats.count > 0 ? `over ${stats.count} call${stats.count !== 1 ? 's' : ''}` : 'no calls yet',
+      cls: '',
     },
   ];
 
@@ -517,11 +601,11 @@ function renderSummary(stats, records) {
 }
 
 function renderModelRows(byModel) {
-  const el   = document.getElementById('model-rows');
+  const el = document.getElementById('model-rows');
   const meta = document.getElementById('model-meta');
   if (!el) return;
 
-  const sorted = Object.entries(byModel).sort(([,a],[,b]) => (b.input + b.output) - (a.input + a.output));
+  const sorted = Object.entries(byModel).sort(([, a], [, b]) => (b.input + b.output) - (a.input + a.output));
   if (meta) meta.textContent = `${sorted.length} model${sorted.length !== 1 ? 's' : ''}`;
 
   if (!sorted.length) {
@@ -529,10 +613,10 @@ function renderModelRows(byModel) {
     return;
   }
 
-  const maxTok = Math.max(...sorted.map(([,v]) => v.input + v.output), 1);
+  const maxTok = Math.max(...sorted.map(([, v]) => v.input + v.output), 1);
   el.innerHTML = sorted.map(([modelId, v]) => {
     const total = v.input + v.output;
-    const pct   = Math.round((total / maxTok) * 100);
+    const pct = Math.round((total / maxTok) * 100);
     return `
       <div class="model-row">
         <div class="model-row-header">
@@ -553,7 +637,7 @@ function renderProviders(byProvider) {
   const el = document.getElementById('provider-grid');
   if (!el) return;
 
-  const sorted = Object.entries(byProvider).sort(([,a],[,b]) => (b.input + b.output) - (a.input + a.output));
+  const sorted = Object.entries(byProvider).sort(([, a], [, b]) => (b.input + b.output) - (a.input + a.output));
 
   if (!sorted.length) {
     el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;grid-column:1/-1">No provider data yet</div>';
@@ -571,7 +655,7 @@ function renderProviders(byProvider) {
 }
 
 function renderActivity(records) {
-  const el   = document.getElementById('activity-list');
+  const el = document.getElementById('activity-list');
   const meta = document.getElementById('activity-meta');
   if (!el) return;
 
@@ -585,7 +669,7 @@ function renderActivity(records) {
 
   el.innerHTML = recent.map(r => {
     const total = (r.inputTokens ?? 0) + (r.outputTokens ?? 0);
-    const cost  = tokenCost(r.model, r.inputTokens ?? 0, r.outputTokens ?? 0);
+    const cost = tokenCost(r.model, r.inputTokens ?? 0, r.outputTokens ?? 0);
     return `
       <div class="activity-item">
         <div class="activity-dot"></div>
@@ -641,7 +725,7 @@ function showSections() {
 
 function render() {
   const records = filteredRecords();
-  const stats   = computeStats(records);
+  const stats = computeStats(records);
 
   if (!_records.length) { showEmpty(); return; }
 
@@ -706,12 +790,12 @@ document.getElementById('refresh-btn')?.addEventListener('click', async () => {
 //  CLEAR DATA
 // ─────────────────────────────────────────────
 
-const overlay       = document.getElementById('confirm-overlay');
+const overlay = document.getElementById('confirm-overlay');
 const confirmCancel = document.getElementById('confirm-cancel');
 const confirmDelete = document.getElementById('confirm-delete');
-const clearBtn      = document.getElementById('clear-usage-btn');
+const clearBtn = document.getElementById('clear-usage-btn');
 
-clearBtn?.addEventListener('click',    () => overlay?.classList.add('open'));
+clearBtn?.addEventListener('click', () => overlay?.classList.add('open'));
 confirmCancel?.addEventListener('click', () => overlay?.classList.remove('open'));
 overlay?.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
 
