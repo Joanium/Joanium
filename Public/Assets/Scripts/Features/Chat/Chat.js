@@ -6,6 +6,7 @@
 //    • Model failover (rank-ordered within provider, then across providers)
 //    • Retry with exponential backoff
 //    • Unified AI planning step — AI decides skills + tools in one call
+//    • Edit & Retry for user messages; Retry for assistant messages
 // ─────────────────────────────────────────────
 
 import { state } from '../../Shared/State.js';
@@ -25,7 +26,7 @@ import { buildFailoverCandidates, planRequest, agentLoop } from './Agent.js';
 document.documentElement.classList.add('show-tokens');
 
 function buildTokenFooter(usage, provider, modelId) {
-  const inp = usage?.inputTokens  ?? 0;
+  const inp = usage?.inputTokens ?? 0;
   const out = usage?.outputTokens ?? 0;
   if (!inp && !out) return null;
 
@@ -66,6 +67,14 @@ function checkIcon() {
   return `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
 }
 
+function editIcon() {
+  return `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+}
+
+function retryIcon() {
+  return `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>`;
+}
+
 chatMessages.addEventListener('click', async (e) => {
   const copyCodeBtn = e.target.closest('.copy-code-btn');
   if (copyCodeBtn) {
@@ -88,18 +97,18 @@ chatMessages.addEventListener('click', async (e) => {
     if (!codeEl) return;
     const lang = dlCodeBtn.dataset.lang || 'txt';
     const EXT_MAP = {
-      javascript:'js', js:'js', typescript:'ts', ts:'ts', python:'py', py:'py',
-      html:'html', css:'css', json:'json', bash:'sh', shell:'sh', sh:'sh',
-      sql:'sql', java:'java', kotlin:'kt', swift:'swift', rust:'rs', go:'go',
-      cpp:'cpp', c:'c', php:'php', ruby:'rb', yaml:'yaml', yml:'yml',
-      xml:'xml', markdown:'md', md:'md', jsx:'jsx', tsx:'tsx',
-      vue:'vue', scss:'scss', sass:'sass', less:'less',
+      javascript: 'js', js: 'js', typescript: 'ts', ts: 'ts', python: 'py', py: 'py',
+      html: 'html', css: 'css', json: 'json', bash: 'sh', shell: 'sh', sh: 'sh',
+      sql: 'sql', java: 'java', kotlin: 'kt', swift: 'swift', rust: 'rs', go: 'go',
+      cpp: 'cpp', c: 'c', php: 'php', ruby: 'rb', yaml: 'yaml', yml: 'yml',
+      xml: 'xml', markdown: 'md', md: 'md', jsx: 'jsx', tsx: 'tsx',
+      vue: 'vue', scss: 'scss', sass: 'sass', less: 'less',
     };
     const ext = EXT_MAP[lang.toLowerCase()] || lang || 'txt';
     try {
       const blob = new Blob([codeEl.textContent], { type: 'text/plain' });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
       a.href = url; a.download = `code.${ext}`;
       document.body.appendChild(a); a.click();
       document.body.removeChild(a); URL.revokeObjectURL(url);
@@ -129,13 +138,13 @@ function attachCopyEvent(btn, textToCopy) {
 function generateChatId() {
   const now = new Date();
   const p = v => String(v).padStart(2, '0');
-  return `${now.getFullYear()}-${p(now.getMonth()+1)}-${p(now.getDate())}_${p(now.getHours())}-${p(now.getMinutes())}-${p(now.getSeconds())}`;
+  return `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}_${p(now.getHours())}-${p(now.getMinutes())}-${p(now.getSeconds())}`;
 }
 
 function normalizeMessage(msg) {
   return {
-    role:        msg?.role ?? 'user',
-    content:     String(msg?.content ?? ''),
+    role: msg?.role ?? 'user',
+    content: String(msg?.content ?? ''),
     attachments: Array.isArray(msg?.attachments)
       ? msg.attachments.filter(a => a?.type === 'image' && typeof a.dataUrl === 'string')
       : [],
@@ -165,7 +174,7 @@ function smoothScrollToBottom() {
   chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
 }
 
-let _updateSendBtn = () => {};
+let _updateSendBtn = () => { };
 export function setSendBtnUpdater(fn) { _updateSendBtn = fn; }
 
 /* ══════════════════════════════════════════
@@ -174,19 +183,70 @@ export function setSendBtnUpdater(fn) { _updateSendBtn = fn; }
 async function trackUsage(usage, chatId, provider = null, modelId = null) {
   if (!usage || (!usage.inputTokens && !usage.outputTokens)) return;
   const p = provider ?? state.selectedProvider;
-  const m = modelId  ?? state.selectedModel;
+  const m = modelId ?? state.selectedModel;
   if (!p || !m) return;
   try {
     const modelInfo = p.models?.[m];
     await window.electronAPI?.trackUsage?.({
-      provider:     p.provider,
-      model:        m,
-      modelName:    modelInfo?.name ?? m,
-      inputTokens:  usage.inputTokens  ?? 0,
+      provider: p.provider,
+      model: m,
+      modelName: modelInfo?.name ?? m,
+      inputTokens: usage.inputTokens ?? 0,
       outputTokens: usage.outputTokens ?? 0,
-      chatId:       chatId ?? state.currentChatId ?? null,
+      chatId: chatId ?? state.currentChatId ?? null,
     });
   } catch (err) { console.warn('[Chat] Could not track usage:', err); }
+}
+
+/* ══════════════════════════════════════════
+   RESEND FROM CURRENT STATE
+   Used by edit-save and retry actions.
+   Assumes state.messages already ends with
+   the user message to respond to.
+══════════════════════════════════════════ */
+async function doSendFromState() {
+  if (!state.selectedProvider || !state.selectedModel || state.isTyping) return;
+
+  state.isTyping = true;
+  _updateSendBtn();
+
+  const live = createLiveRow();
+  live.push('Thinking…');
+
+  const lastUserMsg = [...state.messages].reverse().find(m => m.role === 'user');
+  let plannedToolCalls = [];
+
+  if (lastUserMsg?.content) {
+    try {
+      const plan = await planRequest(lastUserMsg.content);
+      for (const skillName of (plan.skills ?? [])) {
+        live.push(`[SKILL] ${skillName}`);
+        await new Promise(r => setTimeout(r, 120));
+      }
+      for (const tc of (plan.toolCalls ?? [])) {
+        live.push(`[TOOL] ${tc.name.replace(/_/g, ' ')}`);
+        await new Promise(r => setTimeout(r, 80));
+      }
+      plannedToolCalls = plan.toolCalls ?? [];
+    } catch { /* non-fatal */ }
+  }
+
+  try {
+    const { text: finalReply, usage, usedProvider, usedModel } = await agentLoop(
+      state.messages, live, plannedToolCalls, state.systemPrompt,
+    );
+    await trackUsage(usage, state.currentChatId, usedProvider, usedModel);
+    state.messages.push({ role: 'assistant', content: finalReply, attachments: [] });
+    saveCurrentChat();
+  } catch (err) {
+    const errMsg = `Something went wrong: ${err.message}`;
+    live.set(errMsg);
+    state.messages.push({ role: 'assistant', content: errMsg, attachments: [] });
+    console.error('[Chat] doSendFromState error:', err);
+  } finally {
+    state.isTyping = false;
+    _updateSendBtn();
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -203,7 +263,7 @@ function buildLogItem(rawLine) {
   dotSpan.className = 'agent-log-dot';
   item.appendChild(dotSpan);
 
-  let iconHtml    = '';
+  let iconHtml = '';
   let displayText = rawLine;
 
   if (rawLine.startsWith('[GMAIL]')) {
@@ -253,13 +313,8 @@ function buildLogItem(rawLine) {
    Methods:
      push(line)                   — add a log item while tools run
      stream(chunk)                — append streamed token, throttled md render
-     finalize(md, usage, p, mid)  — final markdown + token footer
+     finalize(md, usage, p, mid)  — final markdown + token footer + retry btn
      set(markdown)                — direct set (errors / non-streaming fallback)
-
-   A pulsing dot <span.stream-cursor> is inserted as a real DOM
-   sibling of the reply element while streaming (not a CSS ::after).
-   Markdown re-renders every RENDER_THROTTLE_MS so formatting appears
-   live; finalize() does the authoritative final render.
 ══════════════════════════════════════════ */
 const RENDER_THROTTLE_MS = 80;
 
@@ -283,20 +338,21 @@ function createLiveRow() {
       </div>
       <div class="message-actions assistant-actions" style="display:none;">
         <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>
+        <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>
       </div>
     </div>`;
 
   chatMessages.appendChild(row);
   smoothScrollToBottom();
 
-  const logEl     = row.querySelector('.agent-log');
-  const replyEl   = row.querySelector('.agent-reply');
+  const logEl = row.querySelector('.agent-log');
+  const replyEl = row.querySelector('.agent-reply');
   const actionsEl = row.querySelector('.message-actions');
 
   let _streamActive = false;
-  let _accumulated  = '';
+  let _accumulated = '';
   let _lastRenderAt = 0;
-  let _cursorEl     = null;
+  let _cursorEl = null;
 
   return {
     row,
@@ -311,25 +367,20 @@ function createLiveRow() {
     stream(chunk) {
       if (!_streamActive) {
         _streamActive = true;
-        // Slide log out
         logEl.style.transition = 'opacity 0.15s ease';
-        logEl.style.opacity    = '0';
+        logEl.style.opacity = '0';
         setTimeout(() => { logEl.style.display = 'none'; }, 150);
-        // Mark reply as streaming so CSS makes it inline (cursor flows with text)
         replyEl.classList.add('is-streaming');
-        // Create cursor once — re-appended at end of replyEl after every render
         _cursorEl = document.createElement('span');
         _cursorEl.className = 'stream-cursor';
       }
 
       _accumulated += chunk;
 
-      // Throttled progressive markdown render
       const now = Date.now();
       if (now - _lastRenderAt >= RENDER_THROTTLE_MS) {
         _lastRenderAt = now;
         replyEl.innerHTML = renderMarkdown(_accumulated);
-        // Always re-append cursor as last child so it trails the text
         replyEl.appendChild(_cursorEl);
       }
 
@@ -340,13 +391,25 @@ function createLiveRow() {
       _accumulated = markdown;
       _cursorEl?.remove();
       _cursorEl = null;
-      // Remove streaming mode — back to block so markdown renders normally
       replyEl.classList.remove('is-streaming');
-      logEl.style.display  = 'none';
-      // Authoritative final render
-      replyEl.innerHTML    = renderMarkdown(markdown);
+      logEl.style.display = 'none';
+      replyEl.innerHTML = renderMarkdown(markdown);
       actionsEl.style.display = 'flex';
       attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), markdown);
+
+      // Wire retry button
+      const retryBtn = actionsEl.querySelector('.retry-msg-btn');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', async () => {
+          if (state.isTyping) return;
+          const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
+          const rowIdx = rows.indexOf(row);
+          if (rowIdx === -1) return;
+          rows.slice(rowIdx).forEach(r => r.remove());
+          state.messages = state.messages.slice(0, rowIdx);
+          await doSendFromState();
+        });
+      }
 
       if (usage) {
         const footer = buildTokenFooter(usage, provider, modelId);
@@ -360,12 +423,12 @@ function createLiveRow() {
       _cursorEl?.remove();
       _cursorEl = null;
       replyEl.classList.remove('is-streaming');
-      logEl.style.opacity    = '0';
+      logEl.style.opacity = '0';
       logEl.style.transition = 'opacity 0.2s ease';
       setTimeout(() => {
-        logEl.innerHTML      = '';
-        logEl.style.display  = 'none';
-        replyEl.innerHTML    = renderMarkdown(markdown);
+        logEl.innerHTML = '';
+        logEl.style.display = 'none';
+        replyEl.innerHTML = renderMarkdown(markdown);
         actionsEl.style.display = 'flex';
         attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), markdown);
         smoothScrollToBottom();
@@ -385,14 +448,33 @@ export function appendMessage(role, content, addToState = true, scroll = true, a
   row.className = `message-row ${msg.role}`;
 
   if (msg.role === 'user') {
+    /* ── Action buttons (copy / edit / retry) ── */
     const actions = document.createElement('div');
     actions.className = 'message-actions user-actions';
-    actions.innerHTML = `<button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>`;
-    attachCopyEvent(actions.querySelector('.copy-msg-btn'), msg.content);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'action-btn copy-msg-btn';
+    copyBtn.title = 'Copy Message';
+    copyBtn.innerHTML = copyIcon();
+    attachCopyEvent(copyBtn, msg.content);
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'action-btn edit-msg-btn';
+    editBtn.title = 'Edit Message';
+    editBtn.innerHTML = editIcon();
+
+    const retryBtn = document.createElement('button');
+    retryBtn.className = 'action-btn retry-msg-btn';
+    retryBtn.title = 'Retry';
+    retryBtn.innerHTML = retryIcon();
+
+    actions.append(copyBtn, editBtn, retryBtn);
     row.appendChild(actions);
 
+    /* ── Bubble ── */
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
+
     if (msg.attachments.length > 0) {
       bubble.classList.add('has-attachments');
       const gallery = document.createElement('div');
@@ -400,24 +482,165 @@ export function appendMessage(role, content, addToState = true, scroll = true, a
       msg.attachments.forEach(a => gallery.appendChild(buildImageFrame(a, 'bubble-attachment')));
       bubble.appendChild(gallery);
     }
+
+    let textEl = null;
     if (msg.content) {
-      const tb = document.createElement('div');
-      tb.className = 'bubble-text';
-      appendTextWithLineBreaks(tb, msg.content);
-      bubble.appendChild(tb);
+      textEl = document.createElement('div');
+      textEl.className = 'bubble-text';
+      appendTextWithLineBreaks(textEl, msg.content);
+      bubble.appendChild(textEl);
     }
+
     row.appendChild(bubble);
+
+    /* ── Edit handler ── */
+    editBtn.addEventListener('click', () => {
+      if (state.isTyping) return;
+
+      // Expand row to full width for editing
+      row.classList.add('is-editing');
+
+      // Hide actions while editing
+      actions.style.opacity = '0';
+      actions.style.pointerEvents = 'none';
+
+      const originalContent = msg.content;
+
+      // Replace text with textarea
+      const editArea = document.createElement('textarea');
+      editArea.className = 'bubble-edit-textarea';
+      editArea.value = originalContent;
+      if (textEl) {
+        textEl.replaceWith(editArea);
+      } else {
+        bubble.appendChild(editArea);
+      }
+      editArea.style.height = `${Math.max(editArea.scrollHeight, 60)}px`;
+      editArea.focus();
+      editArea.setSelectionRange(editArea.value.length, editArea.value.length);
+      editArea.addEventListener('input', () => {
+        editArea.style.height = 'auto';
+        editArea.style.height = `${editArea.scrollHeight}px`;
+      });
+
+      // Warning text
+      const warning = document.createElement('div');
+      warning.className = 'bubble-edit-warning';
+      warning.innerHTML = `
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Editing will remove all messages after this point
+      `;
+      bubble.appendChild(warning);
+
+      // Edit action buttons
+      const editActions = document.createElement('div');
+      editActions.className = 'bubble-edit-actions';
+      editActions.innerHTML = `
+        <button class="bubble-edit-cancel">Cancel</button>
+        <button class="bubble-edit-save">Save &amp; Send</button>
+      `;
+      bubble.appendChild(editActions);
+
+      const cancelBtn = editActions.querySelector('.bubble-edit-cancel');
+      const saveBtn = editActions.querySelector('.bubble-edit-save');
+
+      cancelBtn.addEventListener('click', () => {
+        // Animate collapse before restoring
+        bubble.style.transition = 'max-width 0.22s var(--ease-out-expo), width 0.22s var(--ease-out-expo), opacity 0.15s ease';
+        bubble.style.opacity = '0.6';
+        setTimeout(() => {
+          bubble.style.opacity = '';
+          bubble.style.transition = '';
+          if (textEl) {
+            editArea.replaceWith(textEl);
+          } else {
+            editArea.remove();
+          }
+          warning.remove();
+          editActions.remove();
+          row.classList.remove('is-editing');
+          actions.style.opacity = '';
+          actions.style.pointerEvents = '';
+        }, 180);
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        const newText = editArea.value.trim();
+        if (!newText || state.isTyping) return;
+
+        // Find this row's index in the DOM
+        const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
+        const rowIdx = rows.indexOf(row);
+        if (rowIdx === -1) return;
+
+        // Update state
+        msg.content = newText;
+        if (state.messages[rowIdx]) {
+          state.messages[rowIdx] = { ...state.messages[rowIdx], content: newText };
+        }
+
+        // Remove all subsequent rows + state entries
+        rows.slice(rowIdx + 1).forEach(r => r.remove());
+        state.messages = state.messages.slice(0, rowIdx + 1);
+
+        // Restore bubble text with new content
+        textEl = document.createElement('div');
+        textEl.className = 'bubble-text';
+        appendTextWithLineBreaks(textEl, newText);
+        editArea.replaceWith(textEl);
+        warning.remove();
+        editActions.remove();
+        row.classList.remove('is-editing');
+
+        // Update copy button binding
+        attachCopyEvent(copyBtn, newText);
+
+        actions.style.opacity = '';
+        actions.style.pointerEvents = '';
+
+        // Resend
+        await doSendFromState();
+      });
+    });
+
+    /* ── Retry handler ── */
+    retryBtn.addEventListener('click', async () => {
+      if (state.isTyping) return;
+      const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
+      const rowIdx = rows.indexOf(row);
+      if (rowIdx === -1) return;
+      // Remove all rows after this user message
+      rows.slice(rowIdx + 1).forEach(r => r.remove());
+      state.messages = state.messages.slice(0, rowIdx + 1);
+      await doSendFromState();
+    });
+
   } else {
+    /* ── Assistant message ── */
     row.innerHTML = `
       ${assistantIcon()}
       <div class="content-wrapper" style="flex:1;min-width:0;">
         <div class="content"></div>
         <div class="message-actions assistant-actions">
           <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>
+          <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>
         </div>
       </div>`;
     row.querySelector('.content').innerHTML = renderMarkdown(msg.content);
     attachCopyEvent(row.querySelector('.copy-msg-btn'), msg.content);
+
+    row.querySelector('.retry-msg-btn')?.addEventListener('click', async () => {
+      if (state.isTyping) return;
+      const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
+      const rowIdx = rows.indexOf(row);
+      if (rowIdx === -1) return;
+      // Remove this assistant row and everything after, resend from preceding user msg
+      rows.slice(rowIdx).forEach(r => r.remove());
+      state.messages = state.messages.slice(0, rowIdx);
+      await doSendFromState();
+    });
   }
 
   chatMessages.appendChild(row);
@@ -450,7 +673,7 @@ export function showChatView() {
   welcome.style.display = 'flex';
   const anim = welcome.animate(
     [{ opacity: 1, transform: 'translateY(0) scale(1)' },
-     { opacity: 0, transform: 'translateY(-16px) scale(0.97)' }],
+    { opacity: 0, transform: 'translateY(-16px) scale(0.97)' }],
     { duration: 280, easing: 'cubic-bezier(0.4,0,1,1)', fill: 'forwards' },
   );
   anim.onfinish = () => { welcome.style.display = 'none'; };
@@ -520,7 +743,7 @@ export async function callAIWithContext(contextPrompt) {
   const msgs = [...state.messages.slice(-10), { role: 'user', content: contextPrompt, attachments: [] }];
   try {
     const result = await fetchWithTools(state.selectedProvider, state.selectedModel, msgs, state.systemPrompt, []);
-    const reply  = result.type === 'text' ? result.text : '(unexpected tool call)';
+    const reply = result.type === 'text' ? result.text : '(unexpected tool call)';
     await trackUsage(result.usage, state.currentChatId);
     replaceLastAssistant(reply);
     state.messages.push({ role: 'assistant', content: reply, attachments: [] });
@@ -546,7 +769,7 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
   resetComposer();
 
   sendBtnEl?.animate(
-    [{ transform:'scale(1)' },{ transform:'scale(0.85)' },{ transform:'scale(1.15)' },{ transform:'scale(1)' }],
+    [{ transform: 'scale(1)' }, { transform: 'scale(0.85)' }, { transform: 'scale(1.15)' }, { transform: 'scale(1)' }],
     { duration: 350, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' },
   );
 
@@ -562,7 +785,7 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
   live.push('Thinking…');
 
   // ── Unified AI planning step ────────────────────────────────────────
-  let plannedToolCalls = [];   // [{name, params}]
+  let plannedToolCalls = [];
 
   if (text) {
     try {
@@ -607,20 +830,20 @@ export async function saveCurrentChat() {
     (first?.attachments?.length ? 'Image attachment' : 'Untitled');
   try {
     await window.electronAPI?.saveChat({
-      id:        state.currentChatId,
+      id: state.currentChatId,
       title,
       updatedAt: new Date().toISOString(),
-      provider:  state.selectedProvider?.provider ?? null,
-      model:     state.selectedModel ?? null,
-      messages:  state.messages,
+      provider: state.selectedProvider?.provider ?? null,
+      model: state.selectedModel ?? null,
+      messages: state.messages,
     });
   } catch (err) { console.warn('[Chat] Could not save chat:', err); }
 }
 
-export function startNewChat(extraCleanup = () => {}) {
-  state.messages      = [];
+export function startNewChat(extraCleanup = () => { }) {
+  state.messages = [];
   state.currentChatId = null;
-  state.isTyping      = false;
+  state.isTyping = false;
   document.getElementById('typing-row')?.remove();
   chatMessages.innerHTML = '';
   restoreWelcome();
@@ -632,16 +855,16 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
   try {
     const chat = await window.electronAPI?.loadChat(chatId);
     if (!chat) return;
-    state.messages      = [];
+    state.messages = [];
     state.currentChatId = chat.id;
-    state.isTyping      = false;
+    state.isTyping = false;
     document.getElementById('typing-row')?.remove();
     chatMessages.innerHTML = '';
     resetComposer();
     showChatView();
     const restored = (chat.messages ?? []).map(m => ({
-      role:        m?.role ?? 'user',
-      content:     String(m?.content ?? ''),
+      role: m?.role ?? 'user',
+      content: String(m?.content ?? ''),
       attachments: Array.isArray(m?.attachments)
         ? m.attachments.filter(a => a?.type === 'image' && typeof a.dataUrl === 'string')
         : [],
@@ -653,7 +876,7 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
       const provider = state.providers.find(p => p.provider === chat.provider);
       if (provider) {
         state.selectedProvider = provider;
-        state.selectedModel    = chat.model;
+        state.selectedModel = chat.model;
         updateModelLabel();
         buildModelDropdown();
       }
