@@ -23,13 +23,19 @@
       </div>
       <div id="titlebar-controls">
         <button id="btn-minimize" title="Minimize">
-          <svg viewBox="0 0 12 12"><rect y="5.5" width="12" height="1" fill="currentColor" /></svg>
+          <svg viewBox="0 0 12 12">
+            <rect y="5.5" width="12" height="1" fill="currentColor" />
+          </svg>
         </button>
         <button id="btn-maximize" title="Maximize / Restore">
-          <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.2" /></svg>
+          <svg viewBox="0 0 12 12">
+            <rect x="1" y="1" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.2" />
+          </svg>
         </button>
         <button id="btn-close" title="Close">
-          <svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" /></svg>
+          <svg viewBox="0 0 12 12">
+            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
     </div>
@@ -58,9 +64,11 @@
             <div class="library-search-shell">
               <div class="lp-search-wrap">
                 <svg class="lp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                  <circle cx="11" cy="11" r="7" /><path d="M16.5 16.5L21 21" stroke-linecap="round" />
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M16.5 16.5L21 21" stroke-linecap="round" />
                 </svg>
-                <input type="text" id="library-search" placeholder="Search chats..." autocomplete="off" spellcheck="false" />
+                <input type="text" id="library-search" placeholder="Search chats..." autocomplete="off"
+                  spellcheck="false" />
               </div>
             </div>
             <div class="library-list-shell">
@@ -81,7 +89,8 @@
       <!-- About Modal -->
       <div id="about-modal-backdrop">
         <div id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
-          <button class="settings-modal-close about-modal-close" id="about-modal-close" type="button" aria-label="Close about">
+          <button class="settings-modal-close about-modal-close" id="about-modal-close" type="button"
+            aria-label="Close about">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
             </svg>
@@ -98,12 +107,14 @@
             <div class="about-divider"></div>
             <a id="about-sponsor-btn" class="about-sponsor-btn" href="#" role="button">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 21.593c-.534.542-1.076 1.05-1.524 1.483a.75.75 0 01-1.032-.011L2.29 16.01C.454 14.174 0 12.023 0 10.14 0 6.262 3.004 3 6.75 3c1.922 0 3.724.841 4.95 2.174A6.75 6.75 0 0117.25 3C21 3 24 6.263 24 10.14c0 1.883-.454 4.034-2.292 5.87l-7.154 7.065a.75.75 0 01-1.032.011c-.448-.433-.99-.94-1.522-1.482z"/>
+                <path
+                  d="M12 21.593c-.534.542-1.076 1.05-1.524 1.483a.75.75 0 01-1.032-.011L2.29 16.01C.454 14.174 0 12.023 0 10.14 0 6.262 3.004 3 6.75 3c1.922 0 3.724.841 4.95 2.174A6.75 6.75 0 0117.25 3C21 3 24 6.263 24 10.14c0 1.883-.454 4.034-2.292 5.87l-7.154 7.065a.75.75 0 01-1.032.011c-.448-.433-.99-.94-1.522-1.482z" />
               </svg>
               Sponsor on GitHub
             </a>
             <p class="footer-credit">
-              Made with ❤️ by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-name">Joel Jolly</a>
+              Made with ❤️ by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer"
+                class="credit-name">Joel Jolly</a>
             </p>
           </div>
         </div>
@@ -137,22 +148,26 @@
                 <section class="settings-panel active" data-settings-panel="user">
                   <div class="settings-panel-header">
                     <h3>User</h3>
-                    <p>Update your display name, memory, and custom instructions. These are injected into every AI conversation automatically.</p>
+                    <p>Update your display name, memory, and custom instructions. These are injected into every AI
+                      conversation automatically.</p>
                   </div>
                   <div class="settings-form">
                     <label class="settings-field">
                       <span class="settings-field-label">Name</span>
-                      <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name" autocomplete="name" />
+                      <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name"
+                        autocomplete="name" />
                     </label>
                     <label class="settings-field">
                       <span class="settings-field-label settings-field-label--with-badge">
                         Memory
                       </span>
-                      <textarea id="settings-memory" placeholder="Facts about you, ongoing projects, preferences the AI should always remember…"></textarea>
+                      <textarea id="settings-memory"
+                        placeholder="Facts about you, ongoing projects, preferences the AI should always remember…"></textarea>
                     </label>
                     <label class="settings-field">
                       <span class="settings-field-label">Custom Instructions</span>
-                      <textarea id="settings-custom-instructions" placeholder="Tone, style, or behaviour instructions for the AI…"></textarea>
+                      <textarea id="settings-custom-instructions"
+                        placeholder="Tone, style, or behaviour instructions for the AI…"></textarea>
                     </label>
                   </div>
                 </section>
@@ -172,7 +187,8 @@
                 <section class="settings-panel" data-settings-panel="connectors" hidden>
                   <div class="settings-panel-header">
                     <h3>Connectors</h3>
-                    <p>Link Gmail and GitHub so the AI knows about your emails and repos, and automations can take action.</p>
+                    <p>Link Gmail and GitHub so the AI knows about your emails and repos, and automations can take
+                      action.</p>
                   </div>
                   <div id="connector-list" class="connector-list">
                     <div class="cx-loading">Loading connectors…</div>
@@ -223,13 +239,21 @@
               <div class="input-actions">
                 <button class="icon-btn" id="attachment-btn" title="Paste an image from clipboard">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round"
+                      stroke-linejoin="round" />
                   </svg>
                 </button>
                 <button class="icon-btn" title="Voice input">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <rect x="9" y="2" width="6" height="11" rx="3" />
                     <path d="M5 10a7 7 0 0014 0M12 19v3M8 22h8" stroke-linecap="round" />
+                  </svg>
+                </button>
+                <button class="icon-btn" id="enhance-btn" title="Enhance prompt">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13">
+                    <path
+                      d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"
+                      stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" />
                   </svg>
                 </button>
                 <button class="send-btn" id="send-btn" title="Send">
@@ -241,7 +265,8 @@
             </div>
           </div>
           <p class="footer-credit">
-            Made with ❤️ by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-name">Joel Jolly</a>
+            Made with ❤️ by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer"
+              class="credit-name">Joel Jolly</a>
           </p>
         </div>
       </main>

@@ -8,10 +8,12 @@ import {
 // Window controls
 import '../Shared/WindowControls.js';
 
+import { fetchWithTools } from '../Features/AI/AIProvider.js';
+
 // Modals
-import { initSidebar }       from '../Shared/Sidebar.js';
-import { initAboutModal }    from '../Shared/Modals/AboutModal.js';
-import { initLibraryModal }  from '../Shared/Modals/LibraryModal.js';
+import { initSidebar } from '../Shared/Sidebar.js';
+import { initAboutModal } from '../Shared/Modals/AboutModal.js';
+import { initLibraryModal } from '../Shared/Modals/LibraryModal.js';
 import { initSettingsModal } from '../Shared/Modals/SettingsModal.js';
 
 // Features
@@ -36,15 +38,15 @@ const library = initLibraryModal({
 
 // Sidebar
 const sidebar = initSidebar({
-  activePage:    'chat',
-  onNewChat:     () => startNewChat(() => { library.close(); settings.close(); }),
-  onLibrary:     () => library.isOpen() ? library.close() : library.open(),
+  activePage: 'chat',
+  onNewChat: () => startNewChat(() => { library.close(); settings.close(); }),
+  onLibrary: () => library.isOpen() ? library.close() : library.open(),
   onAutomations: () => window.electronAPI?.launchAutomations?.(),
-  onSkills:      () => window.electronAPI?.launchSkills?.(),
-  onPersonas:    () => window.electronAPI?.launchPersonas?.(),
-  onUsage:       () => window.electronAPI?.launchUsage?.(),
-  onSettings:    () => settings.open(),
-  onAbout:       () => about.open(),
+  onSkills: () => window.electronAPI?.launchSkills?.(),
+  onPersonas: () => window.electronAPI?.launchPersonas?.(),
+  onUsage: () => window.electronAPI?.launchUsage?.(),
+  onSettings: () => settings.open(),
+  onAbout: () => about.open(),
 });
 
 // Keep sidebar in sync whenever the user profile updates
@@ -120,3 +122,77 @@ loadProviders().then(async () => {
 });
 
 console.log(`[${APP_NAME}] loaded`);
+
+// ─────────────────────────────────────────────
+//  ENHANCE BUTTON  — drop this block into Index.js
+//  after the "Send button state" section.
+//
+//  Requires: textarea, state, fetchWithTools
+//  already imported/defined in Index.js (they are).
+// ─────────────────────────────────────────────
+
+const enhanceBtn = document.getElementById('enhance-btn');
+
+/** Sync the enhance button's active/inactive appearance */
+function updateEnhanceBtn() {
+  if (!enhanceBtn) return;
+  const hasText = textarea.value.trim().length > 0;
+  enhanceBtn.classList.toggle('enhance-active', hasText && !state.isTyping);
+  enhanceBtn.disabled = !hasText || state.isTyping;
+}
+
+/** Call the AI and rewrite the user's prompt */
+async function handleEnhance() {
+  const raw = textarea.value.trim();
+  if (!raw || state.isTyping || !state.selectedProvider || !state.selectedModel) return;
+
+  // ── Loading state ─────────────────────────
+  enhanceBtn.classList.remove('enhance-active');
+  enhanceBtn.classList.add('enhance-loading');
+  enhanceBtn.disabled = true;
+  const labelEl = enhanceBtn.querySelector('.enhance-btn-label');
+  if (labelEl) labelEl.textContent = 'Enhancing…';
+
+  try {
+    const result = await fetchWithTools(
+      state.selectedProvider,
+      state.selectedModel,
+      [{ role: 'user', content: raw, attachments: [] }],
+      [
+        'You are a prompt-enhancement assistant.',
+        'Rewrite the user\'s message into a clearer, more specific, and more effective prompt.',
+        'Keep the same intent and language style.',
+        'Return ONLY the enhanced prompt — no preamble, no quotes, no explanation.',
+      ].join(' '),
+      [],
+    );
+
+    if (result.type === 'text' && result.text && result.text !== '(empty response)') {
+      textarea.value = result.text;
+      textarea.dispatchEvent(new Event('input')); // triggers auto-resize + send btn update
+    }
+  } catch (err) {
+    console.warn('[Enhance] Failed:', err.message);
+  } finally {
+    // ── Restore button ─────────────────────
+    enhanceBtn.classList.remove('enhance-loading');
+    if (labelEl) labelEl.textContent = 'Enhance';
+    updateEnhanceBtn();
+  }
+}
+
+// Wire events
+enhanceBtn?.addEventListener('click', handleEnhance);
+
+// Keep enhance button in sync with textarea content
+textarea.addEventListener('input', updateEnhanceBtn);
+
+updateEnhanceBtn();
+
+// Also update when isTyping changes (send btn updater already exists,
+// piggyback by wrapping the existing setSendBtnUpdater call):
+const _originalSendBtnUpdater = updateSendBtn;
+setSendBtnUpdater(() => {
+  _originalSendBtnUpdater();
+  updateEnhanceBtn();
+});

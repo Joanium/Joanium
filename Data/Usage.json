@@ -206,6 +206,60 @@
       "inputTokens": 14132,
       "outputTokens": 123,
       "chatId": "2026-03-19_19-54-23"
+    },
+    {
+      "timestamp": "2026-03-19T14:33:17.464Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 42083,
+      "outputTokens": 1949,
+      "chatId": "2026-03-19_19-54-23"
+    },
+    {
+      "timestamp": "2026-03-19T15:31:22.249Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 15315,
+      "outputTokens": 1952,
+      "chatId": "2026-03-19_21-00-17"
+    },
+    {
+      "timestamp": "2026-03-19T15:36:46.404Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 38961,
+      "outputTokens": 356,
+      "chatId": "2026-03-19_21-06-14"
+    },
+    {
+      "timestamp": "2026-03-19T15:37:14.699Z",
+      "provider": "mistral",
+      "model": "codestral-latest",
+      "modelName": "Codestral",
+      "inputTokens": 6028,
+      "outputTokens": 52,
+      "chatId": "2026-03-19_21-06-14"
+    },
+    {
+      "timestamp": "2026-03-19T15:37:56.756Z",
+      "provider": "mistral",
+      "model": "codestral-latest",
+      "modelName": "Codestral",
+      "inputTokens": 21827,
+      "outputTokens": 211,
+      "chatId": "2026-03-19_21-06-14"
+    },
+    {
+      "timestamp": "2026-03-19T15:38:42.452Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 23716,
+      "outputTokens": 316,
+      "chatId": "2026-03-19_21-06-14"
     }
   ]
 }

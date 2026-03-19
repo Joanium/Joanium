@@ -11,10 +11,10 @@
 //  Chat.js imports and calls these; it never contains agent logic itself.
 // ─────────────────────────────────────────────
 
-import { state }                                          from '../../Shared/State.js';
+import { state } from '../../Shared/State.js';
 import { fetchWithTools, fetchStreamingWithTools, withRetry } from '../AI/AIProvider.js';
-import { TOOLS }                                          from './Tools/Index.js';
-import { executeTool }                                    from './Executors/Index.js';
+import { TOOLS } from './Tools/Index.js';
+import { executeTool } from './Executors/Index.js';
 
 /* ══════════════════════════════════════════
    1. FAILOVER CANDIDATES
@@ -91,19 +91,19 @@ export async function planRequest(userText) {
 
   const skillsCatalogue = skills.length
     ? skills.map(s =>
-        `  - "${s.name}": ${s.trigger?.trim() || s.description?.trim() || 'general assistant skill'}`
-      ).join('\n')
+      `  - "${s.name}": ${s.trigger?.trim() || s.description?.trim() || 'general assistant skill'}`
+    ).join('\n')
     : '  (none)';
 
   // ── Build tool catalogue with required params ─────────────────────────
   const toolsCatalogue = TOOLS.length
     ? TOOLS.map(t => {
-        const requiredParams = Object.entries(t.parameters ?? {})
-          .filter(([, p]) => p.required)
-          .map(([k, p]) => `${k} (${p.type}): ${p.description}`)
-          .join(', ');
-        return `  - "${t.name}": ${t.description}${requiredParams ? ` | Required: ${requiredParams}` : ''}`;
-      }).join('\n')
+      const requiredParams = Object.entries(t.parameters ?? {})
+        .filter(([, p]) => p.required)
+        .map(([k, p]) => `${k} (${p.type}): ${p.description}`)
+        .join(', ');
+      return `  - "${t.name}": ${t.description}${requiredParams ? ` | Required: ${requiredParams}` : ''}`;
+    }).join('\n')
     : '  (none)';
 
   // ── Planning prompt ───────────────────────────────────────────────────
@@ -147,25 +147,25 @@ export async function planRequest(userText) {
 
     // Extract JSON by brace positions — no regex
     const start = result.text.indexOf('{');
-    const end   = result.text.lastIndexOf('}');
+    const end = result.text.lastIndexOf('}');
     if (start === -1 || end === -1) return { skills: [], toolCalls: [] };
 
     const parsed = JSON.parse(result.text.slice(start, end + 1));
 
     const validSkillNames = new Set(skills.map(s => s.name));
-    const validToolNames  = new Set(TOOLS.map(t => t.name));
+    const validToolNames = new Set(TOOLS.map(t => t.name));
 
     // Support both {name, params} objects and bare name strings
     const toolCalls = (parsed.toolCalls ?? parsed.tools ?? [])
       .map(entry => {
-        if (typeof entry === 'string')         return { name: entry,      params: {} };
-        if (typeof entry?.name === 'string')   return { name: entry.name, params: entry.params ?? {} };
+        if (typeof entry === 'string') return { name: entry, params: {} };
+        if (typeof entry?.name === 'string') return { name: entry.name, params: entry.params ?? {} };
         return null;
       })
       .filter(tc => tc && validToolNames.has(tc.name));
 
     return {
-      skills:    (parsed.skills ?? []).filter(n => typeof n === 'string' && validSkillNames.has(n)),
+      skills: (parsed.skills ?? []).filter(n => typeof n === 'string' && validSkillNames.has(n)),
       toolCalls,
     };
   } catch (err) {
@@ -192,9 +192,9 @@ export async function planRequest(userText) {
 ══════════════════════════════════════════ */
 export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) {
   const loopMessages = [...messages];
-  const MAX_TURNS    = 10;
-  let toolsUsed      = false;
-  const totalUsage   = { inputTokens: 0, outputTokens: 0 };
+  const MAX_TURNS = 10;
+  let toolsUsed = false;
+  const totalUsage = { inputTokens: 0, outputTokens: 0 };
 
   // ── Candidate model list ──────────────────────────────────────────────
   const candidates = [
@@ -203,13 +203,13 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
   ].filter(c => c.provider && c.modelId);
 
   let usedProvider = state.selectedProvider;
-  let usedModel    = state.selectedModel;
+  let usedModel = state.selectedModel;
 
   // ── Tool subsets ──────────────────────────────────────────────────────
   // Turn 0: only the tools the planner asked for (focused, avoids distractions)
   // Turn 1+: all tools (AI can chain freely after first tool use)
   const plannedToolNames = [...new Set((plannedToolCalls ?? []).map(tc => tc.name))];
-  const plannedTools     = plannedToolNames.length
+  const plannedTools = plannedToolNames.length
     ? TOOLS.filter(t => plannedToolNames.includes(t.name))
     : TOOLS;
 
@@ -218,11 +218,11 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
   // eliminating "missing required param" errors.
   const callPlanHint = plannedToolCalls?.length
     ? '\n\nCALL PLAN — execute these tool calls in order:\n' +
-      plannedToolCalls.map((tc, i) => {
-        const paramsStr = Object.entries(tc.params ?? {})
-          .map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(', ');
-        return `${i + 1}. ${tc.name}(${paramsStr})`;
-      }).join('\n')
+    plannedToolCalls.map((tc, i) => {
+      const paramsStr = Object.entries(tc.params ?? {})
+        .map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(', ');
+      return `${i + 1}. ${tc.name}(${paramsStr})`;
+    }).join('\n')
     : '';
 
   const sysPromptWithPlan = systemPrompt + callPlanHint;
@@ -234,12 +234,12 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
     // Keep the call plan in the system prompt for EVERY turn until all planned
     // tools have been called. Without this the AI loses context of what to call
     // next and just says "not available" instead of executing remaining tools.
-    const calledCount       = loopMessages.filter(m => m.role === 'assistant' && m.content.startsWith('I used the')).length;
-    const allToolsDone      = !plannedToolCalls?.length || calledCount >= plannedToolCalls.length;
+    const calledCount = loopMessages.filter(m => m.role === 'assistant' && m.content.startsWith('I used the')).length;
+    const allToolsDone = !plannedToolCalls?.length || calledCount >= plannedToolCalls.length;
     const sysPromptThisTurn = allToolsDone ? systemPrompt : sysPromptWithPlan;
-    let result               = null;
-    let lastErr              = null;
-    let streamingStarted     = false;
+    let result = null;
+    let lastErr = null;
+    let streamingStarted = false;
 
     const onToken = (chunk) => {
       streamingStarted = true;
@@ -266,7 +266,7 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
         }, 3, 600);
 
         usedProvider = provider;
-        usedModel    = modelId;
+        usedModel = modelId;
         break; // success — stop trying candidates
 
       } catch (err) {
@@ -288,7 +288,7 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
 
     // Accumulate usage across all turns
     if (result.usage) {
-      totalUsage.inputTokens  += result.usage.inputTokens  ?? 0;
+      totalUsage.inputTokens += result.usage.inputTokens ?? 0;
       totalUsage.outputTokens += result.usage.outputTokens ?? 0;
     }
 
@@ -313,28 +313,28 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt) 
       }
 
       loopMessages.push({
-        role:        'assistant',
-        content:     `I used the ${name} tool.`,
+        role: 'assistant',
+        content: `I used the ${name} tool.`,
         attachments: [],
       });
 
       // How many planned tools are still outstanding?
-      const calledSoFar   = loopMessages.filter(m => m.role === 'assistant' && m.content.startsWith('I used the')).length;
-      const totalPlanned  = plannedToolCalls?.length ?? 0;
+      const calledSoFar = loopMessages.filter(m => m.role === 'assistant' && m.content.startsWith('I used the')).length;
+      const totalPlanned = plannedToolCalls?.length ?? 0;
       const moreToolsLeft = totalPlanned > 0 && calledSoFar < totalPlanned;
       // Note: sysPromptThisTurn will automatically include the call plan
       // on the next turn because calledCount is re-evaluated at the top of the loop.
 
       loopMessages.push({
-        role:    'user',
+        role: 'user',
         content: moreToolsLeft
           // Still have planned tools to run — tell the AI to keep going
           ? `Tool result for ${name}:\n${toolResult}\n\n` +
-            `You still have ${totalPlanned - calledSoFar} more tool call(s) to make before writing the final response. ` +
-            `Call the next tool now. Do not write a response yet.`
+          `You still have ${totalPlanned - calledSoFar} more tool call(s) to make before writing the final response. ` +
+          `Call the next tool now. Do not write a response yet.`
           // All tools done — synthesize using persona/tone from the system prompt
           : `Tool result for ${name}:\n${toolResult}\n\n` +
-            `All tool calls are complete. Now write your response to the user incorporating ALL the data gathered above. No raw JSON or code blocks.`,
+          `All tool calls are complete. Now write your response to the user incorporating ALL the data gathered above. No raw JSON or code blocks.`,
         attachments: [],
       });
     }

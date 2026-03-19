@@ -12,11 +12,9 @@
 import { state } from '../../Shared/State.js';
 import { render as renderMarkdown } from '../../Shared/Markdown.js';
 import { welcome, chatView, chatMessages } from '../../Shared/DOM.js';
-import { fetchWithTools, fetchStreamingWithTools, withRetry } from '../AI/AIProvider.js';
+import { fetchWithTools } from '../AI/AIProvider.js';
 import { reset as resetComposer } from '../Composer/Composer.js';
-import { TOOLS } from './Tools/Index.js';
-import { executeTool } from './Executors/Index.js';
-import { buildFailoverCandidates, planRequest, agentLoop } from './Agent.js';
+import { planRequest, agentLoop } from './Agent.js';
 
 /* ══════════════════════════════════════════
    TOKEN FOOTER — always on
