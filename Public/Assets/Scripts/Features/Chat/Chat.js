@@ -9,8 +9,8 @@ import { render as renderMarkdown } from '../../Shared/Markdown.js';
 import { welcome, chatView, chatMessages } from '../../Shared/DOM.js';
 import { fetchWithTools } from '../AI/AIProvider.js';
 import { reset as resetComposer } from '../Composer/Composer.js';
-import { TOOLS } from './Tools.js';
-import { executeTool } from './ToolExecutor.js';
+import { TOOLS } from './Tools/Index.js';
+import { executeTool } from './Executors/Index.js';
 
 /* ══════════════════════════════════════════
    ICONS & EVENT LISTENERS (MESSAGE ACTIONS)
@@ -23,8 +23,9 @@ function checkIcon() {
   return `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
 }
 
-// Global delegate for code-block copying
+// Global delegate for code-block copying and downloading
 chatMessages.addEventListener('click', async (e) => {
+  // ── Copy code button ──
   const copyCodeBtn = e.target.closest('.copy-code-btn');
   if (copyCodeBtn) {
     const wrapper = copyCodeBtn.closest('.code-wrapper');
@@ -40,6 +41,52 @@ chatMessages.addEventListener('click', async (e) => {
       }, 2000);
     } catch (err) {
       console.error('Failed to copy code:', err);
+    }
+  }
+
+  // ── Download code button ──
+  const downloadCodeBtn = e.target.closest('.download-code-btn');
+  if (downloadCodeBtn) {
+    const wrapper = downloadCodeBtn.closest('.code-wrapper');
+    const codeEl = wrapper.querySelector('code');
+    const lang = downloadCodeBtn.dataset.lang || 'txt';
+
+    // Map language names to file extensions
+    const EXT_MAP = {
+      javascript: 'js', js: 'js', typescript: 'ts', ts: 'ts',
+      python: 'py', py: 'py', html: 'html', css: 'css',
+      json: 'json', bash: 'sh', shell: 'sh', sh: 'sh',
+      sql: 'sql', java: 'java', kotlin: 'kt', swift: 'swift',
+      rust: 'rs', go: 'go', cpp: 'cpp', c: 'c', php: 'php',
+      ruby: 'rb', yaml: 'yaml', yml: 'yml', xml: 'xml',
+      markdown: 'md', md: 'md', jsx: 'jsx', tsx: 'tsx',
+      vue: 'vue', scss: 'scss', sass: 'sass', less: 'less',
+    };
+
+    const ext = EXT_MAP[lang.toLowerCase()] || lang || 'txt';
+    const filename = `code.${ext}`;
+
+    try {
+      const blob = new Blob([codeEl.textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Visual feedback
+      const originalHtml = downloadCodeBtn.innerHTML;
+      downloadCodeBtn.innerHTML = `${checkIcon()} Saved`;
+      downloadCodeBtn.style.color = 'var(--accent)';
+      setTimeout(() => {
+        downloadCodeBtn.innerHTML = originalHtml;
+        downloadCodeBtn.style.color = '';
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to download code:', err);
     }
   }
 });
@@ -116,12 +163,12 @@ async function trackUsage(usage, chatId) {
   try {
     const modelInfo = state.selectedProvider.models?.[state.selectedModel];
     await window.electronAPI?.trackUsage?.({
-      provider:     state.selectedProvider.provider,
-      model:        state.selectedModel,
-      modelName:    modelInfo?.name ?? state.selectedModel,
-      inputTokens:  usage.inputTokens  ?? 0,
+      provider: state.selectedProvider.provider,
+      model: state.selectedModel,
+      modelName: modelInfo?.name ?? state.selectedModel,
+      inputTokens: usage.inputTokens ?? 0,
       outputTokens: usage.outputTokens ?? 0,
-      chatId:       chatId ?? state.currentChatId ?? null,
+      chatId: chatId ?? state.currentChatId ?? null,
     });
   } catch (err) {
     console.warn('[Chat] Could not track usage:', err);
@@ -129,24 +176,57 @@ async function trackUsage(usage, chatId) {
 }
 
 /* ══════════════════════════════════════════
-   SKILL DETECTION
-   Loads skills and returns ones whose trigger
-   keywords overlap with the user message.
+   SKILL DETECTION  (AI-powered classification)
+   Uses a lightweight AI call to determine which
+   skills are genuinely relevant to the user's request.
+   Falls back to empty array gracefully on any error.
 ══════════════════════════════════════════ */
 async function detectRelevantSkills(userText) {
   try {
     const res = await window.electronAPI?.getSkills?.();
     const skills = res?.skills ?? [];
-    const msgWords = userText.toLowerCase().split(/\W+/).filter(w => w.length > 3);
-    const matched = [];
-    for (const skill of skills) {
-      const triggerWords = (skill.trigger || skill.description || '')
-        .toLowerCase().split(/\W+/).filter(w => w.length > 3);
-      const overlap = msgWords.some(w => triggerWords.includes(w));
-      if (overlap) matched.push(skill.name);
-    }
-    return matched;
-  } catch {
+    if (!skills.length) return [];
+    if (!state.selectedProvider || !state.selectedModel) return [];
+
+    // Build a compact skill catalogue for the classifier
+    const catalogue = skills
+      .map(s => {
+        const trigger = s.trigger?.trim();
+        const desc = s.description?.trim();
+        const detail = trigger || desc || '';
+        return `- "${s.name}"${detail ? `: ${detail}` : ''}`;
+      })
+      .join('\n');
+
+    const classifierPrompt =
+      `You are a skill-routing assistant. Given a user request and a list of named skills, ` +
+      `return ONLY a JSON array of skill names that are directly useful for that request. ` +
+      `Return [] if none are relevant. No explanation, no markdown fences — raw JSON array only.\n\n` +
+      `User request: "${userText}"\n\n` +
+      `Available skills:\n${catalogue}`;
+
+    const result = await fetchWithTools(
+      state.selectedProvider,
+      state.selectedModel,
+      [{ role: 'user', content: classifierPrompt, attachments: [] }],
+      'You are a skill classifier. Reply ONLY with a raw JSON array of skill name strings.',
+      [] // no tools for this lightweight call
+    );
+
+    if (result.type !== 'text') return [];
+
+    // Extract JSON array from response (handle any extra whitespace/chars)
+    const match = result.text.match(/\[[\s\S]*?\]/);
+    if (!match) return [];
+
+    const parsed = JSON.parse(match[0]);
+    if (!Array.isArray(parsed)) return [];
+
+    // Validate against actual skill names to prevent hallucinations
+    const validNames = new Set(skills.map(s => s.name));
+    return parsed.filter(n => typeof n === 'string' && validNames.has(n));
+  } catch (err) {
+    console.warn('[Chat] Skill detection failed:', err.message);
     return [];
   }
 }
@@ -239,7 +319,7 @@ function createLiveRow() {
   chatMessages.appendChild(row);
   smoothScrollToBottom();
 
-  const logEl   = row.querySelector('.agent-log');
+  const logEl = row.querySelector('.agent-log');
   const replyEl = row.querySelector('.agent-reply');
   const actionsEl = row.querySelector('.message-actions');
 
@@ -450,7 +530,7 @@ async function agentLoop(messages, live) {
     );
 
     if (result.usage) {
-      totalUsage.inputTokens  += result.usage.inputTokens  ?? 0;
+      totalUsage.inputTokens += result.usage.inputTokens ?? 0;
       totalUsage.outputTokens += result.usage.outputTokens ?? 0;
     }
 
@@ -519,15 +599,14 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
   const live = createLiveRow();
   live.push('_Thinking…_');
 
-  // ── Skill detection ───────────────────────────────────────────────────
-  // Check which skills are relevant to this message and surface them visually
+  // ── AI-powered skill detection ────────────────────────────────────────
+  // Run classification concurrently with initial setup; only show matched skills
   if (text) {
     try {
       const matchedSkills = await detectRelevantSkills(text);
       for (const skillName of matchedSkills) {
         live.push(`[SKILL] Reading skill: ${skillName}`);
-        // Small stagger so items don't all appear at once
-        await new Promise(r => setTimeout(r, 180));
+        await new Promise(r => setTimeout(r, 160));
       }
     } catch { /* non-fatal */ }
   }

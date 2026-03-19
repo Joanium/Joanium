@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────
    code-block.css
-   Code block wrapper, language label, copy button
+   Code block wrapper, language label, copy + download buttons
 ───────────────────────────────────────────── */
 
 .code-wrapper {
@@ -30,20 +30,49 @@
   letter-spacing: 0.5px;
 }
 
-.copy-code-btn {
+/* ── Action buttons group ── */
+.code-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+}
+
+/* Shared styles for copy + download buttons */
+.copy-code-btn,
+.download-code-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
   font-size: 11.5px;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-family: var(--font-ui);
   transition:
     background var(--transition-fast),
     color      var(--transition-fast);
 }
 
-.copy-code-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
+.copy-code-btn:hover,
+.download-code-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+/* Subtle divider between copy and download */
+.download-code-btn {
+  position: relative;
+}
+
+.download-code-btn::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--border-subtle);
+}

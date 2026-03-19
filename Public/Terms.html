@@ -1,101 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" data-theme="dark
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terms of Service & Privacy Policy — openworld</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Theme ── */
+    /* ── App design tokens (dark theme) ── */
     :root {
-      --bg:         #0d0d10;
-      --bg-card:    #13131a;
-      --bg-rule:    #1c1c26;
-      --accent:     #6c8eff;
-      --accent-dim: rgba(108,142,255,0.10);
-      --text-hi:    #f0f0f5;
-      --text-mid:   #9090a8;
-      --text-lo:    #55556a;
-      --border:     #222230;
-      --radius:     14px;
+      --bg-primary:    #1a1a1a;
+      --bg-secondary:  #222222;
+      --bg-tertiary:   #2a2a2a;
+      --bg-hover:      #303030;
+      --bg-input:      #2e2e2e;
+      --border:        #383838;
+      --border-subtle: #2c2c2c;
+      --text-primary:  #e8e8e8;
+      --text-secondary:#9a9a9a;
+      --text-muted:    #606060;
+      --accent:        #cc785c;
+      --accent-glow:   rgba(204, 120, 92, 0.18);
+      --accent-dim:    rgba(204, 120, 92, 0.08);
+      --accent-hover:  #d9896e;
+      --mesh-a:        rgba(204, 120, 92, 0.04);
+      --mesh-b:        rgba(120, 100, 180, 0.03);
+      --shadow-color:  rgba(0, 0, 0, 0.5);
+      --titlebar-bg:   #141414;
+
+      --font-ui:   'Sora', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 22px;
+
+      --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* ── Body ── */
-    body {
-      background: var(--bg);
-      color: var(--text-mid);
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 15px;
-      line-height: 1.8;
-      padding: 0;
+    /* ── Base ── */
+    html, body {
+      font-family: var(--font-ui);
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
+
+    /* Mesh background (matches app) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, var(--mesh-a), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, var(--mesh-b), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Scrollbar (matches app) ── */
+    ::-webkit-scrollbar        { width: 4px; }
+    ::-webkit-scrollbar-track  { background: transparent; }
+    ::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
     /* ── Top bar ── */
     .topbar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(13,13,16,0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+      background: var(--titlebar-bg);
+      border-bottom: 1px solid var(--border-subtle);
       padding: 0 clamp(20px, 5vw, 80px);
-      height: 56px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .topbar-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       text-decoration: none;
+    }
+
+    .topbar-logo {
+      width: 16px;
+      height: 16px;
       color: var(--accent);
     }
 
-    .topbar-brand svg {
-      width: 20px;
-      height: 20px;
-    }
-
     .topbar-name {
-      font-family: system-ui, sans-serif;
       font-size: 13px;
-      font-weight: 600;
-      color: var(--text-hi);
+      font-weight: 500;
+      color: var(--text-secondary);
       letter-spacing: 0.3px;
     }
 
     .topbar-date {
-      font-family: system-ui, sans-serif;
       font-size: 11.5px;
-      color: var(--text-lo);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
     }
 
     /* ── Hero ── */
     .hero {
-      background: linear-gradient(160deg, rgba(108,142,255,0.06) 0%, transparent 55%);
-      border-bottom: 1px solid var(--border);
-      padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 80px) clamp(40px, 6vw, 72px);
+      position: relative;
+      z-index: 1;
+      padding: clamp(56px, 9vw, 100px) clamp(20px, 5vw, 80px) clamp(48px, 7vw, 80px);
       text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-family: system-ui, sans-serif;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 20px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--accent-dim);
+      border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+      margin-bottom: 24px;
     }
 
     .hero-eyebrow-dot {
@@ -103,140 +146,181 @@
       height: 5px;
       border-radius: 50%;
       background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
+      animation: dotPulse 2s ease-in-out infinite;
     }
 
-    @keyframes pulse {
+    @keyframes dotPulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.4; transform: scale(0.7); }
+      50%       { opacity: 0.35; transform: scale(0.7); }
+    }
+
+    /* App icon treatment for hero */
+    .hero-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 22px;
+      background: var(--accent-dim);
+      border: 1.5px solid color-mix(in srgb, var(--accent) 28%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      margin: 0 auto 20px;
+      box-shadow: 0 0 32px var(--accent-glow);
+    }
+
+    .hero-icon svg {
+      width: 32px;
+      height: 32px;
     }
 
     .hero h1 {
-      font-family: system-ui, sans-serif;
-      font-size: clamp(28px, 5vw, 48px);
+      font-size: clamp(26px, 4.5vw, 42px);
       font-weight: 600;
-      color: var(--text-hi);
-      letter-spacing: -1px;
+      color: var(--text-primary);
+      letter-spacing: -0.8px;
       line-height: 1.15;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .hero h1 span { color: var(--accent); }
 
     .hero-sub {
-      max-width: 520px;
+      max-width: 480px;
       margin: 0 auto;
-      font-size: 14.5px;
-      color: var(--text-mid);
+      font-size: 13.5px;
+      color: var(--text-secondary);
       line-height: 1.75;
     }
 
     /* ── TOC nav ── */
     .toc-wrap {
-      max-width: 760px;
+      position: relative;
+      z-index: 1;
+      max-width: 740px;
       margin: 0 auto;
-      padding: 36px clamp(20px, 5vw, 40px) 0;
+      padding: 32px clamp(20px, 5vw, 40px) 0;
     }
 
     .toc {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 24px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 18px 22px;
     }
 
     .toc-label {
-      font-family: system-ui, sans-serif;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--text-lo);
-      width: 100%;
-      margin-bottom: 4px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .toc-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .toc a {
-      font-family: system-ui, sans-serif;
-      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
       color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
       text-decoration: none;
-      transition: opacity 0.15s;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
     }
 
-    .toc a:hover { opacity: 0.7; }
+    .toc a:hover {
+      background: color-mix(in srgb, var(--accent) 15%, var(--bg-tertiary));
+      border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+      transform: translateY(-1px);
+    }
 
     /* ── Main content ── */
     .content {
-      max-width: 760px;
+      position: relative;
+      z-index: 1;
+      max-width: 740px;
       margin: 0 auto;
       padding: 40px clamp(20px, 5vw, 40px) 80px;
     }
 
     /* ── Section ── */
     .section {
-      margin-bottom: 52px;
-      scroll-margin-top: 80px;
+      margin-bottom: 44px;
+      scroll-margin-top: 72px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      transition: border-color 0.2s;
+    }
+
+    .section:hover {
+      border-color: color-mix(in srgb, var(--accent) 16%, var(--border-subtle));
     }
 
     .section-tag {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-family: system-ui, sans-serif;
+      gap: 6px;
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 10px;
-    }
-
-    .section-tag::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.5;
+      font-family: var(--font-mono);
     }
 
     .section h2 {
-      font-family: system-ui, sans-serif;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 600;
-      color: var(--text-hi);
-      letter-spacing: -0.3px;
-      margin-bottom: 16px;
+      color: var(--text-primary);
+      letter-spacing: -0.25px;
+      margin-bottom: 14px;
       line-height: 1.3;
     }
 
     .section p {
-      margin-bottom: 14px;
-      color: var(--text-mid);
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      line-height: 1.75;
     }
 
     .section p:last-child { margin-bottom: 0; }
 
-    /* ── Highlight boxes ── */
+    /* ── Highlight / callout box ── */
     .highlight {
       background: var(--accent-dim);
-      border: 1px solid rgba(108,142,255,0.18);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin: 20px 0;
-      font-family: system-ui, sans-serif;
-      font-size: 13.5px;
-      color: var(--text-hi);
+      border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: var(--text-primary);
       line-height: 1.65;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
     }
 
-    .highlight strong {
-      color: var(--accent);
+    .highlight-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
+
+    .highlight strong { color: var(--accent); font-weight: 600; }
 
     /* ── Bullet list ── */
     .term-list {
@@ -244,100 +328,115 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin: 16px 0;
+      gap: 8px;
+      margin: 14px 0;
     }
 
     .term-list li {
-      padding-left: 20px;
-      position: relative;
-      color: var(--text-mid);
-      font-size: 14.5px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      line-height: 1.65;
     }
 
     .term-list li::before {
-      content: '–';
-      position: absolute;
-      left: 0;
-      color: var(--text-lo);
+      content: '';
+      width: 5px;
+      height: 5px;
+      min-width: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 8px;
+      opacity: 0.7;
     }
 
-    /* ── HR divider ── */
+    .term-list li strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── Divider ── */
     .rule {
       border: none;
-      border-top: 1px solid var(--border);
-      margin: 48px 0;
+      border-top: 1px solid var(--border-subtle);
+      margin: 40px 0;
     }
 
-    /* ── Privacy anchor ── */
-    #privacy { scroll-margin-top: 80px; }
+    /* ── Privacy heading bridge ── */
+    .section-bridge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 44px 0 28px;
+    }
+
+    .section-bridge-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .section-bridge-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
 
     /* ── Footer ── */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 28px clamp(20px, 5vw, 80px);
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border-subtle);
+      padding: 24px clamp(20px, 5vw, 80px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
+      background: var(--titlebar-bg);
     }
 
     .footer-brand {
-      font-family: system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 12px;
-      color: var(--text-lo);
+      color: var(--text-muted);
+    }
+
+    .footer-brand svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
     }
 
     .footer-brand span { color: var(--accent); font-weight: 600; }
 
     .footer-credit {
-      font-family: system-ui, sans-serif;
       font-size: 11.5px;
-      color: var(--text-lo);
+      color: var(--text-muted);
     }
 
     .footer-credit a {
-      color: var(--text-mid);
+      color: var(--accent);
       text-decoration: none;
+      font-weight: 500;
       transition: color 0.15s;
     }
 
-    .footer-credit a:hover { color: var(--accent); }
+    .footer-credit a:hover { color: var(--accent-hover); }
 
-    /* ── Back button ── */
-    .back-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: system-ui, sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-mid);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      padding: 5px 12px 5px 9px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .section { padding: 18px 20px; }
+      .hero h1 { font-size: 24px; }
     }
-
-    .back-pill:hover {
-      border-color: var(--accent);
-      color: var(--text-hi);
-      background: var(--accent-dim);
-    }
-
-    .back-pill svg {
-      width: 13px;
-      height: 13px;
-    }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
   </style>
 </head>
 
@@ -346,7 +445,7 @@
   <!-- Top bar -->
   <header class="topbar">
     <a class="topbar-brand" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg class="topbar-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" />
       </svg>
       <span class="topbar-name">openworld</span>
@@ -360,7 +459,12 @@
       <span class="hero-eyebrow-dot"></span>
       Legal
     </div>
-    <h1>Terms of Service &amp;<br /><span>Privacy Policy</span></h1>
+    <div class="hero-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z"/>
+      </svg>
+    </div>
+    <h1>Terms &amp; <span>Privacy</span></h1>
     <p class="hero-sub">
       Plain language. No hidden traps. openworld is built on the principle that your data belongs to you — full stop.
     </p>
@@ -368,16 +472,18 @@
 
   <!-- TOC -->
   <div class="toc-wrap">
-    <nav class="toc">
+    <nav class="toc" aria-label="Jump to section">
       <div class="toc-label">Jump to section</div>
-      <a href="#acceptance">Acceptance</a>
-      <a href="#use">Permitted Use</a>
-      <a href="#keys">API Keys</a>
-      <a href="#liability">Liability</a>
-      <a href="#changes">Changes</a>
-      <a href="#privacy">Privacy Policy</a>
-      <a href="#data">Your Data</a>
-      <a href="#contact">Contact</a>
+      <div class="toc-links">
+        <a href="#acceptance">Acceptance</a>
+        <a href="#use">Permitted Use</a>
+        <a href="#keys">API Keys</a>
+        <a href="#liability">Liability</a>
+        <a href="#changes">Changes</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#data">Your Data</a>
+        <a href="#contact">Contact</a>
+      </div>
     </nav>
   </div>
 
@@ -387,7 +493,7 @@
     <!-- ── TERMS OF SERVICE ── -->
 
     <section class="section" id="acceptance">
-      <div class="section-tag">Section 01</div>
+      <div class="section-tag">§ 01</div>
       <h2>Acceptance of Terms</h2>
       <p>
         By installing, launching, or using openworld ("the App"), you agree to be bound by these Terms of Service. If you do not agree, please do not use the App.
@@ -398,7 +504,7 @@
     </section>
 
     <section class="section" id="use">
-      <div class="section-tag">Section 02</div>
+      <div class="section-tag">§ 02</div>
       <h2>Permitted Use</h2>
       <p>
         openworld is a personal AI interface that lets you connect to third-party AI providers using your own API keys. You may use it for lawful, personal, or professional purposes.
@@ -406,40 +512,41 @@
       <ul class="term-list">
         <li>You must comply with the terms of service of any AI provider whose API you connect.</li>
         <li>You must not use the App to generate, distribute, or store illegal content.</li>
-        <li>You must not attempt to reverse-engineer, decompile, or extract the source code of the App (beyond what open-source licenses permit).</li>
+        <li>You must not attempt to reverse-engineer or decompile the App beyond what open-source licenses permit.</li>
         <li>You must not use the App to harass, defame, or harm any individual or group.</li>
       </ul>
     </section>
 
     <section class="section" id="keys">
-      <div class="section-tag">Section 03</div>
+      <div class="section-tag">§ 03</div>
       <h2>API Keys &amp; Third-Party Services</h2>
       <div class="highlight">
-        <strong>Your keys never leave your device.</strong> openworld stores all API keys exclusively in local storage on your machine. No key is ever transmitted to openworld servers — because there are none.
+        <span class="highlight-icon">🔒</span>
+        <span><strong>Your keys never leave your device.</strong> openworld stores all API keys exclusively in local storage on your machine. No key is ever transmitted to openworld servers — because there are none.</span>
       </div>
       <p>
         You are solely responsible for maintaining the security of your API keys. openworld accepts no liability for unauthorized use of keys that you store in the App.
       </p>
       <p>
-        Costs incurred through your API keys (e.g. token charges billed by OpenAI, Anthropic, Google, or others) are entirely your responsibility. openworld has no visibility into or control over those charges.
+        Costs incurred through your API keys (e.g. token charges billed by OpenAI, Anthropic, Google, or others) are entirely your responsibility.
       </p>
     </section>
 
     <section class="section" id="liability">
-      <div class="section-tag">Section 04</div>
+      <div class="section-tag">§ 04</div>
       <h2>Disclaimer &amp; Limitation of Liability</h2>
       <p>
-        openworld is provided "as is" without warranties of any kind, express or implied. We make no guarantee of uptime, accuracy of AI responses, or fitness for a particular purpose.
+        openworld is provided "as is" without warranties of any kind. We make no guarantee of uptime, accuracy of AI responses, or fitness for a particular purpose.
       </p>
       <ul class="term-list">
         <li>AI-generated content may be inaccurate, incomplete, or inappropriate — always apply human judgment.</li>
         <li>We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the App.</li>
-        <li>Our maximum liability to you for any claim shall not exceed the amount you have paid for the App (which, if free, is $0).</li>
+        <li>Our maximum liability for any claim shall not exceed the amount you have paid for the App (which, if free, is $0).</li>
       </ul>
     </section>
 
     <section class="section" id="changes">
-      <div class="section-tag">Section 05</div>
+      <div class="section-tag">§ 05</div>
       <h2>Changes to These Terms</h2>
       <p>
         We may update these Terms occasionally. Changes will be reflected in the "Last updated" date at the top of this page. Continued use of the App after changes constitutes acceptance of the updated Terms.
@@ -449,15 +556,21 @@
       </p>
     </section>
 
-    <hr class="rule" />
+    <!-- ── Divider bridge ── -->
+    <div class="section-bridge">
+      <div class="section-bridge-line"></div>
+      <div class="section-bridge-label">Privacy Policy</div>
+      <div class="section-bridge-line"></div>
+    </div>
 
     <!-- ── PRIVACY POLICY ── -->
 
     <section class="section" id="privacy">
-      <div class="section-tag">Privacy Policy</div>
+      <div class="section-tag">Privacy</div>
       <h2>Our Commitment to Your Privacy</h2>
       <div class="highlight">
-        <strong>openworld has no backend.</strong> There is no openworld account, no openworld server, and no telemetry. The App runs entirely on your device.
+        <span class="highlight-icon">🛡️</span>
+        <span><strong>openworld has no backend.</strong> There is no openworld account, no openworld server, and no telemetry. The App runs entirely on your device.</span>
       </div>
       <p>
         We built openworld because we believe your conversations with AI should be private by default — not monetized, not analyzed, not stored somewhere you don't control.
@@ -468,17 +581,17 @@
       <div class="section-tag">Your Data</div>
       <h2>What We Collect — And Don't</h2>
       <ul class="term-list">
-        <li><strong style="color:var(--text-hi)">Conversations</strong> — Stored only in your browser's local storage. Never sent to us.</li>
-        <li><strong style="color:var(--text-hi)">API keys</strong> — Stored only on your device. Encrypted in local storage.</li>
-        <li><strong style="color:var(--text-hi)">Your name</strong> — Used for personalized greetings. Stored locally, never transmitted.</li>
-        <li><strong style="color:var(--text-hi)">Usage analytics</strong> — None. We have no analytics, no crash reporting, no telemetry.</li>
-        <li><strong style="color:var(--text-hi)">Cookies</strong> — None. We don't set any cookies.</li>
+        <li><strong>Conversations</strong> — Stored only in local storage on your device. Never sent to us.</li>
+        <li><strong>API keys</strong> — Stored only on your device. Never transmitted externally by the App.</li>
+        <li><strong>Your name</strong> — Used for personalized greetings. Stored locally, never transmitted.</li>
+        <li><strong>Usage analytics</strong> — None. We have no analytics, no crash reporting, no telemetry.</li>
+        <li><strong>Cookies</strong> — None. We don't set any cookies.</li>
       </ul>
       <p>
-        When you send a message in the App, your message is sent directly from your device to the AI provider's API (e.g. OpenAI, Anthropic). openworld is not an intermediary — it simply facilitates that direct connection.
+        When you send a message, it goes directly from your device to the AI provider's API (e.g. OpenAI, Anthropic). openworld is not an intermediary — it facilitates that direct connection.
       </p>
       <p>
-        Each AI provider has their own privacy policy that governs how they handle your prompts and completions. We strongly encourage you to review them.
+        Each AI provider has their own privacy policy governing how they handle your prompts. We strongly encourage you to review them.
       </p>
     </section>
 
@@ -486,19 +599,23 @@
       <div class="section-tag">Contact</div>
       <h2>Questions?</h2>
       <p>
-        If you have any questions about these terms or our privacy practices, reach out via the project repository or through the developer's website.
+        If you have any questions about these terms or privacy practices, reach out via the project repository or through the developer's website.
       </p>
       <p>
-        Built and maintained by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:none;">Joel Jolly</a>.
+        Built and maintained by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-weight:500;">Joel Jolly</a>.
       </p>
     </section>
 
   </main>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer>
     <div class="footer-brand">
-      <span>openworld</span> — Terms &amp; Privacy
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z"/>
+      </svg>
+      <span>openworld</span>
+      <span style="color:var(--text-muted);font-weight:400;">— Terms &amp; Privacy</span>
     </div>
     <div class="footer-credit">
       Made with ❤️ by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer">Joel Jolly</a>

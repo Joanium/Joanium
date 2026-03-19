@@ -53,6 +53,15 @@
       "inputTokens": 12641,
       "outputTokens": 495,
       "chatId": "2026-03-19_10-19-07"
+    },
+    {
+      "timestamp": "2026-03-19T08:38:06.910Z",
+      "provider": "openrouter",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "modelName": "Qwen 2.5 72B",
+      "inputTokens": 7069,
+      "outputTokens": 1220,
+      "chatId": "2026-03-19_14-06-49"
     }
   ]
 }
