@@ -4,10 +4,10 @@
       "id": "agent_1773940519870_pei1",
       "name": "Morning Digest",
       "description": "Morning Digest",
-      "enabled": true,
+      "enabled": false,
       "primaryModel": {
-        "provider": "openrouter",
-        "modelId": "mistralai/mistral-large"
+        "provider": "mistral",
+        "modelId": "mistral-large-latest"
       },
       "fallbackModels": [
         {
@@ -29,17 +29,51 @@
           "name": "Morning Email Digest",
           "trigger": {
             "type": "daily",
-            "time": "08:00"
+            "time": "09:44"
           },
           "dataSource": {
             "type": "gmail_inbox"
           },
-          "instruction": "Read these emails carefully. Identify the 3 most important ones requiring action today. For each, write: subject, sender, what action is needed, and by when. Then list FYI emails briefly.",
+          "instruction": "Read these emails carefully. Identify the 3 most important ones requiring action today. For each, write: subject, sender, what action is needed, and by when. Then list FYI emails briefly.\nand also summarize all of my other details as  well and send me a summary for my day ahead.",
           "output": {
+            "condition": "always",
+            "conditionKeyword": "",
             "type": "send_email",
-            "to": "joeljollyeng@gmail.com"
+            "to": "joeljollyeng@gmail.com",
+            "subject": "Morning Digest"
           },
-          "lastRun": "2026-03-19T17:16:11.900Z"
+          "lastRun": "2026-03-20T04:23:11.873Z",
+          "history": [
+            {
+              "timestamp": "2026-03-20T04:22:46.001Z",
+              "acted": true,
+              "skipped": false,
+              "error": null,
+              "summary": "Here’s your actionable summary for today:\n\n---\n\n**Top 3 Emails Requiring Action Today:**\n\n1. Subject: Brave Search API login attempt\n   Sender: Brave Search API <search-api@brave.com>\n   Action Needed: Complete the sign-in process using the verification code 731437. This expires in 15 minutes, so act immediately.\n\n2. Subject: Report: Daily Margin Statement | 19-03-2026\n   Sender: Groww <noreply@groww.in>\n   Action Needed: Review the attached daily margin statement for your stock trades. Verify accuracy and address any discrepancies. Due today.\n\n3. Subject: Joel, your application was sent to Ta"
+            },
+            {
+              "timestamp": "2026-03-20T04:14:17.416Z",
+              "acted": true,
+              "skipped": false,
+              "error": null,
+              "summary": "Here’s the prioritized action list and FYI summary for your inbox:\n\nAction required today:\n\n1. Subject: Brave Search API login attempt\nSender: Brave Search API <search-api@brave.com>\nAction needed: Complete the sign-in process using the verification code 731437.\nBy when: Within 15 minutes (code expires soon).\n\n2. Subject: Report: Daily Margin Statement | 19-03-2026\nSender: Groww <noreply@groww.in>\nAction needed: Review the attached daily margin statement to verify trading margins and ensure no discrepancies.\nBy when: Today (end of trading day).\n\n3. Subject: Joel, your application was sent to T"
+            }
+          ],
+          "dataSources": [
+            {
+              "type": "gmail_inbox"
+            },
+            {
+              "type": "weather",
+              "location": "Coonoor"
+            },
+            {
+              "type": "hacker_news"
+            },
+            {
+              "type": "github_notifications"
+            }
+          ]
         }
       ]
     }
