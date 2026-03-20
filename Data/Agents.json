@@ -42,52 +42,8 @@
             "to": "joeljollyeng@gmail.com",
             "subject": "Morning Digest"
           },
-          "lastRun": "2026-03-20T08:11:32.859Z",
-          "history": [
-            {
-              "timestamp": "2026-03-20T08:11:32.859Z",
-              "acted": true,
-              "skipped": false,
-              "nothingToReport": false,
-              "error": null,
-              "skipReason": null,
-              "summary": "Here are the 3 most important emails requiring action today:\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action needed: Check the status of unwrapgithub.onrender.com and troubleshoot the downtime issue. Verify if the service is restored after the subsequent \"UP\" notification.\n   By when: Today\n\n2. Subject: [GitHub] Vercel is requesting",
-              "fullResponse": "Here are the 3 most important emails requiring action today:\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action needed: Check the status of unwrapgithub.onrender.com and troubleshoot the downtime issue. Verify if the service is restored after the subsequent \"UP\" notification.\n   By when: Today\n\n2. Subject: [GitHub] Vercel is requesting updated permissions\n   Sender: GitHub <noreply@github.com>\n   Action needed: Review the updated permissions requested by the Vercel GitHub App and approve or deny the request based on necessity.\n   By when: Today\n\n3. Subject: Transactions In Your Demat Account\n   Sender: services@cdslindia.co.in\n   Action needed: Verify the transactions listed for your Demat account (LARSEN & TOUBRO LIMITED and TATA CONSULTANCY SERVICES LIMITED) to ensure they are accurate and authorized.\n   By when: Today\n\n---\n\nFYI emails (no immediate action required):\n- Job alerts from LinkedIn, Jooble, and Glassdoor (e.g., Front End Developer, Senior Test Designer, Java Developer roles).\n- Newsletters from LinkedIn, iBizzBuzz, and NVIDIA (e.g., hiring trends, AI coding courses, ad trends).\n- UptimeRobot notification confirming service restoration.\n- Outlier AI profile completion reminder.\n- Fiverr podcast launch offer.\n- Hacker News top stories (e.g., ArXiv independence, Android sideloading, FSF vs. Anthropic).\n\n---\n\nSummary for your day ahead:\n\n1. **Priorities**:\n   - Address the downtime issue with `unwrapgithub.onrender.com` (service is now up, but verify functionality).\n   - Review and respond to Vercel’s GitHub permissions request.\n   - Validate Demat account transactions for accuracy.\n\n2. **GitHub Activity**:\n   - 50 unread notifications, mostly CI/CD workflow successes for `OpenWorld` (backup to GitLab) and dependency updates for `Elsa` and `JoelOS`.\n\n3. **Weather in Coonoor**:\n   - 20.6°C, 41% humidity, light wind (5 km/h). Pleasant conditions.\n\n4. **Job Opportunities**:\n   - Multiple openings for Full Stack, Java, PHP, React, and Power Apps developers (remote/Coimbatore-based). Review if interested.\n\n5. **News/Updates**:\n   - ArXiv’s independence from Cornell and Android sideloading changes are trending on Hacker News.\n   - NVIDIA GTC 2026 developer news is available.\n\n6. **Miscellaneous**:\n   - Outlier AI project invitation pending profile completion.\n   - LinkedIn newsletters discuss hiring trends and AI app development."
-            },
-            {
-              "timestamp": "2026-03-20T08:10:14.049Z",
-              "acted": true,
-              "skipped": false,
-              "nothingToReport": false,
-              "error": null,
-              "skipReason": null,
-              "summary": "Good morning Joel,\n\nHere are the 3 most important emails requiring action today:\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action needed: Check the status of your service hosted at unwrapgithub.onrender.com and troubleshoot the downtime issue.\n   By when: Today\n\n2. Subject: [GitHub] Vercel is requesting updated permissions\n   Sender:",
-              "fullResponse": "Good morning Joel,\n\nHere are the 3 most important emails requiring action today:\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action needed: Check the status of your service hosted at unwrapgithub.onrender.com and troubleshoot the downtime issue.\n   By when: Today\n\n2. Subject: [GitHub] Vercel is requesting updated permissions\n   Sender: GitHub <noreply@github.com>\n   Action needed: Review the updated permissions requested by the Vercel GitHub App and approve or deny the request.\n   By when: Today\n\n3. Subject: Transactions In Your Demat Account\n   Sender: services@cdslindia.co.in\n   Action needed: Verify the transactions listed in your Demat account for accuracy and report any discrepancies.\n   By when: Today\n\nFYI emails:\n- Job alerts from LinkedIn, Jooble, and Glassdoor (various developer roles).\n- Newsletters from iBizzBuzz, NVIDIA, Fiverr, Outlier AI, and others (trends, courses, podcasts, etc.).\n- UptimeRobot notification confirming your service is back up.\n- Hacker News top stories (no direct action needed).\n\nSummary for your day ahead:\n- Weather in Coonoor: 20.6°C, 41% humidity, wind at 5 km/h. Pleasant day ahead.\n- GitHub: 50 unread notifications, mostly successful CI activity for your OpenWorld repository. Two dependency updates for electron-context-menu in Elsa and JoelOS projects.\n- Demat account: Two transaction alerts for Larsen & Toubro Limited and Tata Consultancy Services Limited. Verify these.\n- Service monitoring: Your unwrapgithub.onrender.com service experienced downtime but is now back up. Investigate the cause to prevent future issues.\n- Job market: Multiple job alerts for developer roles, primarily in Coimbatore and remote positions. Review if interested.\n- Learning: NVIDIA GTC 2026 developer news and AI coding courses available. Consider exploring if time permits.\n\nPrioritize the action items above, then address GitHub notifications and other emails as time allows. Have a productive day!"
-            },
-            {
-              "timestamp": "2026-03-20T07:30:04.203Z",
-              "acted": false,
-              "skipped": false,
-              "nothingToReport": false,
-              "error": "fetch failed",
-              "summary": "Error: fetch failed",
-              "fullResponse": ""
-            },
-            {
-              "timestamp": "2026-03-20T04:22:46.001Z",
-              "acted": true,
-              "skipped": false,
-              "error": null,
-              "summary": "Here’s your actionable summary for today:\n\n---\n\n**Top 3 Emails Requiring Action Today:**\n\n1. Subject: Brave Search API login attempt\n   Sender: Brave Search API <search-api@brave.com>\n   Action Needed: Complete the sign-in process using the verification code 731437. This expires in 15 minutes, so act immediately.\n\n2. Subject: Report: Daily Margin Statement | 19-03-2026\n   Sender: Groww <noreply@groww.in>\n   Action Needed: Review the attached daily margin statement for your stock trades. Verify accuracy and address any discrepancies. Due today.\n\n3. Subject: Joel, your application was sent to Ta"
-            },
-            {
-              "timestamp": "2026-03-20T04:14:17.416Z",
-              "acted": true,
-              "skipped": false,
-              "error": null,
-              "summary": "Here’s the prioritized action list and FYI summary for your inbox:\n\nAction required today:\n\n1. Subject: Brave Search API login attempt\nSender: Brave Search API <search-api@brave.com>\nAction needed: Complete the sign-in process using the verification code 731437.\nBy when: Within 15 minutes (code expires soon).\n\n2. Subject: Report: Daily Margin Statement | 19-03-2026\nSender: Groww <noreply@groww.in>\nAction needed: Review the attached daily margin statement to verify trading margins and ensure no discrepancies.\nBy when: Today (end of trading day).\n\n3. Subject: Joel, your application was sent to T"
-            }
-          ],
+          "lastRun": null,
+          "history": [],
           "dataSources": [
             {
               "type": "gmail_inbox"

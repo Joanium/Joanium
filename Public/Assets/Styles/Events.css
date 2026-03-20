@@ -474,21 +474,64 @@
 }
 
 .event-status-badge--success {
-  background: rgba(34, 197, 94, 0.10);
+  background: rgba(34, 197, 94, .10);
   color: #16a34a;
-  border: 1px solid rgba(34, 197, 94, 0.22);
+  border: 1px solid rgba(34, 197, 94, .22);
 }
 
 .event-status-badge--error {
-  background: rgba(248, 113, 113, 0.10);
+  background: rgba(248, 113, 113, .10);
   color: #dc2626;
-  border: 1px solid rgba(248, 113, 113, 0.22);
+  border: 1px solid rgba(248, 113, 113, .22);
 }
 
 .event-status-badge--skipped {
   background: var(--bg-tertiary);
   color: var(--text-muted);
   border: 1px solid var(--border-subtle);
+}
+
+/* Running row */
+.event-row--running {
+  border-color: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.event-status--running {
+  background: var(--accent-dim);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--accent);
+}
+
+.running-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.event-status-badge--running {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.event-elapsed {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.elapsed-value {
+  color: var(--accent);
+}
+
+.event-row--finishing {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.4s, transform 0.4s;
 }
 
 /* ── Summary / error ── */
@@ -562,8 +605,6 @@
 
 /* ══════════════════════════════════════════
    EVENT DETAIL MODAL
-   Centered, same pattern as agent/settings modals
-   in the rest of the app.
 ══════════════════════════════════════════ */
 #event-detail-backdrop {
   position: fixed;
@@ -744,9 +785,46 @@
   }
 }
 
-/* ─────────────────────────────────────────────
-   Confirm-clear modal
-───────────────────────────────────────────── */
+/* ══════════════════════════════════════════
+   CONFIRM-CLEAR MODAL
+   Fixed: #events-confirm-backdrop was missing
+   visibility rules — the backdrop stayed
+   invisible even when .open was added.
+══════════════════════════════════════════ */
+
+#events-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(8, 11, 18, 0.55);
+  backdrop-filter: blur(12px);
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+#events-confirm-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Generic modal panel wrapper (used by confirm modal) */
+.modal-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.32);
+  transform: translateY(16px) scale(0.95);
+  transition: transform 0.28s var(--ease-spring);
+}
+
+#events-confirm-backdrop.open .modal-panel {
+  transform: translateY(0) scale(1);
+}
 
 .events-confirm-modal {
   max-width: 420px;
@@ -763,8 +841,9 @@
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  background: var(--color-error, #ff453a1a);
-  color: var(--color-error, #ff453a);
+  background: rgba(248, 113, 113, 0.10);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -775,14 +854,14 @@
 .events-confirm-title {
   font-size: 17px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
   margin: 0 0 10px;
   letter-spacing: -0.2px;
 }
 
 .events-confirm-body {
   font-size: 13.5px;
-  color: var(--color-text-secondary);
+  color: var(--text-secondary);
   line-height: 1.55;
   margin: 0 0 28px;
   max-width: 320px;
@@ -798,6 +877,7 @@
   flex: 1;
   height: 40px;
   border-radius: 10px;
+  font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -814,12 +894,18 @@
 }
 
 .events-confirm-btn--cancel {
-  background: var(--color-bg-tertiary, rgba(120, 120, 128, .12));
-  color: var(--color-text-primary);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.events-confirm-btn--cancel:hover {
+  background: var(--bg-hover);
+  opacity: 1;
 }
 
 .events-confirm-btn--ok {
-  background: var(--color-error, #ff453a);
+  background: #ef4444;
   color: #fff;
   font-weight: 600;
 }

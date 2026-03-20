@@ -395,6 +395,15 @@
       "inputTokens": 14023,
       "outputTokens": 114,
       "chatId": "2026-03-19_21-51-31"
+    },
+    {
+      "timestamp": "2026-03-20T08:44:52.513Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 4335,
+      "outputTokens": 626,
+      "chatId": null
     }
   ]
 }
