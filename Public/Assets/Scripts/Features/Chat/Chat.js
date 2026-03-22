@@ -952,6 +952,21 @@ export function restoreWelcome() {
   welcome.style.removeProperty('opacity');
   welcome.style.removeProperty('transform');
   chatView.classList.remove('active');
+
+  // Toggling display restarts CSS animations on children — reset .welcome-greeting
+  // so it's immediately visible rather than starting at opacity:0 for 250ms.
+  const greeting = welcome.querySelector('.welcome-greeting');
+  if (greeting) {
+    greeting.style.animation = 'none';
+    greeting.style.opacity   = '1';
+    greeting.style.transform = 'none';
+    // Re-enable the animation rule on the next frame so it still works on first load
+    requestAnimationFrame(() => {
+      greeting.style.removeProperty('animation');
+      greeting.style.removeProperty('opacity');
+      greeting.style.removeProperty('transform');
+    });
+  }
 }
 
 /* ══════════════════════════════════════════
