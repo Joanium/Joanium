@@ -86,7 +86,7 @@ export async function planRequest(userText) {
   let skills = [];
   try {
     const res = await window.electronAPI?.getSkills?.();
-    skills = res?.skills ?? [];
+    skills = (res?.skills ?? []).filter(s => s.enabled === true);
   } catch { /* non-fatal */ }
 
   const skillsCatalogue = skills.length

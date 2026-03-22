@@ -56,16 +56,17 @@ function loadSkills() {
 
   for (const file of fs.readdirSync(skillsDir)) {
     if (!file.endsWith('.md') || SKIP_FILES.has(file)) continue;
-
-    // Skip disabled skills — this is the key gating check
     if (enabledMap[file] !== true) continue;
 
     try {
       const content = fs.readFileSync(path.join(skillsDir, file), 'utf-8');
       const meta = parseFrontmatter(content);
       const { name, trigger, description } = meta;
-      if (name && (trigger || description)) {
-        skills.push({ name, trigger: trigger || '', description: description || '' });
+      // Extract full body after frontmatter
+      const bodyMatch = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?([\s\S]*)$/);
+      const body = bodyMatch ? bodyMatch[1].trim() : '';
+      if (name) {
+        skills.push({ name, trigger: trigger || '', description: description || '', body });
       }
     } catch { /* skip */ }
   }
@@ -75,19 +76,23 @@ function loadSkills() {
 function buildSkillsBlock() {
   const skills = loadSkills();
   if (!skills.length) return '';
-  const lines = [
+
+  const skillDocs = skills.map(s => {
+    const lines = [`### Skill: ${s.name}`];
+    if (s.trigger)     lines.push(`**When to use:** ${s.trigger}`);
+    if (s.description) lines.push(`**Description:** ${s.description}`);
+    if (s.body)        lines.push('', s.body);
+    return lines.join('\n');
+  });
+
+  return [
     '## Skills',
-    'You have built-in skills. Apply whichever fits the task silently — no need to announce them:',
+    `You have ${skills.length} active skill${skills.length !== 1 ? 's' : ''}. Read each one fully and apply whichever fits — silently, no need to announce them.`,
     '',
-    ...skills.map(s => {
-      const when = s.trigger ? ` Use when: ${s.trigger}.` : '';
-      const how  = s.description ? ` Approach: ${s.description}` : '';
-      return `- **${s.name}** —${when}${how}`;
-    }),
+    ...skillDocs,
     '',
-    'Blend skills when relevant. If none fit, just answer normally.',
-  ];
-  return lines.join('\n');
+    'Blend skills when relevant. If none fit, answer normally.',
+  ].join('\n\n');
 }
 
 // ─────────────────────────────────────────────
