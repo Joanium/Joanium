@@ -1,4 +1,4 @@
-i am joel jolly my moms name is Jessie and my dads name is Jolly.
+I am Joel Jolly my moms name is Jessie and my dads name is Jolly.
 
 --- Auto-learned Mar 22, 2026 ---
 - Born on May 11, 2002, in Chennai, Tamil Nadu.

@@ -24,17 +24,20 @@
       </div>
       <div id="titlebar-controls">
         <button id="btn-minimize" title="Minimize">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round">
             <line x1="5" y1="10" x2="15" y2="10" />
           </svg>
         </button>
         <button id="btn-maximize" title="Maximize / Restore">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round">
             <rect x="5" y="5" width="10" height="10" rx="2" ry="2" />
           </svg>
         </button>
         <button id="btn-close" title="Close">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round">
             <line x1="6" y1="6" x2="14" y2="14" />
             <line x1="14" y1="6" x2="6" y2="14" />
           </svg>
@@ -122,92 +125,6 @@
         </div>
       </div>
 
-      <!-- Settings Modal -->
-      <div id="settings-modal-backdrop">
-        <div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
-          <div class="settings-modal-header">
-            <div class="settings-modal-copy">
-              <h2 id="settings-modal-title">Workspace settings</h2>
-            </div>
-            <button id="settings-modal-close" class="settings-modal-close" type="button" aria-label="Close settings">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="settings-modal-body">
-            <div class="settings-shell">
-              <nav class="settings-tabs" aria-label="Settings sections">
-                <button class="settings-tab active" type="button" data-settings-tab="user">User</button>
-                <button class="settings-tab" type="button" data-settings-tab="providers">Connected Providers</button>
-                <button class="settings-tab" type="button" data-settings-tab="connectors">Connectors</button>
-              </nav>
-
-              <div class="settings-content">
-
-                <!-- User tab -->
-                <section class="settings-panel active" data-settings-panel="user">
-                  <div class="settings-panel-header">
-                    <h3>User</h3>
-                    <p>Update your display name, memory, and custom instructions. These are injected into every AI
-                      conversation automatically.</p>
-                  </div>
-                  <div class="settings-form">
-                    <label class="settings-field">
-                      <span class="settings-field-label">Name</span>
-                      <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name"
-                        autocomplete="name" />
-                    </label>
-                    <label class="settings-field">
-                      <span class="settings-field-label settings-field-label--with-badge">
-                        Memory
-                      </span>
-                      <textarea id="settings-memory"
-                        placeholder="Facts about you, ongoing projects, preferences the AI should always remember…"></textarea>
-                    </label>
-                    <label class="settings-field">
-                      <span class="settings-field-label">Custom Instructions</span>
-                      <textarea id="settings-custom-instructions"
-                        placeholder="Tone, style, or behaviour instructions for the AI…"></textarea>
-                    </label>
-                  </div>
-                </section>
-
-                <!-- Providers tab -->
-                <section class="settings-panel" data-settings-panel="providers" hidden>
-                  <div class="settings-panel-header">
-                    <h3>Connected Providers</h3>
-                    <p>Update provider API keys.</p>
-                  </div>
-                  <div id="settings-providers-list" class="providers-stack">
-                    <div class="ap-empty-hint">Loading…</div>
-                  </div>
-                </section>
-
-                <!-- Connectors tab — connector-list is populated by Connectors.js -->
-                <section class="settings-panel" data-settings-panel="connectors" hidden>
-                  <div class="settings-panel-header">
-                    <h3>Connectors</h3>
-                    <p>Link Gmail and GitHub so the AI knows about your emails and repos, and automations can take
-                      action.</p>
-                  </div>
-                  <div id="connector-list" class="connector-list">
-                    <div class="cx-loading">Loading connectors…</div>
-                  </div>
-                </section>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="settings-modal-footer">
-            <div id="settings-save-feedback" class="settings-feedback" aria-live="polite"></div>
-            <button id="settings-save" class="settings-save-btn" type="button">Save changes</button>
-          </div>
-        </div>
-      </div>
-
       <!-- Main content -->
       <main id="main">
 
@@ -217,8 +134,10 @@
         </div>
 
         <!-- ── Scroll-to-bottom button ── -->
-        <button id="scroll-to-bottom" class="scroll-to-bottom-btn" title="Scroll to bottom" aria-label="Scroll to bottom">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <button id="scroll-to-bottom" class="scroll-to-bottom-btn" title="Scroll to bottom"
+          aria-label="Scroll to bottom">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </button>
