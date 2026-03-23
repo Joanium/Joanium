@@ -5,11 +5,15 @@
 //  Runs in the Electron main process (full Node access).
 // ─────────────────────────────────────────────
 
-import { ipcMain } from 'electron';
+import { ipcMain, dialog, BrowserWindow, shell } from 'electron';
 import { exec }     from 'child_process';
 import fs           from 'fs';
 import path         from 'path';
 import os           from 'os';
+import { spawn }    from 'child_process';
+
+// Keep track of active pseudo-terminals
+const activePtys = new Map();
 
 /* ── Helpers ─────────────────────────────────────── */
 
@@ -29,6 +33,65 @@ function truncate(str, maxBytes = MAX_OUTPUT_BYTES) {
 /* ── IPC Registration ─────────────────────────────── */
 
 export function register() {
+
+  /* ── select-directory ──────────────────────────── */
+  ipcMain.handle('select-directory', async (e) => {
+    const window = BrowserWindow.fromWebContents(e.sender);
+    const result = await dialog.showOpenDialog(window, {
+      properties: ['openDirectory', 'createDirectory']
+    });
+    if (result.canceled || result.filePaths.length === 0) {
+      return { ok: false };
+    }
+    return { ok: true, path: result.filePaths[0] };
+  });
+
+  /* ── PTY (Pseudo-Terminal) Handlers ────────────── */
+  ipcMain.handle('pty-spawn', async (e, { command, cwd }) => {
+    const pid = Date.now().toString() + Math.random().toString(36).substring(2);
+    
+    // Fallback to simple spawn if node-pty isn't available
+    const child = spawn(command, {
+      cwd: cwd || os.homedir(),
+      shell: true,
+      env: { ...process.env, FORCE_COLOR: '1' } // Try to get colored output
+    });
+
+    activePtys.set(pid, child);
+
+    child.stdout.on('data', data => {
+      e.sender.send('pty-data', pid, data.toString());
+    });
+    child.stderr.on('data', data => {
+      e.sender.send('pty-data', pid, data.toString());
+    });
+    child.on('exit', code => {
+      activePtys.delete(pid);
+      e.sender.send('pty-exit', pid, code);
+    });
+
+    return { ok: true, pid };
+  });
+
+  ipcMain.handle('pty-write', async (_e, pid, data) => {
+    const child = activePtys.get(pid);
+    if (!child) return { ok: false, error: 'PTY not found' };
+    child.stdin.write(data);
+    return { ok: true };
+  });
+
+  ipcMain.handle('pty-resize', async (_e, pid, cols, rows) => {
+    // Cannot resize plain child_process, ignored
+    return { ok: true };
+  });
+
+  ipcMain.handle('pty-kill', async (_e, pid) => {
+    const child = activePtys.get(pid);
+    if (!child) return { ok: false, error: 'PTY not found' };
+    child.kill();
+    activePtys.delete(pid);
+    return { ok: true };
+  });
 
   /* ── run-shell-command ─────────────────────────── */
   ipcMain.handle('run-shell-command', async (_e, { command, cwd, timeout }) => {
@@ -146,6 +209,46 @@ export function register() {
       if (append) fs.appendFileSync(resolved, content ?? '', 'utf-8');
       else        fs.writeFileSync(resolved, content ?? '', 'utf-8');
       return { ok: true, path: resolved, bytes: Buffer.byteLength(content ?? '', 'utf-8') };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  /* ── create-directory ───────────────────────────── */
+  ipcMain.handle('create-directory', async (_e, { dirPath }) => {
+    if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
+    const resolved = path.resolve(dirPath);
+    try {
+      if (!fs.existsSync(resolved)) fs.mkdirSync(resolved, { recursive: true });
+      return { ok: true, path: resolved };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  /* ── open-folder-os ───────────────────────────── */
+  ipcMain.handle('open-folder-os', async (_e, { dirPath }) => {
+    if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
+    const resolved = path.resolve(dirPath);
+    try {
+      const err = await shell.openPath(resolved);
+      if (err) return { ok: false, error: err };
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  /* ── delete-item ───────────────────────────── */
+  ipcMain.handle('delete-item', async (_e, { itemPath }) => {
+    if (!itemPath?.trim()) return { ok: false, error: 'No path provided to delete.' };
+    const resolved = path.resolve(itemPath);
+    try {
+      if (fs.existsSync(resolved)) {
+        fs.rmSync(resolved, { recursive: true, force: true });
+        return { ok: true, path: resolved };
+      }
+      return { ok: false, error: 'Path does not exist.' };
     } catch (err) {
       return { ok: false, error: err.message };
     }

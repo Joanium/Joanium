@@ -525,6 +525,27 @@ export function init(onSend) {
     input.click();
   });
 
+  // Open Folder Button logic
+  const folderBtn = document.getElementById('folder-btn');
+  if (folderBtn) {
+    folderBtn.addEventListener('click', async () => {
+      const result = await window.electronAPI?.selectDirectory?.();
+      if (result && result.ok && result.path) {
+        state.workspacePath = result.path;
+        showHint(`📂 Workpace Set: ${result.path}`, 'info', { sticky: true });
+        updateSendBtn();
+      }
+    });
+    
+    // Clear workspace state if user double clicks folder btn
+    folderBtn.addEventListener('dblclick', () => {
+      if (state.workspacePath) {
+        state.workspacePath = null;
+        showHint(`Workspace cleared.`, 'info');
+      }
+    });
+  }
+
   // Re-sync when model changes
   window.addEventListener('ow:model-selection-changed', syncCapabilities);
 

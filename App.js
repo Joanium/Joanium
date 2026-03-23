@@ -33,6 +33,7 @@ import * as SkillsIPC     from './Packages/Main/IPC/SkillsIPC.js';
 import * as PersonasIPC   from './Packages/Main/IPC/PersonasIPC.js';
 import * as UsageIPC      from './Packages/Main/IPC/UsageIPC.js';
 import * as AgentsIPC    from './Packages/Main/IPC/AgentsIPC.js';
+import * as TerminalIPC   from './Packages/Main/IPC/TerminalIPC.js';
 
 /* ══════════════════════════════════════════
    ENGINES  (singletons shared across IPC modules)
@@ -58,6 +59,7 @@ SkillsIPC.register();
 PersonasIPC.register();
 UsageIPC.register();
 AgentsIPC.register(agentsEngine, automationEngine);
+TerminalIPC.register();
 
 /* ══════════════════════════════════════════
    APP LIFECYCLE

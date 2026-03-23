@@ -112,6 +112,11 @@ function renderInline(raw) {
   // 9 ─ Hard line break  (two trailing spaces + newline)
   s = s.replace(/  \n/g, '<br>');
 
+  // 9a ─ Terminal Mounts
+  s = s.replace(/\[TERMINAL:([a-zA-Z0-9.-]+)\]/g, (_, pid) => {
+    return `<div class="embedded-terminal-mount" data-pid="${pid}" style="height: 300px; width: 100%; border-radius: 8px; margin: 10px 0; overflow: hidden; padding: 4px; border: 1px solid var(--border-subtle); background: #12141c;"></div>`;
+  });
+
   // 10 ─ Restore code spans
   s = s.replace(/\x01S(\d+)\x01/g, (_, i) => spans[+i]);
 

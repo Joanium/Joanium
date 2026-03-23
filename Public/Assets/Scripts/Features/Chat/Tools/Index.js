@@ -16,12 +16,13 @@ import { COUNTRY_TOOLS } from './CountryTools.js';
 import { ASTRONOMY_TOOLS } from './AstronomyTools.js';
 import { HACKERNEWS_TOOLS } from './HackerNewsTools.js';
 import { URL_TOOLS } from './UrlTools.js';
+import { TERMINAL_TOOLS } from './TerminalTools.js';
 
 export {
     GMAIL_TOOLS, GITHUB_TOOLS, WEATHER_TOOLS, CRYPTO_TOOLS, FINANCE_TOOLS, PHOTO_TOOLS,
     WIKI_TOOLS, GEO_TOOLS, FUN_TOOLS,
     JOKE_TOOLS, QUOTE_TOOLS, COUNTRY_TOOLS, ASTRONOMY_TOOLS, HACKERNEWS_TOOLS,
-    URL_TOOLS,
+    URL_TOOLS, TERMINAL_TOOLS,
 };
 
 /** Complete flat list of every tool available to the AI. */
@@ -41,6 +42,7 @@ export const TOOLS = [
     ...ASTRONOMY_TOOLS,
     ...HACKERNEWS_TOOLS,
     ...URL_TOOLS,
+    ...TERMINAL_TOOLS,
 ];
 
 const CATEGORY_TO_CONNECTOR = {
@@ -62,6 +64,7 @@ const CATEGORY_TO_CONNECTOR = {
     nasa: 'nasa',
     hackernews: 'hackernews',
     cleanuri: 'cleanuri',
+    terminal: 'local_system',
 };
 
 /**

@@ -19,6 +19,7 @@ import * as CountryExecutor    from './CountryExecutor.js';
 import * as AstronomyExecutor  from './AstronomyExecutor.js';
 import * as HackerNewsExecutor from './HackerNewsExecutor.js';
 import * as UrlExecutor        from './UrlExecutor.js';
+import * as TerminalExecutor   from './TerminalExecutor.js';
 
 const EXECUTORS = [
   GmailExecutor,
@@ -36,6 +37,7 @@ const EXECUTORS = [
   AstronomyExecutor,
   HackerNewsExecutor,
   UrlExecutor,
+  TerminalExecutor,
 ];
 
 /**

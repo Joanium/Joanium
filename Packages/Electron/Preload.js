@@ -98,4 +98,30 @@ contextBridge.exposeInMainWorld('electronAPI', {
   maximize: () => ipcRenderer.send('window-maximize'),
   close: () => ipcRenderer.send('window-close'),
 
+  // File System & Terminal
+  selectDirectory: () => ipcRenderer.invoke('select-directory'),
+  runShellCommand: (params) => ipcRenderer.invoke('run-shell-command', params),
+  readLocalFile: (params) => ipcRenderer.invoke('read-local-file', params),
+  listDirectory: (params) => ipcRenderer.invoke('list-directory', params),
+  writeAIFile: (params) => ipcRenderer.invoke('write-ai-file', params),
+  createDirectory: (params) => ipcRenderer.invoke('create-directory', params),
+  openFolderOS: (params) => ipcRenderer.invoke('open-folder-os', params),
+  openTerminalOS: (params) => ipcRenderer.invoke('open-terminal-os', params),
+  deleteItem: (params) => ipcRenderer.invoke('delete-item', params),
+  
+  // PTY / Embedded Terminal
+  spawnPty: (opts) => ipcRenderer.invoke('pty-spawn', opts),
+  writePty: (pid, data) => ipcRenderer.invoke('pty-write', pid, data),
+  resizePty: (pid, cols, rows) => ipcRenderer.invoke('pty-resize', pid, cols, rows),
+  killPty: (pid) => ipcRenderer.invoke('pty-kill', pid),
+  onPtyData: (callback) => {
+    // Only register once
+    ipcRenderer.removeAllListeners('pty-data');
+    ipcRenderer.on('pty-data', (_e, pid, data) => callback(pid, data));
+  },
+  onPtyExit: (callback) => {
+    ipcRenderer.removeAllListeners('pty-exit');
+    ipcRenderer.on('pty-exit', (_e, pid, exitCode) => callback(pid, exitCode));
+  },
+
 });

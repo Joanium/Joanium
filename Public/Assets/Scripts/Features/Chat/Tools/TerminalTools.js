@@ -2,7 +2,7 @@
 export const TERMINAL_TOOLS = [
   {
     name: 'run_shell_command',
-    description: 'Execute a shell command on the local machine and return stdout/stderr. Ideal for: running scripts, git operations, npm/pip commands, file manipulation, checking processes, compiling code. Output is streamed back so the AI can reason about results and chain commands.',
+    description: 'Execute a short-lived shell command and return stdout/stderr. Ideal for scripts, git, file manipulation, compiling. WARNING: DO NOT use this for long-running servers or it will timeout! DO NOT use "start cmd" or spawn external windows. For servers/watchers, YOU MUST use start_local_server instead.',
     category: 'terminal',
     parameters: {
       command: {
@@ -70,6 +70,59 @@ export const TERMINAL_TOOLS = [
         type: 'string',
         required: false,
         description: 'Set to "true" to append instead of overwrite',
+      },
+    },
+  },
+  {
+    name: 'create_folder',
+    description: 'Create a new directory at the specified path. Creates parent directories if needed.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the new directory',
+      },
+    },
+  },
+  {
+    name: 'open_folder',
+    description: 'Open a folder natively in the host OS file explorer (Finder, Windows Explorer). Use this when the user asks to "open the folder".',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the directory to open',
+      },
+    },
+  },
+  {
+    name: 'start_local_server',
+    description: 'Start a long-running background process (like npm start, python servers, or watch tasks). This embeds an interactive terminal in the chat UI so the user can see live logs and interact with it.',
+    category: 'terminal',
+    parameters: {
+      command: {
+        type: 'string',
+        required: true,
+        description: 'The command to start the server (e.g. "npm run dev", "node server.js")',
+      },
+      working_directory: {
+        type: 'string',
+        required: false,
+        description: 'Absolute path to run the command in.',
+      },
+    },
+  },
+  {
+    name: 'delete_item',
+    description: 'Permanently delete a file or directory. WARNING: Destructive operation. Ensure the path is exactly what you intend to delete.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file or directory to be deleted.',
       },
     },
   },

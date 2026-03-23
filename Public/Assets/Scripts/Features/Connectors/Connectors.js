@@ -258,6 +258,16 @@ const FREE_CONNECTORS = [
     tools:       ['shorten_url'],
     toolHint:    'Ask: "Shorten this URL: https://example.com/very/long/path"',
   },
+  {
+    id:          'local_system',
+    name:        'Local System',
+    icon:        '💻',
+    description: 'Grant the AI permission to access your local file system, run terminal commands, and create/edit local code files.',
+    noKey:       true,
+    docsUrl:     '#',
+    tools:       ['run_shell_command', 'read_local_file', 'list_directory', 'write_file', 'create_folder', 'open_folder', 'start_local_server'],
+    toolHint:    'Lets you build tools and manage files directly on your system.',
+  },
 ];
 
 /* ══════════════════════════════════════════

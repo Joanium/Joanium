@@ -89,6 +89,16 @@ export async function planRequest(userText) {
     }).join('\n')
     : '  (none)';
 
+  let dirContext = '';
+  if (state.workspacePath) {
+    try {
+      const dirRes = await window.electronAPI?.listDirectory?.({ dirPath: state.workspacePath });
+      if (dirRes?.ok && dirRes.entries) {
+        dirContext = '\nCurrent Folder Contents:\n' + dirRes.entries.map(e => `- ${e.name} (${e.type})`).join('\n');
+      }
+    } catch(e) {}
+  }
+
   const planPrompt = [
     'You are a planning assistant for an AI agent.',
     'Read the user request. Decide which skills and tools are needed,',
@@ -97,6 +107,7 @@ export async function planRequest(userText) {
     '(e.g. get_fred_data for GDP and again for UNRATE), list each call separately.',
     '',
     `User request: "${userText}"`,
+    state.workspacePath ? `\n[IMPORTANT WORKSPACE CONTEXT]\nThe user has opened a local folder: ${state.workspacePath}${dirContext}\nYou MUST use tools (write_file, run_shell_command) to build and deploy exactly as requested inside this folder. You are FULLY AUTONOMOUS. Do not ask for permission, just plan the tool calls.` : '',
     '',
     'Available skills (reference docs injected into agent context):',
     skillsCatalogue,
@@ -188,14 +199,27 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt, 
     }).join('\n')
     : '';
 
-  const sysPromptWithPlan = systemPrompt + callPlanHint;
+  let workspaceHint = '';
+  if (state.workspacePath) {
+    let dirDetails = '';
+    try {
+      const res = await window.electronAPI?.listDirectory?.({ dirPath: state.workspacePath });
+      if (res?.ok && res.entries) {
+        dirDetails = '\n\nCurrent Folder Contents:\n' + res.entries.map(e => `- ${e.name} (${e.type})`).join('\n');
+      }
+    } catch(e) {}
+    workspaceHint = `\n\n[USER WORKSPACE]\nThe user has explicitly opened the following local workspace directory: ${state.workspacePath}${dirDetails}\nWhen the user asks you to create files, build an app, or run commands, you MUST execute them inside this directory using your tools (e.g. write_file, run_shell_command, start_local_server). You are a FULLY AUTONOMOUS agent. DO NOT ask for permission. ALWAYS use the tools to write the code to disk. CRITICAL: To start a server or UI, YOU MUST use the 'start_local_server' tool. NEVER use 'run_shell_command' with tools like "start cmd" or open external windows. Servers must be embedded using start_local_server.`;
+  }
+
+  const basePromptWithWorkspace = systemPrompt + workspaceHint;
+  const sysPromptWithPlan = basePromptWithWorkspace + callPlanHint;
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
-    const toolsThisTurn = toolsUsed ? TOOLS : (turn === 0 ? plannedTools : TOOLS);
+    const toolsThisTurn = TOOLS;
 
     const calledCount = loopMessages.filter(m => m.role === 'assistant' && m.content.startsWith('I used the')).length;
     const allToolsDone = !plannedToolCalls?.length || calledCount >= plannedToolCalls.length;
-    const sysPromptThisTurn = allToolsDone ? systemPrompt : sysPromptWithPlan;
+    const sysPromptThisTurn = allToolsDone ? basePromptWithWorkspace : sysPromptWithPlan;
     let result = null;
     let lastErr = null;
     let streamingStarted = false;
@@ -257,15 +281,24 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt, 
     if (result.type === 'tool_call') {
       const { name, params } = result;
       toolsUsed = true;
-      live.push(`Calling ${name.replace(/_/g, ' ')}…`);
+      const logHandle = live.push(`Calling ${name.replace(/_/g, ' ')}…`);
 
       let toolResult;
+      let success = true;
       try {
-        toolResult = await executeTool(name, params, msg => live.push(msg));
+        toolResult = await executeTool(name, params, msg => {
+          const subLog = live.push(msg);
+          // If the tool emits intermediate logs, mark them as checked too
+          if (subLog && subLog.done) subLog.done(true);
+        });
       } catch (err) {
+        success = false;
         toolResult = `Error: ${err.message}`;
-        live.push(`Tool error: ${err.message}`);
+        const errLog = live.push(`Tool error: ${err.message}`);
+        if (errLog && errLog.done) errLog.done(false);
       }
+
+      if (logHandle && logHandle.done) logHandle.done(success);
 
       loopMessages.push({
         role: 'assistant',
@@ -277,14 +310,16 @@ export async function agentLoop(messages, live, plannedToolCalls, systemPrompt, 
       const totalPlanned = plannedToolCalls?.length ?? 0;
       const moreToolsLeft = totalPlanned > 0 && calledSoFar < totalPlanned;
 
+      let nextInstruction = '';
+      if (moreToolsLeft) {
+        nextInstruction = `You still have ${totalPlanned - calledSoFar} more planned tool call(s) to make before writing the final response. Call the next tool now. Do not write a response yet.`;
+      } else {
+        nextInstruction = `Tool call complete. You may call another tool if needed to complete the user's request. If you are finished using tools, write your final response to the user incorporating ALL the data gathered above. No raw JSON or raw code blocks unless requested.`;
+      }
+
       loopMessages.push({
         role: 'user',
-        content: moreToolsLeft
-          ? `Tool result for ${name}:\n${toolResult}\n\n` +
-          `You still have ${totalPlanned - calledSoFar} more tool call(s) to make before writing the final response. ` +
-          `Call the next tool now. Do not write a response yet.`
-          : `Tool result for ${name}:\n${toolResult}\n\n` +
-          `All tool calls are complete. Now write your response to the user incorporating ALL the data gathered above. No raw JSON or code blocks.`,
+        content: `Tool result for ${name}:\n${toolResult}\n\n${nextInstruction}`,
         attachments: [],
       });
     }

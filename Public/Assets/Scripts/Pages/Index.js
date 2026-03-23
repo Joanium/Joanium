@@ -23,6 +23,7 @@ import {
   sendMessage, startNewChat, loadChat,
   setSendBtnUpdater, stopGeneration,
 } from '../Features/Chat/Chat.js';
+import { initTerminalObserver } from '../Features/Chat/TerminalComponent.js';
 
 // Modal instances
 const about = initAboutModal();
@@ -126,6 +127,7 @@ document.addEventListener('click', e => {
 document.title = APP_NAME;
 
 initModelSelector();
+initTerminalObserver();
 
 // Wire composer — stop generation if typing, otherwise send
 initComposer(() => {
