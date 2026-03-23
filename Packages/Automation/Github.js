@@ -120,3 +120,60 @@ export async function getLatestRelease(credentials, owner, repo) {
 export async function getReleases(credentials, owner, repo, perPage = 10) {
   return githubFetch(`/repos/${owner}/${repo}/releases?per_page=${perPage}`, credentials.token);
 }
+
+// ─────────────────────────────────────────────
+// Code Review Agent additions
+// ─────────────────────────────────────────────
+
+export async function getPRFiles(credentials, owner, repo, prNumber) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/${prNumber}/files?per_page=100`,
+    credentials.token,
+  );
+}
+
+export async function getPRDiff(credentials, owner, repo, prNumber) {
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
+    {
+      headers: {
+        Authorization:          `Bearer ${credentials.token}`,
+        Accept:                 'application/vnd.github.v3.diff',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    },
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? `GitHub API ${res.status}`);
+  }
+  return res.text();
+}
+
+export async function getPRDetails(credentials, owner, repo, prNumber) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/${prNumber}`,
+    credentials.token,
+  );
+}
+
+export async function createPRReview(credentials, owner, repo, prNumber, { body, event = 'COMMENT', comments = [] }) {
+  return githubFetch(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify({ body, event, comments }),
+  });
+}
+
+export async function listPRReviews(credentials, owner, repo, prNumber) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/${prNumber}/reviews`,
+    credentials.token,
+  );
+}
+
+export async function getPRComments(credentials, owner, repo, prNumber) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/${prNumber}/comments?per_page=100`,
+    credentials.token,
+  );
+}

@@ -452,6 +452,21 @@ async function executeOutput(output, aiResponse, agent, job, connectorEngine) {
       break;
     }
 
+    case 'github_pr_review': {
+      const creds = connectorEngine?.getCredentials('github');
+      if (!creds?.token) throw new Error('GitHub not connected.');
+      if (!output.owner || !output.repo || !output.prNumber) {
+        throw new Error('github_pr_review: owner, repo, and prNumber are required.');
+      }
+      const { createPRReview } = await import('../Automation/Github.js');
+      const event = output.event ?? 'COMMENT';
+      await createPRReview(creds, output.owner, output.repo, output.prNumber, {
+        body: aiResponse,
+        event,
+      });
+      break;
+    }
+
     default:
       console.warn(`[AgentsEngine] Unknown output type: "${output?.type}"`);
   }
