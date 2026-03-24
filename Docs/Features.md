@@ -30,9 +30,9 @@ Hover over any message (user or assistant) to reveal a **Copy** button.
 
 ---
 
-## Tools (Live Data)
+## Tools
 
-The AI can call external APIs to answer real-time questions. Tools are defined in `Public/Assets/Scripts/Features/Chat/Tools/` and executed in `Executors/`.
+The AI can call external APIs and built-in utilities from chat. Tools are defined in `Public/Assets/Scripts/Features/Chat/Tools/` and executed in `Executors/`.
 
 ### Weather
 **Tool:** `get_weather`  
@@ -85,6 +85,13 @@ Returns photo URLs, photographer credits, dimensions, and like counts.
 ### GitHub (when connected)
 **Tools:** `github_list_repos`, `github_get_issues`, `github_get_pull_requests`, `github_get_file`, `github_get_file_tree`, `github_get_notifications`  
 **Try:** "Show my open PRs" or "Load the README from my main repo" or "What issues are open in withinjoel/Romelson?"
+
+### Utility Tools
+**Tools:** `calculate_expression`, `convert_units`, `get_time_in_timezone`, `generate_uuid`, `hash_text`, `encode_base64`, `decode_base64`, `format_json`, `convert_text_case`, `get_text_stats`  
+**Provider:** Built in (no connector required)  
+**Try:** "Convert 5 miles to kilometers", "Format this JSON", "Hash this string with SHA-256", or "What time is it in Tokyo?"
+
+These tools handle local utility tasks without leaving the app: calculations, common unit conversions, timezone lookup, UUID generation, hashing, Base64 encode/decode, JSON formatting, text case conversion, and text statistics.
 
 ---
 

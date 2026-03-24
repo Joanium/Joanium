@@ -15,6 +15,7 @@ Romelson is a personal desktop AI platform built on Electron. It brings together
 - **Skills** — Markdown-defined capabilities the AI applies automatically — debugging guides, API design patterns, copywriting frameworks, and more.
 - **Usage analytics** — Full token tracking, cost breakdowns by model and provider, hourly heatmaps, and auto-generated insights.
 - **Free APIs out of the box** — Weather, crypto prices, exchange rates, US Treasury data, FRED economic indicators, and Unsplash photos — no key required for most.
+- **Built-in utility tools** — Math, unit conversions, timezone lookup, UUID generation, hashing, Base64 encode/decode, JSON formatting, and text transformations without any connector setup.
 
 ---
 

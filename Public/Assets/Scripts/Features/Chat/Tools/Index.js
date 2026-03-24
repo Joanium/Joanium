@@ -19,11 +19,13 @@ import { URL_TOOLS } from './UrlTools.js';
 import { TERMINAL_TOOLS } from './TerminalTools.js';
 import { REPO_TOOLS } from './RepoTools.js';
 import { REVIEW_TOOLS } from './ReviewTools.js';
+import { UTILITY_TOOLS } from './UtilityTools.js';
 
 export {
   GMAIL_TOOLS, GITHUB_TOOLS, WEATHER_TOOLS, CRYPTO_TOOLS, FINANCE_TOOLS, PHOTO_TOOLS,
   WIKI_TOOLS, GEO_TOOLS, FUN_TOOLS, JOKE_TOOLS, QUOTE_TOOLS, COUNTRY_TOOLS,
   ASTRONOMY_TOOLS, HACKERNEWS_TOOLS, URL_TOOLS, TERMINAL_TOOLS, REPO_TOOLS, REVIEW_TOOLS,
+  UTILITY_TOOLS,
 };
 
 export const STATIC_TOOLS = [
@@ -45,6 +47,7 @@ export const STATIC_TOOLS = [
   ...TERMINAL_TOOLS,
   ...REPO_TOOLS,
   ...REVIEW_TOOLS,
+  ...UTILITY_TOOLS,
 ];
 
 // Legacy export retained for existing imports; dynamic MCP tools are layered in via getAvailableTools().

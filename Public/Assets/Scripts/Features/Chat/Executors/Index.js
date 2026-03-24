@@ -19,6 +19,7 @@ import * as UrlExecutor        from './UrlExecutor.js';
 import * as TerminalExecutor   from './TerminalExecutor.js';
 import * as RepoExecutor       from './RepoExecutor.js';
 import * as ReviewExecutor     from './ReviewExecutor.js';
+import * as UtilityExecutor    from './UtilityExecutor.js';
 import * as MCPExecutor        from './MCPExecutor.js';
 
 const EXECUTORS = [
@@ -40,6 +41,7 @@ const EXECUTORS = [
   TerminalExecutor,
   RepoExecutor,
   ReviewExecutor,
+  UtilityExecutor,
   MCPExecutor,
 ];
 
