@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Features/AI/AIProvider.js
+//  Romelson — Public/Assets/Scripts/Features/AI/AIProvider.js
 //  Provider adapters with NATIVE function/tool calling support.
 //  Supports streaming (SSE) for all providers, with retry helper.
 //  Returns token usage alongside responses for analytics.
@@ -388,7 +388,7 @@ export async function fetchStreamingWithTools(
       'content-type': 'application/json',
       [auth_header]:  `${auth_prefix}${api}`,
       ...(providerId === 'openrouter'
-        ? { 'HTTP-Referer': 'https://openworld.app', 'X-Title': 'openworld' }
+        ? { 'HTTP-Referer': 'https://romelson.app', 'X-Title': 'Romelson' }
         : {}),
     },
     body: JSON.stringify(body),
@@ -546,7 +546,7 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
       'content-type': 'application/json',
       [auth_header]:  `${auth_prefix}${api}`,
       ...(providerId === 'openrouter'
-        ? { 'HTTP-Referer': 'https://openworld.app', 'X-Title': 'openworld' }
+        ? { 'HTTP-Referer': 'https://romelson.app', 'X-Title': 'Romelson' }
         : {}),
     },
     body: JSON.stringify(body),

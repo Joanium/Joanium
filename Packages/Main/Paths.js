@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/Paths.js
+//  Romelson — Packages/Main/Paths.js
 //  Single source of truth for all file-system paths.
 //  Import this everywhere instead of computing paths ad-hoc.
 // ─────────────────────────────────────────────

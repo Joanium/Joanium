@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/PersonasIPC.js
+//  Romelson — Packages/Main/IPC/PersonasIPC.js
 //  Reads persona .md files from Personas/ directory.
 //  Manages active persona persistence in Data/ActivePersona.json
 // ─────────────────────────────────────────────

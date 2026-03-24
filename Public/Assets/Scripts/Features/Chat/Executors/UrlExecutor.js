@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/UrlExecutor.js
+// Romelson — Features/Chat/Executors/UrlExecutor.js
 import { safeJson } from './utils.js';
 
 const HANDLED = new Set(['shorten_url']);

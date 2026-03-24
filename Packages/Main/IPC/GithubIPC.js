@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/GithubIPC.js
+//  Romelson — Packages/Main/IPC/GithubIPC.js
 //  Handlers for all GitHub REST API operations.
 // ─────────────────────────────────────────────
 

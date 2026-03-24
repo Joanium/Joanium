@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/UserIPC.js
+//  Romelson — Packages/Main/IPC/UserIPC.js
 //  Handlers for user profile, model list, API keys,
 //  custom instructions, and memory.
 // ─────────────────────────────────────────────

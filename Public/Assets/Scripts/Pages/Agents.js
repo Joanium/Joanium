@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Pages/Agents.js
+//  Romelson — Public/Assets/Scripts/Pages/Agents.js
 // ─────────────────────────────────────────────
 
 import '../Shared/WindowControls.js';

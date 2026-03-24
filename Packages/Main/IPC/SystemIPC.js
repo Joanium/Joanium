@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/SystemIPC.js
+//  Romelson — Packages/Main/IPC/SystemIPC.js
 //  Exposes the context-aware system prompt to the renderer.
 // ─────────────────────────────────────────────
 

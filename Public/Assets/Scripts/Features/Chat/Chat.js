@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Features/Chat/Chat.js
+//  Romelson — Public/Assets/Scripts/Features/Chat/Chat.js
 //  Core chat logic with:
 //    • Streaming responses (SSE, progressive markdown during stream)
 //    • Per-response inline token/cost footer (always on)

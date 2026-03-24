@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/CountryExecutor.js
+// Romelson — Features/Chat/Executors/CountryExecutor.js
 import { safeJson, fmt } from './utils.js';
 
 const HANDLED = new Set(['get_country_info']);

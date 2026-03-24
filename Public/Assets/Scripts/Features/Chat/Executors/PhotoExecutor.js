@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/PhotoExecutor.js
+// Romelson — Features/Chat/Executors/PhotoExecutor.js
 import { safeJson } from './utils.js';
 
 const HANDLED = new Set(['search_photos']);
@@ -25,7 +25,7 @@ export async function execute(toolName, params, onStage = () => { }) {
             `1. Go to unsplash.com/developers`,
             `2. Create a free account and register an app`,
             `3. Copy your Access Key`,
-            `4. In openworld: Settings → Connectors → Unsplash → Add key`,
+            `4. In Romelson: Settings → Connectors → Unsplash → Add key`,
             ``,
             `The free tier allows 50 requests/hour.`,
         ].join('\n');

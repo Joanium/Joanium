@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Features/ModelSelector/ModelSelector.js
+//  Romelson — Public/Assets/Scripts/Features/ModelSelector/ModelSelector.js
 //  Loads available models, renders the dropdown sorted by rank,
 //  and fires a custom event whenever the active model changes.
 // ─────────────────────────────────────────────
@@ -187,7 +187,7 @@ export async function loadProviders() {
     state.providers        = [];
     state.selectedProvider = null;
     state.selectedModel    = null;
-    if (modelLabel)    modelLabel.textContent = 'openworld';
+    if (modelLabel)    modelLabel.textContent = 'Romelson';
     if (modelDropdown) modelDropdown.innerHTML = '';
     notifyModelSelectionChanged();
   }

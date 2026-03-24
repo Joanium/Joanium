@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/WindowIPC.js
+//  Romelson — Packages/Main/IPC/WindowIPC.js
 //  Frameless-window controls (minimize / maximize / close).
 // ─────────────────────────────────────────────
 

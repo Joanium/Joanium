@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/utils.js
+// Romelson — Features/Chat/Executors/utils.js
 // Shared constants and pure helpers used across all executor modules.
 
 export const WMO_CODES = {

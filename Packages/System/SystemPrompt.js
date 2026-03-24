@@ -179,9 +179,9 @@ export async function buildSystemPrompt({
     blank();
     push('---');
     blank();
-    push(`You are running inside openworld, a personal desktop AI platform.`);
+    push(`You are running inside Romelson, a personal desktop AI platform.`);
   } else {
-    push(`You are an intelligent AI assistant running inside openworld — a personal desktop AI platform built by Joel Jolly.`);
+    push(`You are an intelligent AI assistant running inside Romelson — a personal desktop AI platform built by Joel Jolly.`);
   }
 
   blank();

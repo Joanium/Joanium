@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/Services/UserService.js
+//  Romelson — Packages/Main/Services/UserService.js
 //  All user data, model data, and plain-text file I/O.
 //  No Electron imports — pure Node.js, easily testable.
 // ─────────────────────────────────────────────

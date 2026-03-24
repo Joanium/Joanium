@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/AgentsIPC.js
+//  Romelson — Packages/Main/IPC/AgentsIPC.js
 // ─────────────────────────────────────────────
 
 import { ipcMain } from 'electron';

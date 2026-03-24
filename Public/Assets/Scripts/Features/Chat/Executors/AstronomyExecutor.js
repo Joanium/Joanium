@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/AstronomyExecutor.js
+// Romelson — Features/Chat/Executors/AstronomyExecutor.js
 import { safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_apod', 'get_iss_location']);

@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/GmailIPC.js
+//  Romelson — Packages/Main/IPC/GmailIPC.js
 // ─────────────────────────────────────────────
 
 import { ipcMain }                                from 'electron';

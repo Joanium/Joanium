@@ -1,4 +1,4 @@
-// openworld — Pages/Automations/subEvents.js
+// Romelson — Pages/Automations/subEvents.js
 // Appends optional sub-section controls to action field areas.
 
 import { makeFieldRow, makeToggleRow } from './FieldBuilders.js';

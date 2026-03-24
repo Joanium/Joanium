@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — SetupPage.js
+//  Romelson — SetupPage.js
 //  First-run onboarding · Splash → Name → Providers → Done
 // ─────────────────────────────────────────────
 

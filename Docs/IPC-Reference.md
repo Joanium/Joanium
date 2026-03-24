@@ -1,6 +1,6 @@
 # IPC Reference
 
-Every IPC channel exposed by openworld. All channels use `ipcRenderer.invoke()` (request/response) unless noted as `ipcRenderer.send()` (fire-and-forget).
+Every IPC channel exposed by Romelson. All channels use `ipcRenderer.invoke()` (request/response) unless noted as `ipcRenderer.send()` (fire-and-forget).
 
 The preload script (`Packages/Electron/Preload.js`) exposes all channels as `window.electronAPI.*` methods. The renderer never calls ipcRenderer directly.
 
@@ -314,7 +314,7 @@ const result = await window.electronAPI.githubGetRepos()
 Returns the content of a file from a repository.
 
 ```typescript
-const result = await window.electronAPI.githubGetFile('withinJoel', 'openworld', 'README.md')
+const result = await window.electronAPI.githubGetFile('withinJoel', 'Romelson', 'README.md')
 // Returns: { ok: boolean, path, name, content, sha, size, url }
 ```
 
@@ -322,7 +322,7 @@ const result = await window.electronAPI.githubGetFile('withinJoel', 'openworld',
 Returns the file tree of a repository.
 
 ```typescript
-const result = await window.electronAPI.githubGetTree('withinJoel', 'openworld', 'main')
+const result = await window.electronAPI.githubGetTree('withinJoel', 'Romelson', 'main')
 // Returns: { ok: boolean, tree: Array<{ path, type, sha }> }
 ```
 
@@ -330,7 +330,7 @@ const result = await window.electronAPI.githubGetTree('withinJoel', 'openworld',
 Returns issues for a repository.
 
 ```typescript
-const result = await window.electronAPI.githubGetIssues('withinJoel', 'openworld', 'open')
+const result = await window.electronAPI.githubGetIssues('withinJoel', 'Romelson', 'open')
 // Returns: { ok: boolean, issues: Array<issue> }
 ```
 
@@ -338,7 +338,7 @@ const result = await window.electronAPI.githubGetIssues('withinJoel', 'openworld
 Returns pull requests for a repository.
 
 ```typescript
-const result = await window.electronAPI.githubGetPRs('withinJoel', 'openworld', 'open')
+const result = await window.electronAPI.githubGetPRs('withinJoel', 'Romelson', 'open')
 // Returns: { ok: boolean, prs: Array<pr> }
 ```
 
@@ -354,7 +354,7 @@ const result = await window.electronAPI.githubGetNotifications()
 Returns recent commits for a repository.
 
 ```typescript
-const result = await window.electronAPI.githubGetCommits('withinJoel', 'openworld')
+const result = await window.electronAPI.githubGetCommits('withinJoel', 'Romelson')
 // Returns: { ok: boolean, commits: Array<commit> }
 ```
 

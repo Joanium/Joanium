@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/ConnectorIPC.js
+//  Romelson — Packages/Main/IPC/ConnectorIPC.js
 //  Handlers for saving, removing, and validating connector credentials.
 //  Also handles free API connector toggle and key management.
 // ─────────────────────────────────────────────

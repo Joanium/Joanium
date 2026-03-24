@@ -1,4 +1,4 @@
-// openworld — Pages/Automations/confirmDialog.js
+// Romelson — Pages/Automations/confirmDialog.js
 // Delete-confirmation overlay. Imports renderAutomations from grid.js (one-way dep).
 
 import { state } from './State.js';

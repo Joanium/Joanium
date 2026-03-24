@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/SetupIPC.js
+//  Romelson — Packages/Main/IPC/SetupIPC.js
 //  Handlers used during first-run setup wizard
 //  and global page navigation.
 // ─────────────────────────────────────────────

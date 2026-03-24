@@ -1,5 +1,5 @@
 {
-  "name": "openworld",
+  "name": "Romelson",
   "version": "0.1.0",
   "description": "An Electron app that connects and controls your world",
   "type": "module",
@@ -11,6 +11,7 @@
     "lint": "eslint ."
   },
   "keywords": [
+    "Romelson",
     "electron",
     "automation",
     "integration"
@@ -27,8 +28,8 @@
     "eslint": "^10.1.0"
   },
   "build": {
-    "appId": "com.openworld.app",
-    "productName": "openworld",
+    "appId": "com.Romelson.app",
+    "productName": "Romelson",
     "directories": {
       "output": "dist"
     },

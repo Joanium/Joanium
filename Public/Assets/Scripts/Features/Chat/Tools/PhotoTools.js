@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/PhotoTools.js
+// Romelson — Features/Chat/Tools/PhotoTools.js
 export const PHOTO_TOOLS = [
     {
         name: 'search_photos',

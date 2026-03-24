@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/Services/ChatService.js
+//  Romelson — Packages/Main/Services/ChatService.js
 //  Chat persistence — save, load, list, delete.
 //  No Electron imports — pure Node.js, easily testable.
 // ─────────────────────────────────────────────

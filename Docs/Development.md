@@ -1,6 +1,6 @@
 # Development Guide
 
-Everything you need to add features, fix bugs, and extend openworld.
+Everything you need to add features, fix bugs, and extend Romelson.
 
 ---
 
@@ -8,8 +8,8 @@ Everything you need to add features, fix bugs, and extend openworld.
 
 ```bash
 # Prerequisites: Node.js 18+, npm
-git clone https://github.com/withinJoel/openworld
-cd openworld
+git clone https://github.com/withinJoel/Romelson
+cd Romelson
 npm install
 npm start
 ```

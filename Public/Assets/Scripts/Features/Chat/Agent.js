@@ -1,4 +1,4 @@
-// openworld — Public/Assets/Scripts/Features/Chat/Agent.js
+// Romelson — Public/Assets/Scripts/Features/Chat/Agent.js
 // Owns planning, failover, and the multi-step tool execution loop.
 
 import { state } from '../../Shared/State.js';

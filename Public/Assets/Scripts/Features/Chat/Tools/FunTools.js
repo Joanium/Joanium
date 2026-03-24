@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/FunTools.js
+// Romelson — Features/Chat/Tools/FunTools.js
 export const FUN_TOOLS = [
     {
         name: 'get_random_fact',

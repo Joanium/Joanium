@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/ChatIPC.js
+//  Romelson — Packages/Main/IPC/ChatIPC.js
 //  Handlers for saving, loading, listing, and deleting chats.
 // ─────────────────────────────────────────────
 

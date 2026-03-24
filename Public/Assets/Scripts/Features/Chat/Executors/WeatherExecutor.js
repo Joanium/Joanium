@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/WeatherExecutor.js
+// Romelson — Features/Chat/Executors/WeatherExecutor.js
 import { WMO_CODES, safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_weather']);

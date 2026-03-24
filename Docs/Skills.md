@@ -103,7 +103,7 @@ Write the body as a structured reference the AI should follow. Think of it as a 
 1. Create a new `.md` file in `Skills/`
 2. Add the YAML frontmatter (name, trigger, description)
 3. Write the skill body — be specific and structured
-4. Restart openworld (skills are loaded at startup)
+4. Restart Romelson (skills are loaded at startup)
 5. The new skill will appear in the Skills page and be available to the planner
 
 ### Tips for Good Skills

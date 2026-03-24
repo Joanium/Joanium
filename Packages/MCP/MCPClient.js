@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/MCP/MCPClient.js
+//  Romelson — Packages/MCP/MCPClient.js
 //  Model Context Protocol client.
 //  Supports:
 //    • HTTP transport (POST + SSE response)
@@ -14,7 +14,7 @@ import path                  from 'path';
 import { createInterface }   from 'readline';
 
 const PROTOCOL_VERSION = '2024-11-05';
-const CLIENT_INFO      = { name: 'openworld', version: '0.1.0' };
+const CLIENT_INFO      = { name: 'Romelson', version: '0.1.0' };
 
 /* ══════════════════════════════════════════
    BASE MCP SESSION

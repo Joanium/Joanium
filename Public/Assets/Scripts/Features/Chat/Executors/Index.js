@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/Index.js
+// Romelson — Features/Chat/Executors/Index.js
 // Main dispatcher that routes each tool name to the correct executor module.
 
 import * as GmailExecutor      from './GmailExecutor.js';

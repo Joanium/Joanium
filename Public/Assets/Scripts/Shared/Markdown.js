@@ -1,5 +1,5 @@
 /**
- * openworld — Shared/Markdown.js
+ * Romelson — Shared/Markdown.js
  *
  * Production-grade, Claude-style Markdown renderer.
  *

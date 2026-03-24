@@ -1,6 +1,6 @@
 # Architecture
 
-openworld is an Electron app. Understanding Electron's two-process model is the key to understanding everything else.
+Romelson is an Electron app. Understanding Electron's two-process model is the key to understanding everything else.
 
 ---
 
@@ -147,7 +147,7 @@ The built prompt is **cached for 5 minutes** by `SystemPromptService.js` and inv
 
 ## Multi-Page Architecture
 
-openworld is not a single-page app. Each page is a separate HTML file loaded into the same `BrowserWindow`:
+Romelson is not a single-page app. Each page is a separate HTML file loaded into the same `BrowserWindow`:
 
 | HTML file | Purpose |
 |---|---|

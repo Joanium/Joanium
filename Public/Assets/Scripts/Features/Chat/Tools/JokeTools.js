@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/JokeTools.js
+// Romelson — Features/Chat/Tools/JokeTools.js
 export const JOKE_TOOLS = [
     {
         name: 'get_joke',

@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/GithubExecutor.js
+// Romelson — Features/Chat/Executors/GithubExecutor.js
 
 const HANDLED = new Set([
     'github_list_repos', 'github_get_issues', 'github_get_pull_requests',

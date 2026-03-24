@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/GmailTools.js
+// Romelson — Features/Chat/Tools/GmailTools.js
 export const GMAIL_TOOLS = [
     {
         name: 'gmail_send_email',

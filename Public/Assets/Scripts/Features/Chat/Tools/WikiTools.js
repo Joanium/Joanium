@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/WikiTools.js
+// Romelson — Features/Chat/Tools/WikiTools.js
 export const WIKI_TOOLS = [
     {
         name: 'search_wikipedia',

@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/FinanceTools.js
+// Romelson — Features/Chat/Tools/FinanceTools.js
 export const FINANCE_TOOLS = [
     {
         name: 'get_exchange_rate',

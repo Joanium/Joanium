@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/Window.js
+//  Romelson — Packages/Main/Window.js
 //  Creates and exposes the single BrowserWindow.
 //  All other modules call get() / loadPage() instead
 //  of holding a direct reference to the window.

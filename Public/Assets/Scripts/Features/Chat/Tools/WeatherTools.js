@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/WeatherTools.js
+// Romelson — Features/Chat/Tools/WeatherTools.js
 export const WEATHER_TOOLS = [
     {
         name: 'get_weather',

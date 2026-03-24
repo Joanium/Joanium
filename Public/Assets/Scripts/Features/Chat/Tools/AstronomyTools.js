@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/AstronomyTools.js
+// Romelson — Features/Chat/Tools/AstronomyTools.js
 export const ASTRONOMY_TOOLS = [
     {
         name: 'get_apod',

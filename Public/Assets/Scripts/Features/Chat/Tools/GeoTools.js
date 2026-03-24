@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/GeoTools.js
+// Romelson — Features/Chat/Tools/GeoTools.js
 export const GEO_TOOLS = [
     {
         name: 'get_ip_info',

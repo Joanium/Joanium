@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Features/Connectors/Connectors.js
+//  Romelson — Public/Assets/Scripts/Features/Connectors/Connectors.js
 //  Renders connector cards and handles connect/disconnect/toggle flows.
 //  Includes service connectors (Gmail, GitHub) and free API connectors.
 // ─────────────────────────────────────────────

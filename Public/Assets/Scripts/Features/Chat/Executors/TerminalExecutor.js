@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/TerminalExecutor.js
+// Romelson — Features/Chat/Executors/TerminalExecutor.js
 // Bridges the AI's local-dev tool calls to the Electron IPC layer.
 
 import { state } from '../../../Shared/State.js';

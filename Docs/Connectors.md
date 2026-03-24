@@ -1,6 +1,6 @@
 # Connectors
 
-Connectors link openworld to external services. There are two types: service connectors (Gmail, GitHub) that require credentials, and free API connectors that are enabled by default.
+Connectors link Romelson to external services. There are two types: service connectors (Gmail, GitHub) that require credentials, and free API connectors that are enabled by default.
 
 ---
 
@@ -15,9 +15,9 @@ Gmail uses OAuth 2.0. You need a Google Cloud project with OAuth credentials to 
 3. Enable the **Gmail API**: APIs & Services → Enable APIs → search "Gmail API" → Enable
 4. Create OAuth credentials: APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID
    - Application type: **Desktop app**
-   - Name it anything (e.g. "openworld")
+   - Name it anything (e.g. "Romelson")
 5. Download or copy the **Client ID** and **Client Secret**
-6. In openworld: Settings → Connectors → Gmail → paste Client ID and Client Secret → Sign in with Google
+6. In Romelson: Settings → Connectors → Gmail → paste Client ID and Client Secret → Sign in with Google
 7. Approve the permissions in the browser window that opens
 
 ### Scopes Requested
@@ -26,7 +26,7 @@ Gmail uses OAuth 2.0. You need a Google Cloud project with OAuth credentials to 
 - `userinfo.email` — verify your email address
 
 ### Token Refresh
-Access tokens expire after 1 hour. openworld automatically refreshes them using the stored refresh token — you don't need to reconnect. The refreshed token is immediately persisted to `Data/Connectors.json`.
+Access tokens expire after 1 hour. Romelson automatically refreshes them using the stored refresh token — you don't need to reconnect. The refreshed token is immediately persisted to `Data/Connectors.json`.
 
 ### Reconnecting
 If Gmail stops working (refresh token revoked, credentials changed), go to Settings → Connectors → Gmail → Disconnect, then reconnect.
@@ -50,7 +50,7 @@ GitHub uses a Personal Access Token (PAT). Classic tokens are easiest; fine-grai
    - `read:user` — get your username and profile
    - `notifications` — read GitHub notifications
 4. Copy the generated token (starts with `ghp_`)
-5. In openworld: Settings → Connectors → GitHub → paste the token → Connect GitHub
+5. In Romelson: Settings → Connectors → GitHub → paste the token → Connect GitHub
 
 ### What GitHub Enables
 **System prompt context:** Your GitHub username and last 20 repos (name, description, language) are automatically included in every chat. Ask "what are my repos?" and the AI already knows.

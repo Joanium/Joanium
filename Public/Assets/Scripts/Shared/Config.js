@@ -1,4 +1,4 @@
-export const APP_NAME = 'openworld';
+export const APP_NAME = 'Romelson';
 
 export default {
   APP_NAME,

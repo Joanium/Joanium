@@ -1,4 +1,4 @@
-// openworld — Pages/Automations/constants.js
+// Romelson — Pages/Automations/constants.js
 // Static metadata for action types and their form fields.
 
 export const ACTION_META = {

@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — App.js  (main process entry point)
+//  App.js  (main process entry point)
 //
 //  This file is intentionally thin. All business logic
 //  lives in Packages/Main/. Add features by:

@@ -1,6 +1,6 @@
 # Automations
 
-openworld's automation engine lets you schedule sequences of actions — no code required.
+Romelson's automation engine lets you schedule sequences of actions — no code required.
 
 ---
 
@@ -17,7 +17,7 @@ After each successful execution, `lastRun` is updated and persisted. This preven
 ## Triggers
 
 ### On Startup
-Runs every time openworld is launched. Useful for morning briefings, workspace setup, or opening your daily tools.
+Runs every time Romelson is launched. Useful for morning briefings, workspace setup, or opening your daily tools.
 
 ### Every N Minutes
 `interval` trigger. Set any interval from 1 to 1440 minutes. The engine uses elapsed time since `lastRun` — if the app was closed, it runs immediately on next launch if the interval has passed.

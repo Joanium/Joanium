@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Public/Assets/Scripts/Features/Composer/Composer.js
+//  Romelson — Public/Assets/Scripts/Features/Composer/Composer.js
 //  Manages the message input area: auto-resize, attachment
 //  paste, drag-drop, multi-file support (CSV/JSON/YAML/MD/TXT/code).
 // ─────────────────────────────────────────────

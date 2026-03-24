@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Automation/Github.js
+//  Romelson — Packages/Automation/Github.js
 //  GitHub REST API integration (main-process safe)
 //  Pure functions: accept { token } credentials, return data or throw.
 // ─────────────────────────────────────────────

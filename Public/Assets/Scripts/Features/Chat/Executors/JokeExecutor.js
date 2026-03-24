@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/JokeExecutor.js
+// Romelson — Features/Chat/Executors/JokeExecutor.js
 import { safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_joke']);

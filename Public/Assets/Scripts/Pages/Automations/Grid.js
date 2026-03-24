@@ -1,4 +1,4 @@
-// openworld — Pages/Automations/grid.js
+// Romelson — Pages/Automations/grid.js
 // Renders the automation card grid and handles toggle interactions.
 // Calls onEdit / onConfirmDelete callbacks provided via initGrid().
 

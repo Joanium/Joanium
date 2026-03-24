@@ -1,8 +1,8 @@
-# openworld
+# Romelson
 
 > One interface. Every AI. Think clearly. Build faster. Create freely.
 
-openworld is a personal desktop AI platform built on Electron. It brings together multiple AI providers, a powerful automation engine, Gmail and GitHub integrations, custom AI personas, and a skill system — all in a single offline-first app where your data stays on your machine.
+Romelson is a personal desktop AI platform built on Electron. It brings together multiple AI providers, a powerful automation engine, Gmail and GitHub integrations, custom AI personas, and a skill system — all in a single offline-first app where your data stays on your machine.
 
 ---
 
@@ -23,8 +23,8 @@ openworld is a personal desktop AI platform built on Electron. It brings togethe
 ```bash
 # Prerequisites: Node.js 18+, npm
 
-git clone https://github.com/withinJoel/openworld
-cd openworld
+git clone https://github.com/withinJoel/Romelson
+cd Romelson
 npm install
 npm start
 ```
@@ -36,7 +36,7 @@ On first launch, a setup wizard walks you through adding your API keys. Everythi
 ## Project Layout
 
 ```
-openworld/
+Romelson/
 ├── App.js                        # Electron main process entry point
 ├── package.json
 │

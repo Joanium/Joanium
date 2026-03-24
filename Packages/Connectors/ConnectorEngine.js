@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Connectors/ConnectorEngine.js
+//  Romelson — Packages/Connectors/ConnectorEngine.js
 //  Manages connector credentials stored in Data/Connectors.json
 //  Runs in the Electron main process.
 // ─────────────────────────────────────────────

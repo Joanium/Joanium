@@ -1,4 +1,4 @@
-// openworld — Pages/Automations/utils.js
+// Romelson — Pages/Automations/utils.js
 // Pure utility and display-formatting functions. No DOM, no side effects.
 
 export function escapeHtml(v) {

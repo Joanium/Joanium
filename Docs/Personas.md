@@ -152,7 +152,7 @@ A philosopher of inner life. Works at the slow, deep layer — meaning, identity
 1. Create a new `.md` file in `Personas/`
 2. Add the YAML frontmatter (name, personality, description)
 3. Write the instruction body — be specific about communication style and what the persona does and doesn't do
-4. Restart openworld (personas are loaded at startup)
+4. Restart Romelson (personas are loaded at startup)
 5. The new persona appears in the Personas page
 
 ### Persona Body Structure (Recommended)

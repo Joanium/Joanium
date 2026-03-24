@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/MCPExecutor.js
+// Romelson — Features/Chat/Executors/MCPExecutor.js
 // Dynamically routes tool calls to connected MCP servers.
 // The set of handled tools is determined at runtime by querying
 // the main process for the current list of MCP tools.

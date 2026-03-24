@@ -98,7 +98,7 @@ function buildDefaultCard() {
     </div>
     <div class="persona-info">
       <div class="persona-name">Default Assistant</div>
-      <div class="persona-description">The standard openworld AI — helpful, accurate, and contextually aware of your system, repos, and email.</div>
+      <div class="persona-description">The standard Romelson AI — helpful, accurate, and contextually aware of your system, repos, and email.</div>
     </div>
     <div class="persona-personality">
       <span class="persona-tag">helpful</span>
@@ -199,7 +199,7 @@ function render(query = '') {
   if (!personasGrid) return;
   personasGrid.innerHTML = '';
 
-  const defaultKeywords = 'default assistant helpful accurate contextual openworld standard';
+  const defaultKeywords = 'default assistant helpful accurate contextual romelson standard';
   const showDefault = !query || defaultKeywords.includes(query.toLowerCase()) ||
     'default assistant'.includes(query.toLowerCase());
 

@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Tools/ReviewTools.js
+// Romelson — Features/Chat/Tools/ReviewTools.js
 export const REVIEW_TOOLS = [
   {
     name: 'github_get_pr_diff',

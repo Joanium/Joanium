@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/RepoExecutor.js
+// Romelson — Features/Chat/Executors/RepoExecutor.js
 // Smart repo context loader: fetches file tree + selects & loads the most
 // relevant source files for codebase-level Q&A.
 

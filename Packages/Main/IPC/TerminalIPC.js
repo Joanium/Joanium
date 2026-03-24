@@ -1,4 +1,4 @@
-// openworld — Packages/Main/IPC/TerminalIPC.js
+// Romelson — Packages/Main/IPC/TerminalIPC.js
 // Executes shell commands, reads files, inspects workspaces, and exposes
 // local dev tooling on behalf of the chat tool system.
 

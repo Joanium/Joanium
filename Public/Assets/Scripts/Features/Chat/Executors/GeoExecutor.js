@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/GeoExecutor.js
+// Romelson — Features/Chat/Executors/GeoExecutor.js
 import { safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_ip_info']);

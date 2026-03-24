@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Agents/AgentsEngine.js
+//  Romelson — Packages/Agents/AgentsEngine.js
 // ─────────────────────────────────────────────
 
 import fs   from 'fs';
@@ -94,7 +94,7 @@ async function callModel(providerData, modelId, systemPrompt, userMessage) {
     headers: {
       'content-type': 'application/json',
       [auth_header]: `${auth_prefix}${api}`,
-      ...(pid === 'openrouter' ? { 'HTTP-Referer': 'https://openworld.app', 'X-Title': 'openworld' } : {}),
+      ...(pid === 'openrouter' ? { 'HTTP-Referer': 'https://romelson.app', 'X-Title': 'Romelson' } : {}),
     },
     body: JSON.stringify({
       model: modelId,
@@ -264,7 +264,7 @@ async function collectOneSource(ds, connectorEngine) {
     case 'rss_feed': {
       if (!ds.url) return '⚠️ No RSS feed URL specified.';
       try {
-        const xml = await fetch(ds.url, { headers: { 'User-Agent': 'openworld-agent/1.0' } }).then(r => r.text());
+        const xml = await fetch(ds.url, { headers: { 'User-Agent': 'romelson-agent/1.0' } }).then(r => r.text());
         const items = [];
         const max = ds.maxResults ?? 10;
         const extractTag = (str, tag) => {
@@ -288,7 +288,7 @@ async function collectOneSource(ds, connectorEngine) {
       try {
         const data = await fetch(
           `https://www.reddit.com/r/${ds.subreddit}/${ds.sort ?? 'hot'}.json?limit=${Math.min(ds.maxResults ?? 10, 25)}`,
-          { headers: { 'User-Agent': 'openworld-agent/1.0' } }
+          { headers: { 'User-Agent': 'romelson-agent/1.0' } }
         ).then(r => r.json());
         const posts = data.data?.children ?? [];
         if (!posts.length) return `EMPTY: r/${ds.subreddit} has no posts.`;
@@ -351,7 +351,7 @@ async function collectOneSource(ds, connectorEngine) {
     case 'fetch_url': {
       if (!ds.url) return '⚠️ No URL specified.';
       try {
-        const html = await fetch(ds.url, { headers: { 'User-Agent': 'openworld-agent/1.0' } }).then(r => r.text());
+        const html = await fetch(ds.url, { headers: { 'User-Agent': 'romelson-agent/1.0' } }).then(r => r.text());
         const text = html
           .replace(/<script[\s\S]*?<\/script>/gi, '')
           .replace(/<style[\s\S]*?<\/style>/gi, '')

@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/IPC/AutomationIPC.js
+//  Romelson — Packages/Main/IPC/AutomationIPC.js
 //  Handlers for automation CRUD + page navigation.
 // ─────────────────────────────────────────────
 

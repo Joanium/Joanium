@@ -1,4 +1,4 @@
-// openworld — Features/Chat/Executors/ReviewExecutor.js
+// Romelson — Features/Chat/Executors/ReviewExecutor.js
 // Handles PR diff fetching and posting AI-generated code reviews.
 
 const HANDLED = new Set([

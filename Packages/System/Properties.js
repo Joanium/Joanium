@@ -1,4 +1,4 @@
-const APP_NAME = 'openworld';
+const APP_NAME = 'Romelson';
 
 export const Properties = {
   name: APP_NAME,

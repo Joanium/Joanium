@@ -1,4 +1,4 @@
-// openworld — Features/Chat/TerminalComponent.js
+// Romelson — Features/Chat/TerminalComponent.js
 
 let dependencyPromise = null;
 

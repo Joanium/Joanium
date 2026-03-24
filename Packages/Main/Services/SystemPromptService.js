@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────
-//  openworld — Packages/Main/Services/SystemPromptService.js
+//  Romelson — Packages/Main/Services/SystemPromptService.js
 //  Builds and caches the context-aware system prompt.
 //  Cache is invalidated whenever settings, connectors, or active persona change.
 // ─────────────────────────────────────────────
