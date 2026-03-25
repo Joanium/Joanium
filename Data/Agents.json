@@ -1,3 +1,70 @@
 {
-  "agents": []
+  "agents": [
+    {
+      "id": "agent_1774439205536_eurz",
+      "name": "Email Checker",
+      "description": "",
+      "enabled": false,
+      "primaryModel": {
+        "provider": "mistral",
+        "modelId": "mistral-large-latest"
+      },
+      "fallbackModels": [],
+      "jobs": [
+        {
+          "id": "job_1774439117474_scb3",
+          "name": "",
+          "trigger": {
+            "type": "on_startup",
+            "time": "08:00"
+          },
+          "dataSources": [
+            {
+              "type": "gmail_inbox"
+            }
+          ],
+          "instruction": "Read these emails. Identify the most important ones needing action today. For each: subject, sender, what action is needed, and urgency. Then briefly list FYI emails.",
+          "output": {
+            "type": "send_email",
+            "to": "joeljollyeng@gmail.com",
+            "subject": "Inbox Brief",
+            "cc": "withinjoel@gmail.com"
+          },
+          "history": [
+            {
+              "timestamp": "2026-03-25T12:58:03.880Z",
+              "acted": true,
+              "skipped": false,
+              "nothingToReport": false,
+              "error": null,
+              "skipReason": null,
+              "summary": "Here’s the prioritized action list followed by FYI emails:\n\n---\n\n**Action Required Today:**\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action: Investigate why unwrapgithub.onrender.com/ is down and restore service. Check logs, dependencies, or hosting status.\n   Urgency: High (service outage)\n\n2. Subject: Re: [withinJoel/JoelOS] Bump ",
+              "fullResponse": "Here’s the prioritized action list followed by FYI emails:\n\n---\n\n**Action Required Today:**\n\n1. Subject: Monitor is DOWN: unwrapgithub.onrender.com/\n   Sender: UptimeRobot <alert@uptimerobot.com>\n   Action: Investigate why unwrapgithub.onrender.com/ is down and restore service. Check logs, dependencies, or hosting status.\n   Urgency: High (service outage)\n\n2. Subject: Re: [withinJoel/JoelOS] Bump electron from 41.0.3 to 41.0.4 (PR #91)\n   Sender: cloudflare-workers-and-pages[bot] <notifications@github.com>\n   Action: Review the successful deploy of JoelOS via Cloudflare Pages. Verify the preview URL and merge the PR if everything looks correct.\n   Urgency: Medium (pending deployment review)\n\n3. Subject: [withinJoel/JoelOS] Bump electron from 41.0.3 to 41.0.4 (PR #91)\n   Sender: dependabot[bot] <notifications@github.com>\n   Action: Review the Dependabot PR for Electron version bump. Merge if no conflicts or issues are found.\n   Urgency: Medium (dependency update)\n\n4. Subject: [withinJoel/EraWanderer] Bump phpstan/phpstan from 2.1.42 to 2.1.43 (PR #33)\n   Sender: dependabot[bot] <notifications@github.com>\n   Action: Review the Dependabot PR for PHPStan version bump. Merge if no conflicts or issues are found.\n   Urgency: Medium (dependency update)\n\n---\n\n**FYI Emails (No Immediate Action Needed):**\n\n1. Monitor is UP: unwrapgithub.onrender.com/ — UptimeRobot\n2. Even the best-case scenario for energy markets is disastrous — The Economist’s week ahead\n3. Juniper Square is looking for Technical Lead, AI Initiatives - India and 13 more new jobs — Jooble\n4. Introducing AI Reimagine ⭐ — IconScout\n5. Your job alerts: Data Analyst — Hays\n6. Your colleagues are getting a 56% pay bump. Are you? — ivee\n7. Weekly Statement of Funds & Securities | INDmoney — INDmoney Statements\n8. Get 50% OFF: Save big on features to boost your site — Wix.com\n9. “front end developer”: Intric - Frontend Engineer and more — LinkedIn Job Alerts\n10. Daily Trading & Investment Ideas - These 10 banking stocks have an upside potential of up to 26% in 1 year — The Economic Times\n11. Month-End Rush: Free Swiggy One with your Loan — Jupiter\n12. Your first MTF trade, simplified — Groww\n13. Software Engineer at Hashtech Info and 12 more jobs in Remote, Gabon — Glassdoor Jobs\n14. Full Stack Developer (Remote) at ICF and 10 more jobs in Remote, Gabon — Glassdoor Jobs\n15. New jobs in Remote, Gabon. Apply Now. — Glassdoor Jobs\n16. Senior Full Stack Engineer at Humana and 12 more jobs in Remote, Gabon — Glassdoor Jobs\n\n---"
+            },
+            {
+              "timestamp": "2026-03-25T12:46:25.548Z",
+              "acted": false,
+              "skipped": false,
+              "nothingToReport": false,
+              "error": "Token refresh failed: Token has been expired or revoked.. Please reconnect Gmail.",
+              "skipReason": null,
+              "summary": "Error: Token refresh failed: Token has been expired or revoked.. Please reconnect Gmail.",
+              "fullResponse": ""
+            },
+            {
+              "timestamp": "2026-03-25T12:44:09.653Z",
+              "acted": false,
+              "skipped": false,
+              "nothingToReport": false,
+              "error": "Token refresh failed: Token has been expired or revoked.. Please reconnect Gmail.",
+              "skipReason": null,
+              "summary": "Error: Token refresh failed: Token has been expired or revoked.. Please reconnect Gmail.",
+              "fullResponse": ""
+            }
+          ],
+          "lastRun": "2026-03-25T12:58:03.880Z"
+        }
+      ]
+    }
+  ]
 }

@@ -2,17 +2,16 @@
   "connectors": {
     "gmail": {
       "enabled": true,
-      "credentials": {
-        "accessToken": "ya29.a0Aa7MYioG5zj1kVxZWGjEsYzQsmW0vcQF9H3nS7GAMiWpf0NyFidPVNTC1mxp3RD3XXCJCeqeskKDPCjRksKM8pIhZqwCFRwKDmpxg1QeIX9ITVxlKF2SLuKG8zrFbp_QaECB6NraUPSb8-9Gap4CLvDsNlMRQTbLcwSLSkPIF8Am59kst_fW2G-UCG-WlmgHo1bM_wm7aCgYKAeISARESFQHGX2Mi4Rrd-Iy4IxkSigB56V1ULw0207",
-        "refreshToken": "1//0gArNnzcw1YpeCgYIARAAGBASNwF-L9IrQiyXG1u_YpXh2LAwX0anZxn3zMmO6GqcI7Z3IbRFzyaJ1kIMLoWwIIAT3PQXOMuIeFc",
-        "tokenExpiry": 1774428931202,
-        "email": "joeljollyhere@gmail.com",
-        "clientId": "492756371702-6o4sfs7hsksds0aqgf3vgr14jm6voftl.apps.googleusercontent.com",
-        "clientSecret": "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"
-      },
-      "connectedAt": "2026-03-18T08:55:32.224Z",
       "isFree": false,
-      "noKey": false
+      "credentials": {
+        "accessToken": "ya29.a0ATkoCc6AO0rZTVFvcMAOiNFQxeoilIZtY0aGN_D2LGUojlXRHEVXXAki0PalxCimVWt5zAED4p_bq3ocJhzEJErG1kNgIjkQVYYB2f0kBWD_y0sp-MsNY6CxeMepHgru7Gi1nE_574F0-ydqY6c1pvaBXo0f6GE4Zy3bUOX5tJdo_7nSHrGkzC9egDkuQt58rN5vwI4aCgYKAe0SARESFQHGX2Mio58cb8L_Fu4RueCHXNSCzg0206",
+        "refreshToken": "1//0gbR0UNAUQg7ECgYIARAAGBASNwF-L9IrgaaQRiR8I2TknmDin99rSjBU3vDZhmM1USTVQ4lYjRODueWNphdXVlLHNxywMTKyTQM",
+        "tokenExpiry": 1774447054146,
+        "email": "joeljollyhere@gmail.com",
+        "clientId": "492756371702-quhr3jof5amqh6shft6pu3eur572thrc.apps.googleusercontent.com",
+        "clientSecret": "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"
+      },
+      "connectedAt": "2026-03-25T12:57:35.206Z"
     },
     "github": {
       "enabled": true,
