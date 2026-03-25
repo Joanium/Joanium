@@ -1,7 +1,7 @@
 {
   "name": "Evelina",
   "version": "0.1.0",
-  "description": "An Electron app that connects and controls your world",
+  "description": "Your AI assistant.",
   "type": "module",
   "main": "App.js",
   "scripts": {
@@ -14,9 +14,11 @@
     "Evelina",
     "electron",
     "automation",
-    "integration"
+    "integration",
+    "AI",
+    "Assistant"
   ],
-  "author": "",
+  "author": "Joel Jolly",
   "license": "MIT",
   "dependencies": {
     "jszip": "^3.10.1",
