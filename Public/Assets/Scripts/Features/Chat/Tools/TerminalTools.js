@@ -113,6 +113,18 @@ export const TERMINAL_TOOLS = [
     },
   },
   {
+    name: 'extract_file_text',
+    description: 'Extract readable text from a local document such as PDF, DOCX, XLSX, XLS, ODS, PPTX, RTF, or plain text files. Use this when the user gives you a document instead of source code.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the local file to extract text from.',
+      },
+    },
+  },
+  {
     name: 'read_file_chunk',
     description: 'Read a specific line range from a local file. Prefer this for large files or focused code review.',
     category: 'terminal',

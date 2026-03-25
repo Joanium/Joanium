@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────
 //  Evelina — Public/Assets/Scripts/Features/Composer/Composer.js
 //  Manages the message input area: auto-resize, attachment
-//  paste, drag-drop, multi-file support (CSV/JSON/YAML/MD/TXT/code).
+//  paste, drag-drop, and multi-file support including PDF/DOCX/XLSX/PPTX.
 // ─────────────────────────────────────────────
 
 import { state } from '../../Shared/State.js';
@@ -30,6 +30,14 @@ const FILE_TYPES = {
   yml: { icon: '≡', color: '#06b6d4', label: 'YAML' },
   toml: { icon: '⚙', color: '#8b5cf6', label: 'TOML' },
   xml: { icon: '</>', color: '#f97316', label: 'XML' },
+  pdf: { icon: 'PDF', color: '#ef4444', label: 'PDF' },
+  docx: { icon: 'DOC', color: '#2563eb', label: 'Word' },
+  xlsx: { icon: 'XLS', color: '#16a34a', label: 'Excel' },
+  xls: { icon: 'XLS', color: '#16a34a', label: 'Excel' },
+  xlsm: { icon: 'XLS', color: '#16a34a', label: 'Excel Macro' },
+  xlsb: { icon: 'XLS', color: '#16a34a', label: 'Excel Binary' },
+  ods: { icon: 'ODS', color: '#16a34a', label: 'Spreadsheet' },
+  pptx: { icon: 'PPT', color: '#ea580c', label: 'PowerPoint' },
 
   // Code
   js: { icon: 'JS', color: '#f7df1e', label: 'JavaScript', dark: true },
@@ -59,11 +67,52 @@ const FILE_TYPES = {
   txt: { icon: '📄', color: '#6b7280', label: 'Text' },
   log: { icon: '📋', color: '#6b7280', label: 'Log' },
   env: { icon: '🔑', color: '#10b981', label: 'Env' },
+  rtf: { icon: 'RTF', color: '#6366f1', label: 'Rich Text' },
 };
+
+const DIRECT_TEXT_EXTENSIONS = new Set([
+  'txt', 'md', 'mdx', 'log', 'env', 'json', 'csv', 'tsv', 'yaml', 'yml',
+  'toml', 'xml', 'html', 'css', 'scss', 'less', 'js', 'ts', 'jsx', 'tsx',
+  'py', 'rb', 'go', 'rs', 'java', 'cs', 'cpp', 'c', 'h', 'hpp', 'php',
+  'sql', 'graphql', 'gql', 'sh', 'bash', 'zsh', 'ps1', 'vue', 'svelte',
+  'astro', 'rtf',
+]);
+
+const EXTRACTABLE_BINARY_EXTENSIONS = new Set([
+  'pdf', 'docx', 'xlsx', 'xls', 'xlsm', 'xlsb', 'ods', 'pptx',
+]);
+
+const DIRECT_TEXT_MAX_SIZE = 2 * 1024 * 1024;
+const EXTRACTABLE_BINARY_MAX_SIZE = 10 * 1024 * 1024;
 
 function getFileTypeMeta(filename) {
   const ext = filename.split('.').pop()?.toLowerCase() ?? 'txt';
   return FILE_TYPES[ext] ?? { icon: '📄', color: '#6b7280', label: ext.toUpperCase() };
+}
+
+function isTextLikeMime(mime = '') {
+  const lower = String(mime || '').toLowerCase();
+  return (
+    lower.startsWith('text/') ||
+    lower.includes('json') ||
+    lower.includes('xml') ||
+    lower.includes('yaml') ||
+    lower.includes('javascript')
+  );
+}
+
+function isExtractableBinary(ext, mime = '') {
+  if (EXTRACTABLE_BINARY_EXTENSIONS.has(ext)) return true;
+
+  const lower = String(mime || '').toLowerCase();
+  return (
+    lower === 'application/pdf' ||
+    lower.includes('wordprocessingml.document') ||
+    lower.includes('spreadsheetml.sheet') ||
+    lower.includes('ms-excel') ||
+    lower.includes('opendocument.spreadsheet') ||
+    lower.includes('presentationml.presentation')
+  );
 }
 
 /** Parse/summarise file content for the AI. */
@@ -336,6 +385,33 @@ function readClipboardImage(item, index) {
   });
 }
 
+async function extractBinaryAttachment(file, ext, mime) {
+  const arrayBuffer = await file.arrayBuffer();
+  const result = await window.electronAPI?.extractDocumentText?.({
+    fileName: file.name,
+    mimeType: mime,
+    buffer: arrayBuffer,
+  });
+
+  if (!result?.ok) {
+    throw new Error(result?.error ?? 'Text extraction failed.');
+  }
+
+  return {
+    id: generateId('attachment'),
+    type: 'file',
+    mimeType: mime || `application/${ext || 'octet-stream'}`,
+    name: file.name,
+    textContent: result.text,
+    rawContent: '',
+    lines: result.lines,
+    summary: result.summary,
+    ext,
+    extractedKind: result.kind,
+    extractedWarnings: result.warnings ?? [],
+  };
+}
+
 async function handlePaste(event) {
   const items = Array.from(event.clipboardData?.items ?? []);
   const imageItems = items.filter(i => i.type.startsWith('image/'));
@@ -372,7 +448,7 @@ async function handlePaste(event) {
 /* ══════════════════════════════════════════
    PUBLIC — addAttachments
    Feature 5: Rich multi-file support.
-   Handles images + CSV, JSON, YAML, MD, code, TXT, etc.
+   Handles images + CSV, JSON, YAML, MD, code, TXT, PDF, DOCX, XLSX, PPTX.
 ══════════════════════════════════════════ */
 export async function addAttachments(files) {
   const newAttachments = [];
@@ -403,13 +479,31 @@ export async function addAttachments(files) {
       continue;
     }
 
-    // ── Text / data / code files ─────────────────────────────────────────
-    const MAX_SIZE = 2 * 1024 * 1024; // 2 MB limit for text files
-    if (file.size > MAX_SIZE) {
-      showHint(`"${file.name}" is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max 2 MB.`, 'warning');
+    const binaryExtractable = isExtractableBinary(ext, mime);
+    const directText = DIRECT_TEXT_EXTENSIONS.has(ext) || isTextLikeMime(mime);
+    const maxSize = binaryExtractable ? EXTRACTABLE_BINARY_MAX_SIZE : DIRECT_TEXT_MAX_SIZE;
+
+    if (file.size > maxSize) {
+      const maxSizeMb = (maxSize / 1024 / 1024).toFixed(0);
+      showHint(`"${file.name}" is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max ${maxSizeMb} MB.`, 'warning');
       continue;
     }
 
+    if (binaryExtractable) {
+      try {
+        newAttachments.push(await extractBinaryAttachment(file, ext, mime));
+      } catch (err) {
+        showHint(`Could not extract readable text from "${file.name}": ${err.message}`, 'warning');
+      }
+      continue;
+    }
+
+    if (!directText) {
+      showHint(`"${file.name}" is not a supported text or document format yet.`, 'warning');
+      continue;
+    }
+
+    // ── Text / data / code files ─────────────────────────────────────────
     const rawText = await file.text().catch(() => null);
     if (rawText === null) {
       showHint(`Could not read "${file.name}" — it may be a binary file.`, 'warning');
@@ -475,7 +569,7 @@ export function syncCapabilities() {
   if (attachmentBtn) {
     attachmentBtn.classList.toggle('is-disabled', false); // files always ok
     attachmentBtn.setAttribute('aria-disabled', 'false');
-    attachmentBtn.title = 'Attach files (images, CSV, JSON, YAML, code, text…)';
+    attachmentBtn.title = 'Attach files (images, PDF, Word, Excel, slides, code, text…)';
   }
 
   if (!supportsImages) {
@@ -520,11 +614,11 @@ export function init(onSend) {
   sendBtn.addEventListener('click', _onSend);
 
   // Attachment button opens native file picker for all supported types
-  attachmentBtn?.addEventListener('click', () => {
+    attachmentBtn?.addEventListener('click', () => {
     const input = Object.assign(document.createElement('input'), {
       type: 'file',
       multiple: true,
-      accept: 'image/*,.csv,.tsv,.json,.yaml,.yml,.toml,.xml,.txt,.md,.mdx,.log,.env,.sh,.py,.js,.ts,.jsx,.tsx,.vue,.svelte,.rs,.go,.rb,.java,.cs,.cpp,.c,.h,.php,.sql,.graphql,.html,.css,.scss,.less',
+      accept: 'image/*,.pdf,.docx,.xlsx,.xls,.xlsm,.xlsb,.ods,.pptx,.csv,.tsv,.json,.yaml,.yml,.toml,.xml,.txt,.md,.mdx,.log,.env,.rtf,.sh,.py,.js,.ts,.jsx,.tsx,.vue,.svelte,.rs,.go,.rb,.java,.cs,.cpp,.c,.h,.hpp,.php,.sql,.graphql,.gql,.html,.css,.scss,.less,.astro',
     });
     input.addEventListener('change', async () => {
       if (input.files?.length) await addAttachments(Array.from(input.files));

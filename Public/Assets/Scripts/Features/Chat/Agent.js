@@ -146,10 +146,10 @@ function buildWorkspaceHint(summary, mode = 'runtime') {
   }
 
   if (mode === 'planning') {
-    lines.push('For coding, QA, or DevOps requests, strongly prefer inspect_workspace, search_workspace, read_file_chunk, read_multiple_local_files, list_directory_tree, replace_lines_in_file, insert_into_file, git_status, git_diff, run_project_checks, and GitHub/MCP tools over guessing.');
+    lines.push('For coding, QA, or DevOps requests, strongly prefer inspect_workspace, search_workspace, extract_file_text, read_file_chunk, read_multiple_local_files, list_directory_tree, replace_lines_in_file, insert_into_file, git_status, git_diff, run_project_checks, and GitHub/MCP tools over guessing.');
   } else {
     lines.push('When the user asks you to code, debug, test, review, or deploy, use the local workspace tools and stay inside this directory unless the user says otherwise.');
-    lines.push('Prefer inspect_workspace, search_workspace, read_file_chunk, read_multiple_local_files, list_directory_tree, replace_lines_in_file, insert_into_file, copy_item, move_item, git_status, git_diff, run_project_checks, and apply_file_patch before falling back to raw shell commands.');
+    lines.push('Prefer inspect_workspace, search_workspace, extract_file_text, read_file_chunk, read_multiple_local_files, list_directory_tree, replace_lines_in_file, insert_into_file, copy_item, move_item, git_status, git_diff, run_project_checks, and apply_file_patch before falling back to raw shell commands.');
     lines.push('Use assess_shell_command before risky shell work. Only set allow_risky=true when the user explicitly requested the risky action.');
     lines.push("Use start_local_server for long-running dev servers or watchers instead of run_shell_command.");
   }

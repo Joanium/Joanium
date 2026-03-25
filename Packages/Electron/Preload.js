@@ -145,6 +145,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   runShellCommand: (params) => ipcRenderer.invoke('run-shell-command', params),
   assessCommandRisk: (params) => ipcRenderer.invoke('assess-command-risk', params),
   readLocalFile: (params) => ipcRenderer.invoke('read-local-file', params),
+  extractDocumentText: (params) => ipcRenderer.invoke('extract-document-text', params),
   readFileChunk: (params) => ipcRenderer.invoke('read-file-chunk', params),
   readMultipleLocalFiles: (params) => ipcRenderer.invoke('read-multiple-local-files', params),
   listDirectory: (params) => ipcRenderer.invoke('list-directory', params),

@@ -394,7 +394,7 @@ function buildImageFrame(attachment, className) {
 function buildFileFrame(attachment, className) {
   const extMatch = (attachment.name || '').match(/\.([^.]+)$/);
   const ext = extMatch ? extMatch[1].toUpperCase() : 'FILE';
-  const linesText = attachment.lines ? `${attachment.lines} lines` : 'File';
+  const linesText = attachment.summary || (attachment.lines ? `${attachment.lines} lines` : 'File');
   const frame = document.createElement('div');
   frame.className = className;
   frame.title = attachment.name || 'File';
@@ -1158,8 +1158,10 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
 export async function saveCurrentChat() {
   if (!state.currentChatId || !state.messages.length) return;
   const first = state.messages.find(m => m.role === 'user');
+  const hasFileAttachment = first?.attachments?.some(a => a?.type === 'file');
+  const hasImageAttachment = first?.attachments?.some(a => a?.type === 'image');
   const title = first?.content?.trim().slice(0, 70) ||
-    (first?.attachments?.length ? 'Image attachment' : 'Untitled');
+    (hasFileAttachment ? 'File attachment' : hasImageAttachment ? 'Image attachment' : 'Untitled');
   try {
     await window.electronAPI?.saveChat({
       id: state.currentChatId,
@@ -1213,7 +1215,10 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
       role: m?.role ?? 'user',
       content: String(m?.content ?? ''),
       attachments: Array.isArray(m?.attachments)
-        ? m.attachments.filter(a => a?.type === 'image' && typeof a.dataUrl === 'string')
+        ? m.attachments.filter(a =>
+          (a?.type === 'image' && typeof a.dataUrl === 'string') ||
+          (a?.type === 'file' && typeof a.textContent === 'string'),
+        )
         : [],
     }));
     restored.forEach(m => appendMessage(m.role, m.content, false, false, m.attachments));

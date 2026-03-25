@@ -19,6 +19,14 @@ Responses stream token by token. Markdown is re-rendered every 80ms during strea
 ### Image Attachments
 Models that support image input (Claude, GPT-4o, Gemini) accept images via paste (Ctrl+V / Cmd+V). Images are shown as thumbnails in the composer before sending. The attachment button shows which models support images — if your selected model doesn't support images, you get a warning and the send button stays disabled.
 
+### Document Attachments
+The composer also accepts local files and embeds their contents into the prompt so the AI can work directly from uploaded material. Plain text, code, JSON, CSV, YAML, Markdown, and logs are read immediately. PDF, DOCX, XLSX/XLS/ODS, PPTX, and RTF files are converted to text first so the model can read them.
+
+Structured files get lightweight enrichment before sending:
+- CSV/TSV files include row and column context.
+- JSON files are pretty-printed and summarized.
+- PDF, Word, spreadsheet, and slide decks are converted into readable plain text with a short summary such as page, sheet, or slide count.
+
 ### Token Footer
 Every AI response shows a token usage footer: input tokens ↑, output tokens ↓, and an estimated cost based on published pricing. This is always visible (not togglable).
 
@@ -87,11 +95,11 @@ Returns photo URLs, photographer credits, dimensions, and like counts.
 **Try:** "Show my open PRs" or "Load the README from my main repo" or "What issues are open in withinjoel/Evelina?"
 
 ### Local Dev & Editing
-**Tools:** `inspect_workspace`, `search_workspace`, `find_file_by_name`, `read_local_file`, `read_file_chunk`, `read_multiple_local_files`, `list_directory`, `list_directory_tree`, `write_file`, `apply_file_patch`, `replace_lines_in_file`, `insert_into_file`, `copy_item`, `move_item`, `git_status`, `git_diff`, `run_project_checks`, `start_local_server`  
+**Tools:** `inspect_workspace`, `search_workspace`, `find_file_by_name`, `read_local_file`, `extract_file_text`, `read_file_chunk`, `read_multiple_local_files`, `list_directory`, `list_directory_tree`, `write_file`, `apply_file_patch`, `replace_lines_in_file`, `insert_into_file`, `copy_item`, `move_item`, `git_status`, `git_diff`, `run_project_checks`, `start_local_server`  
 **Provider:** Built in (no connector required)  
-**Try:** "Inspect this repo", "Read these three files", "Replace lines 20 to 35", "Insert this import before the router setup", "Copy this config into a new env file", or "Run lint and tests"
+**Try:** "Inspect this repo", "Extract text from this PDF", "Read these three files", "Replace lines 20 to 35", "Insert this import before the router setup", "Copy this config into a new env file", or "Run lint and tests"
 
-These tools let the AI work directly with a local codebase: inspect the workspace, read one or many files, view directory trees, make surgical edits, move or copy files, review Git state, run project checks, and start local dev servers without leaving chat.
+These tools let the AI work directly with a local codebase and local documents: inspect the workspace, extract text from PDFs and Office files, read one or many files, view directory trees, make surgical edits, move or copy files, review Git state, run project checks, and start local dev servers without leaving chat.
 
 ### Utility Tools
 **Tools:** `calculate_expression`, `convert_units`, `get_time_in_timezone`, `generate_uuid`, `hash_text`, `encode_base64`, `decode_base64`, `format_json`, `convert_text_case`, `get_text_stats`  

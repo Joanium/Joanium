@@ -10,6 +10,7 @@ const HANDLED = new Set([
   'run_shell_command',
   'assess_shell_command',
   'read_local_file',
+  'extract_file_text',
   'read_file_chunk',
   'read_multiple_local_files',
   'list_directory',
@@ -149,6 +150,18 @@ function formatDirectoryTree(result) {
   ].join('\n');
 }
 
+function formatDocumentExtraction(result, filePath) {
+  return [
+    `Extracted text from ${filePath}:`,
+    `Type: ${result.kind} | Summary: ${result.summary}${result.truncated ? ' | Truncated for context' : ''}`,
+    ...(result.warnings?.length ? ['', 'Warnings:', ...result.warnings.map(warning => `- ${warning}`)] : []),
+    '',
+    '```',
+    result.text,
+    '```',
+  ].join('\n');
+}
+
 export async function execute(toolName, params, onStage = () => { }) {
   switch (toolName) {
     case 'inspect_workspace': {
@@ -262,6 +275,16 @@ export async function execute(toolName, params, onStage = () => { }) {
         result.content,
         '```',
       ].join('\n');
+    }
+
+    case 'extract_file_text': {
+      const { path: filePath } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+
+      onStage(`Extracting text from ${filePath}`);
+      const result = await window.electronAPI?.extractDocumentText?.({ filePath });
+      if (!result?.ok) throw new Error(result?.error ?? 'Document extraction failed');
+      return formatDocumentExtraction(result, filePath);
     }
 
     case 'read_file_chunk': {

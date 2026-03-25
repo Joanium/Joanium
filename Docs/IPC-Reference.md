@@ -392,6 +392,22 @@ await window.electronAPI.readLocalFile({ filePath: 'D:\\Projects\\OpenWorld\\App
 await window.electronAPI.readFileChunk({ filePath: 'D:\\Projects\\OpenWorld\\App.js', startLine: 1, lineCount: 80 })
 ```
 
+### `extract-document-text`
+Extracts readable text from a local path or an uploaded binary document buffer. Supports PDF, DOCX, XLSX/XLS/ODS, PPTX, RTF, and plain text formats.
+
+```typescript
+await window.electronAPI.extractDocumentText({
+  filePath: 'D:\\Projects\\OpenWorld\\Docs\\Roadmap.pdf'
+})
+
+await window.electronAPI.extractDocumentText({
+  fileName: 'proposal.docx',
+  mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  buffer: arrayBuffer
+})
+// Returns: { ok: boolean, kind?: string, summary?: string, text?: string, lines?: number, warnings?: string[], error?: string }
+```
+
 ### `read-multiple-local-files`
 Reads several text files in one round trip for compare-and-edit workflows.
 

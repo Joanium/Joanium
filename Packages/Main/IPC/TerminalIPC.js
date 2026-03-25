@@ -7,6 +7,10 @@ import { exec, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import {
+  extractDocumentTextFromBuffer,
+  extractDocumentTextFromPath,
+} from '../Services/DocumentExtractionService.js';
 
 const activePtys = new Map();
 
@@ -541,6 +545,22 @@ export function register() {
         ok: true,
         ...readTextFilePreview(filePath, maxLines),
       };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('extract-document-text', async (_e, payload = {}) => {
+    try {
+      const result = payload.filePath?.trim()
+        ? await extractDocumentTextFromPath(payload.filePath)
+        : await extractDocumentTextFromBuffer({
+          fileName: payload.fileName ?? '',
+          mimeType: payload.mimeType ?? '',
+          buffer: payload.buffer,
+        });
+
+      return { ok: true, ...result };
     } catch (err) {
       return { ok: false, error: err.message };
     }
