@@ -17,6 +17,9 @@ const MAX_FILE_BYTES = 512_000;
 const MAX_LINES_DEFAULT = 200;
 const MAX_SEARCH_RESULTS = 40;
 const MAX_SEARCH_FILES = 4_000;
+const MAX_MULTI_FILE_READS = 12;
+const MAX_TREE_DEPTH = 6;
+const MAX_TREE_ENTRIES = 500;
 
 const WORKSPACE_SKIP_DIRS = new Set([
   '.git', 'node_modules', 'dist', 'build', 'out', '.next', '.nuxt',
@@ -70,6 +73,108 @@ function isProbablyTextFile(filePath) {
   const base = path.basename(filePath).toLowerCase();
   if (base === 'dockerfile' || base === 'makefile' || base === '.gitignore') return true;
   return TEXT_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+}
+
+function detectEol(raw = '') {
+  return raw.includes('\r\n') ? '\r\n' : '\n';
+}
+
+function splitLinesPreserveFinal(raw = '') {
+  if (!raw) return { lines: [], endsWithNewline: false };
+  const endsWithNewline = /\r?\n$/.test(raw);
+  const lines = raw.split(/\r?\n/);
+  if (endsWithNewline) lines.pop();
+  return { lines, endsWithNewline };
+}
+
+function joinLines(lines = [], eol = '\n', endsWithNewline = false) {
+  if (!lines.length) return '';
+  const joined = lines.join(eol);
+  return endsWithNewline ? `${joined}${eol}` : joined;
+}
+
+function parsePathList(input) {
+  return String(input ?? '')
+    .split(/[\r\n,]+/)
+    .map(value => value.trim())
+    .filter(Boolean);
+}
+
+function readTextFilePreview(filePath, maxLines = MAX_LINES_DEFAULT) {
+  const resolved = path.resolve(filePath);
+  const stat = fs.statSync(resolved);
+  if (!stat.isFile()) throw new Error(`"${resolved}" is not a file.`);
+  if (stat.size > MAX_FILE_BYTES) {
+    throw new Error(`File too large (${(stat.size / 1024).toFixed(0)} KB > 512 KB limit). Use read-file-chunk or search-workspace instead.`);
+  }
+
+  const raw = fs.readFileSync(resolved, 'utf-8');
+  const lines = raw.split('\n');
+  const limit = Math.min(Number(maxLines) || MAX_LINES_DEFAULT, 2_000);
+  const sliced = lines.slice(0, limit);
+  const note = lines.length > limit ? `\n...(showing ${limit} of ${lines.length} lines)` : '';
+
+  return {
+    path: resolved,
+    content: sliced.join('\n') + note,
+    totalLines: lines.length,
+    sizeBytes: stat.size,
+  };
+}
+
+function buildDirectoryTree(dirPath, maxDepth = 3, maxEntries = 200) {
+  const resolved = path.resolve(dirPath);
+  const stat = fs.statSync(resolved);
+  if (!stat.isDirectory()) throw new Error(`"${resolved}" is not a directory.`);
+
+  const depthLimit = Math.min(Math.max(1, Number(maxDepth) || 3), MAX_TREE_DEPTH);
+  const entryLimit = Math.min(Math.max(1, Number(maxEntries) || 200), MAX_TREE_ENTRIES);
+  const lines = [resolved];
+  let included = 0;
+  let truncated = false;
+
+  function walk(currentPath, depth, prefix) {
+    if (depth >= depthLimit || truncated) return;
+
+    let entries = fs.readdirSync(currentPath, { withFileTypes: true })
+      .filter(entry => entry.name !== '.' && entry.name !== '..' && !entry.isSymbolicLink?.())
+      .filter(entry => !WORKSPACE_SKIP_DIRS.has(entry.name))
+      .sort((a, b) => {
+        if (a.isDirectory() !== b.isDirectory()) return a.isDirectory() ? -1 : 1;
+        return a.name.localeCompare(b.name);
+      });
+
+    for (let index = 0; index < entries.length; index++) {
+      if (included >= entryLimit) {
+        truncated = true;
+        return;
+      }
+
+      const entry = entries[index];
+      const isLast = index === entries.length - 1;
+      const marker = isLast ? '└─ ' : '├─ ';
+      const nextPrefix = `${prefix}${isLast ? '   ' : '│  '}`;
+      const label = `${entry.name}${entry.isDirectory() ? '/' : ''}`;
+
+      lines.push(`${prefix}${marker}${label}`);
+      included += 1;
+
+      if (entry.isDirectory()) {
+        walk(path.join(currentPath, entry.name), depth + 1, nextPrefix);
+        if (truncated) return;
+      }
+    }
+  }
+
+  walk(resolved, 0, '');
+
+  return {
+    path: resolved,
+    lines,
+    count: included,
+    truncated,
+    maxDepth: depthLimit,
+  };
 }
 
 function walkWorkspaceFiles(rootPath, maxFiles = MAX_SEARCH_FILES) {
@@ -431,26 +536,10 @@ export function register() {
   ipcMain.handle('read-local-file', async (_e, { filePath, maxLines }) => {
     if (!filePath?.trim()) return { ok: false, error: 'No file path provided.' };
 
-    const resolved = path.resolve(filePath);
     try {
-      const stat = fs.statSync(resolved);
-      if (!stat.isFile()) return { ok: false, error: `"${resolved}" is not a file.` };
-      if (stat.size > MAX_FILE_BYTES) {
-        return { ok: false, error: `File too large (${(stat.size / 1024).toFixed(0)} KB > 512 KB limit). Use read-file-chunk or search-workspace instead.` };
-      }
-
-      const raw = fs.readFileSync(resolved, 'utf-8');
-      const lines = raw.split('\n');
-      const limit = Math.min(Number(maxLines) || MAX_LINES_DEFAULT, 2_000);
-      const sliced = lines.slice(0, limit);
-      const note = lines.length > limit ? `\n… (showing ${limit} of ${lines.length} lines)` : '';
-
       return {
         ok: true,
-        content: sliced.join('\n') + note,
-        totalLines: lines.length,
-        sizeBytes: stat.size,
-        path: resolved,
+        ...readTextFilePreview(filePath, maxLines),
       };
     } catch (err) {
       return { ok: false, error: err.message };
@@ -480,6 +569,25 @@ export function register() {
     }
   });
 
+  ipcMain.handle('read-multiple-local-files', async (_e, { paths, maxLinesPerFile }) => {
+    const filePaths = parsePathList(paths).slice(0, MAX_MULTI_FILE_READS);
+    if (!filePaths.length) return { ok: false, error: 'No file paths provided.' };
+
+    try {
+      const files = filePaths.map(filePath => {
+        try {
+          return { ok: true, ...readTextFilePreview(filePath, maxLinesPerFile ?? 180) };
+        } catch (err) {
+          return { ok: false, path: path.resolve(filePath), error: err.message };
+        }
+      });
+
+      return { ok: true, files };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
   ipcMain.handle('list-directory', async (_e, { dirPath }) => {
     if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
 
@@ -502,6 +610,19 @@ export function register() {
       });
 
       return { ok: true, path: resolved, entries: items, count: items.length };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('list-directory-tree', async (_e, { dirPath, maxDepth, maxEntries }) => {
+    if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
+
+    try {
+      return {
+        ok: true,
+        ...buildDirectoryTree(dirPath, maxDepth, maxEntries),
+      };
     } catch (err) {
       return { ok: false, error: err.message };
     }
@@ -601,12 +722,167 @@ export function register() {
     }
   });
 
+  ipcMain.handle('replace-lines-in-file', async (_e, { filePath, startLine, endLine, replacement }) => {
+    if (!filePath?.trim()) return { ok: false, error: 'No file path provided.' };
+    if (!Number.isFinite(Number(startLine))) return { ok: false, error: 'No valid start line provided.' };
+    if (!Number.isFinite(Number(endLine))) return { ok: false, error: 'No valid end line provided.' };
+    if (typeof replacement !== 'string') return { ok: false, error: 'No replacement text provided.' };
+
+    const resolved = path.resolve(filePath);
+    try {
+      const original = fs.readFileSync(resolved, 'utf-8');
+      const eol = detectEol(original);
+      const { lines, endsWithNewline } = splitLinesPreserveFinal(original);
+      const start = Math.max(1, Number(startLine));
+      const end = Math.max(start, Number(endLine));
+
+      if (start > lines.length || end > lines.length) {
+        return { ok: false, error: `Line range ${start}-${end} is outside the file (${lines.length} lines).` };
+      }
+
+      const replacementLines = replacement === '' ? [] : replacement.split(/\r?\n/);
+      const nextLines = [
+        ...lines.slice(0, start - 1),
+        ...replacementLines,
+        ...lines.slice(end),
+      ];
+
+      fs.writeFileSync(resolved, joinLines(nextLines, eol, endsWithNewline), 'utf-8');
+
+      return {
+        ok: true,
+        path: resolved,
+        startLine: start,
+        endLine: end,
+        insertedLines: replacementLines.length,
+      };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('insert-into-file', async (_e, { filePath, content, position = 'end', lineNumber, anchor }) => {
+    if (!filePath?.trim()) return { ok: false, error: 'No file path provided.' };
+    if (typeof content !== 'string') return { ok: false, error: 'No content provided.' };
+
+    const resolved = path.resolve(filePath);
+    try {
+      const original = fs.readFileSync(resolved, 'utf-8');
+      const normalizedPosition = String(position || '').trim().toLowerCase() || (anchor ? 'after' : 'end');
+      let next = original;
+
+      if (Number.isFinite(Number(lineNumber))) {
+        const eol = detectEol(original);
+        const { lines, endsWithNewline } = splitLinesPreserveFinal(original);
+        const rawLineNumber = Math.max(1, Number(lineNumber));
+        const boundedLineNumber = Math.min(rawLineNumber, lines.length + 1);
+        const insertIndex = normalizedPosition === 'after'
+          ? Math.min(boundedLineNumber, lines.length)
+          : boundedLineNumber - 1;
+        const contentLines = content === '' ? [] : content.split(/\r?\n/);
+
+        lines.splice(insertIndex, 0, ...contentLines);
+        next = joinLines(lines, eol, endsWithNewline);
+      } else if (anchor) {
+        const anchorIndex = original.indexOf(anchor);
+        if (anchorIndex === -1) {
+          return { ok: false, error: 'Anchor text was not found in the file.' };
+        }
+
+        const insertAt = normalizedPosition === 'before'
+          ? anchorIndex
+          : anchorIndex + anchor.length;
+        next = `${original.slice(0, insertAt)}${content}${original.slice(insertAt)}`;
+      } else if (normalizedPosition === 'start') {
+        next = `${content}${original}`;
+      } else {
+        next = `${original}${content}`;
+      }
+
+      fs.writeFileSync(resolved, next, 'utf-8');
+
+      return {
+        ok: true,
+        path: resolved,
+        position: normalizedPosition,
+        mode: Number.isFinite(Number(lineNumber)) ? 'line' : anchor ? 'anchor' : 'boundary',
+      };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
   ipcMain.handle('create-directory', async (_e, { dirPath }) => {
     if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
     const resolved = path.resolve(dirPath);
     try {
       if (!fs.existsSync(resolved)) fs.mkdirSync(resolved, { recursive: true });
       return { ok: true, path: resolved };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('copy-item', async (_e, { sourcePath, destinationPath, overwrite = false }) => {
+    if (!sourcePath?.trim()) return { ok: false, error: 'No source path provided.' };
+    if (!destinationPath?.trim()) return { ok: false, error: 'No destination path provided.' };
+
+    const source = path.resolve(sourcePath);
+    const destination = path.resolve(destinationPath);
+    const allowOverwrite = normalizeBool(overwrite);
+
+    try {
+      if (!fs.existsSync(source)) return { ok: false, error: 'Source path does not exist.' };
+      if (fs.existsSync(destination)) {
+        if (!allowOverwrite) {
+          return { ok: false, error: 'Destination already exists. Re-run with overwrite=true to replace it.' };
+        }
+        const reason = protectedDeleteReason(destination);
+        if (reason) return { ok: false, error: reason };
+        fs.rmSync(destination, { recursive: true, force: true });
+      }
+
+      const destinationParent = path.dirname(destination);
+      if (!fs.existsSync(destinationParent)) fs.mkdirSync(destinationParent, { recursive: true });
+      fs.cpSync(source, destination, { recursive: true, force: allowOverwrite });
+
+      return { ok: true, source, destination };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('move-item', async (_e, { sourcePath, destinationPath, overwrite = false }) => {
+    if (!sourcePath?.trim()) return { ok: false, error: 'No source path provided.' };
+    if (!destinationPath?.trim()) return { ok: false, error: 'No destination path provided.' };
+
+    const source = path.resolve(sourcePath);
+    const destination = path.resolve(destinationPath);
+    const allowOverwrite = normalizeBool(overwrite);
+
+    try {
+      if (!fs.existsSync(source)) return { ok: false, error: 'Source path does not exist.' };
+      if (fs.existsSync(destination)) {
+        if (!allowOverwrite) {
+          return { ok: false, error: 'Destination already exists. Re-run with overwrite=true to replace it.' };
+        }
+        const reason = protectedDeleteReason(destination);
+        if (reason) return { ok: false, error: reason };
+        fs.rmSync(destination, { recursive: true, force: true });
+      }
+
+      const destinationParent = path.dirname(destination);
+      if (!fs.existsSync(destinationParent)) fs.mkdirSync(destinationParent, { recursive: true });
+
+      try {
+        fs.renameSync(source, destination);
+      } catch (err) {
+        if (!['EXDEV', 'EPERM'].includes(err.code)) throw err;
+        fs.cpSync(source, destination, { recursive: true, force: true });
+        fs.rmSync(source, { recursive: true, force: true });
+      }
+
+      return { ok: true, source, destination };
     } catch (err) {
       return { ok: false, error: err.message };
     }

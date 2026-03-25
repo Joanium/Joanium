@@ -86,6 +86,13 @@ Returns photo URLs, photographer credits, dimensions, and like counts.
 **Tools:** `github_list_repos`, `github_get_issues`, `github_get_pull_requests`, `github_get_file`, `github_get_file_tree`, `github_get_notifications`  
 **Try:** "Show my open PRs" or "Load the README from my main repo" or "What issues are open in withinjoel/Evelina?"
 
+### Local Dev & Editing
+**Tools:** `inspect_workspace`, `search_workspace`, `find_file_by_name`, `read_local_file`, `read_file_chunk`, `read_multiple_local_files`, `list_directory`, `list_directory_tree`, `write_file`, `apply_file_patch`, `replace_lines_in_file`, `insert_into_file`, `copy_item`, `move_item`, `git_status`, `git_diff`, `run_project_checks`, `start_local_server`  
+**Provider:** Built in (no connector required)  
+**Try:** "Inspect this repo", "Read these three files", "Replace lines 20 to 35", "Insert this import before the router setup", "Copy this config into a new env file", or "Run lint and tests"
+
+These tools let the AI work directly with a local codebase: inspect the workspace, read one or many files, view directory trees, make surgical edits, move or copy files, review Git state, run project checks, and start local dev servers without leaving chat.
+
 ### Utility Tools
 **Tools:** `calculate_expression`, `convert_units`, `get_time_in_timezone`, `generate_uuid`, `hash_text`, `encode_base64`, `decode_base64`, `format_json`, `convert_text_case`, `get_text_stats`  
 **Provider:** Built in (no connector required)  

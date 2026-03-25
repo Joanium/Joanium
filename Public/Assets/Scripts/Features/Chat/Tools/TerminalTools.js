@@ -135,6 +135,23 @@ export const TERMINAL_TOOLS = [
     },
   },
   {
+    name: 'read_multiple_local_files',
+    description: 'Read several local text files in one call. Useful when comparing related files before editing.',
+    category: 'terminal',
+    parameters: {
+      paths: {
+        type: 'string',
+        required: true,
+        description: 'Comma-separated absolute file paths to read.',
+      },
+      max_lines_per_file: {
+        type: 'number',
+        required: false,
+        description: 'Maximum lines to return per file (default: 180, max: 1000).',
+      },
+    },
+  },
+  {
     name: 'list_directory',
     description: 'List files and folders at a given path, with file sizes.',
     category: 'terminal',
@@ -143,6 +160,28 @@ export const TERMINAL_TOOLS = [
         type: 'string',
         required: true,
         description: 'Absolute directory path to list.',
+      },
+    },
+  },
+  {
+    name: 'list_directory_tree',
+    description: 'Show a shallow recursive tree of a directory. Use this to understand project layout before searching or editing.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute directory path to inspect.',
+      },
+      max_depth: {
+        type: 'number',
+        required: false,
+        description: 'Maximum recursion depth (default: 3, max: 6).',
+      },
+      max_entries: {
+        type: 'number',
+        required: false,
+        description: 'Maximum files and folders to include (default: 200, max: 500).',
       },
     },
   },
@@ -196,6 +235,65 @@ export const TERMINAL_TOOLS = [
     },
   },
   {
+    name: 'replace_lines_in_file',
+    description: 'Replace an exact line range in a local text file. Prefer this for surgical edits when you know the affected lines.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file to edit.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based start line of the range to replace.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based end line of the range to replace.',
+      },
+      replacement: {
+        type: 'string',
+        required: true,
+        description: 'Replacement text for the specified line range. Use an empty string to delete the range.',
+      },
+    },
+  },
+  {
+    name: 'insert_into_file',
+    description: 'Insert text into a local file at the start, end, a line number, or before or after an anchor string.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file to edit.',
+      },
+      content: {
+        type: 'string',
+        required: true,
+        description: 'Text to insert. Include surrounding newlines when needed.',
+      },
+      position: {
+        type: 'string',
+        required: false,
+        description: 'Insert position: start, end, before, or after. Defaults to end, or after when anchor is provided.',
+      },
+      line_number: {
+        type: 'number',
+        required: false,
+        description: 'Optional 1-based line number to insert before or after.',
+      },
+      anchor: {
+        type: 'string',
+        required: false,
+        description: 'Optional exact text anchor to insert before or after.',
+      },
+    },
+  },
+  {
     name: 'create_folder',
     description: 'Create a new directory at the specified path. Creates parent directories if needed.',
     category: 'terminal',
@@ -204,6 +302,50 @@ export const TERMINAL_TOOLS = [
         type: 'string',
         required: true,
         description: 'Absolute path to the new directory.',
+      },
+    },
+  },
+  {
+    name: 'copy_item',
+    description: 'Copy a local file or directory to a new path.',
+    category: 'terminal',
+    parameters: {
+      source_path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the source file or directory.',
+      },
+      destination_path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute destination path.',
+      },
+      overwrite: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to overwrite an existing destination.',
+      },
+    },
+  },
+  {
+    name: 'move_item',
+    description: 'Move or rename a local file or directory.',
+    category: 'terminal',
+    parameters: {
+      source_path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the source file or directory.',
+      },
+      destination_path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute destination path.',
+      },
+      overwrite: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to overwrite an existing destination.',
       },
     },
   },

@@ -360,6 +360,127 @@ const result = await window.electronAPI.githubGetCommits('withinJoel', 'Evelina'
 
 ---
 
+## Local Dev & Terminal
+
+These channels back the chat agent's local workspace tools.
+
+### `inspect-workspace`
+Summarises the current codebase: languages, frameworks, scripts, test signals, CI, and infra hints.
+
+```typescript
+const result = await window.electronAPI.inspectWorkspace({ rootPath: 'D:\\Projects\\OpenWorld' })
+// Returns: { ok: boolean, summary: { path, languages, frameworks, packageScripts, testing, infra, ... } }
+```
+
+### `search-workspace`
+Searches text across the workspace and returns matching files with line snippets.
+
+```typescript
+const result = await window.electronAPI.searchWorkspace({
+  rootPath: 'D:\\Projects\\OpenWorld',
+  query: 'apply_file_patch',
+  maxResults: 20
+})
+// Returns: { ok: boolean, root, matches: Array<{ path, lineNumber, line }> }
+```
+
+### `read-local-file` / `read-file-chunk`
+Reads a full text file preview or a specific line range.
+
+```typescript
+await window.electronAPI.readLocalFile({ filePath: 'D:\\Projects\\OpenWorld\\App.js', maxLines: 150 })
+await window.electronAPI.readFileChunk({ filePath: 'D:\\Projects\\OpenWorld\\App.js', startLine: 1, lineCount: 80 })
+```
+
+### `read-multiple-local-files`
+Reads several text files in one round trip for compare-and-edit workflows.
+
+```typescript
+const result = await window.electronAPI.readMultipleLocalFiles({
+  paths: 'D:\\Projects\\OpenWorld\\App.js,D:\\Projects\\OpenWorld\\package.json',
+  maxLinesPerFile: 120
+})
+// Returns: { ok: boolean, files: Array<{ ok, path, content?, totalLines?, sizeBytes?, error? }> }
+```
+
+### `list-directory` / `list-directory-tree`
+Lists one folder flat or as a shallow recursive tree.
+
+```typescript
+await window.electronAPI.listDirectory({ dirPath: 'D:\\Projects\\OpenWorld\\Packages' })
+await window.electronAPI.listDirectoryTree({ dirPath: 'D:\\Projects\\OpenWorld\\Packages', maxDepth: 3, maxEntries: 200 })
+```
+
+### `write-ai-file` / `apply-file-patch`
+Writes a full file or performs exact-text replacement in place.
+
+```typescript
+await window.electronAPI.writeAIFile({ filePath: 'D:\\Projects\\OpenWorld\\tmp.txt', content: 'hello' })
+await window.electronAPI.applyFilePatch({
+  filePath: 'D:\\Projects\\OpenWorld\\App.js',
+  search: 'old text',
+  replace: 'new text'
+})
+```
+
+### `replace-lines-in-file` / `insert-into-file`
+Supports surgical edits by line range or by insertion target.
+
+```typescript
+await window.electronAPI.replaceLinesInFile({
+  filePath: 'D:\\Projects\\OpenWorld\\App.js',
+  startLine: 10,
+  endLine: 14,
+  replacement: 'const value = 42;'
+})
+
+await window.electronAPI.insertIntoFile({
+  filePath: 'D:\\Projects\\OpenWorld\\App.js',
+  content: '\\nimport fs from \"fs\";\\n',
+  anchor: "import { app, BrowserWindow } from 'electron';",
+  position: 'after'
+})
+```
+
+### `copy-item` / `move-item` / `create-directory` / `delete-item`
+Copies, renames, creates, or deletes files and folders.
+
+```typescript
+await window.electronAPI.copyItem({ sourcePath: 'D:\\Projects\\OpenWorld\\.env.example', destinationPath: 'D:\\Projects\\OpenWorld\\.env' })
+await window.electronAPI.moveItem({ sourcePath: 'D:\\Projects\\OpenWorld\\old.js', destinationPath: 'D:\\Projects\\OpenWorld\\new.js' })
+await window.electronAPI.createDirectory({ dirPath: 'D:\\Projects\\OpenWorld\\tmp\\reports' })
+await window.electronAPI.deleteItem({ itemPath: 'D:\\Projects\\OpenWorld\\tmp\\old-report.txt' })
+```
+
+### `run-shell-command` / `assess-command-risk` / `run-project-checks`
+Runs short-lived commands, assesses destructive risk, and executes detected lint/test/build scripts.
+
+```typescript
+await window.electronAPI.assessCommandRisk({ command: 'git push --force' })
+await window.electronAPI.runShellCommand({ command: 'npm run lint', cwd: 'D:\\Projects\\OpenWorld', timeout: 30000 })
+await window.electronAPI.runProjectChecks({ working_directory: 'D:\\Projects\\OpenWorld' })
+```
+
+### `git-status` / `git-diff` / `git-create-branch`
+Exposes lightweight Git operations for local review and workflow setup.
+
+```typescript
+await window.electronAPI.gitStatus({ workingDir: 'D:\\Projects\\OpenWorld' })
+await window.electronAPI.gitDiff({ workingDir: 'D:\\Projects\\OpenWorld', staged: false })
+await window.electronAPI.gitCreateBranch({ workingDir: 'D:\\Projects\\OpenWorld', branchName: 'codex/new-tools' })
+```
+
+### `pty-spawn` / `pty-write` / `pty-kill`
+Starts a long-running process whose output is streamed into the embedded chat terminal.
+
+```typescript
+const { pid } = await window.electronAPI.spawnPty({ command: 'npm run dev', cwd: 'D:\\Projects\\OpenWorld' })
+await window.electronAPI.writePty(pid, 'rs\n')
+await window.electronAPI.killPty(pid)
+```
+
+---
+
 ## Skills & Personas
 
 ### `get-skills`

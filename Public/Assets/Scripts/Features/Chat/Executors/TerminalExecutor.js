@@ -11,10 +11,16 @@ const HANDLED = new Set([
   'assess_shell_command',
   'read_local_file',
   'read_file_chunk',
+  'read_multiple_local_files',
   'list_directory',
+  'list_directory_tree',
   'write_file',
   'apply_file_patch',
+  'replace_lines_in_file',
+  'insert_into_file',
   'create_folder',
+  'copy_item',
+  'move_item',
   'git_status',
   'git_diff',
   'git_create_branch',
@@ -108,6 +114,39 @@ function formatProjectChecks(result) {
   }
 
   return lines.join('\n');
+}
+
+function formatMultipleFileReads(result) {
+  return [
+    `Read ${result.files.length} file${result.files.length !== 1 ? 's' : ''}:`,
+    '',
+    ...result.files.map(file => {
+      if (!file.ok) {
+        return [
+          `### ${file.path}`,
+          `Error: ${file.error}`,
+        ].join('\n');
+      }
+
+      return [
+        `### ${file.path}`,
+        `Size: ${(file.sizeBytes / 1024).toFixed(1)} KB | Lines: ${file.totalLines}`,
+        '```',
+        file.content,
+        '```',
+      ].join('\n');
+    }),
+  ].join('\n');
+}
+
+function formatDirectoryTree(result) {
+  return [
+    `Directory tree for ${result.path}:`,
+    `Entries shown: ${result.count}${result.truncated ? ' (truncated)' : ''} | Depth: ${result.maxDepth}`,
+    '```',
+    result.lines.join('\n'),
+    '```',
+  ].join('\n');
 }
 
 export async function execute(toolName, params, onStage = () => { }) {
@@ -247,6 +286,19 @@ export async function execute(toolName, params, onStage = () => { }) {
       ].join('\n');
     }
 
+    case 'read_multiple_local_files': {
+      if (!params.paths?.trim()) throw new Error('Missing required param: paths');
+
+      onStage(`Reading multiple files`);
+      const result = await window.electronAPI?.readMultipleLocalFiles?.({
+        paths: params.paths,
+        maxLinesPerFile: params.max_lines_per_file,
+      });
+
+      if (!result?.ok) throw new Error(result?.error ?? 'Multi-file read failed');
+      return formatMultipleFileReads(result);
+    }
+
     case 'list_directory': {
       const { path: dirPath } = params;
       if (!dirPath?.trim()) throw new Error('Missing required param: path');
@@ -269,6 +321,20 @@ export async function execute(toolName, params, onStage = () => { }) {
         '',
         ...lines,
       ].join('\n');
+    }
+
+    case 'list_directory_tree': {
+      const { path: dirPath } = params;
+      if (!dirPath?.trim()) throw new Error('Missing required param: path');
+
+      onStage(`Listing tree for ${dirPath}`);
+      const result = await window.electronAPI?.listDirectoryTree?.({
+        dirPath,
+        maxDepth: params.max_depth,
+        maxEntries: params.max_entries,
+      });
+      if (!result?.ok) throw new Error(result?.error ?? 'Directory tree failed');
+      return formatDirectoryTree(result);
     }
 
     case 'write_file': {
@@ -300,6 +366,41 @@ export async function execute(toolName, params, onStage = () => { }) {
       return `✅ Patched ${result.path} (${result.replacements} replacement${result.replacements !== 1 ? 's' : ''})`;
     }
 
+    case 'replace_lines_in_file': {
+      const { path: filePath, start_line, end_line, replacement } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+      if (typeof replacement !== 'string') throw new Error('Missing required param: replacement');
+
+      onStage(`Replacing lines ${start_line}-${end_line} in ${filePath}`);
+      const result = await window.electronAPI?.replaceLinesInFile?.({
+        filePath,
+        startLine: start_line,
+        endLine: end_line,
+        replacement,
+      });
+      if (!result?.ok) throw new Error(result?.error ?? 'Line replacement failed');
+      return `✅ Replaced lines ${result.startLine}-${result.endLine} in ${result.path}`;
+    }
+
+    case 'insert_into_file': {
+      const { path: filePath, content } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (typeof content !== 'string') throw new Error('Missing required param: content');
+
+      onStage(`Inserting text into ${filePath}`);
+      const result = await window.electronAPI?.insertIntoFile?.({
+        filePath,
+        content,
+        position: params.position,
+        lineNumber: params.line_number,
+        anchor: params.anchor,
+      });
+      if (!result?.ok) throw new Error(result?.error ?? 'Insert failed');
+      return `✅ Inserted text into ${result.path} using ${result.mode} targeting (${result.position})`;
+    }
+
     case 'create_folder': {
       const { path: dirPath } = params;
       if (!dirPath?.trim()) throw new Error('Missing required param: path');
@@ -308,6 +409,36 @@ export async function execute(toolName, params, onStage = () => { }) {
       const result = await window.electronAPI?.createDirectory?.({ dirPath });
       if (!result?.ok) throw new Error(result?.error ?? 'Folder creation failed');
       return `✅ Folder created: ${result.path}`;
+    }
+
+    case 'copy_item': {
+      const { source_path, destination_path } = params;
+      if (!source_path?.trim()) throw new Error('Missing required param: source_path');
+      if (!destination_path?.trim()) throw new Error('Missing required param: destination_path');
+
+      onStage(`Copying ${source_path}`);
+      const result = await window.electronAPI?.copyItem?.({
+        sourcePath: source_path,
+        destinationPath: destination_path,
+        overwrite: params.overwrite,
+      });
+      if (!result?.ok) throw new Error(result?.error ?? 'Copy failed');
+      return `✅ Copied ${result.source} -> ${result.destination}`;
+    }
+
+    case 'move_item': {
+      const { source_path, destination_path } = params;
+      if (!source_path?.trim()) throw new Error('Missing required param: source_path');
+      if (!destination_path?.trim()) throw new Error('Missing required param: destination_path');
+
+      onStage(`Moving ${source_path}`);
+      const result = await window.electronAPI?.moveItem?.({
+        sourcePath: source_path,
+        destinationPath: destination_path,
+        overwrite: params.overwrite,
+      });
+      if (!result?.ok) throw new Error(result?.error ?? 'Move failed');
+      return `✅ Moved ${result.source} -> ${result.destination}`;
     }
 
     case 'git_status': {
