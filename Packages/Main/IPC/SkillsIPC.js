@@ -1,10 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/SkillsIPC.js
-//  Reads skill .md files from Skills/ directory.
-//  Manages per-skill enabled state in Data/Skills.json.
-//  All skills are DISABLED by default.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';

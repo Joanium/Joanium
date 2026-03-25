@@ -1,6 +1,3 @@
-// Evelina — Features/Chat/Executors/Index.js
-// Main dispatcher that routes each tool name to the correct executor module.
-
 import * as GmailExecutor from './GmailExecutor.js';
 import * as GithubExecutor from './GithubExecutor.js';
 import * as WeatherExecutor from './WeatherExecutor.js';

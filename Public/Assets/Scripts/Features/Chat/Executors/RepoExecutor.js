@@ -1,7 +1,3 @@
-// Evelina — Features/Chat/Executors/RepoExecutor.js
-// Smart repo context loader: fetches file tree + selects & loads the most
-// relevant source files for codebase-level Q&A.
-
 const HANDLED = new Set(['github_load_repo_context', 'github_search_code']);
 
 // File extensions we consider "source" (worth loading)

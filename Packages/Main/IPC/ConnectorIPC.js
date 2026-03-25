@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/ConnectorIPC.js
-//  Handlers for saving, removing, and validating connector credentials.
-//  Also handles free API connector toggle and key management.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as GmailAPI from '../../Automation/Gmail.js';
 import * as GithubAPI from '../../Automation/Github.js';

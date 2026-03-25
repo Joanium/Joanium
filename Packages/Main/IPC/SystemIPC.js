@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/SystemIPC.js
-//  Exposes the context-aware system prompt to the renderer.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as UserService from '../Services/UserService.js';
 import * as SystemPromptService from '../Services/SystemPromptService.js';

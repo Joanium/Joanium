@@ -1,12 +1,5 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Pages/Chat.js
-//  SPA page module. Exports mount() and unmount().
-// ─────────────────────────────────────────────
-
 import { state } from '../Shared/State.js';
 import { initDOM } from '../Shared/DOM.js';
-// DOM refs are imported as live bindings.
-// They are null until initDOM() is called inside mount().
 import {
   textarea, sendBtn, chips,
   modelDropdown, modelSelectorBtn,

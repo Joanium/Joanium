@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/UserIPC.js
-//  Handlers for user profile, model list, API keys,
-//  custom instructions, and memory.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as UserService from '../Services/UserService.js';
 import { invalidate as invalidateSysPrompt } from '../Services/SystemPromptService.js';

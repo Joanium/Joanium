@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/WikiTools.js
 export const WIKI_TOOLS = [
     {
         name: 'search_wikipedia',

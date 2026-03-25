@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/PhotoTools.js
 export const PHOTO_TOOLS = [
     {
         name: 'search_photos',

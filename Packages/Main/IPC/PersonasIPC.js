@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/PersonasIPC.js
-//  Reads persona .md files from Personas/ directory.
-//  Manages active persona persistence in Data/ActivePersona.json
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';

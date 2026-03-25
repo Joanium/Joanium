@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/UrlTools.js
 export const URL_TOOLS = [
     {
         name: 'shorten_url',

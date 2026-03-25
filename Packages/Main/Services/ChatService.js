@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/Services/ChatService.js
-//  Chat persistence — save, load, list, delete.
-//  No Electron imports — pure Node.js, easily testable.
-// ─────────────────────────────────────────────
-
 import fs from 'fs';
 import path from 'path';
 import Paths from '../Paths.js';

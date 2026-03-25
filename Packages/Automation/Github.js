@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Automation/Github.js
-//  GitHub REST API integration (main-process safe)
-//  Pure functions: accept { token } credentials, return data or throw.
-// ─────────────────────────────────────────────
-
 const GITHUB_BASE = 'https://api.github.com';
 
 async function githubFetch(endpoint, token, options = {}) {

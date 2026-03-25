@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/Services/SystemPromptService.js
-//  Builds and caches the context-aware system prompt.
-//  Cache is invalidated whenever settings, connectors, or active persona change.
-// ─────────────────────────────────────────────
-
 import fs from 'fs';
 import * as GithubAPI from '../../Automation/Github.js';
 import { buildSystemPrompt } from '../../System/SystemPrompt.js';

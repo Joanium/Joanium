@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Pages/Agents.js
-// ─────────────────────────────────────────────
-
 function getAgentsHTML() {
   return `
 <main id="main" class="agents-main">

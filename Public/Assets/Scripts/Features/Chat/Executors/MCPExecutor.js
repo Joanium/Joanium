@@ -1,9 +1,3 @@
-// Evelina — Features/Chat/Executors/MCPExecutor.js
-// Dynamically routes tool calls to connected MCP servers.
-// The set of handled tools is determined at runtime by querying
-// the main process for the current list of MCP tools.
-
-/** Cache of tool names from MCP servers, refreshed per session. */
 let _mcpToolNames = new Set();
 let _lastFetch = 0;
 const CACHE_TTL = 30_000; // 30 s

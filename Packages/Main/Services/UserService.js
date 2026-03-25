@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/Services/UserService.js
-//  All user data, model data, and plain-text file I/O.
-//  No Electron imports — pure Node.js, easily testable.
-// ─────────────────────────────────────────────
-
 import fs from 'fs';
 import Paths from '../Paths.js';
 

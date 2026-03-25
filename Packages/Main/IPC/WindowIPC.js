@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/WindowIPC.js
-//  Frameless-window controls (minimize / maximize / close).
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import { get as getWin } from '../Window.js';
 

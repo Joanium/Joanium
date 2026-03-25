@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/GmailIPC.js
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as GmailAPI from '../../Automation/Gmail.js';
 import { startGmailOAuthFlow, setConnectorEngine } from '../../Automation/Gmail.js';

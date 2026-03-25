@@ -1,5 +1,3 @@
-// Evelina — Features/Chat/Executors/GithubExecutor.js
-
 const HANDLED = new Set([
     'github_list_repos', 'github_get_issues', 'github_get_pull_requests',
     'github_get_file', 'github_get_file_tree', 'github_get_notifications',

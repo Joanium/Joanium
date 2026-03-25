@@ -1,6 +1,3 @@
-// Evelina — Features/Chat/Tools/Index.js
-// Aggregates static tool definitions and appends dynamic MCP tools at runtime.
-
 import { GMAIL_TOOLS } from './GmailTools.js';
 import { GITHUB_TOOLS } from './GithubTools.js';
 import { WEATHER_TOOLS } from './WeatherTools.js';

@@ -1,12 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/MCP/MCPClient.js
-//  Model Context Protocol client.
-//  Supports:
-//    • HTTP transport (POST + SSE response)
-//    • stdio transport (spawned child process)
-//  See: https://spec.modelcontextprotocol.io
-// ─────────────────────────────────────────────
-
 import { EventEmitter } from 'events';
 import { spawn } from 'child_process';
 import fs from 'fs';

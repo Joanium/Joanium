@@ -1,6 +1,3 @@
-// Evelina — Features/Chat/Executors/utils.js
-// Shared constants and pure helpers used across all executor modules.
-
 export const WMO_CODES = {
     0: '☀️ Clear sky', 1: '🌤️ Mainly clear', 2: '⛅ Partly cloudy',
     3: '☁️ Overcast', 45: '🌫️ Foggy', 48: '🌫️ Icy fog',

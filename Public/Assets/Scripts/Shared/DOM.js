@@ -1,19 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Shared/DOM.js
-//
-//  WHY export let + initDOM()?
-//  ES modules have LIVE BINDINGS: when we reassign
-//  `textarea = getElementById(...)` in initDOM(),
-//  every importer that already imported `{ textarea }`
-//  immediately sees the new value — no re-import needed.
-//
-//  This lets Chat.js import these at module level
-//  (so the imports are hoisted and resolved), then
-//  call initDOM() after injecting the Chat HTML,
-//  at which point all references become valid.
-// ─────────────────────────────────────────────
-
-// ── Composer ────────────────────────────────
 export let textarea            = null;
 export let sendBtn             = null;
 export let attachmentBtn       = null;

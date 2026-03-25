@@ -1,6 +1,3 @@
-// Evelina — Pages/Automations/constants.js
-// Static metadata for action types and their form fields.
-
 export const ACTION_META = {
     open_site: { label: '🌐 Open website', fields: ['url'], group: 'System' },
     open_multiple_sites: { label: '🌐 Open multiple websites', fields: ['urls'], group: 'System' },

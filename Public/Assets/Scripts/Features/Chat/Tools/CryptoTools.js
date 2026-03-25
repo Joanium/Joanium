@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/CryptoTools.js
 export const CRYPTO_TOOLS = [
     {
         name: 'get_crypto_price',

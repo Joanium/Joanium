@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/TerminalTools.js
 export const TERMINAL_TOOLS = [
   {
     name: 'inspect_workspace',

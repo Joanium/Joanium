@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/RepoTools.js
 export const REPO_TOOLS = [
   {
     name: 'github_load_repo_context',

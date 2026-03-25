@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/GithubTools.js
 export const GITHUB_TOOLS = [
   {
     name: 'github_list_repos',

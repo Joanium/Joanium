@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/CountryTools.js
 export const COUNTRY_TOOLS = [
     {
         name: 'get_country_info',

@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/SetupIPC.js
-//  Handlers used during first-run setup wizard
-//  and global page navigation.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as UserService from '../Services/UserService.js';
 import { loadPage } from '../Window.js';

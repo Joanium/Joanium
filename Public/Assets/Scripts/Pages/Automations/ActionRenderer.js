@@ -1,7 +1,3 @@
-// Evelina — Pages/Automations/actionRenderer.js
-// Renders the dynamic field area for each action type,
-// builds complete action rows, and reads form data back out.
-
 import { ACTION_META } from './Constants.js';
 import { makeFieldRow, makeConnectorNote } from './FieldBuilders.js';
 import {

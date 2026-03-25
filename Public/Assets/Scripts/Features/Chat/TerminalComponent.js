@@ -1,5 +1,3 @@
-// Evelina — Features/Chat/TerminalComponent.js
-
 let dependencyPromise = null;
 
 function assetUrl(relativePath) {

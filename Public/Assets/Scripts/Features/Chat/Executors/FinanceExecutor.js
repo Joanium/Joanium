@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Executors/FinanceExecutor.js
 import { fmt, safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_exchange_rate', 'get_treasury_data', 'get_fred_data']);

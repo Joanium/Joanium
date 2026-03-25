@@ -1,10 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/MCPIPC.js
-//  IPC handlers for MCP server management.
-//  The MCPRegistry singleton lives in the main process
-//  and is shared across all chat windows.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';

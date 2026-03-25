@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/AutomationIPC.js
-//  Handlers for automation CRUD + page navigation.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 /**
  * @param {AutomationEngine} automationEngine

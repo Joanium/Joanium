@@ -1,6 +1,3 @@
-// Evelina — Pages/Automations/utils.js
-// Pure utility and display-formatting functions. No DOM, no side effects.
-
 export function escapeHtml(v) {
     return String(v ?? '')
         .replace(/&/g, '&amp;').replace(/</g, '&lt;')

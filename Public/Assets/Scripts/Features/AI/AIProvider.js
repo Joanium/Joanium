@@ -1,10 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Features/AI/AIProvider.js
-//  Provider adapters with NATIVE function/tool calling support.
-//  Supports streaming (SSE) for all providers, with retry helper.
-//  Returns token usage alongside responses for analytics.
-// ─────────────────────────────────────────────
-
 function extractBase64(dataUrl) {
   return String(dataUrl ?? '').split(',', 2)[1] ?? '';
 }

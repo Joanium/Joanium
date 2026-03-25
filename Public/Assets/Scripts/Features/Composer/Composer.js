@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Features/Composer/Composer.js
-//  Manages the message input area: auto-resize, attachment
-//  paste, drag-drop, and multi-file support including PDF/DOCX/XLSX/PPTX.
-// ─────────────────────────────────────────────
-
 import { state } from '../../Shared/State.js';
 import { generateId } from '../../Shared/Utils.js';
 import {

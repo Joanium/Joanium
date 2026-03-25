@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Features/ModelSelector/ModelSelector.js
-//  Loads available models, renders the dropdown sorted by rank,
-//  and fires a custom event whenever the active model changes.
-// ─────────────────────────────────────────────
-
 import { state } from '../../Shared/State.js';
 import { modelLabel, modelDropdown, modelSelectorBtn } from '../../Shared/DOM.js';
 

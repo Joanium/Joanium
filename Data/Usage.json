@@ -980,6 +980,24 @@
       "inputTokens": 38164,
       "outputTokens": 250,
       "chatId": "2026-03-25_12-14-16"
+    },
+    {
+      "timestamp": "2026-03-25T07:11:37.639Z",
+      "provider": "mistral",
+      "model": "codestral-latest",
+      "modelName": "Codestral",
+      "inputTokens": 63069,
+      "outputTokens": 5390,
+      "chatId": "2026-03-25_12-39-01"
+    },
+    {
+      "timestamp": "2026-03-25T07:12:51.055Z",
+      "provider": "mistral",
+      "model": "mistral-small-latest",
+      "modelName": "Mistral Small",
+      "inputTokens": 34570,
+      "outputTokens": 260,
+      "chatId": "2026-03-25_12-39-01"
     }
   ]
 }

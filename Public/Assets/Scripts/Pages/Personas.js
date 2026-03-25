@@ -5,7 +5,6 @@ let searchInput = null;
 let searchClearBtn = null;
 let countEl = null;
 let _navigate = null;
-
 let _activePersona = null;
 let _allPersonas = [];
 

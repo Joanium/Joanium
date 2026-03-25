@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/Paths.js
-//  Single source of truth for all file-system paths.
-//  Import this everywhere instead of computing paths ad-hoc.
-// ─────────────────────────────────────────────
-
 import { fileURLToPath } from 'url';
 import path from 'path';
 

@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — SetupPage.js
-//  First-run onboarding · Splash → Name → Providers → Done
-// ─────────────────────────────────────────────
-
 const PROVIDERS = [
   {
     id: 'anthropic',

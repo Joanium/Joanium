@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/ChatIPC.js
-//  Handlers for saving, loading, listing, and deleting chats.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as ChatService from '../Services/ChatService.js';
 

@@ -6,12 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ─────────────────────────────────────────────
-//  SKILLS — read frontmatter from Skills/*.md
-//  Only skills explicitly enabled in Data/Skills.json
-//  are injected into the system prompt.
-// ─────────────────────────────────────────────
-
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};

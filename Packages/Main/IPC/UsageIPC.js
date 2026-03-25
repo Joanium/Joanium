@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/UsageIPC.js
-//  Tracks per-request token usage, persists to
-//  Data/Usage.json, and serves the Usage page.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';

@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Connectors/ConnectorEngine.js
-//  Manages connector credentials stored in Data/Connectors.json
-//  Runs in the Electron main process.
-// ─────────────────────────────────────────────
-
 import fs from 'fs';
 import path from 'path';
 

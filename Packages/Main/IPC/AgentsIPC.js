@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/AgentsIPC.js
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 export function register(agentsEngine, automationEngine = null) {
 

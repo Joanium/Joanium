@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Pages/Automations.js
-//  SPA page module.
-// ─────────────────────────────────────────────
-
 import { escapeHtml, formatActionsSummary, formatLastRun, formatTrigger, generateId } from './Automations/Utils.js';
 import { createActionRow, collectActionFromRow } from './Automations/ActionRenderer.js';
 

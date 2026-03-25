@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Executors/CryptoExecutor.js
 import { fmt, fmtBig, safeJson } from './utils.js';
 
 const HANDLED = new Set(['get_crypto_price', 'get_crypto_trending']);

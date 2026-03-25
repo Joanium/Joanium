@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/QuoteTools.js
 export const QUOTE_TOOLS = [
     {
         name: 'get_quote',

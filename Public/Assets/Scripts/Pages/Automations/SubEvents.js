@@ -1,6 +1,3 @@
-// Evelina — Pages/Automations/subEvents.js
-// Appends optional sub-section controls to action field areas.
-
 import { makeFieldRow, makeToggleRow } from './FieldBuilders.js';
 import { capitalize } from './Utils.js';
 

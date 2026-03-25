@@ -1,32 +1,3 @@
-/**
- * Evelina — Shared/Markdown.js
- *
- * Production-grade, Claude-style Markdown renderer.
- *
- * Block elements
- *   ATX headings (h1–h3), horizontal rules, fenced code blocks,
- *   blockquotes (nested), unordered lists, ordered lists, task lists
- *   (- [ ] / - [x]), tables (GFM-style), and paragraphs.
- *
- * Inline elements
- *   Bold (**text** / __text__), italic (*text* / _text_),
- *   bold+italic (***text***), strikethrough (~~text~~),
- *   inline code (`code`), links ([text](url)), bare-URL auto-links,
- *   and hard line-breaks (two spaces before \n).
- *
- * Code blocks render with the existing Copy + Download button UI so
- * that the Chat.js event handlers (.copy-code-btn / .download-code-btn)
- * keep working without any changes.
- *
- * Architecture
- *   1. Extract fenced code blocks → opaque placeholders
- *   2. Split remaining text into lines
- *   3. parseBlocks() walks line-by-line, dispatching to specialised
- *      parsers for tables, blockquotes, and lists
- *   4. Each text node is passed through renderInline()
- *   5. Placeholders are swapped back for the full code-block HTML
- */
-
 import { escapeHtml } from './Utils.js';
 
 /* ══════════════════════════════════════════

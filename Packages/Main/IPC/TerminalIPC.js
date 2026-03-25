@@ -1,7 +1,3 @@
-// Evelina — Packages/Main/IPC/TerminalIPC.js
-// Executes shell commands, reads files, inspects workspaces, and exposes
-// local dev tooling on behalf of the chat tool system.
-
 import { ipcMain, dialog, BrowserWindow, shell } from 'electron';
 import { exec, spawn } from 'child_process';
 import fs from 'fs';

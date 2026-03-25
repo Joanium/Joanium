@@ -1,5 +1,3 @@
-// Evelina — Features/Chat/Executors/GmailExecutor.js
-
 const HANDLED = new Set(['gmail_send_email', 'gmail_read_inbox', 'gmail_search_emails']);
 
 export function handles(toolName) { return HANDLED.has(toolName); }

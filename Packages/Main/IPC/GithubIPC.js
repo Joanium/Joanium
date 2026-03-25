@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Packages/Main/IPC/GithubIPC.js
-//  Handlers for all GitHub REST API operations.
-// ─────────────────────────────────────────────
-
 import { ipcMain } from 'electron';
 import * as GithubAPI from '../../Automation/Github.js';
 

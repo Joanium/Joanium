@@ -1,7 +1,3 @@
-// Evelina — Pages/Automations/grid.js
-// Renders the automation card grid and handles toggle interactions.
-// Calls onEdit / onConfirmDelete callbacks provided via initGrid().
-
 import { state } from './State.js';
 import { escapeHtml, formatTrigger, formatActionsSummary, formatLastRun } from './Utils.js';
 

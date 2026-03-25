@@ -1,18 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/Features/Chat/Chat.js
-//  Core chat logic with:
-//    • Streaming responses (SSE, progressive markdown during stream)
-//    • Per-response inline token/cost footer (always on)
-//    • Model failover (rank-ordered within provider, then across providers)
-//    • Retry with exponential backoff
-//    • Unified AI planning step — AI decides skills + tools in one call
-//    • Edit & Retry for user messages; Retry for assistant messages
-//    • Auto-learning memory — extracts facts from conversation every 10 messages
-//    • Right-rail message timeline navigator (2+ user messages)
-//    • Scroll-to-bottom button
-//    • Stop generation button support via AbortController
-// ─────────────────────────────────────────────
-
 import { state } from '../../Shared/State.js';
 import { render as renderMarkdown } from '../../Shared/Markdown.js';
 import { welcome, chatView, chatMessages } from '../../Shared/DOM.js';

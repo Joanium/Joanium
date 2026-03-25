@@ -1,6 +1,3 @@
-// Evelina — Features/Chat/Executors/ReviewExecutor.js
-// Handles PR diff fetching and posting AI-generated code reviews.
-
 const HANDLED = new Set([
   'github_get_pr_diff',
   'github_review_pr',

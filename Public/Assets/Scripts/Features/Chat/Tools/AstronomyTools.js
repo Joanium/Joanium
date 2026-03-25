@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/AstronomyTools.js
 export const ASTRONOMY_TOOLS = [
     {
         name: 'get_apod',

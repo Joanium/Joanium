@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Executors/CountryExecutor.js
 import { safeJson, fmt } from './utils.js';
 
 const HANDLED = new Set(['get_country_info']);

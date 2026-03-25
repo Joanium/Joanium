@@ -1,4 +1,3 @@
-// Evelina — Features/Chat/Tools/FinanceTools.js
 export const FINANCE_TOOLS = [
     {
         name: 'get_exchange_rate',

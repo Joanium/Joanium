@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────
-//  Evelina — Public/Assets/Scripts/App.js
-//  Single-page application router.
-//  Initializes the shell once, lazy-loads page modules on navigate.
-// ─────────────────────────────────────────────
-
 import { state }              from './Shared/State.js';
 import { initSidebar }        from './Shared/Sidebar.js';
 import { initAboutModal }     from './Shared/Modals/AboutModal.js';
@@ -12,11 +6,6 @@ import { initProjectsModal }  from './Shared/Modals/ProjectsModal.js';
 import { initSettingsModal }  from './Shared/Modals/SettingsModal.js';
 import { syncModalOpenState } from './Shared/DOM.js';
 
-/* ══════════════════════════════════════════
-   PAGE REGISTRY
-   Lazy-loaded so each page's code only
-   executes after its HTML is in the DOM.
-══════════════════════════════════════════ */
 const PAGES = {
   chat:        () => import('./Pages/index.js'),
   automations: () => import('./Pages/Automations.js'),
