@@ -20,8 +20,6 @@ import * as UtilityExecutor from '../Utility/Executor.js';
 import * as MCPExecutor from '../MCP/Executor.js';
 import * as SearchExecutor from '../Search/Executor.js';
 import * as DictionaryExecutor from '../Dictionary/Executor.js';
-import * as TranslateExecutor from '../Translate/Executor.js';
-import * as NewsExecutor from '../News/Executor.js';
 import * as DateTimeExecutor from '../DateTime/Executor.js';
 import * as PasswordExecutor from '../Password/Executor.js';
 
@@ -47,8 +45,6 @@ const EXECUTORS = [
   UtilityExecutor,
   SearchExecutor,
   DictionaryExecutor,
-  TranslateExecutor,
-  NewsExecutor,
   DateTimeExecutor,
   PasswordExecutor,
   // MCP always last (dynamic)
