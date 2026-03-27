@@ -44,6 +44,9 @@
    THEME TRANSITIONS
 ══════════════════════════════════════════ */
 body,
+#app,
+#body-wrap,
+#page-outlet,
 #sidebar,
 #main,
 #titlebar,

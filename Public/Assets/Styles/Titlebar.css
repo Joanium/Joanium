@@ -6,11 +6,7 @@
 #titlebar {
   height: var(--titlebar-h);
   min-height: var(--titlebar-h);
-  /* 2026 Glassmorphism Standard */
-  background: color-mix(in srgb, var(--titlebar-bg) 65%, transparent);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 40%, transparent);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
