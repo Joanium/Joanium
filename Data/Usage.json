@@ -1439,6 +1439,15 @@
       "inputTokens": 25440,
       "outputTokens": 44,
       "chatId": "2026-03-27_17-50-30"
+    },
+    {
+      "timestamp": "2026-03-27T14:04:10.873Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 40466,
+      "outputTokens": 1091,
+      "chatId": "2026-03-27_19-33-04"
     }
   ]
 }

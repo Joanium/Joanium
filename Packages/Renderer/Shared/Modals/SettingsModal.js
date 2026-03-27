@@ -1,14 +1,15 @@
-import { state }              from '../Core/State.js';
+import { state } from '../Core/State.js';
 import { loadConnectorsPanel } from '../../Features/Connectors/index.js';
-import { loadMCPPanel }        from '../../Features/MCP/index.js';
+import { loadMCPPanel } from '../../Features/MCP/index.js';
 
 // PROVIDER META
 const PROVIDER_META = {
-  anthropic:  { color: '#cc785c', placeholder: 'sk-ant-api03-…', iconPath: 'Assets/Icons/Claude.png',     fallback: 'C'   },
-  openai:     { color: '#10a37f', placeholder: 'sk-proj-…',      iconPath: 'Assets/Icons/ChatGPT.png',    fallback: 'GPT' },
-  google:     { color: '#4285f4', placeholder: 'AIza…',          iconPath: 'Assets/Icons/Gemini.png',     fallback: 'G'   },
-  openrouter: { color: '#9b59b6', placeholder: 'sk-or-v1-…',     iconPath: 'Assets/Icons/OpenRouter.png', fallback: 'OR'  },
-  mistral:    { color: '#f54e42', placeholder: 'Enter Mistral API key', iconPath: 'Assets/Icons/Mistral.png', fallback: 'M' },
+  anthropic: { color: '#cc785c', placeholder: 'sk-ant-api03-…', iconPath: 'Assets/Icons/Claude.png', fallback: 'C' },
+  openai: { color: '#10a37f', placeholder: 'sk-proj-…', iconPath: 'Assets/Icons/ChatGPT.png', fallback: 'GPT' },
+  google: { color: '#4285f4', placeholder: 'AIza…', iconPath: 'Assets/Icons/Gemini.png', fallback: 'G' },
+  openrouter: { color: '#9b59b6', placeholder: 'sk-or-v1-…', iconPath: 'Assets/Icons/OpenRouter.png', fallback: 'OR' },
+  mistral: { color: '#f54e42', placeholder: 'Enter Mistral API key', iconPath: 'Assets/Icons/Mistral.png', fallback: 'M' },
+  nvidia: { color: '#76b900', placeholder: 'nvapi-...', iconPath: 'Assets/Icons/Nvidia.png', fallback: 'NV', },
 };
 
 // HELPERS
@@ -154,26 +155,26 @@ export function initSettingsModal() {
 
   // 2. Module state
   const settingsState = {
-    activeTab:           'user',
-    providerCatalog:     [],
+    activeTab: 'user',
+    providerCatalog: [],
     pendingProviderKeys: {},
-    pendingDeletes:      new Set(), // provider IDs marked for key removal
+    pendingDeletes: new Set(), // provider IDs marked for key removal
   };
 
   // 3. Element accessors (resolved after injection)
-  const $  = (id) => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-  const backdrop      = () => $('settings-modal-backdrop');
-  const closeBtn      = () => $('settings-modal-close');
-  const saveBtn       = () => $('settings-save');
-  const saveFeedback  = () => $('settings-save-feedback');
-  const nameInput     = () => $('settings-user-name');
-  const memoryInput   = () => $('settings-memory');
+  const backdrop = () => $('settings-modal-backdrop');
+  const closeBtn = () => $('settings-modal-close');
+  const saveBtn = () => $('settings-save');
+  const saveFeedback = () => $('settings-save-feedback');
+  const nameInput = () => $('settings-user-name');
+  const memoryInput = () => $('settings-memory');
   const instructInput = () => $('settings-custom-instructions');
   const providersList = () => $('settings-providers-list');
 
-  const tabs   = () => $$('[data-settings-tab]');
+  const tabs = () => $$('[data-settings-tab]');
   const panels = () => $$('[data-settings-panel]');
 
   // 4. Feedback
@@ -181,21 +182,21 @@ export function initSettingsModal() {
     const el = saveFeedback();
     if (!el) return;
     el.textContent = msg;
-    el.className   = msg ? `settings-feedback ${tone}` : 'settings-feedback';
+    el.className = msg ? `settings-feedback ${tone}` : 'settings-feedback';
   }
 
   function updateSaveBtn() {
     const btn = saveBtn();
     if (!btn) return;
     const tab = settingsState.activeTab;
-    if (tab === 'user')      { btn.textContent = 'Save changes';          btn.disabled = false; return; }
+    if (tab === 'user') { btn.textContent = 'Save changes'; btn.disabled = false; return; }
     if (tab === 'providers') {
       btn.textContent = 'Save provider changes';
-      btn.disabled    = false;
+      btn.disabled = false;
       return;
     }
     btn.textContent = 'No changes to save';
-    btn.disabled    = true;
+    btn.disabled = true;
   }
 
   // 5. Tabs
@@ -219,8 +220,8 @@ export function initSettingsModal() {
 
   function focusActiveTab() {
     if (settingsState.activeTab === 'providers') { providersList()?.querySelector('input')?.focus(); return; }
-    if (settingsState.activeTab === 'mcp')       { document.getElementById('mcp-add-btn')?.focus(); return; }
-    if (settingsState.activeTab === 'user')      nameInput()?.focus();
+    if (settingsState.activeTab === 'mcp') { document.getElementById('mcp-add-btn')?.focus(); return; }
+    if (settingsState.activeTab === 'user') nameInput()?.focus();
   }
 
   // 6. Providers tab — enhanced with status badges + delete
@@ -243,12 +244,12 @@ export function initSettingsModal() {
     list.innerHTML = '';
 
     sorted.forEach(p => {
-      const meta       = PROVIDER_META[p.provider] ?? {};
-      const inputId    = `settings-key-${p.provider}`;
-      const savedKey   = String(p.api ?? '').trim();
-      const isActive   = savedKey.length > 0;
+      const meta = PROVIDER_META[p.provider] ?? {};
+      const inputId = `settings-key-${p.provider}`;
+      const savedKey = String(p.api ?? '').trim();
+      const isActive = savedKey.length > 0;
       const isDeleting = settingsState.pendingDeletes.has(p.provider);
-      const pending    = settingsState.pendingProviderKeys[p.provider] ?? '';
+      const pending = settingsState.pendingProviderKeys[p.provider] ?? '';
 
       const row = document.createElement('div');
       row.className = `spr-row${isActive && !isDeleting ? ' spr-row--active' : ''}${isDeleting ? ' spr-row--deleting' : ''}`;
@@ -262,7 +263,7 @@ export function initSettingsModal() {
       img.src = meta.iconPath ?? '';
       img.alt = '';
       img.addEventListener('error', () => iconWrap.classList.add('icon-missing'));
-      img.addEventListener('load',  () => iconWrap.classList.remove('icon-missing'));
+      img.addEventListener('load', () => iconWrap.classList.remove('icon-missing'));
       if (img.complete && img.naturalWidth === 0) iconWrap.classList.add('icon-missing');
       iconWrap.appendChild(img);
 
@@ -370,11 +371,11 @@ export function initSettingsModal() {
 
   // 7. Apply user profile to DOM + state
   function applyUserProfile(user = {}) {
-    const rawName     = String(user?.name ?? '').trim();
+    const rawName = String(user?.name ?? '').trim();
     const displayName = rawName || 'User';
-    const firstName   = displayName.split(/\s+/)[0];
+    const firstName = displayName.split(/\s+/)[0];
 
-    state.userName     = rawName;
+    state.userName = rawName;
     state.userInitials = getInitials(displayName);
 
     const welcomeTitle = document.querySelector('.welcome-title');
@@ -410,7 +411,7 @@ export function initSettingsModal() {
     ]);
 
     applyUserProfile(user ?? {});
-    settingsState.providerCatalog     = Array.isArray(providers) ? providers : [];
+    settingsState.providerCatalog = Array.isArray(providers) ? providers : [];
     settingsState.pendingProviderKeys = {};
 
     const ni = nameInput(); if (ni) ni.value = user?.name ?? '';
@@ -423,8 +424,8 @@ export function initSettingsModal() {
 
   // 10. Save — user tab
   async function saveUserTab() {
-    const nextName  = nameInput()?.value.trim() ?? '';
-    const nextMem   = memoryInput()?.value ?? '';
+    const nextName = nameInput()?.value.trim() ?? '';
+    const nextMem = memoryInput()?.value ?? '';
     const nextInstr = instructInput()?.value ?? '';
 
     if (nextName.length < 2) {
@@ -442,8 +443,8 @@ export function initSettingsModal() {
         window.electronAPI?.saveMemory?.(nextMem),
       ]);
       if (!profileRes?.ok) throw new Error(profileRes?.error ?? 'Could not save profile.');
-      if (!instrRes?.ok)   throw new Error(instrRes?.error   ?? 'Could not save custom instructions.');
-      if (!memRes?.ok)     throw new Error(memRes?.error     ?? 'Could not save memory.');
+      if (!instrRes?.ok) throw new Error(instrRes?.error ?? 'Could not save custom instructions.');
+      if (!memRes?.ok) throw new Error(memRes?.error ?? 'Could not save memory.');
 
       applyUserProfile(profileRes.user ?? { name: nextName });
       setFeedback('Changes saved.', 'success');
@@ -484,17 +485,17 @@ export function initSettingsModal() {
 
       const all = await window.electronAPI?.getModels?.() ?? [];
       state.allProviders = all;
-      state.providers    = all.filter(p => p.api && p.api.trim() !== '');
+      state.providers = all.filter(p => p.api && p.api.trim() !== '');
 
-      settingsState.providerCatalog     = all;
+      settingsState.providerCatalog = all;
       settingsState.pendingProviderKeys = {};
       settingsState.pendingDeletes.clear();
       renderProviders();
 
-      const addedCount   = Object.values(changes).filter(v => v !== null).length;
+      const addedCount = Object.values(changes).filter(v => v !== null).length;
       const removedCount = Object.values(changes).filter(v => v === null).length;
       const parts = [];
-      if (addedCount)   parts.push(`${addedCount} key${addedCount !== 1 ? 's' : ''} saved`);
+      if (addedCount) parts.push(`${addedCount} key${addedCount !== 1 ? 's' : ''} saved`);
       if (removedCount) parts.push(`${removedCount} key${removedCount !== 1 ? 's' : ''} removed`);
       setFeedback(parts.join(', ') + '.', 'success');
       window.dispatchEvent(new CustomEvent('ow:settings-saved'));
@@ -514,7 +515,7 @@ export function initSettingsModal() {
     });
 
     saveBtn()?.addEventListener('click', () => {
-      if (settingsState.activeTab === 'user')      void saveUserTab();
+      if (settingsState.activeTab === 'user') void saveUserTab();
       if (settingsState.activeTab === 'providers') void saveProvidersTab();
     });
 
@@ -527,7 +528,7 @@ export function initSettingsModal() {
       const isSave = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's';
       if (isSave && backdrop()?.classList.contains('open')) {
         e.preventDefault();
-        if (settingsState.activeTab === 'user')      void saveUserTab();
+        if (settingsState.activeTab === 'user') void saveUserTab();
         if (settingsState.activeTab === 'providers') void saveProvidersTab();
         return;
       }

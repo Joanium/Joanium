@@ -48,4 +48,13 @@ export const PROVIDERS = [
     iconPath: 'Assets/Icons/Mistral.png',
     fallback: 'MI',
   },
+  {
+    id: 'nvidia',
+    label: 'NVIDIA',
+    company: 'NVIDIA',
+    placeholder: 'nvapi-...',
+    color: '#76b900',
+    iconPath: 'Assets/Icons/Nvidia.png',
+    fallback: 'NV',
+  },
 ];

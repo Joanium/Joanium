@@ -415,5 +415,43 @@
         }
       }
     }
+  },
+  {
+    "provider": "nvidia",
+    "label": "NVIDIA",
+    "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+    "api": null,
+    "auth_header": "Authorization",
+    "auth_prefix": "Bearer ",
+    "models": {
+      "moonshotai/kimi-k2-thinking": {
+        "name": "Kimi K2 Thinking",
+        "description": "MoonshotAI reasoning model via NVIDIA NIM",
+        "rank": 3,
+        "max_output": 16384,
+        "inputs": {
+          "text": true,
+          "image": false
+        },
+        "pricing": {
+          "input": 1.0,
+          "output": 3.0
+        }
+      },
+      "deepseek-ai/deepseek-v3.2": {
+        "name": "DeepSeek V3.2",
+        "description": "DeepSeek's latest flagship model via NVIDIA NIM",
+        "rank": 4,
+        "max_output": 8192,
+        "inputs": {
+          "text": true,
+          "image": false
+        },
+        "pricing": {
+          "input": 0.27,
+          "output": 0.27
+        }
+      }
+    }
   }
 ]
