@@ -111,6 +111,7 @@ export function getChatHTML() {
             </div>
           </div>
           <p id="browser-preview-url" class="browser-preview-url">AI browser activity will appear here once Evelina starts navigating.</p>
+          <p id="browser-preview-status" class="browser-preview-status-text"></p>
         </div>
         <div class="browser-preview-actions">
           <button id="browser-preview-toggle-btn" class="browser-preview-action browser-preview-action--primary" type="button" disabled>Waiting</button>

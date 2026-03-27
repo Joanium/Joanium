@@ -1,5 +1,5 @@
-import { state } from '../../Shared/Core/State.js';
-import { initDOM } from '../../Shared/Core/DOM.js';
+import { state }              from '../../Shared/Core/State.js';
+import { initDOM }            from '../../Shared/Core/DOM.js';
 import {
   textarea, sendBtn, chips,
   modelDropdown, modelSelectorBtn,
@@ -40,7 +40,7 @@ function getWelcomeTitleText() {
 
   const hour = new Date().getHours();
 
-  const allGreetings = [...getTimeGreetings(name), ...getRandomGreetings(name)];
+  const allGreetings = [...getTimeGreetings(hour, name), ...getRandomGreetings(name)];
   return allGreetings[Math.floor(Math.random() * allGreetings.length)];
 }
 

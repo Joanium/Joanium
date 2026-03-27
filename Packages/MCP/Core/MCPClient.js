@@ -218,7 +218,6 @@ export class MCPRegistry {
     const entry = { session, tools, meta: { id, name, transport } };
     this._servers.set(id, entry);
 
-    console.log(`[MCP] Connected "${name}" — ${tools.length} tool(s)`);
     return { tools, name };
   }
 
@@ -228,7 +227,6 @@ export class MCPRegistry {
     if (!entry) return;
     await entry.session.close().catch(() => { });
     this._servers.delete(serverId);
-    console.log(`[MCP] Disconnected "${entry.meta.name}"`);
   }
 
   /** List all tools across all connected servers. */

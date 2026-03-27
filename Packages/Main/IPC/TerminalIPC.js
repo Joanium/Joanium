@@ -7,6 +7,8 @@ import {
   extractDocumentTextFromBuffer,
   extractDocumentTextFromPath,
 } from '../Services/DocumentExtractionService.js';
+// FIX: imported so open-terminal-os handler can open a native terminal at a directory
+import { openTerminalAtPath } from '../../Automation/Actions/Terminal.js';
 
 const activePtys = new Map();
 
@@ -967,6 +969,20 @@ export function register() {
       const err = await shell.openPath(resolved);
       if (err) return { ok: false, error: err };
       return { ok: true };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('open-terminal-os', async (_e, { dirPath }) => {
+    if (!dirPath?.trim()) return { ok: false, error: 'No directory path provided.' };
+    const resolved = path.resolve(dirPath.trim());
+    try {
+      if (!fs.existsSync(resolved)) {
+        return { ok: false, error: `Directory does not exist: ${resolved}` };
+      }
+      await openTerminalAtPath(resolved, '');
+      return { ok: true, path: resolved };
     } catch (err) {
       return { ok: false, error: err.message };
     }
