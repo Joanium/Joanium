@@ -18,6 +18,12 @@ import * as RepoExecutor from '../Repo/Executor.js';
 import * as ReviewExecutor from '../Review/Executor.js';
 import * as UtilityExecutor from '../Utility/Executor.js';
 import * as MCPExecutor from '../MCP/Executor.js';
+import * as SearchExecutor from '../Search/Executor.js';
+import * as DictionaryExecutor from '../Dictionary/Executor.js';
+import * as TranslateExecutor from '../Translate/Executor.js';
+import * as NewsExecutor from '../News/Executor.js';
+import * as DateTimeExecutor from '../DateTime/Executor.js';
+import * as PasswordExecutor from '../Password/Executor.js';
 
 const EXECUTORS = [
   GmailExecutor,
@@ -39,6 +45,13 @@ const EXECUTORS = [
   RepoExecutor,
   ReviewExecutor,
   UtilityExecutor,
+  SearchExecutor,
+  DictionaryExecutor,
+  TranslateExecutor,
+  NewsExecutor,
+  DateTimeExecutor,
+  PasswordExecutor,
+  // MCP always last (dynamic)
   MCPExecutor,
 ];
 
@@ -56,7 +69,7 @@ async function executorHandles(executor, toolName) {
   return Boolean(result);
 }
 
-export async function executeTool(toolName, params, onStage = () => { }) {
+export async function executeTool(toolName, params, onStage = () => {}) {
   for (const executor of EXECUTORS) {
     if (await executorHandles(executor, toolName)) {
       return executor.execute(toolName, params, onStage);

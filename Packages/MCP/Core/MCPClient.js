@@ -1,7 +1,5 @@
 import { EventEmitter } from 'events';
 import { spawn } from 'child_process';
-import fs from 'fs';
-import path from 'path';
 import { createInterface } from 'readline';
 
 const PROTOCOL_VERSION = '2024-11-05';

@@ -18,12 +18,18 @@ import { TERMINAL_TOOLS } from '../Terminal/Tools.js';
 import { REPO_TOOLS } from '../Repo/Tools.js';
 import { REVIEW_TOOLS } from '../Review/Tools.js';
 import { UTILITY_TOOLS } from '../Utility/Tools.js';
+import { SEARCH_TOOLS } from '../Search/Tools.js';
+import { DICTIONARY_TOOLS } from '../Dictionary/Tools.js';
+import { TRANSLATE_TOOLS } from '../Translate/Tools.js';
+import { NEWS_TOOLS } from '../News/Tools.js';
+import { DATETIME_TOOLS } from '../DateTime/Tools.js';
+import { PASSWORD_TOOLS } from '../Password/Tools.js';
 
 export {
   GMAIL_TOOLS, GITHUB_TOOLS, WEATHER_TOOLS, CRYPTO_TOOLS, FINANCE_TOOLS, PHOTO_TOOLS,
   WIKI_TOOLS, GEO_TOOLS, FUN_TOOLS, JOKE_TOOLS, QUOTE_TOOLS, COUNTRY_TOOLS,
   ASTRONOMY_TOOLS, HACKERNEWS_TOOLS, URL_TOOLS, TERMINAL_TOOLS, REPO_TOOLS, REVIEW_TOOLS,
-  UTILITY_TOOLS,
+  UTILITY_TOOLS, SEARCH_TOOLS, DICTIONARY_TOOLS, TRANSLATE_TOOLS, NEWS_TOOLS, DATETIME_TOOLS, PASSWORD_TOOLS,
 };
 
 export const STATIC_TOOLS = [
@@ -46,6 +52,12 @@ export const STATIC_TOOLS = [
   ...REPO_TOOLS,
   ...REVIEW_TOOLS,
   ...UTILITY_TOOLS,
+  ...SEARCH_TOOLS,
+  ...DICTIONARY_TOOLS,
+  ...TRANSLATE_TOOLS,
+  ...NEWS_TOOLS,
+  ...DATETIME_TOOLS,
+  ...PASSWORD_TOOLS,
 ];
 
 // Legacy export retained for existing imports; dynamic MCP tools are layered in via getAvailableTools().
@@ -72,6 +84,13 @@ const CATEGORY_TO_CONNECTOR = {
   nasa: 'nasa',
   hackernews: 'hackernews',
   cleanuri: 'cleanuri',
+  // New categories — all free, no connector required
+  search: null,
+  dictionary: null,
+  translate: null,
+  news: null,
+  datetime: null,
+  security: null,
 };
 
 const WORKSPACE_SCOPED_TOOL_NAMES = new Set([
@@ -140,7 +159,8 @@ function dedupeTools(tools = []) {
 function filterToolListByConnectors(tools = [], connectorStatuses = {}) {
   return tools.filter(tool => {
     const connectorName = CATEGORY_TO_CONNECTOR[tool.category];
-    if (!connectorName) return true;
+    // null means no connector required — always available
+    if (connectorName === null || connectorName === undefined) return true;
     const status = connectorStatuses?.[connectorName];
     return status?.enabled === true;
   });
