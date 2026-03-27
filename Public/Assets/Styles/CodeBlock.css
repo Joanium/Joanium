@@ -39,6 +39,7 @@
 
 /* Shared styles for copy + download buttons */
 .copy-code-btn,
+.preview-code-btn,
 .download-code-btn {
   display: flex;
   align-items: center;
@@ -57,16 +58,19 @@
 }
 
 .copy-code-btn:hover,
+.preview-code-btn:hover,
 .download-code-btn:hover {
   color: var(--text-primary);
   background: var(--bg-hover);
 }
 
 /* Subtle divider between copy and download */
+.preview-code-btn,
 .download-code-btn {
   position: relative;
 }
 
+.preview-code-btn::before,
 .download-code-btn::before {
   content: '';
   position: absolute;

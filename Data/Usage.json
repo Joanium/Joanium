@@ -1376,6 +1376,33 @@
       "inputTokens": 1550,
       "outputTokens": 794,
       "chatId": "2026-03-27_14-45-21"
+    },
+    {
+      "timestamp": "2026-03-27T09:23:41.176Z",
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "modelName": "Mistral Large",
+      "inputTokens": 10434,
+      "outputTokens": 150,
+      "chatId": "2026-03-27_14-53-21"
+    },
+    {
+      "timestamp": "2026-03-27T09:41:16.020Z",
+      "provider": "mistral",
+      "model": "codestral-latest",
+      "modelName": "Codestral",
+      "inputTokens": 10841,
+      "outputTokens": 535,
+      "chatId": "2026-03-27_15-10-55"
+    },
+    {
+      "timestamp": "2026-03-27T09:42:41.521Z",
+      "provider": "mistral",
+      "model": "codestral-latest",
+      "modelName": "Codestral",
+      "inputTokens": 8786,
+      "outputTokens": 2562,
+      "chatId": "2026-03-27_15-10-55"
     }
   ]
 }

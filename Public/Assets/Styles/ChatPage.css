@@ -86,3 +86,6 @@
 
 /* 28. Chat Timeline + scroll-to-bottom */
 @import './ChatTimeline.css';
+
+/* 29. HTML preview modal */
+@import './HtmlPreview.css';

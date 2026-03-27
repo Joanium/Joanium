@@ -5,6 +5,7 @@ import { escapeHtml } from '../Core/Utils.js';
 ══════════════════════════════════════════ */
 const COPY_ICON = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
 const DL_ICON = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const PREVIEW_ICON = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.8"/></svg>`;
 
 /* Private sentinel used for code-block placeholders — never appears in real text */
 const CODE_FENCE = '\x00CB';
@@ -13,14 +14,24 @@ const CODE_FENCE = '\x00CB';
    CODE BLOCK RENDERER
    Preserves exact class names Chat.js depends on.
 ══════════════════════════════════════════ */
+function isHtmlPreviewable(lang, code) {
+  const normalizedLang = String(lang ?? '').trim().toLowerCase();
+  if (['html', 'htm', 'xhtml'].includes(normalizedLang)) return true;
+
+  const trimmed = String(code ?? '').trim();
+  return /^<!doctype html\b/i.test(trimmed) || /^<html[\s>]/i.test(trimmed);
+}
+
 function renderCodeBlock(lang, code) {
   const display = lang || 'code';
+  const showPreview = isHtmlPreviewable(lang, code);
   return (
     `<div class="code-wrapper">` +
     `<div class="code-header">` +
     `<span class="code-lang">${escapeHtml(display)}</span>` +
     `<div class="code-actions">` +
     `<button class="copy-code-btn" title="Copy code">${COPY_ICON} Copy</button>` +
+    `${showPreview ? `<button class="preview-code-btn" title="Preview HTML">${PREVIEW_ICON} Preview</button>` : ''}` +
     `<button class="download-code-btn" title="Download file" data-lang="${escapeHtml(lang)}">${DL_ICON} Download</button>` +
     `</div>` +
     `</div>` +

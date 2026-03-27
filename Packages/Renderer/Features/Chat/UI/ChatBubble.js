@@ -1,6 +1,7 @@
 import { state } from '../../../Shared/Core/State.js';
 import { render as renderMarkdown } from '../../../Shared/Content/Markdown.js';
 import { chatMessages } from '../../../Shared/Core/DOM.js';
+import { openHtmlPreviewModal } from '../../../Shared/Modals/HtmlPreviewModal.js';
 import { copyIcon, checkIcon, editIcon, retryIcon, assistantIcon } from './ChatIcons.js';
 import { buildTokenFooter, updateTimeline } from './ChatTimeline.js';
 
@@ -423,6 +424,15 @@ export async function onChatMessagesClick(e) {
       copyCodeBtn.style.color = 'var(--accent)';
       setTimeout(() => { copyCodeBtn.innerHTML = orig; copyCodeBtn.style.color = ''; }, 2000);
     } catch (err) { console.error('Failed to copy code:', err); }
+  }
+
+  const previewCodeBtn = e.target.closest('.preview-code-btn');
+  if (previewCodeBtn) {
+    const wrapper = previewCodeBtn.closest('.code-wrapper');
+    const codeEl = wrapper?.querySelector('code');
+    if (!codeEl) return;
+    openHtmlPreviewModal(codeEl.textContent);
+    return;
   }
 
   const dlCodeBtn = e.target.closest('.download-code-btn');
