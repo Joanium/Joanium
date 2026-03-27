@@ -177,6 +177,7 @@ export function buildLogItem(rawLine) {
 export function createLiveRow(doSendFromStateFn) {
   const row = document.createElement('div');
   row.className = 'message-row assistant';
+
   row.innerHTML = `
     ${assistantIcon()}
     <div class="content-wrapper">
@@ -184,10 +185,10 @@ export function createLiveRow(doSendFromStateFn) {
         <div class="agent-thinking-shell agent-thinking-shell--working">
           <button type="button" class="agent-thinking-toggle" aria-expanded="false">
             <span class="agent-thinking-summary">
-              <span class="agent-thinking-dot"></span>
+            <span class="agent-thinking-dot"></span>
               <span class="agent-thinking-label">Thinking</span>
             </span>
-            <span class="agent-thinking-caret" aria-hidden="true">
+            <span class="agent-thinking-caret" aria-hidden="true" hidden>
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 8l4 4 4-4"></path>
               </svg>
@@ -195,8 +196,7 @@ export function createLiveRow(doSendFromStateFn) {
           </button>
           <div class="agent-thinking-body" hidden>
             <div class="agent-thinking-trace" hidden>
-              <div class="agent-thinking-trace-label">Model thinking</div>
-              <div class="agent-thinking-trace-content"></div>
+              <div class="agent-thinking-trace-content">Blooming ideas...</div>
             </div>
             <div class="agent-log"></div>
             <div class="agent-tool-output"></div>
@@ -222,6 +222,7 @@ export function createLiveRow(doSendFromStateFn) {
   const thinkingBodyEl = row.querySelector('.agent-thinking-body');
   const thinkingTraceEl = row.querySelector('.agent-thinking-trace');
   const thinkingTraceContentEl = row.querySelector('.agent-thinking-trace-content');
+  const thinkingCaretEl = row.querySelector('.agent-thinking-caret');
 
   let _streamActive = false;
   let _accumulated = '';
@@ -230,6 +231,16 @@ export function createLiveRow(doSendFromStateFn) {
   let _lastReasoningRenderAt = 0;
   let _cursorEl = null;
   let _thinkingState = 'working';
+  // Tracks whether any expandable content has arrived (log items or reasoning).
+  // The caret is shown only once this is true.
+  let _hasContent = false;
+
+  /* ── Reveal the caret once there is content to expand/collapse ── */
+  function revealCaret() {
+    if (_hasContent) return;
+    _hasContent = true;
+    if (thinkingCaretEl) thinkingCaretEl.removeAttribute('hidden');
+  }
 
   function setThinkingOpen(open) {
     thinkingToggleEl?.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -248,6 +259,7 @@ export function createLiveRow(doSendFromStateFn) {
   }
 
   thinkingToggleEl?.addEventListener('click', () => {
+    if (!_hasContent) return; // nothing to toggle yet
     const isOpen = thinkingToggleEl.getAttribute('aria-expanded') === 'true';
     setThinkingOpen(!isOpen);
   });
@@ -270,6 +282,11 @@ export function createLiveRow(doSendFromStateFn) {
     row,
 
     push(line) {
+      revealCaret();
+      // Auto-open the body the first time content is pushed
+      if (!_hasContent || thinkingToggleEl?.getAttribute('aria-expanded') !== 'true') {
+        setThinkingOpen(true);
+      }
       const item = buildLogItem(line);
       logEl.appendChild(item);
       requestAnimationFrame(() => item.classList.add('agent-log-item--in'));
@@ -305,6 +322,8 @@ export function createLiveRow(doSendFromStateFn) {
       const text = String(chunk ?? '');
       if (!text) return;
       _reasoning += text;
+      // Reveal caret and open body when reasoning starts
+      revealCaret();
       setThinkingOpen(true);
       renderReasoning();
       smoothScrollToBottom();
@@ -385,7 +404,8 @@ export function createLiveRow(doSendFromStateFn) {
 
       wrap.appendChild(grid);
 
-      // ensure thinking panel is open so gallery is visible
+      // Ensure thinking panel is open so gallery is visible
+      revealCaret();
       setThinkingOpen(true);
       toolOutputEl.appendChild(wrap);
       smoothScrollToBottom();
@@ -421,6 +441,11 @@ export function createLiveRow(doSendFromStateFn) {
       replyEl.innerHTML = renderMarkdown(markdown);
       actionsEl.style.display = 'flex';
       attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), markdown);
+
+      // Collapse the thinking shell after finalization if there's content
+      if (_hasContent && thinkingToggleEl?.getAttribute('aria-expanded') === 'true') {
+        setThinkingOpen(false);
+      }
 
       const retryBtn = actionsEl.querySelector('.retry-msg-btn');
       if (retryBtn) {
@@ -588,7 +613,7 @@ export function sanitizeMessagesForUI(messages = []) {
 }
 
 /* ── appendMessage ── */
-export function appendMessage(role, content, addToState = true, scroll = true, attachments = [], doSendFromStateFn = () => {}) {
+export function appendMessage(role, content, addToState = true, scroll = true, attachments = [], doSendFromStateFn = () => { }) {
   const msg = normalizeMessage({ role, content, attachments });
   if (isInternalHiddenMessage(msg)) return null;
   if (addToState) state.messages.push(msg);

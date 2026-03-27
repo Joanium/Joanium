@@ -117,8 +117,18 @@ export async function mountTerminal(containerId, pid) {
     window.electronAPI?.onPtyExit?.(handleExit);
 }
 
-// Global observer to automatically mount terminals
+/**
+ * Set up a MutationObserver that automatically mounts xterm terminals into
+ * any `.embedded-terminal-mount` elements that are added to the DOM.
+ *
+ * Returns a cleanup function that disconnects the observer — call it when the
+ * Chat page unmounts to avoid accumulating observers across SPA navigations.
+ *
+ * @returns {() => void} cleanup
+ */
 export function initTerminalObserver() {
+    const initializedPids = new Set();
+
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
@@ -129,10 +139,13 @@ export function initTerminalObserver() {
 
                     if (mounts?.length) {
                         mounts.forEach(mount => {
-                            if (!mount.classList.contains('initialized')) {
+                            const pid = mount.dataset.pid;
+                            // Guard against double-init within the same observer lifecycle
+                            if (!mount.classList.contains('initialized') && !initializedPids.has(pid)) {
                                 mount.classList.add('initialized');
                                 mount.id = mount.id || 'term_' + Math.random().toString(36).substring(2);
-                                mountTerminal(mount.id, mount.dataset.pid);
+                                if (pid) initializedPids.add(pid);
+                                mountTerminal(mount.id, pid);
                             }
                         });
                     }
@@ -142,4 +155,10 @@ export function initTerminalObserver() {
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+
+    // Return a cleanup function so callers can disconnect when the page unmounts
+    return function cleanupTerminalObserver() {
+        observer.disconnect();
+        initializedPids.clear();
+    };
 }

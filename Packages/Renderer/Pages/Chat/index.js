@@ -1,5 +1,5 @@
-import { state }              from '../../Shared/Core/State.js';
-import { initDOM }            from '../../Shared/Core/DOM.js';
+import { state } from '../../Shared/Core/State.js';
+import { initDOM } from '../../Shared/Core/DOM.js';
 import {
   textarea, sendBtn, chips,
   modelDropdown, modelSelectorBtn,
@@ -94,7 +94,12 @@ export function mount(outlet, { settings, navigate }) {
 
   syncProjectUI();
   initModelSelector();
-  initTerminalObserver();
+
+  // initTerminalObserver returns a cleanup function — capture it so we can
+  // disconnect the MutationObserver when this page unmounts, preventing
+  // observer accumulation across SPA navigations.
+  const cleanupTerminalObserver = initTerminalObserver();
+
   initChatUI();
 
   // ── Send button ──────────────────────────────────────────────────────────
@@ -113,10 +118,10 @@ export function mount(outlet, { settings, navigate }) {
     sendBtn.innerHTML = SEND_ICON;
     sendBtn.classList.remove('is-stop');
     sendBtn.title = 'Send';
-    const hasText  = textarea?.value.trim().length > 0;
-    const hasAtt   = state.composerAttachments.length > 0;
+    const hasText = textarea?.value.trim().length > 0;
+    const hasAtt = state.composerAttachments.length > 0;
     const hasUnsup = state.composerAttachments.some(a => a.type === 'image') &&
-                     !state.selectedProvider?.models?.[state.selectedModel]?.inputs?.image;
+      !state.selectedProvider?.models?.[state.selectedModel]?.inputs?.image;
     const ready = (hasText || hasAtt) && !state.isTyping && !hasUnsup;
     sendBtn.classList.toggle('ready', ready);
     sendBtn.disabled = !ready;
@@ -136,7 +141,7 @@ export function mount(outlet, { settings, navigate }) {
   // ── Composer ──────────────────────────────────────────────────────────────
   initComposer(() => {
     if (state.isTyping) { stopGeneration(); return; }
-    const text        = textarea?.value.trim() ?? '';
+    const text = textarea?.value.trim() ?? '';
     const attachments = state.composerAttachments.map(a => ({ ...a }));
     sendMessage({ text, attachments, sendBtnEl: sendBtn });
   });
@@ -167,7 +172,7 @@ export function mount(outlet, { settings, navigate }) {
     try { state.systemPrompt = await window.electronAPI?.getSystemPrompt?.() ?? ''; }
     catch { state.systemPrompt = ''; }
   }
-  const onSettingsSaved      = () => refreshSystemPrompt();
+  const onSettingsSaved = () => refreshSystemPrompt();
   const onUserProfileUpdated = () => syncWelcomeTitle();
   window.addEventListener('ow:settings-saved', onSettingsSaved);
   window.addEventListener('ow:user-profile-updated', onUserProfileUpdated);
@@ -180,7 +185,7 @@ export function mount(outlet, { settings, navigate }) {
   // ── Drag-and-drop ─────────────────────────────────────────────────────────
   ensureDropOverlay();
   let dragCounter = 0;
-  const onDragOver  = e => { e.preventDefault(); e.stopPropagation(); };
+  const onDragOver = e => { e.preventDefault(); e.stopPropagation(); };
   const onDragEnter = e => {
     e.preventDefault(); e.stopPropagation();
     const overlay = getDropOverlay();
@@ -208,10 +213,10 @@ export function mount(outlet, { settings, navigate }) {
     syncCapabilities();
     await refreshSystemPrompt();
 
-    const pendingId      = window._pendingChatId;
+    const pendingId = window._pendingChatId;
     const shouldStartFresh = window._startFreshChat === true;
-    window._pendingChatId   = null;
-    window._startFreshChat  = false;
+    window._pendingChatId = null;
+    window._startFreshChat = false;
 
     if (pendingId) {
       await loadChat(pendingId, { updateModelLabel, buildModelDropdown, notifyModelSelectionChanged });
@@ -223,6 +228,10 @@ export function mount(outlet, { settings, navigate }) {
 
   // ── Cleanup ───────────────────────────────────────────────────────────────
   return function unmount() {
+    // Disconnect the terminal MutationObserver — prevents accumulation across
+    // SPA navigations (each mount registers a new one without this).
+    cleanupTerminalObserver();
+
     document.removeEventListener('click', onDocClick);
     document.removeEventListener('dragover', onDragOver);
     document.removeEventListener('dragenter', onDragEnter);

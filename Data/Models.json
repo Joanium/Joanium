@@ -426,7 +426,7 @@
     "models": {
       "moonshotai/kimi-k2-thinking": {
         "name": "Kimi K2 Thinking",
-        "description": "MoonshotAI reasoning model via NVIDIA NIM",
+        "description": "MoonshotAI reasoning model",
         "rank": 3,
         "max_output": 16384,
         "inputs": {
@@ -440,7 +440,7 @@
       },
       "deepseek-ai/deepseek-v3.2": {
         "name": "DeepSeek V3.2",
-        "description": "DeepSeek's latest flagship model via NVIDIA NIM",
+        "description": "DeepSeek's latest flagship model",
         "rank": 4,
         "max_output": 8192,
         "inputs": {
