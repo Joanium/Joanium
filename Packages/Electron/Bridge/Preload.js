@@ -133,6 +133,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   runAgentNow: (agentId) => ipcRenderer.invoke('run-agent-now', agentId),
   launchAgents: () => ipcRenderer.invoke('launch-agents'),
 
+  // Channel gateway — main → renderer event + reply back
+  onChannelIncoming: (cb) => ipcRenderer.on('channel-incoming', (_e, data) => cb(data)),
+  channelReply: (id, text) => ipcRenderer.invoke('channel-reply', id, text),
+
   // MCP
   mcpListServers: () => ipcRenderer.invoke('mcp-list-servers'),
   mcpSaveServer: (serverConfig) => ipcRenderer.invoke('mcp-save-server', serverConfig),
@@ -150,6 +154,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     if (typeof callback === 'function') browserPreviewListeners.add(callback);
   },
   offBrowserPreviewState: (callback) => browserPreviewListeners.delete(callback),
+
+  // Channels
+  getChannels: () => ipcRenderer.invoke('get-channels'),
+  getChannelConfig: (name) => ipcRenderer.invoke('get-channel-config', name),
+  saveChannel: (name, config) => ipcRenderer.invoke('save-channel', name, config),
+  removeChannel: (name) => ipcRenderer.invoke('remove-channel', name),
+  toggleChannel: (name, enabled) => ipcRenderer.invoke('toggle-channel', name, enabled),
+  updateChannelPrompt: (name, prompt) => ipcRenderer.invoke('update-channel-prompt', name, prompt),
+  validateChannel: (name, credentials) => ipcRenderer.invoke('validate-channel', name, credentials),
 
   // Events
   launchEvents: () => ipcRenderer.invoke('launch-events'),

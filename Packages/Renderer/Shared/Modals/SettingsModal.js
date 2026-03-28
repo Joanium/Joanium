@@ -1,6 +1,7 @@
 import { state } from '../Core/State.js';
 import { loadConnectorsPanel } from '../../Features/Connectors/index.js';
 import { loadMCPPanel } from '../../Features/MCP/index.js';
+import { loadChannelsPanel } from '../../Features/Channels/index.js';
 import { PROVIDERS, PROVIDERS_BY_ID } from '../../Pages/Setup/Providers/SetupProviders.js';
 
 const PROVIDER_ORDER = new Map(
@@ -34,6 +35,7 @@ function buildHTML() {
               <button class="settings-tab active" type="button" data-settings-tab="user">User</button>
               <button class="settings-tab" type="button" data-settings-tab="providers">AI Providers</button>
               <button class="settings-tab" type="button" data-settings-tab="connectors">Connectors</button>
+              <button class="settings-tab" type="button" data-settings-tab="channels">Channels</button>
               <button class="settings-tab" type="button" data-settings-tab="mcp">MCP Servers</button>
             </nav>
 
@@ -86,6 +88,16 @@ function buildHTML() {
                 </div>
                 <div id="mcp-settings-panel" class="mcp-settings-panel">
                   <div class="cx-loading">Loading MCP servers...</div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="channels" hidden>
+                <div class="settings-panel-header">
+                  <h3>Channels</h3>
+                  <p>Connect WhatsApp and Telegram. When someone messages in, the AI replies automatically on your behalf.</p>
+                </div>
+                <div id="channels-settings-panel" class="channels-settings-panel">
+                  <div class="cx-loading">Loading channels...</div>
                 </div>
               </section>
             </div>
@@ -283,6 +295,7 @@ export function initSettingsModal() {
     updateSaveButton();
     if (tabId === 'connectors') loadConnectorsPanel();
     if (tabId === 'mcp') loadMCPPanel();
+    if (tabId === 'channels') loadChannelsPanel();
   }
 
   function focusActiveTab() {

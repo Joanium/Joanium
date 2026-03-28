@@ -424,16 +424,18 @@ export async function fetchStreamingWithTools(
       let ev;
       try { ev = JSON.parse(raw); } catch { continue; }
 
-      const part = ev.candidates?.[0]?.content?.parts?.[0];
-      if (part?.text) {
-        if (part.thought) {
-          onReasoning?.(part.text);
-        } else {
-          fullText += part.text;
-          onToken?.(part.text);
+      const parts = ev.candidates?.[0]?.content?.parts ?? [];
+      for (const part of parts) {
+        if (part.text) {
+          if (part.thought) {
+            onReasoning?.(part.text);
+          } else {
+            fullText += part.text;
+            onToken?.(part.text);
+          }
+        } else if (part.functionCall && !fnCall) {
+          fnCall = part.functionCall;
         }
-      } else if (part?.functionCall && !fnCall) {
-        fnCall = part.functionCall;
       }
       if (ev.usageMetadata) {
         inputTokens = ev.usageMetadata.promptTokenCount ?? inputTokens;

@@ -5,6 +5,7 @@ import { initLibraryModal }   from '../Shared/Modals/LibraryModal.js';
 import { initProjectsModal }  from '../Shared/Modals/ProjectsModal.js';
 import { initSettingsModal }  from '../Shared/Modals/SettingsModal.js';
 import { injectCSS }          from '../Shared/Utils/InjectCSS.js';
+import { initChannelGateway } from '../Features/Channels/Gateway.js';
 
 // Each entry: load = dynamic import, css = stylesheet to inject before mount
 const PAGES = {
@@ -155,6 +156,9 @@ async function init() {
   // sidebar so settings.loadUser() can hydrate the sidebar avatar.
   _settings = initSettingsModal();
   _about    = initAboutModal();
+
+  // ── Channel Gateway — process Telegram/WhatsApp messages via agentLoop ─
+  initChannelGateway();
 
   // ── Sidebar ─────────────────────────────────────────────────────────
   // Initialized ONCE here. All navigation goes through window.appNavigate

@@ -41,6 +41,10 @@ const ICON = {
             <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/>
           </svg>`,
 
+  channels: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+             </svg>`,
+
   theme: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <circle cx="12" cy="12" r="4"/>
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41
@@ -168,7 +172,7 @@ function buildAvatarPanelHTML() {
  * Mount and wire the shared sidebar.
  *
  * @param {object} opts
- * @param {'chat'|'library'|'projects'|'automations'|'agents'|'skills'|'personas'|'events'|'usage'} [opts.activePage='chat']
+ * @param {'chat'|'library'|'projects'|'automations'|'agents'|'channels'|'skills'|'personas'|'events'|'usage'} [opts.activePage='chat']
  * @param {() => void} [opts.onNewChat]
  * @param {() => void} [opts.onLibrary]
  * @param {() => void} [opts.onProjects]

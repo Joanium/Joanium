@@ -18,6 +18,7 @@ import { isFirstRun }       from './Packages/Main/Services/UserService.js';
 import { AutomationEngine } from './Packages/Automation/Core/AutomationEngine.js';
 import { ConnectorEngine }  from './Packages/Connectors/Core/ConnectorEngine.js';
 import { AgentsEngine }  from './Packages/Agents/Core/AgentsEngine.js';
+import { ChannelEngine } from './Packages/Channels/Core/ChannelEngine.js';
 
 // ── IPC handler modules ───────────────────────────────────────────────
 import * as SetupIPC      from './Packages/Main/IPC/SetupIPC.js';
@@ -37,6 +38,7 @@ import * as AgentsIPC    from './Packages/Main/IPC/AgentsIPC.js';
 import * as TerminalIPC   from './Packages/Main/IPC/TerminalIPC.js';
 import * as MCPIPC        from './Packages/Main/IPC/MCPIPC.js';
 import * as BrowserPreviewIPC from './Packages/Main/IPC/BrowserPreviewIPC.js';
+import * as ChannelsIPC   from './Packages/Main/IPC/ChannelsIPC.js';
 import {
   BUILTIN_BROWSER_USER_AGENT,
   getBrowserPreviewService,
@@ -47,6 +49,7 @@ import {
 ══════════════════════════════════════════ */
 let automationEngine = null;
 let agentsEngine     = null;
+let channelEngine    = null;
 
 // Keep the in-app browser closer to a regular desktop Chrome profile for sites that
 // are picky about Electron defaults or break under HTTP/2.
@@ -67,6 +70,7 @@ app.whenReady().then(async () => {
   const connectorEngine  = new ConnectorEngine(Paths.CONNECTORS_FILE);
   automationEngine = new AutomationEngine(Paths.AUTOMATIONS_FILE, connectorEngine);
   agentsEngine     = new AgentsEngine(Paths.AGENTS_FILE, connectorEngine);
+  channelEngine    = new ChannelEngine(Paths.CHANNELS_FILE);
 
   // ── IPC registration ─────────────────────────────────────────────────────
   SetupIPC.register();
@@ -86,14 +90,20 @@ app.whenReady().then(async () => {
   AgentsIPC.register(agentsEngine, automationEngine);
   TerminalIPC.register();
   MCPIPC.register();
+  ChannelsIPC.register(channelEngine);
 
   automationEngine.start();
   agentsEngine.start();
+  channelEngine.start();
 
   // Show the window immediately — don't block on MCP
   const startPage = isFirstRun() ? Paths.SETUP_PAGE : Paths.INDEX_PAGE;
   const mainWindow = createWindow(startPage);
   getBrowserPreviewService().attachToWindow(mainWindow);
+
+  // Hand the window reference to the channel engine so it can
+  // dispatch incoming messages to the renderer's full AI pipeline
+  channelEngine.setWindow(mainWindow);
 
   // MCP auto-connect runs in the background AFTER the window is up
   MCPIPC.autoConnect().catch(err => {
@@ -111,5 +121,6 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', () => {
   automationEngine?.stop();
   agentsEngine?.stop();
+  channelEngine?.stop();
   if (process.platform !== 'darwin') app.quit();
 });

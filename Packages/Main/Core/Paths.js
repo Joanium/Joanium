@@ -24,6 +24,7 @@ export const Paths = {
   ACTIVE_PERSONA_FILE: path.join(ROOT, 'Data', 'ActivePersona.json'),
   USAGE_FILE: path.join(ROOT, 'Data', 'Usage.json'),
   AGENTS_FILE: path.join(ROOT, 'Data', 'Agents.json'),
+  CHANNELS_FILE: path.join(ROOT, 'Data', 'Channels.json'),
   MCP_FILE: path.join(ROOT, 'Data', 'MCPServers.json'),
   WINDOW_STATE_FILE: path.join(ROOT, 'Data', 'WindowState.json'),
 
@@ -41,6 +42,7 @@ export const Paths = {
   USAGE_PAGE: path.join(ROOT, 'Public', 'Usage.html'),
   AGENTS_PAGE: path.join(ROOT, 'Public', 'Agents.html'),
   EVENTS_PAGE: path.join(ROOT, 'Public', 'Events.html'),
+  CHANNELS_PAGE: path.join(ROOT, 'Public', 'Channels.html'),
 };
 
 export default Paths;

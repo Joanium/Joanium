@@ -1,0 +1,18 @@
+{
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "8665126924:AAEkbgU8PXdEvrNiezIWEkhDpCxXBsuDiCM",
+      "lastUpdateId": 959887597,
+      "connectedAt": "2026-03-28T12:29:32.325Z"
+    },
+    "whatsapp": {
+      "enabled": false,
+      "accountSid": "",
+      "authToken": "",
+      "fromNumber": "",
+      "systemPrompt": "You are a helpful AI assistant. Reply concisely and helpfully.",
+      "connectedAt": null
+    }
+  }
+}
