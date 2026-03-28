@@ -107,6 +107,18 @@ async function fetchCountry() {
   return null;
 }
 
+// Date
+function getCurrentDate() {
+  const now = new Date();
+
+  return now.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
 // ─────────────────────────────────────────────
 //  PUBLIC
 // ─────────────────────────────────────────────
@@ -183,6 +195,7 @@ export async function buildSystemPrompt({
   push(`## User`);
   push(`- **Name:** ${userName || 'User'}`);
   push(`- **Local time:** ${timeStr}`);
+  push(` - **date:** ${getCurrentDate}`);
   if (country) push(`- **Country:** ${country}`);
   push(`- **OS:** ${osName} ${release}`);
   push(`- **Hardware:** ${cpuCores}-core CPU (${cpuModel}), ${totalMemGB} GB RAM`);

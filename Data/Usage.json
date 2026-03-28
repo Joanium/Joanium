@@ -1502,6 +1502,51 @@
       "inputTokens": 10282,
       "outputTokens": 164,
       "chatId": "2026-03-27_23-23-54"
+    },
+    {
+      "timestamp": "2026-03-28T02:32:20.935Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 89381,
+      "outputTokens": 1261,
+      "chatId": "2026-03-28_08-01-08"
+    },
+    {
+      "timestamp": "2026-03-28T02:37:28.081Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 45771,
+      "outputTokens": 891,
+      "chatId": "2026-03-28_08-01-08"
+    },
+    {
+      "timestamp": "2026-03-28T02:41:08.473Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 45854,
+      "outputTokens": 871,
+      "chatId": "2026-03-28_08-08-41"
+    },
+    {
+      "timestamp": "2026-03-28T02:43:45.343Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 31002,
+      "outputTokens": 400,
+      "chatId": "2026-03-28_08-11-46"
+    },
+    {
+      "timestamp": "2026-03-28T02:44:26.231Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 28410,
+      "outputTokens": 280,
+      "chatId": "2026-03-28_08-11-46"
     }
   ]
 }

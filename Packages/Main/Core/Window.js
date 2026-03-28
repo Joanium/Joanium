@@ -17,7 +17,7 @@ export function create(page) {
     minHeight: 720,
     frame: false,
     titleBarStyle: 'hidden',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: 'white',
     show: false,
     webPreferences: {
       preload: Paths.PRELOAD,
