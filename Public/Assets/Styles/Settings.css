@@ -32,6 +32,8 @@ body.modal-open { overflow: hidden; }
 #settings-modal {
   width: min(980px, calc(100vw - 40px));
   max-height: min(680px, calc(100vh - 40px));
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background: var(--bg-secondary);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
@@ -105,7 +107,17 @@ body.modal-open { overflow: hidden; }
 /* ══════════════════════════════════════════
    MODAL BODY + FOOTER
 ══════════════════════════════════════════ */
-.settings-modal-body   { padding: 18px 30px 30px; overflow-y: auto; }
+.settings-modal-header,
+.settings-modal-footer {
+  flex-shrink: 0;
+}
+
+.settings-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 18px 30px 30px;
+  overflow-y: auto;
+}
 
 .settings-modal-footer {
   display: flex;

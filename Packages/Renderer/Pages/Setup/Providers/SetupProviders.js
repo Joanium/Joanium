@@ -1,7 +1,6 @@
 function apiKeyField(placeholder) {
   return [{
     key: 'apiKey',
-    label: 'API key',
     type: 'password',
     placeholder,
     required: true,
