@@ -1,5 +1,9 @@
 import { BrowserWindow, shell } from 'electron';
 import Paths from './Paths.js';
+import {
+  attachWindowStatePersistence,
+  loadWindowState,
+} from '../Services/WindowStateService.js';
 
 /** @type {BrowserWindow | null} */
 let _win = null;
@@ -10,9 +14,13 @@ let _win = null;
  * @returns {BrowserWindow}
  */
 export function create(page) {
+  const windowState = loadWindowState();
+
   _win = new BrowserWindow({
-    width: 1100,
-    height: 720,
+    width: windowState.bounds.width,
+    height: windowState.bounds.height,
+    x: windowState.bounds.x,
+    y: windowState.bounds.y,
     minWidth: 1100,
     minHeight: 720,
     frame: false,
@@ -28,8 +36,16 @@ export function create(page) {
     },
   });
 
+  attachWindowStatePersistence(_win);
   _win.loadFile(page);
-  _win.once('ready-to-show', () => _win.show());
+  _win.once('ready-to-show', () => {
+    if (windowState.isFullScreen) {
+      _win.setFullScreen(true);
+    } else if (windowState.isMaximized) {
+      _win.maximize();
+    }
+    _win.show();
+  });
 
   // Open all target="_blank" links in the OS default browser
   _win.webContents.setWindowOpenHandler(({ url }) => {

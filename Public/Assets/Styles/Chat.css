@@ -261,10 +261,9 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  padding: 18px 0 18px 18px;
+  padding: 0;
   box-sizing: border-box;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-tertiary) 96%, transparent), color-mix(in srgb, var(--bg-primary) 96%, transparent));
+  background: transparent;
 }
 
 .browser-preview-viewport {
@@ -272,7 +271,7 @@
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  background: color-mix(in srgb, var(--bg-secondary) 94%, transparent);
+  background: transparent;
 }
 
 .browser-preview-empty {
@@ -651,6 +650,6 @@ html.show-tokens .token-footer {
   }
 
   .browser-preview-mount {
-    padding: 14px 0 14px 14px;
+    padding: 0;
   }
 }

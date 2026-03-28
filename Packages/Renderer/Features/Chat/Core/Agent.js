@@ -49,6 +49,13 @@ const HIGH_RISK_BROWSER_TERMS = [
 
 const BROWSER_CONFIRMATION_SENTINEL = 'Potentially irreversible website action pending.';
 const RATE_LIMIT_BACKOFF_MS = [5000, 10000, 15000];
+const SEARCH_ENGINE_BLOCK_PATTERNS = [
+  /google\.com\/sorry/i,
+  /\bunusual traffic\b/i,
+  /\brecaptcha\b/i,
+  /\bi am not a robot\b/i,
+  /\bi'm not a robot\b/i,
+];
 
 function isRateLimitError(err) {
   const message = String(err?.message ?? '').toLowerCase();
@@ -249,6 +256,24 @@ function buildWorkspaceHint(summary, mode = 'runtime') {
   return lines.join('\n');
 }
 
+function buildWorkspaceFilePolicyHint() {
+  if (state.workspacePath) {
+    return [
+      '## Workspace File Policy',
+      `A workspace directory is open at: ${state.workspacePath}`,
+      'When the user asks for code, bug fixes, or file changes, prefer using the available workspace/file tools to create or update the real files inside that workspace.',
+      'Do not stop at code snippets when you can safely complete the request directly in the open workspace.',
+    ].join('\n');
+  }
+
+  return [
+    '## Workspace File Policy',
+    'No workspace directory is currently open.',
+    'Do not claim to create or edit files, and do not invent file operations.',
+    'If the user asks for code while no workspace is open, provide the code in the reply and let the user create the files unless they open a workspace first.',
+  ].join('\n');
+}
+
 function normalizePlanResult(parsed, validSkillNames, validToolNames) {
   const toolCalls = (parsed.toolCalls ?? parsed.tools ?? [])
     .map(entry => {
@@ -325,9 +350,11 @@ function buildBrowserAutomationBlock(browserTools = []) {
     'Connected MCP browser tools are available for live website work.',
     'Use them when the user needs real-time browsing, ticket availability checks, reservations, form filling, or other website navigation.',
     'Prefer the official site or a site the user explicitly names.',
+    'If the user only mentions Google or another search engine as a way to reach a clearly known destination site, prefer going directly to the destination site unless they explicitly need search-engine results.',
     'Verify live details such as dates, prices, availability, passenger details, and policies from the page before answering.',
     'Never claim that a page, profile, search result, or checkout is visible unless the latest browser tool result explicitly confirms the current URL, title, or visible page text.',
     'If the current page is not explicit in the latest result, call browser_get_state or browser_snapshot before answering.',
+    'If a search engine shows a CAPTCHA, unusual-traffic page, or robot check, stop using that search engine and either navigate directly to the destination site or tell the user the route is blocked.',
     'Stop and ask for explicit confirmation before any irreversible website action such as a final booking, reservation, checkout, purchase, or payment submission.',
     'If login, CAPTCHA, OTP, 2FA, or payment details are required, ask the user for that step clearly and continue after they reply.',
     listedTools ? `Browser-capable tools currently available:\n${listedTools}` : '',
@@ -434,8 +461,22 @@ function buildToolFailureLabel(name, err) {
   return `${buildToolLogLabel(name)} failed${message ? `: ${message}` : ''}`;
 }
 
-function buildBrowserResultInstruction(toolMeta = null) {
+function hasSearchEngineBlocker(toolResult) {
+  const text = stringifyToolResult(toolResult);
+  return SEARCH_ENGINE_BLOCK_PATTERNS.some(pattern => pattern.test(text));
+}
+
+function buildBrowserResultInstruction(toolMeta = null, toolResult = '') {
   if (!looksLikeBrowserAutomationTool(toolMeta)) return '';
+
+  if (hasSearchEngineBlocker(toolResult)) {
+    return [
+      'The current page is a search-engine CAPTCHA or unusual-traffic blocker page.',
+      'Do not pretend the browsing task succeeded.',
+      'If the destination site is obvious from the user request, navigate there directly or use that site search instead of the search engine.',
+      'If the blocker still prevents progress, tell the user exactly that the search-engine route is blocked.',
+    ].join(' ');
+  }
 
   return [
     'For browser work, only describe the page that is explicitly confirmed in the Result block below.',
@@ -487,6 +528,7 @@ export async function planRequest(userText) {
   ]);
   const browserTools = getBrowserAutomationTools(availableTools);
   const browserPlanningHint = buildBrowserPlanningHint(browserTools);
+  const workspaceFilePolicyHint = buildWorkspaceFilePolicyHint();
 
   const planPrompt = [
     'You are a planning assistant for an AI agent.',
@@ -498,6 +540,7 @@ export async function planRequest(userText) {
     `User request: "${userText}"`,
     state.activeProject ? `\n${buildActiveProjectHint('planning')}` : '',
     workspaceSummary ? `\n${buildWorkspaceHint(workspaceSummary, 'planning')}` : '',
+    `\n${workspaceFilePolicyHint}`,
     browserPlanningHint ? `\n${browserPlanningHint}` : '',
     '',
     'Available skills:',
@@ -564,7 +607,8 @@ export async function agentLoop(messages, live, plannedSkills = [], plannedToolC
   const selectedSkillBlock = buildSelectedSkillsBlock(plannedSkills, allSkills);
   const projectHint = buildActiveProjectHint('runtime');
   const workspaceHint = buildWorkspaceHint(workspaceSummary, 'runtime');
-  const basePrompt = [systemPrompt, toolPrivacyBlock, browserAutomationBlock, selectedSkillBlock, projectHint, workspaceHint].filter(Boolean).join('\n\n');
+  const workspaceFilePolicyHint = buildWorkspaceFilePolicyHint();
+  const basePrompt = [systemPrompt, toolPrivacyBlock, browserAutomationBlock, selectedSkillBlock, projectHint, workspaceHint, workspaceFilePolicyHint].filter(Boolean).join('\n\n');
   const toolMetaByName = new Map(availableTools.map(tool => [tool.name, tool]));
   let browserApprovalAvailable = hasPendingBrowserApproval(loopMessages);
 
@@ -776,7 +820,7 @@ export async function agentLoop(messages, live, plannedSkills = [], plannedToolC
       const totalPlanned = plannedToolCalls?.length ?? 0;
       executedToolCount += 1;
       const remainingPlanned = totalPlanned > 0 ? Math.max(0, totalPlanned - executedToolCount) : 0;
-      const browserResultInstruction = buildBrowserResultInstruction(toolMeta);
+      const browserResultInstruction = buildBrowserResultInstruction(toolMeta, llmToolResult);
 
       loopMessages.push({
         role: 'user',

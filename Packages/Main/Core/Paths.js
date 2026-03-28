@@ -25,6 +25,7 @@ export const Paths = {
   USAGE_FILE: path.join(ROOT, 'Data', 'Usage.json'),
   AGENTS_FILE: path.join(ROOT, 'Data', 'Agents.json'),
   MCP_FILE: path.join(ROOT, 'Data', 'MCPServers.json'),
+  WINDOW_STATE_FILE: path.join(ROOT, 'Data', 'WindowState.json'),
 
   // Skills & Personas directories (project root)
   SKILLS_DIR: path.join(ROOT, 'Skills'),
