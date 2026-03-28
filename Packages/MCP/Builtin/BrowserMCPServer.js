@@ -3183,13 +3183,11 @@ export class BrowserMCPServer {
 
         window.alert = function(message) {
           window.__owLastDialog = { type: 'alert', message: String(message ?? ''), result: null, timestamp: Date.now() };
-          console.log('[ow-dialog] alert: ' + String(message ?? ''));
         };
 
         window.confirm = function(message) {
           const accepted = window.__owDialogConfig.action !== 'dismiss';
           window.__owLastDialog = { type: 'confirm', message: String(message ?? ''), result: accepted, timestamp: Date.now() };
-          console.log('[ow-dialog] confirm: ' + String(message ?? '') + ' => ' + accepted);
           return accepted;
         };
 
@@ -3197,7 +3195,6 @@ export class BrowserMCPServer {
           const accepted = window.__owDialogConfig.action !== 'dismiss';
           const text = accepted ? (window.__owDialogConfig.promptText || String(defaultValue ?? '')) : null;
           window.__owLastDialog = { type: 'prompt', message: String(message ?? ''), result: text, timestamp: Date.now() };
-          console.log('[ow-dialog] prompt: ' + String(message ?? '') + ' => ' + text);
           return text;
         };
       })()

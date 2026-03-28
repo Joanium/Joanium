@@ -3,7 +3,7 @@
     "telegram": {
       "enabled": true,
       "botToken": "8665126924:AAEkbgU8PXdEvrNiezIWEkhDpCxXBsuDiCM",
-      "lastUpdateId": 959887597,
+      "lastUpdateId": 959887602,
       "connectedAt": "2026-03-28T12:29:32.325Z"
     },
     "whatsapp": {
@@ -12,6 +12,20 @@
       "authToken": "",
       "fromNumber": "",
       "systemPrompt": "You are a helpful AI assistant. Reply concisely and helpfully.",
+      "connectedAt": null
+    },
+    "discord": {
+      "enabled": false,
+      "botToken": "",
+      "channelId": "",
+      "lastMessageId": null,
+      "connectedAt": null
+    },
+    "slack": {
+      "enabled": false,
+      "botToken": "",
+      "channelId": "",
+      "lastMessageTs": null,
       "connectedAt": null
     }
   }

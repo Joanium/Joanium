@@ -63,27 +63,7 @@ export function register(connectorEngine) {
     } catch (err) { return { ok: false, error: err.message }; }
   });
 
-  ipcMain.handle('github-create-issue', async (_e, owner, repo, title, body, labels = []) => {
-    try {
-      const c = creds(); if (!c?.token) return notConnected();
-      const issue = await GithubAPI.createIssue(c, owner, repo, title, body, labels);
-      return { ok: true, issue };
-    } catch (err) { return { ok: false, error: err.message }; }
-  });
 
-  ipcMain.handle('github-get-releases', async (_e, owner, repo) => {
-    try {
-      const c = creds(); if (!c?.token) return notConnected();
-      return { ok: true, releases: await GithubAPI.getReleases(c, owner, repo) };
-    } catch (err) { return { ok: false, error: err.message }; }
-  });
-
-  ipcMain.handle('github-get-latest-release', async (_e, owner, repo) => {
-    try {
-      const c = creds(); if (!c?.token) return notConnected();
-      return { ok: true, release: await GithubAPI.getLatestRelease(c, owner, repo) };
-    } catch (err) { return { ok: false, error: err.message }; }
-  });
 
   ipcMain.handle('github-get-pr-diff', async (_e, owner, repo, prNumber) => {
     try {

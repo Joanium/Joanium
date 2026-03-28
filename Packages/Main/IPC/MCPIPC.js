@@ -58,7 +58,6 @@ export async function autoConnect() {
     if (!cfg.enabled) continue;
     try {
       await registry.connect(cfg);
-      console.log(`[MCPIPC] Auto-connected "${cfg.name}"`);
     } catch (err) {
       console.warn(`[MCPIPC] Auto-connect failed for "${cfg.name}":`, err.message);
     }

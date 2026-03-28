@@ -39,8 +39,7 @@ export function initChannelGateway() {
   if (_initialised) return;
   _initialised = true;
 
-  api?.onChannelIncoming?.(async ({ id, channelName, from, text }) => {
-    console.log(`[ChannelGateway] ${channelName} from ${from}: "${text.slice(0, 80)}${text.length > 80 ? '…' : ''}"`);
+  api?.onChannelIncoming?.(async ({ id, channelName, text }) => {
 
     try {
       if (!state.selectedProvider || !state.selectedModel) {
@@ -70,6 +69,4 @@ export function initChannelGateway() {
       try { await api.channelReply(id, `Sorry, something went wrong: ${err.message}`); } catch { /* ignore */ }
     }
   });
-
-  console.log('[ChannelGateway] Ready — using full agentLoop (tools + usage tracking)');
 }

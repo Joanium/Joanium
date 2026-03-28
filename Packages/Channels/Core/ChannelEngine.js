@@ -20,6 +20,20 @@ const DEFAULT_STATE = {
       fromNumber: '',
       connectedAt: null,
     },
+    discord: {
+      enabled: false,
+      botToken: '',
+      channelId: '',
+      lastMessageId: null,
+      connectedAt: null,
+    },
+    slack: {
+      enabled: false,
+      botToken: '',
+      channelId: '',
+      lastMessageTs: null,
+      connectedAt: null,
+    },
   },
 };
 
@@ -99,6 +113,75 @@ async function sendWhatsApp(cfg, to, text) {
 }
 
 /* ══════════════════════════════════════════
+   DISCORD  — poll + send
+══════════════════════════════════════════ */
+async function pollDiscord(cfg) {
+  if (!cfg.channelId) return [];
+  const url = `https://discord.com/api/v10/channels/${cfg.channelId}/messages?limit=10${cfg.lastMessageId ? `&after=${cfg.lastMessageId}` : ''}`;
+  const res = await fetch(url, { headers: { Authorization: `Bot ${cfg.botToken}` } });
+  if (!res.ok) throw new Error(`Discord HTTP ${res.status}`);
+  const messages = await res.json();
+
+  return messages
+    .filter(m => !m.author?.bot && m.content)
+    .map(m => ({
+      id: m.id,
+      channelId: m.channel_id,
+      text: m.content,
+      from: m.author?.username ?? 'User',
+    })).reverse(); // Oldest first
+}
+
+async function sendDiscord(botToken, channelId, text) {
+  const res = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bot ${botToken}` },
+    body: JSON.stringify({ content: text }),
+  });
+  if (!res.ok) {
+    const d = await res.json().catch(() => ({}));
+    throw new Error(d.message ?? `Discord sendMessage HTTP ${res.status}`);
+  }
+}
+
+/* ══════════════════════════════════════════
+   SLACK  — poll + send
+══════════════════════════════════════════ */
+async function pollSlack(cfg) {
+  if (!cfg.channelId) return [];
+  const url = `https://slack.com/api/conversations.history?channel=${cfg.channelId}&limit=10${cfg.lastMessageTs ? `&oldest=${cfg.lastMessageTs}` : ''}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${cfg.botToken}` } });
+  if (!res.ok) throw new Error(`Slack HTTP ${res.status}`);
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error ?? 'Slack API error');
+
+  const messages = (data.messages ?? [])
+    .filter(m => m.type === 'message' && !m.bot_id && m.text)
+    .map(m => ({
+      ts: m.ts,
+      channelId: cfg.channelId,
+      text: m.text,
+      from: m.user || 'User',
+    }));
+  
+  // conversations.history returns newest first, so reverse to process chronological
+  return messages.reverse();
+}
+
+async function sendSlack(botToken, channelId, text) {
+  const res = await fetch('https://slack.com/api/chat.postMessage', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${botToken}` },
+    body: JSON.stringify({ channel: channelId, text }),
+  });
+  if (!res.ok) {
+    throw new Error(`Slack sendMessage HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error ?? 'Slack sendMessage API error');
+}
+
+/* ══════════════════════════════════════════
    CHANNEL ENGINE CLASS
    The engine is a GATEWAY only — it does NOT
    call AI itself. All message processing is
@@ -139,8 +222,8 @@ export class ChannelEngine {
       const id = randomUUID();
       const timer = setTimeout(() => {
         this._pending.delete(id);
-        reject(new Error('Channel gateway timeout (120s)'));
-      }, 120_000);
+        reject(new Error('Channel gateway timeout (240s)'));
+      }, 240_000);
 
       this._pending.set(id, {
         resolve: (reply) => { clearTimeout(timer); resolve(reply); },
@@ -229,11 +312,28 @@ export class ChannelEngine {
     return { friendlyName: data.friendly_name };
   }
 
+  async validateSlack(botToken) {
+    const res = await fetch('https://slack.com/api/auth.test', {
+      headers: { Authorization: `Bearer ${botToken}` },
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error ?? 'Invalid Slack token');
+    return { name: data.user, team: data.team };
+  }
+
+  async validateDiscord(botToken) {
+    const res = await fetch('https://discord.com/api/v10/users/@me', {
+      headers: { Authorization: `Bot ${botToken}` },
+    });
+    if (!res.ok) throw new Error('Invalid Discord bot token');
+    const data = await res.json();
+    return { username: data.username };
+  }
+
   /* ── Polling ── */
   start() {
     this._load();
     this._ticker = setInterval(() => this._poll(), 5_000);
-    console.log('[ChannelEngine] Started — polling every 5 s');
   }
 
   stop() {
@@ -241,7 +341,6 @@ export class ChannelEngine {
     // Reject all pending replies on shutdown
     for (const [, p] of this._pending) p.reject(new Error('App shutting down'));
     this._pending.clear();
-    console.log('[ChannelEngine] Stopped');
   }
 
   async _poll() {
@@ -250,6 +349,8 @@ export class ChannelEngine {
     try {
       await this._pollTelegram();
       await this._pollWhatsApp();
+      await this._pollDiscord();
+      await this._pollSlack();
     } catch (err) {
       console.error('[ChannelEngine] Poll error:', err.message);
     } finally {
@@ -292,7 +393,6 @@ export class ChannelEngine {
           
           clearInterval(typingInterval);
           await sendTelegram(cfg.botToken, msg.chatId, reply);
-          console.log(`[ChannelEngine] Telegram ↩ replied to ${msg.from} (chat ${msg.chatId})`);
         } catch (err) {
           if (typingInterval) clearInterval(typingInterval);
           console.error(`[ChannelEngine] Telegram reply failed (chat ${msg.chatId}):`, err.message);
@@ -316,9 +416,74 @@ export class ChannelEngine {
         try {
           const reply = await this._dispatchToRenderer('whatsapp', msg.from, msg.text);
           await sendWhatsApp(cfg, msg.from, reply);
-          console.log(`[ChannelEngine] WhatsApp ↩ replied to ${msg.from}`);
         } catch (err) {
           console.error(`[ChannelEngine] WhatsApp reply failed (${msg.from}):`, err.message);
+        }
+      })();
+    }
+  }
+
+  async _pollDiscord() {
+    this._load();
+    const cfg = this._data.channels.discord;
+    if (!cfg?.enabled || !cfg.botToken || !cfg.channelId) return;
+
+    let messages;
+    try { messages = await pollDiscord(cfg); }
+    catch (err) { console.warn('[ChannelEngine] Discord poll failed:', err.message); return; }
+
+    if (messages.length) {
+      cfg.lastMessageId = messages[messages.length - 1].id;
+      this._persist();
+    }
+
+    // Process all incoming messages concurrently
+    for (const msg of messages) {
+      (async () => {
+        let typingInterval = null;
+        try {
+          const sendTyping = () => fetch(`https://discord.com/api/v10/channels/${msg.channelId}/typing`, {
+            method: 'POST',
+            headers: { Authorization: `Bot ${cfg.botToken}` },
+          }).catch(() => {});
+
+          sendTyping();
+          typingInterval = setInterval(sendTyping, 9000); // 10s max
+
+          const reply = await this._dispatchToRenderer('discord', msg.from, msg.text);
+          
+          clearInterval(typingInterval);
+          await sendDiscord(cfg.botToken, msg.channelId, reply);
+        } catch (err) {
+          if (typingInterval) clearInterval(typingInterval);
+          console.error(`[ChannelEngine] Discord reply failed (${msg.from}):`, err.message);
+        }
+      })();
+    }
+  }
+
+  async _pollSlack() {
+    this._load();
+    const cfg = this._data.channels.slack;
+    if (!cfg?.enabled || !cfg.botToken || !cfg.channelId) return;
+
+    let messages;
+    try { messages = await pollSlack(cfg); }
+    catch (err) { console.warn('[ChannelEngine] Slack poll failed:', err.message); return; }
+
+    if (messages.length) {
+      cfg.lastMessageTs = messages[messages.length - 1].ts;
+      this._persist();
+    }
+
+    // Process all incoming messages concurrently
+    for (const msg of messages) {
+      (async () => {
+        try {
+          const reply = await this._dispatchToRenderer('slack', msg.from, msg.text);
+          await sendSlack(cfg.botToken, msg.channelId, reply);
+        } catch (err) {
+          console.error(`[ChannelEngine] Slack reply failed (${msg.from}):`, err.message);
         }
       })();
     }
@@ -327,6 +492,8 @@ export class ChannelEngine {
   _isConfigured(name, c) {
     if (name === 'telegram') return Boolean(c.botToken);
     if (name === 'whatsapp') return Boolean(c.accountSid && c.authToken && c.fromNumber);
+    if (name === 'discord') return Boolean(c.botToken && c.channelId);
+    if (name === 'slack') return Boolean(c.botToken && c.channelId);
     return false;
   }
 }

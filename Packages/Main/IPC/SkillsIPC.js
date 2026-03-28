@@ -145,12 +145,4 @@ export function register() {
     }
   });
 
-  /* ── Return only the enabled map (lightweight, for SystemPrompt use) ── */
-  ipcMain.handle('get-skills-enabled-map', () => {
-    try {
-      return { ok: true, map: loadEnabledMap() };
-    } catch (err) {
-      return { ok: false, map: {}, error: err.message };
-    }
-  });
 }

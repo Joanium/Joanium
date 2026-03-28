@@ -456,79 +456,7 @@ export function createLiveRow(doSendFromStateFn) {
       if (!photos.length) return;
       _replyAttachments.push(clonePhotoGalleryAttachment({ query, total, photos }));
 
-      const wrap = document.createElement('div');
-      wrap.className = 'agent-photo-gallery';
-
-      const header = document.createElement('div');
-      header.className = 'agent-photo-gallery-header';
-      header.innerHTML = `
-        <span class="agent-photo-gallery-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-          ${photos.length} photos for &ldquo;${query}&rdquo;
-        </span>
-        <span class="agent-photo-gallery-meta">${(total ?? photos.length).toLocaleString()} total on Unsplash</span>
-      `;
-      wrap.appendChild(header);
-
-      const grid = document.createElement('div');
-      grid.className = 'agent-photo-grid';
-
-      photos.forEach((photo) => {
-        const card = document.createElement('a');
-        card.className = 'agent-photo-card';
-        card.href = photo.photographerUrl || '#';
-        card.target = '_blank';
-        card.rel = 'noopener noreferrer';
-        card.title = `${photo.photographer} — click to view profile`;
-
-        const imgWrap = document.createElement('div');
-        imgWrap.className = 'agent-photo-img-wrap';
-
-        const img = document.createElement('img');
-        img.src = photo.thumb || photo.small || '';
-        img.alt = photo.description || 'Unsplash photo';
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (photo.pageUrl) window.open(photo.pageUrl, '_blank', 'noopener,noreferrer');
-        });
-        imgWrap.appendChild(img);
-
-        const overlay = document.createElement('div');
-        overlay.className = 'agent-photo-overlay';
-        overlay.innerHTML = `
-          <span class="agent-photo-desc">${(photo.description || '').slice(0, 60)}${photo.description?.length > 60 ? '…' : ''}</span>
-          <span class="agent-photo-likes">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            ${photo.likes?.toLocaleString() ?? 0}
-          </span>
-        `;
-        imgWrap.appendChild(overlay);
-        card.appendChild(imgWrap);
-
-        const meta = document.createElement('div');
-        meta.className = 'agent-photo-meta';
-        meta.innerHTML = `
-          <span class="agent-photo-photographer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            ${photo.photographer}
-          </span>
-          <span class="agent-photo-dims">${photo.width ?? '?'}×${photo.height ?? '?'}</span>
-        `;
-        card.appendChild(meta);
-
-        grid.appendChild(card);
-      });
-
-      wrap.appendChild(grid);
-
-      replyMediaEl.appendChild(wrap);
+      replyMediaEl.appendChild(createPhotoGalleryElement({ query, total, photos }));
       smoothScrollToBottom();
     },
 
@@ -980,22 +908,3 @@ export function appendMessage(role, content, addToState = true, scroll = true, a
   return row;
 }
 
-export function replaceLastAssistant(markdown) {
-  const rows = chatMessages.querySelectorAll('.message-row.assistant');
-  const last = rows[rows.length - 1];
-  if (last) {
-    const replyTextEl = last.querySelector('.agent-reply-text');
-    if (replyTextEl) replyTextEl.innerHTML = renderMarkdown(markdown);
-    else {
-      const assistantTextEl = last.querySelector('.assistant-text-content');
-      if (assistantTextEl) assistantTextEl.innerHTML = renderMarkdown(markdown);
-      else {
-        const content = last.querySelector('.content');
-        if (content) content.innerHTML = renderMarkdown(markdown);
-      }
-    }
-    attachCopyEvent(last.querySelector('.copy-msg-btn'), markdown);
-  } else {
-    appendMessage('assistant', markdown, false, true);
-  }
-}

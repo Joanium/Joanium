@@ -103,7 +103,6 @@ export async function attemptMemoryUpdate() {
       `--- Auto-learned ${timestamp} ---\n${bullets}`;
 
     await window.electronAPI?.saveMemory?.(updated);
-    console.log('[Chat] Memory updated with new learnings.');
 
   } catch (err) {
     console.warn('[Chat] Memory update failed (non-fatal):', err.message);

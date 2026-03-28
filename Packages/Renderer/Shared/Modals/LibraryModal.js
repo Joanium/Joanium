@@ -1,4 +1,5 @@
 import { state } from '../Core/State.js';
+import { escapeHtml, timeAgo } from '../Core/Utils.js';
 
 // HTML TEMPLATE
 function buildHTML() {
@@ -44,22 +45,6 @@ function buildHTML() {
 }
 
 // HELPERS
-function escapeHtml(v) {
-  return String(v ?? '')
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-function formatChatDate(date) {
-  const now  = new Date();
-  const diff = now - date;
-  const DAY  = 86_400_000;
-  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  if (diff < DAY)     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  if (diff < 7 * DAY) return DAYS[date.getDay()];
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-}
-
 function currentChatScope() {
   return state.activeProject ? { projectId: state.activeProject.id } : {};
 }
@@ -112,7 +97,6 @@ export function initLibraryModal({ onChatSelect = () => {} } = {}) {
     list.innerHTML = '';
 
     filtered.forEach(chat => {
-      const dateText = chat.updatedAt ? formatChatDate(new Date(chat.updatedAt)) : '';
       const item     = document.createElement('div');
       item.className = 'lp-item';
       item.dataset.id = escapeHtml(chat.id);
@@ -121,7 +105,7 @@ export function initLibraryModal({ onChatSelect = () => {} } = {}) {
       info.className = 'lp-item-info';
       info.innerHTML = `
         <div class="lp-item-title">${escapeHtml(chat.title || 'Untitled chat')}</div>
-        <div class="lp-item-meta">${escapeHtml(dateText)}</div>`;
+        <div class="chat-time">${timeAgo(new Date(chat.updatedAt))}</div>`;
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'lp-delete-btn';

@@ -195,7 +195,7 @@ export async function buildSystemPrompt({
   push(`## User`);
   push(`- **Name:** ${userName || 'User'}`);
   push(`- **Local time:** ${timeStr}`);
-  push(` - **date:** ${getCurrentDate}`);
+  push(` - **date:** ${getCurrentDate()}`);
   if (country) push(`- **Country:** ${country}`);
   push(`- **OS:** ${osName} ${release}`);
   push(`- **Hardware:** ${cpuCores}-core CPU (${cpuModel}), ${totalMemGB} GB RAM`);

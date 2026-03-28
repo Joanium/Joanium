@@ -514,7 +514,6 @@ export class AgentsEngine {
       }
     }
     this._persist();
-    console.log('[AgentsEngine] All job history cleared.');
   }
 
   saveAgent(agent) {

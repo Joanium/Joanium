@@ -5,7 +5,7 @@ import { reset as resetComposer } from '../Composer/index.js';
 import { planRequest, agentLoop } from './Core/Agent.js';
 
 // Sub-modules
-import { onChatMessagesClick, appendMessage, replaceLastAssistant, createLiveRow, sanitizeAssistantReply, sanitizeMessagesForUI } from './UI/ChatBubble.js';
+import { onChatMessagesClick, appendMessage, createLiveRow, sanitizeAssistantReply, sanitizeMessagesForUI } from './UI/ChatBubble.js';
 import { updateTimeline, setupScrollFeatures, bumpScrollBadge } from './UI/ChatTimeline.js';
 import { attemptMemoryUpdate, resetMemoryCounter } from './Core/ChatMemory.js';
 import { saveCurrentChat, trackUsage, generateChatId, currentChatScope } from './Data/ChatPersistence.js';
@@ -154,73 +154,7 @@ export function restoreWelcome() {
   }
 }
 
-/* ══════════════════════════════════════════
-   LEGACY HELPERS
-══════════════════════════════════════════ */
-export async function callAI() {
-  state.isTyping = true;
-  _updateSendBtn();
-  const chatIdAtRequest = state.currentChatId;
 
-  const typingRow = document.createElement('div');
-  typingRow.className = 'message-row assistant';
-  typingRow.id = 'typing-row';
-  typingRow.innerHTML = `${(await import('./UI/ChatIcons.js')).assistantIcon()}<div class="content" style="padding-top:6px">
-    <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
-  </div>`;
-  chatMessages.appendChild(typingRow);
-  chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
-
-  const remove = (cb) => {
-    if (!typingRow.isConnected) { state.isTyping = false; _updateSendBtn(); cb?.(); return; }
-    typingRow.animate(
-      [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.96)' }],
-      { duration: 180, easing: 'ease-in', fill: 'forwards' },
-    ).onfinish = () => { typingRow.remove(); state.isTyping = false; _updateSendBtn(); cb?.(); };
-  };
-
-  if (!state.selectedProvider || !state.selectedModel) {
-    remove(() => appendMessage('assistant', 'No AI provider configured. Add an API key, Ollama, or LM Studio in Settings.', true, true, [], doSendFromState));
-    return;
-  }
-
-  try {
-    const result = await fetchWithTools(state.selectedProvider, state.selectedModel, state.messages, state.systemPrompt, []);
-    const reply = sanitizeAssistantReply(result.type === 'text' ? result.text : '(unexpected tool call)');
-    await trackUsage(result.usage, chatIdAtRequest);
-    remove(() => {
-      if (state.currentChatId !== chatIdAtRequest) return;
-      appendMessage('assistant', reply, true, true, [], doSendFromState);
-      saveCurrentChat();
-    });
-  } catch (err) {
-    remove(() => appendMessage('assistant', `API Error: ${err.message}`, true, true, [], doSendFromState));
-    console.error('[Chat] callAI error:', err);
-  }
-}
-
-export async function callAIWithContext(contextPrompt) {
-  state.isTyping = true;
-  _updateSendBtn();
-  if (!state.selectedProvider || !state.selectedModel) {
-    replaceLastAssistant('No AI provider configured. Connect an API key, Ollama, or LM Studio first.');
-    state.isTyping = false; _updateSendBtn(); return;
-  }
-  const msgs = [...state.messages.slice(-10), { role: 'user', content: contextPrompt, attachments: [] }];
-  try {
-    const result = await fetchWithTools(state.selectedProvider, state.selectedModel, msgs, state.systemPrompt, []);
-    const reply = sanitizeAssistantReply(result.type === 'text' ? result.text : '(unexpected tool call)');
-    await trackUsage(result.usage, state.currentChatId);
-    replaceLastAssistant(reply);
-    state.messages.push({ role: 'assistant', content: reply, attachments: [] });
-    saveCurrentChat();
-  } catch (err) {
-    replaceLastAssistant(`AI error: ${err.message}`);
-  } finally {
-    state.isTyping = false;
-    _updateSendBtn();
-  }
-}
 
 /* ══════════════════════════════════════════
    SEND MESSAGE
@@ -368,5 +302,5 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
 
 /* Re-export sub-module helpers needed by other files */
 export { saveCurrentChat, trackUsage } from './Data/ChatPersistence.js';
-export { appendMessage, replaceLastAssistant, sanitizeMessagesForUI } from './UI/ChatBubble.js';
+export { appendMessage, sanitizeMessagesForUI } from './UI/ChatBubble.js';
 export { updateTimeline } from './UI/ChatTimeline.js';

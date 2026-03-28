@@ -41,3 +41,39 @@ export function getInitials(name) {
   if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   return (parts[0] ?? 'OW').slice(0, 2).toUpperCase();
 }
+
+/** 
+ * Format a trigger descriptor into a human readable string.
+ */
+export function formatTrigger(trigger) {
+  if (!trigger) return '?';
+  switch (trigger.type) {
+    case 'on_startup': return '\u26A1 Startup';
+    case 'interval': return `\u23F1 Every ${trigger.minutes}m`;
+    case 'hourly': return '\u23F0 Hourly';
+    case 'daily': return `\u{1F305} Daily ${trigger.time ?? ''}`;
+    case 'weekly': return `\u{1F4C5} ${capitalize(trigger.day ?? '')} ${trigger.time ?? ''}`;
+    default: return trigger.type;
+  }
+}
+
+/**
+ * Format a timestamp into a relative time string (e.g. "5m ago", "2h ago").
+ */
+export function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso);
+  const minute = 60_000;
+  const hour = 3_600_000;
+
+  if (diff < minute) return 'just now';
+  if (diff < hour) return `${Math.floor(diff / minute)}m ago`;
+  if (diff < 86_400_000) return `${Math.floor(diff / hour)}h ago`;
+
+  return new Date(iso).toLocaleDateString([], { month: 'short', day: 'numeric' });
+}
+
+/** Sort models by rank. Array can contain plain models or entries with { provider, modelName, ... } */
+export function sortModelsByRank(modelsArray) {
+  return [...modelsArray].sort((l, r) => (l.rank ?? 999) - (r.rank ?? 999));
+}
