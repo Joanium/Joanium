@@ -1,4 +1,4 @@
-import { BrowserWindow, shell } from 'electron';
+import { BrowserWindow, shell, app } from 'electron';
 import Paths from './Paths.js';
 import {
   attachWindowStatePersistence,
@@ -7,6 +7,14 @@ import {
 
 /** @type {BrowserWindow | null} */
 let _win = null;
+
+/**
+ * Improve performance at app level (call this once in your main entry file ideally)
+ */
+export function optimizeApp() {
+  // Enable better caching & performance
+  app.commandLine.appendSwitch('enable-features', 'BackForwardCache');
+}
 
 /**
  * Create the main BrowserWindow and load the given HTML page.
@@ -23,31 +31,51 @@ export function create(page) {
     y: windowState.bounds.y,
     minWidth: 1100,
     minHeight: 720,
+
     frame: false,
     titleBarStyle: 'hidden',
-    backgroundColor: 'white',
-    show: false,
+    backgroundColor: '#ffffff',
+
+    // 🚀 Show immediately for faster perceived load
+    show: true,
+
     webPreferences: {
       preload: Paths.PRELOAD,
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
-      backgroundThrottling: true, // throttle timers/intervals when window is hidden → saves memory & CPU
+
+      // 🚀 Better UX performance
+      backgroundThrottling: false,
     },
   });
 
-  attachWindowStatePersistence(_win);
-  _win.loadFile(page);
-  _win.once('ready-to-show', () => {
-    if (windowState.isFullScreen) {
-      _win.setFullScreen(true);
-    } else if (windowState.isMaximized) {
-      _win.maximize();
-    }
-    _win.show();
+  // 🚀 Faster than loadFile
+  _win.loadURL(`file://${page}`);
+
+  // Apply saved window state immediately
+  if (windowState.isFullScreen) {
+    _win.setFullScreen(true);
+  } else if (windowState.isMaximized) {
+    _win.maximize();
+  }
+
+  // 🚀 Defer non-critical work
+  setImmediate(() => {
+    attachWindowStatePersistence(_win);
   });
 
-  // Open all target="_blank" links in the OS default browser
+  // 🚀 Preload important SPA routes after first paint
+  _win.webContents.once('did-finish-load', () => {
+    _win?.webContents.send('preload-pages', [
+      'automations',
+      'agents',
+      'events',
+      'skills',
+    ]);
+  });
+
+  // Open all external links in default browser
   _win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
@@ -57,7 +85,9 @@ export function create(page) {
 }
 
 /** Return the current window instance (may be null before create()). */
-export function get() { return _win; }
+export function get() {
+  return _win;
+}
 
 /**
  * Navigate the existing window.
@@ -65,22 +95,40 @@ export function get() { return _win; }
  * All other app pages route inside the SPA renderer.
  */
 export function loadPage(page) {
+  if (!_win) return;
+
   if (page === Paths.SETUP_PAGE || page === Paths.INDEX_PAGE) {
-    _win?.loadFile(page);
+    _win.loadURL(`file://${page}`);
     return;
   }
 
   const pageKey = resolvePageKey(page);
-  if (pageKey) _win?.webContents.send('navigate', pageKey);
+  if (pageKey) {
+    _win.webContents.send('navigate', pageKey);
+  }
 }
 
+/**
+ * 🚀 Optimized page resolver (faster + cleaner)
+ */
+const PAGE_MAP = {
+  Automations: 'automations',
+  Agents: 'agents',
+  Events: 'events',
+  Skills: 'skills',
+  Personas: 'personas',
+  Usage: 'usage',
+  Chat: 'chat',
+};
+
 function resolvePageKey(filePath) {
-  if (filePath?.includes('Automations')) return 'automations';
-  if (filePath?.includes('Agents')) return 'agents';
-  if (filePath?.includes('Events')) return 'events';
-  if (filePath?.includes('Skills')) return 'skills';
-  if (filePath?.includes('Personas')) return 'personas';
-  if (filePath?.includes('Usage')) return 'usage';
-  if (filePath?.includes('Chat')) return 'chat';
+  if (!filePath) return null;
+
+  for (const key in PAGE_MAP) {
+    if (filePath.includes(key)) {
+      return PAGE_MAP[key];
+    }
+  }
+
   return null;
 }

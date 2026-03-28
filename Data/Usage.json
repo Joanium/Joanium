@@ -1826,6 +1826,15 @@
       "inputTokens": 14254,
       "outputTokens": 317,
       "chatId": "channel:telegram"
+    },
+    {
+      "timestamp": "2026-03-28T14:44:52.284Z",
+      "provider": "nvidia",
+      "model": "moonshotai/kimi-k2-thinking",
+      "modelName": "Kimi K2 Thinking",
+      "inputTokens": 2298,
+      "outputTokens": 2332,
+      "chatId": null
     }
   ]
 }
