@@ -1,29 +1,47 @@
 # Joanium
 
-> One desktop AI workspace for chat, projects, automations, agents, and tools.
+> Your desktop AI workspace. Local-first, project-aware, and built to actually help you get work done. ⚡
 
 **Website:** [Joanium.com](https://joanium.com)
 
-Joanium is a local-first desktop AI app built with Electron. It brings together multi-model chat, project-aware workspace tools, scheduled automations, AI agents, channels, MCP servers, skills, personas, and usage tracking in one place.
+Joanium is a desktop AI app built with Electron for people who want more than a chat box in a shiny wrapper. It brings together multi-model chat, real project folders, automations, AI agents, MCP servers, connectors, skills, personas, and local data storage in one focused workspace.
 
-It is built for people who want a serious AI workspace, not a pile of disconnected tabs, scripts, and dashboards.
+It is serious software with range. Fast when you need speed, flexible when your workflow gets weird, and local-first by default so your machine still feels like yours.
 
-## What Joanium Does
+## What Joanium Actually Gives You
 
-- Chat with different AI models from one interface.
-- Work inside real project folders with file, terminal, git, and browser-aware tooling.
-- Run scheduled automations for deterministic tasks.
-- Run scheduled AI agents for monitoring, summaries, triage, and recurring analysis.
-- Connect services like Gmail and GitHub to bring live context into chat and background jobs.
-- Extend the app with MCP servers, skills, and personas.
-- Keep data stored locally under `Data/` instead of treating your desktop like a browser tab.
+- 🤖 **Multi-model chat** that does more than answer prompts.
+- 📁 **Project-aware tooling** with files, terminal, git, and workspace context.
+- ⏱️ **Automations** for repeatable tasks you do not want to babysit.
+- 🧠 **AI agents** for monitoring, summaries, triage, and recurring analysis.
+- 🔌 **Live connectors** like Gmail and GitHub that bring real context into the app.
+- 🛠️ **MCP servers, skills, and personas** so the app can adapt to how you work.
+- 🔒 **Local-first storage** under `Data/`, so your chats and runtime state stay on your machine.
 
-## Why It Feels Different
+## Why It Hits Different
 
-- **Local-first by default** - chats, settings, projects, usage, and runtime state live on your machine.
-- **Built for real workflows** - chat is connected to projects, tools, automations, and agents instead of existing as an isolated prompt box.
-- **Modular architecture** - main process services, renderer features, automations, agents, channels, and MCP stay cleanly separated.
-- **Expandable without chaos** - connectors, skills, personas, and docs make it easier to grow the app without turning it into a mess.
+- **Not another disposable AI tab**  
+  Joanium is designed like a workspace, not a demo.
+
+- **Built for real workflows**  
+  Chat connects to projects, tools, automations, agents, and external context instead of living in isolation.
+
+- **Power without turning into chaos**  
+  The architecture stays modular, so the app can grow without becoming a spaghetti pile.
+
+- **Personality without losing credibility**  
+  It is flexible, expressive, and useful without feeling gimmicky.
+
+## Core Areas
+
+- 💬 **Chat** - multi-model conversations with tools, connectors, and MCP support.
+- 🗂️ **Projects** - workspace-aware context with project-scoped chats and tooling.
+- ⚙️ **Automations** - scheduled action chains for deterministic work.
+- 🧠 **Agents** - scheduled AI jobs that collect data, reason over it, and produce outputs.
+- 📡 **Events** - a live operational timeline for runs, failures, skips, and active jobs.
+- 📚 **Skills** - local Markdown-based behavior packs that shape how the assistant works.
+- 🎭 **Personas** - switch the assistant's identity, tone, and framing.
+- 📈 **Usage** - local visibility into model activity and cost.
 
 ## Quick Start
 
@@ -36,18 +54,7 @@ npm install
 npm start
 ```
 
-On first launch, Joanium walks through setup and stores its local app data inside `Data/`.
-
-## Core Areas
-
-- **Chat** - multi-model conversations with local tools, connectors, and MCP support.
-- **Projects** - workspace-aware context with project-scoped chats and tooling.
-- **Automations** - scheduled action chains for repeatable tasks.
-- **Agents** - scheduled AI jobs that collect data, reason over it, and produce outputs.
-- **Events** - a live operational timeline for runs, failures, skips, and active jobs.
-- **Skills** - local Markdown-based behavior packs that shape how the assistant works.
-- **Personas** - switch the assistant's identity, tone, and framing.
-- **Usage** - local tracking for model activity and cost visibility.
+On first launch, Joanium walks through setup and stores local app data inside `Data/`.
 
 ## Project Structure
 
@@ -85,9 +92,9 @@ The [`Docs/`](Docs/) folder covers the current runtime and feature set in depth.
 - [`Docs/MCP.md`](Docs/MCP.md) - MCP server support and tool surfacing
 - [`Docs/Development.md`](Docs/Development.md) - extension patterns and implementation guidance
 
-## Status
+## Current Status
 
-Joanium is actively being built and refined. The current codebase already includes the app shell, project-aware workflows, scheduled runtimes, connector support, and local persistence model that the product is built around.
+Joanium is actively being built and sharpened. The foundation is already here: the app shell, project-aware workflows, scheduled runtimes, connector support, and the local-first persistence model that ties everything together.
 
 ## Built By
 
