@@ -113,7 +113,7 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'extract_file_text',
-    description: 'Extract readable text from a local document such as PDF, DOCX, XLSX, XLS, ODS, PPTX, RTF, or plain text files. Use this when the user gives you a document instead of source code.',
+    description: 'Extract readable text from a local document such as PDF, DOCX, XLSX, XLSM, PPTX, RTF, or plain text files. Use this when the user gives you a document instead of source code.',
     category: 'terminal',
     parameters: {
       path: {

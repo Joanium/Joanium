@@ -245,7 +245,7 @@ async function handlePaste(event) {
 /* ══════════════════════════════════════════
    PUBLIC — addAttachments
    Feature 5: Rich multi-file support.
-   Handles images + CSV, JSON, YAML, MD, code, TXT, PDF, DOCX, XLSX, PPTX.
+   Handles images + CSV, JSON, YAML, MD, code, TXT, PDF, DOCX, XLSX/XLSM, PPTX.
 ══════════════════════════════════════════ */
 export async function addAttachments(files) {
   const newAttachments = [];
@@ -415,7 +415,7 @@ export function init(onSend) {
     const input = Object.assign(document.createElement('input'), {
       type: 'file',
       multiple: true,
-      accept: 'image/*,.pdf,.docx,.xlsx,.xls,.xlsm,.xlsb,.ods,.pptx,.csv,.tsv,.json,.yaml,.yml,.toml,.xml,.txt,.md,.mdx,.log,.env,.rtf,.sh,.py,.js,.ts,.jsx,.tsx,.vue,.svelte,.rs,.go,.rb,.java,.cs,.cpp,.c,.h,.hpp,.php,.sql,.graphql,.gql,.html,.css,.scss,.less,.astro',
+      accept: 'image/*,.pdf,.docx,.xlsx,.xlsm,.pptx,.csv,.tsv,.json,.yaml,.yml,.toml,.xml,.txt,.md,.mdx,.log,.env,.rtf,.sh,.py,.js,.ts,.jsx,.tsx,.vue,.svelte,.rs,.go,.rb,.java,.cs,.cpp,.c,.h,.hpp,.php,.sql,.graphql,.gql,.html,.css,.scss,.less,.astro',
     });
     input.addEventListener('change', async () => {
       if (input.files?.length) await addAttachments(Array.from(input.files));

@@ -59,7 +59,7 @@ export const DIRECT_TEXT_EXTENSIONS = new Set([
 ]);
 
 export const EXTRACTABLE_BINARY_EXTENSIONS = new Set([
-  'pdf', 'docx', 'xlsx', 'xls', 'xlsm', 'xlsb', 'ods', 'pptx',
+  'pdf', 'docx', 'xlsx', 'xlsm', 'pptx',
 ]);
 
 export const DIRECT_TEXT_MAX_SIZE = 2 * 1024 * 1024;
@@ -88,8 +88,7 @@ export function isExtractableBinary(ext, mime = '') {
     lower === 'application/pdf' ||
     lower.includes('wordprocessingml.document') ||
     lower.includes('spreadsheetml.sheet') ||
-    lower.includes('ms-excel') ||
-    lower.includes('opendocument.spreadsheet') ||
+    lower.includes('sheet.macroenabled.12') ||
     lower.includes('presentationml.presentation')
   );
 }

@@ -9,9 +9,11 @@ const TEXT_EXTENSIONS = new Set([
   'astro', 'ini', 'cfg', 'conf', 'rtf',
 ]);
 
+const SPREADSHEET_EXTENSIONS = new Set(['xlsx', 'xlsm']);
+
 const DOCUMENT_EXTENSIONS = new Set([
   ...TEXT_EXTENSIONS,
-  'pdf', 'docx', 'xlsx', 'xls', 'xlsm', 'xlsb', 'ods', 'pptx',
+  'pdf', 'docx', ...SPREADSHEET_EXTENSIONS, 'pptx',
 ]);
 
 const MAX_EXTRACTED_CHARS = 120_000;
@@ -21,7 +23,7 @@ const MAX_SLIDES = 40;
 
 let _pdfParseModule = null;
 let _mammothModule = null;
-let _xlsxModule = null;
+let _excelJsModule = null;
 let _jszipModule = null;
 
 function getExtension(fileName = '') {
@@ -120,11 +122,11 @@ async function getMammoth() {
   return _mammothModule.default ?? _mammothModule;
 }
 
-async function getXlsx() {
-  if (!_xlsxModule) {
-    _xlsxModule = await import('xlsx');
+async function getExcelJs() {
+  if (!_excelJsModule) {
+    _excelJsModule = await import('exceljs');
   }
-  return _xlsxModule;
+  return _excelJsModule.default ?? _excelJsModule;
 }
 
 async function getJszip() {
@@ -181,30 +183,52 @@ async function extractDocx(buffer) {
   });
 }
 
+function serializeWorksheetRow(row) {
+  const cells = [];
+
+  for (let column = 1; column <= row.cellCount; column += 1) {
+    cells.push(row.getCell(column).toCsvString());
+  }
+
+  while (cells.length && !cells.at(-1)) {
+    cells.pop();
+  }
+
+  return cells.join(',');
+}
+
 async function extractSpreadsheet(buffer) {
-  const XLSX = await getXlsx();
-  const workbook = XLSX.read(buffer, { type: 'buffer' });
+  const ExcelJS = await getExcelJs();
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
   const sections = [];
 
-  for (const sheetName of workbook.SheetNames.slice(0, MAX_SHEETS)) {
-    const sheet = workbook.Sheets[sheetName];
-    if (!sheet) continue;
+  for (const worksheet of workbook.worksheets.slice(0, MAX_SHEETS)) {
+    const previewRows = [];
+    let rowCount = 0;
 
-    const csv = XLSX.utils.sheet_to_csv(sheet, { blankrows: false }).trim();
-    if (!csv) continue;
+    worksheet.eachRow({ includeEmpty: false }, row => {
+      const csvLine = serializeWorksheetRow(row);
+      if (!csvLine.trim()) return;
 
-    const rows = csv.split(/\r?\n/).filter(Boolean);
-    const preview = rows.slice(0, MAX_ROWS_PER_SHEET).join('\n');
-    const remaining = rows.length > MAX_ROWS_PER_SHEET
-      ? `\n...(truncated ${rows.length - MAX_ROWS_PER_SHEET} more rows)`
+      rowCount += 1;
+      if (previewRows.length < MAX_ROWS_PER_SHEET) {
+        previewRows.push(csvLine);
+      }
+    });
+
+    if (!rowCount) continue;
+
+    const remaining = rowCount > MAX_ROWS_PER_SHEET
+      ? `\n...(truncated ${rowCount - MAX_ROWS_PER_SHEET} more rows)`
       : '';
 
-    sections.push(`## Sheet: ${sheetName}\n${preview}${remaining}`);
+    sections.push(`## Sheet: ${worksheet.name}\n${previewRows.join('\n')}${remaining}`);
   }
 
   return buildResult({
     kind: 'spreadsheet',
-    summary: `${workbook.SheetNames.length} sheet${workbook.SheetNames.length !== 1 ? 's' : ''}`,
+    summary: `${workbook.worksheets.length} sheet${workbook.worksheets.length !== 1 ? 's' : ''}`,
     text: sections.join('\n\n'),
   });
 }
@@ -246,20 +270,23 @@ async function extractPptx(buffer) {
   });
 }
 
+function isSupportedSpreadsheetMime(mimeType = '') {
+  const lowerMime = String(mimeType || '').toLowerCase();
+  return lowerMime.includes('spreadsheetml.sheet') || lowerMime.includes('sheet.macroenabled.12');
+}
+
 export function supportsDocumentExtraction(fileName = '', mimeType = '') {
   const ext = getExtension(fileName);
   if (DOCUMENT_EXTENSIONS.has(ext)) return true;
 
+  const lowerMime = String(mimeType || '').toLowerCase();
+  if (isSupportedSpreadsheetMime(lowerMime)) return true;
+
   return [
     'application/pdf',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-excel',
-    'application/vnd.ms-excel.sheet.macroEnabled.12',
-    'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
-    'application/vnd.oasis.opendocument.spreadsheet',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-  ].includes(String(mimeType || '').toLowerCase());
+  ].includes(lowerMime);
 }
 
 export async function extractDocumentTextFromBuffer({ fileName = '', mimeType = '', buffer }) {
@@ -269,13 +296,13 @@ export async function extractDocumentTextFromBuffer({ fileName = '', mimeType = 
   if (TEXT_EXTENSIONS.has(ext)) return extractTextLike(payload, ext);
   if (ext === 'pdf') return extractPdf(payload);
   if (ext === 'docx') return extractDocx(payload);
-  if (['xlsx', 'xls', 'xlsm', 'xlsb', 'ods'].includes(ext)) return extractSpreadsheet(payload);
+  if (SPREADSHEET_EXTENSIONS.has(ext)) return extractSpreadsheet(payload);
   if (ext === 'pptx') return extractPptx(payload);
 
   const lowerMime = String(mimeType || '').toLowerCase();
   if (lowerMime === 'application/pdf') return extractPdf(payload);
   if (lowerMime.includes('wordprocessingml.document')) return extractDocx(payload);
-  if (lowerMime.includes('spreadsheetml.sheet') || lowerMime.includes('ms-excel') || lowerMime.includes('opendocument.spreadsheet')) {
+  if (isSupportedSpreadsheetMime(lowerMime)) {
     return extractSpreadsheet(payload);
   }
   if (lowerMime.includes('presentationml.presentation')) return extractPptx(payload);
