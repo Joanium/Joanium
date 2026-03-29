@@ -61,6 +61,14 @@
       {
         "from": "Data/Models.json",
         "to": "Data/Models.json"
+      },
+      {
+        "from": "Skills",
+        "to": "Skills"
+      },
+      {
+        "from": "Personas",
+        "to": "Personas"
       }
     ],
     "win": {
