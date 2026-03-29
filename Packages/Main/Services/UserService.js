@@ -8,7 +8,7 @@ const DEFAULT_USER = {
   api_keys: {},
   provider_settings: {},
   preferences: {
-    theme: 'dark',
+    theme: 'light',
     default_provider: null,
     default_model: null,
   },

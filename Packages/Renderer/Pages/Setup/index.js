@@ -322,7 +322,7 @@ async function saveSetup() {
       setup_complete: true,
       created_at: new Date().toISOString(),
       preferences: {
-        theme: 'dark',
+        theme: 'light',
         default_provider: [...state.selectedProviders][0] || null,
         default_model: null,
       },

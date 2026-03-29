@@ -406,15 +406,21 @@ body {
 
 /* ── Primary button ── */
 .btn-primary {
-    width: 50%;
-    padding: 13px 24px;
+    width: 100%;
+    max-width: 380px;
+    height: 52px;
+    padding: 0 24px;
     border-radius: 100px;
     border: none;
     background: var(--text-muted);
     color: var(--bg-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-ui);
     font-size: 14px;
     font-weight: 600;
+    line-height: 1;
     letter-spacing: 0.3px;
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
@@ -526,8 +532,8 @@ body {
 }
 
 .p-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -536,7 +542,7 @@ body {
 
 .provider-card[data-icon-frame='soft'] .p-icon,
 .provider-card[data-icon-frame='solid'] .p-icon {
-    border-radius: 16px;
+    border-radius: 14px;
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--p-color) 20%, transparent);
 }
 
@@ -549,8 +555,10 @@ body {
 }
 
 .p-icon-image {
-    width: var(--p-icon-size, 30px);
-    height: var(--p-icon-size, 30px);
+    width: calc(var(--p-icon-size, 30px) - 3px);
+    height: calc(var(--p-icon-size, 30px) - 3px);
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     user-select: none;
     pointer-events: none;
@@ -612,8 +620,8 @@ body {
     }
 
     .p-icon {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
     }
 }
 
@@ -629,8 +637,8 @@ body {
     }
 
     .p-icon {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
     }
 }
 

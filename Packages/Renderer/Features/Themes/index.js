@@ -1,4 +1,4 @@
 (function() {
-  const theme = localStorage.getItem('ow-theme') || 'dark';
+  const theme = localStorage.getItem('ow-theme') || 'light';
   document.documentElement.setAttribute('data-theme', theme);
 })();
