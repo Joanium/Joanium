@@ -38,9 +38,7 @@ export function buildDefaultCard({ isActive, searchQuery, onActivate, onChat }) 
   card.innerHTML = `
     ${isActive ? `<div class="persona-active-badge"><div class="persona-active-badge-dot"></div>Active</div>` : ''}
     <div class="persona-avatar persona-avatar--default">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px">
-        <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z"/>
-      </svg>
+      <img src="../Icons/Logo.png" alt="Joanium" width="50" height="50">
     </div>
     <div class="persona-info">
       <div class="persona-name">Default Assistant</div>

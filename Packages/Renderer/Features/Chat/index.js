@@ -1,6 +1,5 @@
 import { state } from '../../Shared/Core/State.js';
 import { welcome, chatView, chatMessages } from '../../Shared/Core/DOM.js';
-import { fetchWithTools } from '../AI/index.js';
 import { reset as resetComposer } from '../Composer/index.js';
 import { planRequest, agentLoop } from './Core/Agent.js';
 

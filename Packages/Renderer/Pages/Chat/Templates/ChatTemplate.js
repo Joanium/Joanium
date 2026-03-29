@@ -33,9 +33,7 @@ export function getChatHTML() {
 
     <section id="welcome">
       <div class="welcome-greeting">
-        <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.4"/>
-        </svg>
+        <img src="../Icons/Logo.png" alt="Joanium" class="welcome-logo" width="64" height="64">
         <h1 class="welcome-title">Welcome</h1>
       </div>
       <p class="welcome-subtitle" id="welcome-subtitle">Ask me anything.</p>

@@ -259,10 +259,7 @@ export function buildLogItem(rawLine) {
       style="width:14px;height:14px;object-fit:contain;vertical-align:middle;border-radius:2px;flex-shrink:0;"/>`;
   } else if (rawLine.startsWith('[SKILL]')) {
     displayText = rawLine.slice(7).trim();
-    iconHtml = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-      style="width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:var(--accent)">
-      <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z"/>
-    </svg>`;
+    iconHtml = `<img src="../Icons/Logo.png" alt="Joanium" width="14" height="14">`;
   } else if (rawLine.startsWith('[TOOL]')) {
     displayText = humanizeBrowserToolLog(rawLine.slice(6).trim());
     iconHtml = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"

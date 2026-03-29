@@ -16,8 +16,6 @@ export function retryIcon() {
 
 export function assistantIcon() {
   return `<div class="assistant-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke-width="1.5"/>
-    </svg>
+    <img src="../Icons/Logo.png" alt="Joanium" width="45" height="45">
   </div>`;
 }
