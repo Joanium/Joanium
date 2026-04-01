@@ -1,4 +1,4 @@
-﻿import { getFeatureBoot } from '../../../../../Renderer/Features/Core/FeatureBoot.js';
+﻿import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 
 export const MAX_JOBS = 5;
 

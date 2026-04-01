@@ -1,4 +1,4 @@
-import { chatMessages } from '../../../../Renderer/Shared/Core/DOM.js';
+import { chatMessages } from '../../../Shared/Core/DOM.js';
 
 /* ── Token footer ── */
 export function buildTokenFooter(usage, provider, modelId) {

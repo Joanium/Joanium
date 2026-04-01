@@ -1,4 +1,4 @@
-import { escapeHtml } from '../Core/Utils.js';
+import { escapeHtml } from '../../../System/Utils.js';
 
 /* ══════════════════════════════════════════
    SVG ICONS  (match existing UI in Chat.js)

@@ -1,4 +1,4 @@
-import { state } from '../../../../../Renderer/Shared/Core/State.js';
+import { state } from '../../../../../System/State.js';
 
 const HANDLED = new Set([
   'inspect_workspace',

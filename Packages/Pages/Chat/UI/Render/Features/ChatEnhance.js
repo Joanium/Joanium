@@ -1,4 +1,4 @@
-import { fetchWithTools } from '../../../../../Renderer/Features/AI/index.js';
+import { fetchWithTools } from '../../../../../Features/AI/index.js';
 
 /**
  * Initialise the ✨ Enhance prompt button feature.

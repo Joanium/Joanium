@@ -1,4 +1,4 @@
-import { syncModalOpenState } from '../Renderer/Shared/Core/DOM.js';
+import { syncModalOpenState } from '../Pages/Shared/Core/DOM.js';
 
 const PREVIEW_CSP = [
   "default-src 'none'",

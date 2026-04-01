@@ -1,10 +1,10 @@
-import { state }              from '../Shared/Core/State.js';
-import { initSidebar }        from '../Shared/Navigation/Sidebar.js';
+import { state }              from '../../System/State.js';
+import { initSidebar }        from '../../Pages/Shared/Navigation/Sidebar.js';
 import { initAboutModal }     from '../../Modals/AboutModal.js';
 import { initLibraryModal }   from '../../Modals/LibraryModal.js';
 import { initProjectsModal }  from '../../Modals/ProjectsModal.js';
 import { initSettingsModal }  from '../../Modals/SettingsModal.js';
-import { injectCSS }          from '../Shared/Utils/InjectCSS.js';
+import { injectCSS }          from '../../System/Utils/InjectCSS.js';
 import { initChannelGateway } from '../../Pages/Channels/Features/Gateway.js';
 
 // Each entry: load = dynamic import, css = stylesheet to inject before mount

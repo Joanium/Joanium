@@ -5,7 +5,7 @@ import {
   browserPreviewUrl,
   browserPreviewStatus,
   browserPreviewStatusDot,
-} from '../../../../../Renderer/Shared/Core/DOM.js';
+} from '../../../../Shared/Core/DOM.js';
 
 const DEFAULT_PREVIEW_STATE = Object.freeze({
   visible: false,

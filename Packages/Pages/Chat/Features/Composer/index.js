@@ -1,10 +1,10 @@
-import { state } from '../../../../Renderer/Shared/Core/State.js';
-import { generateId } from '../../../../Renderer/Shared/Core/Utils.js';
+import { state } from '../../../../System/State.js';
+import { generateId } from '../../../../System/Utils.js';
 import {
   textarea, sendBtn, attachmentBtn, folderBtn,
   composerAttachments as composerAttachmentsEl,
   composerHint,
-} from '../../../../Renderer/Shared/Core/DOM.js';
+} from '../../../Shared/Core/DOM.js';
 import { modelSupportsInput } from '../ModelSelector/index.js';
 import {
   FILE_TYPES,

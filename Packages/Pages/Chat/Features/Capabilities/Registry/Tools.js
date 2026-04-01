@@ -1,5 +1,5 @@
-﻿import { state } from '../../../../../Renderer/Shared/Core/State.js';
-import { getFeatureBoot } from '../../../../../Renderer/Features/Core/FeatureBoot.js';
+﻿import { state } from '../../../../../System/State.js';
+import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 import { WEATHER_TOOLS } from '../Weather/Tools.js';
 import { CRYPTO_TOOLS } from '../Crypto/Tools.js';
 import { FINANCE_TOOLS } from '../Finance/Tools.js';

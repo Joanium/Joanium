@@ -1,5 +1,5 @@
-import { state } from '../../../../Renderer/Shared/Core/State.js';
-import { fetchWithTools } from '../../../../Renderer/Features/AI/index.js';
+import { state } from '../../../../System/State.js';
+import { fetchWithTools } from '../../../../Features/AI/index.js';
 
 const MEMORY_LEARN_INTERVAL = 5;
 export let _userMessagesSinceLastLearn = 0;

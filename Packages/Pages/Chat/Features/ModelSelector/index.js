@@ -1,5 +1,5 @@
-import { state } from '../../../../Renderer/Shared/Core/State.js';
-import { modelLabel, modelDropdown, modelSelectorBtn } from '../../../../Renderer/Shared/Core/DOM.js';
+import { state } from '../../../../System/State.js';
+import { modelLabel, modelDropdown, modelSelectorBtn } from '../../../Shared/Core/DOM.js';
 
 /* ══════════════════════════════════════════
    INTERNAL HELPERS

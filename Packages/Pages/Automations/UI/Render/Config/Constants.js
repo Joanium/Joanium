@@ -1,4 +1,4 @@
-﻿import { getFeatureBoot } from '../../../../../Renderer/Features/Core/FeatureBoot.js';
+﻿import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 
 export const ACTION_META = {
   open_site: { label: 'Open website', fields: ['url'], group: 'System' },

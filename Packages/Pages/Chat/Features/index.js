@@ -1,5 +1,5 @@
-import { state } from '../../../Renderer/Shared/Core/State.js';
-import { welcome, chatView, chatMessages } from '../../../Renderer/Shared/Core/DOM.js';
+import { state } from '../../../System/State.js';
+import { welcome, chatView, chatMessages } from '../../../Pages/Shared/Core/DOM.js';
 import { reset as resetComposer } from './Composer/index.js';
 import { planRequest, agentLoop } from './Core/Agent.js';
 

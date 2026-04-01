@@ -1,10 +1,10 @@
-import { state } from '../../../../Renderer/Shared/Core/State.js';
-import { initDOM } from '../../../../Renderer/Shared/Core/DOM.js';
+import { state } from '../../../../System/State.js';
+import { initDOM } from '../../../Shared/Core/DOM.js';
 import {
   textarea, sendBtn,
   modelDropdown, modelSelectorBtn,
   projectOpenFolderBtn, projectExitBtn,
-} from '../../../../Renderer/Shared/Core/DOM.js';
+} from '../../../Shared/Core/DOM.js';
 
 import { getSubtitles, getTimeGreetings, getRandomGreetings } from './Messages/Messages.js';
 

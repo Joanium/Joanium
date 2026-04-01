@@ -12,7 +12,7 @@
 
 import { agentLoop } from '../../Chat/Features/Core/Agent.js';
 import { trackUsage } from '../../Chat/Features/Data/ChatPersistence.js';
-import { state } from '../../../Renderer/Shared/Core/State.js';
+import { state } from '../../../System/State.js';
 
 const api = window.electronAPI;
 

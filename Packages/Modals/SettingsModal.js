@@ -1,4 +1,4 @@
-import { state } from '../Renderer/Shared/Core/State.js';
+import { state } from '../System/State.js';
 import { loadConnectorsPanel } from '../Pages/Shared/Connectors/index.js';
 import { loadMCPPanel } from '../Pages/Shared/MCP/index.js';
 import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';

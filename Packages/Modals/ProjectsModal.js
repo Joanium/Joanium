@@ -1,5 +1,5 @@
-import { state } from '../Renderer/Shared/Core/State.js';
-import { syncModalOpenState } from '../Renderer/Shared/Core/DOM.js';
+import { state } from '../System/State.js';
+import { syncModalOpenState } from '../Pages/Shared/Core/DOM.js';
 
 function buildHTML() {
   return /* html */`

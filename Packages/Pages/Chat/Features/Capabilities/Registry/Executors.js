@@ -1,4 +1,4 @@
-﻿import { getFeatureBoot } from '../../../../../Renderer/Features/Core/FeatureBoot.js';
+﻿import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 import * as WeatherExecutor from '../Weather/Executor.js';
 import * as CryptoExecutor from '../Crypto/Executor.js';
 import * as FinanceExecutor from '../Finance/Executor.js';

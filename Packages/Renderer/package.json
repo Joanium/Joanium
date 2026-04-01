@@ -2,7 +2,7 @@
   "name": "@Joanium/renderer",
   "private": true,
   "type": "module",
-  "description": "Renderer-process JavaScript package for Joanium.",
+  "description": "Renderer-process entry point for Joanium.",
   "main": "./Application/Main.js",
   "exports": {
     ".": "./Application/Main.js"

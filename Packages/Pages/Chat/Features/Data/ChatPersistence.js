@@ -4,7 +4,7 @@
    Helpers: chat ID, chat scope, message
    sanitisation for storage.
 ══════════════════════════════════════════ */
-import { state } from '../../../../Renderer/Shared/Core/State.js';
+import { state } from '../../../../System/State.js';
 import { sanitizeMessagesForUI } from '../UI/ChatBubble.js';
 
 export function generateChatId() {
