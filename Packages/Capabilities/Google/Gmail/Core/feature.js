@@ -1,5 +1,5 @@
 ﻿import defineFeature from '../../../Core/defineFeature.js';
-import * as GmailAPI from '../../../../Features/Automation/Integrations/Gmail.js';
+import * as GmailAPI from './GmailAPI.js';
 import { GMAIL_TOOLS } from './Tools.js';
 import { executeGmailChatTool } from './ChatExecutor.js';
 import { gmailAutomationHandlers } from './AutomationHandlers.js';

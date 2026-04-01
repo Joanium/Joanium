@@ -1,4 +1,4 @@
-﻿import { getFreshCreds, startOAuthFlow, detectServices } from '../../Features/Automation/Integrations/GoogleWorkspace.js';
+﻿import { getFreshCreds, startOAuthFlow, detectServices } from './GoogleWorkspace.js';
 import defineFeature from '../Core/defineFeature.js';
 
 async function getProfileEmail(accessToken) {

@@ -1,5 +1,5 @@
 ﻿import { sendNotification } from '../../../../Features/Automation/Actions/Notification.js';
-import * as GmailAPI from '../../../../Features/Automation/Integrations/Gmail.js';
+import * as GmailAPI from './GmailAPI.js';
 import { requireGoogleCredentials } from '../../Common.js';
 
 function previewBrief(brief) {

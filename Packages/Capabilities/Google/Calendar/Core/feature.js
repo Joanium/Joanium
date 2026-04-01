@@ -1,5 +1,5 @@
 ﻿import defineFeature from '../../../Core/defineFeature.js';
-import * as CalendarAPI from '../../../../Features/Automation/Integrations/GoogleCalendar.js';
+import * as CalendarAPI from './CalendarAPI.js';
 import { CALENDAR_TOOLS } from './Tools.js';
 import { executeCalendarChatTool } from './ChatExecutor.js';
 import { withGoogle } from '../../Common.js';

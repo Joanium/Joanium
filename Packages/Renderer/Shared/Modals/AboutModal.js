@@ -18,7 +18,7 @@ function buildHTML() {
         <div class="about-modal-body">
 
           <div class="about-logo-wrap">
-            <img src="../Icons/Logo.ico" alt="Joanium" width="64" height="64" />
+            <img src="../../../Icons/Logo.ico" alt="Joanium" width="64" height="64" />
           </div>
 
           <div class="about-app-name" id="about-modal-title">Joanium</div>

@@ -1,4 +1,4 @@
-﻿import * as GmailAPI from '../../../../Features/Automation/Integrations/Gmail.js';
+﻿import * as GmailAPI from './GmailAPI.js';
 import { requireGoogleCredentials } from '../../Common.js';
 
 function formatEmailList(emails = [], { starred = false, sent = false } = {}) {

@@ -2,7 +2,7 @@ import { state } from '../Core/State.js';
 import { loadConnectorsPanel } from '../../Features/Connectors/index.js';
 import { loadMCPPanel } from '../../Features/MCP/index.js';
 import { loadChannelsPanel } from '../../Features/Channels/index.js';
-import { PROVIDERS, PROVIDERS_BY_ID } from '../../Pages/Setup/Providers/SetupProviders.js';
+import { PROVIDERS, PROVIDERS_BY_ID } from '../../../Pages/Setup/UI/Render/Providers/SetupProviders.js';
 
 const PROVIDER_ORDER = new Map(
   PROVIDERS.map((provider, index) => [provider.id, index]),

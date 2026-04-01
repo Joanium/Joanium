@@ -9,13 +9,13 @@ import { initChannelGateway } from '../Features/Channels/Gateway.js';
 
 // Each entry: load = dynamic import, css = stylesheet to inject before mount
 const PAGES = {
-  chat:        { load: () => import('../Pages/Chat/index.js'),        css: null },
-  automations: { load: () => import('../Pages/Automations/index.js'), css: 'Assets/Styles/AutomationsPage.css' },
-  agents:      { load: () => import('../Pages/Agents/index.js'),      css: 'Assets/Styles/AgentsPage.css' },
-  events:      { load: () => import('../Pages/Events/index.js'),      css: 'Assets/Styles/EventsPage.css' },
-  skills:      { load: () => import('../Pages/Skills/index.js'),      css: 'Assets/Styles/SkillsPage.css' },
-  personas:    { load: () => import('../Pages/Personas/index.js'),    css: 'Assets/Styles/PersonasPage.css' },
-  usage:       { load: () => import('../Pages/Usage/index.js'),       css: 'Assets/Styles/UsagePage.css' },
+  chat:        { load: () => import('../../Pages/Chat/UI/Render/index.js'),        css: null },
+  automations: { load: () => import('../../Pages/Automations/UI/Render/index.js'), css: '../Automations/UI/Styles/AutomationsPage.css' },
+  agents:      { load: () => import('../../Pages/Agents/UI/Render/index.js'),      css: '../Agents/UI/Styles/AgentsPage.css' },
+  events:      { load: () => import('../../Pages/Events/UI/Render/index.js'),      css: '../Events/UI/Styles/EventsPage.css' },
+  skills:      { load: () => import('../../Pages/Skills/UI/Render/index.js'),      css: '../Skills/UI/Styles/SkillsPage.css' },
+  personas:    { load: () => import('../../Pages/Personas/UI/Render/index.js'),    css: '../Personas/UI/Styles/PersonasPage.css' },
+  usage:       { load: () => import('../../Pages/Usage/UI/Render/index.js'),       css: '../Usage/UI/Styles/UsagePage.css' },
 };
 
 /* ══════════════════════════════════════════

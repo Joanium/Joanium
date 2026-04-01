@@ -1,0 +1,11 @@
+/* 1. Themes */
+@import '../../../Shared/Styles/Themes.css';
+
+/* 2. Root */
+@import '../../../Shared/Styles/Root.css';
+
+/* 3. Setup */
+@import './Setup.css';
+
+/* 4. Footer */
+@import '../../../Shared/Styles/Footer.css';

@@ -1,4 +1,4 @@
-import * as GithubAPI from '../../../Features/Automation/Integrations/Github.js';
+import * as GithubAPI from './GithubAPI.js';
 
 export function getGithubCredentials(ctx) {
   const credentials = ctx.connectorEngine?.getCredentials('github');

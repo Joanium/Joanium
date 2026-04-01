@@ -46,15 +46,14 @@ export const Paths = {
   PRELOAD: path.join(ROOT, 'Core', 'Electron', 'Bridge', 'Preload.js'),
 
   // Pages
-  SETUP_PAGE: path.join(ROOT, 'Public', 'Setup.html'),
-  INDEX_PAGE: path.join(ROOT, 'Public', 'index.html'),
-  AUTOMATIONS_PAGE: path.join(ROOT, 'Public', 'Automations.html'),
-  SKILLS_PAGE: path.join(ROOT, 'Public', 'Skills.html'),
-  PERSONAS_PAGE: path.join(ROOT, 'Public', 'Personas.html'),
-  USAGE_PAGE: path.join(ROOT, 'Public', 'Usage.html'),
-  AGENTS_PAGE: path.join(ROOT, 'Public', 'Agents.html'),
-  EVENTS_PAGE: path.join(ROOT, 'Public', 'Events.html'),
-  CHANNELS_PAGE: path.join(ROOT, 'Public', 'Channels.html'),
+  SETUP_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Setup', 'Setup.html'),
+  INDEX_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Chat', 'Chat.html'),
+  AUTOMATIONS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Automations', 'Automations.html'),
+  SKILLS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Skills', 'Skills.html'),
+  PERSONAS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Personas', 'Personas.html'),
+  USAGE_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Usage', 'Usage.html'),
+  AGENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Agents', 'Agents.html'),
+  EVENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Events', 'Events.html'),
 };
 
 export default Paths;

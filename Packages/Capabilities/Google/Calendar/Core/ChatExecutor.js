@@ -1,4 +1,4 @@
-﻿import * as CalendarAPI from '../../../../Features/Automation/Integrations/GoogleCalendar.js';
+﻿import * as CalendarAPI from './CalendarAPI.js';
 import { requireGoogleCredentials } from '../../Common.js';
 
 function formatEventTime(eventTime) {

@@ -8,7 +8,4 @@ export { sendNotification } from './Actions/Notification.js';
 export { openSite } from './Actions/Site.js';
 export { openTerminalAtPath, openTerminalAndRun } from './Actions/Terminal.js';
 
-export * as GmailAPI from './Integrations/Gmail.js';
-export * as GithubAPI from './Integrations/Github.js';
-
 export { shouldRunNow } from './Scheduling/Scheduling.js';
