@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
-import * as GithubAPI from '../../Automation/Integrations/Github.js';
-import { getFreshCreds } from '../../Automation/Integrations/GoogleWorkspace.js';
+import * as GithubAPI from '../../Features/Automation/Integrations/Github.js';
+import { getFreshCreds } from '../../Features/Automation/Integrations/GoogleWorkspace.js';
 import { invalidate as invalidateSysPrompt } from '../Services/SystemPromptService.js';
 
 export function register(connectorEngine, featureRegistry = null) {

@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';
-import { MCPRegistry } from '../../MCP/Core/MCPClient.js';
+import { MCPRegistry } from '../../Features/MCP/Core/MCPClient.js';
 import Paths from '../Core/Paths.js';
 
 /* ── Singleton registry ── */

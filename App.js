@@ -4,11 +4,11 @@ import fs from 'fs';
 import Paths from './Packages/Main/Core/Paths.js';
 import { create as createWindow } from './Packages/Main/Core/Window.js';
 import { isFirstRun } from './Packages/Main/Services/UserService.js';
-import { AutomationEngine } from './Packages/Automation/Core/AutomationEngine.js';
-import { ConnectorEngine } from './Packages/Connectors/Core/ConnectorEngine.js';
-import { AgentsEngine } from './Packages/Agents/Core/AgentsEngine.js';
-import { ChannelEngine } from './Packages/Channels/Core/ChannelEngine.js';
-import FeatureRegistry from './Packages/Features/Core/FeatureRegistry.js';
+import { AutomationEngine } from './Packages/Features/Automation/Core/AutomationEngine.js';
+import { ConnectorEngine } from './Packages/Features/Connectors/Core/ConnectorEngine.js';
+import { AgentsEngine } from './Packages/Features/Agents/Core/AgentsEngine.js';
+import { ChannelEngine } from './Packages/Features/Channels/Core/ChannelEngine.js';
+import FeatureRegistry from './Packages/Capabilities/Core/FeatureRegistry.js';
 
 import * as SetupIPC from './Packages/Main/IPC/SetupIPC.js';
 import * as UserIPC from './Packages/Main/IPC/UserIPC.js';

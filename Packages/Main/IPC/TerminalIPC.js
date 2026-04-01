@@ -7,7 +7,7 @@ import {
   extractDocumentTextFromBuffer,
   extractDocumentTextFromPath,
 } from '../Services/DocumentExtractionService.js';
-import { openTerminalAtPath } from '../../Automation/Actions/Terminal.js';
+import { openTerminalAtPath } from '../../Features/Automation/Actions/Terminal.js';
 
 const activePtys = new Map();
 

@@ -40,7 +40,7 @@ export const Paths = {
   PERSONAS_DIR: path.join(EXTERNAL, 'Personas'),
 
   // Features
-  FEATURES_DIR: path.join(ROOT, 'Packages', 'Features'),
+  FEATURES_DIR: path.join(ROOT, 'Packages', 'Capabilities'),
 
   // Preload
   PRELOAD: path.join(ROOT, 'Core', 'Electron', 'Bridge', 'Preload.js'),
