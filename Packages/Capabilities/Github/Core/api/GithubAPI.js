@@ -221,15 +221,15 @@ export async function unstarRepo(credentials, owner, repo) {
 export async function getRepoStats(credentials, owner, repo) {
   const data = await githubFetch(`/repos/${owner}/${repo}`, credentials.token);
   return {
-    fullName:     data.full_name,
-    description:  data.description ?? '',
-    stars:        data.stargazers_count,
-    forks:        data.forks_count,
-    openIssues:   data.open_issues_count,
-    watchers:     data.watchers_count,
-    language:     data.language ?? 'Unknown',
+    fullName: data.full_name,
+    description: data.description ?? '',
+    stars: data.stargazers_count,
+    forks: data.forks_count,
+    openIssues: data.open_issues_count,
+    watchers: data.watchers_count,
+    language: data.language ?? 'Unknown',
     defaultBranch: data.default_branch,
-    url:          data.html_url,
+    url: data.html_url,
   };
 }
 
@@ -330,14 +330,14 @@ export async function getIssueDetails(credentials, owner, repo, issueNumber) {
 
 export async function updateIssue(credentials, owner, repo, issueNumber, { title, body, state, labels, assignees } = {}) {
   const payload = {};
-  if (title     !== undefined) payload.title     = title;
-  if (body      !== undefined) payload.body      = body;
-  if (state     !== undefined) payload.state     = state;
-  if (labels    !== undefined) payload.labels    = labels;
+  if (title !== undefined) payload.title = title;
+  if (body !== undefined) payload.body = body;
+  if (state !== undefined) payload.state = state;
+  if (labels !== undefined) payload.labels = labels;
   if (assignees !== undefined) payload.assignees = assignees;
   return githubFetch(`/repos/${owner}/${repo}/issues/${issueNumber}`, credentials.token, {
     method: 'PATCH',
-    body:   JSON.stringify(payload),
+    body: JSON.stringify(payload),
   });
 }
 
@@ -368,17 +368,17 @@ export async function getMilestones(credentials, owner, repo, state = 'open') {
 export async function createMilestone(credentials, owner, repo, title, description = '', dueOn = '') {
   const payload = { title };
   if (description) payload.description = description;
-  if (dueOn)       payload.due_on      = dueOn;
+  if (dueOn) payload.due_on = dueOn;
   return githubFetch(`/repos/${owner}/${repo}/milestones`, credentials.token, {
     method: 'POST',
-    body:   JSON.stringify(payload),
+    body: JSON.stringify(payload),
   });
 }
 
 export async function createBranch(credentials, owner, repo, branchName, sha) {
   return githubFetch(`/repos/${owner}/${repo}/git/refs`, credentials.token, {
     method: 'POST',
-    body:   JSON.stringify({ ref: `refs/heads/${branchName}`, sha }),
+    body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha }),
   });
 }
 
@@ -432,7 +432,7 @@ export async function requestReviewers(credentials, owner, repo, prNumber, revie
     credentials.token,
     {
       method: 'POST',
-      body:   JSON.stringify({ reviewers, team_reviewers: teamReviewers }),
+      body: JSON.stringify({ reviewers, team_reviewers: teamReviewers }),
     },
   );
 }
@@ -497,9 +497,9 @@ export async function updatePullRequest(credentials, owner, repo, prNumber, {
 } = {}) {
   const payload = {};
   if (title !== undefined) payload.title = title;
-  if (body  !== undefined) payload.body  = body;
+  if (body !== undefined) payload.body = body;
   if (state !== undefined) payload.state = state;
-  if (base  !== undefined) payload.base  = base;
+  if (base !== undefined) payload.base = base;
   return githubFetch(`/repos/${owner}/${repo}/pulls/${prNumber}`, credentials.token, {
     method: 'PATCH',
     body: JSON.stringify(payload),
@@ -654,4 +654,51 @@ export async function getBranchProtection(credentials, owner, repo, branch) {
 
 export async function getUserOrgs(credentials, username) {
   return githubFetch(`/users/${username}/orgs`, credentials.token);
+}
+
+export async function getTrafficClones(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/traffic/clones`, credentials.token);
+}
+
+export async function getCommunityProfile(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/community/profile`, credentials.token);
+}
+
+export async function getRepoWebhooks(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/hooks`, credentials.token);
+}
+
+export async function getOrgMembers(credentials, org, perPage = 30) {
+  return githubFetch(`/orgs/${org}/members?per_page=${perPage}`, credentials.token);
+}
+
+export async function listOrgTeams(credentials, org, perPage = 30) {
+  return githubFetch(`/orgs/${org}/teams?per_page=${perPage}`, credentials.token);
+}
+
+export async function getTeamMembers(credentials, org, teamSlug, perPage = 30) {
+  return githubFetch(
+    `/orgs/${org}/teams/${teamSlug}/members?per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function getIssueReactions(credentials, owner, repo, issueNumber) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/issues/${issueNumber}/reactions`,
+    credentials.token,
+    { headers: { Accept: 'application/vnd.github.squirrel-girl-preview+json' } },
+  );
+}
+
+export async function getRepoLicense(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/license`, credentials.token);
+}
+
+export async function getCodeFrequency(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/stats/code_frequency`, credentials.token);
+}
+
+export async function getContributorStats(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/stats/contributors`, credentials.token);
 }

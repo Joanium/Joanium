@@ -924,6 +924,108 @@
       username: { type: 'string', required: true, description: 'GitHub username' },
     },
   },
+  {
+  name: 'github_get_traffic_clones',
+  description: 'Get clone traffic stats for a repository over the last 14 days.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
+{
+  name: 'github_get_community_profile',
+  description: 'Get the community health profile of a repository including readme, license, and contributing guide presence.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
+{
+  name: 'github_get_repo_webhooks',
+  description: 'List webhooks configured for a repository.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
+{
+  name: 'github_get_org_members',
+  description: 'List public members of a GitHub organization.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    org:   { type: 'string', required: true,  description: 'GitHub organization name' },
+    count: { type: 'number', required: false, description: 'Max members to return (default 30)' },
+  },
+},
+{
+  name: 'github_list_org_teams',
+  description: 'List teams in a GitHub organization.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    org:   { type: 'string', required: true,  description: 'GitHub organization name' },
+    count: { type: 'number', required: false, description: 'Max teams to return (default 30)' },
+  },
+},
+{
+  name: 'github_get_team_members',
+  description: 'List members of a specific team within a GitHub organization.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    org:       { type: 'string', required: true,  description: 'GitHub organization name' },
+    team_slug: { type: 'string', required: true,  description: 'Team slug (from github_list_org_teams)' },
+    count:     { type: 'number', required: false, description: 'Max members to return (default 30)' },
+  },
+},
+{
+  name: 'github_get_issue_reactions',
+  description: 'Get emoji reactions on a GitHub issue or pull request.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner:        { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:         { type: 'string', required: true, description: 'Repository name' },
+    issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+  },
+},
+{
+  name: 'github_get_repo_license',
+  description: 'Get the license file and metadata for a repository.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
+{
+  name: 'github_get_code_frequency',
+  description: 'Get weekly addition and deletion counts for a repository (last ~52 weeks).',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
+{
+  name: 'github_get_contributor_stats',
+  description: 'Get commit, addition, and deletion counts per contributor for a repository.',
+  category: 'github',
+  connectorId: 'github',
+  parameters: {
+    owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+    repo:  { type: 'string', required: true, description: 'Repository name' },
+  },
+},
 ];
 
 export default GITHUB_TOOLS;

@@ -1302,7 +1302,165 @@ export async function executeGithubChatTool(ctx, toolName, params = {}) {
         ...orgs.map((o, i) => `${i + 1}. ${o.login}${o.description ? ` — ${o.description}` : ''}`),
       ].join('\n');
     }
-    
+
+    case 'github_get_traffic_clones': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const data = await GithubAPI.getTrafficClones(credentials, owner, repo);
+      const recent = (data.clones ?? []).slice(-7);
+      return [
+        `Clone traffic for ${owner}/${repo} (last 14 days):`,
+        `Total clones: ${data.count ?? 0} | Unique cloners: ${data.uniques ?? 0}`,
+        '',
+        recent.length ? 'Daily breakdown (last 7 days):' : '',
+        ...recent.map(c => `  ${formatDate(c.timestamp)}: ${c.count} clones, ${c.uniques} unique`),
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_get_community_profile': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const data = await GithubAPI.getCommunityProfile(credentials, owner, repo);
+      const files = data.files ?? {};
+      const checks = [
+        ['README', !!files.readme],
+        ['License', !!files.license],
+        ['Code of conduct', !!files.code_of_conduct],
+        ['Contributing', !!files.contributing],
+        ['Issue template', !!files.issue_template],
+        ['PR template', !!files.pull_request_template],
+      ];
+      return [
+        `Community profile for ${owner}/${repo}`,
+        `Health score: ${data.health_percentage ?? 'n/a'}%`,
+        '',
+        ...checks.map(([name, present]) => `${present ? '✓' : '✗'} ${name}`),
+        data.description ? `\nDescription: ${data.description}` : '',
+        data.documentation ? `Docs: ${data.documentation}` : '',
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_get_repo_webhooks': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const hooks = await GithubAPI.getRepoWebhooks(credentials, owner, repo);
+      if (!hooks.length) return `No webhooks configured for ${owner}/${repo}.`;
+      return [
+        `Webhooks for ${owner}/${repo} (${hooks.length}):`,
+        '',
+        ...hooks.map((h, i) => {
+          const events = (h.events ?? []).join(', ') || 'none';
+          const active = h.active ? 'active' : 'inactive';
+          return `${i + 1}. ${h.config?.url ?? 'no url'} [${active}]\n   Events: ${events}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_org_members': {
+      const { org, count = 30 } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const members = await GithubAPI.getOrgMembers(credentials, org, Math.min(Number(count) || 30, 100));
+      if (!members.length) return `No public members found for org "${org}".`;
+      return [
+        `Members of ${org} (${members.length} shown):`,
+        '',
+        ...members.map((m, i) => `${i + 1}. @${m.login} — ${m.html_url}`),
+      ].join('\n');
+    }
+
+    case 'github_list_org_teams': {
+      const { org, count = 30 } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const teams = await GithubAPI.listOrgTeams(credentials, org, Math.min(Number(count) || 30, 100));
+      if (!teams.length) return `No teams found in org "${org}".`;
+      return [
+        `Teams in ${org} (${teams.length}):`,
+        '',
+        ...teams.map((t, i) =>
+          `${i + 1}. ${t.name} (${t.slug}) — ${t.members_count ?? '?'} members, ${t.repos_count ?? '?'} repos${t.description ? `\n   ${t.description}` : ''}`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_get_team_members': {
+      const { org, team_slug, count = 30 } = params;
+      if (!org || !team_slug) throw new Error('Missing required params: org, team_slug');
+      const members = await GithubAPI.getTeamMembers(credentials, org, team_slug, Math.min(Number(count) || 30, 100));
+      if (!members.length) return `No members found in team "${team_slug}" of org "${org}".`;
+      return [
+        `Members of ${org}/${team_slug} (${members.length}):`,
+        '',
+        ...members.map((m, i) => `${i + 1}. @${m.login}`),
+      ].join('\n');
+    }
+
+    case 'github_get_issue_reactions': {
+      const { owner, repo, issue_number } = params;
+      if (!owner || !repo || !issue_number) throw new Error('Missing required params: owner, repo, issue_number');
+      const reactions = await GithubAPI.getIssueReactions(credentials, owner, repo, Number(issue_number));
+      if (!reactions.length) return `No reactions on ${owner}/${repo}#${issue_number}.`;
+      const counts = reactions.reduce((acc, r) => {
+        acc[r.content] = (acc[r.content] ?? 0) + 1;
+        return acc;
+      }, {});
+      const emojiMap = { '+1': '👍', '-1': '👎', laugh: '😄', hooray: '🎉', confused: '😕', heart: '❤️', rocket: '🚀', eyes: '👀' };
+      return [
+        `Reactions on ${owner}/${repo}#${issue_number} (${reactions.length} total):`,
+        '',
+        ...Object.entries(counts).map(([k, v]) => `${emojiMap[k] ?? k}  ${v}`),
+      ].join('\n');
+    }
+
+    case 'github_get_repo_license': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const data = await GithubAPI.getRepoLicense(credentials, owner, repo);
+      const license = data.license ?? {};
+      const preview = (data.content
+        ? Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf-8').slice(0, 500)
+        : '');
+      return [
+        `License for ${owner}/${repo}`,
+        `Name: ${license.name ?? 'unknown'}`,
+        `SPDX ID: ${license.spdx_id ?? 'n/a'}`,
+        license.url ? `Info: ${license.url}` : '',
+        preview ? `\nPreview:\n${preview}${preview.length === 500 ? '...(truncated)' : ''}` : '',
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_get_code_frequency': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const weeks = await GithubAPI.getCodeFrequency(credentials, owner, repo);
+      if (!weeks?.length) return `No code frequency data available for ${owner}/${repo} yet. GitHub may still be computing it.`;
+      const recent = weeks.slice(-8);
+      return [
+        `Code frequency for ${owner}/${repo} (last ${recent.length} weeks):`,
+        `Format: week — additions / deletions`,
+        '',
+        ...recent.map(([ts, additions, deletions]) =>
+          `  ${formatDate(new Date(ts * 1000))}  +${additions} / ${deletions}`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_get_contributor_stats': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const stats = await GithubAPI.getContributorStats(credentials, owner, repo);
+      if (!stats?.length) return `No contributor stats available for ${owner}/${repo} yet. GitHub may still be computing it.`;
+      const sorted = [...stats].sort((a, b) => b.total - a.total);
+      return [
+        `Contributor stats for ${owner}/${repo} (${sorted.length} contributors):`,
+        '',
+        ...sorted.slice(0, 15).map((c, i) => {
+          const additions = c.weeks?.reduce((s, w) => s + w.a, 0) ?? 0;
+          const deletions = c.weeks?.reduce((s, w) => s + w.d, 0) ?? 0;
+          return `${i + 1}. @${c.author?.login ?? 'unknown'} — ${c.total} commits  +${additions} -${deletions}`;
+        }),
+      ].join('\n');
+    }
+
     default:
       throw new Error(`Unknown GitHub tool: ${toolName}`);
   }
