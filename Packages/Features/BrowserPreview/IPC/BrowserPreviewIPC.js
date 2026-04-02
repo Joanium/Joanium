@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron';
 
+export const ipcMeta = { needs: ['browserPreviewService'] };
 export function register(browserPreviewService) {
   ipcMain.handle('browser-preview-get-state', () => {
     try {

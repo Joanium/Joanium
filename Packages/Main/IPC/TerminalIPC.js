@@ -441,6 +441,7 @@ async function runProjectChecks({ workingDir, includeLint, includeTest, includeB
   };
 }
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('find-file-by-name', async (_e, { rootPath, name, maxResults = 40 }) => {
     if (!rootPath?.trim()) return { ok: false, error: 'No workspace path provided.' };

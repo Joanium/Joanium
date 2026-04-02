@@ -17,3 +17,18 @@ export function openFolder(folderPath) {
         }
     });
 }
+
+export const actionType = 'open_folder';
+export const actionMeta = {
+  label: 'Open folder',
+  group: 'System',
+  fields: ['path', 'openTerminal'],
+  requiredFields: ['path'],
+};
+export async function execute(action) {
+  await openFolder(action.path);
+  if (action.openTerminal) {
+    const { openTerminalAtPath } = await import('./Terminal.js');
+    await openTerminalAtPath(action.path, action.terminalCommand || '');
+  }
+}

@@ -10,3 +10,14 @@ export function sendNotification(title, body = '', clickUrl = '') {
     if (clickUrl) n.on('click', () => shell.openExternal(clickUrl));
     n.show();
 }
+
+export const actionType = 'send_notification';
+export const actionMeta = {
+  label: 'Send notification',
+  group: 'System',
+  fields: ['title', 'body', 'clickUrl'],
+  requiredFields: ['title'],
+};
+export async function execute(action) {
+  sendNotification(action.title, action.body ?? '', action.clickUrl ?? '');
+}

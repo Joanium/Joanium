@@ -54,6 +54,7 @@ function saveEnabledMap(map) {
 
 /* ── IPC registration ── */
 
+export const ipcMeta = { needs: [] };
 export function register() {
 
   /* ── List all skills (with enabled state) ── */

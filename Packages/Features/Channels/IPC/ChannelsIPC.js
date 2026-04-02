@@ -1,8 +1,6 @@
 import { ipcMain } from 'electron';
 
-/**
- * @param {import('../Core/ChannelEngine.js').ChannelEngine} channelEngine
- */
+export const ipcMeta = { needs: ['channelEngine'] };
 export function register(channelEngine) {
 
   /* ── Get all channels (status only, no secrets) ── */

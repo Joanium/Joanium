@@ -4,29 +4,23 @@ import { AgentsEngine } from '../Features/Agents/Core/AgentsEngine.js';
 import { ChannelEngine } from '../Features/Channels/Core/ChannelEngine.js';
 import FeatureRegistry from '../Capabilities/Core/FeatureRegistry.js';
 
-import * as AgentsIPC from '../Features/Agents/IPC/AgentsIPC.js';
-import * as AutomationIPC from '../Features/Automation/IPC/AutomationIPC.js';
-import * as ChannelsIPC from '../Features/Channels/IPC/ChannelsIPC.js';
-import * as MCPIPC from '../Features/MCP/IPC/MCPIPC.js';
-import * as ConnectorIPC from '../Features/Connectors/IPC/ConnectorIPC.js';
-import * as FeatureIPC from '../Features/Core/IPC/FeatureIPC.js';
-import * as SkillsIPC from '../Features/Skills/IPC/SkillsIPC.js';
-import * as BrowserPreviewIPC from '../Features/BrowserPreview/IPC/BrowserPreviewIPC.js';
-
-import * as SetupIPC from './IPC/SetupIPC.js';
-import * as UserIPC from './IPC/UserIPC.js';
-import * as SystemIPC from './IPC/SystemIPC.js';
-import * as ChatIPC from './IPC/ChatIPC.js';
-import * as ProjectIPC from './IPC/ProjectIPC.js';
-import * as WindowIPC from './IPC/WindowIPC.js';
-import * as PersonasIPC from './IPC/PersonasIPC.js';
-import * as UsageIPC from './IPC/UsageIPC.js';
-import * as TerminalIPC from './IPC/TerminalIPC.js';
-
 import { getBrowserPreviewService } from './Services/BrowserPreviewService.js';
 import { invalidate as invalidateSystemPrompt } from './Services/SystemPromptService.js';
 
 import Paths from './Core/Paths.js';
+import { discoverAndRegisterIPC } from './Core/DiscoverIPC.js';
+
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PACKAGES_DIR = path.resolve(__dirname, '..');
+
+const IPC_SCAN_DIRS = [
+  path.join(PACKAGES_DIR, 'Main', 'IPC'),
+  path.join(PACKAGES_DIR, 'Features'),
+];
 
 export async function boot() {
   const featureRegistry = await FeatureRegistry.load(Paths.FEATURES_DIR);
@@ -44,24 +38,16 @@ export async function boot() {
 
   const browserPreviewService = getBrowserPreviewService();
 
-  SetupIPC.register();
-  UserIPC.register();
-  SystemIPC.register(connectorEngine, featureRegistry);
-  ChatIPC.register();
-  ProjectIPC.register();
-  WindowIPC.register();
-  PersonasIPC.register();
-  UsageIPC.register();
-  TerminalIPC.register();
+  const registered = await discoverAndRegisterIPC(IPC_SCAN_DIRS, {
+    connectorEngine,
+    featureRegistry,
+    automationEngine,
+    agentsEngine,
+    channelEngine,
+    browserPreviewService,
+  });
 
-  AutomationIPC.register(automationEngine);
-  AgentsIPC.register(agentsEngine, automationEngine);
-  ChannelsIPC.register(channelEngine);
-  ConnectorIPC.register(connectorEngine, featureRegistry);
-  FeatureIPC.register(featureRegistry);
-  SkillsIPC.register();
-  BrowserPreviewIPC.register(browserPreviewService);
-  MCPIPC.register();
+  console.log(`[Boot] Auto-discovered ${registered.length} IPC modules: ${registered.join(', ')}`);
 
   return {
     featureRegistry,

@@ -7,16 +7,10 @@ import { initSettingsModal }  from '../../Modals/SettingsModal.js';
 import { injectCSS }          from '../../System/Utils/InjectCSS.js';
 import { initChannelGateway } from '../../Pages/Channels/Features/Gateway.js';
 
-// Each entry: load = dynamic import, css = stylesheet to inject before mount
-const PAGES = {
-  chat:        { load: () => import('../../Pages/Chat/UI/Render/index.js'),        css: null },
-  automations: { load: () => import('../../Pages/Automations/UI/Render/index.js'), css: '../Automations/UI/Styles/AutomationsPage.css' },
-  agents:      { load: () => import('../../Pages/Agents/UI/Render/index.js'),      css: '../Agents/UI/Styles/AgentsPage.css' },
-  events:      { load: () => import('../../Pages/Events/UI/Render/index.js'),      css: '../Events/UI/Styles/EventsPage.css' },
-  skills:      { load: () => import('../../Pages/Skills/UI/Render/index.js'),      css: '../Skills/UI/Styles/SkillsPage.css' },
-  personas:    { load: () => import('../../Pages/Personas/UI/Render/index.js'),    css: '../Personas/UI/Styles/PersonasPage.css' },
-  usage:       { load: () => import('../../Pages/Usage/UI/Render/index.js'),       css: '../Usage/UI/Styles/UsagePage.css' },
-};
+import { buildPagesMap } from './PagesManifest.js';
+
+// Build the PAGES map from the manifest — single source of truth
+const PAGES = buildPagesMap();
 
 /* ══════════════════════════════════════════
    ROUTER STATE
@@ -151,9 +145,6 @@ async function init() {
   document.getElementById('btn-close')?.addEventListener('click',    () => window.electronAPI?.close());
 
   // ── CRITICAL modals (needed immediately for sidebar avatar) ─────────────
-  // These inject their own HTML on first call, so they don't need
-  // hardcoded entries in index.html. Order matters: settings before
-  // sidebar so settings.loadUser() can hydrate the sidebar avatar.
   _settings = initSettingsModal();
   _about    = initAboutModal();
 
@@ -161,21 +152,17 @@ async function init() {
   initChannelGateway();
 
   // ── Sidebar ─────────────────────────────────────────────────────────
-  // Initialized ONCE here. All navigation goes through window.appNavigate
-  // so pages don't need to import App.js (which would create circular deps).
+  // Uses a single onNavigate callback for all page nav instead of
+  // individual per-page callbacks. The sidebar builds itself from the
+  // pages manifest.
   _sidebar = initSidebar({
     activePage: 'chat',
-    onNewChat:     () => openFreshChat(),
-    onLibrary:     () => _library?.isOpen() ? _library.close() : _library?.open(),
-    onProjects:    () => _projects?.isOpen() ? _projects.close() : _projects?.open(),
-    onAutomations: () => navigate('automations'),
-    onAgents:      () => navigate('agents'),
-    onEvents:      () => navigate('events'),
-    onSkills:      () => navigate('skills'),
-    onPersonas:    () => navigate('personas'),
-    onUsage:       () => navigate('usage'),
-    onSettings:    () => _settings.open(),
-    onAbout:       () => _about.open(),
+    onNewChat:   () => openFreshChat(),
+    onLibrary:   () => _library?.isOpen() ? _library.close() : _library?.open(),
+    onProjects:  () => _projects?.isOpen() ? _projects.close() : _projects?.open(),
+    onSettings:  () => _settings.open(),
+    onAbout:     () => _about.open(),
+    onNavigate:  (pageId) => navigate(pageId),
   });
 
   // ── User hydration ───────────────────────────────────────────────────
@@ -187,12 +174,9 @@ async function init() {
   });
 
   // ── Main-process navigate events ─────────────────────────────────────
-  // Lets the Electron main process trigger navigation if ever needed
-  // (e.g., after the setup wizard completes and calls launch-main).
   window.electronAPI?.onNavigate?.((page) => navigate(page));
 
   // ── Global navigate for page modules ────────────────────────────────
-  // Pages call window.appNavigate('events') instead of importing App.js
   window.appNavigate = navigate;
 
   // ── Page-loading style ───────────────────────────────────────────────
@@ -212,8 +196,6 @@ async function init() {
   await openFreshChat();
 
   // ── Lazy modals (deferred until browser is idle) ─────────────────────
-  // Library and Projects only needed when user clicks sidebar buttons.
-  // Initialise them after chat renders to avoid competing with first paint.
   const initDeferredModals = () => {
     _library = initLibraryModal({
       onChatSelect: async (chatId) => {
@@ -234,8 +216,6 @@ async function init() {
   }
 
   // SPA navigation now uses in-memory pending chat ids.
-  // Clear any stale value left over from the old multipage flow so
-  // the app doesn't reopen an old chat on a fresh launch.
   localStorage.removeItem('ow-pending-chat');
 }
 

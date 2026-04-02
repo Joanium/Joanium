@@ -4,6 +4,7 @@ import { invalidate as invalidateSysPrompt } from '../Services/SystemPromptServi
 import Paths from '../Core/Paths.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('get-user', wrapRead(() => UserService.readUser()));
 

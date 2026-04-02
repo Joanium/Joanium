@@ -19,6 +19,7 @@ function persist(data) {
   fs.writeFileSync(Paths.USAGE_FILE, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('launch-usage', () => {
     loadPage(Paths.USAGE_PAGE);

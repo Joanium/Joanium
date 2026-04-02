@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import * as ProjectService from '../Services/ProjectService.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('get-projects', wrapRead(() => ProjectService.list()));
   ipcMain.handle('get-project', wrapRead((projectId) => ProjectService.get(projectId)));

@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron';
+export const ipcMeta = { needs: ['agentsEngine', 'automationEngine'] };
 export function register(agentsEngine, automationEngine = null) {
 
   ipcMain.handle('launch-agents', (event) => {

@@ -3,6 +3,7 @@ import * as UserService from '../Services/UserService.js';
 import * as SystemPromptService from '../Services/SystemPromptService.js';
 import Paths from '../Core/Paths.js';
 
+export const ipcMeta = { needs: ['connectorEngine', 'featureRegistry'] };
 export function register(connectorEngine, featureRegistry = null) {
   ipcMain.handle('get-system-prompt', async () => {
     try {

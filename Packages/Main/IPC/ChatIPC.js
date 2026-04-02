@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import * as ChatService from '../Services/ChatService.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('save-chat', wrapHandler((chatData, opts = {}) => {
     ChatService.save(chatData, opts);

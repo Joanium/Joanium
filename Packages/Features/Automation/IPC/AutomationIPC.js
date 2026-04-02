@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 /**
  * @param {AutomationEngine} automationEngine
  */
+export const ipcMeta = { needs: ['automationEngine'] };
 export function register(automationEngine) {
   ipcMain.handle('launch-automations', (event) => {
     event.sender.send('navigate', 'automations');

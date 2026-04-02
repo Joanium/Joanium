@@ -1,18 +1,13 @@
-﻿import fs   from 'fs';
+import fs   from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
 
-// Automation Packages
-import { openSite }                           from '../Actions/Site.js';
-import { openFolder }                         from '../Actions/Folder.js';
-import { openTerminalAtPath, openTerminalAndRun } from '../Actions/Terminal.js';
-import { openApp }                            from '../Actions/Application.js';
-import { sendNotification }                   from '../Actions/Notification.js';
-import { copyToClipboard }                    from '../Actions/Clipboard.js';
-import { writeFile }                          from '../Actions/File.js';
-
+import { loadActions } from './loadActions.js';
 import { shouldRunNow } from '../Scheduling/Scheduling.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ACTIONS_DIR = path.resolve(__dirname, '..', 'Actions');
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  ACTION DISPATCHER
@@ -21,171 +16,16 @@ import { shouldRunNow } from '../Scheduling/Scheduling.js';
 export async function runAction(action, connectorEngine = null) {
   if (!action?.type) return;
 
-
-  switch (action.type) {
-    // System / OS
-    case 'open_site':
-      return openSite(action.url);
-
-    case 'open_multiple_sites': {
-      const urls = String(action.urls ?? '').split('\n').map(u => u.trim()).filter(Boolean);
-      for (const url of urls) {
-        await openSite(url);
-        if (urls.length > 1) await new Promise(r => setTimeout(r, 400));
-      }
-      return;
-    }
-
-    case 'open_folder':
-      await openFolder(action.path);
-      if (action.openTerminal)
-        await openTerminalAtPath(action.path, action.terminalCommand || '');
-      return;
-
-    case 'run_command': {
-      if (!action.command) throw new Error('run_command: no command provided');
-      if (action.silent) {
-        await new Promise((resolve, reject) => {
-          exec(action.command, (err) => {
-            if (action.notifyOnFinish) {
-              sendNotification(
-                err ? 'âŒ Command failed' : 'âœ… Command done',
-                action.command.slice(0, 80),
-              );
-            }
-            err ? reject(err) : resolve();
-          });
-        });
-      } else {
-        await openTerminalAndRun(action.command);
-        if (action.notifyOnFinish) sendNotification('âœ… Command launched', action.command.slice(0, 80));
-      }
-      return;
-    }
-
-    case 'run_script': {
-      if (!action.scriptPath) throw new Error('run_script: no script path provided');
-      const cmd = action.args?.trim()
-        ? `${action.scriptPath} ${action.args}`
-        : action.scriptPath;
-      if (action.silent) {
-        await new Promise((resolve, reject) => {
-          exec(cmd, (err, stdout, stderr) => {
-            if (action.notifyOnFinish) {
-              sendNotification(
-                err ? 'âŒ Script failed' : 'âœ… Script done',
-                path.basename(action.scriptPath),
-              );
-            }
-            err ? reject(err) : resolve();
-          });
-        });
-      } else {
-        await openTerminalAndRun(cmd);
-        if (action.notifyOnFinish) sendNotification('âœ… Script launched', path.basename(action.scriptPath));
-      }
-      return;
-    }
-
-    case 'open_app':
-      return openApp(action.appPath);
-
-    case 'send_notification':
-      return sendNotification(action.title, action.body ?? '', action.clickUrl ?? '');
-
-    case 'copy_to_clipboard':
-      return copyToClipboard(action.text);
-
-    case 'write_file': {
-      if (!action.filePath) throw new Error('write_file: no file path provided');
-      const dir = path.dirname(action.filePath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      if (action.append) {
-        fs.appendFileSync(action.filePath, String(action.content ?? ''), 'utf-8');
-      } else {
-        fs.writeFileSync(action.filePath, String(action.content ?? ''), 'utf-8');
-      }
-      return;
-    }
-
-    case 'move_file': {
-      if (!action.sourcePath || !action.destPath) throw new Error('move_file: source and destination paths required');
-      const destDir = path.dirname(action.destPath);
-      if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
-      fs.renameSync(action.sourcePath, action.destPath);
-      return;
-    }
-
-    case 'copy_file': {
-      if (!action.sourcePath || !action.destPath) throw new Error('copy_file: source and destination paths required');
-      const destDir = path.dirname(action.destPath);
-      if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
-      fs.copyFileSync(action.sourcePath, action.destPath);
-      return;
-    }
-
-    case 'delete_file': {
-      if (!action.filePath) throw new Error('delete_file: no file path provided');
-      fs.unlinkSync(action.filePath);
-      return;
-    }
-
-    case 'create_folder': {
-      if (!action.path) throw new Error('create_folder: no path provided');
-      fs.mkdirSync(action.path, { recursive: true });
-      return;
-    }
-
-    case 'lock_screen': {
-      if (process.platform === 'darwin') {
-        exec('pmset displaysleepnow');
-      } else if (process.platform === 'win32') {
-        exec('rundll32.exe user32.dll,LockWorkStation');
-      } else {
-        exec('xdg-screensaver lock 2>/dev/null || gnome-screensaver-command -l 2>/dev/null || loginctl lock-session');
-      }
-      return;
-    }
-
-    case 'http_request': {
-      if (!action.url) throw new Error('http_request: no URL provided');
-      const method = (action.method || 'GET').toUpperCase();
-      const headers = {};
-
-      if (action.headers) {
-        String(action.headers).split('\n').forEach(line => {
-          const idx = line.indexOf(':');
-          if (idx > 0) {
-            const key = line.slice(0, idx).trim();
-            const val = line.slice(idx + 1).trim();
-            if (key) headers[key] = val;
-          }
-        });
-      }
-      if (!headers['Content-Type'] && action.body) headers['Content-Type'] = 'application/json';
-
-      const opts = { method, headers };
-      if (!['GET', 'HEAD'].includes(method) && action.body) opts.body = action.body;
-
-      try {
-        const res = await fetch(action.url, opts);
-        if (action.notify) {
-          sendNotification(
-            `ðŸŒ ${method} ${res.ok ? 'âœ…' : 'âŒ'} ${res.status}`,
-            action.url,
-          );
-        }
-      } catch (err) {
-        if (action.notify) sendNotification('ðŸŒ HTTP Request Failed', err.message);
-        throw err;
-      }
-      return;
-    }
-
-
-    default:
-      console.warn(`[AutomationEngine] Unknown action type: "${action.type}"`);
+  if (!runAction._map) {
+    runAction._map = await loadActions(ACTIONS_DIR);
   }
+
+  const handler = runAction._map.get(action.type);
+  if (handler) {
+    return handler(action);
+  }
+
+  console.warn(`[AutomationEngine] Unknown action type: "${action.type}"`);
 }
 
 
@@ -339,9 +179,7 @@ export class AutomationEngine {
       live.lastRun = entry.timestamp;
       this._persist();
     } else {
-      console.warn(`[AutomationEngine] Automation ${automationId} not found after run â€” was it deleted?`);
+      console.warn(`[AutomationEngine] Automation ${automationId} not found after run — was it deleted?`);
     }
   }
 }
-
-

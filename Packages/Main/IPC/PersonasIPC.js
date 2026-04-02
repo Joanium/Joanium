@@ -18,6 +18,7 @@ function parseFrontmatter(content) {
   return { meta, body: content.slice(match[0].length).trim() };
 }
 
+export const ipcMeta = { needs: [] };
 export function register() {
   /* ── List all personas ── */
   ipcMain.handle('get-personas', () => {

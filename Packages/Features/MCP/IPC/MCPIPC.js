@@ -65,6 +65,7 @@ export async function autoConnect() {
 }
 
 /* ── IPC Registration ── */
+export const ipcMeta = { needs: [] };
 export function register() {
 
   /* List all configured servers + connection status */

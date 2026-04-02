@@ -1,5 +1,7 @@
-const ICON = {
+import { buildSidebarNav } from '../../../Renderer/Application/PagesManifest.js';
 
+// NON-PAGE ICONS (kept here since they're not navigable pages)
+const ICON = {
   newChat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M12 5v14M5 12h14" stroke-linecap="round"/>
             </svg>`,
@@ -11,38 +13,6 @@ const ICON = {
   projects: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"/>
                <path d="M8 11h8M8 15h5" stroke-linecap="round"/>
-             </svg>`,
-
-  automations: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round"/>
-                </svg>`,
-
-  skills: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                   stroke-linecap="round" stroke-linejoin="round"/>
-           </svg>`,
-
-  personas: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-               <circle cx="12" cy="8" r="4"/>
-               <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/>
-             </svg>`,
-
-  events: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-             <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/>
-           </svg>`,
-
-  usage: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <rect x="2" y="3" width="20" height="14" rx="2"/>
-            <path d="M8 21h8M12 17v4" stroke-linecap="round"/>
-          </svg>`,
-
-  agents: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/>
-            <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/>
-          </svg>`,
-
-  channels: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>
              </svg>`,
 
   theme: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -94,28 +64,36 @@ function applyTheme(theme, animate = true) {
   });
 }
 
+// Non-page sidebar buttons that are handled specially (not from manifest)
+const SPECIAL_BUTTON_IDS = new Set(['chat', 'library', 'projects']);
+
 // HTML BUILDERS
 function buildSidebarHTML(activePage) {
-  const btn = (view, icon, tip) => {
-    const isActive = view === activePage ? ' active' : '';
-    return `<button class="sidebar-btn${isActive}" data-view="${view}" data-tip="${tip}" title="${tip}">
+  const nav = buildSidebarNav();
+
+  const btn = (id, icon, tip) => {
+    const isActive = id === activePage ? ' active' : '';
+    return `<button class="sidebar-btn${isActive}" data-view="${id}" data-tip="${tip}" title="${tip}">
               ${icon}
             </button>`;
   };
+
+  // Filter manifest entries to exclude special buttons (chat, library, projects)
+  // which are hardcoded below with their own dedicated icons
+  const topButtons = nav.top
+    .filter(item => !SPECIAL_BUTTON_IDS.has(item.id))
+    .map(item => btn(item.id, item.icon, item.label)).join('\n    ');
+  const bottomButtons = nav.bottom.map(item => btn(item.id, item.icon, item.label)).join('\n    ');
 
   return `
     ${btn('chat', ICON.newChat, 'New chat')}
     ${btn('library', ICON.library, 'Library')}
     ${btn('projects', ICON.projects, 'Projects')}
-    ${btn('automations', ICON.automations, 'Automations')}
-    ${btn('agents', ICON.agents, 'Agents')}
-    ${btn('skills', ICON.skills, 'Skills')}
-    ${btn('personas', ICON.personas, 'Personas')}
+    ${topButtons}
 
     <div class="sidebar-spacer"></div>
 
-    ${btn('events', ICON.events, 'Events')}
-    ${btn('usage', ICON.usage, 'Usage')}
+    ${bottomButtons}
 
     <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"
             data-tip="Switch theme" title="Switch theme">
@@ -172,32 +150,22 @@ function buildAvatarPanelHTML() {
  * Mount and wire the shared sidebar.
  *
  * @param {object} opts
- * @param {'chat'|'library'|'projects'|'automations'|'agents'|'channels'|'skills'|'personas'|'events'|'usage'} [opts.activePage='chat']
+ * @param {string}   [opts.activePage='chat']
  * @param {() => void} [opts.onNewChat]
  * @param {() => void} [opts.onLibrary]
  * @param {() => void} [opts.onProjects]
- * @param {() => void} [opts.onAutomations]
- * @param {() => void} [opts.onAgents]
- * @param {() => void} [opts.onSkills]
- * @param {() => void} [opts.onPersonas]
- * @param {() => void} [opts.onEvents]
- * @param {() => void} [opts.onUsage]
  * @param {() => void} [opts.onSettings]
  * @param {() => void} [opts.onAbout]
+ * @param {(pageId: string) => void} opts.onNavigate — called for all page nav clicks
  */
 export function initSidebar({
   activePage = 'chat',
   onNewChat = () => { },
   onLibrary = () => { },
   onProjects = () => { },
-  onAutomations = () => { },
-  onAgents = () => { },
-  onSkills = () => { },
-  onPersonas = () => { },
-  onEvents = () => { },
-  onUsage = () => { },
   onSettings = () => { },
   onAbout = () => { },
+  onNavigate = () => { },
 } = {}) {
 
   // Inject keyframe once
@@ -224,19 +192,14 @@ export function initSidebar({
   // Apply saved theme (no flash on load)
   applyTheme(localStorage.getItem('ow-theme') || 'dark', false);
 
-  // Wire navigation buttons
+  // Wire navigation buttons — generic handler from manifest
   sidebarEl.querySelectorAll('.sidebar-btn[data-view]').forEach(btn => {
     btn.addEventListener('click', () => {
       const view = btn.dataset.view;
       if (view === 'chat') { onNewChat(); return; }
       if (view === 'library') { onLibrary(); return; }
       if (view === 'projects') { onProjects(); return; }
-      if (view === 'automations') { onAutomations(); return; }
-      if (view === 'agents') { onAgents(); return; }
-      if (view === 'skills') { onSkills(); return; }
-      if (view === 'personas') { onPersonas(); return; }
-      if (view === 'events') { onEvents(); return; }
-      if (view === 'usage') { onUsage(); return; }
+      onNavigate(view);
     });
   });
 

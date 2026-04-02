@@ -3,6 +3,7 @@ import * as GithubAPI from '../../../Capabilities/Github/Core/api/GithubAPI.js';
 import { getFreshCreds } from '../../../Capabilities/Google/GoogleWorkspace.js';
 import { invalidate as invalidateSysPrompt } from '../../../Main/Services/SystemPromptService.js';
 
+export const ipcMeta = { needs: ['connectorEngine', 'featureRegistry'] };
 export function register(connectorEngine, featureRegistry = null) {
   ipcMain.handle('get-connectors', () => {
     try { return connectorEngine.getAll(); }

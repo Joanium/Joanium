@@ -4,6 +4,7 @@ import { loadPage } from '../Core/Window.js';
 import Paths from '../Core/Paths.js';
 import { wrapHandler } from './IPCWrapper.js';
 
+export const ipcMeta = { needs: [] };
 export function register() {
   ipcMain.handle('save-user', wrapHandler((userData) => {
     return { user: UserService.writeUser(userData) };

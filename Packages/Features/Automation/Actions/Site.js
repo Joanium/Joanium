@@ -7,3 +7,14 @@ export async function openSite(url) {
     if (!/^https?:\/\//i.test(target)) target = `https://${target}`;
     await shell.openExternal(target);
 }
+
+export const actionType = 'open_site';
+export const actionMeta = {
+  label: 'Open site',
+  group: 'System',
+  fields: ['url'],
+  requiredFields: ['url'],
+};
+export async function execute(action) {
+  await openSite(action.url);
+}

@@ -1,5 +1,6 @@
 ﻿import { ipcMain } from 'electron';
 
+export const ipcMeta = { needs: ['featureRegistry'] };
 export function register(featureRegistry) {
   ipcMain.handle('feature:get-boot', async () => featureRegistry.getBootPayload());
 

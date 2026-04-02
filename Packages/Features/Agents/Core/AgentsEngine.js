@@ -1,7 +1,13 @@
 ﻿import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { fileURLToPath } from 'url';
 import { shouldRunNow } from '../../Automation/Scheduling/Scheduling.js';
+import { loadDataSources } from './loadDataSources.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DATA_SOURCES_DIR = path.resolve(__dirname, '..', 'DataSources');
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    USAGE TRACKING
@@ -148,150 +154,31 @@ async function callAIWithFailover(agent, systemPrompt, userMessage, allProviders
   throw lastErr ?? new Error('All models failed');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   DATA SOURCE LABELS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-const DS_LABELS = {  hacker_news: 'Hacker News', rss_feed: 'RSS Feed', reddit_posts: 'Reddit',
-  read_file: 'File', system_stats: 'System Stats',
-  weather: 'Weather', crypto_price: 'Crypto Prices', fetch_url: 'Web Page',
-  custom_context: 'Custom Context',
-};
+/* ══════════════════════════════════════════
+   DATA SOURCE LABELS & COLLECTOR MAP
+   Loaded lazily from DataSources/ directory.
+══════════════════════════════════════════ */
+let _dsCollectMap = null;
+let _dsLabelMap = {};
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+async function getDataSourceMap() {
+  if (_dsCollectMap) return _dsCollectMap;
+  const { collectMap, labelMap } = await loadDataSources(DATA_SOURCES_DIR);
+  _dsCollectMap = collectMap;
+  _dsLabelMap = labelMap;
+  return collectMap;
+}
+
+/* ══════════════════════════════════════════
    SOURCE COLLECTOR
-   NOTE: All Gmail sources read from the unified 'google' connector.
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 export async function collectOneSource(ds, connectorEngine) {
   const type = ds?.type;
-  switch (type) {
+  const map = await getDataSourceMap();
+  const handler = map.get(type);
+  if (handler) return handler(ds);
 
-
-    case 'hacker_news': {
-      const count = ds.count ?? 10;
-      const typeMap = { top: 'topstories', new: 'newstories', best: 'beststories', ask: 'askstories' };
-      const ids = await fetch(
-        `https://hacker-news.firebaseio.com/v0/${typeMap[ds.hnType ?? 'top']}.json`
-      ).then(r => r.json());
-      const stories = await Promise.all(
-        ids.slice(0, count).map(id =>
-          fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json()).catch(() => null)
-        )
-      );
-      const valid = stories.filter(Boolean);
-      if (!valid.length) return 'EMPTY: No Hacker News stories found.';
-      return `Hacker News ${ds.hnType ?? 'top'} stories:\n\n` +
-        valid.map((s, i) => `${i + 1}. ${s.title} (${s.score} pts)`).join('\n\n');
-    }
-
-    case 'rss_feed': {
-      if (!ds.url) return 'âš ï¸ No RSS feed URL specified.';
-      try {
-        const xml = await fetch(ds.url, { headers: { 'User-Agent': 'romelson-agent/1.0' } }).then(r => r.text());
-        const items = [];
-        const max = ds.maxResults ?? 10;
-        const extractTag = (str, tag) => {
-          const m = new RegExp(`<${tag}[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/${tag}>`, 'i').exec(str);
-          return m ? m[1].replace(/<[^>]+>/g, '').trim() : '';
-        };
-        const regex = xml.includes('<item')
-          ? /<item[^>]*>([\s\S]*?)<\/item>/gi
-          : /<entry[^>]*>([\s\S]*?)<\/entry>/gi;
-        let match;
-        while ((match = regex.exec(xml)) !== null && items.length < max) {
-          const title = extractTag(match[1], 'title');
-          if (title) items.push(`${items.length + 1}. ${title}`);
-        }
-        return items.length ? `RSS Feed:\n\n${items.join('\n')}` : 'EMPTY: RSS feed returned no items.';
-      } catch (err) { return `âš ï¸ RSS fetch failed: ${err.message}`; }
-    }
-
-    case 'reddit_posts': {
-      if (!ds.subreddit?.trim()) return 'âš ï¸ No subreddit specified.';
-      try {
-        const data = await fetch(
-          `https://www.reddit.com/r/${ds.subreddit}/${ds.sort ?? 'hot'}.json?limit=${Math.min(ds.maxResults ?? 10, 25)}`,
-          { headers: { 'User-Agent': 'romelson-agent/1.0' } }
-        ).then(r => r.json());
-        const posts = data.data?.children ?? [];
-        if (!posts.length) return `EMPTY: r/${ds.subreddit} has no posts.`;
-        return `r/${ds.subreddit}:\n\n` +
-          posts.map((p, i) => `${i + 1}. ${p.data.title}`).join('\n\n');
-      } catch (err) { return `âš ï¸ Reddit fetch failed: ${err.message}`; }
-    }
-
-    case 'read_file': {
-      if (!ds.filePath) return 'âš ï¸ No file path specified.';
-      if (!fs.existsSync(ds.filePath)) return `âš ï¸ File not found: ${ds.filePath}`;
-      const stat = fs.statSync(ds.filePath);
-      if (stat.size > 500_000) return 'âš ï¸ File too large (>500 KB).';
-      const content = fs.readFileSync(ds.filePath, 'utf-8').trim();
-      if (!content) return `EMPTY: File ${ds.filePath} is empty.`;
-      return `File: ${ds.filePath}\n\n${content.slice(0, 6000)}`;
-    }
-
-    case 'system_stats': {
-      const cpus = os.cpus(), total = os.totalmem(), free = os.freemem(), up = os.uptime();
-      return [
-        `System Stats (${new Date().toLocaleString()}):`,
-        `Platform: ${process.platform} ${os.release()}`,
-        `CPU: ${cpus[0]?.model?.trim()} (${cpus.length} cores)`,
-        `Memory: ${(total / 1e9).toFixed(1)} GB total | ${(free / 1e9).toFixed(1)} GB free`,
-        `Uptime: ${Math.floor(up / 3600)}h ${Math.floor((up % 3600) / 60)}m`,
-      ].join('\n');
-    }
-
-    case 'weather': {
-      if (!ds.location) return 'âš ï¸ No location specified.';
-      const geo = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(ds.location)}&count=1&format=json`
-      ).then(r => r.json());
-      if (!geo.results?.length) return `âš ï¸ Location not found: ${ds.location}`;
-      const { latitude, longitude, name, country, timezone } = geo.results[0];
-      const units = ds.units ?? 'celsius';
-      const w = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
-        `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,precipitation` +
-        `&temperature_unit=${units}&wind_speed_unit=kmh&timezone=${encodeURIComponent(timezone ?? 'auto')}&forecast_days=1`
-      ).then(r => r.json());
-      const c = w.current, deg = units === 'fahrenheit' ? 'Â°F' : 'Â°C';
-      return `Weather in ${name}, ${country}:\nTemp: ${c.temperature_2m}${deg}\nHumidity: ${c.relative_humidity_2m}%\nWind: ${c.wind_speed_10m} km/h`;
-    }
-
-    case 'crypto_price': {
-      const coins = (ds.coins ?? 'bitcoin,ethereum').split(',').map(c => c.trim().toLowerCase()).join(',');
-      const cur = (ds.currency ?? 'usd').toLowerCase();
-      const data = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=${cur}&include_24hr_change=true`
-      ).then(r => r.json());
-      if (!Object.keys(data).length) return 'EMPTY: No crypto price data returned.';
-      return `Crypto Prices:\n` +
-        Object.entries(data).map(([coin, info]) =>
-          `${coin}: ${info[cur]} ${cur.toUpperCase()} (${info[`${cur}_24h_change`]?.toFixed(2) ?? 'N/A'}% 24h)`
-        ).join('\n');
-    }
-
-    case 'fetch_url': {
-      if (!ds.url) return 'âš ï¸ No URL specified.';
-      try {
-        const html = await fetch(ds.url, { headers: { 'User-Agent': 'romelson-agent/1.0' } }).then(r => r.text());
-        const text = html
-          .replace(/<script[\s\S]*?<\/script>/gi, '')
-          .replace(/<style[\s\S]*?<\/style>/gi, '')
-          .replace(/<[^>]+>/g, ' ')
-          .replace(/\s{2,}/g, ' ')
-          .trim()
-          .slice(0, 6000);
-        if (!text) return `EMPTY: No readable content found at ${ds.url}`;
-        return `Content from ${ds.url}:\n\n${text}`;
-      } catch (err) { return `âš ï¸ Failed to fetch URL: ${err.message}`; }
-    }
-
-    case 'custom_context':
-      return ds.context?.trim() || '(no context provided)';
-
-    default:
-      return `âš ï¸ Unknown data source type: "${type}"`;
-  }
+  return `Unknown data source type: "${type}"`;
 }
 
 async function collectData(job, connectorEngine, featureRegistry = null) {
@@ -315,7 +202,7 @@ async function collectData(job, connectorEngine, featureRegistry = null) {
         ? result.value
         : `?? Source failed: ${result.reason?.message ?? 'Unknown error'}`;
       const featureLabel = featureRegistry?.getAgentDataSourceDefinition?.(sources[i]?.type)?.label;
-      return `=== ${featureLabel ?? DS_LABELS[sources[i]?.type] ?? `Source ${i + 1}`} ===\n${text}`;
+      return `=== ${featureLabel ?? _dsLabelMap[sources[i]?.type] ?? `Source ${i + 1}`} ===\n${text}`;
     })
     .join('\n\n');
 }
@@ -333,7 +220,7 @@ export async function executeOutput(output, aiResponse, agent, job, connectorEng
       // Email sending uses the unified 'google' connector
       const creds = connectorEngine?.getCredentials('google');
       if (!creds?.accessToken) throw new Error('Google Workspace not connected.');
-      const { sendEmail } = await import('../../../Capabilities/Google/Gmail/Core/GmailAPI.js');
+      const { sendEmail } = await import('../../../Capabilities/Google/Gmail/Core/api/GmailAPI.js');
       const subject = output.subject?.trim()
         ? output.subject.replace('{{date}}', dateStr).replace('{{agent}}', agent.name).replace('{{job}}', job.name ?? '')
         : `[${agent.name}] ${job.name ?? 'Report'} â€” ${dateStr}`;

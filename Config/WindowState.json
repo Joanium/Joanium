@@ -1,10 +1,10 @@
 {
   "bounds": {
     "width": 1432,
-    "height": 815,
+    "height": 816,
     "x": 104,
-    "y": 1
+    "y": 0
   },
-  "isMaximized": false,
+  "isMaximized": true,
   "isFullScreen": false
 }
