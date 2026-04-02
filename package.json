@@ -80,13 +80,13 @@
       }
     ],
     "win": {
-      "icon": "Icons/Logo.ico"
+      "icon": "Assets/Logo/Logo.ico"
     },
     "mac": {
-      "icon": "Icons/Logo.icns"
+      "icon": "Assets/Logo/Logo.icns"
     },
     "linux": {
-      "icon": "Icons/Logo.png"
+      "icon": "Assets/Logo/Logo.png"
     }
   }
 }

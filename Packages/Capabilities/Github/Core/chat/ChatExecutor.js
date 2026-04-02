@@ -554,6 +554,321 @@ export async function executeGithubChatTool(ctx, toolName, params = {}) {
       return [`Workflow runs for ${owner}/${repo} (${result.total_count || runs.length} total):`, '', ...runs.slice(0, 20).map(run => `- ${run.name}: ${run.status}${run.conclusion ? ` / ${run.conclusion}` : ''} [${run.event}] (${run.head_branch || 'unknown branch'})`)].join('\n');
     }
 
+    case 'github_get_readme': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const file = await GithubAPI.getReadme(credentials, owner, repo);
+      const preview = file.content.length > 6000
+        ? `${file.content.slice(0, 6000)}\n...(truncated)`
+        : file.content;
+      return `README for ${owner}/${repo}:\n\n${preview}`;
+    }
+
+    case 'github_get_issue_details': {
+      const { owner, repo, issue_number } = params;
+      if (!owner || !repo || !issue_number) {
+        throw new Error('Missing required params: owner, repo, issue_number');
+      }
+      const issue = await GithubAPI.getIssueDetails(credentials, owner, repo, Number(issue_number));
+      const labelNames = (issue.labels || []).map(l => l.name).join(', ') || 'none';
+      const assigneeNames = (issue.assignees || []).map(a => `@${a.login}`).join(', ') || 'none';
+      return [
+        `Issue #${issue.number}: ${issue.title}`,
+        `State: ${issue.state}`,
+        `Author: @${issue.user?.login || 'unknown'}`,
+        `Labels: ${labelNames}`,
+        `Assignees: ${assigneeNames}`,
+        issue.milestone ? `Milestone: ${issue.milestone.title}` : '',
+        `Created: ${formatDate(issue.created_at)} | Updated: ${formatDate(issue.updated_at)}`,
+        '',
+        issue.body
+          ? `Description:\n${issue.body.slice(0, 1500)}${issue.body.length > 1500 ? '\n...(truncated)' : ''}`
+          : '(no description)',
+        '',
+        `URL: ${issue.html_url}`,
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_update_issue': {
+      const { owner, repo, issue_number, title, body, state, labels, assignees } = params;
+      if (!owner || !repo || !issue_number) {
+        throw new Error('Missing required params: owner, repo, issue_number');
+      }
+      const updates = {};
+      if (title     !== undefined) updates.title     = title;
+      if (body      !== undefined) updates.body      = body;
+      if (state     !== undefined) updates.state     = state;
+      if (labels    !== undefined) updates.labels    = parseCommaList(labels);
+      if (assignees !== undefined) updates.assignees = parseCommaList(assignees);
+      if (!Object.keys(updates).length) {
+        throw new Error('At least one field to update must be provided.');
+      }
+      const issue = await GithubAPI.updateIssue(credentials, owner, repo, Number(issue_number), updates);
+      return [
+        `Issue #${issue.number} updated in ${owner}/${repo}`,
+        `Title: ${issue.title}`,
+        `State: ${issue.state}`,
+        `URL: ${issue.html_url}`,
+      ].join('\n');
+    }
+
+    case 'github_get_contributors': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const contributors = await GithubAPI.getContributors(credentials, owner, repo);
+      if (!contributors.length) return `No contributors found for ${owner}/${repo}.`;
+      return [
+        `Top contributors for ${owner}/${repo}:`,
+        '',
+        ...contributors.slice(0, 20).map((c, i) =>
+          `${i + 1}. @${c.login} — ${c.contributions.toLocaleString()} commit${c.contributions === 1 ? '' : 's'}`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_get_languages': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const langs = await GithubAPI.getLanguages(credentials, owner, repo);
+      const entries = Object.entries(langs);
+      if (!entries.length) return `No language data available for ${owner}/${repo}.`;
+      const total = entries.reduce((sum, [, bytes]) => sum + bytes, 0);
+      return [
+        `Language breakdown for ${owner}/${repo}:`,
+        '',
+        ...entries
+          .sort(([, a], [, b]) => b - a)
+          .map(([lang, bytes]) => {
+            const pct = ((bytes / total) * 100).toFixed(1);
+            return `${lang}: ${pct}%`;
+          }),
+      ].join('\n');
+    }
+
+    case 'github_get_topics': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const data = await GithubAPI.getTopics(credentials, owner, repo);
+      const topics = data.names || [];
+      if (!topics.length) return `${owner}/${repo} has no topics set.`;
+      return `Topics for ${owner}/${repo}:\n\n${topics.map(t => `• ${t}`).join('\n')}`;
+    }
+
+    case 'github_get_milestones': {
+      const { owner, repo, state = 'open' } = params;
+      requireRepo(owner, repo);
+      const milestones = await GithubAPI.getMilestones(credentials, owner, repo, state);
+      if (!milestones.length) return `No ${state} milestones in ${owner}/${repo}.`;
+      return [
+        `Milestones for ${owner}/${repo} (${state}):`,
+        '',
+        ...milestones.map((m, i) => {
+          const due = m.due_on ? ` | Due: ${formatDate(m.due_on)}` : '';
+          const progress = m.closed_issues + m.open_issues > 0
+            ? ` | ${m.closed_issues}/${m.closed_issues + m.open_issues} closed`
+            : '';
+          return `${i + 1}. #${m.number} ${m.title}${due}${progress}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_create_milestone': {
+      const { owner, repo, title, description = '', due_on = '' } = params;
+      if (!owner || !repo || !title) {
+        throw new Error('Missing required params: owner, repo, title');
+      }
+      const milestone = await GithubAPI.createMilestone(credentials, owner, repo, title, description, due_on);
+      return [
+        `Milestone created in ${owner}/${repo}`,
+        `#${milestone.number}: ${milestone.title}`,
+        milestone.due_on ? `Due: ${formatDate(milestone.due_on)}` : '',
+        `URL: ${milestone.html_url}`,
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_create_branch': {
+      const { owner, repo, branch_name, sha } = params;
+      if (!owner || !repo || !branch_name || !sha) {
+        throw new Error('Missing required params: owner, repo, branch_name, sha');
+      }
+      await GithubAPI.createBranch(credentials, owner, repo, branch_name, sha);
+      return [
+        `Branch created in ${owner}/${repo}`,
+        `Name: ${branch_name}`,
+        `From SHA: ${sha.slice(0, 7)}`,
+      ].join('\n');
+    }
+
+    case 'github_delete_branch': {
+      const { owner, repo, branch_name } = params;
+      if (!owner || !repo || !branch_name) {
+        throw new Error('Missing required params: owner, repo, branch_name');
+      }
+      await GithubAPI.deleteBranch(credentials, owner, repo, branch_name);
+      return `Branch "${branch_name}" deleted from ${owner}/${repo}.`;
+    }
+
+    case 'github_get_forks': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const forks = await GithubAPI.getForks(credentials, owner, repo);
+      if (!forks.length) return `${owner}/${repo} has no forks.`;
+      return [
+        `Forks of ${owner}/${repo} (${forks.length} shown):`,
+        '',
+        ...forks.slice(0, 20).map((f, i) =>
+          `${i + 1}. ${f.full_name} by @${f.owner?.login || 'unknown'} — ★${f.stargazers_count}`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_get_stargazers': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const stargazers = await GithubAPI.getStargazers(credentials, owner, repo);
+      if (!stargazers.length) return `${owner}/${repo} has no stargazers yet.`;
+      return [
+        `Stargazers for ${owner}/${repo} (showing up to 30):`,
+        '',
+        ...stargazers.slice(0, 30).map((u, i) => `${i + 1}. @${u.login}`),
+      ].join('\n');
+    }
+
+    case 'github_get_collaborators': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const collaborators = await GithubAPI.getCollaborators(credentials, owner, repo);
+      if (!collaborators.length) return `No collaborators found for ${owner}/${repo}.`;
+      return [
+        `Collaborators on ${owner}/${repo}:`,
+        '',
+        ...collaborators.map((c, i) => {
+          const role = c.role_name || c.permissions?.admin ? 'admin' : c.permissions?.push ? 'write' : 'read';
+          return `${i + 1}. @${c.login} (${role})`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_compare_branches': {
+      const { owner, repo, base, head } = params;
+      if (!owner || !repo || !base || !head) {
+        throw new Error('Missing required params: owner, repo, base, head');
+      }
+      const cmp = await GithubAPI.compareBranches(credentials, owner, repo, base, head);
+      const files = (cmp.files || []).slice(0, 20);
+      return [
+        `Comparing ${base}...${head} in ${owner}/${repo}`,
+        `Status: ${cmp.status}`,
+        `Ahead by ${cmp.ahead_by} commit(s) | Behind by ${cmp.behind_by} commit(s)`,
+        `Total commits: ${cmp.total_commits}`,
+        '',
+        files.length ? `Changed files (${cmp.files?.length ?? 0} total, showing ${files.length}):` : '',
+        ...files.map(f => `  ${f.status.padEnd(8)} ${f.filename}  (+${f.additions} -${f.deletions})`),
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_get_gists': {
+      const gists = await GithubAPI.getGists(credentials);
+      if (!gists.length) return 'No gists found.';
+      return [
+        `Your Gists (${gists.length} shown):`,
+        '',
+        ...gists.slice(0, 20).map((g, i) => {
+          const files = Object.keys(g.files).join(', ');
+          const visibility = g.public ? 'public' : 'secret';
+          return `${i + 1}. [${visibility}] ${g.description || files} — ${formatDate(g.updated_at)}\n   ${g.html_url}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_traffic_views': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const traffic = await GithubAPI.getTrafficViews(credentials, owner, repo);
+      const recent = (traffic.views || []).slice(-7);
+      return [
+        `Traffic views for ${owner}/${repo} (last 14 days):`,
+        `Total views: ${traffic.count?.toLocaleString() ?? 0} | Unique visitors: ${traffic.uniques?.toLocaleString() ?? 0}`,
+        '',
+        recent.length ? 'Daily breakdown (last 7 days):' : '',
+        ...recent.map(v =>
+          `  ${formatDate(v.timestamp)}: ${v.count} views, ${v.uniques} unique`,
+        ),
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_request_reviewers': {
+      const { owner, repo, pr_number, reviewers = '', team_reviewers = '' } = params;
+      requirePullRequest(owner, repo, pr_number);
+      const parsedReviewers     = parseCommaList(reviewers);
+      const parsedTeamReviewers = parseCommaList(team_reviewers);
+      if (!parsedReviewers.length && !parsedTeamReviewers.length) {
+        throw new Error('At least one reviewer or team_reviewer is required.');
+      }
+      await GithubAPI.requestReviewers(
+        credentials, owner, repo, Number(pr_number),
+        parsedReviewers, parsedTeamReviewers,
+      );
+      const who = [
+        ...parsedReviewers.map(r => `@${r}`),
+        ...parsedTeamReviewers.map(t => `team:${t}`),
+      ].join(', ');
+      return `Reviewers requested on ${owner}/${repo} PR #${pr_number}: ${who}`;
+    }
+
+    case 'github_get_pr_files': {
+      const { owner, repo, pr_number } = params;
+      requirePullRequest(owner, repo, pr_number);
+      const files = await GithubAPI.getPRFiles(credentials, owner, repo, Number(pr_number));
+      if (!files.length) return `PR #${pr_number} in ${owner}/${repo} has no file changes.`;
+      const additions = files.reduce((s, f) => s + f.additions, 0);
+      const deletions = files.reduce((s, f) => s + f.deletions, 0);
+      return [
+        `Files changed in ${owner}/${repo} PR #${pr_number} (${files.length} files, +${additions} -${deletions}):`,
+        '',
+        ...files.slice(0, 50).map(f =>
+          `  ${f.status.padEnd(8)} ${f.filename}  (+${f.additions} -${f.deletions})`,
+        ),
+        files.length > 50 ? `  ...and ${files.length - 50} more` : '',
+      ].filter(Boolean).join('\n');
+    }
+
+    case 'github_list_pr_reviews': {
+      const { owner, repo, pr_number } = params;
+      requirePullRequest(owner, repo, pr_number);
+      const reviews = await GithubAPI.listPRReviews(credentials, owner, repo, Number(pr_number));
+      if (!reviews.length) return `No reviews found for ${owner}/${repo} PR #${pr_number}.`;
+      return [
+        `Reviews on ${owner}/${repo} PR #${pr_number}:`,
+        '',
+        ...reviews.map((r, i) => {
+          const verdict = r.state || 'COMMENTED';
+          const body = String(r.body || '').trim().slice(0, 200);
+          return [
+            `${i + 1}. @${r.user?.login || 'unknown'} — ${verdict} (${formatDate(r.submitted_at)})`,
+            body ? `   ${body}${r.body?.length > 200 ? '...' : ''}` : '',
+          ].filter(Boolean).join('\n');
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_user_info': {
+      const { username } = params;
+      if (!username) throw new Error('Missing required param: username');
+      const user = await GithubAPI.getUserInfo(credentials, username);
+      return [
+        `GitHub User: @${user.login}`,
+        user.name  ? `Name: ${user.name}`  : '',
+        user.bio   ? `Bio: ${user.bio}`    : '',
+        user.company     ? `Company: ${user.company}`                       : '',
+        user.location    ? `Location: ${user.location}`                     : '',
+        user.blog        ? `Website: ${user.blog}`                          : '',
+        `Public repos: ${user.public_repos} | Followers: ${user.followers} | Following: ${user.following}`,
+        `Member since: ${formatDate(user.created_at)}`,
+        `URL: ${user.html_url}`,
+      ].filter(Boolean).join('\n');
+    }
+    
     default:
       throw new Error(`Unknown GitHub tool: ${toolName}`);
   }

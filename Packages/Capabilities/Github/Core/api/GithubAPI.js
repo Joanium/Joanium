@@ -323,3 +323,120 @@ export async function createGist(credentials, description, files, isPublic = fal
     body: JSON.stringify({ description, files, public: isPublic }),
   });
 }
+
+export async function getIssueDetails(credentials, owner, repo, issueNumber) {
+  return githubFetch(`/repos/${owner}/${repo}/issues/${issueNumber}`, credentials.token);
+}
+
+export async function updateIssue(credentials, owner, repo, issueNumber, { title, body, state, labels, assignees } = {}) {
+  const payload = {};
+  if (title     !== undefined) payload.title     = title;
+  if (body      !== undefined) payload.body      = body;
+  if (state     !== undefined) payload.state     = state;
+  if (labels    !== undefined) payload.labels    = labels;
+  if (assignees !== undefined) payload.assignees = assignees;
+  return githubFetch(`/repos/${owner}/${repo}/issues/${issueNumber}`, credentials.token, {
+    method: 'PATCH',
+    body:   JSON.stringify(payload),
+  });
+}
+
+export async function getContributors(credentials, owner, repo, perPage = 30) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/contributors?per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function getLanguages(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/languages`, credentials.token);
+}
+
+export async function getTopics(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/topics`, credentials.token, {
+    headers: { Accept: 'application/vnd.github.mercy-preview+json' },
+  });
+}
+
+export async function getMilestones(credentials, owner, repo, state = 'open') {
+  return githubFetch(
+    `/repos/${owner}/${repo}/milestones?state=${state}&per_page=30`,
+    credentials.token,
+  );
+}
+
+export async function createMilestone(credentials, owner, repo, title, description = '', dueOn = '') {
+  const payload = { title };
+  if (description) payload.description = description;
+  if (dueOn)       payload.due_on      = dueOn;
+  return githubFetch(`/repos/${owner}/${repo}/milestones`, credentials.token, {
+    method: 'POST',
+    body:   JSON.stringify(payload),
+  });
+}
+
+export async function createBranch(credentials, owner, repo, branchName, sha) {
+  return githubFetch(`/repos/${owner}/${repo}/git/refs`, credentials.token, {
+    method: 'POST',
+    body:   JSON.stringify({ ref: `refs/heads/${branchName}`, sha }),
+  });
+}
+
+export async function deleteBranch(credentials, owner, repo, branchName) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/git/refs/heads/${branchName}`,
+    credentials.token,
+    { method: 'DELETE' },
+  );
+}
+
+export async function getForks(credentials, owner, repo, perPage = 20) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/forks?per_page=${perPage}&sort=newest`,
+    credentials.token,
+  );
+}
+
+export async function getStargazers(credentials, owner, repo, perPage = 30) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/stargazers?per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function getCollaborators(credentials, owner, repo) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/collaborators?per_page=50`,
+    credentials.token,
+  );
+}
+
+export async function compareBranches(credentials, owner, repo, base, head) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`,
+    credentials.token,
+  );
+}
+
+export async function getGists(credentials, perPage = 20) {
+  return githubFetch(`/gists?per_page=${perPage}`, credentials.token);
+}
+
+export async function getTrafficViews(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/traffic/views`, credentials.token);
+}
+
+export async function requestReviewers(credentials, owner, repo, prNumber, reviewers = [], teamReviewers = []) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/${prNumber}/requested_reviewers`,
+    credentials.token,
+    {
+      method: 'POST',
+      body:   JSON.stringify({ reviewers, team_reviewers: teamReviewers }),
+    },
+  );
+}
+
+export async function getUserInfo(credentials, username) {
+  return githubFetch(`/users/${username}`, credentials.token);
+}
