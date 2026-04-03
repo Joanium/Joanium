@@ -222,7 +222,7 @@ export async function executeOutput(output, aiResponse, agent, job, connectorEng
       // Email sending uses the unified 'google' connector
       const creds = connectorEngine?.getCredentials('google');
       if (!creds?.accessToken) throw new Error('Google Workspace not connected.');
-      const { sendEmail } = await import('../../../Capabilities/Google/Gmail/Core/api/GmailAPI.js');
+      const { sendEmail } = await import('../../../Capabilities/Google/Gmail/Core/API/GmailAPI.js');
       const subject = output.subject?.trim()
         ? output.subject.replace('{{date}}', dateStr).replace('{{agent}}', agent.name).replace('{{job}}', job.name ?? '')
         : `[${agent.name}] ${job.name ?? 'Report'} â€” ${dateStr}`;

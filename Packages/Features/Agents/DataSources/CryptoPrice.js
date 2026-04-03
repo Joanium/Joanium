@@ -5,7 +5,7 @@ export async function collect(ds) {
     const coins = (ds.coins ?? 'bitcoin,ethereum').split(',').map(c => c.trim().toLowerCase()).join(',');
     const cur = (ds.currency ?? 'usd').toLowerCase();
     const data = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=${cur}&include_24hr_change=true`
+      `https://api.coingecko.com/API/v3/simple/price?ids=${coins}&vs_currencies=${cur}&include_24hr_change=true`
     ).then(r => r.json());
     if (!Object.keys(data).length) return 'EMPTY: No crypto price data returned.';
     return `Crypto Prices:\n` +

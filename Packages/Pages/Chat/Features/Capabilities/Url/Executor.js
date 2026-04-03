@@ -18,7 +18,7 @@ export const { handles, execute } = createExecutor({
 
             // Try CleanURI — free, no key
             try {
-                const res = await fetch('https://cleanuri.com/api/v1/shorten', {
+                const res = await fetch('https://cleanuri.com/API/v1/shorten', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `url=${encodeURIComponent(url)}`,

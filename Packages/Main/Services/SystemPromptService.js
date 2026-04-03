@@ -1,5 +1,5 @@
 import fs from 'fs';
-import * as GithubAPI from '../../Capabilities/Github/Core/api/GithubAPI.js';
+import * as GithubAPI from '../../Capabilities/Github/Core/API/GithubAPI.js';
 import { buildSystemPrompt } from '../../System/Prompting/SystemPrompt.js';
 import Paths from '../Core/Paths.js';
 

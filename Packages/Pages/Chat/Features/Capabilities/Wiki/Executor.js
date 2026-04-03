@@ -15,7 +15,7 @@ export const { handles, execute } = createExecutor({
             let data;
             try {
                 data = await safeJson(
-                    `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}?redirect=true`
+                    `https://en.wikipedia.org/API/rest_v1/page/summary/${encoded}?redirect=true`
                 );
             } catch {
                 // If direct lookup fails, try search endpoint
@@ -28,7 +28,7 @@ export const { handles, execute } = createExecutor({
                     return `No Wikipedia article found for "${query}". Try a more specific or common term.`;
                 }
                 data = await safeJson(
-                    `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}?redirect=true`
+                    `https://en.wikipedia.org/API/rest_v1/page/summary/${encodeURIComponent(title)}?redirect=true`
                 );
             }
 

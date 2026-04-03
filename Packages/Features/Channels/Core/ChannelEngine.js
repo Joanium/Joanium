@@ -132,7 +132,7 @@ async function pollDiscord(cfg) {
   // Fetch our own bot user ID on first poll so we can skip self-messages
   if (!cfg._botUserId) {
     try {
-      const meRes = await fetch('https://discord.com/api/v10/users/@me', {
+      const meRes = await fetch('https://discord.com/API/v10/users/@me', {
         headers: { Authorization: `Bot ${cfg.botToken}` },
       });
       if (meRes.ok) {
@@ -142,9 +142,8 @@ async function pollDiscord(cfg) {
     } catch { /* non-fatal — we'll skip by author.bot flag instead */ }
   }
 
-  const url = `https://discord.com/api/v10/channels/${cfg.channelId}/messages?limit=10${
-    cfg.lastMessageId ? `&after=${cfg.lastMessageId}` : ''
-  }`;
+  const url = `https://discord.com/API/v10/channels/${cfg.channelId}/messages?limit=10${cfg.lastMessageId ? `&after=${cfg.lastMessageId}` : ''
+    }`;
   const res = await fetch(url, { headers: { Authorization: `Bot ${cfg.botToken}` } });
 
   if (res.status === 403) {
@@ -184,7 +183,7 @@ async function sendDiscord(botToken, channelId, text) {
   // Discord has a 2000 char limit per message — split if needed
   const chunks = splitIntoChunks(text, 1990);
   for (const chunk of chunks) {
-    const res = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+    const res = await fetch(`https://discord.com/API/v10/channels/${channelId}/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bot ${botToken}` },
       body: JSON.stringify({ content: chunk }),
@@ -218,7 +217,7 @@ async function pollSlack(cfg) {
   // Fetch our bot user ID once so we can skip our own messages
   if (!cfg._botUserId) {
     try {
-      const authRes = await fetch('https://slack.com/api/auth.test', {
+      const authRes = await fetch('https://slack.com/API/auth.test', {
         headers: { Authorization: `Bearer ${cfg.botToken}` },
       });
       const authData = await authRes.json();
@@ -228,7 +227,7 @@ async function pollSlack(cfg) {
 
   // Build URL — oldest is exclusive (messages AFTER this ts, not including it)
   // This is exactly what we want for polling: no re-processing of last seen message
-  let url = `https://slack.com/api/conversations.history?channel=${cfg.channelId}&limit=10`;
+  let url = `https://slack.com/API/conversations.history?channel=${cfg.channelId}&limit=10`;
   if (cfg.lastMessageTs) {
     url += `&oldest=${cfg.lastMessageTs}`;
   }
@@ -281,7 +280,7 @@ async function sendSlack(botToken, channelId, text) {
   // Slack has a ~40k char limit but we keep messages reasonable
   const chunks = splitIntoChunks(text, 3000);
   for (const chunk of chunks) {
-    const res = await fetch('https://slack.com/api/chat.postMessage', {
+    const res = await fetch('https://slack.com/API/chat.postMessage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${botToken}` },
       body: JSON.stringify({ channel: channelId, text: chunk }),
@@ -355,7 +354,7 @@ export class ChannelEngine {
 
       this._pending.set(id, {
         resolve: (reply) => { clearTimeout(timer); resolve(reply); },
-        reject:  (err)   => { clearTimeout(timer); reject(err); },
+        reject: (err) => { clearTimeout(timer); reject(err); },
       });
 
       this._mainWindow.webContents.send('channel-incoming', { id, channelName, from, text });
@@ -444,7 +443,7 @@ export class ChannelEngine {
   }
 
   async validateSlack(botToken) {
-    const res = await fetch('https://slack.com/api/auth.test', {
+    const res = await fetch('https://slack.com/API/auth.test', {
       headers: { Authorization: `Bearer ${botToken}` },
     });
     const data = await res.json();
@@ -453,7 +452,7 @@ export class ChannelEngine {
   }
 
   async validateDiscord(botToken) {
-    const res = await fetch('https://discord.com/api/v10/users/@me', {
+    const res = await fetch('https://discord.com/API/v10/users/@me', {
       headers: { Authorization: `Bot ${botToken}` },
     });
     if (!res.ok) throw new Error('Invalid Discord bot token');
@@ -463,7 +462,7 @@ export class ChannelEngine {
 
   /* ── Test that the Discord bot can actually read the channel ── */
   async validateDiscordChannel(botToken, channelId) {
-    const res = await fetch(`https://discord.com/api/v10/channels/${channelId}`, {
+    const res = await fetch(`https://discord.com/API/v10/channels/${channelId}`, {
       headers: { Authorization: `Bot ${botToken}` },
     });
     if (res.status === 403) throw new Error(`Bot cannot access channel ${channelId}. Invite the bot to your server first.`);
@@ -475,7 +474,7 @@ export class ChannelEngine {
 
   /* ── Test that the Slack bot can actually read the channel ── */
   async validateSlackChannel(botToken, channelId) {
-    const res = await fetch(`https://slack.com/api/conversations.info?channel=${channelId}`, {
+    const res = await fetch(`https://slack.com/API/conversations.info?channel=${channelId}`, {
       headers: { Authorization: `Bearer ${botToken}` },
     });
     const data = await res.json();
@@ -541,7 +540,7 @@ export class ChannelEngine {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ chat_id: msg.chatId, action: 'typing' }),
-          }).catch(() => {});
+          }).catch(() => { });
 
           sendTyping();
           typingInterval = setInterval(sendTyping, 4500);
@@ -597,10 +596,10 @@ export class ChannelEngine {
       (async () => {
         let typingInterval = null;
         try {
-          const sendTyping = () => fetch(`https://discord.com/api/v10/channels/${msg.channelId}/typing`, {
+          const sendTyping = () => fetch(`https://discord.com/API/v10/channels/${msg.channelId}/typing`, {
             method: 'POST',
             headers: { Authorization: `Bot ${cfg.botToken}` },
-          }).catch(() => {});
+          }).catch(() => { });
 
           sendTyping();
           typingInterval = setInterval(sendTyping, 9000); // 10s max per Discord docs

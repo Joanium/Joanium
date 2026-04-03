@@ -11,7 +11,7 @@ export const { handles, execute } = createExecutor({
 
             // ZenQuotes API — free, no key
             try {
-                const data = await safeJson('https://zenquotes.io/api/random');
+                const data = await safeJson('https://zenquotes.io/API/random');
                 if (Array.isArray(data) && data[0]?.q) {
                     const q = data[0];
                     return [

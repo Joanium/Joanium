@@ -12,9 +12,9 @@ export const STATIC_CONNECTORS = [
     oauthType: 'google',
     // Visually listed under the card after connection to show what was detected
     subServices: [
-      { key: 'gmail',    icon: '📧', name: 'Gmail',            apiUrl: 'https://console.cloud.google.com/apis/library/gmail.googleapis.com' },
-      { key: 'drive',    icon: '🗂️', name: 'Google Drive',     apiUrl: 'https://console.cloud.google.com/apis/library/drive.googleapis.com' },
-      { key: 'calendar', icon: '📅', name: 'Google Calendar',  apiUrl: 'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com' },
+      { key: 'gmail', icon: '📧', name: 'Gmail', apiUrl: 'https://console.cloud.google.com/apis/library/gmail.googleapis.com' },
+      { key: 'drive', icon: '🗂️', name: 'Google Drive', apiUrl: 'https://console.cloud.google.com/apis/library/drive.googleapis.com' },
+      { key: 'calendar', icon: '📅', name: 'Google Calendar', apiUrl: 'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com' },
     ],
     setupSteps: [
       'Go to Google Cloud Console → Create or select a project',
@@ -87,7 +87,7 @@ export const STATIC_FREE_CONNECTORS = [
   { id: 'coingecko', name: 'CoinGecko', icon: '🦎', description: 'Live crypto prices, market caps, 24h changes, and trending coins. 10,000+ tokens.', noKey: true, docsUrl: 'https://coingecko.com', toolHint: 'Ask: "What\'s the price of Ethereum?"' },
   { id: 'exchange_rate', name: 'Exchange Rates', icon: '💱', description: 'Real-time currency exchange rates for 160+ currencies.', noKey: true, docsUrl: 'https://open.er-api.com', toolHint: 'Ask: "Convert 100 USD to INR"' },
   { id: 'treasury', name: 'US Treasury', icon: '🏛️', description: 'Official US fiscal data — national debt, treasury rates, daily cash balance.', noKey: true, docsUrl: 'https://fiscaldata.treasury.gov', toolHint: 'Ask: "What is the current US national debt?"' },
-  { id: 'fred', name: 'Federal Reserve (FRED)', icon: '📊', description: 'Economic indicators — GDP, unemployment, CPI, interest rates, and hundreds more.', noKey: false, optionalKey: true, keyLabel: 'FRED API Key', keyPlaceholder: 'Get your free key at fred.stlouisfed.org', keyHint: 'Free at fred.stlouisfed.org/docs/api/api_key.html', docsUrl: 'https://fred.stlouisfed.org/docs/api/api_key.html', toolHint: 'Ask: "Show me US GDP"' },
+  { id: 'fred', name: 'Federal Reserve (FRED)', icon: '📊', description: 'Economic indicators — GDP, unemployment, CPI, interest rates, and hundreds more.', noKey: false, optionalKey: true, keyLabel: 'FRED API Key', keyPlaceholder: 'Get your free key at fred.stlouisfed.org', keyHint: 'Free at fred.stlouisfed.org/docs/API/api_key.html', docsUrl: 'https://fred.stlouisfed.org/docs/API/api_key.html', toolHint: 'Ask: "Show me US GDP"' },
   { id: 'openweathermap', name: 'OpenWeatherMap', icon: '🌦️', description: 'Detailed weather with hourly forecasts, air quality, and historical data.', noKey: false, optionalKey: false, keyLabel: 'OpenWeatherMap API Key', keyPlaceholder: 'openweathermap.org/api', keyHint: 'Free tier: 1,000 calls/day.', docsUrl: 'https://openweathermap.org/api', toolHint: 'Richer weather data when a key is provided.' },
   { id: 'unsplash', name: 'Unsplash', icon: '📷', description: 'Search millions of high-quality free photos by topic.', noKey: false, optionalKey: false, keyLabel: 'Unsplash Access Key', keyPlaceholder: 'unsplash.com/developers', keyHint: 'Free tier: 50 requests/hour.', docsUrl: 'https://unsplash.com/developers', toolHint: 'Ask: "Find me photos of minimal workspace setups"' },
   { id: 'wikipedia', name: 'Wikipedia', icon: '📚', description: 'Search any topic — get summaries, descriptions, and direct links.', noKey: true, docsUrl: 'https://en.wikipedia.org', toolHint: 'Ask: "Tell me about quantum computing"' },

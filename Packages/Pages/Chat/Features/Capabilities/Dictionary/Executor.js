@@ -15,7 +15,7 @@ export const { handles, execute } = createExecutor({
       // Free Dictionary API — no key, no rate limit
       let data;
       try {
-        data = await safeJson(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(clean)}`);
+        data = await safeJson(`https://api.dictionaryapi.dev/API/v2/entries/en/${encodeURIComponent(clean)}`);
       } catch {
         return `No dictionary entry found for "${clean}". Check the spelling or try a different form of the word.`;
       }

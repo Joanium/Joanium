@@ -9,7 +9,7 @@ export const { handles, execute } = createExecutor({
             onStage(`🎲 Getting a random fact…`);
 
             const data = await safeJson(
-                'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en'
+                'https://uselessfacts.jsph.pl/API/v2/facts/random?language=en'
             );
 
             if (!data?.text) {

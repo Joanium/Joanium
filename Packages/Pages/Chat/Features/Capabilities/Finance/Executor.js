@@ -50,7 +50,7 @@ export const { handles, execute } = createExecutor({
             const { type = 'debt' } = params;
             onStage(`🏛️ Fetching US Treasury data (${type})…`);
 
-            const BASE = 'https://api.fiscaldata.treasury.gov/services/api/v1';
+            const BASE = 'https://api.fiscaldata.treasury.gov/services/API/v1';
             let url, title, formatter;
 
             switch (type) {

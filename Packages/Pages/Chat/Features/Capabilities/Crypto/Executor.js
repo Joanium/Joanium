@@ -11,7 +11,7 @@ export const { handles, execute } = createExecutor({
             onStage(`🔍 Searching for ${coin}…`);
 
             const searchData = await safeJson(
-                `https://api.coingecko.com/api/v3/search?query=${encodeURIComponent(coin)}`
+                `https://api.coingecko.com/API/v3/search?query=${encodeURIComponent(coin)}`
             );
             const coinResult = searchData.coins?.[0];
             if (!coinResult) {
@@ -21,7 +21,7 @@ export const { handles, execute } = createExecutor({
 
             const currencies = [vs_currency, 'usd', 'eur', 'inr'].filter((v, i, a) => a.indexOf(v) === i).join(',');
             const priceData = await safeJson(
-                `https://api.coingecko.com/api/v3/simple/price?ids=${coinResult.id}` +
+                `https://api.coingecko.com/API/v3/simple/price?ids=${coinResult.id}` +
                 `&vs_currencies=${currencies}` +
                 `&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true&include_last_updated_at=true`
             );
@@ -52,7 +52,7 @@ export const { handles, execute } = createExecutor({
 
         get_crypto_trending: async (params, onStage) => {
             onStage(`🔥 Fetching trending coins…`);
-            const data = await safeJson('https://api.coingecko.com/api/v3/search/trending');
+            const data = await safeJson('https://api.coingecko.com/API/v3/search/trending');
             const trending = data.coins?.slice(0, 7) ?? [];
             if (!trending.length) return 'No trending coins data available right now.';
             const lines = trending.map((t, i) => {
