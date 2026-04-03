@@ -12,7 +12,7 @@ If you discover a security vulnerability in Joanium, please report it responsibl
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Instead, email: [INSERT SECURITY EMAIL]
+Instead, email: joaniumhere@gmail.com
 
 Include the following in your report:
 
