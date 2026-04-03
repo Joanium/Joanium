@@ -5,11 +5,11 @@ import { shell } from 'electron';
    CONFIG
 ══════════════════════════════════════════ */
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
-const TOKEN_URL       = 'https://oauth2.googleapis.com/token';
-const USERINFO_URL    = 'https://www.googleapis.com/oauth2/v2/userinfo';
+const TOKEN_URL = 'https://oauth2.googleapis.com/token';
+const USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
 
 const CALLBACK_PORT = 42813;
-const REDIRECT_URI  = `http://localhost:${CALLBACK_PORT}/oauth/callback`;
+const REDIRECT_URI = `http://localhost:${CALLBACK_PORT}/oauth/callback`;
 
 // All scopes in one shot — user only grants once
 const SCOPES = [
@@ -32,16 +32,30 @@ const SCOPES = [
   'https://www.googleapis.com/auth/contacts',
   // Docs
   'https://www.googleapis.com/auth/documents',
+  // Slides
+  'https://www.googleapis.com/auth/presentations',
 ].join(' ');
 
 // Per-service probe endpoints (fast, minimal data)
 const SERVICE_PROBES = {
-  gmail:    { url: 'https://gmail.googleapis.com/gmail/v1/users/me/profile',                          label: 'Gmail' },
-  drive:    { url: 'https://www.googleapis.com/drive/v3/about?fields=user',                           label: 'Google Drive' },
-  calendar: { url: 'https://www.googleapis.com/calendar/v3/calendars/primary',                        label: 'Google Calendar' },
-  youtube:  { url: 'https://www.googleapis.com/youtube/v3/channels?part=id&mine=true',                label: 'YouTube' },
-  tasks:    { url: 'https://tasks.googleapis.com/tasks/v1/users/@me/lists?maxResults=1',              label: 'Google Tasks' },
-  contacts: { url: 'https://people.googleapis.com/v1/people/me?personFields=names',                   label: 'Google Contacts' },
+  gmail: { url: 'https://gmail.googleapis.com/gmail/v1/users/me/profile', label: 'Gmail' },
+  drive: { url: 'https://www.googleapis.com/drive/v3/about?fields=user', label: 'Google Drive' },
+  calendar: {
+    url: 'https://www.googleapis.com/calendar/v3/calendars/primary',
+    label: 'Google Calendar',
+  },
+  youtube: {
+    url: 'https://www.googleapis.com/youtube/v3/channels?part=id&mine=true',
+    label: 'YouTube',
+  },
+  tasks: {
+    url: 'https://tasks.googleapis.com/tasks/v1/users/@me/lists?maxResults=1',
+    label: 'Google Tasks',
+  },
+  contacts: {
+    url: 'https://people.googleapis.com/v1/people/me?personFields=names',
+    label: 'Google Contacts',
+  },
   // Sheets and Docs probed via Drive (same OAuth scope, same GCP project requirement)
   sheets: {
     url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.spreadsheet'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
@@ -51,13 +65,19 @@ const SERVICE_PROBES = {
     url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.document'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
     label: 'Google Docs',
   },
+  slides: {
+    url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.presentation'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
+    label: 'Google Slides',
+  },
 };
 
 /* ══════════════════════════════════════════
    CONNECTOR ENGINE REF
 ══════════════════════════════════════════ */
 let _connectorEngine = null;
-export function setConnectorEngine(engine) { _connectorEngine = engine; }
+export function setConnectorEngine(engine) {
+  _connectorEngine = engine;
+}
 
 /* ══════════════════════════════════════════
    OAUTH FLOW
@@ -65,14 +85,18 @@ export function setConnectorEngine(engine) { _connectorEngine = engine; }
 export function startOAuthFlow(clientId, clientSecret) {
   return new Promise((resolve, reject) => {
     let settled = false;
-    function settle(fn) { if (settled) return; settled = true; fn(); }
+    function settle(fn) {
+      if (settled) return;
+      settled = true;
+      fn();
+    }
 
     const server = http.createServer(async (req, res) => {
       try {
         const url = new URL(req.url, `http://localhost:${CALLBACK_PORT}`);
         if (url.pathname !== '/oauth/callback') return res.end();
 
-        const code  = url.searchParams.get('code');
+        const code = url.searchParams.get('code');
         const error = url.searchParams.get('error');
 
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -82,7 +106,8 @@ export function startOAuthFlow(clientId, clientSecret) {
         </body></html>`);
 
         server.close();
-        if (error || !code) return settle(() => reject(new Error(error || 'No auth code returned')));
+        if (error || !code)
+          return settle(() => reject(new Error(error || 'No auth code returned')));
         const tokens = await exchangeCode(code, clientId, clientSecret);
         settle(() => resolve(tokens));
       } catch (err) {
@@ -93,12 +118,12 @@ export function startOAuthFlow(clientId, clientSecret) {
 
     server.listen(CALLBACK_PORT, 'localhost', () => {
       const authUrl = new URL(GOOGLE_AUTH_URL);
-      authUrl.searchParams.set('client_id',     clientId);
-      authUrl.searchParams.set('redirect_uri',  REDIRECT_URI);
+      authUrl.searchParams.set('client_id', clientId);
+      authUrl.searchParams.set('redirect_uri', REDIRECT_URI);
       authUrl.searchParams.set('response_type', 'code');
-      authUrl.searchParams.set('scope',         SCOPES);
-      authUrl.searchParams.set('access_type',   'offline');
-      authUrl.searchParams.set('prompt',        'consent');
+      authUrl.searchParams.set('scope', SCOPES);
+      authUrl.searchParams.set('access_type', 'offline');
+      authUrl.searchParams.set('prompt', 'consent');
       shell.openExternal(authUrl.toString());
     });
   });
@@ -106,15 +131,19 @@ export function startOAuthFlow(clientId, clientSecret) {
 
 async function exchangeCode(code, clientId, clientSecret) {
   const res = await fetch(TOKEN_URL, {
-    method:  'POST',
+    method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      code, client_id: clientId, client_secret: clientSecret,
-      redirect_uri: REDIRECT_URI, grant_type: 'authorization_code',
+      code,
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: REDIRECT_URI,
+      grant_type: 'authorization_code',
     }),
   });
   const data = await res.json();
-  if (!data.access_token) throw new Error(data.error_description ?? data.error ?? 'Token exchange failed');
+  if (!data.access_token)
+    throw new Error(data.error_description ?? data.error ?? 'Token exchange failed');
 
   const profileRes = await fetch(USERINFO_URL, {
     headers: { Authorization: `Bearer ${data.access_token}` },
@@ -122,13 +151,13 @@ async function exchangeCode(code, clientId, clientSecret) {
   const profile = await profileRes.json();
 
   return {
-    accessToken:  data.access_token,
+    accessToken: data.access_token,
     refreshToken: data.refresh_token,
-    tokenExpiry:  Date.now() + (data.expires_in ?? 3600) * 1000,
-    email:        profile.email,
+    tokenExpiry: Date.now() + (data.expires_in ?? 3600) * 1000,
+    email: profile.email,
     clientId,
     clientSecret,
-    services: {},  // filled in after detectServices()
+    services: {}, // filled in after detectServices()
   };
 }
 
@@ -160,27 +189,31 @@ export async function detectServices(creds) {
 ══════════════════════════════════════════ */
 export async function getFreshCreds(creds) {
   const bufferMs = 2 * 60 * 1000;
-  const isExpired = !creds.tokenExpiry || Date.now() > (creds.tokenExpiry - bufferMs);
+  const isExpired = !creds.tokenExpiry || Date.now() > creds.tokenExpiry - bufferMs;
   if (!isExpired) return creds;
 
   if (!creds.refreshToken) {
-    throw new Error('Google token expired and no refresh token. Please reconnect Google Workspace in Settings → Connectors.');
+    throw new Error(
+      'Google token expired and no refresh token. Please reconnect Google Workspace in Settings → Connectors.',
+    );
   }
 
   const res = await fetch(TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id:     creds.clientId,
+      client_id: creds.clientId,
       client_secret: creds.clientSecret,
       refresh_token: creds.refreshToken,
-      grant_type:    'refresh_token',
+      grant_type: 'refresh_token',
     }),
   });
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(`Token refresh failed: ${err.error_description ?? err.error ?? res.status}. Please reconnect Google Workspace.`);
+    throw new Error(
+      `Token refresh failed: ${err.error_description ?? err.error ?? res.status}. Please reconnect Google Workspace.`,
+    );
   }
 
   const data = await res.json();
@@ -218,7 +251,9 @@ export async function googleFetch(creds, url, options = {}) {
     const body = await res.json().catch(() => ({}));
     const message = body.error?.message ?? JSON.stringify(body);
     if (res.status === 403) {
-      throw new Error(`Google API access denied (403). Make sure the required API is enabled in your Google Cloud project. Detail: ${message}`);
+      throw new Error(
+        `Google API access denied (403). Make sure the required API is enabled in your Google Cloud project. Detail: ${message}`,
+      );
     }
     throw new Error(`Google API error (${res.status}): ${message}`);
   }
@@ -229,12 +264,13 @@ export async function googleFetch(creds, url, options = {}) {
 }
 
 export const SERVICE_LABELS = {
-  gmail:    { icon: '📧', name: 'Gmail' },
-  drive:    { icon: '🗂️', name: 'Google Drive' },
+  gmail: { icon: '📧', name: 'Gmail' },
+  drive: { icon: '🗂️', name: 'Google Drive' },
   calendar: { icon: '📅', name: 'Google Calendar' },
-  youtube:  { icon: '▶️', name: 'YouTube' },
-  tasks:    { icon: '✅', name: 'Google Tasks' },
-  sheets:   { icon: '📊', name: 'Google Sheets' },
+  youtube: { icon: '▶️', name: 'YouTube' },
+  tasks: { icon: '✅', name: 'Google Tasks' },
+  sheets: { icon: '📊', name: 'Google Sheets' },
   contacts: { icon: '👤', name: 'Google Contacts' },
-  docs:     { icon: '📄', name: 'Google Docs' },
+  docs: { icon: '📄', name: 'Google Docs' },
+  slides: { icon: '🖼️', name: 'Google Slides' },
 };
