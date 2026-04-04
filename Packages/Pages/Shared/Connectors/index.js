@@ -9,10 +9,7 @@ export const cxState = {
   loaded: false,
 };
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SERVICE BADGE RENDERER
-   Shows Gmail âœ“ / Drive âœ“ / Calendar âœ— after connect
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// SERVICE BADGE RENDERER
 function buildServiceBadges(def, services = {}) {
   if (!def.subServices?.length) return null;
 
@@ -34,7 +31,7 @@ function buildServiceBadges(def, services = {}) {
     `;
 
     const dot = document.createElement('span');
-    dot.textContent = enabled ? 'â—' : 'â—‹';
+    dot.textContent = enabled ? '●' : '○';
     dot.style.fontSize = '8px';
 
     const label = document.createElement('span');
@@ -61,9 +58,7 @@ function buildServiceBadges(def, services = {}) {
   return wrap;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SETUP STEPS (shown before connecting)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// SETUP STEPS (shown before connecting)
 function buildSetupSteps(def) {
   if (!def.setupSteps?.length) return null;
 
@@ -87,10 +82,8 @@ function buildSetupSteps(def) {
   return wrap;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   UNIFIED CONNECTOR CARD
-   Handles both OAuth (Google) and token-based (GitHub) connectors
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// UNIFIED CONNECTOR CARD
+// Handles both OAuth (Google) and token-based (GitHub) connectors
 function buildCard(def, cxState, onConnect, onDisconnect) {
   const status = cxState.statuses[def.id] ?? { enabled: false };
   const isConnected = Boolean(status.enabled);
@@ -100,7 +93,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
   card.className = `cx-card${isConnected ? ' cx-connected' : ''}`;
   card.id = `cx-card-${def.id}`;
 
-  /* â”€â”€ Header â”€â”€ */
+  // Header
   const header = document.createElement('div');
   header.className = 'cx-card-header';
   header.innerHTML = `
@@ -110,11 +103,11 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
       <p>${def.description}</p>
     </div>
     <span class="cx-badge ${isConnected ? 'cx-badge--on' : 'cx-badge--off'}">
-      ${isConnected ? 'â— Connected' : 'â—‹ Not connected'}
+      ${isConnected ? 'Connected' : 'Not connected'}
     </span>`;
   card.appendChild(header);
 
-  /* â”€â”€ Capabilities â”€â”€ */
+  // Capabilities
   const caps = document.createElement('div');
   caps.className = 'cx-capabilities';
   (def.capabilities ?? []).forEach((cap) => {
@@ -125,7 +118,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
   });
   card.appendChild(caps);
 
-  /* â”€â”€ Account info â”€â”€ */
+  // Account info
   if (isConnected && status.accountInfo) {
     const info = document.createElement('div');
     info.className = 'cx-account-info';
@@ -134,7 +127,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
     card.appendChild(info);
   }
 
-  /* â”€â”€ Service badges (Google only â€” shown when connected) â”€â”€ */
+  //Service badges (Google only shown when connected)
   if (isConnected && def.subServices?.length) {
     const badgesEl = buildServiceBadges(def, services);
     if (badgesEl) {
@@ -154,7 +147,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
           'font-size:11px;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:4px 0;text-decoration:underline;';
         refreshBtn.textContent = 'Re-check services';
         refreshBtn.addEventListener('click', async () => {
-          refreshBtn.textContent = 'Checkingâ€¦';
+          refreshBtn.textContent = 'Checking...';
           refreshBtn.disabled = true;
           const res = await window.featureAPI?.invoke?.(
             def.featureId,
@@ -178,7 +171,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
     }
   }
 
-  /* â”€â”€ Automations â”€â”€ */
+  // Automations
   if (def.automations?.length) {
     const autoSec = document.createElement('div');
     autoSec.className = 'cx-auto-section';
@@ -186,19 +179,19 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
     def.automations.forEach((a) => {
       const item = document.createElement('div');
       item.className = 'cx-auto-item';
-      item.innerHTML = `<strong>${a.name}</strong> â€” <span>${a.description}</span>`;
+      item.innerHTML = `<strong>${a.name}</strong> - <span>${a.description}</span>`;
       autoSec.appendChild(item);
     });
     card.appendChild(autoSec);
   }
 
-  /* â”€â”€ Status message â”€â”€ */
+  // Status message
   const statusEl = document.createElement('div');
   statusEl.className = 'cx-status-msg';
   statusEl.id = `cx-status-${def.id}`;
   card.appendChild(statusEl);
 
-  /* â”€â”€ Fields (only shown when not connected or when updating) â”€â”€ */
+  // Fields (only shown when not connected or when updating)
   const fieldsWrap = document.createElement('div');
   fieldsWrap.className = 'cx-fields';
   fieldsWrap.id = `cx-fields-${def.id}`;
@@ -262,7 +255,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
 
   card.appendChild(fieldsWrap);
 
-  /* â”€â”€ Actions row â”€â”€ */
+  // Actions row
   const actions = document.createElement('div');
   actions.className = 'cx-actions';
 
@@ -316,9 +309,7 @@ function buildCard(def, cxState, onConnect, onDisconnect) {
   return card;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   RENDER PANEL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// RENDER PANEL
 function renderPanel() {
   const list = document.getElementById('connector-list');
   if (!list) return;
@@ -327,7 +318,7 @@ function renderPanel() {
   const svcHeader = document.createElement('div');
   svcHeader.className = 'cx-section-header';
   svcHeader.innerHTML = `
-    <div class="cx-section-title"><span class="cx-section-icon">ðŸ”Œ</span> Service Connectors</div>
+    <div class="cx-section-title">Service Connectors</div>
     <div class="cx-section-sub">Requires authentication</div>`;
   list.appendChild(svcHeader);
 
@@ -338,16 +329,14 @@ function renderPanel() {
   const freeHeader = document.createElement('div');
   freeHeader.className = 'cx-section-header cx-section-header--free';
   freeHeader.innerHTML = `
-    <div class="cx-section-title"><span class="cx-section-icon">âš¡</span> Free APIs</div>
-    <div class="cx-section-sub">Enabled by default Â· Toggle to disable</div>`;
+    <div class="cx-section-title">Free APIs</div>
+    <div class="cx-section-sub">Enabled by default, toggle to disable</div>`;
   list.appendChild(freeHeader);
 
   FREE_CONNECTORS.forEach((def) => list.appendChild(buildFreeCard(def, cxState)));
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   CONNECT HANDLERS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+//CONNECT HANDLERS
 async function handleConnect(id, def) {
   if (def.featureId && def.connectMethod) {
     await handleFeatureConnect(id, def);
@@ -364,7 +353,7 @@ async function handleFeatureConnect(id, def) {
     return;
   }
 
-  setConnectBtnState(id, true, def.connectingLabel ?? 'Connectingâ€¦');
+  setConnectBtnState(id, true, def.connectingLabel ?? 'Connecting...');
   if (def.oauthType) {
     setStatus(id, 'A browser window will open - sign in, grant access, then return here.');
   } else {
@@ -406,7 +395,7 @@ async function handleTokenConnect(id, def) {
     return;
   }
 
-  setConnectBtnState(id, true, 'Connectingâ€¦');
+  setConnectBtnState(id, true, 'Connecting...');
   setStatus(id, '');
 
   try {
@@ -442,13 +431,11 @@ async function handleDisconnect(id) {
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   LOAD PANEL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// LOAD PANEL
 export async function loadConnectorsPanel() {
   const list = document.getElementById('connector-list');
   if (!list) return;
-  if (!cxState.loaded) list.innerHTML = '<div class="cx-loading">Loading connectorsâ€¦</div>';
+  if (!cxState.loaded) list.innerHTML = '<div class="cx-loading">Loading connectors...</div>';
 
   try {
     await loadFeatureConnectorDefs();

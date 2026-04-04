@@ -9,9 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_SOURCES_DIR = path.resolve(__dirname, '..', 'DataSources');
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   USAGE TRACKING
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// USAGE TRACKING
 async function trackUsage({ usageFile, provider, model, modelName, inputTokens, outputTokens }) {
   try {
     if (!usageFile) return;
@@ -23,7 +21,7 @@ async function trackUsage({ usageFile, provider, model, modelName, inputTokens, 
       try {
         data = JSON.parse(fs.readFileSync(usageFile, 'utf-8'));
       } catch {
-        /* corrupt â€” start fresh */
+        /* corrupt start fresh */
       }
     }
     if (!Array.isArray(data.records)) data.records = [];
@@ -46,9 +44,7 @@ async function trackUsage({ usageFile, provider, model, modelName, inputTokens, 
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   AI CALLER  â€” returns { text, inputTokens, outputTokens }
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// AI CALLER returns { text, inputTokens, outputTokens }
 async function callModel(providerData, modelId, systemPrompt, userMessage) {
   if (!providerData?.configured)
     throw new Error(`Provider "${providerData?.provider}" is not configured`);
@@ -222,9 +218,7 @@ async function collectData(job, connectorEngine, featureRegistry = null) {
     .join('\n\n');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   OUTPUT EXECUTORS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// OUTPUT EXECUTORS
 export async function executeOutput(
   output,
   aiResponse,
@@ -252,7 +246,7 @@ export async function executeOutput(
             .replace('{{date}}', dateStr)
             .replace('{{agent}}', agent.name)
             .replace('{{job}}', job.name ?? '')
-        : `[${agent.name}] ${job.name ?? 'Report'} â€” ${dateStr}`;
+        : `[${agent.name}] ${job.name ?? 'Report'} - ${dateStr}`;
       await sendEmail(creds, output.to, subject, aiResponse, output.cc ?? '', output.bcc ?? '');
       break;
     }
@@ -261,7 +255,7 @@ export async function executeOutput(
       const { sendNotification } = await import('../../Automation/Actions/Notification.js');
       sendNotification(
         output.title?.trim() || `${agent.name}: ${job.name ?? 'Report'}`,
-        aiResponse.slice(0, 200) + (aiResponse.length > 200 ? 'â€¦' : ''),
+        aiResponse.slice(0, 200) + (aiResponse.length > 200 ? '...' : ''),
         output.clickUrl ?? '',
       );
       break;
@@ -271,7 +265,7 @@ export async function executeOutput(
       if (!output.filePath) throw new Error('write_file: no file path specified.');
       const dir = path.dirname(output.filePath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      const entry = `\n\n--- ${agent.name} / ${job.name ?? 'Job'} â€” ${now.toISOString()} ---\n${aiResponse}\n`;
+      const entry = `\n\n--- ${agent.name} / ${job.name ?? 'Job'} - ${now.toISOString()} ---\n${aiResponse}\n`;
       if (output.append) fs.appendFileSync(output.filePath, entry, 'utf-8');
       else fs.writeFileSync(output.filePath, aiResponse, 'utf-8');
       break;
@@ -321,9 +315,7 @@ export async function executeOutput(
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   AGENTS ENGINE CLASS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+// AGENTS ENGINE CLASS
 export class AgentsEngine {
   constructor(
     storage,
