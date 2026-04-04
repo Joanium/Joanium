@@ -27,7 +27,7 @@ export const Paths = {
   FEATURES_DATA_DIR: path.join(EXTERNAL, 'Data', 'Features'),
 
   // Instructions
-  CUSTOM_INSTRUCTIONS_FILE: path.join(EXTERNAL, 'Instructions', 'CustomInstructions.md'),
+  CUSTOM_INSTRUCTIONS_FILE: path.join(EXTERNAL, 'CustomInstructions', 'CustomInstructions.md'),
   MEMORY_FILE: path.join(EXTERNAL, 'Instructions', 'Memory.md'),
 
   // Skills

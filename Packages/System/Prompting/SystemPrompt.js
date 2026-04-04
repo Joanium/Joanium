@@ -18,8 +18,10 @@ async function fetchCountry() {
       _country = (await res.text()).trim();
       return _country;
     }
-  } catch {}
-  finally { clearTimeout(timer); }
+  } catch {
+  } finally {
+    clearTimeout(timer);
+  }
   return null;
 }
 
@@ -53,10 +55,9 @@ function pushExtraSections(lines, sections = []) {
   }
 }
 
-
 let systemPromptConfig = {};
 try {
-  const spPath = path.join(PROJECT_ROOT, 'Instructions', 'SystemPrompt.json');
+  const spPath = path.join(PROJECT_ROOT, 'CustomInstructions', 'SystemPrompt.json');
   if (fs.existsSync(spPath)) {
     systemPromptConfig = JSON.parse(fs.readFileSync(spPath, 'utf-8'));
   }
@@ -75,8 +76,13 @@ export async function buildSystemPrompt({
 } = {}) {
   const now = new Date();
   const timeStr = now.toLocaleString('en-US', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-    hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short',
   });
 
   const platform = process.platform;
@@ -118,7 +124,12 @@ export async function buildSystemPrompt({
   push(`- **Hardware:** ${cpuCores}-core CPU (${cpuModel}), ${totalMemGB} GB RAM`);
 
   const mergedConnectedServices = [...connectedServices];
-  if (gmailEmail && !mergedConnectedServices.some(item => item.includes('Google Workspace') || item.includes('Gmail'))) {
+  if (
+    gmailEmail &&
+    !mergedConnectedServices.some(
+      (item) => item.includes('Google Workspace') || item.includes('Gmail'),
+    )
+  ) {
     mergedConnectedServices.push(`Gmail (${gmailEmail})`);
   }
   if (mergedConnectedServices.length) {
@@ -139,13 +150,10 @@ export async function buildSystemPrompt({
     push(customInstructions.trim());
   }
 
-
-
   blank();
-  
-  
+
   const finalInst = getConfig('finalInstructions');
-  finalInst.forEach(i => push(i));
+  finalInst.forEach((i) => push(i));
 
   return lines.join('\n');
 }

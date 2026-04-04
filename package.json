@@ -72,11 +72,11 @@
     },
     "files": [
       "App.js",
+      "Core/**/*",
       "Packages/**/*",
       "Public/**/*",
-      "Assets/Logo/Logo.ico",
-      "Assets/Logo/Logo.icns",
-      "Assets/Logo/Logo.png"
+      "Assets/**/*",
+      "SystemInstructions/**/*"
     ],
     "extraResources": [
       {
@@ -98,6 +98,14 @@
       {
         "from": "Personas",
         "to": "Personas"
+      },
+      {
+        "from": "Data",
+        "to": "Data"
+      },
+      {
+        "from": "Instructions",
+        "to": "Instructions"
       }
     ],
     "win": {

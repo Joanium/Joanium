@@ -2,14 +2,14 @@
   "connectors": {
     "github": {
       "enabled": true,
+      "isFree": false,
+      "noKey": false,
       "credentials": {
         "token": "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",
         "username": "withinJoel",
         "avatar": "https://avatars.githubusercontent.com/u/128782382?v=4"
       },
-      "connectedAt": "2026-03-18T04:04:07.687Z",
-      "isFree": false,
-      "noKey": false
+      "connectedAt": "2026-04-03T18:05:48.098Z"
     },
     "open_meteo": {
       "enabled": true,
@@ -134,21 +134,29 @@
     "google": {
       "enabled": true,
       "isFree": false,
+      "noKey": false,
       "credentials": {
-        "accessToken": "ya29.a0Aa7MYiqpiBRZW_m4DebGE_7EYorrE0NXGTFA1IahgX9BajYuh_sBcxy2g8YWMZwN3UYmGgQCMgN5jO8rHYPChIFSzE-Q3SkbQzbyXiKPoBnwkqSCcgwLyFoIifjABdZkkfZtU8_NrxrInE3Fhi8CEs3UGGVC2tBJPjFbkcrDt4pP72T7OBKL2BulUuq5fDHycqOBnTZwaCgYKAawSARESFQHGX2MiY91R5jwLvXzt80GeT2WB3A0207",
-        "refreshToken": "1//0gcF3KQac0BRgCgYIARAAGBASNwF-L9Ir87NAf2knY60kmKHubYKpz5XGxeY5UQEwxl8ITZaTKMjHkkxBRLdTP2BvWTQw8hNXE-Y",
-        "tokenExpiry": 1775236606214,
+        "accessToken": "ya29.a0Aa7MYirOVUdp5bQiQ7SUTIbVixH3yrjiiQG95DyhXbBDIbkNnBXCATYIYjRSDradFSOFGae6v0g7wihhRz-jd9buvCEc1DSk8Vp_j2LsOnHr9YHmC6crI0y23tVivET2cg6guUMxlyMovIK5v9U_OBwlTXg5AVVqF9J5v1zCTPgjXLzsvpcmKPotwVFIbVz-9GxZK5gaCgYKAU0SARESFQHGX2MiWIvdgKrq8_muX1imtQi3OQ0206",
+        "refreshToken": "1//0gn_RSpnKZsQJCgYIARAAGBASNwF-L9IrWmsoOEiIRsed8nWCqDBnaHFXOQUYP2H1AVhbGw8pinemfWKp4VXE9aztOHm3C5_zN0Q",
+        "tokenExpiry": 1775243265097,
         "email": "joeljollyhere@gmail.com",
         "clientId": "859977699490-ukb26f108i4hun7qapm1lbjr0u1et0tk.apps.googleusercontent.com",
         "clientSecret": "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",
         "services": {
           "drive": true,
+          "youtube": false,
+          "contacts": false,
+          "tasks": false,
           "gmail": true,
-          "calendar": true
+          "slides": true,
+          "docs": true,
+          "sheets": true,
+          "calendar": true,
+          "photos": false,
+          "forms": false
         }
       },
-      "connectedAt": "2026-03-30T05:24:20.869Z",
-      "noKey": false
+      "connectedAt": "2026-04-03T18:07:49.311Z"
     }
   }
 }
