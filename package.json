@@ -94,10 +94,6 @@
       {
         "from": "Personas",
         "to": "Personas"
-      },
-      {
-        "from": "Instructions",
-        "to": "Instructions"
       }
     ],
     "win": {

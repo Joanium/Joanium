@@ -52,7 +52,7 @@ export function create(page) {
 
   // Apply saved window state immediately
   if (page === Paths.SETUP_PAGE) {
-    _win.setFullScreen(true);
+    _win.maximize();
   } else if (windowState.isFullScreen) {
     _win.setFullScreen(true);
   } else if (windowState.isMaximized) {

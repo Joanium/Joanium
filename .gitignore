@@ -10,11 +10,10 @@ build/
 Data/User.json
 Data/Chats
 Data/Projects
-Data/Memory.md
 Data/User.md
 Data/WindowState.json
 Data/Skills.json
-Instructions/CustomInstructions.md
+Instructions/
 Data/Features/Channels/Channels.json
 Data/Features/Connectors/Connectors.json
 Data/Features/Agents/Agents.json
