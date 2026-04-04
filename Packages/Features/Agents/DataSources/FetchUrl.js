@@ -3,7 +3,9 @@ export const meta = { label: 'Web Page', group: 'Web' };
 export async function collect(ds) {
   if (!ds.url) return 'No URL specified.';
   try {
-    const html = await fetch(ds.url, { headers: { 'User-Agent': 'romelson-agent/1.0' } }).then(r => r.text());
+    const html = await fetch(ds.url, { headers: { 'User-Agent': 'joanium-agent/1.0' } }).then((r) =>
+      r.text(),
+    );
     const text = html
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')
@@ -13,5 +15,7 @@ export async function collect(ds) {
       .slice(0, 6000);
     if (!text) return `EMPTY: No readable content found at ${ds.url}`;
     return `Content from ${ds.url}:\n\n${text}`;
-  } catch (err) { return `Failed to fetch URL: ${err.message}`; }
+  } catch (err) {
+    return `Failed to fetch URL: ${err.message}`;
+  }
 }

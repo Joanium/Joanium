@@ -7,15 +7,19 @@ function normalizeMessage(msg) {
     role: msg?.role ?? 'user',
     content: String(msg?.content ?? ''),
     attachments: Array.isArray(msg?.attachments)
-      ? msg.attachments.filter(a => (a?.type === 'image' || a?.type === 'file') && (typeof a.dataUrl === 'string' || typeof a.textContent === 'string'))
+      ? msg.attachments.filter(
+          (a) =>
+            (a?.type === 'image' || a?.type === 'file') &&
+            (typeof a.dataUrl === 'string' || typeof a.textContent === 'string'),
+        )
       : [],
   };
 }
 
 function embedFileAttachments(messages) {
-  return messages.map(m => {
-    const fileAttachments = m.attachments ? m.attachments.filter(a => a.type === 'file') : [];
-    const imageAttachments = m.attachments ? m.attachments.filter(a => a.type === 'image') : [];
+  return messages.map((m) => {
+    const fileAttachments = m.attachments ? m.attachments.filter((a) => a.type === 'file') : [];
+    const imageAttachments = m.attachments ? m.attachments.filter((a) => a.type === 'image') : [];
 
     let newContent = String(m.content || '');
     for (const f of fileAttachments) {
@@ -25,7 +29,7 @@ function embedFileAttachments(messages) {
     return {
       ...m,
       content: newContent,
-      attachments: imageAttachments
+      attachments: imageAttachments,
     };
   });
 }
@@ -33,10 +37,16 @@ function embedFileAttachments(messages) {
 function buildAnthropicContent(msg) {
   const blocks = [];
   if (msg.content) blocks.push({ type: 'text', text: msg.content });
-  msg.attachments.forEach(a => blocks.push({
-    type: 'image',
-    source: { type: 'base64', media_type: a.mimeType || 'image/png', data: extractBase64(a.dataUrl) },
-  }));
+  msg.attachments.forEach((a) =>
+    blocks.push({
+      type: 'image',
+      source: {
+        type: 'base64',
+        media_type: a.mimeType || 'image/png',
+        data: extractBase64(a.dataUrl),
+      },
+    }),
+  );
   if (blocks.length === 1 && blocks[0].type === 'text') return msg.content;
   return blocks;
 }
@@ -44,9 +54,11 @@ function buildAnthropicContent(msg) {
 function buildGoogleParts(msg) {
   const parts = [];
   if (msg.content) parts.push({ text: msg.content });
-  msg.attachments.forEach(a => parts.push({
-    inlineData: { mimeType: a.mimeType || 'image/png', data: extractBase64(a.dataUrl) },
-  }));
+  msg.attachments.forEach((a) =>
+    parts.push({
+      inlineData: { mimeType: a.mimeType || 'image/png', data: extractBase64(a.dataUrl) },
+    }),
+  );
   return parts;
 }
 
@@ -54,7 +66,7 @@ function buildOpenAIContent(msg) {
   if (!msg.attachments.length) return msg.content;
   const parts = [];
   if (msg.content) parts.push({ type: 'text', text: msg.content });
-  msg.attachments.forEach(a => parts.push({ type: 'image_url', image_url: { url: a.dataUrl } }));
+  msg.attachments.forEach((a) => parts.push({ type: 'image_url', image_url: { url: a.dataUrl } }));
   return parts;
 }
 
@@ -63,7 +75,7 @@ function buildOpenAIStyleHeaders(providerId, authHeader, authPrefix, apiKey) {
     'content-type': 'application/json',
     ...(authHeader && apiKey ? { [authHeader]: `${authPrefix}${apiKey}` } : {}),
     ...(providerId === 'openrouter'
-      ? { 'HTTP-Referer': 'https://romelson.app', 'X-Title': 'Joanium' }
+      ? { 'HTTP-Referer': 'https://www.joanium.com', 'X-Title': 'Joanium' }
       : {}),
   };
 }
@@ -73,7 +85,7 @@ function buildOpenAIStyleHeaders(providerId, authHeader, authPrefix, apiKey) {
 ══════════════════════════════════════════ */
 
 function toAnthropicTools(tools) {
-  return tools.map(t => ({
+  return tools.map((t) => ({
     name: t.name,
     description: t.description,
     input_schema: {
@@ -82,7 +94,7 @@ function toAnthropicTools(tools) {
         Object.entries(t.parameters).map(([key, p]) => [
           key,
           { type: p.type, description: p.description },
-        ])
+        ]),
       ),
       required: Object.entries(t.parameters)
         .filter(([, p]) => p.required)
@@ -92,7 +104,7 @@ function toAnthropicTools(tools) {
 }
 
 function toOpenAITools(tools) {
-  return tools.map(t => ({
+  return tools.map((t) => ({
     type: 'function',
     function: {
       name: t.name,
@@ -103,7 +115,7 @@ function toOpenAITools(tools) {
           Object.entries(t.parameters).map(([key, p]) => [
             key,
             { type: p.type, description: p.description },
-          ])
+          ]),
         ),
         required: Object.entries(t.parameters)
           .filter(([, p]) => p.required)
@@ -114,24 +126,26 @@ function toOpenAITools(tools) {
 }
 
 function toGoogleTools(tools) {
-  return [{
-    functionDeclarations: tools.map(t => ({
-      name: t.name,
-      description: t.description,
-      parameters: {
-        type: 'object',
-        properties: Object.fromEntries(
-          Object.entries(t.parameters).map(([key, p]) => [
-            key,
-            { type: p.type.toUpperCase(), description: p.description },
-          ])
-        ),
-        required: Object.entries(t.parameters)
-          .filter(([, p]) => p.required)
-          .map(([k]) => k),
-      },
-    })),
-  }];
+  return [
+    {
+      functionDeclarations: tools.map((t) => ({
+        name: t.name,
+        description: t.description,
+        parameters: {
+          type: 'object',
+          properties: Object.fromEntries(
+            Object.entries(t.parameters).map(([key, p]) => [
+              key,
+              { type: p.type.toUpperCase(), description: p.description },
+            ]),
+          ),
+          required: Object.entries(t.parameters)
+            .filter(([, p]) => p.required)
+            .map(([k]) => k),
+        },
+      })),
+    },
+  ];
 }
 
 /* ══════════════════════════════════════════
@@ -169,7 +183,7 @@ export async function withRetry(fn, maxAttempts = 3, baseDelayMs = 600) {
       console.warn(
         `[AIProvider] Retry ${attempt + 1}/${maxAttempts - 1} in ${Math.round(delay)}ms — ${err.message}`,
       );
-      await new Promise(r => setTimeout(r, delay));
+      await new Promise((r) => setTimeout(r, delay));
     }
   }
   throw lastErr;
@@ -203,7 +217,11 @@ async function* parseSSE(response) {
       if (payload && payload !== '[DONE]') yield payload;
     }
   } finally {
-    try { reader.releaseLock(); } catch { /* already released */ }
+    try {
+      reader.releaseLock();
+    } catch {
+      /* already released */
+    }
   }
 }
 
@@ -229,7 +247,7 @@ function extractOpenAITextChunk(delta) {
 
   if (Array.isArray(delta.content)) {
     return delta.content
-      .map(part => {
+      .map((part) => {
         if (part?.type === 'text') return flattenChunkText(part);
         return '';
       })
@@ -259,7 +277,9 @@ function extractOpenAIReasoningChunk(delta) {
 
   if (Array.isArray(delta.content)) {
     return delta.content
-      .map(part => (/reasoning|thinking|summary/.test(String(part?.type ?? '')) ? flattenChunkText(part) : ''))
+      .map((part) =>
+        /reasoning|thinking|summary/.test(String(part?.type ?? '')) ? flattenChunkText(part) : '',
+      )
       .filter(Boolean)
       .join('');
   }
@@ -273,11 +293,7 @@ function shouldRequestReasoning(provider, modelId) {
   if (providerId === 'minimax') return true;
 
   const modelInfo = provider.models?.[modelId] ?? {};
-  const haystack = [
-    modelId,
-    modelInfo.name,
-    modelInfo.description,
-  ]
+  const haystack = [modelId, modelInfo.name, modelInfo.description]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
@@ -316,7 +332,7 @@ export async function fetchStreamingWithTools(
       model: modelId,
       max_tokens: maxTokens,
       stream: true,
-      messages: history.map(m => ({ role: m.role, content: buildAnthropicContent(m) })),
+      messages: history.map((m) => ({ role: m.role, content: buildAnthropicContent(m) })),
     };
     if (sysPrompt) body.system = sysPrompt;
     if (tools.length) body.tools = toAnthropicTools(tools);
@@ -345,7 +361,11 @@ export async function fetchStreamingWithTools(
 
     for await (const raw of parseSSE(res)) {
       let ev;
-      try { ev = JSON.parse(raw); } catch { continue; }
+      try {
+        ev = JSON.parse(raw);
+      } catch {
+        continue;
+      }
 
       switch (ev.type) {
         case 'message_start':
@@ -382,7 +402,11 @@ export async function fetchStreamingWithTools(
     const usage = { inputTokens, outputTokens };
     if (toolName) {
       let params = {};
-      try { params = JSON.parse(toolInputJson); } catch { /* malformed JSON */ }
+      try {
+        params = JSON.parse(toolInputJson);
+      } catch {
+        /* malformed JSON */
+      }
       return { type: 'tool_call', name: toolName, params, callId: toolId, usage };
     }
     return { type: 'text', text: fullText || '(empty response)', usage };
@@ -390,13 +414,12 @@ export async function fetchStreamingWithTools(
 
   /* ── Google Gemini ── */
   if (providerId === 'google') {
-    const streamUrl = endpoint
-      .replace('{model}', modelId)
-      .replace(':generateContent', ':streamGenerateContent') +
+    const streamUrl =
+      endpoint.replace('{model}', modelId).replace(':generateContent', ':streamGenerateContent') +
       `?key=${api}&alt=sse`;
 
     const body = {
-      contents: history.map(m => ({
+      contents: history.map((m) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: buildGoogleParts(m),
       })),
@@ -422,7 +445,11 @@ export async function fetchStreamingWithTools(
 
     for await (const raw of parseSSE(res)) {
       let ev;
-      try { ev = JSON.parse(raw); } catch { continue; }
+      try {
+        ev = JSON.parse(raw);
+      } catch {
+        continue;
+      }
 
       const parts = ev.candidates?.[0]?.content?.parts ?? [];
       for (const part of parts) {
@@ -459,7 +486,7 @@ export async function fetchStreamingWithTools(
   /* ── OpenAI / OpenRouter / Mistral ── */
   const openAIMessages = [
     ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
-    ...history.map(m => ({ role: m.role, content: buildOpenAIContent(m) })),
+    ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
   ];
 
   const maxTokens = provider.models?.[modelId]?.max_output ?? 4096;
@@ -501,7 +528,11 @@ export async function fetchStreamingWithTools(
 
   for await (const raw of parseSSE(res)) {
     let ev;
-    try { ev = JSON.parse(raw); } catch { continue; }
+    try {
+      ev = JSON.parse(raw);
+    } catch {
+      continue;
+    }
 
     if (ev.usage) {
       inputTokens = ev.usage.prompt_tokens ?? inputTokens;
@@ -533,7 +564,11 @@ export async function fetchStreamingWithTools(
   const usage = { inputTokens, outputTokens };
   if (toolName) {
     let params = {};
-    try { params = JSON.parse(toolArgsJson); } catch { /* malformed */ }
+    try {
+      params = JSON.parse(toolArgsJson);
+    } catch {
+      /* malformed */
+    }
     return { type: 'tool_call', name: toolName, params, callId: toolId, usage };
   }
   return { type: 'text', text: fullText || '(empty response)', usage };
@@ -558,7 +593,7 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
     const body = {
       model: modelId,
       max_tokens: maxTokens,
-      messages: history.map(m => ({ role: m.role, content: buildAnthropicContent(m) })),
+      messages: history.map((m) => ({ role: m.role, content: buildAnthropicContent(m) })),
     };
     if (sysPrompt) body.system = sysPrompt;
     if (tools.length) body.tools = toAnthropicTools(tools);
@@ -572,7 +607,10 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
       },
       body: JSON.stringify(body),
     });
-    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message ?? `HTTP ${res.status}`); }
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
+    }
 
     const data = await res.json();
     const usage = {
@@ -580,7 +618,7 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
       outputTokens: data.usage?.output_tokens ?? 0,
     };
 
-    const toolUseBlock = data.content?.find(b => b.type === 'tool_use');
+    const toolUseBlock = data.content?.find((b) => b.type === 'tool_use');
     if (toolUseBlock) {
       return {
         type: 'tool_call',
@@ -590,14 +628,18 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
         usage,
       };
     }
-    return { type: 'text', text: data.content?.find(b => b.type === 'text')?.text ?? '(empty response)', usage };
+    return {
+      type: 'text',
+      text: data.content?.find((b) => b.type === 'text')?.text ?? '(empty response)',
+      usage,
+    };
   }
 
   /* ── Google Gemini ── */
   if (providerId === 'google') {
     const url = endpoint.replace('{model}', modelId) + `?key=${api}`;
     const body = {
-      contents: history.map(m => ({
+      contents: history.map((m) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: buildGoogleParts(m),
       })),
@@ -610,7 +652,10 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message ?? `HTTP ${res.status}`); }
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
+    }
 
     const data = await res.json();
     const usage = {
@@ -634,7 +679,7 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
   /* ── OpenAI / OpenRouter / Mistral ── */
   const openAIMessages = [
     ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
-    ...history.map(m => ({ role: m.role, content: buildOpenAIContent(m) })),
+    ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
   ];
 
   const maxTokensNS = provider.models?.[modelId]?.max_output ?? 4096;
@@ -652,7 +697,10 @@ export async function fetchWithTools(provider, modelId, messages, sysPrompt = ''
     headers: buildOpenAIStyleHeaders(providerId, auth_header, auth_prefix, api),
     body: JSON.stringify(body),
   });
-  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message ?? `HTTP ${res.status}`); }
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
+  }
 
   const data = await res.json();
   const usage = {
