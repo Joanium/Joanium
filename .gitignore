@@ -16,6 +16,9 @@ Data/
 # Instructions
 Instructions/
 
+# Memories
+Memories/
+
 # Environment
 .env
 .env.local

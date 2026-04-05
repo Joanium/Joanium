@@ -69,7 +69,7 @@ export const Paths = {
     return path.join(getStateRoot(), 'Instructions', 'CustomInstructions.md');
   },
   get MEMORY_FILE() {
-    return path.join(getStateRoot(), 'Instructions', 'Memory.md');
+    return path.join(getStateRoot(), 'Memories', 'Memory.md');
   },
 
   // Skills
