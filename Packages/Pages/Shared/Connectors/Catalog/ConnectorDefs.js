@@ -114,7 +114,7 @@ export const STATIC_CONNECTORS = [
   {
     id: 'gitlab',
     name: 'GitLab',
-    icon: '🦊',
+    icon: '<img src="../../../Assets/Icons/Gitlab.png" alt="GitLab" style="width: 26px; height: 26px; object-fit: contain;" />',
     description:
       'Browse projects, load code into chat, track issues & merge requests, and monitor notifications.',
     helpUrl: 'https://gitlab.com/-/user_settings/personal_access_tokens',

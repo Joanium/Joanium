@@ -211,7 +211,7 @@ export async function getUser(credentials) {
 
 export async function getRepos(credentials, perPage = 30) {
   const projects = await gitlabFetch(
-    `/projects?membership=true&order_by=last_activity_at&per_page=${perPage}&with_issues_enabled=true`,
+    `/projects?membership=true&order_by=last_activity_at&per_page=${perPage}`,
     credentials.token,
   );
   return (projects ?? []).map(normalizeRepo);

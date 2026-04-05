@@ -469,7 +469,7 @@ export default defineFeature({
       {
         id: 'gitlab',
         name: 'GitLab',
-        icon: 'GL',
+        icon: '<img src="../../../Assets/Icons/Gitlab.png" alt="GitLab" style="width: 26px; height: 26px; object-fit: contain;" />',
         description:
           'Browse repos, load code into chat, track issues and MRs, and monitor notifications.',
         helpUrl: 'https://gitlab.com/-/user_settings/personal_access_tokens',
