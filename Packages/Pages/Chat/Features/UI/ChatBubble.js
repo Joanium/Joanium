@@ -355,7 +355,7 @@ export function buildLogItem(rawLine) {
 
   if (iconHtml) {
     const wrap = document.createElement('span');
-    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:5px;';
+    wrap.className = 'agent-log-item-with-icon';
     wrap.innerHTML = iconHtml;
     const label = document.createElement('span');
     label.className = 'agent-log-text';
@@ -364,7 +364,7 @@ export function buildLogItem(rawLine) {
     item.appendChild(wrap);
   } else {
     const label = document.createElement('span');
-    label.className = 'agent-log-text';
+    label.className = 'agent-log-text agent-log-item-main';
     label.textContent = displayText;
     item.appendChild(label);
   }

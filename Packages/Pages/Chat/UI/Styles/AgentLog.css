@@ -130,15 +130,17 @@
 }
 
 .agent-log-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 8px;
   padding: 6px 10px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
-  width: fit-content;
   max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 
   /* start invisible — JS adds --in class to trigger animation */
   opacity: 0;
@@ -181,13 +183,39 @@
   color: #ef4444;
 }
 
+/* Lets long tool lines (e.g. shell commands) wrap inside the log pill; terminal output is unchanged. */
+.agent-log-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.agent-log-item-with-icon {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Row uses align-items:center vs a tall text line box; flex-start would leave the glyph top-aligned while the tick is mid-line. */
+.agent-log-item-with-icon > :first-child {
+  flex-shrink: 0;
+  margin-top: calc(0.5 * (12px * 1.45 - 14px));
+}
+
+.agent-log-item-with-icon .agent-log-text {
+  flex: 1;
+  min-width: 0;
+}
+
 .agent-log-text {
   font-size: 12px;
   color: var(--text-muted);
   font-family: var(--font-ui);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 @keyframes agentDotPulse {
@@ -746,13 +774,17 @@
 }
 
 .agent-subagent-log-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 8px;
   padding: 7px 9px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--bg-primary) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--border-subtle) 85%, transparent);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .agent-subagent-log-dot {
@@ -772,9 +804,13 @@
 }
 
 .agent-subagent-log-text {
+  flex: 1;
+  min-width: 0;
   font-size: 11.5px;
   color: var(--text-secondary);
   line-height: 1.45;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .agent-subagent-tool-outputs {
