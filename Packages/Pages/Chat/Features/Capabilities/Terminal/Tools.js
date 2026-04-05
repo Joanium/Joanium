@@ -1,7 +1,8 @@
 export const TERMINAL_TOOLS = [
   {
     name: 'inspect_workspace',
-    description: 'Inspect a local workspace and summarize its stack, scripts, frameworks, tests, CI, env files, and infrastructure signals. Use this early for dev, QA, or DevOps tasks.',
+    description:
+      'Inspect a local workspace and summarize its stack, scripts, frameworks, tests, CI, env files, and infrastructure signals. Use this early for dev, QA, or DevOps tasks.',
     category: 'terminal',
     parameters: {
       path: {
@@ -13,7 +14,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'search_workspace',
-    description: 'Search across a local workspace for a code pattern, function name, config key, or error string, returning file paths and line snippets.',
+    description:
+      'Search across a local workspace for a code pattern, function name, config key, or error string, returning file paths and line snippets.',
     category: 'terminal',
     parameters: {
       query: {
@@ -35,7 +37,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'find_file_by_name',
-    description: 'Find files in a local workspace by filename (case-insensitive substring match). Use this to locate a file when you do not know its exact directory path.',
+    description:
+      'Find files in a local workspace by filename (case-insensitive substring match). Use this to locate a file when you do not know its exact directory path.',
     category: 'terminal',
     parameters: {
       name: {
@@ -57,7 +60,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'run_shell_command',
-    description: 'Execute a short-lived shell command and return stdout/stderr. Use for builds, git, scripts, or diagnostics. For high-risk commands, set allow_risky only if the user explicitly asked for it.',
+    description:
+      'Execute a short-lived shell command and return stdout/stderr. Use for builds, git, scripts, or diagnostics. For high-risk commands, set allow_risky only if the user explicitly asked for it.',
     category: 'terminal',
     parameters: {
       command: {
@@ -68,7 +72,8 @@ export const TERMINAL_TOOLS = [
       working_directory: {
         type: 'string',
         required: false,
-        description: 'Absolute path to run the command in. Defaults to the opened workspace when available.',
+        description:
+          'Absolute path to run the command in. Defaults to the opened workspace when available.',
       },
       timeout_seconds: {
         type: 'number',
@@ -84,7 +89,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'assess_shell_command',
-    description: 'Assess a shell command for risk before running it. Useful for DevOps actions, destructive git commands, and infrastructure changes.',
+    description:
+      'Assess a shell command for risk before running it. Useful for DevOps actions, destructive git commands, and infrastructure changes.',
     category: 'terminal',
     parameters: {
       command: {
@@ -113,7 +119,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'extract_file_text',
-    description: 'Extract readable text from a local document such as PDF, DOCX, XLSX, XLSM, PPTX, RTF, or plain text files. Use this when the user gives you a document instead of source code.',
+    description:
+      'Extract readable text from a local document such as PDF, DOCX, XLSX, XLSM, PPTX, RTF, or plain text files. Use this when the user gives you a document instead of source code.',
     category: 'terminal',
     parameters: {
       path: {
@@ -125,7 +132,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'read_file_chunk',
-    description: 'Read a specific line range from a local file. Prefer this for large files or focused code review.',
+    description:
+      'Read a specific line range from a local file. Prefer this for large files or focused code review.',
     category: 'terminal',
     parameters: {
       path: {
@@ -147,7 +155,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'read_multiple_local_files',
-    description: 'Read several local text files in one call. Useful when comparing related files before editing.',
+    description:
+      'Read several local text files in one call. Useful when comparing related files before editing.',
     category: 'terminal',
     parameters: {
       paths: {
@@ -176,7 +185,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'list_directory_tree',
-    description: 'Show a shallow recursive tree of a directory. Use this to understand project layout before searching or editing.',
+    description:
+      'Show a shallow recursive tree of a directory. Use this to understand project layout before searching or editing.',
     category: 'terminal',
     parameters: {
       path: {
@@ -220,7 +230,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'apply_file_patch',
-    description: 'Patch a local file by replacing exact text. Use this for targeted edits instead of rewriting entire files.',
+    description:
+      'Patch a local file by replacing exact text. Use this for targeted edits instead of rewriting entire files.',
     category: 'terminal',
     parameters: {
       path: {
@@ -247,7 +258,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'replace_lines_in_file',
-    description: 'Replace an exact line range in a local text file. Prefer this for surgical edits when you know the affected lines.',
+    description:
+      'Replace an exact line range in a local text file. Prefer this for surgical edits when you know the affected lines.',
     category: 'terminal',
     parameters: {
       path: {
@@ -268,13 +280,15 @@ export const TERMINAL_TOOLS = [
       replacement: {
         type: 'string',
         required: true,
-        description: 'Replacement text for the specified line range. Use an empty string to delete the range.',
+        description:
+          'Replacement text for the specified line range. Use an empty string to delete the range.',
       },
     },
   },
   {
     name: 'insert_into_file',
-    description: 'Insert text into a local file at the start, end, a line number, or before or after an anchor string.',
+    description:
+      'Insert text into a local file at the start, end, a line number, or before or after an anchor string.',
     category: 'terminal',
     parameters: {
       path: {
@@ -290,7 +304,8 @@ export const TERMINAL_TOOLS = [
       position: {
         type: 'string',
         required: false,
-        description: 'Insert position: start, end, before, or after. Defaults to end, or after when anchor is provided.',
+        description:
+          'Insert position: start, end, before, or after. Defaults to end, or after when anchor is provided.',
       },
       line_number: {
         type: 'number',
@@ -306,7 +321,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'create_folder',
-    description: 'Create a new directory at the specified path. Creates parent directories if needed.',
+    description:
+      'Create a new directory at the specified path. Creates parent directories if needed.',
     category: 'terminal',
     parameters: {
       path: {
@@ -362,7 +378,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'git_status',
-    description: 'Get local git status for the current workspace, including branch and changed files.',
+    description:
+      'Get local git status for the current workspace, including branch and changed files.',
     category: 'terminal',
     parameters: {
       working_directory: {
@@ -374,7 +391,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'git_diff',
-    description: 'Get the local git diff for the current workspace. Useful before code review, summaries, or QA.',
+    description:
+      'Get the local git diff for the current workspace. Useful before code review, summaries, or QA.',
     category: 'terminal',
     parameters: {
       working_directory: {
@@ -413,7 +431,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'run_project_checks',
-    description: 'Run detected lint, test, and build commands for the current workspace. This is the agent’s main QA tool for local projects.',
+    description:
+      'Run detected lint, test, and build commands for the current workspace. This is the agent’s main QA tool for local projects.',
     category: 'terminal',
     parameters: {
       working_directory: {
@@ -452,7 +471,8 @@ export const TERMINAL_TOOLS = [
   },
   {
     name: 'start_local_server',
-    description: 'Start a long-running background process like a dev server or watcher. The process is shown in an embedded terminal inside chat.',
+    description:
+      'Start a long-running background process like a dev server or watcher. The process is shown in an embedded terminal inside chat. The host waits after spawn (default ~15s, up to 60s): if the process exits during that window (e.g. EADDRINUSE after compile), the tool fails with captured output instead of claiming success.',
     category: 'terminal',
     parameters: {
       command: {
@@ -464,6 +484,12 @@ export const TERMINAL_TOOLS = [
         type: 'string',
         required: false,
         description: 'Absolute path to run the command in. Defaults to the opened workspace.',
+      },
+      settle_ms: {
+        type: 'number',
+        required: false,
+        description:
+          'How long to wait (ms, 0–60000) after spawn for startup failures (port bind, crash after compile). Default 15000. Use 0 only if you accept no startup verification.',
       },
     },
   },

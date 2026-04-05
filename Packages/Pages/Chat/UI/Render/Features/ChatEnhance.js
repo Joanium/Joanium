@@ -82,7 +82,14 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
         state.selectedProvider,
         state.selectedModel,
         [{ role: 'user', content: textarea.value.trim(), attachments: [] }],
-        "You are a prompt-enhancement assistant. Rewrite the user's message into a clearer, more specific prompt. Keep the same intent. Return ONLY the enhanced prompt — no preamble.",
+        [
+          'You are a prompt-enhancement assistant. Rewrite the user message into one clearer prompt they can send as-is.',
+          'Keep the same goal and tone. Do not change "do this for me" into "explain how I could do it" unless they asked for an explanation.',
+          'If they want something run, fixed, or opened (e.g. local dev server, URL in browser), keep it action-directed: ask the assistant to inspect the repo, pick the right commands, run them, read terminal output for the URL, and open it — not to quiz the user on stack (React vs static vs Flask) or paste multi-branch tutorials.',
+          'Do not add rhetorical questions back to the user, "which type are you?", or long option lists unless the original message explicitly asked for choices.',
+          'Stay concise: similar length or modestly longer than the original; never replace a short ask with a long lecture.',
+          'Return ONLY the enhanced prompt — no preamble, quotes, or labels.',
+        ].join(' '),
         [],
       );
       if (result.type === 'text' && result.text && result.text !== '(empty response)') {

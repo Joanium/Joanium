@@ -272,7 +272,7 @@ function buildWorkspaceHint(summary, mode = 'runtime') {
       'Use assess_shell_command before risky shell work. Only set allow_risky=true when the user explicitly requested the risky action.',
     );
     lines.push(
-      'Use start_local_server for long-running dev servers or watchers instead of run_shell_command.',
+      'Use start_local_server for long-running dev servers or watchers instead of run_shell_command. If the tool succeeds, read the embedded terminal output (or run a quick check) before claiming the URL works — the tool fails if the process exits during startup (e.g. EADDRINUSE).',
     );
   }
 
@@ -1075,6 +1075,9 @@ export async function agentLoop(
         }
       } else if (typeof toolResult === 'string' && toolResult.includes('[TERMINAL:')) {
         live.showToolOutput?.(toolResult);
+        if (success && name === 'start_local_server') {
+          llmToolResult = `${toolResult}\n\nConfirm from the terminal output that the server is listening before telling the user to open a preview URL; bind failures such as EADDRINUSE can appear after compile finishes.`;
+        }
       }
 
       const totalPlanned = plannedToolCalls?.length ?? 0;
