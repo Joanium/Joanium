@@ -1,4 +1,4 @@
-export { AutomationEngine, runAction } from './Core/AutomationEngine.js';
+export { AutomationEngine } from './Core/AutomationEngine.js';
 
 export { openApp } from './Actions/Application.js';
 export { copyToClipboard } from './Actions/Clipboard.js';

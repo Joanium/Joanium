@@ -36,7 +36,6 @@ export function defineFeature(feature = {}) {
     main: feature.main ?? {},
     renderer: feature.renderer ?? {},
     automation: feature.automation ?? {},
-    agents: feature.agents ?? {},
     channels: feature.channels ?? {},
     prompt: feature.prompt ?? {},
     storage: feature.storage ?? {},

@@ -18,26 +18,29 @@ app.whenReady().then(async () => {
   if (!fs.existsSync(Paths.DATA_DIR)) fs.mkdirSync(Paths.DATA_DIR, { recursive: true });
   if (!fs.existsSync(Paths.CHATS_DIR)) fs.mkdirSync(Paths.CHATS_DIR, { recursive: true });
   if (!fs.existsSync(Paths.PROJECTS_DIR)) fs.mkdirSync(Paths.PROJECTS_DIR, { recursive: true });
-  if (!fs.existsSync(Paths.FEATURES_DATA_DIR)) fs.mkdirSync(Paths.FEATURES_DATA_DIR, { recursive: true });
+  if (!fs.existsSync(Paths.FEATURES_DATA_DIR))
+    fs.mkdirSync(Paths.FEATURES_DATA_DIR, { recursive: true });
 
   engines = await boot();
   startEngines(engines);
 
-  const { featureRegistry, channelEngine, browserPreviewService } = engines;
+  const { featureRegistry, channelEngine, browserPreviewService, agentsEngine } = engines;
 
   const startPage = isFirstRun() ? Paths.SETUP_PAGE : Paths.INDEX_PAGE;
   const mainWindow = createWindow(startPage);
   browserPreviewService.attachToWindow(mainWindow);
   channelEngine.setWindow(mainWindow);
+  agentsEngine?.attachWindow?.(mainWindow);
   featureRegistry.attachWindow(mainWindow);
 
-  MCPIPC.autoConnect().catch(err => console.warn('[App] MCP auto-connect failed:', err.message));
+  MCPIPC.autoConnect().catch((err) => console.warn('[App] MCP auto-connect failed:', err.message));
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       const win = createWindow(isFirstRun() ? Paths.SETUP_PAGE : Paths.INDEX_PAGE);
       browserPreviewService.attachToWindow(win);
       channelEngine.setWindow(win);
+      agentsEngine?.attachWindow?.(win);
       featureRegistry.attachWindow(win);
     }
   });

@@ -70,5 +70,8 @@
 /* 24. Automations */
 @import './Automations.css';
 
-/* 25. Free API Connectors */
+/* 25. Agent builder utilities reused by the new Agents page */
+@import '../../../Agents/UI/Styles/Agents.css';
+
+/* 26. Free API Connectors */
 @import '../../../Shared/Styles/FreeConnectors.css';

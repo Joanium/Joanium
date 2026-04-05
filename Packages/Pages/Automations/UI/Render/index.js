@@ -1,259 +1,467 @@
-import { loadAutomationFeatureRegistry } from './Config/Constants.js';
-import { escapeHtml, formatActionsSummary, formatLastRun, getTriggerPresentation, generateId } from './Utils/Utils.js';
-import { createActionRow, collectActionFromRow } from './Components/ActionRenderer.js';
+import {
+  DATA_SOURCE_TYPES,
+  OUTPUT_TYPES,
+  loadAutomationsFeatureRegistry,
+} from './Config/Constants.js';
+import { createConfirmDialog } from '../../../Agents/UI/Render/Components/ConfirmDialog.js';
+import { createAgentGrid } from './Components/Grid.js';
+import { createHistoryModal } from '../../../../Modals/HistoryModal.js';
+import { createJobsController } from './Builders/JobBuilder.js';
+import { createModelPicker } from '../../../Agents/UI/Render/Components/ModelPicker.js';
+import { createResponseViewer } from '../../../Agents/UI/Render/Components/ResponseViewer.js';
+import { createAgentsPageState } from './State/State.js';
 import { getAutomationsHTML } from './Templates/Template.js';
-import { createCardPool } from '../../../../System/CardPool.js';
+import {
+  cloneJobsForEditing,
+  generateAgentId,
+  resolveModelLabel,
+} from '../../../Agents/UI/Render/Utils/Utils.js';
 
-// ── mount ────────────────────────────────────────────────────────────────────
-export function mount(outlet) {
-  outlet.innerHTML = getAutomationsHTML();
+const BUILTIN_REQUIRED_DATA_SOURCE_FIELDS = {
+  rss_feed: ['url'],
+  reddit_posts: ['subreddit'],
+  weather: ['location'],
+  read_file: ['filePath'],
+  fetch_url: ['url'],
+};
 
-  // ── Local state ────────────────────────────────────────────────────────────
-  const pageState = { automations: [] };
-  let _editingId  = null;
-  let _autoPool   = null;
+const BUILTIN_REQUIRED_OUTPUT_FIELDS = {
+  send_email: ['to'],
+  write_file: ['filePath'],
+  http_webhook: ['url'],
+};
 
-  // ── DOM refs (looked up lazily inside functions) ───────────────────────────
-  const $ = id => document.getElementById(id);
+const BUILTIN_FIELD_LABELS = {
+  filePath: 'file path',
+  location: 'location',
+  repo: 'repository',
+  subreddit: 'subreddit',
+  to: 'recipient email',
+  url: 'URL',
+};
 
-  // ── Card pool ──────────────────────────────────────────────────────────────
-  function createAutoCard() {
-    const card = document.createElement('div');
-    card.className = 'auto-card';
-    card._currentAuto = null;
+function hasConfiguredValue(value) {
+  if (typeof value === 'boolean') return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (Array.isArray(value)) return value.length > 0;
+  if (value && typeof value === 'object') return Object.keys(value).length > 0;
+  return String(value ?? '').trim().length > 0;
+}
 
-    card.innerHTML = `
-      <div class="auto-card-head">
-        <div class="auto-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round" stroke-width="1.6"/></svg></div>
-        <div class="auto-card-info">
-          <div class="auto-card-name"></div>
-          <div class="auto-card-desc" style="display:none"></div>
-        </div>
-        <label class="auto-toggle" title="">
-          <input type="checkbox" class="toggle-input"><div class="auto-toggle-track"></div>
-        </label>
-      </div>
-      <div class="auto-card-meta">
-        <span class="auto-card-tag trigger-tag">
-          <span class="auto-trigger-icon" aria-hidden="true"></span>
-          <span class="auto-trigger-text"></span>
-        </span>
-        <div class="auto-card-actions-summary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6h11M9 12h11M9 18h11M5 6v.01M5 12v.01M5 18v.01" stroke-linecap="round"/></svg>
-          <span class="auto-actions-text"></span>
-        </div>
-        <div class="auto-card-lastrun" style="display:none"></div>
-      </div>
-      <div class="auto-card-footer">
-        <button class="auto-card-btn edit-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg>
-          Edit
-        </button>
-        <button class="auto-card-btn danger delete-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Delete
-        </button>
-      </div>`;
+function getJobSources(job = {}) {
+  if (Array.isArray(job.dataSources)) return job.dataSources.filter(Boolean);
+  if (job.dataSource?.type) return [job.dataSource];
+  return [];
+}
 
-    card.querySelector('.toggle-input').addEventListener('change', async e => {
-      const auto = card._currentAuto;
-      if (!auto) return;
-      auto.enabled = e.target.checked;
-      card.classList.toggle('is-disabled', !auto.enabled);
-      await window.electronAPI?.invoke?.('toggle-automation', auto.id, auto.enabled);
-    });
-    card.querySelector('.edit-btn').addEventListener('click', () => { if (card._currentAuto) openModal(card._currentAuto); });
-    card.querySelector('.delete-btn').addEventListener('click', () => { const a = card._currentAuto; if (a) openConfirm(a.id, a.name); });
+function isMeaningfulSource(source = {}) {
+  if (source.type) return true;
+  return Object.entries(source).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
+}
 
-    return card;
-  }
+function isMeaningfulOutput(output = {}) {
+  if (output.type) return true;
+  return Object.entries(output).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
+}
 
-  function updateAutoCard(card, auto) {
-    card._currentAuto = auto;
-    card.className = `auto-card${auto.enabled ? '' : ' is-disabled'}`;
-    card.dataset.id = escapeHtml(auto.id);
+function isBlankJobDraft(job = {}) {
+  return (
+    !String(job.name ?? '').trim() &&
+    !String(job.instruction ?? '').trim() &&
+    !getJobSources(job).some(isMeaningfulSource) &&
+    !isMeaningfulOutput(job.output ?? {})
+  );
+}
 
-    card.querySelector('.auto-card-name').textContent = auto.name;
-    card.querySelector('.auto-toggle').title = auto.enabled ? 'Enabled' : 'Disabled';
-    card.querySelector('.toggle-input').checked = auto.enabled;
-    const trigger = getTriggerPresentation(auto.trigger);
-    card.querySelector('.auto-trigger-icon').innerHTML = trigger.icon;
-    card.querySelector('.auto-trigger-text').textContent = trigger.label;
-    card.querySelector('.auto-actions-text').textContent = formatActionsSummary(auto.actions);
+function collectMissingFields(definition, values = {}, builtinRequired = []) {
+  const missing = [];
+  const requiredParams = (definition?.params ?? []).filter((param) => param.required);
 
-    const descEl = card.querySelector('.auto-card-desc');
-    if (auto.description) {
-      descEl.style.display = '';
-      descEl.textContent = auto.description;
-    } else {
-      descEl.style.display = 'none';
+  requiredParams.forEach((param) => {
+    if (!hasConfiguredValue(values?.[param.key])) {
+      missing.push((param.label ?? param.key).toLowerCase());
     }
+  });
 
-    const lastRunEl = card.querySelector('.auto-card-lastrun');
-    if (auto.lastRun) {
-      lastRunEl.style.display = '';
-      lastRunEl.textContent = formatLastRun(auto.lastRun);
-    } else {
-      lastRunEl.style.display = 'none';
+  builtinRequired.forEach((key) => {
+    if (!hasConfiguredValue(values?.[key])) {
+      missing.push(BUILTIN_FIELD_LABELS[key] ?? key);
     }
+  });
+
+  return missing;
+}
+
+function getJobValidationError(job, index) {
+  const jobName = job.name?.trim() || `Job ${index + 1}`;
+  const sources = getJobSources(job);
+
+  if (!sources.length || !sources.some((source) => source?.type)) {
+    return `${jobName}: choose at least one data source.`;
   }
 
-  // ── Grid rendering ─────────────────────────────────────────────────────────
-  function renderAutomations() {
-    const grid  = $('auto-grid');
-    const empty = $('auto-empty');
-    if (!pageState.automations.length) { empty.hidden = false; grid.hidden = true; return; }
-    empty.hidden = true; grid.hidden = false;
-    _autoPool.render(pageState.automations);
-  }
+  for (const source of sources) {
+    if (!source?.type) return `${jobName}: remove the unfinished data source or choose its type.`;
 
-  async function loadAutomations() {
-    try {
-      const res = await window.electronAPI?.invoke?.('get-automations');
-      pageState.automations = Array.isArray(res?.automations) ? res.automations : [];
-    } catch { pageState.automations = []; }
-    renderAutomations();
-  }
+    const definition = DATA_SOURCE_TYPES.find((item) => item.value === source.type);
+    const missing = collectMissingFields(
+      definition,
+      source,
+      BUILTIN_REQUIRED_DATA_SOURCE_FIELDS[source.type] ?? [],
+    );
 
-  // ── Modal ─────────────────────────────────────────────────────────────────
-  function getSelectedTriggerType() {
-    return [...document.querySelectorAll('.trigger-option')].find(o => o.classList.contains('selected'))?.dataset?.trigger ?? 'on_startup';
-  }
-
-  function updateSubInputVisibility() {
-    const type = getSelectedTriggerType();
-    $('interval-sub-inputs')?.classList.toggle('hidden', type !== 'interval');
-    $('daily-sub-inputs')?.classList.toggle('hidden', type !== 'daily');
-    $('weekly-sub-inputs')?.classList.toggle('hidden', type !== 'weekly');
-  }
-
-  function setTriggerOption(type) {
-    document.querySelectorAll('.trigger-option').forEach(o => o.classList.toggle('selected', o.dataset.trigger === type));
-    updateSubInputVisibility();
-  }
-
-  function openModal(auto = null) {
-    _editingId = auto?.id ?? null;
-    const titleEl = $('auto-modal-title-text');
-    if (titleEl) titleEl.textContent = auto ? 'Edit Automation' : 'New Automation';
-    const nameInput = $('auto-name');   if (nameInput) nameInput.value = auto?.name ?? '';
-    const descInput = $('auto-desc');   if (descInput) descInput.value = auto?.description ?? '';
-    setTriggerOption(auto?.trigger?.type ?? 'on_startup');
-    const dt = $('daily-time');   if (dt) dt.value = auto?.trigger?.time ?? '09:00';
-    const wt = $('weekly-time');  if (wt) wt.value = auto?.trigger?.time ?? '09:00';
-    const wd = $('weekly-day');   if (wd) wd.value = auto?.trigger?.day  ?? 'monday';
-    const im = $('interval-minutes'); if (im) im.value = auto?.trigger?.minutes ?? 30;
-    const list = $('actions-list');
-    if (list) {
-      list.innerHTML = '';
-      const acts = auto?.actions?.length ? auto.actions : [{ type: 'open_site' }];
-      acts.forEach(a => list.appendChild(createActionRow(a)));
-    }
-    $('automation-modal-backdrop')?.classList.add('open');
-    document.body.classList.add('modal-open');
-    setTimeout(() => nameInput?.focus(), 60);
-  }
-
-  function closeModal() {
-    $('automation-modal-backdrop')?.classList.remove('open');
-    document.body.classList.remove('modal-open');
-    _editingId = null;
-  }
-
-  // ── Confirm delete ────────────────────────────────────────────────────────
-  let _deletingId = null;
-  function openConfirm(id, name) {
-    _deletingId = id;
-    const el = $('confirm-automation-name'); if (el) el.textContent = name;
-    $('confirm-overlay')?.classList.add('open');
-  }
-  function closeConfirm() {
-    $('confirm-overlay')?.classList.remove('open');
-    _deletingId = null;
-  }
-
-  // ── Save ──────────────────────────────────────────────────────────────────
-  async function saveModal() {
-    const name = $('auto-name')?.value?.trim();
-    if (!name) { $('auto-name')?.focus(); return; }
-
-    const type = getSelectedTriggerType();
-    const trigger = { type };
-    if (type === 'interval') trigger.minutes = parseInt($('interval-minutes')?.value, 10) || 30;
-    if (type === 'daily')    trigger.time    = $('daily-time')?.value || '09:00';
-    if (type === 'weekly')   { trigger.time  = $('weekly-time')?.value || '09:00'; trigger.day = $('weekly-day')?.value || 'monday'; }
-
-    const actions = [];
-    document.querySelectorAll('#actions-list .action-row').forEach(row => {
-      const a = collectActionFromRow(row); if (a) actions.push(a);
-    });
-
-    const data = { id: _editingId ?? generateId(), name, description: $('auto-desc')?.value?.trim() ?? '', enabled: true, trigger, actions, lastRun: null };
-    const saveBtn = $('auto-save-btn');
-    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
-
-    try {
-      const res = await window.electronAPI?.invoke?.('save-automation', data);
-      if (res?.ok) {
-        const idx = pageState.automations.findIndex(a => a.id === data.id);
-        if (idx >= 0) pageState.automations[idx] = res.automation ?? data;
-        else pageState.automations.push(res.automation ?? data);
-        renderAutomations();
-        closeModal();
-      }
-    } finally {
-      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Automation'; }
+    if (missing.length) {
+      return `${jobName}: ${definition?.label ?? source.type} is missing ${missing.join(', ')}.`;
     }
   }
 
-  // ── Event wiring ──────────────────────────────────────────────────────────
-  $('add-automation-header-btn')?.addEventListener('click', () => openModal());
-  $('add-automation-empty-btn')?.addEventListener('click', () => openModal());
-  $('add-action-btn')?.addEventListener('click', () => {
-    $('actions-list')?.appendChild(createActionRow({ type: 'open_site' }));
-  });
-  $('auto-save-btn')?.addEventListener('click', saveModal);
-  $('auto-cancel-btn')?.addEventListener('click', closeModal);
-  $('auto-modal-close')?.addEventListener('click', closeModal);
-  $('automation-modal-backdrop')?.addEventListener('click', e => { if (e.target.id === 'automation-modal-backdrop') closeModal(); });
+  if (!job.output?.type) {
+    return `${jobName}: choose what to do with the result.`;
+  }
 
-  document.querySelectorAll('.trigger-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      document.querySelectorAll('.trigger-option').forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-      updateSubInputVisibility();
-    });
-  });
+  const outputDefinition = OUTPUT_TYPES.find((item) => item.value === job.output.type);
+  const outputMissing = collectMissingFields(
+    outputDefinition,
+    job.output,
+    BUILTIN_REQUIRED_OUTPUT_FIELDS[job.output.type] ?? [],
+  );
 
-  $('confirm-cancel')?.addEventListener('click', closeConfirm);
-  $('confirm-overlay')?.addEventListener('click', e => { if (e.target.id === 'confirm-overlay') closeConfirm(); });
-  $('confirm-delete')?.addEventListener('click', async () => {
-    if (!_deletingId) return;
-    await window.electronAPI?.invoke?.('delete-automation', _deletingId);
-    pageState.automations = pageState.automations.filter(a => a.id !== _deletingId);
-    closeConfirm();
-    renderAutomations();
-  });
+  if (outputMissing.length) {
+    return `${jobName}: ${outputDefinition?.label ?? job.output.type} is missing ${outputMissing.join(', ')}.`;
+  }
 
-  const onKeydown = e => {
-    if (e.key === 'Escape') { closeModal(); closeConfirm(); }
-  };
-  document.addEventListener('keydown', onKeydown);
+  return null;
+}
 
-  // ── Load data ─────────────────────────────────────────────────────────────
-  _autoPool = createCardPool({
-    container: $('auto-grid'),
-    createCard: createAutoCard,
-    updateCard: updateAutoCard,
-    getKey: auto => auto.id,
-  });
-  loadAutomationFeatureRegistry().then(loadAutomations).catch(error => { console.warn('[Automations] Feature registry load failed:', error); loadAutomations(); });
-
-  // ── Return cleanup ─────────────────────────────────────────────────────────
-  return function unmount() {
-    document.removeEventListener('keydown', onKeydown);
-    _autoPool?.clear();
-    _autoPool = null;
+function sanitizeJobForSave(job = {}) {
+  return {
+    ...job,
+    dataSources: getJobSources(job)
+      .filter((source) => source?.type)
+      .map((source) => ({ ...source })),
+    output: { ...(job.output ?? { type: '' }) },
+    trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
   };
 }
 
+export function mount(outlet) {
+  outlet.innerHTML = getAutomationsHTML();
+
+  const state = createAgentsPageState();
+  const elements = {
+    gridEl: document.getElementById('agents-grid'),
+    emptyEl: document.getElementById('agents-empty'),
+    addAgentHeaderBtn: document.getElementById('add-agent-header-btn'),
+    addAgentEmptyBtn: document.getElementById('add-agent-empty-btn'),
+    modalBackdrop: document.getElementById('agent-modal-backdrop'),
+    modalTitleEl: document.getElementById('agent-modal-title-text'),
+    modalCloseBtn: document.getElementById('agent-modal-close'),
+    modalBodyEl: document.getElementById('agent-modal-body'),
+    cancelBtn: document.getElementById('agent-cancel-btn'),
+    saveBtn: document.getElementById('agent-save-btn'),
+    nameInput: document.getElementById('agent-name'),
+    descInput: document.getElementById('agent-desc'),
+    primaryModelBtn: document.getElementById('primary-model-btn'),
+    primaryModelLabel: document.getElementById('primary-model-label'),
+    primaryModelMenu: document.getElementById('primary-model-menu'),
+    fallbackListEl: document.getElementById('fallback-models-list'),
+    jobsListEl: document.getElementById('jobs-list'),
+    addJobBtn: document.getElementById('add-job-btn'),
+    jobsBadge: document.getElementById('jobs-count-badge'),
+    confirmOverlay: document.getElementById('agent-confirm-overlay'),
+    confirmCancelBtn: document.getElementById('confirm-cancel-btn'),
+    confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
+    confirmNameEl: document.getElementById('confirm-agent-name'),
+  };
+
+  const responseViewer = createResponseViewer();
+  const historyModal = createHistoryModal({
+    dataSourceTypes: DATA_SOURCE_TYPES,
+    onOpenResponse: responseViewer.open,
+  });
+  const modelPicker = createModelPicker({
+    state,
+    primaryModelBtn: elements.primaryModelBtn,
+    primaryModelLabel: elements.primaryModelLabel,
+    primaryModelMenu: elements.primaryModelMenu,
+    fallbackListEl: elements.fallbackListEl,
+  });
+  const jobsController = createJobsController({
+    state,
+    jobsListEl: elements.jobsListEl,
+    addJobBtn: elements.addJobBtn,
+    jobsBadge: elements.jobsBadge,
+    modalBodyEl: elements.modalBodyEl,
+  });
+
+  function renderGrid() {
+    agentGrid.render(state.agents);
+  }
+
+  const confirmDialog = createConfirmDialog({
+    state,
+    overlayEl: elements.confirmOverlay,
+    cancelBtn: elements.confirmCancelBtn,
+    deleteBtn: elements.confirmDeleteBtn,
+    nameEl: elements.confirmNameEl,
+    onDelete: async (automationId) => {
+      try {
+        const response = await window.electronAPI?.invoke?.('delete-automation', automationId);
+        if (!response?.ok) {
+          window.alert(response?.error ?? 'Unable to delete this automation right now.');
+          return;
+        }
+
+        state.agents = state.agents.filter((automation) => automation.id !== automationId);
+        renderGrid();
+      } catch (error) {
+        window.alert(error.message ?? 'Unable to delete this automation right now.');
+      }
+    },
+  });
+
+  const agentGrid = createAgentGrid({
+    gridEl: elements.gridEl,
+    emptyEl: elements.emptyEl,
+    dataSourceTypes: DATA_SOURCE_TYPES,
+    resolveModelLabel: (providerId, modelId) =>
+      resolveModelLabel(state.allModels, providerId, modelId),
+    onToggleAgent: async ({ agent, enabled, card }) => {
+      const previousEnabled = agent.enabled;
+      agent.enabled = enabled;
+      card.classList.toggle('is-disabled', !enabled);
+      try {
+        const response = await window.electronAPI?.invoke?.('toggle-automation', agent.id, enabled);
+        if (response?.ok) return;
+
+        throw new Error(response?.error ?? 'Unable to update the automation right now.');
+      } catch (error) {
+        agent.enabled = previousEnabled;
+        card.classList.toggle('is-disabled', !previousEnabled);
+        const toggleInput = card.querySelector('.toggle-input');
+        if (toggleInput) toggleInput.checked = previousEnabled;
+        window.alert(error.message ?? 'Unable to update the automation right now.');
+      }
+    },
+    onRunAgent: async ({ agent, button }) => {
+      const originalLabel = button.innerHTML;
+      button.classList.add('is-running');
+      button.disabled = true;
+      button.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">
+          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
+        </svg>`;
+      try {
+        const response = await window.electronAPI?.invoke?.('run-automation-now', agent.id);
+        if (!response?.ok) {
+          throw new Error(response?.error ?? 'Unable to run this automation right now.');
+        }
+
+        state.agents = await fetchAutomations();
+        renderGrid();
+      } catch (error) {
+        window.alert(error.message ?? 'Unable to run this automation right now.');
+      } finally {
+        button.classList.remove('is-running');
+        button.disabled = false;
+        button.innerHTML = originalLabel;
+      }
+    },
+    onOpenHistory: async (automation) => {
+      state.agents = await fetchAutomations();
+      historyModal.open(state.agents.find((item) => item.id === automation.id) ?? automation);
+    },
+    onOpenModal: (automation) => openModal(automation),
+    onOpenConfirm: (id, name) => confirmDialog.open(id, name),
+  });
+
+  async function fetchAutomations() {
+    const response = await window.electronAPI?.invoke?.('get-automations').catch(() => null);
+    return Array.isArray(response?.automations) ? response.automations : [];
+  }
+
+  async function loadModels() {
+    try {
+      const providers = (await window.electronAPI?.invoke?.('get-models')) ?? [];
+      state.allModels = [];
+
+      providers.forEach((provider) => {
+        if (!provider.configured) return;
+
+        Object.entries(provider.models ?? {}).forEach(([modelId, info]) => {
+          state.allModels.push({
+            providerId: provider.provider,
+            provider: provider.label ?? provider.provider,
+            modelId,
+            modelName: info.name ?? modelId,
+            description: info.description ?? '',
+            rank: info.rank ?? 999,
+          });
+        });
+      });
+
+      state.allModels.sort((left, right) => left.rank - right.rank);
+    } catch (error) {
+      console.warn('[Automations] Could not load models:', error);
+      state.allModels = [];
+    }
+  }
+
+  async function openModal(automation = null) {
+    state.editingId = automation?.id ?? null;
+    state.editingEnabled = automation?.enabled ?? true;
+    state.primaryModel = automation?.primaryModel ? { ...automation.primaryModel } : null;
+    state.fallbackModels = automation?.fallbackModels ? [...automation.fallbackModels] : [];
+    state.jobs = cloneJobsForEditing(automation);
+
+    if (elements.modalTitleEl) {
+      elements.modalTitleEl.textContent = automation ? 'Edit Automation' : 'New Automation';
+    }
+    if (elements.nameInput) elements.nameInput.value = automation?.name ?? '';
+    if (elements.descInput) elements.descInput.value = automation?.description ?? '';
+
+    modelPicker.syncPrimaryModelLabel();
+    modelPicker.renderFallbackList();
+    jobsController.renderJobsList();
+
+    elements.modalBackdrop?.classList.add('open');
+    document.body.classList.add('modal-open');
+    setTimeout(() => elements.nameInput?.focus(), 60);
+  }
+
+  function closeModal() {
+    elements.modalBackdrop?.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    state.editingId = null;
+    modelPicker.closeMenu();
+  }
+
+  const onModalBackdropClick = (event) => {
+    if (event.target === elements.modalBackdrop) closeModal();
+  };
+
+  const onSaveClick = async () => {
+    const name = elements.nameInput?.value.trim();
+    if (!name) {
+      elements.nameInput?.animate([{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }], {
+        duration: 900,
+      });
+      elements.nameInput?.focus();
+      return;
+    }
+
+    const configuredJobs = state.jobs
+      .filter((job) => !isBlankJobDraft(job))
+      .map(sanitizeJobForSave);
+
+    if (
+      configuredJobs.length > 0 &&
+      (!state.primaryModel?.provider || !state.primaryModel?.modelId)
+    ) {
+      elements.primaryModelBtn?.animate(
+        [{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }],
+        { duration: 900 },
+      );
+      elements.primaryModelBtn?.focus();
+      window.alert('Choose a primary model before saving an automation with jobs.');
+      return;
+    }
+
+    const invalidJobMessage = configuredJobs
+      .map((job, index) => getJobValidationError(job, index))
+      .find(Boolean);
+
+    if (invalidJobMessage) {
+      window.alert(invalidJobMessage);
+      return;
+    }
+
+    const payload = {
+      id: state.editingId ?? generateAgentId(),
+      name,
+      description: elements.descInput?.value.trim() ?? '',
+      enabled: state.editingEnabled,
+      primaryModel: state.primaryModel ? { ...state.primaryModel } : null,
+      fallbackModels: state.fallbackModels.map((model) => ({ ...model })),
+      jobs: configuredJobs,
+    };
+
+    elements.saveBtn.disabled = true;
+    elements.saveBtn.textContent = 'Saving...';
+
+    try {
+      const response = await window.electronAPI?.invoke?.('save-automation', payload);
+      if (!response?.ok) {
+        throw new Error(response?.error ?? 'Unable to save this automation right now.');
+      }
+
+      const nextAutomation = response.automation ?? payload;
+      const existingIndex = state.agents.findIndex((automation) => automation.id === payload.id);
+
+      if (existingIndex >= 0) {
+        state.agents[existingIndex] = nextAutomation;
+      } else {
+        state.agents.push(nextAutomation);
+      }
+
+      renderGrid();
+      closeModal();
+    } catch (error) {
+      window.alert(error.message ?? 'Unable to save this automation right now.');
+    } finally {
+      elements.saveBtn.disabled = false;
+      elements.saveBtn.textContent = 'Save Automation';
+    }
+  };
+
+  const onEscapeKey = (event) => {
+    if (event.key !== 'Escape') return;
+    closeModal();
+    confirmDialog.close();
+    historyModal.close();
+    responseViewer.close();
+  };
+
+  const onCreateClick = () => openModal();
+
+  elements.addAgentHeaderBtn?.addEventListener('click', onCreateClick);
+  elements.addAgentEmptyBtn?.addEventListener('click', onCreateClick);
+  elements.modalCloseBtn?.addEventListener('click', closeModal);
+  elements.cancelBtn?.addEventListener('click', closeModal);
+  elements.modalBackdrop?.addEventListener('click', onModalBackdropClick);
+  elements.saveBtn?.addEventListener('click', onSaveClick);
+  document.addEventListener('keydown', onEscapeKey);
+
+  async function load() {
+    await loadAutomationsFeatureRegistry();
+    await loadModels();
+    state.agents = await fetchAutomations();
+    renderGrid();
+  }
+
+  load().catch((error) => {
+    console.error('[Automations] Failed to load page data:', error);
+  });
+
+  return function cleanup() {
+    document.removeEventListener('keydown', onEscapeKey);
+    elements.addAgentHeaderBtn?.removeEventListener('click', onCreateClick);
+    elements.addAgentEmptyBtn?.removeEventListener('click', onCreateClick);
+    elements.modalCloseBtn?.removeEventListener('click', closeModal);
+    elements.cancelBtn?.removeEventListener('click', closeModal);
+    elements.modalBackdrop?.removeEventListener('click', onModalBackdropClick);
+    elements.saveBtn?.removeEventListener('click', onSaveClick);
+
+    agentGrid.clear();
+    jobsController.cleanup();
+    modelPicker.cleanup();
+    confirmDialog.cleanup();
+
+    closeModal();
+    confirmDialog.close();
+    historyModal.close();
+    responseViewer.close();
+    historyModal.destroy();
+    responseViewer.destroy();
+  };
+}

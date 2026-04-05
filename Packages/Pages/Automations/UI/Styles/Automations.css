@@ -137,7 +137,9 @@
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-mid);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-mid);
   box-shadow: 0 4px 18px var(--accent-glow);
 }
 
@@ -249,7 +251,9 @@
   background: var(--bg-hover);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.22s, border-color 0.22s;
+  transition:
+    background 0.22s,
+    border-color 0.22s;
 }
 
 .auto-toggle-track::after {
@@ -262,15 +266,17 @@
   height: 14px;
   border-radius: 50%;
   background: var(--text-muted);
-  transition: transform 0.22s var(--ease-spring), background 0.22s;
+  transition:
+    transform 0.22s var(--ease-spring),
+    background 0.22s;
 }
 
-.auto-toggle input:checked+.auto-toggle-track {
+.auto-toggle input:checked + .auto-toggle-track {
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.auto-toggle input:checked+.auto-toggle-track::after {
+.auto-toggle input:checked + .auto-toggle-track::after {
   transform: translateY(-50%) translateX(18px);
   background: #fff;
 }
@@ -511,7 +517,9 @@
   font-size: 13.5px;
   color: var(--text-primary);
   outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .auto-input::placeholder,
@@ -757,7 +765,9 @@
   font-size: 13px;
   color: var(--text-primary);
   outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .action-value-input::placeholder,
@@ -802,7 +812,7 @@
   user-select: none;
 }
 
-.action-sub-toggle input[type="checkbox"] {
+.action-sub-toggle input[type='checkbox'] {
   /* custom checkbox */
   appearance: none;
   width: 16px;
@@ -813,19 +823,22 @@
   background: var(--bg-input);
   cursor: pointer;
   position: relative;
-  transition: background 0.18s, border-color 0.18s;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
 }
 
-.action-sub-toggle input[type="checkbox"]:checked {
+.action-sub-toggle input[type='checkbox']:checked {
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.action-sub-toggle input[type="checkbox"]:checked::after {
+.action-sub-toggle input[type='checkbox']:checked::after {
   content: '';
   position: absolute;
   inset: 2px;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6l3 3 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' fill='none' stroke='white' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6l3 3 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center/contain no-repeat;
 }
 
 .action-sub-toggle-text {
@@ -939,7 +952,9 @@
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .auto-btn-cancel:hover {
@@ -1064,7 +1079,9 @@
   font-weight: 600;
   cursor: pointer;
   border: 1px solid var(--border);
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .confirm-cancel-btn {
@@ -1123,4 +1140,28 @@
   border: 1px solid rgba(217, 119, 6, 0.2);
   border-radius: 8px;
   padding: 6px 10px;
+}
+
+/* Agentic Agents page additions */
+.agent-textarea--prompt {
+  min-height: 160px;
+  max-height: 320px;
+}
+
+.agentic-prompt-preview {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 12px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+}
+
+.auto-card-btn.is-running {
+  opacity: 0.9;
 }

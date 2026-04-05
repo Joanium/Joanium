@@ -1,84 +1,69 @@
-﻿import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
+import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 
-export const ACTION_META = {
-  open_site: { label: 'Open website', fields: ['url'], group: 'System' },
-  open_multiple_sites: { label: 'Open multiple websites', fields: ['urls'], group: 'System' },
-  open_folder: { label: 'Open folder', fields: ['path'], group: 'System' },
-  run_command: { label: 'Run command', fields: ['command'], group: 'System' },
-  run_script: { label: 'Run script file', fields: ['scriptPath', 'args'], group: 'System' },
-  open_app: { label: 'Open app', fields: ['appPath'], group: 'System' },
-  send_notification: { label: 'Send notification', fields: ['notifTitle', 'notifBody'], group: 'System' },
-  copy_to_clipboard: { label: 'Copy to clipboard', fields: ['text'], group: 'System' },
-  write_file: { label: 'Write to file', fields: ['filePath', 'content'], group: 'System' },
-  move_file: { label: 'Move / rename file', fields: ['sourcePath', 'destPath'], group: 'System' },
-  copy_file: { label: 'Copy file', fields: ['sourcePath', 'destPath'], group: 'System' },
-  delete_file: { label: 'Delete file', fields: ['filePath'], group: 'System' },
-  create_folder: { label: 'Create folder', fields: ['path'], group: 'System' },
-  lock_screen: { label: 'Lock screen', fields: [], group: 'System' },
-  http_request: { label: 'HTTP request / webhook', fields: ['url', 'httpMethod'], group: 'System' },
-};
+export const MAX_JOBS = 5;
 
-export const FIELD_META = {
-  url: { placeholder: 'https://example.com', textarea: false },
-  urls: { placeholder: 'https://example.com\nhttps://github.com\none per line...', textarea: true },
-  path: { placeholder: '/Users/you/Documents or C:\\Users\\you', textarea: false },
-  command: { placeholder: 'npm run build', textarea: false },
-  scriptPath: { placeholder: '/Users/you/scripts/backup.sh or script.py', textarea: false },
-  args: { placeholder: '--verbose --output /tmp (optional)', textarea: false },
-  appPath: { placeholder: '/Applications/VS Code.app or C:\\...\\code.exe', textarea: false },
-  notifTitle: { placeholder: 'Notification title', textarea: false },
-  notifBody: { placeholder: 'Notification body (optional)', textarea: false },
-  text: { placeholder: 'Text to copy to clipboard...', textarea: false },
-  filePath: { placeholder: '/Users/you/Desktop/output.txt', textarea: false },
-  content: { placeholder: 'File content...', textarea: true },
-  sourcePath: { placeholder: '/Users/you/file.txt', textarea: false },
-  destPath: { placeholder: '/Users/you/moved/file.txt', textarea: false },
-  httpMethod: { type: 'select', options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'], textarea: false },
-  httpHeaders: { placeholder: 'Content-Type: application/json\nAuthorization: Bearer ...', textarea: true },
-  httpBody: { placeholder: '{"key": "value"} or form=data&key=val', textarea: true },
-  clickUrl: { placeholder: 'https://open-this.com on notification click (optional)', textarea: false },
-  terminalCommand: { placeholder: 'npm run dev (leave blank to just open terminal)', textarea: false },
-};
+export const DATA_SOURCE_TYPES = [
+  { value: 'rss_feed', label: 'RSS / Atom Feed', group: 'Web & Feeds' },
+  { value: 'reddit_posts', label: 'Reddit - Subreddit posts', group: 'Web & Feeds' },
+  { value: 'hacker_news', label: 'Hacker News - Top stories', group: 'Web & Feeds' },
+  { value: 'fetch_url', label: 'Fetch URL - Any web page', group: 'Web & Feeds' },
+  { value: 'weather', label: 'Weather - Current conditions', group: 'System & Data' },
+  { value: 'crypto_price', label: 'Crypto - Live prices', group: 'System & Data' },
+  { value: 'system_stats', label: 'System Stats - CPU / Memory', group: 'System & Data' },
+  { value: 'read_file', label: 'Read File - Local file', group: 'System & Data' },
+  { value: 'custom_context', label: 'Custom - Provide context directly', group: 'Other' },
+];
 
-export const FIELD_LABELS = {
-  url: 'URL',
-  urls: 'URLs (one per line)',
-  path: 'Folder path',
-  command: 'Command',
-  scriptPath: 'Script path',
-  args: 'Arguments',
-  appPath: 'App path',
-  notifTitle: 'Title',
-  notifBody: 'Body',
-  text: 'Text',
-  filePath: 'File path',
-  content: 'Content',
-  sourcePath: 'Source path',
-  destPath: 'Destination path',
-  httpMethod: 'Method',
-  httpHeaders: 'Headers',
-  httpBody: 'Request body',
-  clickUrl: 'Open URL on click',
-  terminalCommand: 'Then run (optional)',
+export const OUTPUT_TYPES = [
+  { value: 'send_email', label: 'Send email via Gmail', group: 'Messaging' },
+  { value: 'send_notification', label: 'Desktop notification', group: 'Messaging' },
+  { value: 'write_file', label: 'Write to a file', group: 'Files' },
+  { value: 'append_to_memory', label: 'Append to AI Memory', group: 'AI' },
+  { value: 'http_webhook', label: 'HTTP webhook / POST', group: 'Webhooks' },
+];
+
+export const INSTRUCTION_TEMPLATES = {
+  rss_feed:
+    'Read these feed articles. Identify the most relevant and interesting items. Summarize key developments.',
+  reddit_posts:
+    'Review these posts. Identify trending topics, significant discussions, and anything worth knowing.',
+  hacker_news:
+    'Summarize the most relevant stories. Focus on AI, engineering, and startup news. Give a brief insight for each.',
+  fetch_url: 'Read and analyze this content. Extract key information and anything actionable.',
+  weather:
+    'Based on current weather, provide a practical briefing: what to wear, any warnings, and how it affects plans.',
+  crypto_price: 'Analyze these prices and 24h changes. Flag significant moves and note any trends.',
+  system_stats:
+    'Analyze these system stats. Flag any concerning resource usage and provide a brief health assessment.',
+  read_file:
+    'Analyze this file content. Summarize key information, patterns, and anything actionable.',
+  custom_context: 'Analyze the provided information and give a thoughtful, useful response.',
 };
 
 let automationsBootLoaded = false;
 
-export async function loadAutomationFeatureRegistry() {
+export async function loadAutomationsFeatureRegistry() {
   if (automationsBootLoaded) return;
   automationsBootLoaded = true;
 
   try {
     const boot = await getFeatureBoot();
-    for (const action of boot?.automations?.actions ?? []) {
-      if (!action?.type) continue;
-      ACTION_META[action.type] = {
-        ...(ACTION_META[action.type] ?? {}),
-        ...action,
-      };
+
+    const existingDataSourceValues = new Set(DATA_SOURCE_TYPES.map((item) => item.value));
+    for (const item of boot?.automations?.dataSources ?? []) {
+      if (!item?.value || existingDataSourceValues.has(item.value)) continue;
+      DATA_SOURCE_TYPES.push(item);
+      existingDataSourceValues.add(item.value);
     }
-    Object.assign(FIELD_META, boot?.automations?.fieldMeta ?? {});
-    Object.assign(FIELD_LABELS, boot?.automations?.fieldLabels ?? {});
+
+    const existingOutputValues = new Set(OUTPUT_TYPES.map((item) => item.value));
+    for (const item of boot?.automations?.outputTypes ?? []) {
+      if (!item?.value || existingOutputValues.has(item.value)) continue;
+      OUTPUT_TYPES.push(item);
+      existingOutputValues.add(item.value);
+    }
+
+    Object.assign(INSTRUCTION_TEMPLATES, boot?.automations?.instructionTemplates ?? {});
   } catch (error) {
     console.warn('[AutomationsConstants] Failed to load feature automations:', error);
   }

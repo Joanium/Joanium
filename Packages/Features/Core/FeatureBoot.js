@@ -6,15 +6,14 @@ function emptyBoot() {
     pages: [],
     connectors: { services: [], free: [] },
     chat: { tools: [] },
-    automations: { actions: [], fieldMeta: {}, fieldLabels: {} },
-    agents: { dataSources: [], outputTypes: [], instructionTemplates: {} },
+    automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
   };
 }
 
 export async function getFeatureBoot() {
   if (!window.featureAPI?.getBoot) return emptyBoot();
   if (!bootPromise) {
-    bootPromise = window.featureAPI.getBoot().catch(error => {
+    bootPromise = window.featureAPI.getBoot().catch((error) => {
       console.warn('[FeatureBoot] Failed to load feature boot payload:', error);
       bootPromise = null;
       return emptyBoot();

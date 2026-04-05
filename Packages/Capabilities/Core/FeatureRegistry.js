@@ -195,9 +195,8 @@ export class FeatureRegistry {
     this.windows = new Set();
 
     this.chatToolMap = new Map();
-    this.automationActionMap = new Map();
-    this.agentDataSourceMap = new Map();
-    this.agentOutputMap = new Map();
+    this.automationDataSourceMap = new Map();
+    this.automationOutputMap = new Map();
     this.connectorValidatorMap = new Map();
 
     this._indexFeatures();
@@ -210,19 +209,14 @@ export class FeatureRegistry {
         this.chatToolMap.set(tool.name, feature.id);
       }
 
-      for (const action of feature.automation?.actions ?? []) {
-        if (!action?.type) continue;
-        this.automationActionMap.set(action.type, feature.id);
-      }
-
-      for (const dataSource of feature.agents?.dataSources ?? []) {
+      for (const dataSource of feature.automation?.dataSources ?? []) {
         if (!dataSource?.value) continue;
-        this.agentDataSourceMap.set(dataSource.value, feature.id);
+        this.automationDataSourceMap.set(dataSource.value, feature.id);
       }
 
-      for (const outputType of feature.agents?.outputTypes ?? []) {
+      for (const outputType of feature.automation?.outputTypes ?? []) {
         if (!outputType?.value) continue;
-        this.agentOutputMap.set(outputType.value, feature.id);
+        this.automationOutputMap.set(outputType.value, feature.id);
       }
 
       for (const connector of feature.connectors?.services ?? []) {
@@ -358,11 +352,8 @@ export class FeatureRegistry {
 
   getBootPayload() {
     const chatTools = [];
-    const automationActions = [];
-    const automationFieldMeta = {};
-    const automationFieldLabels = {};
-    const agentDataSources = [];
-    const agentOutputTypes = [];
+    const automationDataSources = [];
+    const automationOutputTypes = [];
     const instructionTemplates = {};
     const featurePages = [];
 
@@ -376,22 +367,18 @@ export class FeatureRegistry {
         chatTools.push({ featureId: feature.id, ...deepClone(tool) });
       }
 
-      for (const action of feature.automation?.actions ?? []) {
-        automationActions.push({ featureId: feature.id, ...deepClone(action) });
+      for (const dataSource of feature.automation?.dataSources ?? []) {
+        automationDataSources.push({ featureId: feature.id, ...deepClone(dataSource) });
       }
 
-      Object.assign(automationFieldMeta, deepClone(feature.automation?.fieldMeta ?? {}));
-      Object.assign(automationFieldLabels, deepClone(feature.automation?.fieldLabels ?? {}));
-
-      for (const dataSource of feature.agents?.dataSources ?? []) {
-        agentDataSources.push({ featureId: feature.id, ...deepClone(dataSource) });
+      for (const outputType of feature.automation?.outputTypes ?? []) {
+        automationOutputTypes.push({ featureId: feature.id, ...deepClone(outputType) });
       }
 
-      for (const outputType of feature.agents?.outputTypes ?? []) {
-        agentOutputTypes.push({ featureId: feature.id, ...deepClone(outputType) });
-      }
-
-      Object.assign(instructionTemplates, deepClone(feature.agents?.instructionTemplates ?? {}));
+      Object.assign(
+        instructionTemplates,
+        deepClone(feature.automation?.instructionTemplates ?? {}),
+      );
     }
 
     return {
@@ -409,13 +396,8 @@ export class FeatureRegistry {
         tools: chatTools,
       },
       automations: {
-        actions: automationActions,
-        fieldMeta: automationFieldMeta,
-        fieldLabels: automationFieldLabels,
-      },
-      agents: {
-        dataSources: agentDataSources,
-        outputTypes: agentOutputTypes,
+        dataSources: automationDataSources,
+        outputTypes: automationOutputTypes,
         instructionTemplates,
       },
     };
@@ -455,33 +437,19 @@ export class FeatureRegistry {
     };
   }
 
-  async runAutomationAction(action, extraContext = {}) {
-    const featureId = this.automationActionMap.get(action?.type);
+  getAutomationDataSourceDefinition(type) {
+    const featureId = this.automationDataSourceMap.get(type);
     if (!featureId) return null;
-
     const feature = this.getFeature(featureId);
-    const handler = feature.automation?.handlers?.[action.type];
-    if (typeof handler !== 'function') return null;
-
-    return {
-      handled: true,
-      result: await handler(this._createContext(feature, extraContext), action),
-    };
+    return (feature.automation?.dataSources ?? []).find((item) => item.value === type) ?? null;
   }
 
-  getAgentDataSourceDefinition(type) {
-    const featureId = this.agentDataSourceMap.get(type);
-    if (!featureId) return null;
-    const feature = this.getFeature(featureId);
-    return (feature.agents?.dataSources ?? []).find((item) => item.value === type) ?? null;
-  }
-
-  async collectAgentDataSource(dataSource, extraContext = {}) {
-    const featureId = this.agentDataSourceMap.get(dataSource?.type);
+  async collectAutomationDataSource(dataSource, extraContext = {}) {
+    const featureId = this.automationDataSourceMap.get(dataSource?.type);
     if (!featureId) return null;
 
     const feature = this.getFeature(featureId);
-    const handler = feature.agents?.dataSourceCollectors?.[dataSource.type];
+    const handler = feature.automation?.dataSourceCollectors?.[dataSource.type];
     if (typeof handler !== 'function') return null;
 
     return {
@@ -490,12 +458,12 @@ export class FeatureRegistry {
     };
   }
 
-  async executeAgentOutput(output, payload, extraContext = {}) {
-    const featureId = this.agentOutputMap.get(output?.type);
+  async executeAutomationOutput(output, payload, extraContext = {}) {
+    const featureId = this.automationOutputMap.get(output?.type);
     if (!featureId) return null;
 
     const feature = this.getFeature(featureId);
-    const handler = feature.agents?.outputHandlers?.[output.type];
+    const handler = feature.automation?.outputHandlers?.[output.type];
     if (typeof handler !== 'function') return null;
 
     return {

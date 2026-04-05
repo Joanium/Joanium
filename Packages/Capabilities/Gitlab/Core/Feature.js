@@ -2,201 +2,16 @@ import defineFeature from '../../Core/DefineFeature.js';
 import { GitlabAPI, getGitlabCredentials, notConnected } from './Shared/Common.js';
 import { GITLAB_TOOLS } from './Chat/Tools.js';
 import { executeGitlabChatTool } from './Chat/ChatExecutor.js';
-import { gitlabAutomationHandlers } from './Automation/AutomationHandlers.js';
-import { gitlabDataSourceCollectors, gitlabOutputHandlers } from './Agents/AgentHandlers.js';
+import {
+  gitlabDataSourceCollectors,
+  gitlabOutputHandlers,
+} from './Automation/AutomationHandlers.js';
 
 function withGitlab(ctx, callback) {
   const credentials = getGitlabCredentials(ctx);
   if (!credentials) return notConnected();
   return callback(credentials).catch((error) => ({ ok: false, error: error.message }));
 }
-
-const GITLAB_ACTIONS = [
-  {
-    type: 'gitlab_open_repo',
-    label: 'Open repo in browser',
-    group: 'GitLab',
-    fields: ['owner', 'repo'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_check_prs',
-    label: 'Check merge requests',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'state'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_check_issues',
-    label: 'Check issues',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'state'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_check_commits',
-    label: 'Check recent commits',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'maxResults'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_check_releases',
-    label: 'Check latest release',
-    group: 'GitLab',
-    fields: ['owner', 'repo'],
-    requiredFields: ['owner', 'repo'],
-  },
-  { type: 'gitlab_check_notifs', label: 'GitLab notifications', group: 'GitLab', fields: [] },
-  {
-    type: 'gitlab_create_issue',
-    label: 'Create issue',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'issueTitle', 'issueBody', 'labels'],
-    requiredFields: ['owner', 'repo', 'issueTitle'],
-  },
-  {
-    type: 'gitlab_repo_stats',
-    label: 'Repo stats notification',
-    group: 'GitLab',
-    fields: ['owner', 'repo'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_star_repo',
-    label: 'Star repository',
-    group: 'GitLab',
-    fields: ['owner', 'repo'],
-    requiredFields: ['owner', 'repo'],
-  },
-  {
-    type: 'gitlab_create_pr',
-    label: 'Create merge request',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'prTitle', 'prHead', 'prBase', 'issueBody', 'draft'],
-    requiredFields: ['owner', 'repo', 'prTitle', 'prHead', 'prBase'],
-  },
-  {
-    type: 'gitlab_merge_pr',
-    label: 'Merge merge request',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'prNumber', 'mergeMethod'],
-    requiredFields: ['owner', 'repo', 'prNumber'],
-  },
-  {
-    type: 'gitlab_close_issue',
-    label: 'Close issue',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'issueNumber', 'closeReason'],
-    requiredFields: ['owner', 'repo', 'issueNumber'],
-  },
-  {
-    type: 'gitlab_comment_issue',
-    label: 'Comment on issue or MR',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'issueNumber', 'issueBody'],
-    requiredFields: ['owner', 'repo', 'issueNumber', 'issueBody'],
-  },
-  {
-    type: 'gitlab_add_labels',
-    label: 'Add labels to issue or MR',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'issueNumber', 'labels'],
-    requiredFields: ['owner', 'repo', 'issueNumber', 'labels'],
-  },
-  {
-    type: 'gitlab_assign',
-    label: 'Assign issue or MR',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'issueNumber', 'assignees'],
-    requiredFields: ['owner', 'repo', 'issueNumber', 'assignees'],
-  },
-  {
-    type: 'gitlab_mark_notifs_read',
-    label: 'Mark notifications as read',
-    group: 'GitLab',
-    fields: [],
-  },
-  {
-    type: 'gitlab_trigger_workflow',
-    label: 'Trigger pipeline',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'workflowId', 'workflowRef', 'workflowInputs'],
-    requiredFields: ['owner', 'repo', 'workflowId'],
-  },
-  {
-    type: 'gitlab_workflow_status',
-    label: 'Pipeline run status',
-    group: 'GitLab',
-    fields: ['owner', 'repo', 'workflowId', 'branch'],
-    requiredFields: ['owner', 'repo', 'workflowId'],
-  },
-  {
-    type: 'gitlab_create_gist',
-    label: 'Create snippet',
-    group: 'GitLab',
-    fields: ['gistFilename', 'content', 'description', 'isPublic', 'openInBrowser'],
-    requiredFields: ['gistFilename', 'content'],
-  },
-];
-
-const GITLAB_FIELD_META = {
-  owner: { placeholder: 'gitlab-username or group', textarea: false },
-  repo: { placeholder: 'repository-name', textarea: false },
-  state: { type: 'select', options: ['open', 'closed', 'all'], textarea: false },
-  maxResults: { type: 'number', placeholder: '10', min: 1, max: 100, textarea: false },
-  issueTitle: { placeholder: 'Bug: something broke in v2.1', textarea: false },
-  issueBody: { placeholder: 'Steps to reproduce...', textarea: true },
-  issueNumber: { type: 'number', placeholder: 'e.g. 42', min: 1, textarea: false },
-  labels: { placeholder: 'bug, enhancement', textarea: false },
-  assignees: { placeholder: 'alice, bob', textarea: false },
-  prTitle: { placeholder: 'feat: add new feature', textarea: false },
-  prHead: { placeholder: 'feature-branch', textarea: false },
-  prBase: { placeholder: 'main', textarea: false },
-  prNumber: { type: 'number', placeholder: 'e.g. 12', min: 1, textarea: false },
-  mergeMethod: { type: 'select', options: ['merge', 'squash', 'rebase'], textarea: false },
-  closeReason: { type: 'select', options: ['completed', 'not_planned'], textarea: false },
-  workflowId: { placeholder: 'pipeline numeric ID', textarea: false },
-  workflowRef: { placeholder: 'main', textarea: false },
-  workflowInputs: { placeholder: '{"env":"staging"}', textarea: true, parse: 'json' },
-  branch: { placeholder: 'main', textarea: false },
-  gistFilename: { placeholder: 'snippet.js', textarea: false },
-  content: { placeholder: 'Content...', textarea: true },
-  description: { placeholder: 'Optional description', textarea: false },
-  draft: { type: 'checkbox', textarea: false },
-  isPublic: { type: 'checkbox', textarea: false },
-  openInBrowser: { type: 'checkbox', textarea: false },
-  event: { type: 'select', options: ['COMMENT', 'APPROVE', 'REQUEST_CHANGES'], textarea: false },
-};
-
-const GITLAB_FIELD_LABELS = {
-  owner: 'Owner / org',
-  repo: 'Repository',
-  state: 'State',
-  maxResults: 'Max results',
-  issueTitle: 'Issue title',
-  issueBody: 'Body',
-  issueNumber: 'Issue / MR number',
-  labels: 'Labels (comma-separated)',
-  assignees: 'Assignees (comma-separated)',
-  prTitle: 'MR title',
-  prHead: 'Head branch',
-  prBase: 'Base branch',
-  prNumber: 'MR number',
-  mergeMethod: 'Merge method',
-  closeReason: 'Close reason',
-  workflowId: 'Pipeline ID',
-  workflowRef: 'Ref (branch/tag)',
-  workflowInputs: 'Pipeline variables JSON',
-  branch: 'Branch',
-  gistFilename: 'Filename',
-  content: 'Content',
-  description: 'Description',
-  draft: 'Open as draft',
-  isPublic: 'Make public',
-  openInBrowser: 'Open in browser',
-  event: 'Review event',
-};
 
 const GITLAB_DATA_SOURCES = [
   { value: 'gitlab_notifications', label: 'GitLab - Notifications', group: 'GitLab' },
@@ -740,12 +555,6 @@ export default defineFeature({
     chatTools: GITLAB_TOOLS,
   },
   automation: {
-    actions: GITLAB_ACTIONS,
-    fieldMeta: GITLAB_FIELD_META,
-    fieldLabels: GITLAB_FIELD_LABELS,
-    handlers: gitlabAutomationHandlers,
-  },
-  agents: {
     dataSources: GITLAB_DATA_SOURCES,
     outputTypes: GITLAB_OUTPUT_TYPES,
     instructionTemplates: GITLAB_INSTRUCTION_TEMPLATES,

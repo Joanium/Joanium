@@ -70,14 +70,24 @@ export function createAgentGrid({
     const editBtn = card.querySelector('.edit-btn');
     const deleteBtn = card.querySelector('.delete-btn');
 
-    toggleInput?.addEventListener('change', event => {
+    toggleInput?.addEventListener('change', (event) => {
       const agent = card._currentAgent;
       if (agent) onToggleAgent({ agent, enabled: event.target.checked, card });
     });
-    runBtn?.addEventListener('click', () => { const a = card._currentAgent; if (a) onRunAgent({ agent: a, button: runBtn }); });
-    historyBtn?.addEventListener('click', () => { if (card._currentAgent) onOpenHistory(card._currentAgent); });
-    editBtn?.addEventListener('click', () => { if (card._currentAgent) onOpenModal(card._currentAgent); });
-    deleteBtn?.addEventListener('click', () => { const a = card._currentAgent; if (a) onOpenConfirm(a.id, a.name); });
+    runBtn?.addEventListener('click', () => {
+      const a = card._currentAgent;
+      if (a) onRunAgent({ agent: a, button: runBtn });
+    });
+    historyBtn?.addEventListener('click', () => {
+      if (card._currentAgent) onOpenHistory(card._currentAgent);
+    });
+    editBtn?.addEventListener('click', () => {
+      if (card._currentAgent) onOpenModal(card._currentAgent);
+    });
+    deleteBtn?.addEventListener('click', () => {
+      const a = card._currentAgent;
+      if (a) onOpenConfirm(a.id, a.name);
+    });
 
     return card;
   }
@@ -89,10 +99,13 @@ export function createAgentGrid({
     card.querySelector('.agent-name').textContent = agent.name;
     card.querySelector('.agent-toggle').title = agent.enabled ? 'Enabled' : 'Disabled';
     card.querySelector('.toggle-input').checked = agent.enabled;
-    card.querySelector('.agent-model-text').textContent = agent.primaryModel ? resolveModelLabel(agent.primaryModel.provider, agent.primaryModel.modelId) : 'No model';
+    card.querySelector('.agent-model-text').textContent = agent.primaryModel
+      ? resolveModelLabel(agent.primaryModel.provider, agent.primaryModel.modelId)
+      : 'No model';
 
     const jobs = agent.jobs ?? [];
-    card.querySelector('.agent-jobs-badge').textContent = `${jobs.length} job${jobs.length !== 1 ? 's' : ''}`;
+    card.querySelector('.agent-jobs-badge').textContent =
+      `${jobs.length} job${jobs.length !== 1 ? 's' : ''}`;
 
     const descEl = card.querySelector('.agent-desc');
     if (agent.description) {
@@ -102,7 +115,11 @@ export function createAgentGrid({
       descEl.style.display = 'none';
     }
 
-    const lastRuns = jobs.map(job => job.lastRun).filter(Boolean).sort().reverse();
+    const lastRuns = jobs
+      .map((job) => job.lastRun)
+      .filter(Boolean)
+      .sort()
+      .reverse();
     const lastRunEl = card.querySelector('.agent-lastrun');
     if (lastRuns[0]) {
       lastRunEl.style.display = '';
@@ -111,20 +128,24 @@ export function createAgentGrid({
       lastRunEl.style.display = 'none';
     }
 
-    const jobRows = jobs.slice(0, 3).map(job => {
-      const sourceCount = getSourceCount(job);
-      const sourceBadge = sourceCount > 1
-        ? `<span class="agent-job-sources-badge">${sourceCount} sources</span>`
-        : '';
+    const jobRows = jobs
+      .slice(0, 3)
+      .map((job) => {
+        const sourceCount = getSourceCount(job);
+        const sourceBadge =
+          sourceCount > 1
+            ? `<span class="agent-job-sources-badge">${sourceCount} sources</span>`
+            : '';
 
-      return `
+        return `
         <div class="agent-job-row">
           <div class="agent-job-dot"></div>
           <span class="agent-job-trigger">${formatTrigger(job.trigger)}</span>
           <span class="agent-job-label">${escapeHtml(getJobLabel(job, dataSourceTypes))}</span>
           ${sourceBadge}
         </div>`;
-    }).join('');
+      })
+      .join('');
 
     const summaryEl = card.querySelector('.agent-jobs-summary');
     summaryEl.innerHTML = jobRows;
@@ -135,7 +156,7 @@ export function createAgentGrid({
     container: gridEl,
     createCard: createAgentCard,
     updateCard: updateAgentCard,
-    getKey: agent => agent.id,
+    getKey: (agent) => agent.id,
   });
 
   function render(agents) {

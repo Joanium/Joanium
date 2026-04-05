@@ -6,6 +6,7 @@ import { initProjectsModal } from '../../Modals/ProjectsModal.js';
 import { initSettingsModal } from '../../Modals/SettingsModal.js';
 import { injectCSS } from '../../System/Utils/InjectCSS.js';
 import { initChannelGateway } from '../../Pages/Channels/Features/Gateway.js';
+import { initScheduledAgentGateway } from '../../Pages/Agents/Features/Gateway.js';
 
 import {
   buildSidebarNav,
@@ -181,6 +182,7 @@ async function init() {
 
   // ── Channel Gateway — process Telegram/WhatsApp messages via agentLoop ─
   initChannelGateway();
+  initScheduledAgentGateway();
 
   // ── Sidebar ─────────────────────────────────────────────────────────
   // Uses a single onNavigate callback for all page nav instead of

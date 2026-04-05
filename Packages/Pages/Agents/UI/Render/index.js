@@ -1,174 +1,341 @@
-import { DATA_SOURCE_TYPES, OUTPUT_TYPES, loadAgentsFeatureRegistry } from './Config/Constants.js';
 import { createConfirmDialog } from './Components/ConfirmDialog.js';
-import { createAgentGrid } from './Components/Grid.js';
-import { createHistoryModal } from '../../../../Modals/HistoryModal.js';
-import { createJobsController } from './Builders/JobBuilder.js';
 import { createModelPicker } from './Components/ModelPicker.js';
 import { createResponseViewer } from './Components/ResponseViewer.js';
-import { createAgentsPageState } from './State/State.js';
+import { generateAgentId, resolveModelLabel } from './Utils/Utils.js';
 import { getAgentsHTML } from './Templates/Template.js';
-import { cloneJobsForEditing, generateAgentId, resolveModelLabel } from './Utils/Utils.js';
+import { createCardPool } from '../../../../System/CardPool.js';
 
-const BUILTIN_REQUIRED_DATA_SOURCE_FIELDS = {
-  rss_feed: ['url'],
-  reddit_posts: ['subreddit'],
-  weather: ['location'],
-  read_file: ['filePath'],
-  fetch_url: ['url'],
-};
+const SCHEDULE_OPTIONS = [
+  { minutes: 1, label: 'Every 1 minute' },
+  { minutes: 5, label: 'Every 5 minutes' },
+  { minutes: 15, label: 'Every 15 minutes' },
+  { minutes: 30, label: 'Every 30 minutes' },
+  { minutes: 60, label: 'Every 1 hour' },
+  { minutes: 120, label: 'Every 2 hours' },
+  { minutes: 240, label: 'Every 4 hours' },
+  { minutes: 480, label: 'Every 8 hours' },
+  { minutes: 1440, label: 'Every 24 hours' },
+];
 
-const BUILTIN_REQUIRED_OUTPUT_FIELDS = {
-  send_email: ['to'],
-  write_file: ['filePath'],
-  http_webhook: ['url'],
-};
-
-const BUILTIN_FIELD_LABELS = {
-  filePath: 'file path',
-  location: 'location',
-  repo: 'repository',
-  subreddit: 'subreddit',
-  to: 'recipient email',
-  url: 'URL',
-};
-
-function hasConfiguredValue(value) {
-  if (typeof value === 'boolean') return true;
-  if (typeof value === 'number') return Number.isFinite(value);
-  if (Array.isArray(value)) return value.length > 0;
-  if (value && typeof value === 'object') return Object.keys(value).length > 0;
-  return String(value ?? '').trim().length > 0;
+function formatSchedule(trigger = {}) {
+  const minutes = Math.max(1, parseInt(trigger.minutes, 10) || 30);
+  const preset = SCHEDULE_OPTIONS.find((option) => option.minutes === minutes);
+  if (preset) return preset.label;
+  return minutes < 60 ? `Every ${minutes} minutes` : `Every ${minutes / 60} hours`;
 }
 
-function getJobSources(job = {}) {
-  if (Array.isArray(job.dataSources)) return job.dataSources.filter(Boolean);
-  if (job.dataSource?.type) return [job.dataSource];
-  return [];
+function truncate(text, limit = 180) {
+  const normalized = String(text ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (normalized.length <= limit) return normalized;
+  return `${normalized.slice(0, limit - 3)}...`;
 }
 
-function isMeaningfulSource(source = {}) {
-  if (source.type) return true;
-  return Object.entries(source).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
-}
-
-function isMeaningfulOutput(output = {}) {
-  if (output.type) return true;
-  return Object.entries(output).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
-}
-
-function isBlankJobDraft(job = {}) {
-  return (
-    !String(job.name ?? '').trim() &&
-    !String(job.instruction ?? '').trim() &&
-    !getJobSources(job).some(isMeaningfulSource) &&
-    !isMeaningfulOutput(job.output ?? {})
-  );
-}
-
-function collectMissingFields(definition, values = {}, builtinRequired = []) {
-  const missing = [];
-  const requiredParams = (definition?.params ?? []).filter((param) => param.required);
-
-  requiredParams.forEach((param) => {
-    if (!hasConfiguredValue(values?.[param.key])) {
-      missing.push((param.label ?? param.key).toLowerCase());
-    }
+function timeAgo(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso);
+  const second = 1_000;
+  const minute = 60 * second;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  if (diff < 30 * second) return 'just now';
+  if (diff < 2 * minute) return `${Math.floor(diff / second)}s ago`;
+  if (diff < 2 * hour) return `${Math.floor(diff / minute)}m ago`;
+  if (diff < 2 * day) return `${Math.floor(diff / hour)}h ago`;
+  return new Date(iso).toLocaleDateString([], {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
-
-  builtinRequired.forEach((key) => {
-    if (!hasConfiguredValue(values?.[key])) {
-      missing.push(BUILTIN_FIELD_LABELS[key] ?? key);
-    }
-  });
-
-  return missing;
 }
 
-function getJobValidationError(job, index) {
-  const jobName = job.name?.trim() || `Job ${index + 1}`;
-  const sources = getJobSources(job);
+function buildHistoryModal({ onOpenResponse }) {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <div id="agent-history-backdrop">
+      <div id="agent-history-modal">
+        <div class="agent-history-header">
+          <div>
+            <div class="agent-modal-eyebrow">Run History</div>
+            <h2 id="agent-history-title">Agent</h2>
+          </div>
+          <button class="settings-modal-close" id="agent-history-close" type="button" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+            </svg>
+          </button>
+        </div>
+        <div id="agent-history-body" class="agent-history-body"></div>
+      </div>
+    </div>`;
 
-  if (!sources.length || !sources.some((source) => source?.type)) {
-    return `${jobName}: choose at least one data source.`;
+  const backdropEl = wrapper.firstElementChild;
+  document.body.appendChild(backdropEl);
+
+  const titleEl = backdropEl.querySelector('#agent-history-title');
+  const bodyEl = backdropEl.querySelector('#agent-history-body');
+  const closeBtn = backdropEl.querySelector('#agent-history-close');
+
+  function close() {
+    backdropEl.classList.remove('open');
   }
 
-  for (const source of sources) {
-    if (!source?.type) return `${jobName}: remove the unfinished data source or choose its type.`;
+  function open(agent) {
+    titleEl.textContent = agent.name;
+    bodyEl.innerHTML = '';
 
-    const definition = DATA_SOURCE_TYPES.find((item) => item.value === source.type);
-    const missing = collectMissingFields(
-      definition,
-      source,
-      BUILTIN_REQUIRED_DATA_SOURCE_FIELDS[source.type] ?? [],
-    );
-
-    if (missing.length) {
-      return `${jobName}: ${definition?.label ?? source.type} is missing ${missing.join(', ')}.`;
+    const history = Array.isArray(agent.history) ? agent.history : [];
+    if (!history.length) {
+      const hintEl = document.createElement('div');
+      hintEl.className = 'agent-history-empty';
+      hintEl.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          style="width:28px;height:28px;opacity:0.35">
+          <path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/>
+        </svg>
+        <p>No runs recorded yet.<br>Use Run Now to execute this agent immediately.</p>`;
+      bodyEl.appendChild(hintEl);
+      backdropEl.classList.add('open');
+      return;
     }
+
+    const section = document.createElement('div');
+    section.className = 'agent-history-job';
+    section.innerHTML = `
+      <div class="agent-history-job-header">
+        <span class="agent-history-job-name">Scheduled runs</span>
+        <span class="agent-history-job-trigger">${formatSchedule(agent.trigger)}</span>
+        <span class="agent-history-job-count">${history.length} run${history.length !== 1 ? 's' : ''}</span>
+      </div>`;
+
+    history.forEach((entry) => {
+      const statusClass = entry.error ? 'error' : 'acted';
+      const statusLabel = entry.error ? 'Error' : 'Completed';
+      const row = document.createElement('div');
+      row.className = `agent-history-entry agent-history-entry--${statusClass}`;
+      row.innerHTML = `
+        <div class="agent-history-entry-row">
+          <div class="agent-history-entry-left">
+            <span class="agent-history-entry-time">${timeAgo(entry.timestamp)}</span>
+            <span class="agent-history-entry-datetime">${new Date(entry.timestamp).toLocaleString()}</span>
+          </div>
+          <div class="agent-history-entry-right">
+            <span class="agent-history-entry-status agent-history-entry-status--${statusClass}">${statusLabel}</span>
+            ${entry.fullResponse || entry.summary ? '<button class="agent-history-view-btn" type="button">View</button>' : ''}
+          </div>
+        </div>
+        ${
+          entry.error
+            ? `<div class="agent-history-entry-error">${entry.error}</div>`
+            : entry.summary
+              ? `<div class="agent-history-entry-nothing">${truncate(entry.summary, 220)}</div>`
+              : ''
+        }`;
+
+      row.querySelector('.agent-history-view-btn')?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        onOpenResponse(entry, agent.name);
+      });
+
+      section.appendChild(row);
+    });
+
+    bodyEl.appendChild(section);
+    backdropEl.classList.add('open');
   }
 
-  if (!job.output?.type) {
-    return `${jobName}: choose what to do with the result.`;
-  }
+  const onBackdropClick = (event) => {
+    if (event.target === backdropEl) close();
+  };
 
-  const outputDefinition = OUTPUT_TYPES.find((item) => item.value === job.output.type);
-  const outputMissing = collectMissingFields(
-    outputDefinition,
-    job.output,
-    BUILTIN_REQUIRED_OUTPUT_FIELDS[job.output.type] ?? [],
-  );
+  closeBtn.addEventListener('click', close);
+  backdropEl.addEventListener('click', onBackdropClick);
 
-  if (outputMissing.length) {
-    return `${jobName}: ${outputDefinition?.label ?? job.output.type} is missing ${outputMissing.join(', ')}.`;
-  }
-
-  return null;
-}
-
-function sanitizeJobForSave(job = {}) {
   return {
-    ...job,
-    dataSources: getJobSources(job)
-      .filter((source) => source?.type)
-      .map((source) => ({ ...source })),
-    output: { ...(job.output ?? { type: '' }) },
-    trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
+    open,
+    close,
+    destroy() {
+      closeBtn.removeEventListener('click', close);
+      backdropEl.removeEventListener('click', onBackdropClick);
+      backdropEl.remove();
+    },
+  };
+}
+
+function createAgentsGrid({
+  gridEl,
+  emptyEl,
+  resolveModelName,
+  onToggle,
+  onRun,
+  onHistory,
+  onEdit,
+  onDelete,
+}) {
+  function createCard() {
+    const card = document.createElement('div');
+    card.className = 'auto-card';
+    card._currentAgent = null;
+
+    card.innerHTML = `
+      <div class="auto-card-head">
+        <div class="auto-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg></div>
+        <div class="auto-card-info">
+          <div class="auto-card-name"></div>
+          <div class="auto-card-desc" style="display:none"></div>
+        </div>
+        <label class="auto-toggle" title="">
+          <input type="checkbox" class="toggle-input"><div class="auto-toggle-track"></div>
+        </label>
+      </div>
+      <div class="auto-card-meta">
+        <span class="auto-card-tag trigger-tag">
+          <span class="auto-trigger-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>
+          </span>
+          <span class="auto-trigger-text"></span>
+        </span>
+        <div class="auto-card-actions-summary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg>
+          <span class="auto-actions-text"></span>
+        </div>
+        <div class="agentic-prompt-preview"></div>
+        <div class="auto-card-lastrun" style="display:none"></div>
+      </div>
+      <div class="auto-card-footer">
+        <button class="auto-card-btn run-btn" title="Run now">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Run
+        </button>
+        <button class="auto-card-btn history-btn" title="View history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>
+          History
+        </button>
+        <button class="auto-card-btn edit-btn" title="Edit agent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg>
+          Edit
+        </button>
+        <button class="auto-card-btn danger delete-btn" title="Delete agent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Delete
+        </button>
+      </div>`;
+
+    card.querySelector('.toggle-input')?.addEventListener('change', (event) => {
+      if (card._currentAgent) onToggle(card._currentAgent, event.target.checked, card);
+    });
+    card.querySelector('.run-btn')?.addEventListener('click', () => {
+      if (card._currentAgent) onRun(card._currentAgent, card.querySelector('.run-btn'));
+    });
+    card.querySelector('.history-btn')?.addEventListener('click', () => {
+      if (card._currentAgent) onHistory(card._currentAgent);
+    });
+    card.querySelector('.edit-btn')?.addEventListener('click', () => {
+      if (card._currentAgent) onEdit(card._currentAgent);
+    });
+    card.querySelector('.delete-btn')?.addEventListener('click', () => {
+      if (card._currentAgent) onDelete(card._currentAgent.id, card._currentAgent.name);
+    });
+
+    return card;
+  }
+
+  function updateCard(card, agent) {
+    card._currentAgent = agent;
+    card.className = `auto-card${agent.enabled ? '' : ' is-disabled'}`;
+    card.querySelector('.auto-card-name').textContent = agent.name;
+    card.querySelector('.toggle-input').checked = agent.enabled;
+    card.querySelector('.auto-toggle').title = agent.enabled ? 'Enabled' : 'Disabled';
+    card.querySelector('.auto-trigger-text').textContent = formatSchedule(agent.trigger);
+    card.querySelector('.auto-actions-text').textContent =
+      resolveModelName(agent.primaryModel?.provider, agent.primaryModel?.modelId) || 'No model';
+    card.querySelector('.agentic-prompt-preview').textContent =
+      truncate(agent.prompt, 200) || 'No prompt set.';
+
+    const descEl = card.querySelector('.auto-card-desc');
+    if (agent.description) {
+      descEl.style.display = '';
+      descEl.textContent = agent.description;
+    } else {
+      descEl.style.display = 'none';
+    }
+
+    const lastRunEl = card.querySelector('.auto-card-lastrun');
+    if (agent.lastRun) {
+      lastRunEl.style.display = '';
+      lastRunEl.textContent = `Last run ${timeAgo(agent.lastRun)}`;
+    } else {
+      lastRunEl.style.display = 'none';
+    }
+  }
+
+  const pool = createCardPool({
+    container: gridEl,
+    createCard,
+    updateCard,
+    getKey: (agent) => agent.id,
+  });
+
+  function render(agents) {
+    if (!agents.length) {
+      emptyEl.hidden = false;
+      gridEl.hidden = true;
+      return;
+    }
+    emptyEl.hidden = true;
+    gridEl.hidden = false;
+    pool.render(agents);
+  }
+
+  return {
+    render,
+    clear() {
+      pool.clear();
+    },
   };
 }
 
 export function mount(outlet) {
   outlet.innerHTML = getAgentsHTML();
 
-  const state = createAgentsPageState();
+  const state = {
+    agents: [],
+    allModels: [],
+    editingId: null,
+    deletingId: null,
+    editingEnabled: true,
+    primaryModel: null,
+    fallbackModels: [],
+  };
+
   const elements = {
-    gridEl: document.getElementById('agents-grid'),
-    emptyEl: document.getElementById('agents-empty'),
-    addAgentHeaderBtn: document.getElementById('add-agent-header-btn'),
-    addAgentEmptyBtn: document.getElementById('add-agent-empty-btn'),
-    modalBackdrop: document.getElementById('agent-modal-backdrop'),
+    gridEl: document.getElementById('auto-grid'),
+    emptyEl: document.getElementById('auto-empty'),
+    addHeaderBtn: document.getElementById('add-agent-header-btn'),
+    addEmptyBtn: document.getElementById('add-agent-empty-btn'),
+    modalBackdrop: document.getElementById('automation-modal-backdrop'),
     modalTitleEl: document.getElementById('agent-modal-title-text'),
-    modalCloseBtn: document.getElementById('agent-modal-close'),
-    modalBodyEl: document.getElementById('agent-modal-body'),
-    cancelBtn: document.getElementById('agent-cancel-btn'),
-    saveBtn: document.getElementById('agent-save-btn'),
+    modalCloseBtn: document.getElementById('auto-modal-close'),
+    cancelBtn: document.getElementById('auto-cancel-btn'),
+    saveBtn: document.getElementById('auto-save-btn'),
     nameInput: document.getElementById('agent-name'),
     descInput: document.getElementById('agent-desc'),
+    promptInput: document.getElementById('agent-prompt'),
+    scheduleSelect: document.getElementById('agent-schedule-select'),
     primaryModelBtn: document.getElementById('primary-model-btn'),
     primaryModelLabel: document.getElementById('primary-model-label'),
     primaryModelMenu: document.getElementById('primary-model-menu'),
     fallbackListEl: document.getElementById('fallback-models-list'),
-    jobsListEl: document.getElementById('jobs-list'),
-    addJobBtn: document.getElementById('add-job-btn'),
-    jobsBadge: document.getElementById('jobs-count-badge'),
-    confirmOverlay: document.getElementById('agent-confirm-overlay'),
-    confirmCancelBtn: document.getElementById('confirm-cancel-btn'),
-    confirmDeleteBtn: document.getElementById('confirm-delete-btn'),
-    confirmNameEl: document.getElementById('confirm-agent-name'),
+    confirmOverlay: document.getElementById('confirm-overlay'),
+    confirmCancelBtn: document.getElementById('confirm-cancel'),
+    confirmDeleteBtn: document.getElementById('confirm-delete'),
+    confirmNameEl: document.getElementById('confirm-automation-name'),
   };
 
   const responseViewer = createResponseViewer();
-  const historyModal = createHistoryModal({
-    dataSourceTypes: DATA_SOURCE_TYPES,
+  const historyModal = buildHistoryModal({
     onOpenResponse: responseViewer.open,
   });
   const modelPicker = createModelPicker({
@@ -177,94 +344,6 @@ export function mount(outlet) {
     primaryModelLabel: elements.primaryModelLabel,
     primaryModelMenu: elements.primaryModelMenu,
     fallbackListEl: elements.fallbackListEl,
-  });
-  const jobsController = createJobsController({
-    state,
-    jobsListEl: elements.jobsListEl,
-    addJobBtn: elements.addJobBtn,
-    jobsBadge: elements.jobsBadge,
-    modalBodyEl: elements.modalBodyEl,
-  });
-
-  function renderGrid() {
-    agentGrid.render(state.agents);
-  }
-
-  const confirmDialog = createConfirmDialog({
-    state,
-    overlayEl: elements.confirmOverlay,
-    cancelBtn: elements.confirmCancelBtn,
-    deleteBtn: elements.confirmDeleteBtn,
-    nameEl: elements.confirmNameEl,
-    onDelete: async (agentId) => {
-      try {
-        const response = await window.electronAPI?.invoke?.('delete-agent', agentId);
-        if (!response?.ok) {
-          window.alert(response?.error ?? 'Unable to delete this agent right now.');
-          return;
-        }
-
-        state.agents = state.agents.filter((agent) => agent.id !== agentId);
-        renderGrid();
-      } catch (error) {
-        window.alert(error.message ?? 'Unable to delete this agent right now.');
-      }
-    },
-  });
-
-  const agentGrid = createAgentGrid({
-    gridEl: elements.gridEl,
-    emptyEl: elements.emptyEl,
-    dataSourceTypes: DATA_SOURCE_TYPES,
-    resolveModelLabel: (providerId, modelId) =>
-      resolveModelLabel(state.allModels, providerId, modelId),
-    onToggleAgent: async ({ agent, enabled, card }) => {
-      const previousEnabled = agent.enabled;
-      agent.enabled = enabled;
-      card.classList.toggle('is-disabled', !enabled);
-      try {
-        const response = await window.electronAPI?.invoke?.('toggle-agent', agent.id, enabled);
-        if (response?.ok) return;
-
-        throw new Error(response?.error ?? 'Unable to update the agent right now.');
-      } catch (error) {
-        agent.enabled = previousEnabled;
-        card.classList.toggle('is-disabled', !previousEnabled);
-        const toggleInput = card.querySelector('.toggle-input');
-        if (toggleInput) toggleInput.checked = previousEnabled;
-        window.alert(error.message ?? 'Unable to update the agent right now.');
-      }
-    },
-    onRunAgent: async ({ agent, button }) => {
-      const originalLabel = button.innerHTML;
-      button.classList.add('is-running');
-      button.disabled = true;
-      button.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">
-          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
-        </svg>`;
-      try {
-        const response = await window.electronAPI?.invoke?.('run-agent-now', agent.id);
-        if (!response?.ok) {
-          throw new Error(response?.error ?? 'Unable to run this agent right now.');
-        }
-
-        state.agents = await fetchAgents();
-        renderGrid();
-      } catch (error) {
-        window.alert(error.message ?? 'Unable to run this agent right now.');
-      } finally {
-        button.classList.remove('is-running');
-        button.disabled = false;
-        button.innerHTML = originalLabel;
-      }
-    },
-    onOpenHistory: async (agent) => {
-      state.agents = await fetchAgents();
-      historyModal.open(state.agents.find((item) => item.id === agent.id) ?? agent);
-    },
-    onOpenModal: (agent) => openModal(agent),
-    onOpenConfirm: (id, name) => confirmDialog.open(id, name),
   });
 
   async function fetchAgents() {
@@ -279,7 +358,6 @@ export function mount(outlet) {
 
       providers.forEach((provider) => {
         if (!provider.configured) return;
-
         Object.entries(provider.models ?? {}).forEach(([modelId, info]) => {
           state.allModels.push({
             providerId: provider.provider,
@@ -299,21 +377,93 @@ export function mount(outlet) {
     }
   }
 
-  async function openModal(agent = null) {
+  const confirmDialog = createConfirmDialog({
+    state,
+    overlayEl: elements.confirmOverlay,
+    cancelBtn: elements.confirmCancelBtn,
+    deleteBtn: elements.confirmDeleteBtn,
+    nameEl: elements.confirmNameEl,
+    onDelete: async (agentId) => {
+      const response = await window.electronAPI?.invoke?.('delete-agent', agentId);
+      if (!response?.ok) {
+        window.alert(response?.error ?? 'Unable to delete this agent right now.');
+        return;
+      }
+
+      state.agents = state.agents.filter((agent) => agent.id !== agentId);
+      grid.render(state.agents);
+    },
+  });
+
+  const grid = createAgentsGrid({
+    gridEl: elements.gridEl,
+    emptyEl: elements.emptyEl,
+    resolveModelName: (providerId, modelId) =>
+      resolveModelLabel(state.allModels, providerId, modelId),
+    onToggle: async (agent, enabled, card) => {
+      const previousEnabled = agent.enabled;
+      agent.enabled = enabled;
+      card.classList.toggle('is-disabled', !enabled);
+      try {
+        const response = await window.electronAPI?.invoke?.('toggle-agent', agent.id, enabled);
+        if (!response?.ok) throw new Error(response?.error ?? 'Unable to update this agent.');
+      } catch (error) {
+        agent.enabled = previousEnabled;
+        card.classList.toggle('is-disabled', !previousEnabled);
+        const toggleInput = card.querySelector('.toggle-input');
+        if (toggleInput) toggleInput.checked = previousEnabled;
+        window.alert(error.message ?? 'Unable to update this agent.');
+      }
+    },
+    onRun: async (agent, button) => {
+      const originalLabel = button.innerHTML;
+      button.disabled = true;
+      button.classList.add('is-running');
+      button.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">
+          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
+        </svg>
+        Running`;
+      try {
+        const response = await window.electronAPI?.invoke?.('run-agent-now', agent.id);
+        if (!response?.ok)
+          throw new Error(response?.error ?? 'Unable to run this agent right now.');
+        state.agents = await fetchAgents();
+        grid.render(state.agents);
+      } catch (error) {
+        window.alert(error.message ?? 'Unable to run this agent right now.');
+      } finally {
+        button.disabled = false;
+        button.classList.remove('is-running');
+        button.innerHTML = originalLabel;
+      }
+    },
+    onHistory: async (agent) => {
+      state.agents = await fetchAgents();
+      historyModal.open(state.agents.find((item) => item.id === agent.id) ?? agent);
+    },
+    onEdit: (agent) => openModal(agent),
+    onDelete: (id, name) => confirmDialog.open(id, name),
+  });
+
+  function openModal(agent = null) {
     state.editingId = agent?.id ?? null;
     state.editingEnabled = agent?.enabled ?? true;
     state.primaryModel = agent?.primaryModel ? { ...agent.primaryModel } : null;
     state.fallbackModels = agent?.fallbackModels ? [...agent.fallbackModels] : [];
-    state.jobs = cloneJobsForEditing(agent);
 
-    if (elements.modalTitleEl)
+    if (elements.modalTitleEl) {
       elements.modalTitleEl.textContent = agent ? 'Edit Agent' : 'New Agent';
+    }
     if (elements.nameInput) elements.nameInput.value = agent?.name ?? '';
     if (elements.descInput) elements.descInput.value = agent?.description ?? '';
+    if (elements.promptInput) elements.promptInput.value = agent?.prompt ?? '';
+    if (elements.scheduleSelect) {
+      elements.scheduleSelect.value = String(agent?.trigger?.minutes ?? 30);
+    }
 
     modelPicker.syncPrimaryModelLabel();
     modelPicker.renderFallbackList();
-    jobsController.renderJobsList();
 
     elements.modalBackdrop?.classList.add('open');
     document.body.classList.add('modal-open');
@@ -327,54 +477,39 @@ export function mount(outlet) {
     modelPicker.closeMenu();
   }
 
-  const onModalBackdropClick = (event) => {
-    if (event.target === elements.modalBackdrop) closeModal();
-  };
-
-  const onSaveClick = async () => {
+  async function saveModal() {
     const name = elements.nameInput?.value.trim();
+    const prompt = elements.promptInput?.value.trim();
+
     if (!name) {
-      elements.nameInput?.animate([{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }], {
-        duration: 900,
-      });
       elements.nameInput?.focus();
       return;
     }
 
-    const configuredJobs = state.jobs
-      .filter((job) => !isBlankJobDraft(job))
-      .map(sanitizeJobForSave);
+    if (!prompt) {
+      elements.promptInput?.focus();
+      return;
+    }
 
-    if (
-      configuredJobs.length > 0 &&
-      (!state.primaryModel?.provider || !state.primaryModel?.modelId)
-    ) {
-      elements.primaryModelBtn?.animate(
-        [{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }],
-        { duration: 900 },
-      );
+    if (!state.primaryModel?.provider || !state.primaryModel?.modelId) {
       elements.primaryModelBtn?.focus();
-      window.alert('Choose a primary model before saving an agent with jobs.');
+      window.alert('Choose a primary model before saving this agent.');
       return;
     }
 
-    const invalidJobMessage = configuredJobs
-      .map((job, index) => getJobValidationError(job, index))
-      .find(Boolean);
-
-    if (invalidJobMessage) {
-      window.alert(invalidJobMessage);
-      return;
-    }
-
+    const minutes = Math.max(1, parseInt(elements.scheduleSelect?.value, 10) || 30);
     const payload = {
       id: state.editingId ?? generateAgentId(),
       name,
       description: elements.descInput?.value.trim() ?? '',
+      prompt,
       enabled: state.editingEnabled,
-      primaryModel: state.primaryModel ? { ...state.primaryModel } : null,
+      primaryModel: { ...state.primaryModel },
       fallbackModels: state.fallbackModels.map((model) => ({ ...model })),
-      jobs: configuredJobs,
+      trigger: {
+        type: 'interval',
+        minutes,
+      },
     };
 
     elements.saveBtn.disabled = true;
@@ -387,15 +522,11 @@ export function mount(outlet) {
       }
 
       const nextAgent = response.agent ?? payload;
-      const existingIndex = state.agents.findIndex((agent) => agent.id === payload.id);
+      const existingIndex = state.agents.findIndex((agent) => agent.id === nextAgent.id);
+      if (existingIndex >= 0) state.agents[existingIndex] = nextAgent;
+      else state.agents.push(nextAgent);
 
-      if (existingIndex >= 0) {
-        state.agents[existingIndex] = nextAgent;
-      } else {
-        state.agents.push(nextAgent);
-      }
-
-      renderGrid();
+      grid.render(state.agents);
       closeModal();
     } catch (error) {
       window.alert(error.message ?? 'Unable to save this agent right now.');
@@ -403,7 +534,7 @@ export function mount(outlet) {
       elements.saveBtn.disabled = false;
       elements.saveBtn.textContent = 'Save Agent';
     }
-  };
+  }
 
   const onEscapeKey = (event) => {
     if (event.key !== 'Escape') return;
@@ -413,21 +544,24 @@ export function mount(outlet) {
     responseViewer.close();
   };
 
-  const onCreateAgentClick = () => openModal();
+  const onBackdropClick = (event) => {
+    if (event.target === elements.modalBackdrop) closeModal();
+  };
 
-  elements.addAgentHeaderBtn?.addEventListener('click', onCreateAgentClick);
-  elements.addAgentEmptyBtn?.addEventListener('click', onCreateAgentClick);
+  const onCreateClick = () => openModal();
+
+  elements.addHeaderBtn?.addEventListener('click', onCreateClick);
+  elements.addEmptyBtn?.addEventListener('click', onCreateClick);
   elements.modalCloseBtn?.addEventListener('click', closeModal);
   elements.cancelBtn?.addEventListener('click', closeModal);
-  elements.modalBackdrop?.addEventListener('click', onModalBackdropClick);
-  elements.saveBtn?.addEventListener('click', onSaveClick);
+  elements.saveBtn?.addEventListener('click', saveModal);
+  elements.modalBackdrop?.addEventListener('click', onBackdropClick);
   document.addEventListener('keydown', onEscapeKey);
 
   async function load() {
-    await loadAgentsFeatureRegistry();
     await loadModels();
     state.agents = await fetchAgents();
-    renderGrid();
+    grid.render(state.agents);
   }
 
   load().catch((error) => {
@@ -436,23 +570,21 @@ export function mount(outlet) {
 
   return function cleanup() {
     document.removeEventListener('keydown', onEscapeKey);
-    elements.addAgentHeaderBtn?.removeEventListener('click', onCreateAgentClick);
-    elements.addAgentEmptyBtn?.removeEventListener('click', onCreateAgentClick);
+    elements.addHeaderBtn?.removeEventListener('click', onCreateClick);
+    elements.addEmptyBtn?.removeEventListener('click', onCreateClick);
     elements.modalCloseBtn?.removeEventListener('click', closeModal);
     elements.cancelBtn?.removeEventListener('click', closeModal);
-    elements.modalBackdrop?.removeEventListener('click', onModalBackdropClick);
-    elements.saveBtn?.removeEventListener('click', onSaveClick);
+    elements.saveBtn?.removeEventListener('click', saveModal);
+    elements.modalBackdrop?.removeEventListener('click', onBackdropClick);
 
-    agentGrid.clear();
-    jobsController.cleanup();
+    grid.clear();
     modelPicker.cleanup();
     confirmDialog.cleanup();
-
     closeModal();
     confirmDialog.close();
     historyModal.close();
-    responseViewer.close();
     historyModal.destroy();
+    responseViewer.close();
     responseViewer.destroy();
   };
 }

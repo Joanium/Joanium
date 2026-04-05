@@ -107,9 +107,41 @@ function getModelDisplayName(provider, modelId) {
   return provider?.models?.[modelId]?.name ?? modelId ?? 'model';
 }
 
-export function buildFailoverCandidates(selectedProvider, selectedModel) {
+function resolveModelSelection(options = {}) {
+  return {
+    selectedProvider: options.selectedProvider ?? state.selectedProvider,
+    selectedModel: options.selectedModel ?? state.selectedModel,
+    providers: Array.isArray(options.providers) ? options.providers : state.providers,
+    fallbackModels: Array.isArray(options.fallbackModels) ? options.fallbackModels : [],
+  };
+}
+
+export function buildFailoverCandidates(
+  selectedProvider,
+  selectedModel,
+  providers = state.providers,
+  fallbackModels = [],
+) {
   if (!selectedProvider || !selectedModel) return [];
   const candidates = [];
+
+  if (fallbackModels.length) {
+    const seen = new Set();
+    for (const fallback of fallbackModels) {
+      const provider = providers.find((item) => item.provider === fallback?.provider);
+      const modelId = fallback?.modelId;
+      if (!provider || !modelId) continue;
+      const key = `${provider.provider}::${modelId}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      candidates.push({
+        provider,
+        modelId,
+        note: `Falling back to ${provider.label ?? provider.provider} - ${getModelDisplayName(provider, modelId)}...`,
+      });
+    }
+    return candidates;
+  }
 
   const sameProviderModels = Object.entries(selectedProvider.models ?? {})
     .filter(([id]) => id !== selectedModel)
@@ -123,7 +155,7 @@ export function buildFailoverCandidates(selectedProvider, selectedModel) {
     });
   }
 
-  const otherBests = state.providers
+  const otherBests = providers
     .filter((provider) => provider.provider !== selectedProvider.provider)
     .map((provider) => {
       const entries = Object.entries(provider.models ?? {}).sort(
@@ -709,8 +741,9 @@ function buildToolResultContext(
   return lines.join('\n');
 }
 
-export async function planRequest(messages) {
-  if (!state.selectedProvider || !state.selectedModel || !messages?.length) {
+export async function planRequest(messages, options = {}) {
+  const { selectedProvider, selectedModel } = resolveModelSelection(options);
+  if (!selectedProvider || !selectedModel || !messages?.length) {
     return { skills: [], toolCalls: [] };
   }
 
@@ -767,8 +800,8 @@ export async function planRequest(messages) {
 
   try {
     const result = await fetchWithTools(
-      state.selectedProvider,
-      state.selectedModel,
+      selectedProvider,
+      selectedModel,
       [{ role: 'user', content: planPrompt, attachments: [] }],
       'You are a planning assistant. Output only valid JSON.',
       [],
@@ -801,6 +834,8 @@ export async function agentLoop(
   signal = null,
   options = {},
 ) {
+  const { selectedProvider, selectedModel, providers, fallbackModels } =
+    resolveModelSelection(options);
   const loopMessages = [...messages];
   const MAX_TURNS = 100;
   const MAX_REWRITE_ATTEMPTS = 5;
@@ -841,12 +876,12 @@ export async function agentLoop(
   let browserApprovalAvailable = hasPendingBrowserApproval(loopMessages);
 
   const candidates = [
-    { provider: state.selectedProvider, modelId: state.selectedModel, note: null },
-    ...buildFailoverCandidates(state.selectedProvider, state.selectedModel),
+    { provider: selectedProvider, modelId: selectedModel, note: null },
+    ...buildFailoverCandidates(selectedProvider, selectedModel, providers, fallbackModels),
   ].filter((candidate) => candidate.provider && candidate.modelId);
 
-  let usedProvider = state.selectedProvider;
-  let usedModel = state.selectedModel;
+  let usedProvider = selectedProvider;
+  let usedModel = selectedModel;
 
   const callPlanHint = plannedToolCalls?.length
     ? [

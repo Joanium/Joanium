@@ -10,8 +10,11 @@ export function register(automationEngine) {
   });
 
   ipcMain.handle('get-automations', () => {
-    try { return { ok: true, automations: automationEngine.getAll() }; }
-    catch (err) { return { ok: false, error: err.message, automations: [] }; }
+    try {
+      return { ok: true, automations: automationEngine.getAll() };
+    } catch (err) {
+      return { ok: false, error: err.message, automations: [] };
+    }
   });
 
   ipcMain.handle('save-automation', (_e, automation) => {
@@ -19,7 +22,9 @@ export function register(automationEngine) {
       const saved = automationEngine.saveAutomation(automation);
       automationEngine.reload();
       return { ok: true, automation: saved };
-    } catch (err) { return { ok: false, error: err.message }; }
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
   });
 
   ipcMain.handle('delete-automation', (_e, id) => {
@@ -27,7 +32,9 @@ export function register(automationEngine) {
       automationEngine.deleteAutomation(id);
       automationEngine.reload();
       return { ok: true };
-    } catch (err) { return { ok: false, error: err.message }; }
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
   });
 
   ipcMain.handle('toggle-automation', (_e, id, enabled) => {
@@ -35,6 +42,17 @@ export function register(automationEngine) {
       automationEngine.toggleAutomation(id, enabled);
       automationEngine.reload();
       return { ok: true };
-    } catch (err) { return { ok: false, error: err.message }; }
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('run-automation-now', async (_e, automationId) => {
+    try {
+      await automationEngine.runNow(automationId);
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
   });
 }

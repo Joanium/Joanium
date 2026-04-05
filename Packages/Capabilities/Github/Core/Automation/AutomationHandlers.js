@@ -1,230 +1,146 @@
-import { GithubAPI, parseCommaList, requireGithubCredentials } from '../Shared/Common.js';
+﻿import { GithubAPI, requireGithubCredentials } from '../Shared/Common.js';
 
-async function openSite(url) {
-  const mod = await import('../../../../Features/Automation/Actions/Site.js');
-  return mod.openSite(url);
+function requireRepo(owner, repo) {
+  if (!owner || !repo) throw new Error('GitHub owner and repo are required.');
 }
 
-async function sendNotification(title, body = '') {
-  const mod = await import('../../../../Features/Automation/Actions/Notification.js');
-  return mod.sendNotification(title, body);
-}
-
-function requireRepo(action) {
-  if (!action.owner || !action.repo) throw new Error('GitHub owner and repo are required.');
-}
-
-function parseBoolean(value) {
-  if (typeof value === 'boolean') return value;
-  if (value == null || value === '') return false;
-  return ['true', '1', 'yes', 'on'].includes(String(value).toLowerCase());
-}
-
-function parseWorkflowInputs(value) {
-  if (!value) return {};
-  if (typeof value === 'object' && !Array.isArray(value)) return value;
+function formatDate(value) {
+  if (!value) return 'unknown date';
   try {
-    const parsed = JSON.parse(String(value));
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+    return new Date(value).toLocaleDateString();
   } catch {
-    throw new Error('workflowInputs must be valid JSON.');
+    return String(value);
   }
 }
 
-export const githubAutomationHandlers = {
-  async github_open_repo(_ctx, action) {
-    requireRepo(action);
-    await openSite(`https://github.com/${action.owner}/${action.repo}`);
-  },
-
-  async github_check_prs(ctx, action) {
-    requireRepo(action);
-    const credentials = requireGithubCredentials(ctx);
-    const state = action.state ?? 'open';
-    const prs = await GithubAPI.getPullRequests(credentials, action.owner, action.repo, state);
-    await sendNotification(
-      `${action.owner}/${action.repo} - ${prs.length} ${state} PR${prs.length === 1 ? '' : 's'}`,
-      prs.slice(0, 3).map(pr => `- ${pr.title}`).join('\n') || 'No pull requests.',
-    );
-  },
-
-  async github_check_issues(ctx, action) {
-    requireRepo(action);
-    const credentials = requireGithubCredentials(ctx);
-    const state = action.state ?? 'open';
-    const issues = await GithubAPI.getIssues(credentials, action.owner, action.repo, state);
-    await sendNotification(
-      `${action.owner}/${action.repo} - ${issues.length} ${state} issue${issues.length === 1 ? '' : 's'}`,
-      issues.slice(0, 3).map(issue => `- ${issue.title}`).join('\n') || 'No issues.',
-    );
-  },
-
-  async github_check_commits(ctx, action) {
-    requireRepo(action);
-    const credentials = requireGithubCredentials(ctx);
-    const commits = await GithubAPI.getCommits(credentials, action.owner, action.repo, action.maxResults ?? 5);
-    await sendNotification(
-      `${action.owner}/${action.repo} - ${commits.length} recent commit${commits.length === 1 ? '' : 's'}`,
-      commits.slice(0, 3).map(commit => `- ${String(commit.commit?.message || '').split('\n')[0]}`).join('\n') || 'No commits found.',
-    );
-  },
-
-  async github_check_releases(ctx, action) {
-    requireRepo(action);
-    const credentials = requireGithubCredentials(ctx);
-    const release = await GithubAPI.getLatestRelease(credentials, action.owner, action.repo);
-    await sendNotification(
-      `${action.owner}/${action.repo} - ${release.tag_name}`,
-      `${release.name || release.tag_name}${release.published_at ? ` - ${new Date(release.published_at).toLocaleDateString()}` : ''}`,
-    );
-  },
-
-  async github_check_notifs(ctx) {
+export const githubDataSourceCollectors = {
+  async github_notifications(ctx) {
     const credentials = requireGithubCredentials(ctx);
     const notifications = await GithubAPI.getNotifications(credentials);
-    await sendNotification(
-      'GitHub Notifications',
-      notifications.length === 0 ? 'No unread notifications.' : `${notifications.length} unread notification${notifications.length === 1 ? '' : 's'}`,
-    );
+    if (!notifications.length) return 'EMPTY: GitHub has no unread notifications.';
+    return `GitHub Notifications - ${notifications.length} unread:\n\n${notifications
+      .slice(0, 15)
+      .map(
+        (item, index) =>
+          `${index + 1}. [${item.reason}] ${item.subject?.title} in ${item.repository?.full_name}`,
+      )
+      .join('\n')}`;
   },
 
-  async github_create_issue(ctx, action) {
-    requireRepo(action);
-    const title = action.issueTitle ?? action.title;
-    if (!title) throw new Error('Issue title is required.');
+  async github_repos(ctx, dataSource) {
     const credentials = requireGithubCredentials(ctx);
-    const issue = await GithubAPI.createIssue(
+    const repos = await GithubAPI.getRepos(credentials, dataSource.maxResults ?? 30);
+    if (!repos.length) return 'EMPTY: No GitHub repositories found.';
+    return `GitHub Repositories - ${repos.length} repos:\n\n${repos.map((repo, index) => `${index + 1}. ${repo.full_name} [${repo.language ?? 'unknown'}]`).join('\n')}`;
+  },
+
+  async github_prs(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
+    const credentials = requireGithubCredentials(ctx);
+    const state = dataSource.state ?? 'open';
+    const prs = await GithubAPI.getPullRequests(
       credentials,
-      action.owner,
-      action.repo,
-      title,
-      action.issueBody ?? action.body ?? '',
-      parseCommaList(action.labels),
+      dataSource.owner,
+      dataSource.repo,
+      state,
+      dataSource.maxResults ?? 20,
     );
-    await sendNotification(`Issue created: #${issue.number}`, `${issue.title} - ${action.owner}/${action.repo}`);
+    if (!prs.length)
+      return `EMPTY: ${dataSource.owner}/${dataSource.repo} has no ${state} pull requests.`;
+    return `GitHub Pull Requests (${dataSource.owner}/${dataSource.repo}) - ${prs.length}:\n\n${prs.map((pr, index) => `${index + 1}. #${pr.number}: ${pr.title} by ${pr.user?.login ?? 'unknown'}`).join('\n\n')}`;
   },
 
-  async github_repo_stats(ctx, action) {
-    requireRepo(action);
+  async github_issues(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
     const credentials = requireGithubCredentials(ctx);
-    const stats = await GithubAPI.getRepoStats(credentials, action.owner, action.repo);
-    await sendNotification(
-      stats.fullName || `${action.owner}/${action.repo}`,
-      `Stars ${stats.stars ?? 0} | Forks ${stats.forks ?? 0} | Open issues ${stats.openIssues ?? 0} | ${stats.language ?? 'unknown'}`,
+    const state = dataSource.state ?? 'open';
+    const issues = await GithubAPI.getIssues(
+      credentials,
+      dataSource.owner,
+      dataSource.repo,
+      state,
+      dataSource.maxResults ?? 20,
     );
+    if (!issues.length)
+      return `EMPTY: ${dataSource.owner}/${dataSource.repo} has no ${state} issues.`;
+    return `GitHub Issues (${dataSource.owner}/${dataSource.repo}) - ${issues.length}:\n\n${issues.map((issue, index) => `${index + 1}. #${issue.number}: ${issue.title} by ${issue.user?.login ?? 'unknown'}`).join('\n\n')}`;
   },
 
-  async github_star_repo(ctx, action) {
-    requireRepo(action);
+  async github_commits(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
     const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.starRepo(credentials, action.owner, action.repo);
-    await sendNotification(`Starred ${action.owner}/${action.repo}`, '');
+    const commits = await GithubAPI.getCommits(
+      credentials,
+      dataSource.owner,
+      dataSource.repo,
+      dataSource.maxResults ?? 10,
+    );
+    if (!commits.length) return `EMPTY: ${dataSource.owner}/${dataSource.repo} has no commits.`;
+    return `GitHub Commits (${dataSource.owner}/${dataSource.repo}) - ${commits.length}:\n\n${commits.map((commit, index) => `${index + 1}. ${String(commit.commit?.message || '').split('\n')[0]} - ${commit.commit?.author?.name ?? 'unknown'}`).join('\n')}`;
   },
 
-  async github_create_pr(ctx, action) {
-    requireRepo(action);
-    const title = action.prTitle ?? action.title;
-    const head = action.prHead ?? action.head;
-    const base = action.prBase ?? action.base;
-    if (!title || !head || !base) throw new Error('PR title, head branch, and base branch are required.');
+  async github_releases(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
     const credentials = requireGithubCredentials(ctx);
-    const pr = await GithubAPI.createPR(credentials, action.owner, action.repo, {
-      title,
-      head,
-      base,
-      body: action.issueBody ?? action.body ?? '',
-      draft: parseBoolean(action.draft),
+    const releases = await GithubAPI.getReleases(
+      credentials,
+      dataSource.owner,
+      dataSource.repo,
+      dataSource.maxResults ?? 10,
+    );
+    if (!releases.length) return `EMPTY: ${dataSource.owner}/${dataSource.repo} has no releases.`;
+    return `GitHub Releases (${dataSource.owner}/${dataSource.repo}) - ${releases.length}:\n\n${releases.map((release, index) => `${index + 1}. ${release.name || release.tag_name} (${release.tag_name}) - ${formatDate(release.published_at)}`).join('\n')}`;
+  },
+
+  async github_workflow_runs(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
+    const credentials = requireGithubCredentials(ctx);
+    const runs = await GithubAPI.getWorkflowRuns(credentials, dataSource.owner, dataSource.repo, {
+      branch: dataSource.branch ?? '',
+      event: dataSource.event ?? '',
+      perPage: dataSource.maxResults ?? 20,
     });
-    await sendNotification(`PR created: #${pr.number}`, `${pr.title} - ${action.owner}/${action.repo}`);
+    const workflowRuns = runs.workflow_runs ?? [];
+    if (!workflowRuns.length)
+      return `EMPTY: ${dataSource.owner}/${dataSource.repo} has no workflow runs.`;
+    return `GitHub Workflow Runs (${dataSource.owner}/${dataSource.repo}) - ${workflowRuns.length}:\n\n${workflowRuns.map((run, index) => `${index + 1}. ${run.name}: ${run.status}${run.conclusion ? ` / ${run.conclusion}` : ''} [${run.event}]`).join('\n')}`;
   },
 
-  async github_merge_pr(ctx, action) {
-    requireRepo(action);
-    if (!action.prNumber) throw new Error('Pull request number is required.');
+  async github_repo_stats(ctx, dataSource) {
+    requireRepo(dataSource.owner, dataSource.repo);
     const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.mergePR(credentials, action.owner, action.repo, Number(action.prNumber), action.mergeMethod ?? 'merge', action.commitTitle ?? '');
-    await sendNotification(`PR #${action.prNumber} merged`, `${action.owner}/${action.repo} - ${action.mergeMethod ?? 'merge'}`);
+    const stats = await GithubAPI.getRepoStats(credentials, dataSource.owner, dataSource.repo);
+    return [
+      `GitHub Repo Stats (${stats.fullName || `${dataSource.owner}/${dataSource.repo}`})`,
+      `Stars: ${stats.stars ?? 0}`,
+      `Forks: ${stats.forks ?? 0}`,
+      `Watchers: ${stats.watchers ?? 0}`,
+      `Open issues: ${stats.openIssues ?? 0}`,
+      `Language: ${stats.language ?? 'unknown'}`,
+      stats.description ? `Description: ${stats.description}` : '',
+      stats.url ? `URL: ${stats.url}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n');
   },
+};
 
-  async github_close_issue(ctx, action) {
-    requireRepo(action);
-    if (!action.issueNumber) throw new Error('Issue number is required.');
+export const githubOutputHandlers = {
+  async github_pr_review(ctx, payload) {
     const credentials = requireGithubCredentials(ctx);
-    const reason = action.closeReason ?? action.reason ?? 'completed';
-    await GithubAPI.closeIssue(credentials, action.owner, action.repo, Number(action.issueNumber), reason);
-    await sendNotification(`Issue #${action.issueNumber} closed`, `${action.owner}/${action.repo} - ${reason}`);
-  },
-
-  async github_comment_issue(ctx, action) {
-    requireRepo(action);
-    if (!action.issueNumber) throw new Error('Issue number is required.');
-    const body = action.issueBody ?? action.body;
-    if (!body) throw new Error('Comment body is required.');
-    const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.addIssueComment(credentials, action.owner, action.repo, Number(action.issueNumber), body);
-    await sendNotification(`Comment added to #${action.issueNumber}`, `${action.owner}/${action.repo}`);
-  },
-
-  async github_add_labels(ctx, action) {
-    requireRepo(action);
-    if (!action.issueNumber) throw new Error('Issue number is required.');
-    const labels = parseCommaList(action.labels);
-    if (!labels.length) throw new Error('At least one label is required.');
-    const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.addLabels(credentials, action.owner, action.repo, Number(action.issueNumber), labels);
-    await sendNotification(`Labels added to #${action.issueNumber}`, labels.join(', '));
-  },
-
-  async github_assign(ctx, action) {
-    requireRepo(action);
-    if (!action.issueNumber) throw new Error('Issue number is required.');
-    const assignees = parseCommaList(action.assignees);
-    if (!assignees.length) throw new Error('At least one assignee is required.');
-    const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.addAssignees(credentials, action.owner, action.repo, Number(action.issueNumber), assignees);
-    await sendNotification(`Assigned #${action.issueNumber}`, `${assignees.join(', ')} - ${action.owner}/${action.repo}`);
-  },
-
-  async github_mark_notifs_read(ctx) {
-    const credentials = requireGithubCredentials(ctx);
-    await GithubAPI.markAllNotificationsRead(credentials);
-    await sendNotification('GitHub notifications cleared', 'All notifications marked as read.');
-  },
-
-  async github_trigger_workflow(ctx, action) {
-    requireRepo(action);
-    if (!action.workflowId) throw new Error('Workflow ID is required.');
-    const credentials = requireGithubCredentials(ctx);
-    const ref = action.workflowRef ?? action.ref ?? 'main';
-    const inputs = parseWorkflowInputs(action.workflowInputs ?? action.inputs);
-    await GithubAPI.triggerWorkflow(credentials, action.owner, action.repo, action.workflowId, ref, inputs);
-    await sendNotification('Workflow triggered', `${action.workflowId} on ${ref} - ${action.owner}/${action.repo}`);
-  },
-
-  async github_workflow_status(ctx, action) {
-    requireRepo(action);
-    if (!action.workflowId) throw new Error('Workflow ID is required.');
-    const credentials = requireGithubCredentials(ctx);
-    const run = await GithubAPI.getLatestWorkflowRun(credentials, action.owner, action.repo, action.workflowId, action.branch ?? '');
-    if (!run) {
-      await sendNotification(action.workflowId, 'No workflow runs found.');
-      return;
+    const { output, aiResponse } = payload;
+    if (!output.owner || !output.repo || !output.prNumber) {
+      throw new Error('github_pr_review requires owner, repo, and prNumber.');
     }
-    await sendNotification(
-      `${action.workflowId} - ${run.status}${run.conclusion ? ` / ${run.conclusion}` : ''}`,
-      `Branch: ${run.head_branch ?? 'unknown'} - ${action.owner}/${action.repo}`,
+    await GithubAPI.createPRReview(
+      credentials,
+      output.owner,
+      output.repo,
+      Number(output.prNumber),
+      {
+        body: aiResponse,
+        event: output.event ?? 'COMMENT',
+      },
     );
-  },
-
-  async github_create_gist(ctx, action) {
-    const filename = action.gistFilename ?? action.filename;
-    if (!filename) throw new Error('Filename is required.');
-    if (!action.content) throw new Error('Content is required.');
-    const credentials = requireGithubCredentials(ctx);
-    const gist = await GithubAPI.createGist(credentials, action.description ?? '', { [filename]: { content: action.content } }, parseBoolean(action.isPublic));
-    await sendNotification('Gist created', gist.html_url ?? `${filename}`);
-    if (parseBoolean(action.openInBrowser) && gist.html_url) {
-      await openSite(gist.html_url);
-    }
   },
 };
