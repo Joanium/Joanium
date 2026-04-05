@@ -1,0 +1,17 @@
+{
+  "name": "@Joanium/capability-gitlab",
+  "private": true,
+  "type": "module",
+  "description": "GitLab capability package for Joanium.",
+  "main": "./Core/Feature.js",
+  "exports": {
+    ".": "./Core/Feature.js"
+  },
+  "joanium": {
+    "discovery": {
+      "features": [
+        "./Core"
+      ]
+    }
+  }
+}
