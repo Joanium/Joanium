@@ -111,6 +111,42 @@ export const STATIC_CONNECTORS = [
       },
     ],
   },
+  {
+    id: 'gitlab',
+    name: 'GitLab',
+    icon: '🦊',
+    description:
+      'Browse projects, load code into chat, track issues & merge requests, and monitor notifications.',
+    helpUrl: 'https://gitlab.com/-/user_settings/personal_access_tokens',
+    helpText: 'Create a Personal Access Token →',
+    featureId: 'gitlab',
+    oauthType: null,
+    subServices: [],
+    setupSteps: [],
+    capabilities: [
+      'Ask "load file X from owner/project" in chat',
+      'List projects, issues, and merge requests',
+      'AI knows your projects via system prompt',
+      'Track MRs & issues via automations',
+    ],
+    fields: [
+      {
+        key: 'token',
+        label: 'Personal Access Token',
+        placeholder: 'glpat-…',
+        type: 'password',
+        hint: 'Create at gitlab.com/profile/personal_access_tokens — needs: read_api, read_repository, read_user, read_all scopes',
+      },
+    ],
+    automations: [
+      { name: 'Daily MR Summary', description: 'Every morning — notify about open merge requests' },
+      { name: 'Issue Tracker', description: 'Daily — notify about open issues in a project' },
+      {
+        name: 'GitLab Notifications',
+        description: 'Hourly — notify if there are unread notifications',
+      },
+    ],
+  },
 ];
 
 export const STATIC_FREE_CONNECTORS = [

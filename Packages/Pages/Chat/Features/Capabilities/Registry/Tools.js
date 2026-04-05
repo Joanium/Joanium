@@ -1,4 +1,4 @@
-﻿import { state } from '../../../../../System/State.js';
+import { state } from '../../../../../System/State.js';
 import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
 import { WEATHER_TOOLS } from '../Weather/Tools.js';
 import { CRYPTO_TOOLS } from '../Crypto/Tools.js';
@@ -75,6 +75,7 @@ const CATEGORY_TO_CONNECTOR = {
   calendar: 'google',
   github: 'github',
   github_review: 'github',
+  gitlab: 'gitlab',
   open_meteo: 'open_meteo',
   coingecko: 'coingecko',
   exchange_rate: 'exchange_rate',
