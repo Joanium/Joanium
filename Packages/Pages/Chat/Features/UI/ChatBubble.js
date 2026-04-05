@@ -330,7 +330,7 @@ export function buildLogItem(rawLine) {
       .trim()
       .startsWith('Thinking')
   ) {
-    displayText = 'Understanding the request...';
+    displayText = 'Working…';
   }
 
   if (rawLine.startsWith('[GMAIL]')) {
@@ -772,10 +772,9 @@ export async function onChatMessagesClick(e) {
 
 /* ── Message normalisation / sanitisation ── */
 const INTERNAL_ASSISTANT_TOOL_PATTERNS = [
-  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b.*$/i,
+  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b[\s.,;:!?\u2026]*$/i,
   /^\s*Tool result for\b/i,
   /^\s*Internal execution context for the assistant only\b/i,
-  /\[TERMINAL:[^\]]+\]/i,
 ];
 
 function stripAssistantReasoningTags(text) {
@@ -814,6 +813,13 @@ function isInternalAssistantToolLeak(text) {
   return INTERNAL_ASSISTANT_TOOL_PATTERNS.some((pattern) => pattern.test(value));
 }
 
+function stripTerminalMountMarkers(text) {
+  return String(text ?? '')
+    .replace(/\[TERMINAL:[^\]]+\]/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 export function isInternalHiddenMessage(msg) {
   if (!msg) return false;
   if (msg.role === 'assistant') return isInternalAssistantToolLeak(msg.content);
@@ -827,6 +833,8 @@ export function sanitizeAssistantReply(text) {
   const value = stripAssistantReasoningTags(text);
   if (!value) return '(empty response)';
   if (!isInternalAssistantToolLeak(value)) return value;
+  const recovered = stripTerminalMountMarkers(value);
+  if (recovered.length >= 32 && !isInternalAssistantToolLeak(recovered)) return recovered;
   return 'I ran into an internal formatting issue while preparing the answer. Please try again.';
 }
 

@@ -4,10 +4,9 @@ import Paths from '../Core/Paths.js';
 import * as ProjectService from './ProjectService.js';
 
 const INTERNAL_ASSISTANT_TOOL_PATTERNS = [
-  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b.*$/i,
+  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b[\s.,;:!?\u2026]*$/i,
   /^\s*Tool result for\b/i,
   /^\s*Internal execution context for the assistant only\b/i,
-  /\[TERMINAL:[^\]]+\]/i,
 ];
 const CHAT_ID_RE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
 

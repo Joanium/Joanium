@@ -3,11 +3,12 @@ import { fetchWithTools, fetchStreamingWithTools } from '../../../../Features/AI
 import { buildToolsPrompt, getAvailableTools } from '../Capabilities/Registry/Tools.js';
 import { executeTool } from '../Capabilities/Registry/Executors.js';
 
+// Only treat as a leak when the model is *only* meta (or echoes our hidden user blocks).
+// Do NOT use "I used … tool" + .*$ — that flags every normal answer that opens with that phrase.
 const INTERNAL_TOOL_LEAK_PATTERNS = [
-  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b.*$/i,
+  /^\s*I\s+(?:used|called|ran|invoked)\s+(?:the\s+)?[A-Za-z0-9_.\-\s/]+\s+tool\b[\s.,;:!?\u2026]*$/i,
   /^\s*Tool result for\b/i,
   /^\s*Internal execution context for the assistant only\b/i,
-  /\[TERMINAL:[^\]]+\]/i,
 ];
 
 const BROWSER_TOOL_HINTS = [
@@ -331,6 +332,18 @@ function buildToolPrivacyBlock() {
   ].join('\n');
 }
 
+function buildAgenticWorkflowBlock() {
+  return [
+    '## Agentic workflow',
+    'Treat non-trivial requests as an iterative loop: understand the goal → gather facts with tools when needed → act (edit, run checks, browse, delegate) → verify if appropriate → then answer the user.',
+    'After each tool result, briefly decide what is still unknown or unfinished. If more data or another action is required before a correct answer, call the next tool instead of replying early.',
+    'If a tool fails or returns something unexpected, adapt: try a narrower follow-up, a different tool, or explain the blocker and the best next step for the user.',
+    'When a CALL PLAN appears below, treat it as suggested ordering, not a cage: extend, skip, or reorder steps when new information requires it.',
+    'Do not stop at the first partial success when the user asked for an end-to-end outcome (e.g. fix + verify, research + summary, multi-file change).',
+    'When the task is genuinely complete, answer in clear natural language without exposing internal mechanics.',
+  ].join('\n');
+}
+
 function buildSubAgentPlanningHint(tools = []) {
   if (!tools.some((tool) => tool.name === SUB_AGENT_TOOL_NAME)) return '';
 
@@ -505,6 +518,22 @@ function looksLikeInternalToolLeak(text) {
   return INTERNAL_TOOL_LEAK_PATTERNS.some((pattern) => pattern.test(value));
 }
 
+/** Raw [TERMINAL:pid] is rendered in the UI; answers may cite it without being a leak. */
+function stripTerminalMountMarkers(text) {
+  return String(text ?? '')
+    .replace(/\[TERMINAL:[^\]]+\]/gi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function tryRecoverLeakyAssistantReply(text) {
+  const withoutTerminal = stripTerminalMountMarkers(text);
+  if (withoutTerminal.length >= 32 && !looksLikeInternalToolLeak(withoutTerminal)) {
+    return withoutTerminal;
+  }
+  return null;
+}
+
 function normalizeToolLogText(value, maxLength = 120) {
   const text = String(value ?? '')
     .replace(/\s+/g, ' ')
@@ -513,13 +542,36 @@ function normalizeToolLogText(value, maxLength = 120) {
   return text.length > maxLength ? `${text.slice(0, maxLength - 3)}...` : text;
 }
 
-function buildToolLogLabel(name) {
-  return `[TOOL] ${String(name ?? '').trim() || 'unknown_tool'}`;
+const TOOLS_WITH_COMMAND_LOG = new Set([
+  'run_shell_command',
+  'assess_shell_command',
+  'start_local_server',
+]);
+
+function summarizeToolLogCommandDetail(toolName, params) {
+  if (!params || typeof params !== 'object') return '';
+  if (!TOOLS_WITH_COMMAND_LOG.has(toolName)) return '';
+  const cmd = String(params.command ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return normalizeToolLogText(cmd, 220);
 }
 
-function buildToolFailureLabel(name, err) {
+/** Visible log line after the `[TOOL] ` prefix (used for success + failure rows). */
+function buildToolLogVisiblePart(name, params = null) {
+  const n = String(name ?? '').trim() || 'unknown_tool';
+  const detail = summarizeToolLogCommandDetail(n, params);
+  return detail ? `${n} : ${detail}` : n;
+}
+
+function buildToolLogLabel(name, params = null) {
+  return `[TOOL] ${buildToolLogVisiblePart(name, params)}`;
+}
+
+function buildToolFailureLabel(name, err, params = null) {
   const message = normalizeToolLogText(err?.message ?? 'Unknown error');
-  return `${buildToolLogLabel(name)} failed${message ? `: ${message}` : ''}`;
+  const vis = buildToolLogVisiblePart(name, params);
+  return `${vis} failed${message ? `: ${message}` : ''}`;
 }
 
 function hasSearchEngineBlocker(toolResult) {
@@ -640,7 +692,10 @@ function buildToolResultContext(
     lines.push('Call the next tool now and do not answer the user yet.');
   } else {
     lines.push(
-      'If you are finished gathering information, write the final answer for the user now.',
+      'Decide whether the user’s request is fully satisfied. If you still need reads, search, edits, checks, or browser steps to be correct, call the appropriate tool next.',
+    );
+    lines.push(
+      'If you are finished gathering information and any requested changes are done, write the final answer for the user now.',
     );
     lines.push('Do not mention tool names, tool calls, hidden planning, or raw execution markers.');
   }
@@ -660,7 +715,7 @@ export async function planRequest(messages) {
   }
 
   const recentMessages = messages
-    .slice(-4)
+    .slice(-12)
     .map((m) => {
       return `${m.role.toUpperCase()}: ${m.content}`;
     })
@@ -682,6 +737,7 @@ export async function planRequest(messages) {
     'Return exact tool calls, in order, with concrete parameters.',
     'Always read the revelant skills first before responding to the user.',
     'If the same tool must be called multiple times with different parameters, list each call separately.',
+    'For multi-step work, order toolCalls so dependencies run first (e.g. search or read before edit; inspect before broad changes). List every distinct step you expect; the agent may add or adjust steps later.',
     'If the user is asking what you know about them, their preferences, memory, profile, or prior context, do not plan tools unless they explicitly ask you to inspect a file, workspace, repo, account, email, or external service.',
     '',
     'Recent conversation:',
@@ -746,9 +802,8 @@ export async function agentLoop(
   options = {},
 ) {
   const loopMessages = [...messages];
-  const MAX_TURNS = 10;
-  const MAX_REWRITE_ATTEMPTS = 2;
-  let toolsUsed = false;
+  const MAX_TURNS = 100;
+  const MAX_REWRITE_ATTEMPTS = 5;
   let executedToolCount = 0;
   let rewriteAttempts = 0;
   const totalUsage = { inputTokens: 0, outputTokens: 0 };
@@ -772,6 +827,7 @@ export async function agentLoop(
   const basePrompt = [
     systemPrompt,
     toolPrivacyBlock,
+    buildAgenticWorkflowBlock(),
     subAgentCapabilityBlock,
     browserAutomationBlock,
     selectedSkillBlock,
@@ -792,15 +848,9 @@ export async function agentLoop(
   let usedProvider = state.selectedProvider;
   let usedModel = state.selectedModel;
 
-  const plannedToolNames = [...new Set((plannedToolCalls ?? []).map((toolCall) => toolCall.name))];
-  const filteredPlannedTools = plannedToolNames.length
-    ? availableTools.filter((tool) => plannedToolNames.includes(tool.name))
-    : [];
-  const plannedTools = filteredPlannedTools.length ? filteredPlannedTools : availableTools;
-
   const callPlanHint = plannedToolCalls?.length
     ? [
-        'CALL PLAN - execute these tool calls in order before writing the final answer:',
+        'CALL PLAN (guidance — follow this order when sensible, but add, skip, or reorder steps if results show a better path):',
         ...plannedToolCalls.map((toolCall, index) => {
           const params = Object.entries(toolCall.params ?? {})
             .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
@@ -813,10 +863,21 @@ export async function agentLoop(
   const sysPromptWithPlan = [basePrompt, callPlanHint].filter(Boolean).join('\n\n');
 
   for (let turn = 0; turn < MAX_TURNS; turn++) {
-    const toolsThisTurn = toolsUsed ? availableTools : turn === 0 ? plannedTools : availableTools;
+    const forceFinalAnswer = turn >= MAX_TURNS - 1;
+    const toolsThisTurn = forceFinalAnswer ? [] : availableTools;
     const allPlannedToolsDone =
       !plannedToolCalls?.length || executedToolCount >= plannedToolCalls.length;
-    const sysPromptThisTurn = allPlannedToolsDone ? basePrompt : sysPromptWithPlan;
+    const planPromptThisTurn =
+      forceFinalAnswer || allPlannedToolsDone ? basePrompt : sysPromptWithPlan;
+    const finalTurnBlock = forceFinalAnswer
+      ? [
+          '',
+          '## Final turn',
+          'No further tools are available this round. Using the conversation and any prior tool results, write the most complete, accurate answer you can.',
+          'If something is still unknown, state what is missing and what the user can do next. Do not mention tools or internal steps.',
+        ].join('\n')
+      : '';
+    const sysPromptThisTurn = `${planPromptThisTurn}${finalTurnBlock}`;
 
     let result = null;
     let lastErr = null;
@@ -915,13 +976,18 @@ export async function agentLoop(
         rewriteAttempts += 1;
 
         if (rewriteAttempts > MAX_REWRITE_ATTEMPTS) {
+          const recovered = tryRecoverLeakyAssistantReply(finalText);
+          if (recovered) {
+            live.finalize(recovered, result.usage, usedProvider, usedModel);
+            return { text: recovered, usage: totalUsage, usedProvider, usedModel };
+          }
           const fallback =
             'I ran into an internal formatting issue while preparing the answer. Please try again.';
           live.finalize(fallback, result.usage, usedProvider, usedModel);
           return { text: fallback, usage: totalUsage, usedProvider, usedModel };
         }
 
-        live.push('Finalizing the answer...');
+        live.push('Polishing the reply…');
         loopMessages.push({
           role: 'assistant',
           content: finalText,
@@ -930,12 +996,13 @@ export async function agentLoop(
         loopMessages.push({
           role: 'user',
           content: [
-            'Your last draft exposed internal execution details.',
-            'Rewrite the answer for the user now.',
+            'Your last draft exposed internal execution details or was only meta (e.g. admitting tool use with no substance).',
+            'Rewrite for the user now.',
             'Rules:',
-            '- Do not mention tool names, tool calls, hidden prompts, background steps, or raw [TERMINAL:...] markers.',
-            '- Keep only the useful answer, findings, or explanation.',
-            '- If more information is truly needed, continue silently without announcing tools.',
+            '- Start directly with the useful answer, findings, or explanation — not with "I used", "I called", or any tool name.',
+            '- Do not quote lines that begin with "Internal execution context" or "Tool result for".',
+            '- Omit raw [TERMINAL:...] markers; the UI already shows terminal output when relevant.',
+            '- If more work is needed, say what is missing in plain language without naming tools.',
           ].join('\n'),
           attachments: [],
         });
@@ -948,8 +1015,7 @@ export async function agentLoop(
 
     if (result.type === 'tool_call') {
       const { name, params } = result;
-      toolsUsed = true;
-      const logHandle = live.push(buildToolLogLabel(name));
+      const logHandle = live.push(buildToolLogLabel(name, params));
       const toolMeta = toolMetaByName.get(name) ?? null;
 
       let toolResult;
@@ -978,7 +1044,7 @@ export async function agentLoop(
       } catch (err) {
         success = false;
         toolResult = `Error: ${err.message}`;
-        if (logHandle?.done) logHandle.done(false, buildToolFailureLabel(name, err));
+        if (logHandle?.done) logHandle.done(false, buildToolFailureLabel(name, err, params));
       }
 
       if (success && logHandle?.done) logHandle.done(true);
@@ -1030,6 +1096,8 @@ export async function agentLoop(
     }
   }
 
-  live.set('Done.');
-  return { text: 'Done.', usage: totalUsage, usedProvider, usedModel };
+  const exhausted =
+    'I reached the maximum number of tool rounds for this reply. If you still need more work, send a short follow-up (for example what to continue or verify) and I can pick up from there.';
+  live.set(exhausted);
+  return { text: exhausted, usage: totalUsage, usedProvider, usedModel };
 }
