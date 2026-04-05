@@ -10,7 +10,7 @@ export function resetMemoryCounter() {
 
 export function showMemoryIndicator() {
   const existing = document.getElementById('memory-learn-indicator');
-  if (existing) return () => { };
+  if (existing) return () => {};
 
   const el = document.createElement('div');
   el.id = 'memory-learn-indicator';
@@ -53,7 +53,7 @@ export async function attemptMemoryUpdate() {
 
   if (!state.selectedProvider || !state.selectedModel) return;
 
-  const userMessages = state.messages.filter(m => m.role === 'user');
+  const userMessages = state.messages.filter((m) => m.role === 'user');
   if (userMessages.length < 4) return;
 
   const hideIndicator = showMemoryIndicator();
@@ -63,7 +63,7 @@ export async function attemptMemoryUpdate() {
 
     const recentMessages = state.messages.slice(-20);
     const conversationText = recentMessages
-      .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content.slice(0, 400)}`)
+      .map((m) => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content.slice(0, 400)}`)
       .join('\n');
 
     const extractPrompt = [
@@ -95,15 +95,21 @@ export async function attemptMemoryUpdate() {
     const text = result.text?.trim() ?? '';
     if (!text || text === '[NOTHING]' || text.toUpperCase().includes('[NOTHING]')) return;
 
-    const bullets = text.split('\n').filter(l => l.trim().startsWith('- ')).join('\n');
+    const bullets = text
+      .split('\n')
+      .filter((l) => l.trim().startsWith('- '))
+      .join('\n');
     if (!bullets) return;
 
-    const timestamp = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const updated = (existingMemory.trim() ? existingMemory.trim() + '\n\n' : '') +
-      `--- Auto-learned ${timestamp} ---\n${bullets}`;
+    const timestamp = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    const updated =
+      (existingMemory.trim() ? existingMemory.trim() + '\n\n' : '') + `# ${timestamp}\n${bullets}`;
 
     await window.electronAPI?.invoke?.('save-memory', updated);
-
   } catch (err) {
     console.warn('[Chat] Memory update failed (non-fatal):', err.message);
   } finally {

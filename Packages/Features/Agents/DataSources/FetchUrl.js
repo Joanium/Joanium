@@ -3,9 +3,14 @@ export const meta = { label: 'Web Page', group: 'Web' };
 export async function collect(ds) {
   if (!ds.url) return 'No URL specified.';
   try {
-    const html = await fetch(ds.url, { headers: { 'User-Agent': 'joanium-agent/1.0' } }).then((r) =>
-      r.text(),
-    );
+    const response = await fetch(ds.url, {
+      headers: { 'User-Agent': 'joanium-agent/1.0' },
+    });
+    if (!response.ok) {
+      return `Failed to fetch URL: ${response.status} ${response.statusText}`.trim();
+    }
+
+    const html = await response.text();
     const text = html
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')

@@ -1,4 +1,4 @@
-import { DATA_SOURCE_TYPES, loadAgentsFeatureRegistry } from './Config/Constants.js';
+import { DATA_SOURCE_TYPES, OUTPUT_TYPES, loadAgentsFeatureRegistry } from './Config/Constants.js';
 import { createConfirmDialog } from './Components/ConfirmDialog.js';
 import { createAgentGrid } from './Components/Grid.js';
 import { createHistoryModal } from '../../../../Modals/HistoryModal.js';
@@ -8,6 +8,133 @@ import { createResponseViewer } from './Components/ResponseViewer.js';
 import { createAgentsPageState } from './State/State.js';
 import { getAgentsHTML } from './Templates/Template.js';
 import { cloneJobsForEditing, generateAgentId, resolveModelLabel } from './Utils/Utils.js';
+
+const BUILTIN_REQUIRED_DATA_SOURCE_FIELDS = {
+  rss_feed: ['url'],
+  reddit_posts: ['subreddit'],
+  weather: ['location'],
+  read_file: ['filePath'],
+  fetch_url: ['url'],
+};
+
+const BUILTIN_REQUIRED_OUTPUT_FIELDS = {
+  send_email: ['to'],
+  write_file: ['filePath'],
+  http_webhook: ['url'],
+};
+
+const BUILTIN_FIELD_LABELS = {
+  filePath: 'file path',
+  location: 'location',
+  repo: 'repository',
+  subreddit: 'subreddit',
+  to: 'recipient email',
+  url: 'URL',
+};
+
+function hasConfiguredValue(value) {
+  if (typeof value === 'boolean') return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (Array.isArray(value)) return value.length > 0;
+  if (value && typeof value === 'object') return Object.keys(value).length > 0;
+  return String(value ?? '').trim().length > 0;
+}
+
+function getJobSources(job = {}) {
+  if (Array.isArray(job.dataSources)) return job.dataSources.filter(Boolean);
+  if (job.dataSource?.type) return [job.dataSource];
+  return [];
+}
+
+function isMeaningfulSource(source = {}) {
+  if (source.type) return true;
+  return Object.entries(source).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
+}
+
+function isMeaningfulOutput(output = {}) {
+  if (output.type) return true;
+  return Object.entries(output).some(([key, value]) => key !== 'type' && hasConfiguredValue(value));
+}
+
+function isBlankJobDraft(job = {}) {
+  return (
+    !String(job.name ?? '').trim() &&
+    !String(job.instruction ?? '').trim() &&
+    !getJobSources(job).some(isMeaningfulSource) &&
+    !isMeaningfulOutput(job.output ?? {})
+  );
+}
+
+function collectMissingFields(definition, values = {}, builtinRequired = []) {
+  const missing = [];
+  const requiredParams = (definition?.params ?? []).filter((param) => param.required);
+
+  requiredParams.forEach((param) => {
+    if (!hasConfiguredValue(values?.[param.key])) {
+      missing.push((param.label ?? param.key).toLowerCase());
+    }
+  });
+
+  builtinRequired.forEach((key) => {
+    if (!hasConfiguredValue(values?.[key])) {
+      missing.push(BUILTIN_FIELD_LABELS[key] ?? key);
+    }
+  });
+
+  return missing;
+}
+
+function getJobValidationError(job, index) {
+  const jobName = job.name?.trim() || `Job ${index + 1}`;
+  const sources = getJobSources(job);
+
+  if (!sources.length || !sources.some((source) => source?.type)) {
+    return `${jobName}: choose at least one data source.`;
+  }
+
+  for (const source of sources) {
+    if (!source?.type) return `${jobName}: remove the unfinished data source or choose its type.`;
+
+    const definition = DATA_SOURCE_TYPES.find((item) => item.value === source.type);
+    const missing = collectMissingFields(
+      definition,
+      source,
+      BUILTIN_REQUIRED_DATA_SOURCE_FIELDS[source.type] ?? [],
+    );
+
+    if (missing.length) {
+      return `${jobName}: ${definition?.label ?? source.type} is missing ${missing.join(', ')}.`;
+    }
+  }
+
+  if (!job.output?.type) {
+    return `${jobName}: choose what to do with the result.`;
+  }
+
+  const outputDefinition = OUTPUT_TYPES.find((item) => item.value === job.output.type);
+  const outputMissing = collectMissingFields(
+    outputDefinition,
+    job.output,
+    BUILTIN_REQUIRED_OUTPUT_FIELDS[job.output.type] ?? [],
+  );
+
+  if (outputMissing.length) {
+    return `${jobName}: ${outputDefinition?.label ?? job.output.type} is missing ${outputMissing.join(', ')}.`;
+  }
+
+  return null;
+}
+
+function sanitizeJobForSave(job = {}) {
+  return {
+    ...job,
+    dataSources: getJobSources(job)
+      .filter((source) => source?.type)
+      .map((source) => ({ ...source })),
+    output: { ...(job.output ?? { type: '' }) },
+    trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
+  };
+}
 
 export function mount(outlet) {
   outlet.innerHTML = getAgentsHTML();
@@ -69,10 +196,19 @@ export function mount(outlet) {
     cancelBtn: elements.confirmCancelBtn,
     deleteBtn: elements.confirmDeleteBtn,
     nameEl: elements.confirmNameEl,
-    onDelete: async agentId => {
-      await window.electronAPI?.invoke?.('delete-agent', agentId);
-      state.agents = state.agents.filter(agent => agent.id !== agentId);
-      renderGrid();
+    onDelete: async (agentId) => {
+      try {
+        const response = await window.electronAPI?.invoke?.('delete-agent', agentId);
+        if (!response?.ok) {
+          window.alert(response?.error ?? 'Unable to delete this agent right now.');
+          return;
+        }
+
+        state.agents = state.agents.filter((agent) => agent.id !== agentId);
+        renderGrid();
+      } catch (error) {
+        window.alert(error.message ?? 'Unable to delete this agent right now.');
+      }
     },
   });
 
@@ -80,27 +216,54 @@ export function mount(outlet) {
     gridEl: elements.gridEl,
     emptyEl: elements.emptyEl,
     dataSourceTypes: DATA_SOURCE_TYPES,
-    resolveModelLabel: (providerId, modelId) => resolveModelLabel(state.allModels, providerId, modelId),
+    resolveModelLabel: (providerId, modelId) =>
+      resolveModelLabel(state.allModels, providerId, modelId),
     onToggleAgent: async ({ agent, enabled, card }) => {
+      const previousEnabled = agent.enabled;
       agent.enabled = enabled;
       card.classList.toggle('is-disabled', !enabled);
-      await window.electronAPI?.invoke?.('toggle-agent', agent.id, enabled);
+      try {
+        const response = await window.electronAPI?.invoke?.('toggle-agent', agent.id, enabled);
+        if (response?.ok) return;
+
+        throw new Error(response?.error ?? 'Unable to update the agent right now.');
+      } catch (error) {
+        agent.enabled = previousEnabled;
+        card.classList.toggle('is-disabled', !previousEnabled);
+        const toggleInput = card.querySelector('.toggle-input');
+        if (toggleInput) toggleInput.checked = previousEnabled;
+        window.alert(error.message ?? 'Unable to update the agent right now.');
+      }
     },
     onRunAgent: async ({ agent, button }) => {
+      const originalLabel = button.innerHTML;
       button.classList.add('is-running');
+      button.disabled = true;
       button.innerHTML = `
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">
           <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
         </svg>`;
-      await window.electronAPI?.invoke?.('run-agent-now', agent.id);
-      state.agents = await fetchAgents();
-      renderGrid();
+      try {
+        const response = await window.electronAPI?.invoke?.('run-agent-now', agent.id);
+        if (!response?.ok) {
+          throw new Error(response?.error ?? 'Unable to run this agent right now.');
+        }
+
+        state.agents = await fetchAgents();
+        renderGrid();
+      } catch (error) {
+        window.alert(error.message ?? 'Unable to run this agent right now.');
+      } finally {
+        button.classList.remove('is-running');
+        button.disabled = false;
+        button.innerHTML = originalLabel;
+      }
     },
-    onOpenHistory: async agent => {
+    onOpenHistory: async (agent) => {
       state.agents = await fetchAgents();
-      historyModal.open(state.agents.find(item => item.id === agent.id) ?? agent);
+      historyModal.open(state.agents.find((item) => item.id === agent.id) ?? agent);
     },
-    onOpenModal: agent => openModal(agent),
+    onOpenModal: (agent) => openModal(agent),
     onOpenConfirm: (id, name) => confirmDialog.open(id, name),
   });
 
@@ -111,10 +274,10 @@ export function mount(outlet) {
 
   async function loadModels() {
     try {
-      const providers = await window.electronAPI?.invoke?.('get-models') ?? [];
+      const providers = (await window.electronAPI?.invoke?.('get-models')) ?? [];
       state.allModels = [];
 
-      providers.forEach(provider => {
+      providers.forEach((provider) => {
         if (!provider.configured) return;
 
         Object.entries(provider.models ?? {}).forEach(([modelId, info]) => {
@@ -143,7 +306,8 @@ export function mount(outlet) {
     state.fallbackModels = agent?.fallbackModels ? [...agent.fallbackModels] : [];
     state.jobs = cloneJobsForEditing(agent);
 
-    if (elements.modalTitleEl) elements.modalTitleEl.textContent = agent ? 'Edit Agent' : 'New Agent';
+    if (elements.modalTitleEl)
+      elements.modalTitleEl.textContent = agent ? 'Edit Agent' : 'New Agent';
     if (elements.nameInput) elements.nameInput.value = agent?.name ?? '';
     if (elements.descInput) elements.descInput.value = agent?.description ?? '';
 
@@ -163,18 +327,43 @@ export function mount(outlet) {
     modelPicker.closeMenu();
   }
 
-  const onModalBackdropClick = event => {
+  const onModalBackdropClick = (event) => {
     if (event.target === elements.modalBackdrop) closeModal();
   };
 
   const onSaveClick = async () => {
     const name = elements.nameInput?.value.trim();
     if (!name) {
-      elements.nameInput?.animate(
+      elements.nameInput?.animate([{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }], {
+        duration: 900,
+      });
+      elements.nameInput?.focus();
+      return;
+    }
+
+    const configuredJobs = state.jobs
+      .filter((job) => !isBlankJobDraft(job))
+      .map(sanitizeJobForSave);
+
+    if (
+      configuredJobs.length > 0 &&
+      (!state.primaryModel?.provider || !state.primaryModel?.modelId)
+    ) {
+      elements.primaryModelBtn?.animate(
         [{ borderColor: '#f87171' }, { borderColor: 'var(--border)' }],
         { duration: 900 },
       );
-      elements.nameInput?.focus();
+      elements.primaryModelBtn?.focus();
+      window.alert('Choose a primary model before saving an agent with jobs.');
+      return;
+    }
+
+    const invalidJobMessage = configuredJobs
+      .map((job, index) => getJobValidationError(job, index))
+      .find(Boolean);
+
+    if (invalidJobMessage) {
+      window.alert(invalidJobMessage);
       return;
     }
 
@@ -184,8 +373,8 @@ export function mount(outlet) {
       description: elements.descInput?.value.trim() ?? '',
       enabled: state.editingEnabled,
       primaryModel: state.primaryModel ? { ...state.primaryModel } : null,
-      fallbackModels: state.fallbackModels.map(model => ({ ...model })),
-      jobs: state.jobs.filter(job => job.dataSources?.some(source => source.type) && job.output?.type),
+      fallbackModels: state.fallbackModels.map((model) => ({ ...model })),
+      jobs: configuredJobs,
     };
 
     elements.saveBtn.disabled = true;
@@ -193,26 +382,30 @@ export function mount(outlet) {
 
     try {
       const response = await window.electronAPI?.invoke?.('save-agent', payload);
-      if (response?.ok) {
-        const nextAgent = response.agent ?? payload;
-        const existingIndex = state.agents.findIndex(agent => agent.id === payload.id);
-
-        if (existingIndex >= 0) {
-          state.agents[existingIndex] = nextAgent;
-        } else {
-          state.agents.push(nextAgent);
-        }
-
-        renderGrid();
-        closeModal();
+      if (!response?.ok) {
+        throw new Error(response?.error ?? 'Unable to save this agent right now.');
       }
+
+      const nextAgent = response.agent ?? payload;
+      const existingIndex = state.agents.findIndex((agent) => agent.id === payload.id);
+
+      if (existingIndex >= 0) {
+        state.agents[existingIndex] = nextAgent;
+      } else {
+        state.agents.push(nextAgent);
+      }
+
+      renderGrid();
+      closeModal();
+    } catch (error) {
+      window.alert(error.message ?? 'Unable to save this agent right now.');
     } finally {
       elements.saveBtn.disabled = false;
       elements.saveBtn.textContent = 'Save Agent';
     }
   };
 
-  const onEscapeKey = event => {
+  const onEscapeKey = (event) => {
     if (event.key !== 'Escape') return;
     closeModal();
     confirmDialog.close();
@@ -237,7 +430,7 @@ export function mount(outlet) {
     renderGrid();
   }
 
-  load().catch(error => {
+  load().catch((error) => {
     console.error('[Agents] Failed to load page data:', error);
   });
 
@@ -263,4 +456,3 @@ export function mount(outlet) {
     responseViewer.destroy();
   };
 }
-

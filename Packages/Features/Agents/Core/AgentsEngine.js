@@ -127,14 +127,25 @@ async function callModel(providerData, modelId, systemPrompt, userMessage) {
 
 async function callAIWithFailover(agent, systemPrompt, userMessage, allProviders, usageFile = '') {
   const candidates = [];
-  if (agent.primaryModel?.provider && agent.primaryModel?.modelId) {
-    const p = allProviders.find((x) => x.provider === agent.primaryModel.provider);
-    if (p?.configured) candidates.push({ provider: p, modelId: agent.primaryModel.modelId });
+  const seenCandidates = new Set();
+
+  function addCandidate(providerId, modelId) {
+    if (!providerId || !modelId) return;
+
+    const provider = allProviders.find((item) => item.provider === providerId);
+    if (!provider?.configured) return;
+
+    const key = `${provider.provider}::${modelId}`;
+    if (seenCandidates.has(key)) return;
+
+    seenCandidates.add(key);
+    candidates.push({ provider, modelId });
   }
+
+  addCandidate(agent.primaryModel?.provider, agent.primaryModel?.modelId);
+
   for (const fb of agent.fallbackModels ?? []) {
-    if (!fb?.provider || !fb?.modelId) continue;
-    const p = allProviders.find((x) => x.provider === fb.provider);
-    if (p?.configured) candidates.push({ provider: p, modelId: fb.modelId });
+    addCandidate(fb?.provider, fb?.modelId);
   }
   if (!candidates.length) throw new Error('No AI model configured for this agent.');
 

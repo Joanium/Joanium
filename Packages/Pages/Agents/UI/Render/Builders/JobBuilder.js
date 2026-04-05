@@ -12,13 +12,12 @@ import {
   getJobLabel,
 } from '../Utils/Utils.js';
 
-export function createJobsController({
-  state,
-  jobsListEl,
-  addJobBtn,
-  jobsBadge,
-  modalBodyEl,
-}) {
+export function createJobsController({ state, jobsListEl, addJobBtn, jobsBadge, modalBodyEl }) {
+  function updateSourceCount(card, count) {
+    card.querySelector('.job-sources-count-badge').textContent =
+      `(${count} source${count !== 1 ? 's' : ''})`;
+  }
+
   function updateJobsBadge() {
     if (jobsBadge) jobsBadge.textContent = `(${state.jobs.length}/${MAX_JOBS})`;
     if (addJobBtn) addJobBtn.disabled = state.jobs.length >= MAX_JOBS;
@@ -43,12 +42,17 @@ export function createJobsController({
       return result;
     }, {});
 
-    const optionsHtml = Object.entries(groups).map(([groupName, items]) => {
-      const options = items.map(item => (
-        `<option value="${item.value}" ${selectedType === item.value ? 'selected' : ''}>${item.label}</option>`
-      )).join('');
-      return `<optgroup label="${groupName}">${options}</optgroup>`;
-    }).join('');
+    const optionsHtml = Object.entries(groups)
+      .map(([groupName, items]) => {
+        const options = items
+          .map(
+            (item) =>
+              `<option value="${item.value}" ${selectedType === item.value ? 'selected' : ''}>${item.label}</option>`,
+          )
+          .join('');
+        return `<optgroup label="${groupName}">${options}</optgroup>`;
+      })
+      .join('');
 
     return `
       <div class="source-selector-group" data-source-idx="${sourceIndex}">
@@ -57,12 +61,16 @@ export function createJobsController({
             <option value="">- ${sourceIndex === 0 ? 'Choose a data source' : 'Add another source'} -</option>
             ${optionsHtml}
           </select>
-          ${sourceIndex > 0 ? `
+          ${
+            sourceIndex > 0
+              ? `
             <button type="button" class="source-remove-btn" title="Remove source">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
               </svg>
-            </button>` : ''}
+            </button>`
+              : ''
+          }
         </div>
         <div class="ds-params-area">${buildDataSourceParams(dataSource)}</div>
       </div>`;
@@ -167,13 +175,13 @@ export function createJobsController({
 
       </div>`;
 
-    card.querySelector('.job-card-header')?.addEventListener('click', event => {
+    card.querySelector('.job-card-header')?.addEventListener('click', (event) => {
       if (event.target.closest('.job-remove-btn')) return;
       card.classList.toggle('open');
     });
 
     card.querySelector('.job-remove-btn')?.addEventListener('click', () => {
-      state.jobs = state.jobs.filter(item => item.id !== job.id);
+      state.jobs = state.jobs.filter((item) => item.id !== job.id);
       renderJobsList();
     });
 
@@ -190,14 +198,14 @@ export function createJobsController({
 
     card.querySelector('.add-source-btn')?.addEventListener('click', () => {
       job.dataSources.push({ type: '' });
-      card.querySelector('.sources-list').innerHTML =
-        job.dataSources.map((dataSource, sourceIndex) => buildSourceSelectorHTML(dataSource, sourceIndex)).join('');
-      card.querySelector('.job-sources-count-badge').textContent =
-        `(${job.dataSources.length} source${job.dataSources.length !== 1 ? 's' : ''})`;
+      card.querySelector('.sources-list').innerHTML = job.dataSources
+        .map((dataSource, sourceIndex) => buildSourceSelectorHTML(dataSource, sourceIndex))
+        .join('');
+      updateSourceCount(card, job.dataSources.length);
       wireAllSourceEvents(card, job);
     });
 
-    card.querySelector('.job-instruction')?.addEventListener('input', event => {
+    card.querySelector('.job-instruction')?.addEventListener('input', (event) => {
       job.instruction = event.target.value;
     });
 
@@ -235,17 +243,16 @@ export function createJobsController({
         }
 
         if (paramsArea) paramsArea.innerHTML = buildDataSourceParams(job.dataSources[sourceIndex]);
-        card.querySelector('.job-sources-count-badge').textContent =
-          `(${job.dataSources.length} source${job.dataSources.length !== 1 ? 's' : ''})`;
+        updateSourceCount(card, job.dataSources.length);
         wireDataSourceParamEvents(groupEl, job.dataSources[sourceIndex]);
       });
 
       groupEl.querySelector('.source-remove-btn')?.addEventListener('click', () => {
         job.dataSources.splice(sourceIndex, 1);
-        sourcesListEl.innerHTML =
-          job.dataSources.map((dataSource, currentIndex) => buildSourceSelectorHTML(dataSource, currentIndex)).join('');
-        card.querySelector('.job-sources-count-badge').textContent =
-          `(${job.dataSources.length} source${job.dataSources.length !== 1 ? 's' : ''})`;
+        sourcesListEl.innerHTML = job.dataSources
+          .map((dataSource, currentIndex) => buildSourceSelectorHTML(dataSource, currentIndex))
+          .join('');
+        updateSourceCount(card, job.dataSources.length);
         wireAllSourceEvents(card, job);
       });
 
@@ -273,9 +280,12 @@ export function createJobsController({
         </select>
         <div class="job-trigger-sub ${type === 'interval' ? '' : 'hidden'} trigger-sub-interval">
           <select class="job-interval-select">
-            ${intervals.map(value => (
-              `<option value="${value}" ${minutes === value ? 'selected' : ''}>${value < 60 ? `Every ${value} min` : value === 60 ? 'Every 1 hr' : `Every ${value / 60} hrs`}</option>`
-            )).join('')}
+            ${intervals
+              .map(
+                (value) =>
+                  `<option value="${value}" ${minutes === value ? 'selected' : ''}>${value < 60 ? `Every ${value} min` : value === 60 ? 'Every 1 hr' : `Every ${value / 60} hrs`}</option>`,
+              )
+              .join('')}
           </select>
         </div>
         <div class="job-trigger-sub ${type === 'daily' ? '' : 'hidden'} trigger-sub-daily">
@@ -284,7 +294,7 @@ export function createJobsController({
         </div>
         <div class="job-trigger-sub ${type === 'weekly' ? '' : 'hidden'} trigger-sub-weekly">
           <select class="job-day-select trigger-day">
-            ${days.map(value => `<option value="${value}" ${day === value ? 'selected' : ''}>${capitalize(value)}</option>`).join('')}
+            ${days.map((value) => `<option value="${value}" ${day === value ? 'selected' : ''}>${capitalize(value)}</option>`).join('')}
           </select>
           <span style="font-size:12px;color:var(--text-muted)">at</span>
           <input type="time" class="job-time-input trigger-time-weekly" value="${time}"/>
@@ -299,35 +309,41 @@ export function createJobsController({
     triggerTypeSelect.addEventListener('change', () => {
       job.trigger = job.trigger ?? {};
       job.trigger.type = triggerTypeSelect.value;
-      card.querySelector('.trigger-sub-interval')?.classList.toggle('hidden', triggerTypeSelect.value !== 'interval');
-      card.querySelector('.trigger-sub-daily')?.classList.toggle('hidden', triggerTypeSelect.value !== 'daily');
-      card.querySelector('.trigger-sub-weekly')?.classList.toggle('hidden', triggerTypeSelect.value !== 'weekly');
+      card
+        .querySelector('.trigger-sub-interval')
+        ?.classList.toggle('hidden', triggerTypeSelect.value !== 'interval');
+      card
+        .querySelector('.trigger-sub-daily')
+        ?.classList.toggle('hidden', triggerTypeSelect.value !== 'daily');
+      card
+        .querySelector('.trigger-sub-weekly')
+        ?.classList.toggle('hidden', triggerTypeSelect.value !== 'weekly');
     });
 
-    card.querySelector('.job-interval-select')?.addEventListener('change', event => {
+    card.querySelector('.job-interval-select')?.addEventListener('change', (event) => {
       job.trigger = job.trigger ?? {};
       job.trigger.minutes = parseInt(event.target.value, 10) || 10;
     });
-    card.querySelector('.trigger-time-daily')?.addEventListener('change', event => {
+    card.querySelector('.trigger-time-daily')?.addEventListener('change', (event) => {
       job.trigger = job.trigger ?? {};
       job.trigger.time = event.target.value;
     });
-    card.querySelector('.trigger-day')?.addEventListener('change', event => {
+    card.querySelector('.trigger-day')?.addEventListener('change', (event) => {
       job.trigger = job.trigger ?? {};
       job.trigger.day = event.target.value;
     });
-    card.querySelector('.trigger-time-weekly')?.addEventListener('change', event => {
+    card.querySelector('.trigger-time-weekly')?.addEventListener('change', (event) => {
       job.trigger = job.trigger ?? {};
       job.trigger.time = event.target.value;
     });
   }
 
   function getDataSourceDefinition(type) {
-    return DATA_SOURCE_TYPES.find(item => item.value === type) ?? null;
+    return DATA_SOURCE_TYPES.find((item) => item.value === type) ?? null;
   }
 
   function getOutputDefinition(type) {
-    return OUTPUT_TYPES.find(item => item.value === type) ?? null;
+    return OUTPUT_TYPES.find((item) => item.value === type) ?? null;
   }
 
   function renderParamControl(param, value) {
@@ -346,9 +362,12 @@ export function createJobsController({
     const resolvedValue = value ?? param.defaultValue ?? (type === 'checkbox' ? false : '');
 
     if (type === 'select') {
-      const options = (param.options ?? []).map(option => (
-        `<option value="${escapeHtml(String(option))}" ${String(option) === String(resolvedValue) ? 'selected' : ''}>${escapeHtml(String(option))}</option>`
-      )).join('');
+      const options = (param.options ?? [])
+        .map(
+          (option) =>
+            `<option value="${escapeHtml(String(option))}" ${String(option) === String(resolvedValue) ? 'selected' : ''}>${escapeHtml(String(option))}</option>`,
+        )
+        .join('');
       return `<label class="job-param-label">${escapeHtml(param.label ?? param.key)}</label><select ${attrs.join(' ')}>${options}</select>`;
     }
 
@@ -366,18 +385,18 @@ export function createJobsController({
   function buildGenericParamFields(definition, values = {}) {
     const params = definition?.params ?? [];
     if (!params.length) return '';
-    return `<div class="job-param-fields">${params.map(param => `<div class="job-param-field">${renderParamControl(param, values?.[param.key])}</div>`).join('')}</div>`;
+    return `<div class="job-param-fields">${params.map((param) => `<div class="job-param-field">${renderParamControl(param, values?.[param.key])}</div>`).join('')}</div>`;
   }
 
   function bindGenericParamEvents(container, values, definition) {
     const params = definition?.params ?? [];
     if (!params.length) return false;
 
-    params.forEach(param => {
+    params.forEach((param) => {
       const input = container.querySelector(`[data-param-key="${param.key}"]`);
       if (!input) return;
       const eventName = param.type === 'select' || param.type === 'checkbox' ? 'change' : 'input';
-      input.addEventListener(eventName, event => {
+      input.addEventListener(eventName, (event) => {
         if (param.type === 'checkbox') {
           values[param.key] = Boolean(event.target.checked);
           return;
@@ -403,7 +422,8 @@ export function createJobsController({
           return;
         }
 
-        values[param.key] = param.type === 'textarea' ? event.target.value : event.target.value.trim();
+        values[param.key] =
+          param.type === 'textarea' ? event.target.value : event.target.value.trim();
       });
     });
 
@@ -416,7 +436,6 @@ export function createJobsController({
     if (generic) return generic;
 
     switch (type) {
-
       case 'rss_feed':
         return `
           <input type="url" class="job-param-input ds-url" placeholder="Feed URL, e.g. https://hnrss.org/frontpage" value="${escapeHtml(dataSource?.url ?? '')}"/>
@@ -463,44 +482,45 @@ export function createJobsController({
   }
 
   function wireDataSourceParamEvents(container, dataSource) {
-    if (bindGenericParamEvents(container, dataSource, getDataSourceDefinition(dataSource?.type))) return;
+    if (bindGenericParamEvents(container, dataSource, getDataSourceDefinition(dataSource?.type)))
+      return;
 
-    const query = selector => container.querySelector(selector);
+    const query = (selector) => container.querySelector(selector);
 
-    query('.ds-max-results')?.addEventListener('input', event => {
+    query('.ds-max-results')?.addEventListener('input', (event) => {
       dataSource.maxResults = parseInt(event.target.value, 10) || 10;
     });
-    query('.ds-query')?.addEventListener('input', event => {
+    query('.ds-query')?.addEventListener('input', (event) => {
       dataSource.query = event.target.value.trim();
     });
-    query('.ds-hn-count')?.addEventListener('input', event => {
+    query('.ds-hn-count')?.addEventListener('input', (event) => {
       dataSource.count = parseInt(event.target.value, 10) || 10;
     });
-    query('.ds-hn-type')?.addEventListener('change', event => {
+    query('.ds-hn-type')?.addEventListener('change', (event) => {
       dataSource.hnType = event.target.value;
     });
-    query('.ds-location')?.addEventListener('input', event => {
+    query('.ds-location')?.addEventListener('input', (event) => {
       dataSource.location = event.target.value.trim();
     });
-    query('.ds-units')?.addEventListener('change', event => {
+    query('.ds-units')?.addEventListener('change', (event) => {
       dataSource.units = event.target.value;
     });
-    query('.ds-coins')?.addEventListener('input', event => {
+    query('.ds-coins')?.addEventListener('input', (event) => {
       dataSource.coins = event.target.value.trim();
     });
-    query('.ds-url')?.addEventListener('input', event => {
+    query('.ds-url')?.addEventListener('input', (event) => {
       dataSource.url = event.target.value.trim();
     });
-    query('.ds-subreddit')?.addEventListener('input', event => {
+    query('.ds-subreddit')?.addEventListener('input', (event) => {
       dataSource.subreddit = event.target.value.trim();
     });
-    query('.ds-reddit-sort')?.addEventListener('change', event => {
+    query('.ds-reddit-sort')?.addEventListener('change', (event) => {
       dataSource.sort = event.target.value;
     });
-    query('.ds-filepath')?.addEventListener('input', event => {
+    query('.ds-filepath')?.addEventListener('input', (event) => {
       dataSource.filePath = event.target.value.trim();
     });
-    query('.ds-context')?.addEventListener('input', event => {
+    query('.ds-context')?.addEventListener('input', (event) => {
       dataSource.context = event.target.value;
     });
   }
@@ -513,12 +533,17 @@ export function createJobsController({
       return result;
     }, {});
 
-    const optionsHtml = Object.entries(groups).map(([groupName, items]) => {
-      const options = items.map(item => (
-        `<option value="${item.value}" ${selectedType === item.value ? 'selected' : ''}>${item.label}</option>`
-      )).join('');
-      return `<optgroup label="${groupName}">${options}</optgroup>`;
-    }).join('');
+    const optionsHtml = Object.entries(groups)
+      .map(([groupName, items]) => {
+        const options = items
+          .map(
+            (item) =>
+              `<option value="${item.value}" ${selectedType === item.value ? 'selected' : ''}>${item.label}</option>`,
+          )
+          .join('');
+        return `<optgroup label="${groupName}">${options}</optgroup>`;
+      })
+      .join('');
 
     return `
       <div class="job-params">
@@ -571,45 +596,65 @@ export function createJobsController({
     typeSelect.addEventListener('change', () => {
       job.output = { type: typeSelect.value };
       if (paramsArea) paramsArea.innerHTML = buildOutputParams(job.output);
-      wireOutputParamEvents(card, job);
+      wireOutputParamEvents(paramsArea, job);
     });
 
-    wireOutputParamEvents(card, job);
+    wireOutputParamEvents(paramsArea, job);
   }
 
-  function wireOutputParamEvents(card, job) {
-    if (bindGenericParamEvents(card, job.output, getOutputDefinition(job.output?.type))) return;
+  function wireOutputParamEvents(container, job) {
+    if (!container || !job.output) return;
+    if (bindGenericParamEvents(container, job.output, getOutputDefinition(job.output?.type)))
+      return;
 
-    const query = selector => card.querySelector(selector);
+    const query = (selector) => container.querySelector(selector);
 
-    query('.out-to')?.addEventListener('input', event => {
+    query('.out-to')?.addEventListener('input', (event) => {
       job.output.to = event.target.value.trim();
     });
-    query('.out-subject')?.addEventListener('input', event => {
+    query('.out-subject')?.addEventListener('input', (event) => {
       job.output.subject = event.target.value.trim();
     });
-    query('.out-cc')?.addEventListener('input', event => {
+    query('.out-cc')?.addEventListener('input', (event) => {
       job.output.cc = event.target.value.trim();
     });
-    query('.out-notif-title')?.addEventListener('input', event => {
+    query('.out-notif-title')?.addEventListener('input', (event) => {
       job.output.title = event.target.value.trim();
     });
-    query('.out-file-path')?.addEventListener('input', event => {
+    query('.out-file-path')?.addEventListener('input', (event) => {
       job.output.filePath = event.target.value.trim();
     });
-    query('.out-append')?.addEventListener('change', event => {
+    query('.out-append')?.addEventListener('change', (event) => {
       job.output.append = event.target.checked;
     });
-    query('.out-webhook-url')?.addEventListener('input', event => {
+    query('.out-webhook-url')?.addEventListener('input', (event) => {
       job.output.url = event.target.value.trim();
     });
-    query('.out-webhook-method')?.addEventListener('change', event => {
+    query('.out-webhook-method')?.addEventListener('change', (event) => {
       job.output.method = event.target.value;
     });
   }
 
+  const onAddJobClick = () => {
+    if (state.jobs.length >= MAX_JOBS) return;
+
+    state.jobs = [...state.jobs, createNewJob()];
+    renderJobsList();
+
+    requestAnimationFrame(() => {
+      const lastCard = jobsListEl?.lastElementChild;
+      lastCard?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      modalBodyEl?.scrollTo({ top: modalBodyEl.scrollHeight, behavior: 'smooth' });
+      lastCard?.querySelector('.job-name-input')?.focus();
+    });
+  };
+
+  addJobBtn?.addEventListener('click', onAddJobClick);
+
   return {
     renderJobsList,
-    cleanup() {},
+    cleanup() {
+      addJobBtn?.removeEventListener('click', onAddJobClick);
+    },
   };
 }
