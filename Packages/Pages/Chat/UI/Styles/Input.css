@@ -82,6 +82,14 @@
   z-index: 1;
 }
 
+/* Inert blocks interaction but not visual affordance — match “disabled” look */
+.input-box.input-box--enhancing .model-selector,
+.input-box.input-box--enhancing .input-footer button,
+.input-box.input-box--enhancing .composer-attachments button {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 @keyframes input-box-enhance-shimmer {
   0% {
     background-position: 100% 0;

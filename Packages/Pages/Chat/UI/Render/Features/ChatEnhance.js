@@ -1,4 +1,46 @@
 import { fetchWithTools } from '../../../../../Features/AI/index.js';
+import { modelDropdown } from '../../../../Shared/Core/DOM.js';
+
+/**
+ * Block all interaction inside the composer (model switcher, buttons, textarea, attachment actions).
+ * Prefers `inert` when available; otherwise toggles disabled on buttons and textarea with restore.
+ *
+ * @param {HTMLElement | null | undefined} inputBox
+ * @param {HTMLTextAreaElement | null | undefined} textarea
+ * @returns {() => void} Call to unlock.
+ */
+function lockComposerDuringEnhance(inputBox, textarea) {
+  modelDropdown?.classList.remove('open');
+
+  if (!inputBox) {
+    if (textarea) textarea.disabled = true;
+    return () => {
+      if (textarea) textarea.disabled = false;
+    };
+  }
+
+  if (typeof HTMLElement !== 'undefined' && 'inert' in HTMLElement.prototype) {
+    inputBox.inert = true;
+    if (textarea) textarea.disabled = true;
+    return () => {
+      inputBox.inert = false;
+      if (textarea) textarea.disabled = false;
+    };
+  }
+
+  const controls = inputBox.querySelectorAll('button, textarea');
+  /** @type {Map<Element, boolean>} */
+  const prevDisabled = new Map();
+  controls.forEach((el) => {
+    prevDisabled.set(el, el.disabled);
+    el.disabled = true;
+  });
+  return () => {
+    prevDisabled.forEach((was, el) => {
+      el.disabled = was;
+    });
+  };
+}
 
 /**
  * Initialise the ✨ Enhance prompt button feature.
@@ -8,6 +50,8 @@ import { fetchWithTools } from '../../../../../Features/AI/index.js';
  */
 export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
   const inputBox = textarea?.closest('.input-box');
+  /** @type {(() => void) | null} */
+  let enhanceUnlock = null;
 
   function updateEnhanceBtn() {
     if (!enhanceBtn || !textarea) return;
@@ -30,7 +74,7 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
     inputBox?.classList.add('input-box--enhancing');
     inputBox?.setAttribute('aria-busy', 'true');
     const hadFocus = document.activeElement === textarea;
-    textarea.disabled = true;
+    enhanceUnlock = lockComposerDuringEnhance(inputBox, textarea);
     const labelEl = enhanceBtn.querySelector('.enhance-btn-label');
     if (labelEl) labelEl.textContent = 'Enhancing...';
     try {
@@ -51,7 +95,8 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
       enhanceBtn.classList.remove('enhance-loading');
       inputBox?.classList.remove('input-box--enhancing');
       inputBox?.removeAttribute('aria-busy');
-      textarea.disabled = false;
+      enhanceUnlock?.();
+      enhanceUnlock = null;
       if (hadFocus) textarea.focus();
       if (labelEl) labelEl.textContent = 'Enhance';
       updateEnhanceBtn();
@@ -69,6 +114,9 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
       textarea?.removeEventListener('input', updateEnhanceBtn);
       inputBox?.classList.remove('input-box--enhancing');
       inputBox?.removeAttribute('aria-busy');
+      enhanceUnlock?.();
+      enhanceUnlock = null;
+      if (inputBox && 'inert' in HTMLElement.prototype) inputBox.inert = false;
       if (textarea) textarea.disabled = false;
     },
   };
