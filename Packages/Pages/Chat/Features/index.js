@@ -4,10 +4,21 @@ import { reset as resetComposer } from './Composer/index.js';
 import { planRequest, agentLoop } from './Core/Agent.js';
 
 // Sub-modules
-import { onChatMessagesClick, appendMessage, createLiveRow, sanitizeAssistantReply, sanitizeMessagesForUI } from './UI/ChatBubble.js';
+import {
+  onChatMessagesClick,
+  appendMessage,
+  createLiveRow,
+  sanitizeAssistantReply,
+  sanitizeMessagesForUI,
+} from './UI/ChatBubble.js';
 import { updateTimeline, setupScrollFeatures, bumpScrollBadge } from './UI/ChatTimeline.js';
 import { attemptMemoryUpdate, resetMemoryCounter } from './Core/ChatMemory.js';
-import { saveCurrentChat, trackUsage, generateChatId, currentChatScope } from './Data/ChatPersistence.js';
+import {
+  saveCurrentChat,
+  trackUsage,
+  generateChatId,
+  currentChatScope,
+} from './Data/ChatPersistence.js';
 
 /* ══════════════════════════════════════════
    TOKEN FOOTER — always on
@@ -30,8 +41,10 @@ export function stopGeneration() {
 /* ══════════════════════════════════════════
    SEND BUTTON UPDATER
 ══════════════════════════════════════════ */
-let _updateSendBtn = () => { };
-export function setSendBtnUpdater(fn) { _updateSendBtn = fn; }
+let _updateSendBtn = () => {};
+export function setSendBtnUpdater(fn) {
+  _updateSendBtn = fn;
+}
 
 /* ══════════════════════════════════════════
    INIT CHAT UI
@@ -57,7 +70,7 @@ async function doSendFromState() {
   const live = createLiveRow(doSendFromState);
   live.push('Thinking…');
 
-  const lastUserMsg = [...state.messages].reverse().find(m => m.role === 'user');
+  const lastUserMsg = [...state.messages].reverse().find((m) => m.role === 'user');
   let plannedSkills = [];
   let plannedToolCalls = [];
 
@@ -65,25 +78,39 @@ async function doSendFromState() {
     try {
       const plan = await planRequest(state.messages);
       plannedSkills = plan.skills ?? [];
-      for (const skillName of (plan.skills ?? [])) {
+      for (const skillName of plan.skills ?? []) {
         const handle = live.push(`[SKILL] ${skillName}`);
-        await new Promise(r => setTimeout(r, 120));
+        await new Promise((r) => setTimeout(r, 120));
         if (handle?.done) handle.done(true);
       }
       if ((plan.toolCalls?.length ?? 0) > 0) {
-        const handle = live.push('Preparing the next steps...');
-        await new Promise(r => setTimeout(r, 80));
+        const handle = live.push('Planning…');
+        await new Promise((r) => setTimeout(r, 80));
         if (handle?.done) handle.done(true);
       }
       plannedToolCalls = plan.toolCalls ?? [];
-    } catch { /* non-fatal */ }
+    } catch {
+      /* non-fatal */
+    }
   }
 
   try {
     _currentAbortController = new AbortController();
-    const { text: finalReply, usage, usedProvider, usedModel } = await agentLoop(
-      state.messages, live, plannedSkills, plannedToolCalls, state.systemPrompt, _currentAbortController.signal,
-    ).finally(() => { _currentAbortController = null; });
+    const {
+      text: finalReply,
+      usage,
+      usedProvider,
+      usedModel,
+    } = await agentLoop(
+      state.messages,
+      live,
+      plannedSkills,
+      plannedToolCalls,
+      state.systemPrompt,
+      _currentAbortController.signal,
+    ).finally(() => {
+      _currentAbortController = null;
+    });
 
     const safeReply = sanitizeAssistantReply(finalReply);
     if (safeReply !== finalReply) live.set(safeReply);
@@ -95,7 +122,7 @@ async function doSendFromState() {
     });
     saveCurrentChat();
     bumpScrollBadge();
-    attemptMemoryUpdate().catch(() => { });
+    attemptMemoryUpdate().catch(() => {});
   } catch (err) {
     _currentAbortController = null;
     if (err.name === 'AbortError') {
@@ -122,19 +149,23 @@ async function doSendFromState() {
 ══════════════════════════════════════════ */
 export function showChatView() {
   if (chatView.classList.contains('active')) return;
-  welcome.getAnimations().forEach(a => a.cancel());
+  welcome.getAnimations().forEach((a) => a.cancel());
   welcome.style.display = 'flex';
   const anim = welcome.animate(
-    [{ opacity: 1, transform: 'translateY(0) scale(1)' },
-    { opacity: 0, transform: 'translateY(-16px) scale(0.97)' }],
+    [
+      { opacity: 1, transform: 'translateY(0) scale(1)' },
+      { opacity: 0, transform: 'translateY(-16px) scale(0.97)' },
+    ],
     { duration: 280, easing: 'cubic-bezier(0.4,0,1,1)', fill: 'forwards' },
   );
-  anim.onfinish = () => { welcome.style.display = 'none'; };
+  anim.onfinish = () => {
+    welcome.style.display = 'none';
+  };
   chatView.classList.add('active');
 }
 
 export function restoreWelcome() {
-  welcome.getAnimations().forEach(a => a.cancel());
+  welcome.getAnimations().forEach((a) => a.cancel());
   welcome.style.display = 'flex';
   welcome.style.removeProperty('opacity');
   welcome.style.removeProperty('transform');
@@ -153,8 +184,6 @@ export function restoreWelcome() {
   }
 }
 
-
-
 /* ══════════════════════════════════════════
    SEND MESSAGE
 ══════════════════════════════════════════ */
@@ -168,12 +197,24 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
   resetComposer();
 
   sendBtnEl?.animate(
-    [{ transform: 'scale(1)' }, { transform: 'scale(0.85)' }, { transform: 'scale(1.15)' }, { transform: 'scale(1)' }],
+    [
+      { transform: 'scale(1)' },
+      { transform: 'scale(0.85)' },
+      { transform: 'scale(1.15)' },
+      { transform: 'scale(1)' },
+    ],
     { duration: 350, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' },
   );
 
   if (!state.selectedProvider || !state.selectedModel) {
-    appendMessage('assistant', 'No AI provider configured. Add an API key, Ollama, or LM Studio in Settings.', true, true, [], doSendFromState);
+    appendMessage(
+      'assistant',
+      'No AI provider configured. Add an API key, Ollama, or LM Studio in Settings.',
+      true,
+      true,
+      [],
+      doSendFromState,
+    );
     return;
   }
 
@@ -191,25 +232,39 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
       const plan = await planRequest(state.messages);
       plannedSkills = plan.skills ?? [];
 
-      for (const skillName of (plan.skills ?? [])) {
+      for (const skillName of plan.skills ?? []) {
         live.push(`[SKILL] ${skillName}`);
-        await new Promise(r => setTimeout(r, 120));
+        await new Promise((r) => setTimeout(r, 120));
       }
       if ((plan.toolCalls?.length ?? 0) > 0) {
-        const handle = live.push('Preparing the next steps...');
-        await new Promise(r => setTimeout(r, 80));
+        const handle = live.push('Planning…');
+        await new Promise((r) => setTimeout(r, 80));
         if (handle?.done) handle.done(true);
       }
 
       plannedToolCalls = plan.toolCalls ?? [];
-    } catch { /* non-fatal */ }
+    } catch {
+      /* non-fatal */
+    }
   }
 
   try {
     _currentAbortController = new AbortController();
-    const { text: finalReply, usage, usedProvider, usedModel } = await agentLoop(
-      state.messages, live, plannedSkills, plannedToolCalls, state.systemPrompt, _currentAbortController.signal,
-    ).finally(() => { _currentAbortController = null; });
+    const {
+      text: finalReply,
+      usage,
+      usedProvider,
+      usedModel,
+    } = await agentLoop(
+      state.messages,
+      live,
+      plannedSkills,
+      plannedToolCalls,
+      state.systemPrompt,
+      _currentAbortController.signal,
+    ).finally(() => {
+      _currentAbortController = null;
+    });
 
     const safeReply = sanitizeAssistantReply(finalReply);
     if (safeReply !== finalReply) live.set(safeReply);
@@ -223,8 +278,7 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
     bumpScrollBadge();
     setTimeout(updateTimeline, 100);
 
-    attemptMemoryUpdate().catch(() => { });
-
+    attemptMemoryUpdate().catch(() => {});
   } catch (err) {
     _currentAbortController = null;
     if (err.name === 'AbortError') {
@@ -248,7 +302,7 @@ export async function sendMessage({ text, attachments, sendBtnEl }) {
 /* ══════════════════════════════════════════
    CHAT SESSION HELPERS
 ══════════════════════════════════════════ */
-export function startNewChat(extraCleanup = () => { }) {
+export function startNewChat(extraCleanup = () => {}) {
   state.messages = [];
   state.currentChatId = null;
   state.isTyping = false;
@@ -268,7 +322,10 @@ export function startNewChat(extraCleanup = () => { }) {
   extraCleanup();
 }
 
-export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, notifyModelSelectionChanged }) {
+export async function loadChat(
+  chatId,
+  { updateModelLabel, buildModelDropdown, notifyModelSelectionChanged },
+) {
   try {
     const chat = await window.electronAPI?.invoke?.('load-chat', chatId, currentChatScope());
     if (!chat) return;
@@ -282,10 +339,12 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
     showChatView();
     const restored = sanitizeMessagesForUI(chat.messages ?? []);
     state.messages = restored;
-    restored.forEach(m => appendMessage(m.role, m.content, false, false, m.attachments, doSendFromState));
+    restored.forEach((m) =>
+      appendMessage(m.role, m.content, false, false, m.attachments, doSendFromState),
+    );
     chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
     if (chat.provider && chat.model) {
-      const provider = state.providers.find(p => p.provider === chat.provider);
+      const provider = state.providers.find((p) => p.provider === chat.provider);
       if (provider) {
         state.selectedProvider = provider;
         state.selectedModel = chat.model;
@@ -296,7 +355,9 @@ export async function loadChat(chatId, { updateModelLabel, buildModelDropdown, n
     notifyModelSelectionChanged();
     _updateSendBtn();
     setTimeout(updateTimeline, 150);
-  } catch (err) { console.error('[Chat] Load error:', err); }
+  } catch (err) {
+    console.error('[Chat] Load error:', err);
+  }
 }
 
 /* Re-export sub-module helpers needed by other files */
