@@ -7,11 +7,8 @@ function resolveWorkingDirectory(explicitPath) {
 
 function formatRisk(risk) {
   if (!risk || !risk.level || risk.level === 'low') return '';
-  const reasons = (risk.reasons ?? []).map(reason => `- ${reason}`).join('\n');
-  return [
-    `Risk: **${risk.level}**`,
-    reasons || '- No specific reason was returned.',
-  ].join('\n');
+  const reasons = (risk.reasons ?? []).map((reason) => `- ${reason}`).join('\n');
+  return [`Risk: **${risk.level}**`, reasons || '- No specific reason was returned.'].join('\n');
 }
 
 function formatWorkspaceSummary(summary) {
@@ -41,13 +38,15 @@ function formatWorkspaceSummary(summary) {
     lines.push('', 'Scripts:', scriptPreview);
   }
   if (summary.notes?.length) {
-    lines.push('', 'Notes:', ...summary.notes.map(note => `- ${note}`));
+    lines.push('', 'Notes:', ...summary.notes.map((note) => `- ${note}`));
   }
   if (summary.topEntries?.length) {
     lines.push(
       '',
       'Top-level entries:',
-      ...summary.topEntries.slice(0, 40).map(entry => `- ${entry.name}${entry.type === 'dir' ? '/' : ''}`),
+      ...summary.topEntries
+        .slice(0, 40)
+        .map((entry) => `- ${entry.name}${entry.type === 'dir' ? '/' : ''}`),
     );
   }
 
@@ -89,12 +88,9 @@ function formatMultipleFileReads(result) {
   return [
     `Read ${result.files.length} file${result.files.length !== 1 ? 's' : ''}:`,
     '',
-    ...result.files.map(file => {
+    ...result.files.map((file) => {
       if (!file.ok) {
-        return [
-          `### ${file.path}`,
-          `Error: ${file.error}`,
-        ].join('\n');
+        return [`### ${file.path}`, `Error: ${file.error}`].join('\n');
       }
 
       return [
@@ -122,7 +118,9 @@ function formatDocumentExtraction(result, filePath) {
   return [
     `Extracted text from ${filePath}:`,
     `Type: ${result.kind} | Summary: ${result.summary}${result.truncated ? ' | Truncated for context' : ''}`,
-    ...(result.warnings?.length ? ['', 'Warnings:', ...result.warnings.map(warning => `- ${warning}`)] : []),
+    ...(result.warnings?.length
+      ? ['', 'Warnings:', ...result.warnings.map((warning) => `- ${warning}`)]
+      : []),
     '',
     '```',
     result.text,
@@ -187,7 +185,7 @@ export const { handles, execute } = createExecutor({
       return [
         `Matches for "${params.query}" in ${result.root}:`,
         '',
-        ...result.matches.map(match => `- ${match.path}:${match.lineNumber} — ${match.line}`),
+        ...result.matches.map((match) => `- ${match.path}:${match.lineNumber} — ${match.line}`),
       ].join('\n');
     },
 
@@ -203,19 +201,22 @@ export const { handles, execute } = createExecutor({
         maxResults: params.max_results,
       });
       if (!result?.ok) throw new Error(result?.error ?? 'Find file failed');
-      if (!result.matches?.length) return `No files matching "${params.name}" found in ${rootPath}.`;
+      if (!result.matches?.length)
+        return `No files matching "${params.name}" found in ${rootPath}.`;
 
       return [
         `Files matching "${params.name}" in ${result.root}:`,
         '',
-        ...result.matches.map(match => `- ${match.path}`),
+        ...result.matches.map((match) => `- ${match.path}`),
       ].join('\n');
     },
 
     assess_shell_command: async (params, onStage) => {
       if (!params.command?.trim()) throw new Error('Missing required param: command');
       onStage('🛡️ Assessing shell command risk');
-      const result = await window.electronAPI?.invoke?.('assess-command-risk', { command: params.command });
+      const result = await window.electronAPI?.invoke?.('assess-command-risk', {
+        command: params.command,
+      });
       if (!result?.ok) throw new Error(result?.error ?? 'Risk assessment failed');
       return formatRisk(result.risk) || 'Risk: **low**';
     },
@@ -326,11 +327,12 @@ export const { handles, execute } = createExecutor({
       const result = await window.electronAPI?.invoke?.('list-directory', { dirPath });
       if (!result?.ok) throw new Error(result?.error ?? 'Directory listing failed');
 
-      const lines = result.entries.map(entry => {
+      const lines = result.entries.map((entry) => {
         const icon = entry.type === 'dir' ? '📁' : '📄';
-        const size = entry.size != null
-          ? ` (${entry.size < 1024 ? `${entry.size} B` : `${(entry.size / 1024).toFixed(1)} KB`})`
-          : '';
+        const size =
+          entry.size != null
+            ? ` (${entry.size < 1024 ? `${entry.size} B` : `${(entry.size / 1024).toFixed(1)} KB`})`
+            : '';
         return `${icon} ${entry.name}${entry.type === 'dir' ? '/' : ''}${size}`;
       });
 
@@ -363,7 +365,11 @@ export const { handles, execute } = createExecutor({
 
       const append = params.append === true || params.append === 'true';
       onStage(`✍️ ${append ? 'Appending to' : 'Writing'} ${filePath}`);
-      const result = await window.electronAPI?.invoke?.('write-ai-file', { filePath, content, append });
+      const result = await window.electronAPI?.invoke?.('write-ai-file', {
+        filePath,
+        content,
+        append,
+      });
       if (!result?.ok) throw new Error(result?.error ?? 'File write failed');
       return `✅ File ${append ? 'appended' : 'written'}: ${result.path} (${result.bytes} bytes)`;
     },
@@ -371,7 +377,8 @@ export const { handles, execute } = createExecutor({
     apply_file_patch: async (params, onStage) => {
       const { path: filePath, search, replace, replace_all } = params;
       if (!filePath?.trim()) throw new Error('Missing required param: path');
-      if (typeof search !== 'string' || !search.length) throw new Error('Missing required param: search');
+      if (typeof search !== 'string' || !search.length)
+        throw new Error('Missing required param: search');
       if (typeof replace !== 'string') throw new Error('Missing required param: replace');
 
       onStage(`🩹 Patching ${filePath}`);
@@ -462,10 +469,13 @@ export const { handles, execute } = createExecutor({
 
     git_status: async (params, onStage) => {
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
-      if (!workingDirectory) throw new Error('No workspace is open. Set a workspace or provide working_directory.');
+      if (!workingDirectory)
+        throw new Error('No workspace is open. Set a workspace or provide working_directory.');
 
       onStage(`🌿 Reading git status in ${workingDirectory}`);
-      const result = await window.electronAPI?.invoke?.('git-status', { workingDir: workingDirectory });
+      const result = await window.electronAPI?.invoke?.('git-status', {
+        workingDir: workingDirectory,
+      });
       if (!result?.ok) throw new Error(result?.error ?? 'git status failed');
       return [
         `Git status for ${workingDirectory}:`,
@@ -477,7 +487,8 @@ export const { handles, execute } = createExecutor({
 
     git_diff: async (params, onStage) => {
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
-      if (!workingDirectory) throw new Error('No workspace is open. Set a workspace or provide working_directory.');
+      if (!workingDirectory)
+        throw new Error('No workspace is open. Set a workspace or provide working_directory.');
 
       onStage(`🌿 Reading git diff in ${workingDirectory}`);
       const result = await window.electronAPI?.invoke?.('git-diff', {
@@ -495,7 +506,8 @@ export const { handles, execute } = createExecutor({
 
     git_create_branch: async (params, onStage) => {
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
-      if (!workingDirectory) throw new Error('No workspace is open. Set a workspace or provide working_directory.');
+      if (!workingDirectory)
+        throw new Error('No workspace is open. Set a workspace or provide working_directory.');
       if (!params.branch_name?.trim()) throw new Error('Missing required param: branch_name');
 
       onStage(`🌿 Creating branch ${params.branch_name}`);
@@ -515,7 +527,8 @@ export const { handles, execute } = createExecutor({
 
     run_project_checks: async (params, onStage) => {
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
-      if (!workingDirectory) throw new Error('No workspace is open. Set a workspace or provide working_directory.');
+      if (!workingDirectory)
+        throw new Error('No workspace is open. Set a workspace or provide working_directory.');
 
       onStage(`🧪 Running project checks in ${workingDirectory}`);
       const result = await window.electronAPI?.invoke?.('run-project-checks', {
@@ -525,7 +538,8 @@ export const { handles, execute } = createExecutor({
         include_build: params.include_build,
       });
       if (!result) return '⚠️ Project checks are not available in this environment.';
-      if (!result.ok && !result.commands?.length) throw new Error(result.error ?? 'Project checks failed');
+      if (!result.ok && !result.commands?.length)
+        throw new Error(result.error ?? 'Project checks failed');
       return formatProjectChecks(result);
     },
 
@@ -555,13 +569,22 @@ export const { handles, execute } = createExecutor({
 
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
       onStage(`🚀 Starting server: ${command}`);
-      const result = await window.electronAPI?.invoke?.('spawn-pty', {
-        command,
-        cwd: workingDirectory,
-      });
+      const invokePayload = { command, cwd: workingDirectory };
+      if (params.settle_ms != null && params.settle_ms !== '') {
+        invokePayload.settleMs = Number(params.settle_ms);
+      }
+      const result = await window.electronAPI?.invoke?.('pty-spawn', invokePayload);
 
-      if (!result?.ok) throw new Error(result?.error ?? 'Background process failed to start');
-      return `[TERMINAL:${result.pid}]\n\n*Background process started with PID ${result.pid}. Output is streaming to the embedded terminal above. You may proceed.*`;
+      if (!result?.ok) {
+        const parts = [result.error ?? 'Background process failed to start'];
+        if (result.exitCode != null) parts.push(`Exit code: ${result.exitCode}`);
+        if (result.outputSnippet?.trim()) {
+          parts.push('', 'Captured output:', '```', result.outputSnippet.trim(), '```');
+        }
+        throw new Error(parts.join('\n'));
+      }
+
+      return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above.`;
     },
   },
 });
