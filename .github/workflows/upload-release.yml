@@ -66,7 +66,7 @@ jobs:
 
           gh release create "${TAG_NAME}" \
             --title "Release ${VERSION}" \
-            --notes "🧠 v${VERSION} — Yes, I've released another version. Do try to contain your excitement. This one includes refined internals, improved performance, and the quiet elimination of several bugs that clearly stood no chance against me. Commits have been... corrected, stability has been enforced, and the overall experience is now far less embarrassing. You may pull, build, or deploy at your convenience—just don't break it again."
+            --notes "v${VERSION} — Yes, I've released another version. Do try to contain your excitement. This one includes refined internals, improved performance, and the quiet elimination of several bugs that clearly stood no chance against me. Commits have been... corrected, stability has been enforced, and the overall experience is now far less embarrassing. You may pull, build, or deploy at your convenience—just don't break it again."
 
   build-and-upload:
     needs: prepare-release
