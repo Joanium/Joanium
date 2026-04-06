@@ -4,7 +4,7 @@ import { createResponseViewer } from './Components/ResponseViewer.js';
 import { generateAgentId, resolveModelLabel } from './Utils/Utils.js';
 import { getAgentsHTML } from './Templates/Template.js';
 import { createCardPool } from '../../../../System/CardPool.js';
-import { state as appState } from '../../../../../System/State.js';
+import { state as appState } from '../../../../System/State.js';
 
 const SCHEDULE_OPTIONS = [
   { minutes: 1, label: 'Every 1 minute' },
