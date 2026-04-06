@@ -73,31 +73,13 @@ export const Paths = {
   },
 
   // Skills
-  get BUNDLED_SKILLS_DIR() {
-    return path.join(getBundledRoot(), 'Skills');
-  },
-  get OFFICIAL_SKILLS_DIR() {
-    return path.join(getBundledRoot(), 'Skills');
-  },
   get USER_SKILLS_DIR() {
     return path.join(getStateRoot(), 'Marketplace', 'Skills');
   },
-  get SKILLS_DIR() {
-    return path.join(getBundledRoot(), 'Skills');
-  },
 
   // Personas
-  get BUNDLED_PERSONAS_DIR() {
-    return path.join(getBundledRoot(), 'Personas');
-  },
-  get OFFICIAL_PERSONAS_DIR() {
-    return path.join(getBundledRoot(), 'Personas');
-  },
   get USER_PERSONAS_DIR() {
     return path.join(getStateRoot(), 'Marketplace', 'Personas');
-  },
-  get PERSONAS_DIR() {
-    return path.join(getBundledRoot(), 'Personas');
   },
 
   // Features

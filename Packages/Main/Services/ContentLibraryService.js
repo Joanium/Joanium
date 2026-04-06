@@ -122,24 +122,19 @@ function compareLibraryEntries(left, right) {
 function resolveFileRoots(kind) {
   if (kind === 'personas') {
     return {
-      bundledRoots: uniqueRoots([Paths.BUNDLED_PERSONAS_DIR]),
       userRoot: Paths.USER_PERSONAS_DIR,
     };
   }
 
   return {
-    bundledRoots: uniqueRoots([Paths.BUNDLED_SKILLS_DIR]),
     userRoot: Paths.USER_SKILLS_DIR,
   };
 }
 
 function readMarkdownEntries(kind) {
-  const { bundledRoots, userRoot } = resolveFileRoots(kind);
+  const { userRoot } = resolveFileRoots(kind);
   const entries = new Map();
-  const rootGroups = [
-    ...bundledRoots.map((rootDir) => ({ rootDir, source: 'official' })),
-    { rootDir: userRoot, source: 'user' },
-  ];
+  const rootGroups = [{ rootDir: userRoot, source: 'user' }];
 
   for (const { rootDir, source } of rootGroups) {
     for (const fullPath of scanMarkdownFiles(rootDir)) {
