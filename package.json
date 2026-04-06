@@ -1,6 +1,6 @@
 {
   "name": "Joanium",
-  "version": "0.1.0",
+  "version": "2026.04.06",
   "description": "Your AI assistant.",
   "type": "module",
   "workspaces": [
@@ -23,7 +23,8 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "build": "electron-builder",
+    "version:date": "node ./Scripts/SetVersionByDate.mjs",
+    "build": "node ./Scripts/SetVersionByDate.mjs && electron-builder",
     "lint": "eslint .",
     "packages:audit": "node ./Scripts/AuditWorkspacePackages.mjs",
     "prepare": "husky"
