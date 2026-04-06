@@ -42,32 +42,21 @@
   max-width: 520px;
 }
 
+.agents-page-header-copy p.agents-page-header-subtitle--single-line {
+  max-width: none;
+}
+
+@media (min-width: 960px) {
+  .agents-page-header-copy p.agents-page-header-subtitle--single-line {
+    white-space: nowrap;
+  }
+}
+
 .agents-header-actions {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-}
-
-/* "Thinks & Reacts" badge */
-.agents-tagline-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  background: color-mix(in srgb, var(--accent) 10%, var(--bg-secondary));
-  color: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-}
-
-.agents-tagline-badge svg {
-  width: 12px;
-  height: 12px;
 }
 
 /* Add agent button */

@@ -30,6 +30,10 @@
   color: var(--text-primary);
   letter-spacing: -0.4px;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .auto-page-header-copy p {

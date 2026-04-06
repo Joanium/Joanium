@@ -1,11 +1,23 @@
 export function getHTML() {
-  return /* html */`
+  return /* html */ `
 <main id="main">
   <div class="skills-main">
     <div class="skills-scroll">
       <div class="skills-page-header">
         <div class="skills-page-header-copy">
-          <h2>Skills</h2>
+          <h2>
+            Skills
+            <span class="agents-tagline-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Context &amp; Tools
+            </span>
+          </h2>
           <p>Enable skills to add specialised capabilities to every chat. Disabled skills are never injected into the AI context.</p>
         </div>
 

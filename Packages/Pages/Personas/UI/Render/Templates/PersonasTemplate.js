@@ -1,10 +1,19 @@
 export function getPersonasHTML() {
-  return /* html */`
+  return /* html */ `
 <main id="main" class="personas-main">
   <div class="personas-scroll">
     <div class="personas-page-header">
       <div class="personas-page-header-copy">
-        <h2>Personas</h2>
+        <h2>
+          Personas
+          <span class="agents-tagline-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="8" r="3.5" />
+              <path d="M5.5 19a6.5 6.5 0 0113 0" stroke-linecap="round" />
+            </svg>
+            Voice &amp; Style
+          </span>
+        </h2>
         <p>Choose a personality for your AI - the active persona shapes every conversation</p>
       </div>
       <span class="page-count" id="personas-count"></span>

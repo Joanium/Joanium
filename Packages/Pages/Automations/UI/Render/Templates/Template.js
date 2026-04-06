@@ -16,7 +16,7 @@ export function getAutomationsHTML() {
             Monitors &amp; Delivers
           </span>
         </h2>
-        <p>Scheduled workflows that collect data, reason over it with AI, and send the result wherever it needs to go.</p>
+        <p class="agents-page-header-subtitle--single-line">Scheduled workflows that collect data, reason over it with AI, and send the result wherever it needs to go.</p>
       </div>
       <div class="agents-header-actions">
         <button class="add-agent-btn" id="add-agent-header-btn">

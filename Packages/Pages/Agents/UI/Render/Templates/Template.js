@@ -5,7 +5,22 @@ export function getAgentsHTML() {
 
     <div class="auto-page-header">
       <div class="auto-page-header-copy">
-        <h2>Agents</h2>
+        <h2>
+          Agents
+          <span class="agents-tagline-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z"
+                stroke-linecap="round"
+              />
+              <path
+                d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z"
+                stroke-linecap="round"
+              />
+            </svg>
+            Thinks &amp; Reacts
+          </span>
+        </h2>
         <p>Autonomous AI workers that wake up on a schedule, receive your prompt, and use the full chat tool stack to get work done.</p>
       </div>
       <button class="add-automation-btn" id="add-agent-header-btn">

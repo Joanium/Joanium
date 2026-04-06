@@ -31,6 +31,10 @@
   color: var(--text-primary);
   letter-spacing: -0.4px;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .skills-page-header-copy p {
@@ -58,7 +62,10 @@
   padding: 5px 12px;
   border-radius: 999px;
   white-space: nowrap;
-  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .skills-enabled-count--active {
@@ -232,7 +239,9 @@
 
 .skill-card.skill-card--enabled:hover {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
-  box-shadow: 0 0 0 1px var(--accent-dim), 0 20px 48px rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 0 0 1px var(--accent-dim),
+    0 20px 48px rgba(0, 0, 0, 0.14);
 }
 
 /* ── Card head ── */
@@ -253,7 +262,9 @@
   justify-content: center;
   color: var(--accent);
   flex-shrink: 0;
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .skill-card--enabled .skill-icon {
@@ -323,7 +334,9 @@
   background: var(--bg-hover);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.22s, border-color 0.22s;
+  transition:
+    background 0.22s,
+    border-color 0.22s;
 }
 
 .skill-toggle-track::after {
@@ -336,15 +349,17 @@
   height: 14px;
   border-radius: 50%;
   background: var(--text-muted);
-  transition: transform 0.22s var(--ease-spring), background 0.22s;
+  transition:
+    transform 0.22s var(--ease-spring),
+    background 0.22s;
 }
 
-.skill-toggle-input:checked+.skill-toggle-track {
+.skill-toggle-input:checked + .skill-toggle-track {
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.skill-toggle-input:checked+.skill-toggle-track::after {
+.skill-toggle-input:checked + .skill-toggle-track::after {
   transform: translateY(-50%) translateX(18px);
   background: #fff;
 }

@@ -102,12 +102,21 @@ export function ensureUsageStyles() {
 }
 
 export function getHTML(REFRESH_HTML, CLEAR_HTML) {
-  return /* html */`
+  return /* html */ `
 <main id="main" class="usage-main">
   <div class="usage-scroll">
     <div class="usage-page-header">
       <div class="usage-page-header-copy">
-        <h2>Usage</h2>
+        <h2>
+          Usage
+          <span class="agents-tagline-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 3v18h18" stroke-linecap="round" />
+              <path d="M7 16V10M12 16V6M17 16v-5" stroke-linecap="round" />
+            </svg>
+            Tokens &amp; Spend
+          </span>
+        </h2>
         <p>Token consumption and model analytics</p>
       </div>
       <div class="usage-header-actions">

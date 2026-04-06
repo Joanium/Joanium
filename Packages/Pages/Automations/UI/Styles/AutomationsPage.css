@@ -70,8 +70,11 @@
 /* 24. Automations */
 @import './Automations.css';
 
-/* 25. Agent builder utilities reused by the new Agents page */
+/* 25. Tagline pill (shared with Automations header in injected templates) */
+@import '../../../Shared/Styles/PageTaglineBadge.css';
+
+/* 26. Agent builder utilities reused by the new Agents page */
 @import '../../../Agents/UI/Styles/Agents.css';
 
-/* 26. Free API Connectors */
+/* 27. Free API Connectors */
 @import '../../../Shared/Styles/FreeConnectors.css';
