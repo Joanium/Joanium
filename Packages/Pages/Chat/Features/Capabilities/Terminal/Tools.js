@@ -1849,4 +1849,675 @@ export const TERMINAL_TOOLS = [
       },
     },
   },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // NEW TOOLS — TOOLS.JS ADDITIONS
+  // Paste these 20 objects into the TERMINAL_TOOLS array in Tools.js,
+  // after the last existing entry (snapshot_workspace).
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  // ── FILTER & PATTERN-BASED EDITING ──────────────────────────────────────────
+
+  {
+    name: 'filter_lines',
+    description:
+      'Keep only the lines in a file that match a pattern, deleting all non-matching lines. The inverse of filter_out_lines. Use for extracting log entries, filtering CSV rows, or isolating relevant code sections.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      pattern: {
+        type: 'string',
+        required: true,
+        description: 'String or regex pattern. Only lines matching this are kept.',
+      },
+      regex: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to treat pattern as a JavaScript regex (default: false).',
+      },
+      case_sensitive: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true for case-sensitive matching (default: false).',
+      },
+    },
+  },
+
+  {
+    name: 'filter_out_lines',
+    description:
+      'Delete every line in a file that matches a pattern, keeping all non-matching lines. The inverse of filter_lines. Use for stripping debug logs, removing blank lines matching a rule, or pruning unwanted entries.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      pattern: {
+        type: 'string',
+        required: true,
+        description: 'String or regex pattern. Lines matching this are deleted.',
+      },
+      regex: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to treat pattern as a JavaScript regex (default: false).',
+      },
+      case_sensitive: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true for case-sensitive matching (default: false).',
+      },
+    },
+  },
+
+  {
+    name: 'insert_line_at_pattern',
+    description:
+      'Insert a block of content immediately before or after every line that matches a pattern. Useful for injecting imports after a specific line, adding blank separators between blocks, or inserting debug statements near every function call.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      pattern: {
+        type: 'string',
+        required: true,
+        description: 'String or regex pattern. Insertion happens at each matching line.',
+      },
+      content: {
+        type: 'string',
+        required: true,
+        description: 'Text to insert. Include newlines as needed.',
+      },
+      position: {
+        type: 'string',
+        required: false,
+        description: '"before" or "after" the matching line (default: "after").',
+      },
+      regex: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to treat pattern as a regex (default: false).',
+      },
+      case_sensitive: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true for case-sensitive matching (default: false).',
+      },
+      all_occurrences: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set false to only insert at the first matching line (default: true — all matches).',
+      },
+    },
+  },
+
+  // ── PRECISE LINE EDITING ─────────────────────────────────────────────────────
+
+  {
+    name: 'replace_single_line',
+    description:
+      'Replace the entire content of exactly one line, identified by its 1-based line number, with new text. More precise than apply_file_patch when you know the exact line number.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      line_number: {
+        type: 'number',
+        required: true,
+        description: '1-based number of the line to replace.',
+      },
+      replacement: {
+        type: 'string',
+        required: true,
+        description: 'New content for the line (without trailing newline).',
+      },
+    },
+  },
+
+  {
+    name: 'swap_two_lines',
+    description:
+      'Exchange the content of exactly two lines, identified by their 1-based line numbers. Useful for quickly reordering declarations, CSS rules, or import statements without moving a whole block.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      line_a: {
+        type: 'number',
+        required: true,
+        description: '1-based number of the first line to swap.',
+      },
+      line_b: {
+        type: 'number',
+        required: true,
+        description: '1-based number of the second line to swap.',
+      },
+    },
+  },
+
+  // ── FILE-LEVEL STRUCTURAL EDITING ────────────────────────────────────────────
+
+  {
+    name: 'add_file_header',
+    description:
+      'Prepend a block of text (license banner, shebang line, auto-generated notice, module docstring, etc.) to the very top of a file. Idempotent by default — skips if the header is already present.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      content: {
+        type: 'string',
+        required: true,
+        description: 'Header text to prepend.',
+      },
+      separator: {
+        type: 'string',
+        required: false,
+        description: 'String inserted between the header and existing content (default: "\\n").',
+      },
+      skip_if_present: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set false to always prepend even if the header already exists (default: true).',
+      },
+    },
+  },
+
+  {
+    name: 'add_file_footer',
+    description:
+      'Append a block of text (closing comment, export statement, trailing config, etc.) to the very bottom of a file. Idempotent by default.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      content: {
+        type: 'string',
+        required: true,
+        description: 'Footer text to append.',
+      },
+      separator: {
+        type: 'string',
+        required: false,
+        description: 'String inserted between existing content and the footer (default: "\\n").',
+      },
+      skip_if_present: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set false to always append even if the footer already exists (default: true).',
+      },
+    },
+  },
+
+  {
+    name: 'strip_comments',
+    description:
+      'Remove all full-line comment lines from a file. Comment syntax is auto-detected from the file extension (// for JS/TS, # for Python/Shell, -- for SQL, <!-- --> for HTML/XML). Lines that are code followed by an inline comment are left intact.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      keep_blank_lines: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set true to replace each removed comment line with a blank line, preserving line numbers (default: false — lines are fully deleted).',
+      },
+    },
+  },
+
+  {
+    name: 'truncate_file',
+    description:
+      'Cut a file down to a maximum number of lines by discarding excess lines from the end (or from the beginning). Leaves the file unchanged if it is already within the limit.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      max_lines: {
+        type: 'number',
+        required: true,
+        description: 'Maximum number of lines to keep.',
+      },
+      from_end: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set true to keep the last max_lines instead of the first (default: false — keeps from the top).',
+      },
+    },
+  },
+
+  // ── OUTPUT / TRANSFORM TOOLS ─────────────────────────────────────────────────
+
+  {
+    name: 'extract_unique_lines',
+    description:
+      'Read a file and write only its unique lines (in original order) to a new output file. Duplicate lines are silently dropped. The source file is not modified. Useful for deduplicating word lists, CSV rows, or log lines.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the source file.',
+      },
+      output_path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path for the deduplicated output file.',
+      },
+      trim_before_compare: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set true to treat lines as equal when they differ only in leading/trailing whitespace (default: false).',
+      },
+      ignore_blank: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to keep only one blank line in the output (default: true).',
+      },
+    },
+  },
+
+  {
+    name: 'pad_lines',
+    description:
+      'Extend each line in a range to a minimum character width by adding a pad character on the left, right, or both sides (center). Useful for formatting table columns, aligning code columns, or constructing fixed-width output.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the range.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the range (inclusive).',
+      },
+      width: {
+        type: 'number',
+        required: true,
+        description: 'Minimum total character width each line should reach.',
+      },
+      align: {
+        type: 'string',
+        required: false,
+        description: '"left" (default), "right", or "center" — which side to add padding to.',
+      },
+      pad_char: {
+        type: 'string',
+        required: false,
+        description: 'Single character to use as padding (default: space).',
+      },
+      skip_blank_lines: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to leave blank lines untouched (default: false).',
+      },
+    },
+  },
+
+  {
+    name: 'align_assignments',
+    description:
+      'Vertically align assignment operators (=, :, =>, or any separator) within a line range by padding the left-hand side of each line. Makes config blocks, destructuring, and variable declarations visually aligned.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the range to align.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the range (inclusive).',
+      },
+      separator: {
+        type: 'string',
+        required: false,
+        description:
+          'The operator/character to align on (default: "="). Common values: ":", "=>", ":".',
+      },
+      skip_blank_lines: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to leave blank lines untouched (default: true).',
+      },
+    },
+  },
+
+  {
+    name: 'quote_lines',
+    description:
+      'Wrap every line in a range with opening and closing quote characters. Useful for converting a list of bare values into a JSON string array, CSV field, or SQL list. Existing occurrences of the quote character inside a line are backslash-escaped by default.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the range.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the range (inclusive).',
+      },
+      quote_char: {
+        type: 'string',
+        required: false,
+        description:
+          "Quote character to use on both sides when open and close are the same (default: '\"').",
+      },
+      open_quote: {
+        type: 'string',
+        required: false,
+        description: 'Opening quote/bracket if different from closing (e.g. "[").',
+      },
+      close_quote: {
+        type: 'string',
+        required: false,
+        description: 'Closing quote/bracket (e.g. "]").',
+      },
+      escape_existing: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set false to skip escaping existing occurrences of the quote character (default: true).',
+      },
+      skip_blank_lines: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to leave blank lines unquoted (default: true).',
+      },
+    },
+  },
+
+  // ── CASE TRANSFORMATION ──────────────────────────────────────────────────────
+
+  {
+    name: 'uppercase_lines',
+    description:
+      'Convert every character in a range of lines to UPPERCASE. Useful for formatting headings, SQL keywords, enum values, or constant declarations.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the range.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the range (inclusive).',
+      },
+    },
+  },
+
+  {
+    name: 'lowercase_lines',
+    description:
+      'Convert every character in a range of lines to lowercase. Useful for normalizing imports, fixing accidentally capped lines, or preparing text for case-insensitive comparison.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the range.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the range (inclusive).',
+      },
+    },
+  },
+
+  // ── WHITESPACE & CHARACTER TOOLS ─────────────────────────────────────────────
+
+  {
+    name: 'collapse_whitespace',
+    description:
+      'Reduce every run of consecutive whitespace characters inside each line to a single space. Leading indentation is preserved by default. Operates on the entire file or a specified line range.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: false,
+        description: '1-based first line of the range (default: 1).',
+      },
+      end_line: {
+        type: 'number',
+        required: false,
+        description: '1-based last line of the range (default: end of file).',
+      },
+      preserve_indent: {
+        type: 'boolean',
+        required: false,
+        description:
+          'Set false to also collapse leading whitespace/indentation (default: true — indentation is kept).',
+      },
+    },
+  },
+
+  {
+    name: 'replace_char',
+    description:
+      'Replace every occurrence of a specific character (or short string) with another character throughout a file or within a specified line range. Simpler and faster than find_replace_regex for single-character substitutions such as tabs ↔ pipes, commas ↔ semicolons, or smart quotes ↔ straight quotes.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      from_char: {
+        type: 'string',
+        required: true,
+        description: 'The character or short string to find.',
+      },
+      to_char: {
+        type: 'string',
+        required: true,
+        description: 'The replacement character or string. Use "" to delete all occurrences.',
+      },
+      start_line: {
+        type: 'number',
+        required: false,
+        description: '1-based first line of the range (default: 1).',
+      },
+      end_line: {
+        type: 'number',
+        required: false,
+        description: '1-based last line of the range (default: end of file).',
+      },
+    },
+  },
+
+  // ── FILE SPLITTING & ROTATING ────────────────────────────────────────────────
+
+  {
+    name: 'split_file_at_pattern',
+    description:
+      'Split a single file into two separate output files at the line matching a pattern. The matching line can be included in part A, part B, or excluded entirely. The source file is not modified.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the source file.',
+      },
+      pattern: {
+        type: 'string',
+        required: true,
+        description: 'String or regex pattern identifying the split line.',
+      },
+      output_path_a: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path for the first part (content before the split line).',
+      },
+      output_path_b: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path for the second part (content after the split line).',
+      },
+      match_goes_to: {
+        type: 'string',
+        required: false,
+        description:
+          'Where the matching line itself goes: "a" (default) → included in part A, "b" → included in part B, "none" → excluded from both.',
+      },
+      regex: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to treat pattern as a regex (default: false).',
+      },
+      case_sensitive: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true for case-sensitive matching (default: false).',
+      },
+      occurrence: {
+        type: 'number',
+        required: false,
+        description:
+          'Which occurrence to split at when the pattern appears multiple times (1-based, default: 1).',
+      },
+    },
+  },
+
+  {
+    name: 'rotate_lines',
+    description:
+      'Rotate a block of lines within a file by N positions. "down" moves the first N lines to the bottom of the block; "up" moves the last N lines to the top. Think of it like a circular buffer shift for a range.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: true,
+        description: '1-based first line of the block to rotate.',
+      },
+      end_line: {
+        type: 'number',
+        required: true,
+        description: '1-based last line of the block (inclusive).',
+      },
+      count: {
+        type: 'number',
+        required: true,
+        description: 'Number of positions to rotate.',
+      },
+      direction: {
+        type: 'string',
+        required: false,
+        description:
+          '"down" (default) — first N lines move to end; "up" — last N lines move to front.',
+      },
+    },
+  },
+
+  // ── METRICS ──────────────────────────────────────────────────────────────────
+
+  {
+    name: 'count_lines_in_range',
+    description:
+      'Count lines in a file or a specific line range, broken down into total, blank, non-blank, word count, and character count. Optionally also counts how many lines in the range match a given pattern. Lighter than get_file_metadata when you just need line statistics for a subsection.',
+    category: 'terminal',
+    parameters: {
+      path: {
+        type: 'string',
+        required: true,
+        description: 'Absolute path to the file.',
+      },
+      start_line: {
+        type: 'number',
+        required: false,
+        description: '1-based first line of the range (default: 1).',
+      },
+      end_line: {
+        type: 'number',
+        required: false,
+        description: '1-based last line of the range (default: end of file).',
+      },
+      pattern: {
+        type: 'string',
+        required: false,
+        description:
+          'Optional pattern — if provided, also reports how many lines in the range match.',
+      },
+      regex: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to treat pattern as a regex (default: false).',
+      },
+    },
+  },
 ];

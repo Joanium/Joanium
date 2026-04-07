@@ -428,6 +428,26 @@ export const { handles, execute } = createExecutor({
     'audit_dependencies',
     'smart_grep',
     'snapshot_workspace',
+    'filter_lines',
+    'filter_out_lines',
+    'insert_line_at_pattern',
+    'replace_single_line',
+    'swap_two_lines',
+    'add_file_header',
+    'add_file_footer',
+    'strip_comments',
+    'truncate_file',
+    'extract_unique_lines',
+    'pad_lines',
+    'align_assignments',
+    'quote_lines',
+    'uppercase_lines',
+    'lowercase_lines',
+    'collapse_whitespace',
+    'split_file_at_pattern',
+    'rotate_lines',
+    'replace_char',
+    'count_lines_in_range',
   ],
   handlers: {
     inspect_workspace: async (params, onStage) => {
@@ -3400,6 +3420,772 @@ export const { handles, execute } = createExecutor({
       }
 
       return lines.join('\n');
+    },
+    filter_lines: async (params, onStage) => {
+      const { path: filePath, pattern } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!pattern?.trim()) throw new Error('Missing required param: pattern');
+
+      const useRegex = params.regex === true;
+      const caseSensitive = params.case_sensitive === true;
+
+      onStage(`🔍 Keeping only lines matching "${pattern}" in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      let regex;
+      try {
+        regex = useRegex
+          ? new RegExp(pattern, caseSensitive ? '' : 'i')
+          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
+      } catch (e) {
+        throw new Error(`Invalid pattern: ${e.message}`);
+      }
+
+      const kept = lines.filter((line) => regex.test(line));
+      const removed = totalLines - kept.length;
+
+      if (!kept.length)
+        return `No lines matched "${pattern}" — all ${totalLines} lines would be deleted. File unchanged.`;
+
+      await ipcWriteFile(filePath, joinLines(kept));
+      return `✅ Kept ${kept.length} matching lines, removed ${removed} non-matching lines in ${filePath} (${totalLines} → ${kept.length} lines)`;
+    },
+
+    // ── 2. FILTER OUT LINES ──────────────────────────────────────────────────
+    // Delete every line that matches a pattern; keep all that don't.
+    filter_out_lines: async (params, onStage) => {
+      const { path: filePath, pattern } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!pattern?.trim()) throw new Error('Missing required param: pattern');
+
+      const useRegex = params.regex === true;
+      const caseSensitive = params.case_sensitive === true;
+
+      onStage(`🗑️ Removing lines matching "${pattern}" from ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      let regex;
+      try {
+        regex = useRegex
+          ? new RegExp(pattern, caseSensitive ? '' : 'i')
+          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
+      } catch (e) {
+        throw new Error(`Invalid pattern: ${e.message}`);
+      }
+
+      const kept = lines.filter((line) => !regex.test(line));
+      const removed = totalLines - kept.length;
+
+      if (!removed) return `No lines matched "${pattern}" — file unchanged.`;
+
+      await ipcWriteFile(filePath, joinLines(kept));
+      return `✅ Removed ${removed} line${removed !== 1 ? 's' : ''} matching "${pattern}" from ${filePath} (${totalLines} → ${kept.length} lines)`;
+    },
+
+    // ── 3. INSERT LINE AT PATTERN ────────────────────────────────────────────
+    // Insert a new line before or after every line that matches a pattern.
+    insert_line_at_pattern: async (params, onStage) => {
+      const { path: filePath, pattern, content: insertContent } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!pattern?.trim()) throw new Error('Missing required param: pattern');
+      if (insertContent == null) throw new Error('Missing required param: content');
+
+      const position = (params.position ?? 'after').toLowerCase();
+      const useRegex = params.regex === true;
+      const caseSensitive = params.case_sensitive === true;
+      const allOccurrences = params.all_occurrences !== false;
+
+      onStage(`📍 Inserting content ${position} each matching line in ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const fileLines = splitLines(content);
+      const insertLines = splitLines(insertContent);
+
+      let regex;
+      try {
+        regex = useRegex
+          ? new RegExp(pattern, caseSensitive ? '' : 'i')
+          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
+      } catch (e) {
+        throw new Error(`Invalid pattern: ${e.message}`);
+      }
+
+      const result = [];
+      let insertCount = 0;
+      for (const line of fileLines) {
+        const matches = regex.test(line) && (allOccurrences || insertCount === 0);
+        if (matches && position === 'before') result.push(...insertLines);
+        result.push(line);
+        if (matches && position === 'after') result.push(...insertLines);
+        if (matches) insertCount++;
+      }
+
+      if (!insertCount) return `No lines matched "${pattern}" — file unchanged.`;
+
+      await ipcWriteFile(filePath, joinLines(result));
+      return `✅ Inserted ${insertLines.length} line${insertLines.length !== 1 ? 's' : ''} ${position} each of ${insertCount} matching line${insertCount !== 1 ? 's' : ''} in ${filePath}`;
+    },
+
+    // ── 4. REPLACE SINGLE LINE ───────────────────────────────────────────────
+    // Replace exactly one line by its 1-based line number.
+    replace_single_line: async (params, onStage) => {
+      const { path: filePath, line_number, replacement } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (line_number == null) throw new Error('Missing required param: line_number');
+      if (typeof replacement !== 'string') throw new Error('Missing required param: replacement');
+
+      onStage(`✏️ Replacing line ${line_number} in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+
+      if (line_number < 1 || line_number > totalLines) {
+        throw new Error(
+          `line_number ${line_number} is out of range (file has ${totalLines} lines)`,
+        );
+      }
+
+      const lines = splitLines(content);
+      const old = lines[line_number - 1];
+      lines[line_number - 1] = replacement;
+      await ipcWriteFile(filePath, joinLines(lines));
+
+      return [
+        `✅ Replaced line ${line_number} in ${filePath}`,
+        `  was: ${old.trim().slice(0, 120)}`,
+        `  now: ${replacement.trim().slice(0, 120)}`,
+      ].join('\n');
+    },
+
+    // ── 5. SWAP TWO LINES ────────────────────────────────────────────────────
+    // Exchange the content of exactly two lines by their line numbers.
+    swap_two_lines: async (params, onStage) => {
+      const { path: filePath, line_a, line_b } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (line_a == null) throw new Error('Missing required param: line_a');
+      if (line_b == null) throw new Error('Missing required param: line_b');
+      if (line_a === line_b) throw new Error('line_a and line_b must be different');
+
+      onStage(`↔️ Swapping lines ${line_a} and ${line_b} in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+
+      for (const n of [line_a, line_b]) {
+        if (n < 1 || n > totalLines) {
+          throw new Error(`Line ${n} is out of range (file has ${totalLines} lines)`);
+        }
+      }
+
+      const lines = splitLines(content);
+      [lines[line_a - 1], lines[line_b - 1]] = [lines[line_b - 1], lines[line_a - 1]];
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Swapped line ${line_a} ↔ line ${line_b} in ${filePath}`;
+    },
+
+    // ── 6. ADD FILE HEADER ───────────────────────────────────────────────────
+    // Prepend a block of text to the very top of a file.
+    add_file_header: async (params, onStage) => {
+      const { path: filePath, content: headerContent } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!headerContent) throw new Error('Missing required param: content');
+
+      const skipIfPresent = params.skip_if_present !== false;
+      const separator = params.separator ?? '\n';
+
+      onStage(`📎 Adding header to ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+
+      if (skipIfPresent && content.startsWith(headerContent.trimEnd())) {
+        return `Header already present at top of ${filePath} — no change made.`;
+      }
+
+      const newContent = headerContent.trimEnd() + separator + content;
+      await ipcWriteFile(filePath, newContent);
+
+      const headerLines = splitLines(headerContent).length;
+      return `✅ Added ${headerLines}-line header to top of ${filePath}`;
+    },
+
+    // ── 7. ADD FILE FOOTER ───────────────────────────────────────────────────
+    // Append a block of text to the very bottom of a file.
+    add_file_footer: async (params, onStage) => {
+      const { path: filePath, content: footerContent } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!footerContent) throw new Error('Missing required param: content');
+
+      const skipIfPresent = params.skip_if_present !== false;
+      const separator = params.separator ?? '\n';
+
+      onStage(`📎 Adding footer to ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+
+      if (skipIfPresent && content.trimEnd().endsWith(footerContent.trimStart())) {
+        return `Footer already present at bottom of ${filePath} — no change made.`;
+      }
+
+      const newContent = content.trimEnd() + separator + footerContent.trimStart();
+      await ipcWriteFile(filePath, newContent);
+
+      const footerLines = splitLines(footerContent).length;
+      return `✅ Added ${footerLines}-line footer to bottom of ${filePath}`;
+    },
+
+    // ── 8. STRIP COMMENTS ────────────────────────────────────────────────────
+    // Remove full-line comments from a file. Comment style is auto-detected
+    // from the file extension. Inline comments (code + comment) are left intact
+    // by default.
+    strip_comments: async (params, onStage) => {
+      const { path: filePath } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+
+      const keepBlankLines = params.keep_blank_lines !== false;
+
+      onStage(`🧹 Stripping comment lines from ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const style = getCommentStyle(filePath, null);
+      const singleMarkers = [];
+      if (style.single) singleMarkers.push(style.single);
+      // Always include common fallbacks so mixed files are handled
+      for (const m of ['//', '#', '--']) {
+        if (!singleMarkers.includes(m)) singleMarkers.push(m);
+      }
+      const blockStart = style.block?.[0] ?? null;
+      const blockEnd = style.block?.[1] ?? null;
+
+      let inBlock = false;
+      let removed = 0;
+      const result = [];
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+
+        // Block comment handling
+        if (blockStart && blockEnd) {
+          if (!inBlock && trimmed.startsWith(blockStart)) {
+            inBlock = !trimmed.slice(blockStart.length).includes(blockEnd);
+            removed++;
+            if (keepBlankLines) result.push('');
+            continue;
+          }
+          if (inBlock) {
+            if (trimmed.includes(blockEnd)) inBlock = false;
+            removed++;
+            if (keepBlankLines) result.push('');
+            continue;
+          }
+        }
+
+        // Single-line comment handling (full-line only)
+        const isFullLineComment = singleMarkers.some((m) => trimmed.startsWith(m));
+        if (isFullLineComment) {
+          removed++;
+          if (keepBlankLines) result.push('');
+        } else {
+          result.push(line);
+        }
+      }
+
+      await ipcWriteFile(filePath, joinLines(result));
+      return `✅ Removed ${removed} comment line${removed !== 1 ? 's' : ''} from ${filePath} (${totalLines} → ${result.length} lines)`;
+    },
+
+    // ── 9. TRUNCATE FILE ─────────────────────────────────────────────────────
+    // Keep only the first (or last) N lines of a file; discard the rest.
+    truncate_file: async (params, onStage) => {
+      const { path: filePath, max_lines } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (max_lines == null) throw new Error('Missing required param: max_lines');
+      if (max_lines < 1) throw new Error('max_lines must be at least 1');
+
+      const fromEnd = params.from_end === true;
+
+      onStage(`✂️ Truncating ${filePath} to ${max_lines} line${max_lines !== 1 ? 's' : ''}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+
+      if (totalLines <= max_lines) {
+        return `File already has ${totalLines} lines (≤ ${max_lines}) — no change needed.`;
+      }
+
+      const lines = splitLines(content);
+      const kept = fromEnd ? lines.slice(-max_lines) : lines.slice(0, max_lines);
+      const removed = totalLines - kept.length;
+
+      await ipcWriteFile(filePath, joinLines(kept));
+      return `✅ Truncated ${filePath}: kept ${kept.length} lines, removed ${removed} from the ${fromEnd ? 'beginning' : 'end'}`;
+    },
+
+    // ── 10. EXTRACT UNIQUE LINES ─────────────────────────────────────────────
+    // Read a file, deduplicate its lines in order, and write the result to a
+    // new output file. The source file is not modified.
+    extract_unique_lines: async (params, onStage) => {
+      const { path: filePath, output_path } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!output_path?.trim()) throw new Error('Missing required param: output_path');
+
+      const trimCompare = params.trim_before_compare === true;
+      const ignoreBlank = params.ignore_blank !== false;
+
+      onStage(`🔑 Extracting unique lines from ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const seen = new Set();
+      const unique = [];
+
+      for (const line of lines) {
+        if (ignoreBlank && !line.trim()) {
+          if (!seen.has('\x00blank\x00')) {
+            seen.add('\x00blank\x00');
+            unique.push(line);
+          }
+          continue;
+        }
+        const key = trimCompare ? line.trim() : line;
+        if (!seen.has(key)) {
+          seen.add(key);
+          unique.push(line);
+        }
+      }
+
+      const removed = totalLines - unique.length;
+      await ipcWriteFile(output_path, joinLines(unique));
+      return `✅ Extracted ${unique.length} unique line${unique.length !== 1 ? 's' : ''} (removed ${removed} duplicate${removed !== 1 ? 's' : ''}) from ${filePath} → ${output_path}`;
+    },
+
+    // ── 11. PAD LINES ────────────────────────────────────────────────────────
+    // Pad each line in a range to a minimum character width using a pad
+    // character. Supports left, right, and center alignment.
+    pad_lines: async (params, onStage) => {
+      const { path: filePath, start_line, end_line, width } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+      if (width == null) throw new Error('Missing required param: width');
+      if (width < 1) throw new Error('width must be at least 1');
+
+      const align = (params.align ?? 'left').toLowerCase();
+      if (!['left', 'right', 'center'].includes(align)) {
+        throw new Error('align must be "left", "right", or "center"');
+      }
+      const padChar = (params.pad_char ?? ' ').charAt(0) || ' ';
+      const skipBlank = params.skip_blank_lines === true;
+
+      onStage(`⬜ Padding lines ${start_line}–${end_line} to width ${width} in ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      let changed = 0;
+
+      for (let i = s; i < e; i++) {
+        if (skipBlank && !lines[i].trim()) continue;
+        if (lines[i].length >= width) continue;
+
+        const needed = width - lines[i].length;
+        if (align === 'right') {
+          lines[i] = padChar.repeat(needed) + lines[i];
+        } else if (align === 'center') {
+          const left = Math.floor(needed / 2);
+          const right = Math.ceil(needed / 2);
+          lines[i] = padChar.repeat(left) + lines[i] + padChar.repeat(right);
+        } else {
+          lines[i] = lines[i] + padChar.repeat(needed);
+        }
+        changed++;
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Padded ${changed} line${changed !== 1 ? 's' : ''} to width ${width} (${align}-aligned, pad: "${padChar}") in ${filePath}`;
+    },
+
+    // ── 12. ALIGN ASSIGNMENTS ────────────────────────────────────────────────
+    // Vertically align a separator (default =) in a range of lines by padding
+    // the left-hand side of each line to the same width. Great for config
+    // blocks, destructuring, and CSS properties.
+    align_assignments: async (params, onStage) => {
+      const { path: filePath, start_line, end_line } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+
+      const separator = params.separator ?? '=';
+      const skipBlank = params.skip_blank_lines !== false;
+
+      onStage(`⬌ Aligning "${separator}" in lines ${start_line}–${end_line} of ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      const block = lines.slice(s, e);
+
+      // First pass: find maximum left-hand side length among lines that contain separator
+      let maxLeft = 0;
+      const parsed = block.map((line) => {
+        if (skipBlank && !line.trim()) return null;
+        const idx = line.indexOf(separator);
+        if (idx === -1) return null;
+        const left = line.slice(0, idx).trimEnd();
+        const right = line.slice(idx + separator.length);
+        if (left.length > maxLeft) maxLeft = left.length;
+        return { left, right };
+      });
+
+      // Second pass: rebuild lines with padding
+      let changed = 0;
+      const aligned = block.map((line, i) => {
+        const p = parsed[i];
+        if (!p) return line;
+        const newLine = p.left.padEnd(maxLeft) + ' ' + separator + ' ' + p.right.trimStart();
+        if (newLine !== line) changed++;
+        return newLine;
+      });
+
+      lines.splice(s, block.length, ...aligned);
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Aligned ${changed} line${changed !== 1 ? 's' : ''} by "${separator}" (max left width: ${maxLeft}) in ${filePath}`;
+    },
+
+    // ── 13. QUOTE LINES ──────────────────────────────────────────────────────
+    // Wrap every line in a range with a configurable opening and closing quote
+    // character. Existing occurrences of the quote character can be escaped.
+    quote_lines: async (params, onStage) => {
+      const { path: filePath, start_line, end_line } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+
+      const openQuote = params.open_quote ?? params.quote_char ?? '"';
+      const closeQuote = params.close_quote ?? openQuote;
+      const skipBlank = params.skip_blank_lines !== false;
+      const escapeExisting = params.escape_existing !== false;
+
+      onStage(`❝ Quoting lines ${start_line}–${end_line} in ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      let changed = 0;
+
+      const escapeRe = new RegExp(openQuote.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+
+      for (let i = s; i < e; i++) {
+        if (skipBlank && !lines[i].trim()) continue;
+        let text = lines[i];
+        if (escapeExisting) text = text.replace(escapeRe, '\\' + openQuote);
+        lines[i] = `${openQuote}${text}${closeQuote}`;
+        changed++;
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Quoted ${changed} line${changed !== 1 ? 's' : ''} with ${openQuote}…${closeQuote} in ${filePath}`;
+    },
+
+    // ── 14. UPPERCASE LINES ──────────────────────────────────────────────────
+    // Convert every character in a line range to UPPERCASE.
+    uppercase_lines: async (params, onStage) => {
+      const { path: filePath, start_line, end_line } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+
+      onStage(`🔠 Uppercasing lines ${start_line}–${end_line} in ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      let changed = 0;
+
+      for (let i = s; i < e; i++) {
+        const upper = lines[i].toUpperCase();
+        if (upper !== lines[i]) {
+          lines[i] = upper;
+          changed++;
+        }
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Uppercased ${changed} line${changed !== 1 ? 's' : ''} (lines ${start_line}–${end_line}) in ${filePath}`;
+    },
+
+    // ── 15. LOWERCASE LINES ──────────────────────────────────────────────────
+    // Convert every character in a line range to lowercase.
+    lowercase_lines: async (params, onStage) => {
+      const { path: filePath, start_line, end_line } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+
+      onStage(`🔡 Lowercasing lines ${start_line}–${end_line} in ${filePath}`);
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      let changed = 0;
+
+      for (let i = s; i < e; i++) {
+        const lower = lines[i].toLowerCase();
+        if (lower !== lines[i]) {
+          lines[i] = lower;
+          changed++;
+        }
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Lowercased ${changed} line${changed !== 1 ? 's' : ''} (lines ${start_line}–${end_line}) in ${filePath}`;
+    },
+
+    // ── 16. COLLAPSE WHITESPACE ──────────────────────────────────────────────
+    // Reduce any run of consecutive whitespace inside each line to a single
+    // space. Leading indentation is preserved by default.
+    collapse_whitespace: async (params, onStage) => {
+      const { path: filePath } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+
+      const preserveIndent = params.preserve_indent !== false;
+
+      onStage(`🧹 Collapsing internal whitespace in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = (params.start_line ? Math.max(1, params.start_line) : 1) - 1;
+      const e = params.end_line ? Math.min(params.end_line, lines.length) : lines.length;
+
+      let changed = 0;
+      for (let i = s; i < e; i++) {
+        const original = lines[i];
+        let newLine;
+        if (preserveIndent) {
+          const m = original.match(/^(\s*)(.*\S)?\s*$/s);
+          const indent = m?.[1] ?? '';
+          const body = (m?.[2] ?? '').replace(/\s+/g, ' ');
+          newLine = indent + body;
+        } else {
+          newLine = original.trim().replace(/\s+/g, ' ');
+        }
+        if (newLine !== original) {
+          lines[i] = newLine;
+          changed++;
+        }
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Collapsed whitespace in ${changed} of ${totalLines} lines in ${filePath}`;
+    },
+
+    // ── 17. SPLIT FILE AT PATTERN ────────────────────────────────────────────
+    // Split a file into two output files at the first line that matches a
+    // pattern. The matching line itself can go to part A, part B, or neither.
+    split_file_at_pattern: async (params, onStage) => {
+      const { path: filePath, pattern, output_path_a, output_path_b } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!pattern?.trim()) throw new Error('Missing required param: pattern');
+      if (!output_path_a?.trim()) throw new Error('Missing required param: output_path_a');
+      if (!output_path_b?.trim()) throw new Error('Missing required param: output_path_b');
+
+      const useRegex = params.regex === true;
+      const caseSensitive = params.case_sensitive === true;
+      // Where does the split line go? 'a' | 'b' | 'none'
+      const matchGoesTo = (params.match_goes_to ?? 'a').toLowerCase();
+      const occurrence = Math.max(1, params.occurrence ?? 1);
+
+      onStage(`✂️ Splitting ${filePath} at "${pattern}"`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      let regex;
+      try {
+        regex = useRegex
+          ? new RegExp(pattern, caseSensitive ? '' : 'i')
+          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
+      } catch (e) {
+        throw new Error(`Invalid pattern: ${e.message}`);
+      }
+
+      let found = 0;
+      let splitIdx = -1;
+      for (let i = 0; i < lines.length; i++) {
+        if (regex.test(lines[i])) {
+          found++;
+          if (found === occurrence) {
+            splitIdx = i;
+            break;
+          }
+        }
+      }
+
+      if (splitIdx === -1) {
+        return `Pattern "${pattern}" not found (occurrence ${occurrence}) in ${filePath} — file not split.`;
+      }
+
+      let partA, partB;
+      if (matchGoesTo === 'b') {
+        partA = lines.slice(0, splitIdx);
+        partB = lines.slice(splitIdx);
+      } else if (matchGoesTo === 'none') {
+        partA = lines.slice(0, splitIdx);
+        partB = lines.slice(splitIdx + 1);
+      } else {
+        // 'a'
+        partA = lines.slice(0, splitIdx + 1);
+        partB = lines.slice(splitIdx + 1);
+      }
+
+      await Promise.all([
+        ipcWriteFile(output_path_a, joinLines(partA)),
+        ipcWriteFile(output_path_b, joinLines(partB)),
+      ]);
+
+      return [
+        `✅ Split ${filePath} at line ${splitIdx + 1} (pattern: "${pattern}")`,
+        `   Part A: ${partA.length} lines → ${output_path_a}`,
+        `   Part B: ${partB.length} lines → ${output_path_b}`,
+      ].join('\n');
+    },
+
+    // ── 18. ROTATE LINES ─────────────────────────────────────────────────────
+    // Rotate a block of lines by N positions. "down" moves the first N lines
+    // to the end; "up" moves the last N lines to the front.
+    rotate_lines: async (params, onStage) => {
+      const { path: filePath, start_line, end_line, count } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (start_line == null) throw new Error('Missing required param: start_line');
+      if (end_line == null) throw new Error('Missing required param: end_line');
+      if (count == null) throw new Error('Missing required param: count');
+      if (count < 1) throw new Error('count must be at least 1');
+
+      const direction = (params.direction ?? 'down').toLowerCase();
+      if (direction !== 'up' && direction !== 'down') {
+        throw new Error('direction must be "up" or "down"');
+      }
+
+      onStage(
+        `🔄 Rotating lines ${start_line}–${end_line} by ${count} (${direction}) in ${filePath}`,
+      );
+      const { content } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = Math.max(1, start_line) - 1;
+      const e = Math.min(end_line, lines.length);
+      const block = lines.slice(s, e);
+
+      if (block.length < 2) return `Range contains fewer than 2 lines — nothing to rotate.`;
+      const n = count % block.length;
+      if (!n)
+        return `Rotation by ${count} is equivalent to no change for a ${block.length}-line range — file unchanged.`;
+
+      const rotated =
+        direction === 'up'
+          ? [...block.slice(-n), ...block.slice(0, -n)]
+          : [...block.slice(n), ...block.slice(0, n)];
+
+      lines.splice(s, block.length, ...rotated);
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Rotated ${block.length} lines (${start_line}–${end_line}) ${direction} by ${n} position${n !== 1 ? 's' : ''} in ${filePath}`;
+    },
+
+    // ── 19. REPLACE CHAR ─────────────────────────────────────────────────────
+    // Replace every occurrence of a specific character (or short string) with
+    // another throughout a file or within a line range. Simpler and faster than
+    // find_replace_regex for single-character substitutions.
+    replace_char: async (params, onStage) => {
+      const { path: filePath, from_char, to_char } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+      if (!from_char) throw new Error('Missing required param: from_char');
+      if (to_char == null) throw new Error('Missing required param: to_char');
+
+      onStage(`🔤 Replacing "${from_char}" → "${to_char}" in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = (params.start_line ? Math.max(1, params.start_line) : 1) - 1;
+      const e = params.end_line ? Math.min(params.end_line, lines.length) : lines.length;
+
+      const escaped = from_char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escaped, 'g');
+
+      let totalReplaced = 0;
+      let linesChanged = 0;
+      for (let i = s; i < e; i++) {
+        const matches = lines[i].match(regex);
+        if (matches) {
+          lines[i] = lines[i].replace(regex, to_char);
+          totalReplaced += matches.length;
+          linesChanged++;
+        }
+      }
+
+      if (!totalReplaced) {
+        return `"${from_char}" not found in the specified range of ${filePath} — file unchanged.`;
+      }
+
+      await ipcWriteFile(filePath, joinLines(lines));
+      return `✅ Replaced ${totalReplaced} occurrence${totalReplaced !== 1 ? 's' : ''} of "${from_char}" → "${to_char}" across ${linesChanged} line${linesChanged !== 1 ? 's' : ''} in ${filePath}`;
+    },
+
+    // ── 20. COUNT LINES IN RANGE ─────────────────────────────────────────────
+    // Lightweight counter for a file or a specific line range, reporting total,
+    // blank, non-blank lines, word count, character count, and optionally the
+    // number of lines that match an additional filter pattern.
+    count_lines_in_range: async (params, onStage) => {
+      const { path: filePath } = params;
+      if (!filePath?.trim()) throw new Error('Missing required param: path');
+
+      onStage(`🔢 Counting lines in ${filePath}`);
+      const { content, totalLines } = await ipcReadFile(filePath);
+      const lines = splitLines(content);
+
+      const s = (params.start_line ? Math.max(1, params.start_line) : 1) - 1;
+      const e = params.end_line ? Math.min(params.end_line, lines.length) : lines.length;
+      const region = lines.slice(s, e);
+
+      const total = region.length;
+      const blank = region.filter((l) => !l.trim()).length;
+      const nonBlank = total - blank;
+      const words = region
+        .filter((l) => l.trim())
+        .join(' ')
+        .split(/\s+/)
+        .filter(Boolean).length;
+      const chars = region.join('\n').length;
+
+      const rangeLabel =
+        params.start_line || params.end_line
+          ? `lines ${s + 1}–${e} of ${totalLines}`
+          : `all ${totalLines} lines`;
+
+      const output = [
+        `Line count for ${filePath} (${rangeLabel}):`,
+        `  Total lines:     ${total.toLocaleString()}`,
+        `  Blank lines:     ${blank.toLocaleString()}`,
+        `  Non-blank lines: ${nonBlank.toLocaleString()}`,
+        `  Words:           ${words.toLocaleString()}`,
+        `  Characters:      ${chars.toLocaleString()}`,
+      ];
+
+      // Optional pattern filter
+      if (params.pattern?.trim()) {
+        const useRegex = params.regex === true;
+        let regex;
+        try {
+          regex = useRegex
+            ? new RegExp(params.pattern, 'i')
+            : new RegExp(params.pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+          const patCount = region.filter((l) => regex.test(l)).length;
+          output.push(
+            `  Matching "${params.pattern}": ${patCount.toLocaleString()} line${patCount !== 1 ? 's' : ''}`,
+          );
+        } catch (e) {
+          output.push(`  Pattern error: ${e.message}`);
+        }
+      }
+
+      return output.join('\n');
     },
   },
 });
