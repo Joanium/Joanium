@@ -7,7 +7,7 @@ import { loadJson, parseFrontmatter, persistJson } from './FileService.js';
 export const OFFICIAL_PUBLISHER = 'Joanium';
 
 const MARKDOWN_FILE_REGEX = /\.md$/i;
-const DEFAULT_PERSONA_FILENAME = 'joana.md';
+const DEFAULT_PERSONA_FILENAME = 'Joana.md';
 const INVALID_PATH_SEGMENT_REGEX = /[<>:"/\\|?*\u0000-\u001f]+/g;
 
 function sanitizeLibrarySegment(value, fallback) {
