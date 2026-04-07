@@ -131,10 +131,6 @@
 }
 
 /* Default card — dashed border when inactive */
-.persona-card.persona-card--default {
-  border-style: dashed;
-}
-
 /* Active glow */
 .persona-card.is-active {
   border-style: solid;
@@ -191,13 +187,6 @@
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
   user-select: none;
-}
-
-.persona-avatar--default {
-  background: var(--bg-tertiary);
-  border: 1.5px solid var(--border);
-  color: var(--accent);
-  box-shadow: none;
 }
 
 .persona-card:hover .persona-avatar {
@@ -508,18 +497,6 @@
   user-select: none;
   box-shadow: 0 6px 16px var(--accent-glow);
   overflow: hidden;
-}
-
-.persona-modal-avatar--default {
-  background: var(--bg-tertiary);
-  border: 1.5px solid var(--border);
-  box-shadow: none;
-}
-
-.persona-modal-avatar--default img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .persona-modal-name {

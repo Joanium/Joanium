@@ -26,7 +26,7 @@ export function getPersonasHTML() {
       </div>
     </div>
 
-    <div id="personas-search-wrapper" class="page-search-wrapper">
+    <div id="personas-search-wrapper" class="page-search-wrapper" hidden>
       <div class="page-search-box">
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <circle cx="11" cy="11" r="7" />
@@ -49,11 +49,11 @@ export function getPersonasHTML() {
         </svg>
       </div>
       <h3>No personas yet</h3>
-      <p>Browse the Marketplace to discover and install personas that shape your AI's voice and style.</p>
+      <p>Install a persona from the Marketplace or add a <code>.md</code> file under <code>Personas/&lt;Publisher&gt;/Persona.md</code>.</p>
       <button id="personas-go-marketplace" class="page-empty-cta" type="button">Go to Marketplace</button>
     </div>
 
-    <div id="personas-grid" class="personas-grid"></div>
+    <div id="personas-grid" class="personas-grid" hidden></div>
   </div>
 </main>
 

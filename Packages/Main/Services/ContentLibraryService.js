@@ -8,10 +8,24 @@ export const OFFICIAL_PUBLISHER = 'Joanium';
 
 const MARKDOWN_FILE_REGEX = /\.md$/i;
 const DEFAULT_PERSONA_FILENAME = 'joana.md';
+const INVALID_PATH_SEGMENT_REGEX = /[<>:"/\\|?*\u0000-\u001f]+/g;
+
+function sanitizeLibrarySegment(value, fallback) {
+  const sanitized = String(value ?? '')
+    .replace(INVALID_PATH_SEGMENT_REGEX, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/[. ]+$/g, '');
+
+  return sanitized || fallback;
+}
+
+export function sanitizePublisherName(value) {
+  return sanitizeLibrarySegment(value, OFFICIAL_PUBLISHER);
+}
 
 function normalizePublisherName(value) {
-  const trimmed = String(value ?? '').trim();
-  return trimmed || OFFICIAL_PUBLISHER;
+  return sanitizePublisherName(value);
 }
 
 export function isVerifiedPublisher(value) {
@@ -20,7 +34,10 @@ export function isVerifiedPublisher(value) {
 
 export function buildContentId(kind, publisher, filename) {
   const normalizedKind = kind === 'personas' ? 'personas' : 'skills';
-  const normalizedFilename = String(filename ?? '').trim();
+  const normalizedFilename = sanitizeMarkdownFileName(
+    filename,
+    normalizedKind === 'personas' ? 'Persona' : 'Skill',
+  );
   return `${normalizedKind}:${normalizePublisherName(publisher)}/${normalizedFilename}`;
 }
 
@@ -41,13 +58,7 @@ export function parseContentId(value) {
 export function sanitizeMarkdownFileName(value, fallback = 'Item') {
   const raw = String(value ?? '').trim();
   const withNoExtension = raw.replace(/\.md$/i, '');
-  const sanitized = withNoExtension
-    .replace(/[<>:"/\\|?*\u0000-\u001f]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/[. ]+$/g, '');
-
-  const baseName = sanitized || fallback;
+  const baseName = sanitizeLibrarySegment(withNoExtension, fallback);
   return `${baseName}.md`;
 }
 

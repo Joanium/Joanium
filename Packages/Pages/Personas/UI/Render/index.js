@@ -57,8 +57,9 @@ function closeModal() {
 
 function updateBanner() {
   if (!activeBanner || !activeNameEl) return;
-  activeBanner.hidden = false;
-  activeNameEl.textContent = _activePersona?.name || 'Default Assistant';
+  const hasActivePersona = _allPersonas.length > 0 && Boolean(_activePersona?.name);
+  activeBanner.hidden = !hasActivePersona;
+  activeNameEl.textContent = hasActivePersona ? _activePersona.name : '';
 }
 
 function navigateToChat() {
@@ -78,32 +79,32 @@ function render(query = '') {
     _personaPool.render([], null);
     if (personasEmpty) personasEmpty.hidden = false;
     if (searchWrapper) searchWrapper.hidden = true;
-    personasGrid.style.display = 'none';
+    personasGrid.hidden = true;
     return;
   }
 
   if (personasEmpty) personasEmpty.hidden = true;
   if (searchWrapper) searchWrapper.hidden = false;
-  personasGrid.style.display = '';
+  personasGrid.hidden = false;
 
   const filteredCustom = _allPersonas.filter((persona) => matchesSearch(persona, query));
   const visibleItems = [...filteredCustom];
+  let noResults = personasGrid.querySelector('.personas-no-results');
 
   if (visibleItems.length === 0) {
     _personaPool.render([], null);
-    let noResults = personasGrid.querySelector('.personas-no-results');
     if (!noResults) {
       noResults = document.createElement('div');
       noResults.className = 'personas-no-results';
+      noResults.hidden = true;
       personasGrid.appendChild(noResults);
     }
     noResults.textContent = `No personas match "${query}"`;
-    noResults.style.display = '';
+    noResults.hidden = false;
     return;
   }
 
-  const noResults = personasGrid.querySelector('.personas-no-results');
-  if (noResults) noResults.style.display = 'none';
+  if (noResults) noResults.hidden = true;
 
   _personaPool.render(visibleItems, _activePersona?.id ?? null);
 }

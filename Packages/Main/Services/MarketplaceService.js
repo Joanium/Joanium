@@ -99,9 +99,9 @@ function buildDownloadUrl(type, publisher, filename) {
 function normalizeMarketplaceItem(rawItem, type) {
   if (!rawItem || typeof rawItem !== 'object') return null;
 
-  const publisher =
-    String(rawItem.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER).trim() ||
-    ContentLibraryService.OFFICIAL_PUBLISHER;
+  const publisher = ContentLibraryService.sanitizePublisherName(
+    rawItem.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER,
+  );
   const meta = rawItem.meta && typeof rawItem.meta === 'object' ? rawItem.meta : {};
   const filename =
     String(rawItem.filename ?? '').trim() ||
@@ -227,9 +227,9 @@ function withInstalledState(type, items) {
 
 async function resolveItemMarkdown(type, item) {
   if (item.markdown) return item.markdown;
-  const publisher =
-    String(item?.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER).trim() ||
-    ContentLibraryService.OFFICIAL_PUBLISHER;
+  const publisher = ContentLibraryService.sanitizePublisherName(
+    item?.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER,
+  );
   const filename = ContentLibraryService.sanitizeMarkdownFileName(
     item?.filename ?? item?.name,
     type === 'personas' ? 'Persona' : 'Skill',
@@ -288,10 +288,9 @@ export async function getItemDetail({ type = 'skills', item } = {}) {
   const normalizedItem = normalizeMarketplaceItem(item ?? {}, normalizedType);
   if (normalizedItem?.markdown) return normalizedItem;
 
-  const publisher =
-    String(
-      normalizedItem?.publisher ?? item?.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER,
-    ).trim() || ContentLibraryService.OFFICIAL_PUBLISHER;
+  const publisher = ContentLibraryService.sanitizePublisherName(
+    normalizedItem?.publisher ?? item?.publisher ?? ContentLibraryService.OFFICIAL_PUBLISHER,
+  );
   const filename = ContentLibraryService.sanitizeMarkdownFileName(
     normalizedItem?.filename ?? item?.filename ?? item?.name,
     normalizedType === 'personas' ? 'Persona' : 'Skill',

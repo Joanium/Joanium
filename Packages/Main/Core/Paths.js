@@ -116,8 +116,6 @@ export const Paths = {
   SETUP_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Setup', 'Setup.html'),
   INDEX_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Chat', 'Chat.html'),
   AUTOMATIONS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Automations', 'Automations.html'),
-  SKILLS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Skills', 'Skills.html'),
-  PERSONAS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Personas', 'Personas.html'),
   USAGE_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Usage', 'Usage.html'),
   AGENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Agents', 'Agents.html'),
   EVENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Events', 'Events.html'),
