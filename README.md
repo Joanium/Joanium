@@ -1,6 +1,6 @@
 # Joanium
 
-Joanium is a local-first Electron desktop app for people who want an AI assistant that can actually work with projects, files, tools, schedules, personal context, and real integrations instead of acting like a thin chat wrapper.
+Joanium is a local-first desktop app for people who want an AI assistant that can actually work with projects, files, tools, schedules, personal context, and real integrations instead of acting like a thin chat wrapper.
 
 It combines multi-provider chat, workspace-aware assistance, scheduled automations, autonomous agents, MCP, browser tooling, markdown-based skills and personas, and a discovery-driven extension system in one desktop product.
 
