@@ -49,7 +49,7 @@ export function getPersonasHTML() {
         </svg>
       </div>
       <h3>No personas yet</h3>
-      <p>Install a persona from the Marketplace or add a <code>.md</code> file under <code>Personas/&lt;Publisher&gt;/Persona.md</code>.</p>
+      <p>Install a persona from the Marketplace.</p>
       <button id="personas-go-marketplace" class="page-empty-cta" type="button">Go to Marketplace</button>
     </div>
 

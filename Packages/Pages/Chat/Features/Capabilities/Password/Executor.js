@@ -1,17 +1,109 @@
 import { createExecutor } from '../Shared/createExecutor.js';
 
+import { toolsList } from './ToolsList.js';
+
 // Word list for passphrases (common memorable words)
 const WORDS = [
-  'apple','brave','cloud','dance','eagle','flame','grace','happy','ivory','jazzy',
-  'karma','lemon','maple','noble','ocean','piano','quest','river','solar','tiger',
-  'ultra','vivid','waves','xenon','yield','zebra','amber','blaze','coral','drift',
-  'ember','frost','globe','haste','ideal','jewel','khaki','lunar','misty','night',
-  'olive','pearl','quartz','ridge','stone','torch','umbra','vault','winds','xceed',
-  'young','zesty','adobe','beach','cedar','delta','elite','forge','gleam','hawk',
-  'inbox','joker','kneel','lance','magic','nexus','orbit','pixel','query','rally',
-  'shiny','tidal','unity','vapor','waltz','xylem','yacht','zones','acorn','blend',
-  'charm','depot','enter','flint','giant','holly','input','judge','kinky','lodge',
-  'micro','north','onion','plumb','quiet','rocky','swing','trend','upper','venom',
+  'apple',
+  'brave',
+  'cloud',
+  'dance',
+  'eagle',
+  'flame',
+  'grace',
+  'happy',
+  'ivory',
+  'jazzy',
+  'karma',
+  'lemon',
+  'maple',
+  'noble',
+  'ocean',
+  'piano',
+  'quest',
+  'river',
+  'solar',
+  'tiger',
+  'ultra',
+  'vivid',
+  'waves',
+  'xenon',
+  'yield',
+  'zebra',
+  'amber',
+  'blaze',
+  'coral',
+  'drift',
+  'ember',
+  'frost',
+  'globe',
+  'haste',
+  'ideal',
+  'jewel',
+  'khaki',
+  'lunar',
+  'misty',
+  'night',
+  'olive',
+  'pearl',
+  'quartz',
+  'ridge',
+  'stone',
+  'torch',
+  'umbra',
+  'vault',
+  'winds',
+  'xceed',
+  'young',
+  'zesty',
+  'adobe',
+  'beach',
+  'cedar',
+  'delta',
+  'elite',
+  'forge',
+  'gleam',
+  'hawk',
+  'inbox',
+  'joker',
+  'kneel',
+  'lance',
+  'magic',
+  'nexus',
+  'orbit',
+  'pixel',
+  'query',
+  'rally',
+  'shiny',
+  'tidal',
+  'unity',
+  'vapor',
+  'waltz',
+  'xylem',
+  'yacht',
+  'zones',
+  'acorn',
+  'blend',
+  'charm',
+  'depot',
+  'enter',
+  'flint',
+  'giant',
+  'holly',
+  'input',
+  'judge',
+  'kinky',
+  'lodge',
+  'micro',
+  'north',
+  'onion',
+  'plumb',
+  'quiet',
+  'rocky',
+  'swing',
+  'trend',
+  'upper',
+  'venom',
 ];
 
 function getRandomValues(count) {
@@ -21,7 +113,7 @@ function getRandomValues(count) {
     return Array.from(arr);
   }
   // Fallback (less secure but functional)
-  return Array.from({ length: count }, () => Math.floor(Math.random() * 0xFFFFFFFF));
+  return Array.from({ length: count }, () => Math.floor(Math.random() * 0xffffffff));
 }
 
 function randomInt(max) {
@@ -30,22 +122,31 @@ function randomInt(max) {
 }
 
 function generatePassword(length, useSymbols, useNumbers, useUppercase) {
-  const lower   = 'abcdefghijklmnopqrstuvwxyz';
-  const upper   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const digits  = '0123456789';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const digits = '0123456789';
   const symbols = '!@#$%^&*()-_=+[]{}|;:,.<>?';
 
   let chars = lower;
   const required = [lower[randomInt(lower.length)]];
 
-  if (useUppercase) { chars += upper; required.push(upper[randomInt(upper.length)]); }
-  if (useNumbers)   { chars += digits; required.push(digits[randomInt(digits.length)]); }
-  if (useSymbols)   { chars += symbols; required.push(symbols[randomInt(symbols.length)]); }
+  if (useUppercase) {
+    chars += upper;
+    required.push(upper[randomInt(upper.length)]);
+  }
+  if (useNumbers) {
+    chars += digits;
+    required.push(digits[randomInt(digits.length)]);
+  }
+  if (useSymbols) {
+    chars += symbols;
+    required.push(symbols[randomInt(symbols.length)]);
+  }
 
   // Fill remaining slots
   const remaining = Array.from(
     { length: length - required.length },
-    () => chars[randomInt(chars.length)]
+    () => chars[randomInt(chars.length)],
   );
 
   // Shuffle required + remaining
@@ -77,7 +178,8 @@ function generateMemorable(length) {
   const vowels = 'aeiou';
   let result = '';
   for (let i = 0; i < length; i++) {
-    result += i % 2 === 0 ? consonants[randomInt(consonants.length)] : vowels[randomInt(vowels.length)];
+    result +=
+      i % 2 === 0 ? consonants[randomInt(consonants.length)] : vowels[randomInt(vowels.length)];
   }
   return result;
 }
@@ -97,11 +199,11 @@ function strengthLabel(password) {
 
 export const { handles, execute } = createExecutor({
   name: 'PasswordExecutor',
-  tools: ['generate_password'],
+  tools: toolsList,
   handlers: {
     generate_password: async (params, onStage) => {
-      const type           = String(params.type ?? 'password').toLowerCase();
-      const count          = Math.min(Math.max(1, Number(params.count) || 1), 10);
+      const type = String(params.type ?? 'password').toLowerCase();
+      const count = Math.min(Math.max(1, Number(params.count) || 1), 10);
       const includeSymbols = params.include_symbols !== false;
       const includeNumbers = params.include_numbers !== false;
       const includeUppercase = params.include_uppercase !== false;
@@ -132,7 +234,10 @@ export const { handles, execute } = createExecutor({
         }
       }
 
-      const lines = [`🔐 Generated ${type.charAt(0).toUpperCase() + type.slice(1)}${count > 1 ? 's' : ''}`, ''];
+      const lines = [
+        `🔐 Generated ${type.charAt(0).toUpperCase() + type.slice(1)}${count > 1 ? 's' : ''}`,
+        '',
+      ];
 
       if (count === 1) {
         const pw = passwords[0];
@@ -143,12 +248,15 @@ export const { handles, execute } = createExecutor({
         if (type === 'password' || type === 'memorable') {
           lines.push(`Strength: ${strengthLabel(pw)}`);
           lines.push(`Length: ${pw.length} characters`);
-          const entropy = Math.floor(pw.length * Math.log2(
-            (includeUppercase ? 26 : 0) +
-            (includeNumbers ? 10 : 0) +
-            (includeSymbols && type === 'password' ? 28 : 0) +
-            26
-          ));
+          const entropy = Math.floor(
+            pw.length *
+              Math.log2(
+                (includeUppercase ? 26 : 0) +
+                  (includeNumbers ? 10 : 0) +
+                  (includeSymbols && type === 'password' ? 28 : 0) +
+                  26,
+              ),
+          );
           lines.push(`Estimated entropy: ~${entropy} bits`);
         }
       } else {
@@ -159,7 +267,9 @@ export const { handles, execute } = createExecutor({
       }
 
       lines.push('');
-      lines.push('⚠️ Store passwords in a password manager (Bitwarden, 1Password, etc.) — never in plain text.');
+      lines.push(
+        '⚠️ Store passwords in a password manager (Bitwarden, 1Password, etc.) — never in plain text.',
+      );
       return lines.join('\n');
     },
   },

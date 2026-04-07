@@ -1,16 +1,36 @@
 import { createExecutor } from '../Shared/createExecutor.js';
 
-const DAYS   = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
+import { toolsList } from './ToolsList.js';
+
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 const ZODIAC = [
-  ['Capricorn', [12, 22], [1, 19]],  ['Aquarius', [1, 20], [2, 18]],
-  ['Pisces', [2, 19], [3, 20]],      ['Aries', [3, 21], [4, 19]],
-  ['Taurus', [4, 20], [5, 20]],      ['Gemini', [5, 21], [6, 20]],
-  ['Cancer', [6, 21], [7, 22]],      ['Leo', [7, 23], [8, 22]],
-  ['Virgo', [8, 23], [9, 22]],       ['Libra', [9, 23], [10, 22]],
-  ['Scorpio', [10, 23], [11, 21]],   ['Sagittarius', [11, 22], [12, 21]],
+  ['Capricorn', [12, 22], [1, 19]],
+  ['Aquarius', [1, 20], [2, 18]],
+  ['Pisces', [2, 19], [3, 20]],
+  ['Aries', [3, 21], [4, 19]],
+  ['Taurus', [4, 20], [5, 20]],
+  ['Gemini', [5, 21], [6, 20]],
+  ['Cancer', [6, 21], [7, 22]],
+  ['Leo', [7, 23], [8, 22]],
+  ['Virgo', [8, 23], [9, 22]],
+  ['Libra', [9, 23], [10, 22]],
+  ['Scorpio', [10, 23], [11, 21]],
+  ['Sagittarius', [11, 22], [12, 21]],
 ];
 
 function parseDate(str) {
@@ -57,7 +77,7 @@ function getWeekNumber(d) {
 
 export const { handles, execute } = createExecutor({
   name: 'DateTimeExecutor',
-  tools: ['calculate_date'],
+  tools: toolsList,
   handlers: {
     calculate_date: async (params, onStage) => {
       const { operation, date, date2, amount } = params;
@@ -87,7 +107,7 @@ export const { handles, execute } = createExecutor({
           const weeks = (days / 7).toFixed(1);
           const months = (days / 30.44).toFixed(1);
           const earlier = d1 < d2 ? d1 : d2;
-          const later   = d1 < d2 ? d2 : d1;
+          const later = d1 < d2 ? d2 : d1;
           return [
             `📅 Days Between Dates`,
             '',
@@ -177,15 +197,19 @@ export const { handles, execute } = createExecutor({
             return `📅 **That's today!** (${formatDate(today)})`;
           } else {
             const weeks = Math.floor(days / 7);
-            const rem   = days % 7;
+            const rem = days % 7;
             return [
               `📅 Countdown`,
               '',
               `Target: ${formatDate(d1)}`,
               `**${days} day${days !== 1 ? 's' : ''} from now**`,
-              weeks > 0 ? `(${weeks} week${weeks !== 1 ? 's' : ''}${rem > 0 ? ` and ${rem} day${rem !== 1 ? 's' : ''}` : ''})` : '',
+              weeks > 0
+                ? `(${weeks} week${weeks !== 1 ? 's' : ''}${rem > 0 ? ` and ${rem} day${rem !== 1 ? 's' : ''}` : ''})`
+                : '',
               `Today is ${formatDate(today)}`,
-            ].filter(Boolean).join('\n');
+            ]
+              .filter(Boolean)
+              .join('\n');
           }
         }
 

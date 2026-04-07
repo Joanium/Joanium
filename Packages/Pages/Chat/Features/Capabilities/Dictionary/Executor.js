@@ -1,9 +1,11 @@
 import { createExecutor } from '../Shared/createExecutor.js';
 import { safeJson } from '../Shared/Utils.js';
 
+import { toolsList } from './ToolsList.js';
+
 export const { handles, execute } = createExecutor({
   name: 'DictionaryExecutor',
-  tools: ['get_definition'],
+  tools: toolsList,
   handlers: {
     get_definition: async (params, onStage) => {
       const { word } = params;
@@ -15,7 +17,9 @@ export const { handles, execute } = createExecutor({
       // Free Dictionary API — no key, no rate limit
       let data;
       try {
-        data = await safeJson(`https://api.dictionaryapi.dev/API/v2/entries/en/${encodeURIComponent(clean)}`);
+        data = await safeJson(
+          `https://api.dictionaryapi.dev/API/v2/entries/en/${encodeURIComponent(clean)}`,
+        );
       } catch {
         return `No dictionary entry found for "${clean}". Check the spelling or try a different form of the word.`;
       }
@@ -28,9 +32,7 @@ export const { handles, execute } = createExecutor({
       const lines = [];
 
       // Word + phonetic
-      const phonetic = entry.phonetic
-        || entry.phonetics?.find(p => p.text)?.text
-        || '';
+      const phonetic = entry.phonetic || entry.phonetics?.find((p) => p.text)?.text || '';
       lines.push(`📖 **${entry.word}** ${phonetic ? `  /${phonetic}/` : ''}`);
       lines.push('');
 

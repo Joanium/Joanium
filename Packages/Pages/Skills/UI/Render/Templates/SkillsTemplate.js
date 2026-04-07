@@ -51,7 +51,7 @@ export function getHTML() {
           </svg>
         </div>
         <h3>No skills yet</h3>
-        <p>Install a skill from the Marketplace or add a <code>.md</code> file under <code>Skills/&lt;Publisher&gt;/Skill.md</code>.</p>
+        <p>Install a skill from the Marketplace.</p>
         <button id="skills-go-marketplace" class="page-empty-cta" type="button">Go to Marketplace</button>
       </div>
 
