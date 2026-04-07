@@ -1,5 +1,24 @@
 # Joanium
 
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d238934d-b5cc-4a81-b081-eca743ef30ff">
+        <img src="https://github.com/user-attachments/assets/d238934d-b5cc-4a81-b081-eca743ef30ff" alt="Joanium" width="500">
+    </picture>
+</p>
+
+<p align="center">
+  <strong>Think once, Ship more</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/joanium/joanium/releases"><img src="https://img.shields.io/github/v/release/joanium/joanium?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
+</p>
+
+[Website](https://joanium.com) · [Docs](https://joanium.com/docs) · [Marketplace](https://joanium.com/marketplace)
+
+
 Joanium is a local-first desktop app for people who want an AI assistant that can actually work with projects, files, tools, schedules, personal context, and real integrations instead of acting like a thin chat wrapper.
 
 It combines multi-provider chat, workspace-aware assistance, scheduled automations, autonomous agents, MCP, browser tooling, markdown-based skills and personas, and a discovery-driven extension system in one desktop product.
@@ -82,38 +101,10 @@ Docs/                           Project documentation
 Important note: in development mode, Joanium stores runtime state inside the repo root. In packaged builds, that state moves to Electron `userData`. That makes local development simple, but it also means contributors should avoid accidentally committing local runtime data.
 
 ## Quick Start
-
-### Prerequisites
-
-- Node.js and npm
-- A supported AI provider key, or a local model server such as Ollama or LM Studio
-
-### Run locally
-
-```bash
-npm install
-npm start
-```
-
-For development mode:
-
-```bash
-npm run dev
-```
-
-Useful commands:
-
-```bash
-npm run lint
-npm run build
-npm run packages:audit
-```
-
-On Windows PowerShell, if `npm` script execution is blocked by policy, run:
-
-```powershell
-cmd /c npm run packages:audit
-```
+* Go to `https://joanium.com`
+* Click on the download button.
+* Install it.
+* Finish the onboarding.
 
 ## Development Notes
 
