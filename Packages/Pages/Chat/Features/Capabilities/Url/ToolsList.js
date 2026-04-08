@@ -1,1 +1,22 @@
-export const toolsList = ['shorten_url'];
+export const toolsList = [
+  'shorten_url',
+  'parse_url',
+  'extract_query_params',
+  'build_url',
+  'add_utm_params',
+  'remove_tracking_params',
+  'encode_url',
+  'decode_url',
+  'extract_domain',
+  'slugify_to_url',
+  'extract_urls_from_text',
+  'compare_urls',
+  'url_to_markdown_link',
+  'url_to_html_link',
+  'get_url_metadata',
+  'generate_qr_code_url',
+  'get_whois_info',
+  'url_to_base64',
+  'check_redirect_chain',
+  'count_url_params',
+];
