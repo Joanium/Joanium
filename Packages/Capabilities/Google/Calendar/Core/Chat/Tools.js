@@ -744,4 +744,193 @@ export const CALENDAR_TOOLS = [
       },
     },
   },
+
+  // 31
+  {
+    name: 'calendar_get_declined_events',
+    description: 'Get upcoming events the user has declined.',
+    category: 'calendar',
+    parameters: {
+      days: { type: 'number', required: false, description: 'Days ahead to scan (default: 30).' },
+      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+    },
+  },
+
+  // 32
+  {
+    name: 'calendar_get_unanswered_invites',
+    description:
+      'Get upcoming calendar invites the user has not yet responded to (needs-action status).',
+    category: 'calendar',
+    parameters: {
+      days: { type: 'number', required: false, description: 'Days ahead to scan (default: 30).' },
+      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+    },
+  },
+
+  // 33
+  {
+    name: 'calendar_get_organised_events',
+    description: 'Get upcoming events where the user is the organiser.',
+    category: 'calendar',
+    parameters: {
+      days: { type: 'number', required: false, description: 'Days ahead to scan (default: 30).' },
+      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+    },
+  },
+
+  // 34
+  {
+    name: 'calendar_get_all_day_events',
+    description: 'Get only all-day events (no timed events) within a date range.',
+    category: 'calendar',
+    parameters: {
+      time_min: {
+        type: 'string',
+        required: true,
+        description: 'Start of range in ISO 8601 or YYYY-MM-DD format.',
+      },
+      time_max: {
+        type: 'string',
+        required: true,
+        description: 'End of range in ISO 8601 or YYYY-MM-DD format.',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+      max_results: { type: 'number', required: false, description: 'Max results (default: 50).' },
+    },
+  },
+
+  // 35
+  {
+    name: 'calendar_set_event_description',
+    description: 'Set or append notes/description text on an existing Google Calendar event.',
+    category: 'calendar',
+    parameters: {
+      event_id: { type: 'string', required: true, description: 'ID of the event to update.' },
+      description: {
+        type: 'string',
+        required: true,
+        description: 'The description text to set or append.',
+      },
+      append: {
+        type: 'boolean',
+        required: false,
+        description:
+          'If true, appends to existing description instead of replacing it (default: false).',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+    },
+  },
+
+  // 36
+  {
+    name: 'calendar_set_event_location',
+    description: 'Set or update the location of an existing Google Calendar event.',
+    category: 'calendar',
+    parameters: {
+      event_id: { type: 'string', required: true, description: 'ID of the event to update.' },
+      location: {
+        type: 'string',
+        required: true,
+        description: 'New location string. Pass an empty string to clear the location.',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+    },
+  },
+
+  // 37
+  {
+    name: 'calendar_get_conflicting_events',
+    description:
+      'Find existing calendar events that overlap with a proposed time window — useful for conflict detection before scheduling.',
+    category: 'calendar',
+    parameters: {
+      start_datetime: {
+        type: 'string',
+        required: true,
+        description: 'Start of the proposed window in ISO 8601 format.',
+      },
+      end_datetime: {
+        type: 'string',
+        required: true,
+        description: 'End of the proposed window in ISO 8601 format.',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+    },
+  },
+
+  // 38
+  {
+    name: 'calendar_snooze_event',
+    description:
+      'Push an event forward in time by a given number of minutes, shifting both its start and end.',
+    category: 'calendar',
+    parameters: {
+      event_id: { type: 'string', required: true, description: 'ID of the event to snooze.' },
+      minutes: {
+        type: 'number',
+        required: false,
+        description: 'Minutes to shift the event forward (default: 30).',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+    },
+  },
+
+  // 39
+  {
+    name: 'calendar_get_events_by_creator',
+    description:
+      'Get upcoming events that were created by a specific person, identified by their email address.',
+    category: 'calendar',
+    parameters: {
+      email: {
+        type: 'string',
+        required: true,
+        description: "Creator's email address to filter by.",
+      },
+      days: { type: 'number', required: false, description: 'Days ahead to scan (default: 30).' },
+      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+    },
+  },
+
+  // 40
+  {
+    name: 'calendar_extend_event',
+    description:
+      "Extend an event's end time by a given number of minutes without changing its start time.",
+    category: 'calendar',
+    parameters: {
+      event_id: { type: 'string', required: true, description: 'ID of the event to extend.' },
+      minutes: {
+        type: 'number',
+        required: false,
+        description: 'Minutes to add to the end time (default: 30).',
+      },
+      calendar_id: {
+        type: 'string',
+        required: false,
+        description: 'Calendar ID (default: primary).',
+      },
+    },
+  },
 ];

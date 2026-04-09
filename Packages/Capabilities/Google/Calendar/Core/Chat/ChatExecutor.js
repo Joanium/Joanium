@@ -733,6 +733,149 @@ export async function executeCalendarChatTool(ctx, toolName, params = {}) {
       return `Meeting summary (${time_min} → ${time_max}):\n\n• **${count}** timed event${count !== 1 ? 's' : ''}\n• **${humanDuration}** total (${totalHours} hours)`;
     }
 
+    // 31
+    case 'calendar_get_declined_events': {
+      const days = params.days ?? 30;
+      const events = await CalendarAPI.getDeclinedEvents(
+        credentials,
+        days,
+        params.max_results ?? 20,
+      );
+      if (!events.length) return `No declined events found in the next ${days} days.`;
+      return `Declined events (next ${days} days) — ${events.length} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 32
+    case 'calendar_get_unanswered_invites': {
+      const days = params.days ?? 30;
+      const events = await CalendarAPI.getUnansweredInvites(
+        credentials,
+        days,
+        params.max_results ?? 20,
+      );
+      if (!events.length) return `No unanswered invites in the next ${days} days.`;
+      return `Unanswered invites (next ${days} days) — ${events.length} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 33
+    case 'calendar_get_organised_events': {
+      const days = params.days ?? 30;
+      const events = await CalendarAPI.getOrganisedEvents(
+        credentials,
+        days,
+        params.max_results ?? 20,
+      );
+      if (!events.length)
+        return `You are not the organiser of any upcoming events in the next ${days} days.`;
+      return `Events you organised (next ${days} days) — ${events.length} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 34
+    case 'calendar_get_all_day_events': {
+      const { time_min, time_max, calendar_id, max_results } = params;
+      if (!time_min?.trim()) throw new Error('Missing required param: time_min');
+      if (!time_max?.trim()) throw new Error('Missing required param: time_max');
+      const events = await CalendarAPI.getAllDayEvents(
+        credentials,
+        calendar_id?.trim() || 'primary',
+        time_min.trim(),
+        time_max.trim(),
+        max_results ?? 50,
+      );
+      if (!events.length) return `No all-day events found between ${time_min} and ${time_max}.`;
+      return `All-day events (${time_min} → ${time_max}) — ${events.length} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 35
+    case 'calendar_set_event_description': {
+      const { event_id, calendar_id, description, append } = params;
+      if (!event_id?.trim()) throw new Error('Missing required param: event_id');
+      if (description === undefined || description === null)
+        throw new Error('Missing required param: description');
+      const updated = await CalendarAPI.setEventDescription(
+        credentials,
+        calendar_id?.trim() || 'primary',
+        event_id.trim(),
+        String(description),
+        Boolean(append),
+      );
+      const mode = append ? 'appended to' : 'set on';
+      return `Description ${mode} **${updated.summary}** successfully.`;
+    }
+
+    // 36
+    case 'calendar_set_event_location': {
+      const { event_id, calendar_id, location } = params;
+      if (!event_id?.trim()) throw new Error('Missing required param: event_id');
+      if (location === undefined || location === null)
+        throw new Error('Missing required param: location');
+      const updated = await CalendarAPI.setEventLocation(
+        credentials,
+        calendar_id?.trim() || 'primary',
+        event_id.trim(),
+        String(location),
+      );
+      return `Location for **${updated.summary}** updated to: ${updated.location || '(cleared)'}.`;
+    }
+
+    // 37
+    case 'calendar_get_conflicting_events': {
+      const { start_datetime, end_datetime, calendar_id } = params;
+      if (!start_datetime?.trim()) throw new Error('Missing required param: start_datetime');
+      if (!end_datetime?.trim()) throw new Error('Missing required param: end_datetime');
+      const events = await CalendarAPI.getConflictingEvents(
+        credentials,
+        start_datetime.trim(),
+        end_datetime.trim(),
+        calendar_id?.trim() || 'primary',
+      );
+      if (!events.length)
+        return `No conflicting events found between ${start_datetime} and ${end_datetime}.`;
+      return `${events.length} conflicting event${events.length !== 1 ? 's' : ''} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 38
+    case 'calendar_snooze_event': {
+      const { event_id, calendar_id, minutes } = params;
+      if (!event_id?.trim()) throw new Error('Missing required param: event_id');
+      const mins = Number(minutes ?? 30);
+      const updated = await CalendarAPI.snoozeEvent(
+        credentials,
+        calendar_id?.trim() || 'primary',
+        event_id.trim(),
+        mins,
+      );
+      return `**${updated.summary}** snoozed by ${mins} minutes. New start: ${formatEventTime(updated.start)}.`;
+    }
+
+    // 39
+    case 'calendar_get_events_by_creator': {
+      const { email, days, max_results } = params;
+      if (!email?.trim()) throw new Error('Missing required param: email');
+      const events = await CalendarAPI.getEventsByCreator(
+        credentials,
+        email.trim(),
+        days ?? 30,
+        max_results ?? 20,
+      );
+      if (!events.length) return `No upcoming events created by ${email}.`;
+      return `Events created by ${email} — ${events.length} found:\n\n${events.map((e, i) => formatEvent(e, i + 1)).join('\n\n')}`;
+    }
+
+    // 40
+    case 'calendar_extend_event': {
+      const { event_id, calendar_id, minutes } = params;
+      if (!event_id?.trim()) throw new Error('Missing required param: event_id');
+      const mins = Number(minutes ?? 30);
+      const updated = await CalendarAPI.extendEvent(
+        credentials,
+        calendar_id?.trim() || 'primary',
+        event_id.trim(),
+        mins,
+      );
+      return `**${updated.summary}** extended by ${mins} minutes. New end: ${formatEventTime(updated.end)}.`;
+    }
+
     default:
       throw new Error(`Unknown Calendar tool: ${toolName}`);
   }

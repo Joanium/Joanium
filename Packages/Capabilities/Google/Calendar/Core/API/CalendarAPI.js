@@ -595,3 +595,110 @@ export async function getMeetingHours(creds, calendarId = 'primary', timeMin, ti
   const totalMinutes = Math.round(totalMs / 60_000);
   return { count: timedEvents.length, totalMinutes, totalHours: +(totalMinutes / 60).toFixed(2) };
 }
+
+// 31 – get all declined events
+export async function getDeclinedEvents(creds, days = 30, maxResults = 20) {
+  const events = await getUpcomingEvents(creds, days, maxResults);
+  return events.filter((e) => e.attendees?.some((a) => a.self && a.responseStatus === 'declined'));
+}
+
+// 32 – get events where response is still needs-action (no RSVP yet)
+export async function getUnansweredInvites(creds, days = 30, maxResults = 20) {
+  const events = await getUpcomingEvents(creds, days, maxResults);
+  return events.filter((e) =>
+    e.attendees?.some((a) => a.self && a.responseStatus === 'needsAction'),
+  );
+}
+
+// 33 – get events the user organised (they are the organiser)
+export async function getOrganisedEvents(creds, days = 30, maxResults = 20) {
+  const events = await getUpcomingEvents(creds, days, maxResults);
+  return events.filter((e) => e.organizer?.self === true);
+}
+
+// 34 – get only all-day events in a range
+export async function getAllDayEvents(
+  creds,
+  calendarId = 'primary',
+  timeMin,
+  timeMax,
+  maxResults = 50,
+) {
+  const events = await listEvents(creds, calendarId, {
+    timeMin: new Date(timeMin).toISOString(),
+    timeMax: new Date(timeMax).toISOString(),
+    maxResults,
+    singleEvents: true,
+    orderBy: 'startTime',
+  });
+  return events.filter((e) => !!e.start?.date);
+}
+
+// 35 – add a description / notes to an event (append or replace)
+export async function setEventDescription(
+  creds,
+  calendarId = 'primary',
+  eventId,
+  description,
+  append = false,
+) {
+  if (append) {
+    const existing = await getEvent(creds, calendarId, eventId);
+    const current = existing.description ?? '';
+    description = current ? `${current}\n\n${description}` : description;
+  }
+  return patchEvent(creds, calendarId, eventId, { description });
+}
+
+// 36 – update event location only
+export async function setEventLocation(creds, calendarId = 'primary', eventId, location) {
+  return patchEvent(creds, calendarId, eventId, { location });
+}
+
+// 37 – get events that overlap with a specific time window (conflict detection)
+export async function getConflictingEvents(creds, startISO, endISO, calendarId = 'primary') {
+  const events = await listEvents(creds, calendarId, {
+    timeMin: new Date(startISO).toISOString(),
+    timeMax: new Date(endISO).toISOString(),
+    maxResults: 50,
+    singleEvents: true,
+    orderBy: 'startTime',
+  });
+  const start = new Date(startISO);
+  const end = new Date(endISO);
+  return events.filter((e) => {
+    if (!e.start?.dateTime) return false;
+    const eStart = new Date(e.start.dateTime);
+    const eEnd = new Date(e.end.dateTime);
+    return eStart < end && eEnd > start;
+  });
+}
+
+// 38 – snooze an event forward by N minutes
+export async function snoozeEvent(creds, calendarId = 'primary', eventId, minutes = 30) {
+  const event = await getEvent(creds, calendarId, eventId);
+  if (!event.start?.dateTime) throw new Error('Cannot snooze an all-day event');
+  const shift = minutes * 60_000;
+  const newStart = new Date(new Date(event.start.dateTime).getTime() + shift).toISOString();
+  const newEnd = new Date(new Date(event.end.dateTime).getTime() + shift).toISOString();
+  const tz = event.start.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return patchEvent(creds, calendarId, eventId, {
+    start: { dateTime: newStart, timeZone: tz },
+    end: { dateTime: newEnd, timeZone: tz },
+  });
+}
+
+// 39 – get events created by a specific person (by creator email)
+export async function getEventsByCreator(creds, creatorEmail, days = 30, maxResults = 20) {
+  const events = await getUpcomingEvents(creds, days, maxResults);
+  return events.filter((e) => e.creator?.email?.toLowerCase() === creatorEmail.toLowerCase());
+}
+
+// 40 – extend an event's end time by N minutes
+export async function extendEvent(creds, calendarId = 'primary', eventId, minutes = 30) {
+  const event = await getEvent(creds, calendarId, eventId);
+  if (!event.end?.dateTime) throw new Error('Cannot extend an all-day event');
+  const newEnd = new Date(new Date(event.end.dateTime).getTime() + minutes * 60_000).toISOString();
+  const tz = event.end.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return patchEvent(creds, calendarId, eventId, { end: { dateTime: newEnd, timeZone: tz } });
+}
