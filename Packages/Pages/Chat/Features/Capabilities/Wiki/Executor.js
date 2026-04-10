@@ -1,38 +1,12 @@
 import { createExecutor } from '../Shared/createExecutor.js';
 import { safeJson } from '../Shared/Utils.js';
 import { toolsList } from './ToolsList.js';
-
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
-/** Resolve an article title via the summary endpoint (handles redirects). */
-async function resolveTitle(query) {
-  const encoded = encodeURIComponent(query);
-  try {
-    const data = await safeJson(
-      `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}?redirect=true`,
-    );
-    return data?.title ?? query;
-  } catch {
-    // Fall back to opensearch
-    const search = await safeJson(
-      `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encoded}&limit=1&format=json&origin=*`,
-    );
-    return search?.[1]?.[0] ?? query;
-  }
-}
-
-/** Format a number with commas. */
-function fmt(n) {
-  return Number(n).toLocaleString();
-}
-
-// ─── Executor ────────────────────────────────────────────────────────────────
+import { resolveTitle, fmt } from './Utils.js';
 
 export const { handles, execute } = createExecutor({
   name: 'WikiExecutor',
   tools: toolsList,
   handlers: {
-    // ── 1. search_wikipedia ────────────────────────────────────────────────
     search_wikipedia: async (params, onStage) => {
       const { query } = params;
       if (!query) throw new Error('Missing required param: query');
@@ -86,7 +60,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 2. get_wikipedia_sections ─────────────────────────────────────────
     get_wikipedia_sections: async (params, onStage) => {
       const { title } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -113,7 +86,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 3. get_wikipedia_section_content ──────────────────────────────────
     get_wikipedia_section_content: async (params, onStage) => {
       const { title, section } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -164,7 +136,6 @@ export const { handles, execute } = createExecutor({
       ].join('\n');
     },
 
-    // ── 4. get_wikipedia_search_results ───────────────────────────────────
     get_wikipedia_search_results: async (params, onStage) => {
       const { query, limit = 5 } = params;
       if (!query) throw new Error('Missing required param: query');
@@ -193,7 +164,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 5. get_wikipedia_full_article ─────────────────────────────────────
     get_wikipedia_full_article: async (params, onStage) => {
       const { title } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -219,7 +189,6 @@ export const { handles, execute } = createExecutor({
       return [`📄 ${page.title}`, ``, text, ``, `🔗 ${url}`, `Source: Wikipedia`].join('\n');
     },
 
-    // ── 6. get_wikipedia_categories ───────────────────────────────────────
     get_wikipedia_categories: async (params, onStage) => {
       const { title } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -248,7 +217,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 7. get_wikipedia_languages ────────────────────────────────────────
     get_wikipedia_languages: async (params, onStage) => {
       const { title } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -273,7 +241,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 8. get_wikipedia_article_in_language ──────────────────────────────
     get_wikipedia_article_in_language: async (params, onStage) => {
       const { title, lang } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -312,7 +279,6 @@ export const { handles, execute } = createExecutor({
       ].join('\n');
     },
 
-    // ── 9. get_wikipedia_images ───────────────────────────────────────────
     get_wikipedia_images: async (params, onStage) => {
       const { title } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -357,7 +323,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 10. get_wikipedia_linked_articles ─────────────────────────────────
     get_wikipedia_linked_articles: async (params, onStage) => {
       const { title, limit = 20 } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -386,7 +351,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 11. get_wikipedia_random_article ──────────────────────────────────
     get_wikipedia_random_article: async (_params, onStage) => {
       onStage(`🎲 Fetching a random Wikipedia article…`);
 
@@ -400,7 +364,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 12. get_wikipedia_featured_article ────────────────────────────────
     get_wikipedia_featured_article: async (_params, onStage) => {
       onStage(`⭐ Fetching today's Wikipedia featured article…`);
 
@@ -426,7 +389,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 13. get_wikipedia_on_this_day ─────────────────────────────────────
     get_wikipedia_on_this_day: async (params, onStage) => {
       const { month, day, type = 'all' } = params;
       if (!month) throw new Error('Missing required param: month');
@@ -459,7 +421,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 14. get_wikipedia_most_read ───────────────────────────────────────
     get_wikipedia_most_read: async (params, onStage) => {
       const { limit = 10 } = params;
       let { date } = params;
@@ -496,7 +457,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 15. get_wikipedia_page_views ──────────────────────────────────────
     get_wikipedia_page_views: async (params, onStage) => {
       const { title, start, end } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -536,7 +496,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 16. get_wikipedia_did_you_know ────────────────────────────────────
     get_wikipedia_did_you_know: async (_params, onStage) => {
       onStage(`💡 Fetching "Did You Know" facts from Wikipedia…`);
 
@@ -586,7 +545,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 17. get_wikipedia_nearby_articles ─────────────────────────────────
     get_wikipedia_nearby_articles: async (params, onStage) => {
       const { lat, lon, limit = 10 } = params;
       if (lat == null) throw new Error('Missing required param: lat');
@@ -615,7 +573,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 18. get_wikipedia_revision_history ────────────────────────────────
     get_wikipedia_revision_history: async (params, onStage) => {
       const { title, limit = 10 } = params;
       if (!title) throw new Error('Missing required param: title');
@@ -657,7 +614,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 19. get_wikipedia_disambiguation ──────────────────────────────────
     get_wikipedia_disambiguation: async (params, onStage) => {
       const { term } = params;
       if (!term) throw new Error('Missing required param: term');
@@ -704,7 +660,6 @@ export const { handles, execute } = createExecutor({
       return lines.join('\n');
     },
 
-    // ── 20. compare_wikipedia_articles ────────────────────────────────────
     compare_wikipedia_articles: async (params, onStage) => {
       const { topic_a, topic_b } = params;
       if (!topic_a) throw new Error('Missing required param: topic_a');

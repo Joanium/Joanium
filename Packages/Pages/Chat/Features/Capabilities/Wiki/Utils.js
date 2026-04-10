@@ -1,0 +1,21 @@
+/** Resolve an article title via the summary endpoint (handles redirects). */
+export async function resolveTitle(query) {
+  const encoded = encodeURIComponent(query);
+  try {
+    const data = await safeJson(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}?redirect=true`,
+    );
+    return data?.title ?? query;
+  } catch {
+    // Fall back to opensearch
+    const search = await safeJson(
+      `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encoded}&limit=1&format=json&origin=*`,
+    );
+    return search?.[1]?.[0] ?? query;
+  }
+}
+
+/** Format a number with commas. */
+export function fmt(n) {
+  return Number(n).toLocaleString();
+}

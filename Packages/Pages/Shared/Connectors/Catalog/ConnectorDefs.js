@@ -5,7 +5,7 @@ export const STATIC_CONNECTORS = [
   {
     id: 'google',
     name: 'Google Workspace',
-    icon: '🔷',
+    icon: '<img src="../../../Assets/Icons/Google.png" alt="Google" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'Connect once with one Client ID and get access to all enabled Google services.',
     helpUrl: 'https://console.cloud.google.com/apis/credentials',
     helpText: 'Create OAuth credentials + enable APIs →',
