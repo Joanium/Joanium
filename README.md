@@ -23,7 +23,7 @@
   <a href="https://joanium.com">🌐 Website</a> ·
   <a href="https://joanium.com/docs">📖 Docs</a> ·
   <a href="https://joanium.com/marketplace">🛍️ Marketplace</a> ·
-  <a href="https://www.joanium.com/#download">⬇️ Download</a>
+  <a href="https://www.joanium.com/download">⬇️ Download</a>
 </p>
 
 ---
