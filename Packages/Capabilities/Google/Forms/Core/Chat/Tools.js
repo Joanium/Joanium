@@ -1,5 +1,4 @@
 export const FORMS_TOOLS = [
-  // ── Original 4 tools ────────────────────────────────────────────────────────
   {
     name: 'forms_get_form',
     description:
@@ -49,8 +48,6 @@ export const FORMS_TOOLS = [
       form_id: { type: 'string', required: true, description: 'Google Form ID.' },
     },
   },
-
-  // ── Response retrieval ───────────────────────────────────────────────────────
   {
     name: 'forms_get_response_count',
     description: 'Get just the total number of submitted responses for a Google Form.',
@@ -132,8 +129,6 @@ export const FORMS_TOOLS = [
       },
     },
   },
-
-  // ── Question inspection ──────────────────────────────────────────────────────
   {
     name: 'forms_list_questions',
     description:
@@ -157,8 +152,6 @@ export const FORMS_TOOLS = [
       },
     },
   },
-
-  // ── Analytics ────────────────────────────────────────────────────────────────
   {
     name: 'forms_count_answers_for_question',
     description:
@@ -254,8 +247,6 @@ export const FORMS_TOOLS = [
       },
     },
   },
-
-  // ── Quiz support ─────────────────────────────────────────────────────────────
   {
     name: 'forms_get_score_summary',
     description:
@@ -288,8 +279,6 @@ export const FORMS_TOOLS = [
       },
     },
   },
-
-  // ── Utility ──────────────────────────────────────────────────────────────────
   {
     name: 'forms_get_respondent_list',
     description:
