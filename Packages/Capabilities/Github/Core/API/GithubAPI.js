@@ -1219,10 +1219,6 @@ export async function checkGistStarred(credentials, gistId) {
   return res.status === 204;
 }
 
-// ─────────────────────────────────────────────
-// 20 New Tool Additions — append to GithubAPI.js
-// ─────────────────────────────────────────────
-
 export async function getTrafficReferrers(credentials, owner, repo) {
   return githubFetch(`/repos/${owner}/${repo}/traffic/popular/referrers`, credentials.token);
 }
@@ -1361,4 +1357,146 @@ export async function setIssueMilestone(credentials, owner, repo, issueNumber, m
     method: 'PATCH',
     body: JSON.stringify({ milestone: milestoneNumber }),
   });
+}
+
+export async function getAssignableUsers(credentials, owner, repo, perPage = 30) {
+  return githubFetch(`/repos/${owner}/${repo}/assignees?per_page=${perPage}`, credentials.token);
+}
+
+export async function checkUserAssignable(credentials, owner, repo, assignee) {
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/assignees/${assignee}`, {
+    headers: {
+      Authorization: `Bearer ${credentials.token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  });
+  return res.status === 204;
+}
+
+export async function transferRepo(credentials, owner, repo, newOwner, teamIds = []) {
+  return githubFetch(`/repos/${owner}/${repo}/transfer`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify({ new_owner: newOwner, team_ids: teamIds }),
+  });
+}
+
+export async function archiveRepo(credentials, owner, repo, archive = true) {
+  return githubFetch(`/repos/${owner}/${repo}`, credentials.token, {
+    method: 'PATCH',
+    body: JSON.stringify({ archived: archive }),
+  });
+}
+
+export async function generateReleaseNotes(
+  credentials,
+  owner,
+  repo,
+  tagName,
+  previousTagName = '',
+  targetCommitish = '',
+) {
+  const payload = { tag_name: tagName };
+  if (previousTagName) payload.previous_tag_name = previousTagName;
+  if (targetCommitish) payload.target_commitish = targetCommitish;
+  return githubFetch(`/repos/${owner}/${repo}/releases/generate-notes`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getCheckSuite(credentials, owner, repo, checkSuiteId) {
+  return githubFetch(`/repos/${owner}/${repo}/check-suites/${checkSuiteId}`, credentials.token);
+}
+
+export async function listRepoEvents(credentials, owner, repo, perPage = 20) {
+  return githubFetch(`/repos/${owner}/${repo}/events?per_page=${perPage}`, credentials.token);
+}
+
+export async function getStargazersWithDates(credentials, owner, repo, perPage = 30) {
+  return githubFetch(`/repos/${owner}/${repo}/stargazers?per_page=${perPage}`, credentials.token, {
+    headers: { Accept: 'application/vnd.github.star+json' },
+  });
+}
+
+export async function listCommentReactions(credentials, owner, repo, commentId, perPage = 30) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/issues/comments/${commentId}/reactions?per_page=${perPage}`,
+    credentials.token,
+    { headers: { Accept: 'application/vnd.github.squirrel-girl-preview+json' } },
+  );
+}
+
+export async function getGitCommitObject(credentials, owner, repo, sha) {
+  return githubFetch(`/repos/${owner}/${repo}/git/commits/${sha}`, credentials.token);
+}
+
+export async function checkUserFollowing(credentials, username) {
+  const res = await fetch(`https://api.github.com/user/following/${username}`, {
+    headers: {
+      Authorization: `Bearer ${credentials.token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  });
+  return res.status === 204;
+}
+
+export async function getGitTreeObject(credentials, owner, repo, sha, recursive = false) {
+  const qs = recursive ? '?recursive=1' : '';
+  return githubFetch(`/repos/${owner}/${repo}/git/trees/${sha}${qs}`, credentials.token);
+}
+
+export async function getGitBlob(credentials, owner, repo, sha) {
+  return githubFetch(`/repos/${owner}/${repo}/git/blobs/${sha}`, credentials.token);
+}
+
+export async function getGitHubMeta() {
+  const res = await fetch('https://api.github.com/meta', {
+    headers: { 'X-GitHub-Api-Version': '2022-11-28' },
+  });
+  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+  return res.json();
+}
+
+export async function getCodeownersErrors(credentials, owner, repo, ref = '') {
+  const qs = ref ? `?ref=${encodeURIComponent(ref)}` : '';
+  return githubFetch(`/repos/${owner}/${repo}/codeowners/errors${qs}`, credentials.token);
+}
+
+export async function removeAssignees(credentials, owner, repo, issueNumber, assignees = []) {
+  return githubFetch(`/repos/${owner}/${repo}/issues/${issueNumber}/assignees`, credentials.token, {
+    method: 'DELETE',
+    body: JSON.stringify({ assignees }),
+  });
+}
+
+export async function getReadmeAtPath(credentials, owner, repo, dirPath = '', ref = '') {
+  const qs = ref ? `?ref=${encodeURIComponent(ref)}` : '';
+  const path = dirPath ? `/${encodeURIComponent(dirPath)}` : '';
+  return githubFetch(`/repos/${owner}/${repo}/readme${path}${qs}`, credentials.token);
+}
+
+export async function createTag(
+  credentials,
+  owner,
+  repo,
+  { tag, message, object, type = 'commit', tagger },
+) {
+  const payload = { tag, message, object, type };
+  if (tagger) payload.tagger = tagger;
+  return githubFetch(`/repos/${owner}/${repo}/git/tags`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteReaction(credentials, owner, repo, issueNumber, reactionId) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/issues/${issueNumber}/reactions/${reactionId}`,
+    credentials.token,
+    { method: 'DELETE' },
+  );
+}
+
+export async function getLatestPagesBuild(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/pages/builds/latest`, credentials.token);
 }

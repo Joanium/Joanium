@@ -2328,6 +2328,282 @@
       },
     },
   },
+  {
+    name: 'github_get_assignable_users',
+    description: 'List users who can be assigned to issues in a GitHub repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      count: { type: 'number', required: false, description: 'Max users to return (default 30)' },
+    },
+  },
+  {
+    name: 'github_check_user_assignable',
+    description: 'Check whether a specific user can be assigned to issues in a repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      assignee: { type: 'string', required: true, description: 'GitHub username to check' },
+    },
+  },
+  {
+    name: 'github_transfer_repo',
+    description: 'Transfer a repository to a new owner or organization.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'Current repository owner' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      new_owner: { type: 'string', required: true, description: 'Username or org to transfer to' },
+    },
+  },
+  {
+    name: 'github_archive_repo',
+    description: 'Archive or unarchive a GitHub repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      archive: {
+        type: 'boolean',
+        required: false,
+        description: 'true to archive (default), false to unarchive',
+      },
+    },
+  },
+  {
+    name: 'github_generate_release_notes',
+    description: 'Automatically generate release notes (changelog) between two tags.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      tag_name: { type: 'string', required: true, description: 'The tag for the new release' },
+      previous_tag_name: {
+        type: 'string',
+        required: false,
+        description: 'Tag to start from (defaults to last release)',
+      },
+      target_commitish: {
+        type: 'string',
+        required: false,
+        description: 'Branch or SHA for the new release tag',
+      },
+    },
+  },
+  {
+    name: 'github_get_check_suite',
+    description: 'Get full details of a specific check suite by its ID.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      check_suite_id: {
+        type: 'number',
+        required: true,
+        description: 'Check suite ID (from github_list_check_suites)',
+      },
+    },
+  },
+  {
+    name: 'github_list_repo_events',
+    description: 'List recent public activity events for a repository (pushes, PRs, issues, etc.).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      count: { type: 'number', required: false, description: 'Max events to return (default 20)' },
+    },
+  },
+  {
+    name: 'github_get_stargazers_with_dates',
+    description: 'List users who starred a repository along with the exact date they starred it.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max stargazers to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_list_comment_reactions',
+    description: 'List all emoji reactions on a specific issue or PR comment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'Comment ID' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max reactions to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_get_git_commit',
+    description:
+      'Get a low-level git commit object including tree SHA, parent SHAs, and signature verification status.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      sha: { type: 'string', required: true, description: 'Full commit SHA' },
+    },
+  },
+  {
+    name: 'github_check_user_following',
+    description: 'Check whether the authenticated GitHub user is following a specific user.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      username: { type: 'string', required: true, description: 'GitHub username to check' },
+    },
+  },
+  {
+    name: 'github_get_git_tree',
+    description: 'Get a git tree object by SHA, listing all blobs and subtrees at that tree level.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      sha: { type: 'string', required: true, description: 'Tree SHA (from github_get_git_commit)' },
+      recursive: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to recursively list all nested entries',
+      },
+    },
+  },
+  {
+    name: 'github_get_git_blob',
+    description: 'Fetch a raw git blob by SHA and preview its decoded content.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      sha: { type: 'string', required: true, description: 'Blob SHA (from github_get_git_tree)' },
+    },
+  },
+  {
+    name: 'github_get_github_meta',
+    description:
+      "Fetch GitHub's own meta information including API IP ranges for hooks, git, actions, and dependabot.",
+    category: 'github',
+    connectorId: 'github',
+    parameters: {},
+  },
+  {
+    name: 'github_get_codeowners_errors',
+    description: 'Get a list of syntax errors in a repository CODEOWNERS file.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: {
+        type: 'string',
+        required: false,
+        description: 'Branch, tag, or SHA to check (defaults to default branch)',
+      },
+    },
+  },
+  {
+    name: 'github_remove_assignees',
+    description: 'Remove one or more assignees from a GitHub issue or pull request.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      assignees: {
+        type: 'string',
+        required: true,
+        description: 'Comma-separated GitHub usernames to remove',
+      },
+    },
+  },
+  {
+    name: 'github_get_readme_at_path',
+    description: 'Fetch the README file from a specific directory path within a repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      dir_path: {
+        type: 'string',
+        required: false,
+        description: 'Directory path to look for a README in (e.g. docs/). Leave empty for root.',
+      },
+      ref: { type: 'string', required: false, description: 'Branch, tag, or SHA (optional)' },
+    },
+  },
+  {
+    name: 'github_create_tag',
+    description: 'Create an annotated git tag object in a repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      tag: { type: 'string', required: true, description: 'Tag name (e.g. v2.0.0)' },
+      message: { type: 'string', required: true, description: 'Tag annotation message' },
+      object: { type: 'string', required: true, description: 'SHA of the object to tag' },
+      type: {
+        type: 'string',
+        required: false,
+        description: 'Object type: commit (default), tree, or blob',
+      },
+      tagger_name: { type: 'string', required: false, description: 'Tagger display name' },
+      tagger_email: { type: 'string', required: false, description: 'Tagger email address' },
+    },
+  },
+  {
+    name: 'github_delete_reaction',
+    description: 'Remove a specific reaction from a GitHub issue or pull request by reaction ID.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      reaction_id: {
+        type: 'number',
+        required: true,
+        description: 'Reaction ID (from github_get_issue_reactions)',
+      },
+    },
+  },
+  {
+    name: 'github_get_latest_pages_build',
+    description:
+      'Get the status and details of the most recent GitHub Pages build for a repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+    },
+  },
 ];
 
 export default GITHUB_TOOLS;
