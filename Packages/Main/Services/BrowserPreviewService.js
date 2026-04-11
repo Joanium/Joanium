@@ -219,9 +219,23 @@ export class BrowserPreviewService extends EventEmitter {
   attachToWindow(win) {
     if (this._window === win) return;
 
+    // Clean up old resize listener
+    if (this._resizeHandler && this._window && !this._window.isDestroyed()) {
+      this._window.off('resize', this._resizeHandler);
+    }
+
     this._detachIfNeeded();
 
     this._window = win ?? null;
+
+    // Re-query bounds whenever the window resizes
+    if (this._window) {
+      this._resizeHandler = () => {
+        if (this._viewAttached) this._updateBounds();
+      };
+      this._window.on('resize', this._resizeHandler);
+    }
+
     this._attachIfNeeded();
     this._emitState(true);
   }
@@ -332,6 +346,7 @@ export class BrowserPreviewService extends EventEmitter {
   }
 
   setHostBounds(bounds) {
+    console.log('[BrowserPreview] setHostBounds:', JSON.stringify(bounds));
     const normalizedBounds = normalizeHostBounds(bounds);
 
     if (areBoundsEqual(this._hostBounds, normalizedBounds)) {
@@ -493,16 +508,41 @@ export class BrowserPreviewService extends EventEmitter {
   }
 
   /**
-   * Approximate the viewport position from the window's content size.
-   * Used as a fallback when the renderer hasn't sent precise bounds yet.
+   * Query the renderer to get the exact pixel bounds of the mount element,
+   * then apply them directly. This bypasses the renderer→IPC→main pipeline
+   * which is unreliable.
+   */
+  async _queryRendererBounds() {
+    if (!this._window || this._window.isDestroyed()) return null;
+    try {
+      const bounds = await this._window.webContents.executeJavaScript(`
+        (() => {
+          const mount = document.getElementById('browser-preview-mount');
+          if (!mount) return null;
+          const r = mount.getBoundingClientRect();
+          if (!r.width || !r.height) return null;
+          return {
+            x: Math.round(r.x),
+            y: Math.round(r.y),
+            width: Math.round(r.width),
+            height: Math.round(r.height),
+          };
+        })()
+      `);
+      return bounds;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Approximate fallback when executeJavaScript can't run yet.
    */
   _computeFallbackBounds() {
     if (!this._window || this._window.isDestroyed()) return null;
     const [winWidth, winHeight] = this._window.getContentSize();
-    // Grid: chat column = 2fr, preview column = 3fr → preview starts at 40%
     const panelX = Math.round((winWidth * 2) / 5);
     const panelWidth = winWidth - panelX;
-    // Header + status row ~ 155px
     const topInset = 155;
     return {
       x: panelX,
@@ -514,10 +554,28 @@ export class BrowserPreviewService extends EventEmitter {
 
   _updateBounds() {
     if (!this._view || !this._viewAttached) return;
-    const bounds = this._hostBounds || this._computeFallbackBounds();
-    if (!bounds) return;
-    this._view.setBounds(bounds);
-    this._view.setVisible(true);
+
+    // First apply host bounds or fallback immediately (synchronous)
+    const immediateBounds = this._hostBounds || this._computeFallbackBounds();
+    if (immediateBounds) {
+      this._view.setBounds(immediateBounds);
+      this._view.setVisible(true);
+    }
+
+    // Then query the renderer for exact bounds and refine (async)
+    this._queryRendererBounds().then((precise) => {
+      if (!precise || !this._view || !this._viewAttached) return;
+      this._view.setBounds(precise);
+      this._view.setVisible(true);
+
+      // Schedule continuous refinement for when CSS transitions finish
+      setTimeout(() => {
+        this._queryRendererBounds().then((final) => {
+          if (!final || !this._view || !this._viewAttached) return;
+          this._view.setBounds(final);
+        });
+      }, 400);
+    });
   }
 
   _emitState(force = false) {

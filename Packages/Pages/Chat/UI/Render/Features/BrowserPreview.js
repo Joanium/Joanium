@@ -122,11 +122,43 @@ export function createBrowserPreviewFeature() {
     setStatusTone(browserPreviewStatusDot, tone);
   }
 
-  async function syncBounds() {
-    if (disposed || !window.electronAPI?.invoke) {
-      console.log('[BrowserPreview] syncBounds: early return (disposed or no electronAPI)');
-      return;
+  /**
+   * Measure the viewport area where the WebContentsView should be placed.
+   * Tries multiple strategies to guarantee a valid rect even if the viewport
+   * element reports 0×0 during CSS transitions.
+   */
+  function measureViewportRect() {
+    // Strategy 1: the viewport element itself (position: absolute inside mount)
+    if (browserPreviewViewport) {
+      const r = browserPreviewViewport.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) return r;
     }
+
+    // Strategy 2: fall back to the mount container
+    if (browserPreviewMount) {
+      const r = browserPreviewMount.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) return r;
+    }
+
+    // Strategy 3: compute from the panel, subtracting the header area
+    const panelRect = browserPreviewPanel.getBoundingClientRect();
+    if (panelRect.width > 0 && panelRect.height > 0 && browserPreviewMount) {
+      // Use the mount's offsetTop relative to the card / panel to find
+      // where the content area begins.
+      const mountOffsetTop = browserPreviewMount.offsetTop || 0;
+      return {
+        x: panelRect.x,
+        y: panelRect.y + mountOffsetTop,
+        width: panelRect.width,
+        height: Math.max(panelRect.height - mountOffsetTop, 50),
+      };
+    }
+
+    return null;
+  }
+
+  async function syncBounds() {
+    if (disposed || !window.electronAPI?.invoke) return;
 
     let nextBounds = null;
 
@@ -135,23 +167,10 @@ export function createBrowserPreviewFeature() {
     const isStateVisible = currentState.visible;
 
     if (isModalOpen || isPanelHidden || !isStateVisible) {
-      console.log('[BrowserPreview] syncBounds: null bounds —', {
-        isModalOpen,
-        isPanelHidden,
-        isStateVisible,
-      });
       nextBounds = null;
     } else {
-      const el = browserPreviewViewport || browserPreviewMount;
-      const rect = el.getBoundingClientRect();
-      console.log('[BrowserPreview] syncBounds: rect —', {
-        element: el.className,
-        x: rect.x,
-        y: rect.y,
-        width: rect.width,
-        height: rect.height,
-      });
-      if (rect.width && rect.height) {
+      const rect = measureViewportRect();
+      if (rect) {
         nextBounds = {
           x: Math.round(rect.x),
           y: Math.round(rect.y),
@@ -164,12 +183,10 @@ export function createBrowserPreviewFeature() {
     const nextBoundsKey = getBoundsKey(nextBounds);
     if (nextBoundsKey === lastBoundsKey) return;
 
-    console.log('[BrowserPreview] syncBounds: sending bounds →', nextBounds);
     try {
       await window.electronAPI.invoke('browser-preview-set-bounds', nextBounds);
       lastBoundsKey = nextBoundsKey;
     } catch (err) {
-      console.warn('[Chat] Failed to sync browser preview bounds:', err);
       lastBoundsKey = 'uninitialized';
     }
   }
