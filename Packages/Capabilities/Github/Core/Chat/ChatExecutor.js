@@ -4253,6 +4253,366 @@ export async function executeGithubChatTool(ctx, toolName, params = {}) {
       ].join('\n');
     }
 
+    case 'github_get_gitignore_templates': {
+      const templates = await GithubAPI.getGitignoreTemplates(credentials);
+      if (!templates?.length) return 'No .gitignore templates found.';
+      return [
+        `Available .gitignore templates (${templates.length} total):`,
+        '',
+        templates.join(', '),
+        '',
+        'Use github_get_gitignore_template with any name above to fetch its content.',
+      ].join('\n');
+    }
+
+    case 'github_get_gitignore_template': {
+      const { name } = params;
+      if (!name) throw new Error('Missing required param: name');
+      const tmpl = await GithubAPI.getGitignoreTemplate(credentials, name);
+      const preview =
+        (tmpl.source ?? '').length > 3000
+          ? `${tmpl.source.slice(0, 3000)}\n...(truncated)`
+          : (tmpl.source ?? '');
+      return [`.gitignore template: ${tmpl.name}`, '', preview || '(empty)'].join('\n');
+    }
+
+    case 'github_list_licenses': {
+      const licenses = await GithubAPI.listLicenses(credentials);
+      if (!licenses?.length) return 'No license templates found.';
+      return [
+        `Available license templates (${licenses.length}):`,
+        '',
+        ...licenses.map((l, i) => `${i + 1}. ${l.spdx_id.padEnd(20)} ${l.name}`),
+        '',
+        'Use github_get_license with the spdx_id to fetch full text.',
+      ].join('\n');
+    }
+
+    case 'github_get_license': {
+      const { license_key } = params;
+      if (!license_key) throw new Error('Missing required param: license_key');
+      const lic = await GithubAPI.getLicense(credentials, license_key);
+      const body = (lic.body ?? '').slice(0, 1500);
+      const truncated = (lic.body ?? '').length > 1500;
+      return [
+        `License: ${lic.name} (${lic.spdx_id})`,
+        `Category: ${lic.category ?? 'unknown'}`,
+        `FSF approved: ${lic.featured ?? false} | OSI approved: ${lic.key !== undefined}`,
+        lic.html_url ? `Info: ${lic.html_url}` : '',
+        '',
+        'License text:',
+        body + (truncated ? '\n...(truncated)' : ''),
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_render_markdown': {
+      const { text, mode = 'markdown', context = '' } = params;
+      if (!text) throw new Error('Missing required param: text');
+      const html = await GithubAPI.renderMarkdown(credentials, text, mode, context);
+      const preview = html.length > 3000 ? `${html.slice(0, 3000)}\n...(truncated)` : html;
+      return [`Rendered markdown (mode: ${mode}):`, '', preview].join('\n');
+    }
+
+    case 'github_get_emojis': {
+      const emojis = await GithubAPI.getEmojis(credentials);
+      const entries = Object.entries(emojis);
+      if (!entries.length) return 'No emoji data returned.';
+      // Group into a readable sample — full list is 1800+ entries
+      const sample = entries.slice(0, 50);
+      return [
+        `GitHub emoji map (${entries.length} total emojis). Showing first 50:`,
+        '',
+        sample.map(([name]) => `:${name}:`).join('  '),
+        '',
+        'Each name maps to an image URL. Use the emoji name wrapped in colons in GitHub markdown.',
+      ].join('\n');
+    }
+
+    case 'github_get_notification_thread': {
+      const { thread_id } = params;
+      if (!thread_id) throw new Error('Missing required param: thread_id');
+      const t = await GithubAPI.getNotificationThread(credentials, thread_id);
+      return [
+        `Notification thread #${thread_id}:`,
+        `Reason: ${t.reason}`,
+        `Subject: ${t.subject?.title ?? 'unknown'} [${t.subject?.type ?? '?'}]`,
+        `Repository: ${t.repository?.full_name ?? 'unknown'}`,
+        `Unread: ${t.unread}`,
+        `Updated: ${formatDateTime(t.updated_at)}`,
+        t.subject?.url
+          ? `URL: ${t.subject.url.replace('api.github.com/repos', 'github.com').replace('/pulls/', '/pull/').replace('/issues/', '/issues/')}`
+          : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_mark_thread_read': {
+      const { thread_id } = params;
+      if (!thread_id) throw new Error('Missing required param: thread_id');
+      await GithubAPI.markThreadRead(credentials, thread_id);
+      return `Notification thread #${thread_id} marked as read.`;
+    }
+
+    case 'github_get_thread_subscription': {
+      const { thread_id } = params;
+      if (!thread_id) throw new Error('Missing required param: thread_id');
+      const sub = await GithubAPI.getThreadSubscription(credentials, thread_id);
+      return [
+        `Subscription for notification thread #${thread_id}:`,
+        `Subscribed: ${sub.subscribed ?? false}`,
+        `Ignored: ${sub.ignored ?? false}`,
+        `Reason: ${sub.reason ?? 'none'}`,
+        sub.created_at ? `Since: ${formatDate(sub.created_at)}` : '',
+        sub.url ? `Thread URL: ${sub.url}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_set_thread_subscription': {
+      const { thread_id, subscribed = true, ignored = false } = params;
+      if (!thread_id) throw new Error('Missing required param: thread_id');
+      const sub = await GithubAPI.setThreadSubscription(
+        credentials,
+        thread_id,
+        Boolean(subscribed),
+        Boolean(ignored),
+      );
+      return [
+        `Thread #${thread_id} subscription updated:`,
+        `Subscribed: ${sub.subscribed}`,
+        `Ignored: ${sub.ignored}`,
+        `Reason: ${sub.reason ?? 'manual'}`,
+      ].join('\n');
+    }
+
+    case 'github_list_repo_notifications': {
+      const { owner, repo, unread_only = true, count = 20 } = params;
+      requireRepo(owner, repo);
+      const notifications = await GithubAPI.listRepoNotifications(
+        credentials,
+        owner,
+        repo,
+        Boolean(unread_only),
+        Math.min(Number(count) || 20, 100),
+      );
+      if (!notifications.length)
+        return `No ${Boolean(unread_only) ? 'unread ' : ''}notifications for ${owner}/${repo}.`;
+      return [
+        `Notifications for ${owner}/${repo} (${notifications.length} shown):`,
+        '',
+        ...notifications.map((n, i) => {
+          const type = n.subject?.type ?? '?';
+          const title = n.subject?.title ?? 'unknown';
+          const updated = formatDate(n.updated_at);
+          return `${i + 1}. [${type}] ${title}\n   Reason: ${n.reason} | Updated: ${updated} | Unread: ${n.unread}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_mark_repo_notifications_read': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      await GithubAPI.markRepoNotificationsRead(credentials, owner, repo);
+      return `All notifications for ${owner}/${repo} marked as read.`;
+    }
+
+    case 'github_get_pending_org_invitations': {
+      const { org, count = 30 } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const invitations = await GithubAPI.getPendingOrgInvitations(
+        credentials,
+        org,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!invitations.length) return `No pending invitations for org "${org}".`;
+      return [
+        `Pending org invitations for ${org} (${invitations.length}):`,
+        '',
+        ...invitations.map((inv, i) => {
+          const who = inv.login ? `@${inv.login}` : (inv.email ?? 'unknown');
+          const inviter = inv.inviter?.login ?? 'unknown';
+          const role = inv.role ?? 'unknown';
+          const created = formatDate(inv.created_at);
+          return `${i + 1}. ${who}  role: ${role}  invited by @${inviter}  on ${created}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_list_org_runners': {
+      const { org, count = 30 } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const data = await GithubAPI.listOrgRunners(
+        credentials,
+        org,
+        Math.min(Number(count) || 30, 100),
+      );
+      const runners = data.runners ?? [];
+      if (!runners.length) return `No self-hosted runners found for org "${org}".`;
+      return [
+        `Self-hosted runners for org ${org} (${runners.length}):`,
+        '',
+        ...runners.map((r, i) => {
+          const labels = (r.labels ?? []).map((l) => l.name).join(', ') || 'none';
+          return `${i + 1}. ${r.name}  [${r.status}]  OS: ${r.os ?? 'unknown'}  Labels: ${labels}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_search_topics': {
+      const { query, count = 20 } = params;
+      if (!query) throw new Error('Missing required param: query');
+      const result = await GithubAPI.searchTopics(
+        credentials,
+        query,
+        Math.min(Number(count) || 20, 50),
+      );
+      const items = result.items ?? [];
+      if (!items.length) return `No topics found for "${query}".`;
+      return [
+        `Topic search results for "${query}" (${result.total_count?.toLocaleString() ?? 0} total):`,
+        '',
+        ...items.slice(0, 20).map((t, i) => {
+          const featured = t.featured ? ' ⭐' : '';
+          const curated = t.curated ? ' [curated]' : '';
+          return [
+            `${i + 1}. ${t.name}${featured}${curated}`,
+            t.short_description ? `   ${t.short_description}` : '',
+            `   Repos: ${(t.repository_count ?? 0).toLocaleString()}`,
+          ]
+            .filter(Boolean)
+            .join('\n');
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_runner_applications': {
+      const { owner, repo } = params;
+      requireRepo(owner, repo);
+      const apps = await GithubAPI.getRunnerApplications(credentials, owner, repo);
+      if (!apps?.length) return `No runner application downloads found for ${owner}/${repo}.`;
+      return [
+        `Self-hosted runner downloads for ${owner}/${repo}:`,
+        '',
+        ...apps.map(
+          (a, i) =>
+            `${i + 1}. ${a.os}-${a.architecture}  v${a.download_url?.match(/v[\d.]+/)?.[0] ?? '?'}\n   ${a.download_url}`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_list_pr_review_comment_reactions': {
+      const { owner, repo, comment_id, count = 30 } = params;
+      if (!owner || !repo || !comment_id)
+        throw new Error('Missing required params: owner, repo, comment_id');
+      const reactions = await GithubAPI.listPRReviewCommentReactions(
+        credentials,
+        owner,
+        repo,
+        comment_id,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!reactions.length)
+        return `No reactions on PR review comment #${comment_id} in ${owner}/${repo}.`;
+      const counts = reactions.reduce((acc, r) => {
+        acc[r.content] = (acc[r.content] ?? 0) + 1;
+        return acc;
+      }, {});
+      const emojiMap = {
+        '+1': '👍',
+        '-1': '👎',
+        laugh: '😄',
+        hooray: '🎉',
+        confused: '😕',
+        heart: '❤️',
+        rocket: '🚀',
+        eyes: '👀',
+      };
+      return [
+        `Reactions on PR review comment #${comment_id} in ${owner}/${repo} (${reactions.length} total):`,
+        '',
+        ...Object.entries(counts).map(([k, v]) => `${emojiMap[k] ?? k}  ${v}`),
+      ].join('\n');
+    }
+
+    case 'github_add_pr_review_comment_reaction': {
+      const { owner, repo, comment_id, content } = params;
+      if (!owner || !repo || !comment_id || !content)
+        throw new Error('Missing required params: owner, repo, comment_id, content');
+      const valid = ['+1', '-1', 'laugh', 'hooray', 'confused', 'heart', 'rocket', 'eyes'];
+      if (!valid.includes(content)) throw new Error(`content must be one of: ${valid.join(', ')}`);
+      const reaction = await GithubAPI.addPRReviewCommentReaction(
+        credentials,
+        owner,
+        repo,
+        comment_id,
+        content,
+      );
+      const emojiMap = {
+        '+1': '👍',
+        '-1': '👎',
+        laugh: '😄',
+        hooray: '🎉',
+        confused: '😕',
+        heart: '❤️',
+        rocket: '🚀',
+        eyes: '👀',
+      };
+      return `Reaction ${emojiMap[content] ?? content} added to PR review comment #${comment_id} in ${owner}/${repo} (reaction ID: ${reaction.id}).`;
+    }
+
+    case 'github_get_commit_comment': {
+      const { owner, repo, comment_id } = params;
+      if (!owner || !repo || !comment_id)
+        throw new Error('Missing required params: owner, repo, comment_id');
+      const c = await GithubAPI.getCommitComment(credentials, owner, repo, comment_id);
+      return [
+        `Commit comment #${c.id} in ${owner}/${repo}`,
+        `Author: @${c.user?.login ?? 'unknown'}`,
+        c.path ? `File: ${c.path}${c.line != null ? `:${c.line}` : ''}` : 'General commit comment',
+        `Commit: ${c.commit_id?.slice(0, 7) ?? 'unknown'}`,
+        `Created: ${formatDate(c.created_at)} | Updated: ${formatDate(c.updated_at)}`,
+        `URL: ${c.html_url}`,
+        '',
+        c.body ?? '(empty)',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_list_all_commit_comments': {
+      const { owner, repo, count = 30 } = params;
+      requireRepo(owner, repo);
+      const comments = await GithubAPI.listAllCommitComments(
+        credentials,
+        owner,
+        repo,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!comments.length) return `No commit comments found in ${owner}/${repo}.`;
+      return [
+        `Commit comments in ${owner}/${repo} (${comments.length} shown):`,
+        '',
+        ...comments.map((c, i) => {
+          const body = String(c.body ?? '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 120);
+          const commit = c.commit_id?.slice(0, 7) ?? '?';
+          return [
+            `${i + 1}. @${c.user?.login ?? 'unknown'} on \`${commit}\` — ${formatDate(c.created_at)}`,
+            c.path ? `   File: ${c.path}` : '',
+            `   ${body}${(c.body?.length ?? 0) > 120 ? '...' : ''}`,
+          ]
+            .filter(Boolean)
+            .join('\n');
+        }),
+      ].join('\n');
+    }
+
     default:
       throw new Error(`Unknown GitHub tool: ${toolName}`);
   }

@@ -2952,6 +2952,282 @@
       },
     },
   },
+  {
+    name: 'github_get_gitignore_templates',
+    description:
+      'List all available .gitignore template names provided by GitHub (Node, Python, Java, etc.).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {},
+  },
+  {
+    name: 'github_get_gitignore_template',
+    description:
+      'Fetch the full content of a specific .gitignore template by language or framework name.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      name: {
+        type: 'string',
+        required: true,
+        description:
+          'Template name (e.g. Node, Python, Java — from github_get_gitignore_templates)',
+      },
+    },
+  },
+  {
+    name: 'github_list_licenses',
+    description:
+      'List all open-source license templates available through GitHub (MIT, Apache, GPL, etc.).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {},
+  },
+  {
+    name: 'github_get_license',
+    description:
+      'Fetch the full text and metadata of a specific open-source license by its SPDX ID.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      license_key: {
+        type: 'string',
+        required: true,
+        description: 'SPDX license key (e.g. mit, apache-2.0, gpl-3.0 — from github_list_licenses)',
+      },
+    },
+  },
+  {
+    name: 'github_render_markdown',
+    description:
+      "Render a markdown string to HTML using GitHub's markdown engine, with optional repo context for issue/PR references.",
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      text: { type: 'string', required: true, description: 'Markdown text to render' },
+      mode: {
+        type: 'string',
+        required: false,
+        description: 'markdown (default) or gfm (GitHub Flavored Markdown with repo context)',
+      },
+      context: {
+        type: 'string',
+        required: false,
+        description:
+          'Repo context for gfm mode, e.g. owner/repo — enables #issue and @mention linking',
+      },
+    },
+  },
+  {
+    name: 'github_get_emojis',
+    description:
+      'Fetch the full list of emoji names supported in GitHub markdown along with their image URLs.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {},
+  },
+  {
+    name: 'github_get_notification_thread',
+    description:
+      'Get details of a single notification thread including subject, type, and repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      thread_id: {
+        type: 'string',
+        required: true,
+        description: 'Thread ID (visible in notification list results)',
+      },
+    },
+  },
+  {
+    name: 'github_mark_thread_read',
+    description: 'Mark a single notification thread as read.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+    },
+  },
+  {
+    name: 'github_get_thread_subscription',
+    description:
+      'Check whether the authenticated user is subscribed to or ignoring a notification thread.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+    },
+  },
+  {
+    name: 'github_set_thread_subscription',
+    description: 'Subscribe to or ignore a notification thread to control future notifications.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+      subscribed: {
+        type: 'boolean',
+        required: false,
+        description: 'true to subscribe (default), false to unsubscribe',
+      },
+      ignored: {
+        type: 'boolean',
+        required: false,
+        description: 'true to mute all future notifications for this thread (default false)',
+      },
+    },
+  },
+  {
+    name: 'github_list_repo_notifications',
+    description:
+      'List notifications for a specific repository, optionally including already-read ones.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      unread_only: {
+        type: 'boolean',
+        required: false,
+        description: 'true to show only unread (default), false to show all',
+      },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max notifications to return (default 20)',
+      },
+    },
+  },
+  {
+    name: 'github_mark_repo_notifications_read',
+    description: 'Mark all notifications in a specific repository as read.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+    },
+  },
+  {
+    name: 'github_get_pending_org_invitations',
+    description: 'List all pending member invitations sent to users for a GitHub organization.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      org: { type: 'string', required: true, description: 'GitHub organization name' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max invitations to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_list_org_runners',
+    description: 'List all self-hosted Actions runners registered at the organization level.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      org: { type: 'string', required: true, description: 'GitHub organization name' },
+      count: { type: 'number', required: false, description: 'Max runners to return (default 30)' },
+    },
+  },
+  {
+    name: 'github_search_topics',
+    description:
+      'Search GitHub repository topics by keyword, returning topic metadata and repository counts.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      query: {
+        type: 'string',
+        required: true,
+        description: 'Search query (e.g. "react", "machine-learning")',
+      },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max results to return (default 20, max 50)',
+      },
+    },
+  },
+  {
+    name: 'github_get_runner_applications',
+    description:
+      'Get download URLs for the self-hosted runner application binaries for each OS/architecture.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+    },
+  },
+  {
+    name: 'github_list_pr_review_comment_reactions',
+    description: 'List all emoji reactions on a pull request inline review comment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'PR review comment ID' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max reactions to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_add_pr_review_comment_reaction',
+    description: 'Add an emoji reaction to a pull request inline review comment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'PR review comment ID' },
+      content: {
+        type: 'string',
+        required: true,
+        description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
+      },
+    },
+  },
+  {
+    name: 'github_get_commit_comment',
+    description:
+      'Get a single commit comment by its ID, including the file path and line it was left on.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: {
+        type: 'number',
+        required: true,
+        description:
+          'Commit comment ID (from github_get_commit_comments or github_list_all_commit_comments)',
+      },
+    },
+  },
+  {
+    name: 'github_list_all_commit_comments',
+    description:
+      'List all commit comments across every commit in a repository, sorted by most recent.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max comments to return (default 30)',
+      },
+    },
+  },
 ];
 
 export default GITHUB_TOOLS;

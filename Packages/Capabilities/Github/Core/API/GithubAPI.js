@@ -1706,3 +1706,145 @@ export async function getReadmeHtml(credentials, owner, repo, ref = '') {
   }
   return res.text();
 }
+
+// ─────────────────────────────────────────────
+// 20 New Tool Additions (batch 4) — append to GithubAPI.js
+// ─────────────────────────────────────────────
+
+export async function getGitignoreTemplates(credentials) {
+  return githubFetch('/gitignore/templates', credentials.token);
+}
+
+export async function getGitignoreTemplate(credentials, name) {
+  return githubFetch(`/gitignore/templates/${encodeURIComponent(name)}`, credentials.token);
+}
+
+export async function listLicenses(credentials) {
+  return githubFetch('/licenses', credentials.token);
+}
+
+export async function getLicense(credentials, licenseKey) {
+  return githubFetch(`/licenses/${encodeURIComponent(licenseKey)}`, credentials.token);
+}
+
+export async function renderMarkdown(credentials, text, mode = 'markdown', context = '') {
+  const body = { text, mode };
+  if (context) body.context = context;
+  const res = await fetch('https://api.github.com/markdown', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${credentials.token}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+  return res.text();
+}
+
+export async function getEmojis(credentials) {
+  return githubFetch('/emojis', credentials.token);
+}
+
+export async function getNotificationThread(credentials, threadId) {
+  return githubFetch(`/notifications/threads/${threadId}`, credentials.token);
+}
+
+export async function markThreadRead(credentials, threadId) {
+  return githubFetch(`/notifications/threads/${threadId}`, credentials.token, {
+    method: 'PATCH',
+  });
+}
+
+export async function getThreadSubscription(credentials, threadId) {
+  return githubFetch(`/notifications/threads/${threadId}/subscription`, credentials.token);
+}
+
+export async function setThreadSubscription(
+  credentials,
+  threadId,
+  subscribed = true,
+  ignored = false,
+) {
+  return githubFetch(`/notifications/threads/${threadId}/subscription`, credentials.token, {
+    method: 'PUT',
+    body: JSON.stringify({ subscribed, ignored }),
+  });
+}
+
+export async function listRepoNotifications(
+  credentials,
+  owner,
+  repo,
+  unreadOnly = true,
+  perPage = 20,
+) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/notifications?all=${!unreadOnly}&per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function markRepoNotificationsRead(credentials, owner, repo, lastReadAt = '') {
+  const body = lastReadAt ? { last_read_at: lastReadAt } : {};
+  return githubFetch(`/repos/${owner}/${repo}/notifications`, credentials.token, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+  });
+}
+
+export async function getPendingOrgInvitations(credentials, org, perPage = 30) {
+  return githubFetch(`/orgs/${org}/invitations?per_page=${perPage}`, credentials.token);
+}
+
+export async function listOrgRunners(credentials, org, perPage = 30) {
+  return githubFetch(`/orgs/${org}/actions/runners?per_page=${perPage}`, credentials.token);
+}
+
+export async function searchTopics(credentials, query, perPage = 20) {
+  return githubFetch(
+    `/search/topics?q=${encodeURIComponent(query)}&per_page=${perPage}`,
+    credentials.token,
+    { headers: { Accept: 'application/vnd.github.mercy-preview+json' } },
+  );
+}
+
+export async function getRunnerApplications(credentials, owner, repo) {
+  return githubFetch(`/repos/${owner}/${repo}/actions/runners/downloads`, credentials.token);
+}
+
+export async function listPRReviewCommentReactions(
+  credentials,
+  owner,
+  repo,
+  commentId,
+  perPage = 30,
+) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/comments/${commentId}/reactions?per_page=${perPage}`,
+    credentials.token,
+    { headers: { Accept: 'application/vnd.github.squirrel-girl-preview+json' } },
+  );
+}
+
+export async function addPRReviewCommentReaction(credentials, owner, repo, commentId, content) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/comments/${commentId}/reactions`,
+    credentials.token,
+    {
+      method: 'POST',
+      headers: { Accept: 'application/vnd.github.squirrel-girl-preview+json' },
+      body: JSON.stringify({ content }),
+    },
+  );
+}
+
+export async function getCommitComment(credentials, owner, repo, commentId) {
+  return githubFetch(`/repos/${owner}/${repo}/comments/${commentId}`, credentials.token);
+}
+
+export async function listAllCommitComments(credentials, owner, repo, perPage = 30) {
+  return githubFetch(`/repos/${owner}/${repo}/comments?per_page=${perPage}`, credentials.token);
+}
