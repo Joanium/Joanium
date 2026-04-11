@@ -23,6 +23,28 @@ function normalizePreviewState(nextState = {}) {
   return { ...DEFAULT_PREVIEW_STATE, ...nextState };
 }
 
+function arePreviewStatesEqual(left, right) {
+  if (left === right) return true;
+  if (!left || !right) return false;
+
+  return (
+    left.visible === right.visible &&
+    left.hasView === right.hasView &&
+    left.hasPage === right.hasPage &&
+    left.title === right.title &&
+    left.url === right.url &&
+    left.status === right.status &&
+    left.loading === right.loading &&
+    left.canGoBack === right.canGoBack &&
+    left.canGoForward === right.canGoForward
+  );
+}
+
+function getBoundsKey(bounds) {
+  if (!bounds) return 'null';
+  return `${bounds.x}:${bounds.y}:${bounds.width}:${bounds.height}`;
+}
+
 function getStatusTone(state) {
   const status = String(state.status ?? '').toLowerCase();
   if (state.loading) return 'loading';
@@ -59,6 +81,8 @@ export function createBrowserPreviewFeature() {
   let resizeObserver = null;
   let modalObserver = null;
   let disposed = false;
+  let hasRenderedState = false;
+  let lastBoundsKey = 'uninitialized';
 
   function syncPreviewUI() {
     if (disposed) return;
@@ -101,27 +125,36 @@ export function createBrowserPreviewFeature() {
   async function syncBounds() {
     if (disposed || !window.electronAPI?.invoke) return;
 
+    let nextBounds = null;
+
     if (
       document.body.classList.contains('modal-open') ||
       browserPreviewPanel.hidden ||
       !currentState.visible
     ) {
-      await window.electronAPI.invoke('browser-preview-set-bounds', null);
-      return;
+      nextBounds = null;
+    } else {
+      const rect = (browserPreviewViewport || browserPreviewMount).getBoundingClientRect();
+      if (rect.width && rect.height) {
+        nextBounds = {
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          height: rect.height,
+        };
+      }
     }
 
-    const rect = (browserPreviewViewport || browserPreviewMount).getBoundingClientRect();
-    if (!rect.width || !rect.height) {
-      await window.electronAPI.invoke('browser-preview-set-bounds', null);
-      return;
-    }
+    const nextBoundsKey = getBoundsKey(nextBounds);
+    if (nextBoundsKey === lastBoundsKey) return;
 
-    await window.electronAPI.invoke('browser-preview-set-bounds', {
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height,
-    });
+    try {
+      await window.electronAPI.invoke('browser-preview-set-bounds', nextBounds);
+      lastBoundsKey = nextBoundsKey;
+    } catch (err) {
+      console.warn('[Chat] Failed to sync browser preview bounds:', err);
+      lastBoundsKey = 'uninitialized';
+    }
   }
 
   function scheduleBoundsSync() {
@@ -132,7 +165,13 @@ export function createBrowserPreviewFeature() {
   }
 
   function applyState(nextState) {
-    currentState = normalizePreviewState(nextState);
+    const normalizedState = normalizePreviewState(nextState);
+    if (hasRenderedState && arePreviewStatesEqual(currentState, normalizedState)) {
+      return;
+    }
+
+    currentState = normalizedState;
+    hasRenderedState = true;
     syncPreviewUI();
     scheduleBoundsSync();
   }
@@ -184,6 +223,8 @@ export function createBrowserPreviewFeature() {
         window.visualViewport.removeEventListener('resize', scheduleBoundsSync);
       }
       window.electronAPI?.offBrowserPreviewState?.(handlePreviewState);
+      hasRenderedState = false;
+      lastBoundsKey = 'uninitialized';
       browserPreviewPanel.hidden = true;
       browserPreviewPanel.classList.remove('is-active');
       browserPreviewPanel.classList.remove('is-reading');

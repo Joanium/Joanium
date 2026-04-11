@@ -1,4 +1,4 @@
-import { BrowserView } from 'electron';
+import { BrowserView, WebContentsView } from 'electron';
 import { EventEmitter } from 'events';
 
 export const BUILTIN_BROWSER_USER_AGENT =
@@ -154,6 +154,56 @@ function isHttp2ProtocolError(error) {
   return message.includes('ERR_HTTP2_PROTOCOL_ERROR') || message.includes('(-337)');
 }
 
+function normalizeHostBounds(bounds) {
+  if (!bounds || bounds.width <= 0 || bounds.height <= 0) {
+    return null;
+  }
+
+  return {
+    x: Math.max(0, Math.round(bounds.x)),
+    y: Math.max(0, Math.round(bounds.y)),
+    width: Math.max(1, Math.round(bounds.width)),
+    height: Math.max(1, Math.round(bounds.height)),
+  };
+}
+
+function areBoundsEqual(left, right) {
+  if (left === right) return true;
+  if (!left || !right) return false;
+
+  return (
+    left.x === right.x &&
+    left.y === right.y &&
+    left.width === right.width &&
+    left.height === right.height
+  );
+}
+
+function areStatesEqual(left, right) {
+  if (left === right) return true;
+  if (!left || !right) return false;
+
+  return (
+    left.visible === right.visible &&
+    left.hasView === right.hasView &&
+    left.hasPage === right.hasPage &&
+    left.title === right.title &&
+    left.url === right.url &&
+    left.status === right.status &&
+    left.loading === right.loading &&
+    left.canGoBack === right.canGoBack &&
+    left.canGoForward === right.canGoForward
+  );
+}
+
+function getViewWebContents(view) {
+  return view?.webContents ?? null;
+}
+
+function isWebContentsViewInstance(view) {
+  return typeof WebContentsView === 'function' && view instanceof WebContentsView;
+}
+
 export class BrowserPreviewService extends EventEmitter {
   constructor() {
     super();
@@ -167,23 +217,22 @@ export class BrowserPreviewService extends EventEmitter {
     this._status = 'Ready';
     this._loading = false;
     this._sessionConfigured = false;
+    this._lastEmittedState = null;
   }
 
   attachToWindow(win) {
     if (this._window === win) return;
 
-    if (this._window && this._viewAttached && this._view) {
-      this._window.removeBrowserView(this._view);
-      this._viewAttached = false;
-    }
+    this._detachIfNeeded();
 
     this._window = win ?? null;
     this._attachIfNeeded();
-    this._emitState();
+    this._emitState(true);
   }
 
   getState() {
-    const navigationHistory = this._view?.webContents?.navigationHistory;
+    const webContents = getViewWebContents(this._view);
+    const navigationHistory = webContents?.navigationHistory;
 
     return {
       visible: this._visible,
@@ -200,23 +249,33 @@ export class BrowserPreviewService extends EventEmitter {
 
   async ensureWebContents() {
     if (!this._view) {
-      this._view = new BrowserView({
-        webPreferences: {
-          partition: 'persist:Joanium-browser-mcp',
-          contextIsolation: true,
-          nodeIntegration: false,
-          sandbox: false,
-          backgroundThrottling: false,
-        },
-      });
+      const webPreferences = {
+        partition: 'persist:Joanium-browser-mcp',
+        contextIsolation: true,
+        nodeIntegration: false,
+        sandbox: true,
+        backgroundThrottling: false,
+      };
 
-      this._configureSession(this._view.webContents.session);
-      this._view.webContents.setUserAgent(BUILTIN_BROWSER_USER_AGENT);
+      if (typeof WebContentsView === 'function') {
+        this._view = new WebContentsView({ webPreferences });
+        this._view.setVisible(false);
+      } else {
+        this._view = new BrowserView({ webPreferences });
+      }
+
+      const webContents = getViewWebContents(this._view);
+      if (!webContents) {
+        throw new Error('Could not create the built-in browser view.');
+      }
+
+      this._configureSession(webContents.session);
+      webContents.setUserAgent(BUILTIN_BROWSER_USER_AGENT);
       this._wireViewEvents(this._view);
     }
 
     this.show();
-    return this._view.webContents;
+    return getViewWebContents(this._view);
   }
 
   async loadURL(url, { referrer = '' } = {}) {
@@ -278,23 +337,27 @@ export class BrowserPreviewService extends EventEmitter {
   }
 
   setHostBounds(bounds) {
-    if (!bounds || bounds.width <= 0 || bounds.height <= 0) {
-      this._hostBounds = null;
-      this._detachIfNeeded();
-      this._emitState();
+    const normalizedBounds = normalizeHostBounds(bounds);
+
+    if (areBoundsEqual(this._hostBounds, normalizedBounds)) {
+      if (!normalizedBounds) {
+        this._detachIfNeeded();
+      } else {
+        this._attachIfNeeded();
+        this._updateBounds();
+      }
       return;
     }
 
-    this._hostBounds = {
-      x: Math.max(0, Math.round(bounds.x)),
-      y: Math.max(0, Math.round(bounds.y)),
-      width: Math.max(1, Math.round(bounds.width)),
-      height: Math.max(1, Math.round(bounds.height)),
-    };
+    this._hostBounds = normalizedBounds;
+
+    if (!normalizedBounds) {
+      this._detachIfNeeded();
+      return;
+    }
 
     this._attachIfNeeded();
     this._updateBounds();
-    this._emitState();
   }
 
   setStatus(status = 'Ready') {
@@ -308,19 +371,23 @@ export class BrowserPreviewService extends EventEmitter {
 
   async close() {
     this.hide();
-    if (this._view?.webContents && !this._view.webContents.isDestroyed()) {
-      this._view.webContents.close();
+    const webContents = getViewWebContents(this._view);
+    if (webContents && !webContents.isDestroyed()) {
+      webContents.close();
     }
     this._view = null;
     this._title = 'Built-in Browser';
     this._url = '';
     this._status = 'Ready';
     this._loading = false;
+    this._sessionConfigured = false;
+    this._lastEmittedState = null;
     this._emitState();
   }
 
   _wireViewEvents(view) {
-    const webContents = view.webContents;
+    const webContents = getViewWebContents(view);
+    if (!webContents) return;
 
     webContents.setWindowOpenHandler(({ url }) => {
       if (url) {
@@ -403,31 +470,66 @@ export class BrowserPreviewService extends EventEmitter {
   }
 
   _attachIfNeeded() {
-    if (!this._window || !this._view || !this._visible || !this._hostBounds) return;
+    if (
+      !this._window ||
+      this._window.isDestroyed() ||
+      !this._view ||
+      !this._visible ||
+      !this._hostBounds
+    )
+      return;
     if (this._viewAttached) {
       this._updateBounds();
       return;
     }
 
-    this._window.addBrowserView(this._view);
+    if (isWebContentsViewInstance(this._view)) {
+      this._window.contentView.addChildView(this._view);
+      this._view.setVisible(true);
+    } else {
+      this._window.addBrowserView(this._view);
+    }
+
     this._viewAttached = true;
     this._updateBounds();
   }
 
   _detachIfNeeded() {
     if (!this._window || !this._view || !this._viewAttached) return;
-    this._window.removeBrowserView(this._view);
+    if (this._window.isDestroyed()) {
+      this._viewAttached = false;
+      return;
+    }
+
+    if (isWebContentsViewInstance(this._view)) {
+      this._window.contentView.removeChildView(this._view);
+      this._view.setVisible(false);
+    } else {
+      this._window.removeBrowserView(this._view);
+    }
+
     this._viewAttached = false;
   }
 
   _updateBounds() {
     if (!this._view || !this._viewAttached || !this._hostBounds) return;
     this._view.setBounds(this._hostBounds);
+    if (isWebContentsViewInstance(this._view)) {
+      this._view.setVisible(true);
+      return;
+    }
+
     this._view.setAutoResize({ width: false, height: false, horizontal: false, vertical: false });
   }
 
-  _emitState() {
+  _emitState(force = false) {
     const state = this.getState();
+
+    if (!force && areStatesEqual(state, this._lastEmittedState)) {
+      return;
+    }
+
+    this._lastEmittedState = { ...state };
     this.emit('state', state);
 
     if (this._window && !this._window.isDestroyed()) {
