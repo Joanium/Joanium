@@ -72,7 +72,7 @@ async function processJS(content) {
       dead_code: true,
       drop_console: false, // keep console.* — useful for Electron diagnostics
     },
-    mangle: true,
+    mangle: false,
     format: {
       comments: false,
     },
@@ -98,7 +98,7 @@ async function processHTML(content) {
     minifyJS: {
       module: true,
       compress: { passes: 1 },
-      mangle: true,
+      mangle: false,
     },
   });
 }
