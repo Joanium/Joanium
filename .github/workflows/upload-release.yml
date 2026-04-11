@@ -91,29 +91,13 @@ jobs:
         with:
           node-version: 'latest'
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Stage build
-        shell: bash
-        run: |
-          node ./Scripts/SetVersionByDate.mjs
-
-          mkdir -p dist/package
-
-          for entry in *; do
-            if [[ "$entry" != ".git" && "$entry" != "dist" && "$entry" != "node_modules" && "$entry" != ".github" ]]; then
-              cp -r "$entry" dist/package/
-            fi
-          done
-
-          cd dist/package
-          npm install
+      - name: Minify
+        run: node ./Scripts/Minify.mjs
 
       - name: Build and publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          cd dist/package
-          npx electron-builder ${{ matrix.target }} --publish always
+        run: npx electron-builder ${{ matrix.target }} --publish always
