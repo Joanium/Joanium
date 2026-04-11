@@ -97,19 +97,19 @@ export function create(page) {
   });
 
   // Restrict developer shortcuts in the final app (packaged mode)
-  // _win.webContents.on('before-input-event', (event, input) => {
-  //   if (app.isPackaged) {
-  //     const isReload = (input.control || input.meta) && input.key.toLowerCase() === 'r';
-  //     const isDevTools =
-  //       (input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i';
-  //     const isF5 = input.key === 'F5';
-  //     const isF12 = input.key === 'F12';
+  _win.webContents.on('before-input-event', (event, input) => {
+    if (app.isPackaged) {
+      const isReload = (input.control || input.meta) && input.key.toLowerCase() === 'r';
+      const isDevTools =
+        (input.control || input.meta) && input.shift && input.key.toLowerCase() === 'i';
+      const isF5 = input.key === 'F5';
+      const isF12 = input.key === 'F12';
 
-  //     if (isReload || isDevTools || isF5 || isF12) {
-  //       event.preventDefault();
-  //     }
-  //   }
-  // });
+      if (isReload || isDevTools || isF5 || isF12) {
+        event.preventDefault();
+      }
+    }
+  });
 
   return _win;
 }
