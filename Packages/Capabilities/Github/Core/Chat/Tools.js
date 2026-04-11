@@ -2604,6 +2604,354 @@
       repo: { type: 'string', required: true, description: 'Repository name' },
     },
   },
+  {
+    name: 'github_get_user_packages',
+    description: 'List packages (npm, Docker, Maven, NuGet, etc.) published by a GitHub user.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      username: { type: 'string', required: true, description: 'GitHub username' },
+      package_type: {
+        type: 'string',
+        required: false,
+        description: 'Filter by type: npm, maven, rubygems, docker, nuget, or container',
+      },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max packages to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_get_package_versions',
+    description: 'List all published versions of a specific package owned by a GitHub user.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      username: { type: 'string', required: true, description: 'GitHub username' },
+      package_type: {
+        type: 'string',
+        required: true,
+        description: 'Package type: npm, maven, rubygems, docker, nuget, or container',
+      },
+      package_name: { type: 'string', required: true, description: 'Package name' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max versions to return (default 20)',
+      },
+    },
+  },
+  {
+    name: 'github_create_deployment',
+    description: 'Create a new deployment for a ref (branch, SHA, or tag) in a repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: { type: 'string', required: true, description: 'Branch, SHA, or tag to deploy' },
+      task: { type: 'string', required: false, description: 'Task name (default: deploy)' },
+      environment: {
+        type: 'string',
+        required: false,
+        description: 'Target environment (default: production)',
+      },
+      description: {
+        type: 'string',
+        required: false,
+        description: 'Optional deployment description',
+      },
+      payload: { type: 'string', required: false, description: 'Optional JSON metadata string' },
+    },
+  },
+  {
+    name: 'github_create_deployment_status',
+    description:
+      'Post a status update (success, failure, in_progress, etc.) to an existing deployment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      deployment_id: {
+        type: 'number',
+        required: true,
+        description: 'Deployment ID (from github_create_deployment or github_get_deployments)',
+      },
+      state: {
+        type: 'string',
+        required: true,
+        description:
+          'Status state: error, failure, inactive, in_progress, queued, pending, or success',
+      },
+      log_url: { type: 'string', required: false, description: 'URL for the deployment logs' },
+      description: {
+        type: 'string',
+        required: false,
+        description: 'Short description of the status',
+      },
+      environment: { type: 'string', required: false, description: 'Environment name' },
+      environment_url: {
+        type: 'string',
+        required: false,
+        description: 'Public URL for the deployed environment',
+      },
+    },
+  },
+  {
+    name: 'github_trigger_repo_dispatch',
+    description:
+      'Trigger a custom repository_dispatch event to kick off workflows that listen for it.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      event_type: {
+        type: 'string',
+        required: true,
+        description: 'Custom event name (e.g. build, deploy, trigger-tests)',
+      },
+      client_payload: {
+        type: 'string',
+        required: false,
+        description: 'Optional JSON string passed as payload to triggered workflows',
+      },
+    },
+  },
+  {
+    name: 'github_get_git_tag_object',
+    description:
+      'Get a low-level annotated git tag object by its SHA, including tagger info and GPG signature status.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      tag_sha: {
+        type: 'string',
+        required: true,
+        description: 'SHA of the annotated tag object (not the tagged commit SHA)',
+      },
+    },
+  },
+  {
+    name: 'github_list_check_run_annotations',
+    description: 'List all inline annotations (warnings, errors, notices) produced by a check run.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      check_run_id: {
+        type: 'number',
+        required: true,
+        description: 'Check run ID (from github_get_pr_checks or github_get_check_run_details)',
+      },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max annotations to return (default 50)',
+      },
+    },
+  },
+  {
+    name: 'github_get_combined_status',
+    description:
+      'Get the combined commit status for a ref — aggregates all legacy status checks into a single state.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: { type: 'string', required: true, description: 'Commit SHA, branch name, or tag' },
+    },
+  },
+  {
+    name: 'github_list_matching_refs',
+    description:
+      'List all git refs in a repository matching a given prefix pattern (e.g. heads/feat or tags/v1).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref_pattern: {
+        type: 'string',
+        required: true,
+        description: 'Ref prefix to match, e.g. "heads/feat" or "tags/v2"',
+      },
+    },
+  },
+  {
+    name: 'github_update_git_ref',
+    description: 'Update an existing git ref to point to a new SHA (fast-forward or force).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: {
+        type: 'string',
+        required: true,
+        description: 'Ref path without refs/ prefix, e.g. heads/main or tags/v1.0.0',
+      },
+      sha: { type: 'string', required: true, description: 'New SHA to point the ref at' },
+      force: {
+        type: 'boolean',
+        required: false,
+        description: 'Set true to allow non-fast-forward updates (default false)',
+      },
+    },
+  },
+  {
+    name: 'github_create_git_ref',
+    description: 'Create a new git ref (branch or tag pointer) pointing at a specific SHA.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: {
+        type: 'string',
+        required: true,
+        description:
+          'Full ref path including refs/ prefix, e.g. refs/heads/my-branch or refs/tags/v1.0.0',
+      },
+      sha: { type: 'string', required: true, description: 'Commit SHA the ref should point to' },
+    },
+  },
+  {
+    name: 'github_list_repo_review_comments',
+    description: 'List all pull request inline review comments across an entire repository.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      sort: {
+        type: 'string',
+        required: false,
+        description: 'Sort by: created (default) or updated',
+      },
+      direction: {
+        type: 'string',
+        required: false,
+        description: 'Sort direction: desc (default) or asc',
+      },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max comments to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_get_pr_review_comment',
+    description: 'Get a single pull request inline review comment by its ID.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'Review comment ID' },
+    },
+  },
+  {
+    name: 'github_update_pr_review_comment',
+    description: 'Edit the body of an existing inline pull request review comment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'Review comment ID to edit' },
+      body: { type: 'string', required: true, description: 'New comment body in markdown' },
+    },
+  },
+  {
+    name: 'github_delete_pr_review_comment',
+    description: 'Permanently delete an inline pull request review comment.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      comment_id: { type: 'number', required: true, description: 'Review comment ID to delete' },
+    },
+  },
+  {
+    name: 'github_list_commit_branches',
+    description: 'List branches for which a specific commit is the HEAD (tip) commit.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      sha: { type: 'string', required: true, description: 'Commit SHA to check' },
+    },
+  },
+  {
+    name: 'github_get_org_actions_permissions',
+    description:
+      'Get the GitHub Actions permissions policy for an organization (which repos and action types are allowed).',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      org: { type: 'string', required: true, description: 'GitHub organization name' },
+    },
+  },
+  {
+    name: 'github_list_org_blocked_users',
+    description: 'List users that are blocked by a GitHub organization.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      org: { type: 'string', required: true, description: 'GitHub organization name' },
+      count: {
+        type: 'number',
+        required: false,
+        description: 'Max users to return (default 30)',
+      },
+    },
+  },
+  {
+    name: 'github_get_repo_archive_link',
+    description: 'Get a download URL for a repository archive in zip or tarball format.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      format: {
+        type: 'string',
+        required: false,
+        description: 'Archive format: zipball (default) or tarball',
+      },
+      ref: {
+        type: 'string',
+        required: false,
+        description: 'Branch, tag, or SHA to archive (defaults to default branch)',
+      },
+    },
+  },
+  {
+    name: 'github_get_readme_html',
+    description: 'Fetch the rendered HTML of a repository README for display or scraping purposes.',
+    category: 'github',
+    connectorId: 'github',
+    parameters: {
+      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: true, description: 'Repository name' },
+      ref: {
+        type: 'string',
+        required: false,
+        description: 'Branch, tag, or SHA (defaults to default branch)',
+      },
+    },
+  },
 ];
 
 export default GITHUB_TOOLS;

@@ -1500,3 +1500,209 @@ export async function deleteReaction(credentials, owner, repo, issueNumber, reac
 export async function getLatestPagesBuild(credentials, owner, repo) {
   return githubFetch(`/repos/${owner}/${repo}/pages/builds/latest`, credentials.token);
 }
+
+export async function getUserPackages(credentials, username, packageType = '', perPage = 30) {
+  const qs = packageType
+    ? `?package_type=${packageType}&per_page=${perPage}`
+    : `?per_page=${perPage}`;
+  return githubFetch(`/users/${username}/packages${qs}`, credentials.token);
+}
+
+export async function getPackageVersions(
+  credentials,
+  username,
+  packageType,
+  packageName,
+  perPage = 20,
+) {
+  return githubFetch(
+    `/users/${username}/packages/${packageType}/${encodeURIComponent(packageName)}/versions?per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function createDeployment(
+  credentials,
+  owner,
+  repo,
+  {
+    ref,
+    task = 'deploy',
+    autoMerge = false,
+    requiredContexts,
+    payload = '',
+    description = '',
+    environment = 'production',
+    transientEnvironment = false,
+    productionEnvironment = true,
+  },
+) {
+  const body = {
+    ref,
+    task,
+    auto_merge: autoMerge,
+    description,
+    environment,
+    transient_environment: transientEnvironment,
+    production_environment: productionEnvironment,
+  };
+  if (payload) body.payload = payload;
+  if (requiredContexts !== undefined) body.required_contexts = requiredContexts;
+  return githubFetch(`/repos/${owner}/${repo}/deployments`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+export async function createDeploymentStatus(
+  credentials,
+  owner,
+  repo,
+  deploymentId,
+  {
+    state,
+    logUrl = '',
+    description = '',
+    environment = '',
+    environmentUrl = '',
+    autoInactive = true,
+  },
+) {
+  const body = { state, auto_inactive: autoInactive };
+  if (logUrl) body.log_url = logUrl;
+  if (description) body.description = description;
+  if (environment) body.environment = environment;
+  if (environmentUrl) body.environment_url = environmentUrl;
+  return githubFetch(
+    `/repos/${owner}/${repo}/deployments/${deploymentId}/statuses`,
+    credentials.token,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+    },
+  );
+}
+
+export async function triggerRepoDispatch(credentials, owner, repo, eventType, clientPayload = {}) {
+  return githubFetch(`/repos/${owner}/${repo}/dispatches`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify({ event_type: eventType, client_payload: clientPayload }),
+  });
+}
+
+export async function getGitTagObject(credentials, owner, repo, tagSha) {
+  return githubFetch(`/repos/${owner}/${repo}/git/tags/${tagSha}`, credentials.token);
+}
+
+export async function listCheckRunAnnotations(credentials, owner, repo, checkRunId, perPage = 50) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/check-runs/${checkRunId}/annotations?per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function getCombinedStatus(credentials, owner, repo, ref) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/commits/${encodeURIComponent(ref)}/status`,
+    credentials.token,
+  );
+}
+
+export async function listMatchingRefs(credentials, owner, repo, refPattern) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/git/matching-refs/${encodeURIComponent(refPattern)}`,
+    credentials.token,
+  );
+}
+
+export async function updateGitRef(credentials, owner, repo, ref, sha, force = false) {
+  return githubFetch(`/repos/${owner}/${repo}/git/refs/${ref}`, credentials.token, {
+    method: 'PATCH',
+    body: JSON.stringify({ sha, force }),
+  });
+}
+
+export async function createGitRef(credentials, owner, repo, ref, sha) {
+  return githubFetch(`/repos/${owner}/${repo}/git/refs`, credentials.token, {
+    method: 'POST',
+    body: JSON.stringify({ ref, sha }),
+  });
+}
+
+export async function listRepoReviewComments(
+  credentials,
+  owner,
+  repo,
+  sort = 'created',
+  direction = 'desc',
+  perPage = 30,
+) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/pulls/comments?sort=${sort}&direction=${direction}&per_page=${perPage}`,
+    credentials.token,
+  );
+}
+
+export async function getPRReviewComment(credentials, owner, repo, commentId) {
+  return githubFetch(`/repos/${owner}/${repo}/pulls/comments/${commentId}`, credentials.token);
+}
+
+export async function updatePRReviewComment(credentials, owner, repo, commentId, body) {
+  return githubFetch(`/repos/${owner}/${repo}/pulls/comments/${commentId}`, credentials.token, {
+    method: 'PATCH',
+    body: JSON.stringify({ body }),
+  });
+}
+
+export async function deletePRReviewComment(credentials, owner, repo, commentId) {
+  return githubFetch(`/repos/${owner}/${repo}/pulls/comments/${commentId}`, credentials.token, {
+    method: 'DELETE',
+  });
+}
+
+export async function listCommitBranches(credentials, owner, repo, sha) {
+  return githubFetch(
+    `/repos/${owner}/${repo}/commits/${sha}/branches-where-head`,
+    credentials.token,
+    { headers: { Accept: 'application/vnd.github.groot-preview+json' } },
+  );
+}
+
+export async function getOrgActionsPermissions(credentials, org) {
+  return githubFetch(`/orgs/${org}/actions/permissions`, credentials.token);
+}
+
+export async function listOrgBlockedUsers(credentials, org, perPage = 30) {
+  return githubFetch(`/orgs/${org}/blocks?per_page=${perPage}`, credentials.token);
+}
+
+export async function getRepoArchiveLink(credentials, owner, repo, format = 'zipball', ref = '') {
+  const refPath = ref ? `/${encodeURIComponent(ref)}` : '';
+  // Returns a redirect; capture the Location header
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/${format}${refPath}`, {
+    method: 'GET',
+    redirect: 'manual',
+    headers: {
+      Authorization: `Bearer ${credentials.token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  });
+  const location = res.headers.get('location') || res.url || '';
+  return { url: location, format, ref: ref || 'default branch' };
+}
+
+export async function getReadmeHtml(credentials, owner, repo, ref = '') {
+  const qs = ref ? `?ref=${encodeURIComponent(ref)}` : '';
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme${qs}`, {
+    headers: {
+      Authorization: `Bearer ${credentials.token}`,
+      Accept: 'application/vnd.github.html',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? `GitHub API ${res.status}`);
+  }
+  return res.text();
+}

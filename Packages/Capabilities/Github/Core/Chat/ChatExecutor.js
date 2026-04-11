@@ -3840,6 +3840,419 @@ export async function executeGithubChatTool(ctx, toolName, params = {}) {
         .join('\n');
     }
 
+    case 'github_get_user_packages': {
+      const { username, package_type = '', count = 30 } = params;
+      if (!username) throw new Error('Missing required param: username');
+      const packages = await GithubAPI.getUserPackages(
+        credentials,
+        username,
+        package_type,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!packages.length)
+        return `No packages found for @${username}${package_type ? ` (type: ${package_type})` : ''}.`;
+      return [
+        `Packages for @${username} (${packages.length} shown):`,
+        '',
+        ...packages.map((pkg, i) => {
+          const updated = formatDate(pkg.updated_at);
+          return `${i + 1}. ${pkg.name}  [${pkg.package_type}]  visibility: ${pkg.visibility ?? 'unknown'}  updated: ${updated}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_package_versions': {
+      const { username, package_type, package_name, count = 20 } = params;
+      if (!username || !package_type || !package_name)
+        throw new Error('Missing required params: username, package_type, package_name');
+      const versions = await GithubAPI.getPackageVersions(
+        credentials,
+        username,
+        package_type,
+        package_name,
+        Math.min(Number(count) || 20, 100),
+      );
+      if (!versions.length)
+        return `No versions found for package "${package_name}" (${package_type}) owned by @${username}.`;
+      return [
+        `Versions of ${package_type}/${package_name} by @${username} (${versions.length} shown):`,
+        '',
+        ...versions.map((v, i) => {
+          const tags =
+            ((v.metadata?.container?.tags ?? v.metadata?.npm?.name) ? [v.metadata.npm?.tag] : [])
+              .filter(Boolean)
+              .join(', ') || 'untagged';
+          return `${i + 1}. v${v.name ?? v.id}  id: ${v.id}  created: ${formatDate(v.created_at)}`;
+        }),
+      ].join('\n');
+    }
+
+    case 'github_create_deployment': {
+      const {
+        owner,
+        repo,
+        ref,
+        task = 'deploy',
+        environment = 'production',
+        description = '',
+        payload = '',
+      } = params;
+      if (!owner || !repo || !ref) throw new Error('Missing required params: owner, repo, ref');
+      const deployment = await GithubAPI.createDeployment(credentials, owner, repo, {
+        ref,
+        task,
+        autoMerge: false,
+        description,
+        environment,
+        payload,
+      });
+      return [
+        `Deployment created in ${owner}/${repo}`,
+        `ID: ${deployment.id}`,
+        `Ref: ${deployment.ref}`,
+        `Task: ${deployment.task}`,
+        `Environment: ${deployment.environment}`,
+        description ? `Description: ${description}` : '',
+        `Created: ${formatDateTime(deployment.created_at)}`,
+        `Statuses URL: ${deployment.statuses_url}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_create_deployment_status': {
+      const {
+        owner,
+        repo,
+        deployment_id,
+        state,
+        log_url = '',
+        description = '',
+        environment = '',
+        environment_url = '',
+      } = params;
+      if (!owner || !repo || !deployment_id || !state)
+        throw new Error('Missing required params: owner, repo, deployment_id, state');
+      const validStates = [
+        'error',
+        'failure',
+        'inactive',
+        'in_progress',
+        'queued',
+        'pending',
+        'success',
+      ];
+      if (!validStates.includes(state))
+        throw new Error(`state must be one of: ${validStates.join(', ')}`);
+      const status = await GithubAPI.createDeploymentStatus(
+        credentials,
+        owner,
+        repo,
+        deployment_id,
+        {
+          state,
+          logUrl: log_url,
+          description,
+          environment,
+          environmentUrl: environment_url,
+        },
+      );
+      return [
+        `Deployment status posted on ${owner}/${repo} deployment #${deployment_id}`,
+        `State: ${status.state}`,
+        status.environment ? `Environment: ${status.environment}` : '',
+        status.description ? `Description: ${status.description}` : '',
+        status.log_url ? `Logs: ${status.log_url}` : '',
+        status.environment_url ? `App URL: ${status.environment_url}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_trigger_repo_dispatch': {
+      const { owner, repo, event_type, client_payload } = params;
+      if (!owner || !repo || !event_type)
+        throw new Error('Missing required params: owner, repo, event_type');
+      let payload = {};
+      if (client_payload) {
+        try {
+          payload = JSON.parse(client_payload);
+        } catch {
+          /* use empty */
+        }
+      }
+      await GithubAPI.triggerRepoDispatch(credentials, owner, repo, event_type, payload);
+      return [
+        `repository_dispatch event triggered on ${owner}/${repo}`,
+        `Event type: ${event_type}`,
+        Object.keys(payload).length ? `Payload: ${JSON.stringify(payload)}` : '',
+        'Workflows listening for this event will be queued shortly.',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_get_git_tag_object': {
+      const { owner, repo, tag_sha } = params;
+      if (!owner || !repo || !tag_sha)
+        throw new Error('Missing required params: owner, repo, tag_sha');
+      const tag = await GithubAPI.getGitTagObject(credentials, owner, repo, tag_sha);
+      return [
+        `Annotated tag object in ${owner}/${repo}:`,
+        `Tag name: ${tag.tag}`,
+        `SHA: ${tag.sha?.slice(0, 7) ?? tag_sha.slice(0, 7)}`,
+        `Object: ${tag.object?.sha?.slice(0, 7) ?? '?'} (${tag.object?.type ?? '?'})`,
+        `Tagger: ${tag.tagger?.name ?? 'unknown'} <${tag.tagger?.email ?? ''}> on ${formatDate(tag.tagger?.date)}`,
+        `Message:\n${(tag.message ?? '').trim()}`,
+        tag.verification?.verified !== undefined
+          ? `Signature verified: ${tag.verification.verified}`
+          : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_list_check_run_annotations': {
+      const { owner, repo, check_run_id, count = 50 } = params;
+      if (!owner || !repo || !check_run_id)
+        throw new Error('Missing required params: owner, repo, check_run_id');
+      const annotations = await GithubAPI.listCheckRunAnnotations(
+        credentials,
+        owner,
+        repo,
+        check_run_id,
+        Math.min(Number(count) || 50, 100),
+      );
+      if (!annotations.length)
+        return `No annotations found for check run #${check_run_id} in ${owner}/${repo}.`;
+      return [
+        `Annotations for check run #${check_run_id} in ${owner}/${repo} (${annotations.length}):`,
+        '',
+        ...annotations.map((a, i) => {
+          const loc = `${a.path}:${a.start_line ?? '?'}${a.end_line && a.end_line !== a.start_line ? `-${a.end_line}` : ''}`;
+          return [
+            `${i + 1}. [${a.annotation_level?.toUpperCase() ?? 'NOTICE'}] ${loc}`,
+            a.title ? `   ${a.title}` : '',
+            a.message ? `   ${a.message}` : '',
+            a.raw_details ? `   Details: ${a.raw_details.slice(0, 100)}` : '',
+          ]
+            .filter(Boolean)
+            .join('\n');
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_combined_status': {
+      const { owner, repo, ref } = params;
+      if (!owner || !repo || !ref) throw new Error('Missing required params: owner, repo, ref');
+      const data = await GithubAPI.getCombinedStatus(credentials, owner, repo, ref);
+      const statuses = data.statuses ?? [];
+      return [
+        `Combined commit status for ${ref} in ${owner}/${repo}:`,
+        `Overall state: ${data.state ?? 'unknown'}`,
+        `SHA: ${data.sha?.slice(0, 7) ?? '?'}`,
+        `Total checks: ${data.total_count ?? statuses.length}`,
+        '',
+        statuses.length ? 'Individual statuses:' : 'No individual statuses.',
+        ...statuses
+          .slice(0, 20)
+          .map(
+            (s, i) =>
+              `${i + 1}. [${s.state}] ${s.context ?? 'status'}${s.description ? ` — ${s.description}` : ''}`,
+          ),
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_list_matching_refs': {
+      const { owner, repo, ref_pattern } = params;
+      if (!owner || !repo || !ref_pattern)
+        throw new Error('Missing required params: owner, repo, ref_pattern');
+      const refs = await GithubAPI.listMatchingRefs(credentials, owner, repo, ref_pattern);
+      if (!refs?.length) return `No refs matching "${ref_pattern}" in ${owner}/${repo}.`;
+      return [
+        `Refs matching "${ref_pattern}" in ${owner}/${repo} (${refs.length}):`,
+        '',
+        ...refs.map(
+          (r, i) =>
+            `${i + 1}. ${r.ref}  →  ${r.object?.sha?.slice(0, 7) ?? '?'} [${r.object?.type ?? '?'}]`,
+        ),
+      ].join('\n');
+    }
+
+    case 'github_update_git_ref': {
+      const { owner, repo, ref, sha, force = false } = params;
+      if (!owner || !repo || !ref || !sha)
+        throw new Error('Missing required params: owner, repo, ref, sha');
+      const updated = await GithubAPI.updateGitRef(
+        credentials,
+        owner,
+        repo,
+        ref,
+        sha,
+        Boolean(force),
+      );
+      return [
+        `Git ref updated in ${owner}/${repo}`,
+        `Ref: ${updated.ref}`,
+        `SHA: ${updated.object?.sha?.slice(0, 7) ?? sha.slice(0, 7)}`,
+        `Type: ${updated.object?.type ?? 'unknown'}`,
+        force ? 'Note: Force update was used.' : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_create_git_ref': {
+      const { owner, repo, ref, sha } = params;
+      if (!owner || !repo || !ref || !sha)
+        throw new Error('Missing required params: owner, repo, ref, sha');
+      const created = await GithubAPI.createGitRef(credentials, owner, repo, ref, sha);
+      return [
+        `Git ref created in ${owner}/${repo}`,
+        `Ref: ${created.ref}`,
+        `SHA: ${created.object?.sha?.slice(0, 7) ?? sha.slice(0, 7)}`,
+        `Type: ${created.object?.type ?? 'unknown'}`,
+      ].join('\n');
+    }
+
+    case 'github_list_repo_review_comments': {
+      const { owner, repo, sort = 'created', direction = 'desc', count = 30 } = params;
+      requireRepo(owner, repo);
+      const comments = await GithubAPI.listRepoReviewComments(
+        credentials,
+        owner,
+        repo,
+        sort,
+        direction,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!comments.length) return `No pull request review comments found in ${owner}/${repo}.`;
+      return [
+        `PR review comments in ${owner}/${repo} (${comments.length} shown, sorted by ${sort} ${direction}):`,
+        '',
+        ...comments.map((c, i) => {
+          const body = String(c.body ?? '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 150);
+          return [
+            `${i + 1}. @${c.user?.login ?? 'unknown'} on PR #${c.pull_request_url?.split('/').pop() ?? '?'} — ${formatDate(c.created_at)}`,
+            `   ${c.path}:${c.line ?? c.original_line ?? '?'}`,
+            `   ${body}${(c.body?.length ?? 0) > 150 ? '...' : ''}`,
+          ].join('\n');
+        }),
+      ].join('\n');
+    }
+
+    case 'github_get_pr_review_comment': {
+      const { owner, repo, comment_id } = params;
+      if (!owner || !repo || !comment_id)
+        throw new Error('Missing required params: owner, repo, comment_id');
+      const c = await GithubAPI.getPRReviewComment(credentials, owner, repo, comment_id);
+      return [
+        `PR review comment #${c.id} in ${owner}/${repo}`,
+        `Author: @${c.user?.login ?? 'unknown'}`,
+        `File: ${c.path}:${c.line ?? c.original_line ?? '?'}`,
+        `PR: ${c.pull_request_url?.split('/').pop() ?? '?'}`,
+        `Created: ${formatDate(c.created_at)} | Updated: ${formatDate(c.updated_at)}`,
+        `URL: ${c.html_url}`,
+        '',
+        c.body ?? '(empty)',
+      ].join('\n');
+    }
+
+    case 'github_update_pr_review_comment': {
+      const { owner, repo, comment_id, body } = params;
+      if (!owner || !repo || !comment_id || !body)
+        throw new Error('Missing required params: owner, repo, comment_id, body');
+      const c = await GithubAPI.updatePRReviewComment(credentials, owner, repo, comment_id, body);
+      return [
+        `PR review comment #${comment_id} updated in ${owner}/${repo}`,
+        `URL: ${c?.html_url ?? `https://github.com/${owner}/${repo}`}`,
+      ].join('\n');
+    }
+
+    case 'github_delete_pr_review_comment': {
+      const { owner, repo, comment_id } = params;
+      if (!owner || !repo || !comment_id)
+        throw new Error('Missing required params: owner, repo, comment_id');
+      await GithubAPI.deletePRReviewComment(credentials, owner, repo, comment_id);
+      return `PR review comment #${comment_id} deleted from ${owner}/${repo}.`;
+    }
+
+    case 'github_list_commit_branches': {
+      const { owner, repo, sha } = params;
+      if (!owner || !repo || !sha) throw new Error('Missing required params: owner, repo, sha');
+      const branches = await GithubAPI.listCommitBranches(credentials, owner, repo, sha);
+      if (!branches?.length)
+        return `Commit ${sha.slice(0, 7)} is not the HEAD of any branch in ${owner}/${repo}.`;
+      return [
+        `Branches where ${sha.slice(0, 7)} is HEAD in ${owner}/${repo} (${branches.length}):`,
+        '',
+        ...branches.map((b, i) => `${i + 1}. ${b.name}${b.protected ? ' [protected]' : ''}`),
+      ].join('\n');
+    }
+
+    case 'github_get_org_actions_permissions': {
+      const { org } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const data = await GithubAPI.getOrgActionsPermissions(credentials, org);
+      return [
+        `GitHub Actions permissions for org ${org}:`,
+        `Enabled repositories: ${data.enabled_repositories ?? 'unknown'}`,
+        `Allowed actions: ${data.allowed_actions ?? 'unknown'}`,
+        data.selected_actions_url ? `Selected actions URL: ${data.selected_actions_url}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+    }
+
+    case 'github_list_org_blocked_users': {
+      const { org, count = 30 } = params;
+      if (!org) throw new Error('Missing required param: org');
+      const users = await GithubAPI.listOrgBlockedUsers(
+        credentials,
+        org,
+        Math.min(Number(count) || 30, 100),
+      );
+      if (!users.length) return `No blocked users found for org "${org}".`;
+      return [
+        `Blocked users in org ${org} (${users.length}):`,
+        '',
+        ...users.map((u, i) => `${i + 1}. @${u.login}`),
+      ].join('\n');
+    }
+
+    case 'github_get_repo_archive_link': {
+      const { owner, repo, format = 'zipball', ref = '' } = params;
+      requireRepo(owner, repo);
+      const validFormats = ['zipball', 'tarball'];
+      const fmt = validFormats.includes(format) ? format : 'zipball';
+      const result = await GithubAPI.getRepoArchiveLink(credentials, owner, repo, fmt, ref);
+      return [
+        `Archive download link for ${owner}/${repo}:`,
+        `Format: ${result.format} (.${fmt === 'zipball' ? 'zip' : 'tar.gz'})`,
+        `Ref: ${result.ref}`,
+        result.url
+          ? `URL: ${result.url}`
+          : 'Note: Redirect URL not captured — use the GitHub web UI or make a GET request with your token to the API endpoint directly.',
+      ].join('\n');
+    }
+
+    case 'github_get_readme_html': {
+      const { owner, repo, ref = '' } = params;
+      requireRepo(owner, repo);
+      const html = await GithubAPI.getReadmeHtml(credentials, owner, repo, ref);
+      const preview = html.length > 3000 ? `${html.slice(0, 3000)}\n...(truncated)` : html;
+      return [
+        `Rendered README HTML for ${owner}/${repo}${ref ? ` @ ${ref}` : ''}:`,
+        '',
+        preview,
+      ].join('\n');
+    }
+
     default:
       throw new Error(`Unknown GitHub tool: ${toolName}`);
   }
