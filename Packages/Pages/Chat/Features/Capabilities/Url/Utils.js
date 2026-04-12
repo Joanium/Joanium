@@ -5,7 +5,6 @@ export function parseOrThrow(url) {
     throw new Error(`"${url}" is not a valid URL. Include https:// or http://`);
   }
 }
-
 export const TRACKING_PARAMS = new Set([
   'utm_source',
   'utm_medium',

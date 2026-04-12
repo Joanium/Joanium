@@ -4,9 +4,9 @@ export const GMAIL_TOOLS = [
     description: "Send an email via the user's connected Gmail account.",
     category: 'gmail',
     parameters: {
-      to: { type: 'string', required: true, description: 'Recipient email address' },
-      subject: { type: 'string', required: true, description: 'Email subject line' },
-      body: { type: 'string', required: true, description: 'Email body / message content' },
+      to: { type: 'string', required: !0, description: 'Recipient email address' },
+      subject: { type: 'string', required: !0, description: 'Email subject line' },
+      body: { type: 'string', required: !0, description: 'Email body / message content' },
     },
   },
   {
@@ -14,11 +14,7 @@ export const GMAIL_TOOLS = [
     description: "Fetch and summarize the user's unread emails from Gmail.",
     category: 'gmail',
     parameters: {
-      maxResults: {
-        type: 'number',
-        required: false,
-        description: 'Max emails to fetch (default 15)',
-      },
+      maxResults: { type: 'number', required: !1, description: 'Max emails to fetch (default 15)' },
     },
   },
   {
@@ -29,10 +25,10 @@ export const GMAIL_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gmail search query (e.g. "from:boss", "project alpha", "is:unread")',
       },
-      maxResults: { type: 'number', required: false, description: 'Max results (default 10)' },
+      maxResults: { type: 'number', required: !1, description: 'Max results (default 10)' },
     },
   },
   {
@@ -41,8 +37,8 @@ export const GMAIL_TOOLS = [
       'Reply to a specific email by message ID. Use gmail_search_emails first to find the message ID.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID to reply to' },
-      body: { type: 'string', required: true, description: 'Reply text / body' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to reply to' },
+      body: { type: 'string', required: !0, description: 'Reply text / body' },
     },
   },
   {
@@ -50,11 +46,11 @@ export const GMAIL_TOOLS = [
     description: 'Forward a specific email to one or more recipients.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID to forward' },
-      to: { type: 'string', required: true, description: 'Recipient email address to forward to' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to forward' },
+      to: { type: 'string', required: !0, description: 'Recipient email address to forward to' },
       note: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional note to prepend to the forwarded email',
       },
     },
@@ -64,10 +60,10 @@ export const GMAIL_TOOLS = [
     description: "Save an email as a draft in the user's Gmail account without sending it.",
     category: 'gmail',
     parameters: {
-      to: { type: 'string', required: true, description: 'Recipient email address' },
-      subject: { type: 'string', required: true, description: 'Email subject line' },
-      body: { type: 'string', required: true, description: 'Email body / content' },
-      cc: { type: 'string', required: false, description: 'CC email address(es)' },
+      to: { type: 'string', required: !0, description: 'Recipient email address' },
+      subject: { type: 'string', required: !0, description: 'Email subject line' },
+      body: { type: 'string', required: !0, description: 'Email body / content' },
+      cc: { type: 'string', required: !1, description: 'CC email address(es)' },
     },
   },
   {
@@ -75,11 +71,7 @@ export const GMAIL_TOOLS = [
     description: 'Mark a specific email as read.',
     category: 'gmail',
     parameters: {
-      messageId: {
-        type: 'string',
-        required: true,
-        description: 'Gmail message ID to mark as read',
-      },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to mark as read' },
     },
   },
   {
@@ -89,7 +81,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       messageId: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gmail message ID to mark as unread',
       },
     },
@@ -99,7 +91,7 @@ export const GMAIL_TOOLS = [
     description: 'Archive a specific email, removing it from the inbox without deleting it.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID to archive' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to archive' },
     },
   },
   {
@@ -107,11 +99,7 @@ export const GMAIL_TOOLS = [
     description: 'Move a specific email to the trash.',
     category: 'gmail',
     parameters: {
-      messageId: {
-        type: 'string',
-        required: true,
-        description: 'Gmail message ID to move to trash',
-      },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to move to trash' },
     },
   },
   {
@@ -139,11 +127,11 @@ export const GMAIL_TOOLS = [
     description: "Send an email with CC and BCC recipients via the user's Gmail account.",
     category: 'gmail',
     parameters: {
-      to: { type: 'string', required: true, description: 'Primary recipient email address' },
-      subject: { type: 'string', required: true, description: 'Email subject line' },
-      body: { type: 'string', required: true, description: 'Email body / message content' },
-      cc: { type: 'string', required: false, description: 'CC recipient(s), comma-separated' },
-      bcc: { type: 'string', required: false, description: 'BCC recipient(s), comma-separated' },
+      to: { type: 'string', required: !0, description: 'Primary recipient email address' },
+      subject: { type: 'string', required: !0, description: 'Email subject line' },
+      body: { type: 'string', required: !0, description: 'Email body / message content' },
+      cc: { type: 'string', required: !1, description: 'CC recipient(s), comma-separated' },
+      bcc: { type: 'string', required: !1, description: 'BCC recipient(s), comma-separated' },
     },
   },
   {
@@ -154,7 +142,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max emails to return (default: 20)',
       },
     },
@@ -166,7 +154,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max read emails to archive in one pass (default: 100)',
       },
     },
@@ -179,13 +167,13 @@ export const GMAIL_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Gmail search query — all matching emails will be trashed (e.g. "from:newsletter@spam.com", "older_than:1y", "label:promotions")',
       },
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max emails to trash in one pass (default: 50)',
       },
     },
@@ -197,17 +185,17 @@ export const GMAIL_TOOLS = [
     parameters: {
       name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Name for the new label (e.g. "Work/Urgent")',
       },
       text_color: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Label text color as hex (e.g. "#ffffff")',
       },
       background_color: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Label background color as hex (e.g. "#cc3a21")',
       },
     },
@@ -217,10 +205,10 @@ export const GMAIL_TOOLS = [
     description: 'Add a label to a specific email message.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID' },
       label_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Label name to apply (e.g. "Work/Urgent"). Use gmail_get_label_id first if needed.',
       },
@@ -231,10 +219,10 @@ export const GMAIL_TOOLS = [
     description: 'Remove a label from a specific email message.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID' },
       label_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Label name to remove from the message.',
       },
     },
@@ -247,7 +235,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       label_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Display name of the label (e.g. "Work/Urgent", "INBOX", "SPAM")',
       },
     },
@@ -259,7 +247,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max sent emails to return (default: 10)',
       },
     },
@@ -271,7 +259,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max starred emails to return (default: 10)',
       },
     },
@@ -282,7 +270,7 @@ export const GMAIL_TOOLS = [
       'Fetch the full content of a single email by its message ID, including decoded body text.',
     category: 'gmail',
     parameters: {
-      messageId: { type: 'string', required: true, description: 'Gmail message ID to retrieve' },
+      messageId: { type: 'string', required: !0, description: 'Gmail message ID to retrieve' },
     },
   },
   {
@@ -293,7 +281,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       messageId: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gmail message ID to permanently delete',
       },
     },
@@ -306,13 +294,13 @@ export const GMAIL_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Gmail search query — all matching emails are permanently deleted (e.g. "older_than:2y label:promotions")',
       },
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max emails to delete in one pass (default: 50)',
       },
     },
@@ -324,7 +312,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       messageId: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gmail message ID to restore from trash',
       },
     },
@@ -337,7 +325,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       messageId: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gmail message ID to inspect for attachments',
       },
     },
@@ -349,12 +337,12 @@ export const GMAIL_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional Gmail search query to filter threads (e.g. "from:boss is:unread")',
       },
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max threads to return (default: 10)',
       },
     },
@@ -364,7 +352,7 @@ export const GMAIL_TOOLS = [
     description: 'Get all messages in an email conversation thread by thread ID.',
     category: 'gmail',
     parameters: {
-      threadId: { type: 'string', required: true, description: 'Gmail thread ID to retrieve' },
+      threadId: { type: 'string', required: !0, description: 'Gmail thread ID to retrieve' },
     },
   },
   {
@@ -372,7 +360,7 @@ export const GMAIL_TOOLS = [
     description: 'Move an entire email conversation thread to the trash.',
     category: 'gmail',
     parameters: {
-      threadId: { type: 'string', required: true, description: 'Gmail thread ID to trash' },
+      threadId: { type: 'string', required: !0, description: 'Gmail thread ID to trash' },
     },
   },
   {
@@ -381,7 +369,7 @@ export const GMAIL_TOOLS = [
       'Archive an entire email conversation thread, removing it from the inbox without deleting it.',
     category: 'gmail',
     parameters: {
-      threadId: { type: 'string', required: true, description: 'Gmail thread ID to archive' },
+      threadId: { type: 'string', required: !0, description: 'Gmail thread ID to archive' },
     },
   },
   {
@@ -391,7 +379,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       maxResults: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max drafts to return (default: 10)',
       },
     },
@@ -401,7 +389,7 @@ export const GMAIL_TOOLS = [
     description: 'Permanently delete a saved draft by its draft ID.',
     category: 'gmail',
     parameters: {
-      draftId: { type: 'string', required: true, description: 'Gmail draft ID to delete' },
+      draftId: { type: 'string', required: !0, description: 'Gmail draft ID to delete' },
     },
   },
   {
@@ -409,7 +397,7 @@ export const GMAIL_TOOLS = [
     description: 'Send an existing saved draft by its draft ID.',
     category: 'gmail',
     parameters: {
-      draftId: { type: 'string', required: true, description: 'Gmail draft ID to send' },
+      draftId: { type: 'string', required: !0, description: 'Gmail draft ID to send' },
     },
   },
   {
@@ -425,18 +413,18 @@ export const GMAIL_TOOLS = [
     parameters: {
       subject: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Subject line for the auto-reply message',
       },
-      body: { type: 'string', required: true, description: 'Body text of the auto-reply message' },
+      body: { type: 'string', required: !0, description: 'Body text of the auto-reply message' },
       startTime: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Start time as Unix epoch milliseconds (optional)',
       },
       endTime: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'End time as Unix epoch milliseconds (optional)',
       },
     },
@@ -459,36 +447,36 @@ export const GMAIL_TOOLS = [
     description: 'Create a new Gmail filter rule. At least one criteria field is required.',
     category: 'gmail',
     parameters: {
-      from: { type: 'string', required: false, description: 'Filter emails from this sender' },
-      to: { type: 'string', required: false, description: 'Filter emails sent to this address' },
+      from: { type: 'string', required: !1, description: 'Filter emails from this sender' },
+      to: { type: 'string', required: !1, description: 'Filter emails sent to this address' },
       subject: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter emails containing this text in the subject',
       },
       hasWords: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter emails containing these words anywhere',
       },
       doesNotHaveWords: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter emails NOT containing these words',
       },
       markAsRead: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Automatically mark matching emails as read (default: false)',
       },
       archive: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Automatically archive (skip inbox) matching emails (default: false)',
       },
       addLabelIds: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated label IDs to apply to matching emails',
       },
     },
@@ -501,7 +489,7 @@ export const GMAIL_TOOLS = [
     parameters: {
       label_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Display name of the label to delete',
       },
     },
@@ -513,10 +501,10 @@ export const GMAIL_TOOLS = [
     parameters: {
       label_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Current display name of the label',
       },
-      new_name: { type: 'string', required: true, description: 'New display name for the label' },
+      new_name: { type: 'string', required: !0, description: 'New display name for the label' },
     },
   },
   {

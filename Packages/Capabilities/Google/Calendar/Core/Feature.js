@@ -1,9 +1,8 @@
-﻿import defineFeature from '../../../Core/DefineFeature.js';
+import defineFeature from '../../../Core/DefineFeature.js';
 import * as CalendarAPI from './API/CalendarAPI.js';
 import { CALENDAR_TOOLS } from './Chat/Tools.js';
 import { executeCalendarChatTool } from './Chat/ChatExecutor.js';
 import { withGoogle } from '../../Common.js';
-
 export default defineFeature({
   id: 'calendar',
   name: 'Google Calendar',
@@ -26,85 +25,65 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async listCalendars(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+      listCalendars: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           calendars: await CalendarAPI.listCalendars(credentials),
-        }));
-      },
-
-      async listEvents(ctx, { calendarId = 'primary', opts = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      listEvents: async (ctx, { calendarId: calendarId = 'primary', opts: opts = {} } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           events: await CalendarAPI.listEvents(credentials, calendarId, opts),
-        }));
-      },
-
-      async getToday(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getToday: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           events: await CalendarAPI.getTodayEvents(credentials),
-        }));
-      },
-
-      async getUpcoming(ctx, { days = 7, maxResults = 20 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getUpcoming: async (ctx, { days: days = 7, maxResults: maxResults = 20 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           events: await CalendarAPI.getUpcomingEvents(credentials, days, maxResults),
-        }));
-      },
-
-      async searchEvents(ctx, { query, maxResults = 20 }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!query?.trim()) return { ok: false, error: 'Query is required' };
-          return {
-            ok: true,
-            events: await CalendarAPI.searchEvents(credentials, query, maxResults),
-          };
-        });
-      },
-
-      async getEvent(ctx, { calendarId = 'primary', eventId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!eventId) return { ok: false, error: 'eventId is required' };
-          return { ok: true, event: await CalendarAPI.getEvent(credentials, calendarId, eventId) };
-        });
-      },
-
-      async createEvent(ctx, { calendarId = 'primary', eventData } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!eventData?.summary) return { ok: false, error: 'Event summary (title) is required' };
-          return {
-            ok: true,
-            event: await CalendarAPI.createEvent(credentials, calendarId, eventData),
-          };
-        });
-      },
-
-      async updateEvent(ctx, { calendarId = 'primary', eventId, updates = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!eventId) return { ok: false, error: 'eventId is required' };
-          return {
-            ok: true,
-            event: await CalendarAPI.updateEvent(credentials, calendarId, eventId, updates),
-          };
-        });
-      },
-
-      async deleteEvent(ctx, { calendarId = 'primary', eventId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!eventId) return { ok: false, error: 'eventId is required' };
-          await CalendarAPI.deleteEvent(credentials, calendarId, eventId);
-          return { ok: true };
-        });
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeCalendarChatTool(ctx, toolName, params);
-      },
+        })),
+      searchEvents: async (ctx, { query: query, maxResults: maxResults = 20 }) =>
+        withGoogle(ctx, async (credentials) =>
+          query?.trim()
+            ? { ok: !0, events: await CalendarAPI.searchEvents(credentials, query, maxResults) }
+            : { ok: !1, error: 'Query is required' },
+        ),
+      getEvent: async (ctx, { calendarId: calendarId = 'primary', eventId: eventId }) =>
+        withGoogle(ctx, async (credentials) =>
+          eventId
+            ? { ok: !0, event: await CalendarAPI.getEvent(credentials, calendarId, eventId) }
+            : { ok: !1, error: 'eventId is required' },
+        ),
+      createEvent: async (ctx, { calendarId: calendarId = 'primary', eventData: eventData } = {}) =>
+        withGoogle(ctx, async (credentials) =>
+          eventData?.summary
+            ? { ok: !0, event: await CalendarAPI.createEvent(credentials, calendarId, eventData) }
+            : { ok: !1, error: 'Event summary (title) is required' },
+        ),
+      updateEvent: async (
+        ctx,
+        { calendarId: calendarId = 'primary', eventId: eventId, updates: updates = {} } = {},
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          eventId
+            ? {
+                ok: !0,
+                event: await CalendarAPI.updateEvent(credentials, calendarId, eventId, updates),
+              }
+            : { ok: !1, error: 'eventId is required' },
+        ),
+      deleteEvent: async (ctx, { calendarId: calendarId = 'primary', eventId: eventId }) =>
+        withGoogle(ctx, async (credentials) =>
+          eventId
+            ? (await CalendarAPI.deleteEvent(credentials, calendarId, eventId), { ok: !0 })
+            : { ok: !1, error: 'eventId is required' },
+        ),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeCalendarChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: CALENDAR_TOOLS,
-  },
+  renderer: { chatTools: CALENDAR_TOOLS },
 });

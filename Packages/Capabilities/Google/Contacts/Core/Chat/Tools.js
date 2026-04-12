@@ -13,7 +13,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max contacts to return (default: 50, max: 1000).',
       },
     },
@@ -23,14 +23,10 @@ export const CONTACTS_TOOLS = [
     description: 'Search Google Contacts by name, email, or phone number.',
     category: 'contacts',
     parameters: {
-      query: {
-        type: 'string',
-        required: true,
-        description: 'Search term (name, email, or phone).',
-      },
+      query: { type: 'string', required: !0, description: 'Search term (name, email, or phone).' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default: 10).',
       },
     },
@@ -42,7 +38,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       resource_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           "Contact resource name (e.g. 'people/c12345678'). Get from contacts_list or contacts_search.",
       },
@@ -53,12 +49,12 @@ export const CONTACTS_TOOLS = [
     description: 'Create a new Google Contact.',
     category: 'contacts',
     parameters: {
-      given_name: { type: 'string', required: false, description: 'First name.' },
-      family_name: { type: 'string', required: false, description: 'Last name.' },
-      email: { type: 'string', required: false, description: 'Primary email address.' },
-      phone: { type: 'string', required: false, description: 'Primary phone number.' },
-      company: { type: 'string', required: false, description: 'Company or organization name.' },
-      job_title: { type: 'string', required: false, description: 'Job title.' },
+      given_name: { type: 'string', required: !1, description: 'First name.' },
+      family_name: { type: 'string', required: !1, description: 'Last name.' },
+      email: { type: 'string', required: !1, description: 'Primary email address.' },
+      phone: { type: 'string', required: !1, description: 'Primary phone number.' },
+      company: { type: 'string', required: !1, description: 'Company or organization name.' },
+      job_title: { type: 'string', required: !1, description: 'Job title.' },
     },
   },
   {
@@ -68,15 +64,15 @@ export const CONTACTS_TOOLS = [
     parameters: {
       resource_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: "Contact resource name (e.g. 'people/c12345678').",
       },
-      given_name: { type: 'string', required: false, description: 'New first name.' },
-      family_name: { type: 'string', required: false, description: 'New last name.' },
-      email: { type: 'string', required: false, description: 'New primary email.' },
-      phone: { type: 'string', required: false, description: 'New primary phone number.' },
-      company: { type: 'string', required: false, description: 'New company name.' },
-      job_title: { type: 'string', required: false, description: 'New job title.' },
+      given_name: { type: 'string', required: !1, description: 'New first name.' },
+      family_name: { type: 'string', required: !1, description: 'New last name.' },
+      email: { type: 'string', required: !1, description: 'New primary email.' },
+      phone: { type: 'string', required: !1, description: 'New primary phone number.' },
+      company: { type: 'string', required: !1, description: 'New company name.' },
+      job_title: { type: 'string', required: !1, description: 'New job title.' },
     },
   },
   {
@@ -86,7 +82,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       resource_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: "Contact resource name (e.g. 'people/c12345678').",
       },
     },
@@ -112,7 +108,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       contacts: {
         type: 'array',
-        required: true,
+        required: !0,
         description:
           'Array of contact objects. Each object supports: given_name, family_name, email, phone, company, job_title.',
       },
@@ -125,7 +121,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       resource_names: {
         type: 'array',
-        required: true,
+        required: !0,
         description:
           "Array of resource name strings to delete (e.g. ['people/c123', 'people/c456']).",
       },
@@ -137,11 +133,11 @@ export const CONTACTS_TOOLS = [
       'Append an additional email address to an existing contact without overwriting their current emails.',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      email: { type: 'string', required: true, description: 'Email address to add.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      email: { type: 'string', required: !0, description: 'Email address to add.' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: "Label for the email: 'home', 'work', 'other'. Default: 'home'.",
       },
     },
@@ -152,11 +148,11 @@ export const CONTACTS_TOOLS = [
       'Append an additional phone number to an existing contact without overwriting their current numbers.',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      phone: { type: 'string', required: true, description: 'Phone number to add.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      phone: { type: 'string', required: !0, description: 'Phone number to add.' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: "Label: 'mobile', 'home', 'work', 'other'. Default: 'mobile'.",
       },
     },
@@ -166,8 +162,8 @@ export const CONTACTS_TOOLS = [
     description: 'Set or replace the freeform notes / biography field on a contact.',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      note: { type: 'string', required: true, description: 'Note text to save.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      note: { type: 'string', required: !0, description: 'Note text to save.' },
     },
   },
   {
@@ -175,15 +171,15 @@ export const CONTACTS_TOOLS = [
     description: 'Add a mailing address to a contact.',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      street_address: { type: 'string', required: false, description: 'Street and number.' },
-      city: { type: 'string', required: false, description: 'City.' },
-      region: { type: 'string', required: false, description: 'State or province.' },
-      postal_code: { type: 'string', required: false, description: 'ZIP or postal code.' },
-      country: { type: 'string', required: false, description: 'Country name.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      street_address: { type: 'string', required: !1, description: 'Street and number.' },
+      city: { type: 'string', required: !1, description: 'City.' },
+      region: { type: 'string', required: !1, description: 'State or province.' },
+      postal_code: { type: 'string', required: !1, description: 'ZIP or postal code.' },
+      country: { type: 'string', required: !1, description: 'Country name.' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: "Label: 'home', 'work', 'other'. Default: 'home'.",
       },
     },
@@ -193,11 +189,11 @@ export const CONTACTS_TOOLS = [
     description: 'Add a website URL to a contact (personal site, LinkedIn, GitHub, etc.).',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      url: { type: 'string', required: true, description: 'Full URL (include https://).' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      url: { type: 'string', required: !0, description: 'Full URL (include https://).' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: "Label: 'homePage', 'work', 'blog', 'profile', 'other'. Default: 'homePage'.",
       },
     },
@@ -208,10 +204,10 @@ export const CONTACTS_TOOLS = [
       "Set or replace a contact's birthday. Year is optional (use 0 or omit to store month/day only).",
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      month: { type: 'number', required: true, description: 'Month (1–12).' },
-      day: { type: 'number', required: true, description: 'Day (1–31).' },
-      year: { type: 'number', required: false, description: 'Four-digit year (optional).' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      month: { type: 'number', required: !0, description: 'Month (1–12).' },
+      day: { type: 'number', required: !0, description: 'Day (1–31).' },
+      year: { type: 'number', required: !1, description: 'Four-digit year (optional).' },
     },
   },
   {
@@ -220,15 +216,15 @@ export const CONTACTS_TOOLS = [
       'Record a named relationship on a contact (e.g. spouse, manager, assistant, friend).',
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
       related_person: {
         type: 'string',
-        required: true,
+        required: !0,
         description: "Name of the related person (e.g. 'Jane Doe').",
       },
       relation_type: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           "Relationship type: 'spouse', 'child', 'parent', 'manager', 'assistant', 'friend', 'relative', 'partner', 'colleague', 'other'. Default: 'friend'.",
       },
@@ -249,7 +245,7 @@ export const CONTACTS_TOOLS = [
     parameters: {
       company: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Company name or partial name to filter by.',
       },
     },
@@ -259,8 +255,8 @@ export const CONTACTS_TOOLS = [
     description: 'Find a contact by their exact or partial email address.',
     category: 'contacts',
     parameters: {
-      email: { type: 'string', required: true, description: 'Email address (full or partial).' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 10).' },
+      email: { type: 'string', required: !0, description: 'Email address (full or partial).' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 10).' },
     },
   },
   {
@@ -268,8 +264,8 @@ export const CONTACTS_TOOLS = [
     description: 'Find a contact by their phone number.',
     category: 'contacts',
     parameters: {
-      phone: { type: 'string', required: true, description: 'Phone number (full or partial).' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 10).' },
+      phone: { type: 'string', required: !0, description: 'Phone number (full or partial).' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 10).' },
     },
   },
   {
@@ -291,8 +287,8 @@ export const CONTACTS_TOOLS = [
     description: "Remove a specific email address from a contact's list of emails.",
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      email: { type: 'string', required: true, description: 'The exact email address to remove.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      email: { type: 'string', required: !0, description: 'The exact email address to remove.' },
     },
   },
   {
@@ -300,8 +296,8 @@ export const CONTACTS_TOOLS = [
     description: "Remove a specific phone number from a contact's list of phone numbers.",
     category: 'contacts',
     parameters: {
-      resource_name: { type: 'string', required: true, description: 'Contact resource name.' },
-      phone: { type: 'string', required: true, description: 'The exact phone number to remove.' },
+      resource_name: { type: 'string', required: !0, description: 'Contact resource name.' },
+      phone: { type: 'string', required: !0, description: 'The exact phone number to remove.' },
     },
   },
   {
@@ -312,13 +308,13 @@ export const CONTACTS_TOOLS = [
     parameters: {
       since_date: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           "ISO 8601 date string to filter from (e.g. '2024-01-01'). Returns contacts updated on or after this date.",
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max contacts to return (default: 50).',
       },
     },

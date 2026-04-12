@@ -1,66 +1,9 @@
-﻿import defineFeature from '../../../Core/DefineFeature.js';
+import defineFeature from '../../../Core/DefineFeature.js';
 import * as GmailAPI from './API/GmailAPI.js';
 import { GMAIL_TOOLS } from './Chat/Tools.js';
 import { executeGmailChatTool } from './Chat/ChatExecutor.js';
 import { gmailDataSourceCollectors } from './Automation/AutomationHandlers.js';
 import { withGoogle } from '../../Common.js';
-
-const GMAIL_DATA_SOURCES = [
-  {
-    value: 'gmail_inbox',
-    label: 'Gmail - Unread inbox',
-    group: 'Google Workspace',
-    params: [
-      {
-        key: 'maxResults',
-        label: 'Max emails',
-        type: 'number',
-        min: 1,
-        max: 50,
-        defaultValue: 20,
-        placeholder: '20',
-      },
-    ],
-  },
-  {
-    value: 'gmail_search',
-    label: 'Gmail - Search emails',
-    group: 'Google Workspace',
-    params: [
-      {
-        key: 'query',
-        label: 'Search query',
-        type: 'text',
-        required: true,
-        placeholder: 'from:boss OR subject:urgent',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max results',
-        type: 'number',
-        min: 1,
-        max: 30,
-        defaultValue: 10,
-        placeholder: '10',
-      },
-    ],
-  },
-  {
-    value: 'gmail_inbox_stats',
-    label: 'Gmail - Inbox stats',
-    group: 'Google Workspace',
-  },
-];
-
-const GMAIL_INSTRUCTION_TEMPLATES = {
-  gmail_inbox:
-    'Read these emails. Identify the most important ones needing action today. For each: subject, sender, what action is needed, and urgency. Then briefly list FYI emails.',
-  gmail_search:
-    'Analyze these matching emails. Summarize findings, highlight patterns and urgent items.',
-  gmail_inbox_stats:
-    'Analyze these inbox statistics. Flag anything concerning and give a brief health assessment.',
-};
-
 export default defineFeature({
   id: 'gmail',
   name: 'Gmail',
@@ -86,165 +29,183 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async getBrief(ctx, { maxResults = 15 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+      getBrief: async (ctx, { maxResults: maxResults = 15 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           ...(await GmailAPI.getEmailBrief(credentials, maxResults)),
-        }));
-      },
-
-      async getUnread(ctx, { maxResults = 20 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getUnread: async (ctx, { maxResults: maxResults = 20 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           emails: await GmailAPI.getUnreadEmails(credentials, maxResults),
-        }));
-      },
-
-      async search(ctx, { query, maxResults = 10 }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!query?.trim()) return { ok: false, error: 'query is required' };
-          return { ok: true, emails: await GmailAPI.searchEmails(credentials, query, maxResults) };
-        });
-      },
-
-      async getInboxStats(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      search: async (ctx, { query: query, maxResults: maxResults = 10 }) =>
+        withGoogle(ctx, async (credentials) =>
+          query?.trim()
+            ? { ok: !0, emails: await GmailAPI.searchEmails(credentials, query, maxResults) }
+            : { ok: !1, error: 'query is required' },
+        ),
+      getInboxStats: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           stats: await GmailAPI.getInboxStats(credentials),
-        }));
-      },
-
-      async send(ctx, { to, subject, body, cc = '', bcc = '' }) {
-        return withGoogle(ctx, async (credentials) => {
-          await GmailAPI.sendEmail(credentials, to, subject, body, cc, bcc);
-          return { ok: true };
-        });
-      },
-
-      async reply(ctx, { messageId, replyBody }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          if (!replyBody) return { ok: false, error: 'replyBody is required' };
-          await GmailAPI.replyToEmail(credentials, messageId, replyBody);
-          return { ok: true };
-        });
-      },
-
-      async forward(ctx, { messageId, forwardTo, note = '' }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          if (!forwardTo) return { ok: false, error: 'forwardTo is required' };
-          await GmailAPI.forwardEmail(credentials, messageId, forwardTo, note);
-          return { ok: true };
-        });
-      },
-
-      async createDraft(ctx, { to, subject, body = '', cc = '' }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!to || !subject) return { ok: false, error: 'to and subject are required' };
-          return {
-            ok: true,
-            draft: await GmailAPI.createDraft(credentials, to, subject, body, cc),
-          };
-        });
-      },
-
-      async markAllRead(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      send: async (ctx, { to: to, subject: subject, body: body, cc: cc = '', bcc: bcc = '' }) =>
+        withGoogle(
+          ctx,
+          async (credentials) => (
+            await GmailAPI.sendEmail(credentials, to, subject, body, cc, bcc),
+            { ok: !0 }
+          ),
+        ),
+      reply: async (ctx, { messageId: messageId, replyBody: replyBody }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? replyBody
+              ? (await GmailAPI.replyToEmail(credentials, messageId, replyBody), { ok: !0 })
+              : { ok: !1, error: 'replyBody is required' }
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      forward: async (ctx, { messageId: messageId, forwardTo: forwardTo, note: note = '' }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? forwardTo
+              ? (await GmailAPI.forwardEmail(credentials, messageId, forwardTo, note), { ok: !0 })
+              : { ok: !1, error: 'forwardTo is required' }
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      createDraft: async (ctx, { to: to, subject: subject, body: body = '', cc: cc = '' }) =>
+        withGoogle(ctx, async (credentials) =>
+          to && subject
+            ? { ok: !0, draft: await GmailAPI.createDraft(credentials, to, subject, body, cc) }
+            : { ok: !1, error: 'to and subject are required' },
+        ),
+      markAllRead: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           count: await GmailAPI.markAllRead(credentials),
-        }));
-      },
-
-      async archiveRead(ctx, { maxResults = 100 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      archiveRead: async (ctx, { maxResults: maxResults = 100 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           count: await GmailAPI.archiveReadEmails(credentials, maxResults),
-        }));
-      },
-
-      async trashByQuery(ctx, { query, maxResults = 50 }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!query) return { ok: false, error: 'query is required' };
-          return {
-            ok: true,
-            count: await GmailAPI.trashEmailsByQuery(credentials, query, maxResults),
-          };
-        });
-      },
-
-      async markAsRead(ctx, { messageId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          await GmailAPI.markAsRead(credentials, messageId);
-          return { ok: true };
-        });
-      },
-
-      async markAsUnread(ctx, { messageId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          await GmailAPI.markAsUnread(credentials, messageId);
-          return { ok: true };
-        });
-      },
-
-      async archiveMessage(ctx, { messageId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          await GmailAPI.archiveMessage(credentials, messageId);
-          return { ok: true };
-        });
-      },
-
-      async trashMessage(ctx, { messageId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          await GmailAPI.trashMessage(credentials, messageId);
-          return { ok: true };
-        });
-      },
-
-      async listLabels(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      trashByQuery: async (ctx, { query: query, maxResults: maxResults = 50 }) =>
+        withGoogle(ctx, async (credentials) =>
+          query
+            ? { ok: !0, count: await GmailAPI.trashEmailsByQuery(credentials, query, maxResults) }
+            : { ok: !1, error: 'query is required' },
+        ),
+      markAsRead: async (ctx, { messageId: messageId }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? (await GmailAPI.markAsRead(credentials, messageId), { ok: !0 })
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      markAsUnread: async (ctx, { messageId: messageId }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? (await GmailAPI.markAsUnread(credentials, messageId), { ok: !0 })
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      archiveMessage: async (ctx, { messageId: messageId }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? (await GmailAPI.archiveMessage(credentials, messageId), { ok: !0 })
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      trashMessage: async (ctx, { messageId: messageId }) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? (await GmailAPI.trashMessage(credentials, messageId), { ok: !0 })
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      listLabels: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           labels: await GmailAPI.listLabels(credentials),
-        }));
-      },
-
-      async createLabel(ctx, { name, colors = {} }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!name) return { ok: false, error: 'label name is required' };
-          return { ok: true, label: await GmailAPI.createLabel(credentials, name, colors) };
-        });
-      },
-
-      async getLabelId(ctx, { labelName }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!labelName) return { ok: false, error: 'labelName is required' };
-          return { ok: true, id: await GmailAPI.getLabelId(credentials, labelName) };
-        });
-      },
-
-      async modifyMessage(ctx, { messageId, addLabels = [], removeLabels = [] }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!messageId) return { ok: false, error: 'messageId is required' };
-          await GmailAPI.modifyMessage(credentials, messageId, { addLabels, removeLabels });
-          return { ok: true };
-        });
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeGmailChatTool(ctx, toolName, params);
-      },
+        })),
+      createLabel: async (ctx, { name: name, colors: colors = {} }) =>
+        withGoogle(ctx, async (credentials) =>
+          name
+            ? { ok: !0, label: await GmailAPI.createLabel(credentials, name, colors) }
+            : { ok: !1, error: 'label name is required' },
+        ),
+      getLabelId: async (ctx, { labelName: labelName }) =>
+        withGoogle(ctx, async (credentials) =>
+          labelName
+            ? { ok: !0, id: await GmailAPI.getLabelId(credentials, labelName) }
+            : { ok: !1, error: 'labelName is required' },
+        ),
+      modifyMessage: async (
+        ctx,
+        { messageId: messageId, addLabels: addLabels = [], removeLabels: removeLabels = [] },
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          messageId
+            ? (await GmailAPI.modifyMessage(credentials, messageId, {
+                addLabels: addLabels,
+                removeLabels: removeLabels,
+              }),
+              { ok: !0 })
+            : { ok: !1, error: 'messageId is required' },
+        ),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeGmailChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: GMAIL_TOOLS,
-  },
+  renderer: { chatTools: GMAIL_TOOLS },
   automation: {
-    dataSources: GMAIL_DATA_SOURCES,
-    instructionTemplates: GMAIL_INSTRUCTION_TEMPLATES,
+    dataSources: [
+      {
+        value: 'gmail_inbox',
+        label: 'Gmail - Unread inbox',
+        group: 'Google Workspace',
+        params: [
+          {
+            key: 'maxResults',
+            label: 'Max emails',
+            type: 'number',
+            min: 1,
+            max: 50,
+            defaultValue: 20,
+            placeholder: '20',
+          },
+        ],
+      },
+      {
+        value: 'gmail_search',
+        label: 'Gmail - Search emails',
+        group: 'Google Workspace',
+        params: [
+          {
+            key: 'query',
+            label: 'Search query',
+            type: 'text',
+            required: !0,
+            placeholder: 'from:boss OR subject:urgent',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max results',
+            type: 'number',
+            min: 1,
+            max: 30,
+            defaultValue: 10,
+            placeholder: '10',
+          },
+        ],
+      },
+      { value: 'gmail_inbox_stats', label: 'Gmail - Inbox stats', group: 'Google Workspace' },
+    ],
+    instructionTemplates: {
+      gmail_inbox:
+        'Read these emails. Identify the most important ones needing action today. For each: subject, sender, what action is needed, and urgency. Then briefly list FYI emails.',
+      gmail_search:
+        'Analyze these matching emails. Summarize findings, highlight patterns and urgent items.',
+      gmail_inbox_stats:
+        'Analyze these inbox statistics. Flag anything concerning and give a brief health assessment.',
+    },
     dataSourceCollectors: gmailDataSourceCollectors,
   },
 });

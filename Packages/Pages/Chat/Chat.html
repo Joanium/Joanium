@@ -2,31 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!--
-    CRITICAL: Theme must apply BEFORE any CSS loads to prevent flash.
-    Inline script runs synchronously before first paint.
-  -->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <script src="../../Features/Themes/index.js"></script>
-
-    <!--
-    ALL page CSS loaded here upfront.
-    This is the entire fix for FOUC and the "modals flash briefly" bug.
-    Because all CSS is parsed before JS runs, every element starts with
-    the correct display:none / opacity:0 state immediately.
-  -->
     <link rel="stylesheet" href="./UI/Styles/ChatPage.css" />
-    <!-- Other page CSS is injected lazily when each page first mounts -->
   </head>
-
   <body>
     <div id="app">
-      <!-- ── Titlebar ── -->
       <div id="titlebar">
-        <div id="titlebar-drag">
-          <span class="titlebar-name">Joanium</span>
-        </div>
+        <div id="titlebar-drag"><span class="titlebar-name">Joanium</span></div>
         <div id="titlebar-controls">
           <button id="btn-minimize" title="Minimize">
             <svg
@@ -67,25 +50,13 @@
           </button>
         </div>
       </div>
-
-      <!-- ── Body wrap ── -->
       <div id="body-wrap">
-        <!-- Sidebar, theme panel, avatar panel — always present, mounted by App.js -->
         <aside id="sidebar"></aside>
         <div id="theme-panel"></div>
         <div id="avatar-panel"></div>
-
-        <!--
-      Page content outlet — this is where each page mounts its HTML.
-      It replaces the old per-page <main> that lived in separate HTML files.
-    -->
         <div id="page-outlet"></div>
       </div>
-      <!-- /body-wrap -->
     </div>
-    <!-- /app -->
-
-    <!-- Single entry point. Everything else is lazy-loaded per page. -->
     <script type="module" src="../../../Packages/Renderer/Application/Main.js"></script>
   </body>
 </html>

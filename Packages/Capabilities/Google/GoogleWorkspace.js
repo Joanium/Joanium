@@ -1,216 +1,157 @@
 import http from 'http';
 import { shell } from 'electron';
-
-/* ══════════════════════════════════════════
-   CONFIG
-══════════════════════════════════════════ */
-const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
-const TOKEN_URL = 'https://oauth2.googleapis.com/token';
-const USERINFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo';
-
-const CALLBACK_PORT = 42813;
-const REDIRECT_URI = `http://localhost:${CALLBACK_PORT}/oauth/callback`;
-
-// All scopes in one shot — user only grants once
-const SCOPES = [
-  'https://www.googleapis.com/auth/userinfo.email',
-  // Gmail
-  'https://www.googleapis.com/auth/gmail.readonly',
-  'https://www.googleapis.com/auth/gmail.send',
-  'https://www.googleapis.com/auth/gmail.modify',
-  // Drive
-  'https://www.googleapis.com/auth/drive',
-  // Calendar
-  'https://www.googleapis.com/auth/calendar',
-  // YouTube
-  'https://www.googleapis.com/auth/youtube',
-  // Tasks
-  'https://www.googleapis.com/auth/tasks',
-  // Sheets
-  'https://www.googleapis.com/auth/spreadsheets',
-  // Contacts
-  'https://www.googleapis.com/auth/contacts',
-  // Docs
-  'https://www.googleapis.com/auth/documents',
-  // Slides
-  'https://www.googleapis.com/auth/presentations',
-  // Photos
-  'https://www.googleapis.com/auth/photoslibrary.readonly',
-  // Forms
-  'https://www.googleapis.com/auth/forms.body.readonly',
-  'https://www.googleapis.com/auth/forms.responses.readonly',
-].join(' ');
-
-// Per-service probe endpoints (fast, minimal data)
-const SERVICE_PROBES = {
-  gmail: { url: 'https://gmail.googleapis.com/gmail/v1/users/me/profile', label: 'Gmail' },
-  drive: { url: 'https://www.googleapis.com/drive/v3/about?fields=user', label: 'Google Drive' },
-  calendar: {
-    url: 'https://www.googleapis.com/calendar/v3/calendars/primary',
-    label: 'Google Calendar',
-  },
-  youtube: {
-    url: 'https://www.googleapis.com/youtube/v3/channels?part=id&mine=true',
-    label: 'YouTube',
-  },
-  tasks: {
-    url: 'https://tasks.googleapis.com/tasks/v1/users/@me/lists?maxResults=1',
-    label: 'Google Tasks',
-  },
-  contacts: {
-    url: 'https://people.googleapis.com/v1/people/me?personFields=names',
-    label: 'Google Contacts',
-  },
-  // Sheets and Docs probed via Drive (same OAuth scope, same GCP project requirement)
-  sheets: {
-    url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.spreadsheet'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
-    label: 'Google Sheets',
-  },
-  docs: {
-    url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.document'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
-    label: 'Google Docs',
-  },
-  slides: {
-    url: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.presentation'+and+trashed%3Dfalse&pageSize=1&fields=files(id)`,
-    label: 'Google Slides',
-  },
-  photos: {
-    url: 'https://photoslibrary.googleapis.com/v1/albums?pageSize=1',
-    label: 'Google Photos',
-  },
-  forms: {
-    url: 'https://forms.googleapis.com/v1/forms', // 400 = API enabled; 404 = no form ID (expected)
-    label: 'Google Forms',
-  },
-};
-
-/* ══════════════════════════════════════════
-   CONNECTOR ENGINE REF
-══════════════════════════════════════════ */
+const TOKEN_URL = 'https://oauth2.googleapis.com/token',
+  REDIRECT_URI = 'http://localhost:42813/oauth/callback',
+  SCOPES = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/gmail.readonly',
+    'https://www.googleapis.com/auth/gmail.send',
+    'https://www.googleapis.com/auth/gmail.modify',
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/youtube',
+    'https://www.googleapis.com/auth/tasks',
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/contacts',
+    'https://www.googleapis.com/auth/documents',
+    'https://www.googleapis.com/auth/presentations',
+    'https://www.googleapis.com/auth/photoslibrary.readonly',
+    'https://www.googleapis.com/auth/forms.body.readonly',
+    'https://www.googleapis.com/auth/forms.responses.readonly',
+  ].join(' '),
+  SERVICE_PROBES = {
+    gmail: { url: 'https://gmail.googleapis.com/gmail/v1/users/me/profile', label: 'Gmail' },
+    drive: { url: 'https://www.googleapis.com/drive/v3/about?fields=user', label: 'Google Drive' },
+    calendar: {
+      url: 'https://www.googleapis.com/calendar/v3/calendars/primary',
+      label: 'Google Calendar',
+    },
+    youtube: {
+      url: 'https://www.googleapis.com/youtube/v3/channels?part=id&mine=true',
+      label: 'YouTube',
+    },
+    tasks: {
+      url: 'https://tasks.googleapis.com/tasks/v1/users/@me/lists?maxResults=1',
+      label: 'Google Tasks',
+    },
+    contacts: {
+      url: 'https://people.googleapis.com/v1/people/me?personFields=names',
+      label: 'Google Contacts',
+    },
+    sheets: {
+      url: "https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.spreadsheet'+and+trashed%3Dfalse&pageSize=1&fields=files(id)",
+      label: 'Google Sheets',
+    },
+    docs: {
+      url: "https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.document'+and+trashed%3Dfalse&pageSize=1&fields=files(id)",
+      label: 'Google Docs',
+    },
+    slides: {
+      url: "https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.presentation'+and+trashed%3Dfalse&pageSize=1&fields=files(id)",
+      label: 'Google Slides',
+    },
+    photos: {
+      url: 'https://photoslibrary.googleapis.com/v1/albums?pageSize=1',
+      label: 'Google Photos',
+    },
+    forms: { url: 'https://forms.googleapis.com/v1/forms', label: 'Google Forms' },
+  };
 let _connectorEngine = null;
 export function setConnectorEngine(engine) {
   _connectorEngine = engine;
 }
-
-/* ══════════════════════════════════════════
-   OAUTH FLOW
-══════════════════════════════════════════ */
 export function startOAuthFlow(clientId, clientSecret) {
   return new Promise((resolve, reject) => {
-    let settled = false;
+    let settled = !1;
     function settle(fn) {
-      if (settled) return;
-      settled = true;
-      fn();
+      settled || ((settled = !0), fn());
     }
-
     const server = http.createServer(async (req, res) => {
       try {
-        const url = new URL(req.url, `http://localhost:${CALLBACK_PORT}`);
-        if (url.pathname !== '/oauth/callback') return res.end();
-
-        const code = url.searchParams.get('code');
-        const error = url.searchParams.get('error');
-
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end(`<!DOCTYPE html><html><body style="font-family:sans-serif;padding:40px;text-align:center">
-          <h2>${error ? '❌ Connection failed' : '✅ Google Workspace connected!'}</h2>
-          <p>You can close this tab and return to Joanium.</p>
-        </body></html>`);
-
-        server.close();
-        if (error || !code)
+        const url = new URL(req.url, 'http://localhost:42813');
+        if ('/oauth/callback' !== url.pathname) return res.end();
+        const code = url.searchParams.get('code'),
+          error = url.searchParams.get('error');
+        if (
+          (res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }),
+          res.end(
+            `<!DOCTYPE html><html><body style="font-family:sans-serif;padding:40px;text-align:center">\n          <h2>${error ? '❌ Connection failed' : '✅ Google Workspace connected!'}</h2>\n          <p>You can close this tab and return to Joanium.</p>\n        </body></html>`,
+          ),
+          server.close(),
+          error || !code)
+        )
           return settle(() => reject(new Error(error || 'No auth code returned')));
-        const tokens = await exchangeCode(code, clientId, clientSecret);
+        const tokens = await (async function (code, clientId, clientSecret) {
+          const res = await fetch(TOKEN_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({
+                code: code,
+                client_id: clientId,
+                client_secret: clientSecret,
+                redirect_uri: REDIRECT_URI,
+                grant_type: 'authorization_code',
+              }),
+            }),
+            data = await res.json();
+          if (!data.access_token)
+            throw new Error(data.error_description ?? data.error ?? 'Token exchange failed');
+          const profileRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+              headers: { Authorization: `Bearer ${data.access_token}` },
+            }),
+            profile = await profileRes.json();
+          return {
+            accessToken: data.access_token,
+            refreshToken: data.refresh_token,
+            tokenExpiry: Date.now() + 1e3 * (data.expires_in ?? 3600),
+            email: profile.email,
+            clientId: clientId,
+            clientSecret: clientSecret,
+            services: {},
+          };
+        })(code, clientId, clientSecret);
         settle(() => resolve(tokens));
       } catch (err) {
-        server.close();
-        settle(() => reject(err));
+        (server.close(), settle(() => reject(err)));
       }
     });
-
-    server.listen(CALLBACK_PORT, 'localhost', () => {
-      const authUrl = new URL(GOOGLE_AUTH_URL);
-      authUrl.searchParams.set('client_id', clientId);
-      authUrl.searchParams.set('redirect_uri', REDIRECT_URI);
-      authUrl.searchParams.set('response_type', 'code');
-      authUrl.searchParams.set('scope', SCOPES);
-      authUrl.searchParams.set('access_type', 'offline');
-      authUrl.searchParams.set('prompt', 'consent');
-      shell.openExternal(authUrl.toString());
+    server.listen(42813, 'localhost', () => {
+      const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+      (authUrl.searchParams.set('client_id', clientId),
+        authUrl.searchParams.set('redirect_uri', REDIRECT_URI),
+        authUrl.searchParams.set('response_type', 'code'),
+        authUrl.searchParams.set('scope', SCOPES),
+        authUrl.searchParams.set('access_type', 'offline'),
+        authUrl.searchParams.set('prompt', 'consent'),
+        shell.openExternal(authUrl.toString()));
     });
   });
 }
-
-async function exchangeCode(code, clientId, clientSecret) {
-  const res = await fetch(TOKEN_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      code,
-      client_id: clientId,
-      client_secret: clientSecret,
-      redirect_uri: REDIRECT_URI,
-      grant_type: 'authorization_code',
-    }),
-  });
-  const data = await res.json();
-  if (!data.access_token)
-    throw new Error(data.error_description ?? data.error ?? 'Token exchange failed');
-
-  const profileRes = await fetch(USERINFO_URL, {
-    headers: { Authorization: `Bearer ${data.access_token}` },
-  });
-  const profile = await profileRes.json();
-
-  return {
-    accessToken: data.access_token,
-    refreshToken: data.refresh_token,
-    tokenExpiry: Date.now() + (data.expires_in ?? 3600) * 1000,
-    email: profile.email,
-    clientId,
-    clientSecret,
-    services: {}, // filled in after detectServices()
-  };
-}
-
-/* ══════════════════════════════════════════
-   SERVICE DETECTION
-══════════════════════════════════════════ */
 export async function detectServices(creds) {
-  const fresh = await getFreshCreds(creds);
-  const results = {};
-
-  await Promise.all(
-    Object.entries(SERVICE_PROBES).map(async ([key, { url }]) => {
-      try {
-        const res = await fetch(url, {
-          headers: { Authorization: `Bearer ${fresh.accessToken}` },
-        });
-        results[key] = res.ok;
-      } catch {
-        results[key] = false;
-      }
-    }),
+  const fresh = await getFreshCreds(creds),
+    results = {};
+  return (
+    await Promise.all(
+      Object.entries(SERVICE_PROBES).map(async ([key, { url: url }]) => {
+        try {
+          const res = await fetch(url, {
+            headers: { Authorization: `Bearer ${fresh.accessToken}` },
+          });
+          results[key] = res.ok;
+        } catch {
+          results[key] = !1;
+        }
+      }),
+    ),
+    results
   );
-
-  return results;
 }
-
-/* ══════════════════════════════════════════
-   TOKEN REFRESH
-══════════════════════════════════════════ */
 export async function getFreshCreds(creds) {
-  const bufferMs = 2 * 60 * 1000;
-  const isExpired = !creds.tokenExpiry || Date.now() > creds.tokenExpiry - bufferMs;
-  if (!isExpired) return creds;
-
-  if (!creds.refreshToken) {
+  if (creds.tokenExpiry && !(Date.now() > creds.tokenExpiry - 12e4)) return creds;
+  if (!creds.refreshToken)
     throw new Error(
       'Google token expired and no refresh token. Please reconnect Google Workspace in Settings → Connectors.',
     );
-  }
-
   const res = await fetch(TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -221,61 +162,53 @@ export async function getFreshCreds(creds) {
       grant_type: 'refresh_token',
     }),
   });
-
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(
       `Token refresh failed: ${err.error_description ?? err.error ?? res.status}. Please reconnect Google Workspace.`,
     );
   }
-
-  const data = await res.json();
-  const updated = {
-    ...creds,
-    accessToken: data.access_token,
-    tokenExpiry: Date.now() + (data.expires_in ?? 3600) * 1000,
-    ...(data.refresh_token ? { refreshToken: data.refresh_token } : {}),
-  };
-
-  _connectorEngine?.updateCredentials('google', {
-    accessToken: updated.accessToken,
-    tokenExpiry: updated.tokenExpiry,
-    ...(data.refresh_token ? { refreshToken: updated.refreshToken } : {}),
-  });
-
-  return updated;
+  const data = await res.json(),
+    updated = {
+      ...creds,
+      accessToken: data.access_token,
+      tokenExpiry: Date.now() + 1e3 * (data.expires_in ?? 3600),
+      ...(data.refresh_token ? { refreshToken: data.refresh_token } : {}),
+    };
+  return (
+    _connectorEngine?.updateCredentials('google', {
+      accessToken: updated.accessToken,
+      tokenExpiry: updated.tokenExpiry,
+      ...(data.refresh_token ? { refreshToken: updated.refreshToken } : {}),
+    }),
+    updated
+  );
 }
-
-/* ══════════════════════════════════════════
-   SHARED FETCH HELPER
-══════════════════════════════════════════ */
 export async function googleFetch(creds, url, options = {}) {
-  const fresh = await getFreshCreds(creds);
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${fresh.accessToken}`,
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
-  });
-
+  const fresh = await getFreshCreds(creds),
+    res = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${fresh.accessToken}`,
+        'Content-Type': 'application/json',
+        ...(options.headers ?? {}),
+      },
+    });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    const message = body.error?.message ?? JSON.stringify(body);
-    if (res.status === 403) {
+    const body = await res.json().catch(() => ({})),
+      message = body.error?.message ?? JSON.stringify(body);
+    if (403 === res.status)
       throw new Error(
         `Google API access denied (403). Make sure the required API is enabled in your Google Cloud project. Detail: ${message}`,
       );
-    }
     throw new Error(`Google API error (${res.status}): ${message}`);
   }
-
-  if (res.status === 204) return null;
-  const ct = res.headers.get('content-type') ?? '';
-  return ct.includes('json') ? res.json() : res.text();
+  return 204 === res.status
+    ? null
+    : (res.headers.get('content-type') ?? '').includes('json')
+      ? res.json()
+      : res.text();
 }
-
 export const SERVICE_LABELS = {
   gmail: { icon: '📧', name: 'Gmail' },
   drive: { icon: '🗂️', name: 'Google Drive' },

@@ -26,6 +26,7 @@
     "version:date": "node ./Scripts/SetVersionByDate.mjs",
     "build": "node ./Scripts/Build.mjs",
     "minify:dry": "node ./Scripts/Minify.mjs --dry",
+    "format": "prettier --write .",
     "lint": "eslint .",
     "packages:audit": "node ./Scripts/AuditWorkspacePackages.mjs",
     "prepare": "husky"

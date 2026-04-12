@@ -1,4 +1,4 @@
-﻿import defineFeature from '../../../Core/DefineFeature.js';
+import defineFeature from '../../../Core/DefineFeature.js';
 import {
   createFile,
   getFileContent,
@@ -12,7 +12,6 @@ import {
 import { executeDriveChatTool } from './Chat/ChatExecutor.js';
 import { DRIVE_TOOLS } from './Chat/Tools.js';
 import { withGoogle } from '../../Common.js';
-
 export default defineFeature({
   id: 'drive',
   name: 'Google Drive',
@@ -35,74 +34,65 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async listFiles(ctx, { opts = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+      listFiles: async (ctx, { opts: opts = {} } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           files: await listFiles(credentials, opts),
-        }));
-      },
-
-      async searchFiles(ctx, { query, maxResults = 20 }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!query?.trim()) return { ok: false, error: 'Search query is required' };
-          return { ok: true, files: await searchFiles(credentials, query, maxResults) };
-        });
-      },
-
-      async getFileInfo(ctx, { fileId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!fileId) return { ok: false, error: 'fileId is required' };
-          return { ok: true, file: await getFileMetadata(credentials, fileId) };
-        });
-      },
-
-      async readFile(ctx, { fileId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!fileId) return { ok: false, error: 'fileId is required' };
-          return { ok: true, ...(await getFileContent(credentials, fileId)) };
-        });
-      },
-
-      async createFile(ctx, { name, content = '', mimeType = 'text/plain', folderId = null }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!name) return { ok: false, error: 'File name is required' };
-          return {
-            ok: true,
-            file: await createFile(credentials, name, content, mimeType, folderId),
-          };
-        });
-      },
-
-      async updateFile(ctx, { fileId, content = '', mimeType = 'text/plain' }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!fileId) return { ok: false, error: 'fileId is required' };
-          return {
-            ok: true,
-            file: await updateFileContent(credentials, fileId, content, mimeType),
-          };
-        });
-      },
-
-      async listFolders(ctx, { maxResults = 30 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      searchFiles: async (ctx, { query: query, maxResults: maxResults = 20 }) =>
+        withGoogle(ctx, async (credentials) =>
+          query?.trim()
+            ? { ok: !0, files: await searchFiles(credentials, query, maxResults) }
+            : { ok: !1, error: 'Search query is required' },
+        ),
+      getFileInfo: async (ctx, { fileId: fileId }) =>
+        withGoogle(ctx, async (credentials) =>
+          fileId
+            ? { ok: !0, file: await getFileMetadata(credentials, fileId) }
+            : { ok: !1, error: 'fileId is required' },
+        ),
+      readFile: async (ctx, { fileId: fileId }) =>
+        withGoogle(ctx, async (credentials) =>
+          fileId
+            ? { ok: !0, ...(await getFileContent(credentials, fileId)) }
+            : { ok: !1, error: 'fileId is required' },
+        ),
+      createFile: async (
+        ctx,
+        {
+          name: name,
+          content: content = '',
+          mimeType: mimeType = 'text/plain',
+          folderId: folderId = null,
+        },
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          name
+            ? { ok: !0, file: await createFile(credentials, name, content, mimeType, folderId) }
+            : { ok: !1, error: 'File name is required' },
+        ),
+      updateFile: async (
+        ctx,
+        { fileId: fileId, content: content = '', mimeType: mimeType = 'text/plain' },
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          fileId
+            ? { ok: !0, file: await updateFileContent(credentials, fileId, content, mimeType) }
+            : { ok: !1, error: 'fileId is required' },
+        ),
+      listFolders: async (ctx, { maxResults: maxResults = 30 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           folders: await listFolders(credentials, maxResults),
-        }));
-      },
-
-      async getQuota(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getQuota: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           ...(await getStorageQuota(credentials)),
-        }));
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeDriveChatTool(ctx, toolName, params);
-      },
+        })),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeDriveChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: DRIVE_TOOLS,
-  },
+  renderer: { chatTools: DRIVE_TOOLS },
 });

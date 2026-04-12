@@ -7,7 +7,7 @@ export const ASTRONOMY_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Specific date in YYYY-MM-DD format (default: today). Available from 1995-06-16.',
       },

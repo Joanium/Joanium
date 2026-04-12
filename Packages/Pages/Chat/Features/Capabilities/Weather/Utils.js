@@ -4,46 +4,52 @@ export async function resolveLocation(location) {
   );
   if (!geoData.results?.length)
     throw new Error(`Couldn't find a location called "${location}". Try a specific city name.`);
-  return geoData.results[0]; // { latitude, longitude, name, country, timezone, … }
+  return geoData.results[0];
 }
-
-export const deg = (units) => (units === 'fahrenheit' ? '°F' : '°C');
-
+export const deg = (units) => ('fahrenheit' === units ? '°F' : '°C');
 export function uvLabel(uv) {
-  if (uv <= 2) return 'Low';
-  if (uv <= 5) return 'Moderate';
-  if (uv <= 7) return 'High';
-  if (uv <= 10) return 'Very High';
-  return 'Extreme';
+  return uv <= 2
+    ? 'Low'
+    : uv <= 5
+      ? 'Moderate'
+      : uv <= 7
+        ? 'High'
+        : uv <= 10
+          ? 'Very High'
+          : 'Extreme';
 }
-
 export function windDir(degrees) {
-  const dirs = [
-    'N',
-    'NNE',
-    'NE',
-    'ENE',
-    'E',
-    'ESE',
-    'SE',
-    'SSE',
-    'S',
-    'SSW',
-    'SW',
-    'WSW',
-    'W',
-    'WNW',
-    'NW',
-    'NNW',
-  ];
-  return dirs[Math.round(degrees / 22.5) % 16] ?? '?';
+  return (
+    [
+      'N',
+      'NNE',
+      'NE',
+      'ENE',
+      'E',
+      'ESE',
+      'SE',
+      'SSE',
+      'S',
+      'SSW',
+      'SW',
+      'WSW',
+      'W',
+      'WNW',
+      'NW',
+      'NNW',
+    ][Math.round(degrees / 22.5) % 16] ?? '?'
+  );
 }
-
 export function aqiLabel(aqi) {
-  if (aqi <= 50) return 'Good';
-  if (aqi <= 100) return 'Moderate';
-  if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
-  if (aqi <= 200) return 'Unhealthy';
-  if (aqi <= 300) return 'Very Unhealthy';
-  return 'Hazardous';
+  return aqi <= 50
+    ? 'Good'
+    : aqi <= 100
+      ? 'Moderate'
+      : aqi <= 150
+        ? 'Unhealthy for Sensitive Groups'
+        : aqi <= 200
+          ? 'Unhealthy'
+          : aqi <= 300
+            ? 'Very Unhealthy'
+            : 'Hazardous';
 }

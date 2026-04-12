@@ -1,14 +1,11 @@
-/* ─────────────────────────────────────────────
-   ChatTimeline.css
-   Right-side message navigator + scroll-to-bottom
-───────────────────────────────────────────── */
-
-/* ══════════════════════════════════════════
-   MESSAGE TIMELINE — right rail
-   Ticks = one per user message, proportional
-   to their position in the scroll container.
-   Active only when user has sent 2+ messages.
-══════════════════════════════════════════ */
+.chat-timeline-tick::after,
+.chat-timeline-tick::before {
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.2s var(--ease-spring);
+}
 .chat-timeline {
   position: absolute;
   right: 10px;
@@ -18,15 +15,12 @@
   z-index: 15;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s;
 }
-
 .chat-timeline.visible {
   opacity: 1;
   pointer-events: all;
 }
-
-/* Vertical track line */
 .chat-timeline-track {
   position: absolute;
   top: 0;
@@ -36,15 +30,13 @@
   transform: translateX(-50%);
   background: linear-gradient(
     to bottom,
-    transparent 0%,
+    transparent 0,
     var(--border-subtle) 8%,
     var(--border-subtle) 92%,
     transparent 100%
   );
   border-radius: 2px;
 }
-
-/* Individual tick per user message */
 .chat-timeline-tick {
   position: absolute;
   left: 50%;
@@ -62,7 +54,6 @@
     box-shadow 0.18s ease;
   animation: tickIn 0.25s var(--ease-spring) both;
 }
-
 @keyframes tickIn {
   from {
     opacity: 0;
@@ -73,90 +64,67 @@
     transform: translate(-50%, -50%) scaleX(1);
   }
 }
-
 .chat-timeline-tick:hover {
   width: 18px;
   height: 3px;
   background: var(--accent);
   box-shadow: 0 0 6px var(--accent-glow);
 }
-
-/* Tooltip bubble — appears to the left on hover */
+.chat-timeline-tick::after,
+.scroll-to-bottom-btn {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
 .chat-timeline-tick::after {
   content: attr(data-preview);
-  position: absolute;
   right: calc(100% + 14px);
-  top: 50%;
-  transform: translateY(-50%) translateX(6px);
-  background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 7px 12px;
   font-size: 11.5px;
   font-family: var(--font-ui);
-  color: var(--text-secondary);
   white-space: nowrap;
   max-width: 230px;
   overflow: hidden;
   text-overflow: ellipsis;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.18s ease,
-    transform 0.2s var(--ease-spring);
   z-index: 200;
   backdrop-filter: blur(8px);
 }
-
 .chat-timeline-tick:hover::after {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
-
-/* Small arrow pointing right from tooltip */
 .chat-timeline-tick::before {
   content: '';
   position: absolute;
   right: calc(100% + 9px);
-  top: 50%;
-  transform: translateY(-50%) translateX(6px);
   border: 4px solid transparent;
   border-left-color: var(--border);
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity 0.18s ease,
-    transform 0.2s var(--ease-spring);
   z-index: 201;
 }
-
 .chat-timeline-tick:hover::before {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
-
-/* ══════════════════════════════════════════
-   SCROLL TO BOTTOM BUTTON
-══════════════════════════════════════════ */
 .scroll-to-bottom-btn {
-  position: absolute;
   bottom: 200px;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--bg-secondary);
   border: 1px solid var(--border);
-  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
-  opacity: 0;
-  pointer-events: none;
   transition:
     opacity 0.25s ease,
     transform 0.3s var(--ease-spring),
@@ -166,13 +134,11 @@
     box-shadow 0.2s ease;
   z-index: 20;
 }
-
 .scroll-to-bottom-btn.visible {
   opacity: 1;
   pointer-events: all;
   transform: translateX(-50%) translateY(0);
 }
-
 .scroll-to-bottom-btn:hover {
   background: var(--accent);
   color: #fff;
@@ -180,18 +146,14 @@
   box-shadow: 0 6px 22px var(--accent-glow);
   transform: translateX(-50%) translateY(-2px);
 }
-
 .scroll-to-bottom-btn:active {
   transform: translateX(-50%) scale(0.94);
 }
-
 .scroll-to-bottom-btn svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
-
-/* Subtle unread-count badge */
 .scroll-to-bottom-badge {
   position: absolute;
   top: -5px;
@@ -211,7 +173,6 @@
   border: 1.5px solid var(--bg-primary);
   animation: badgePop 0.3s var(--ease-spring) both;
 }
-
 @keyframes badgePop {
   from {
     transform: scale(0);

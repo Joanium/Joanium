@@ -3,7 +3,6 @@ import * as FormsAPI from './API/FormsAPI.js';
 import { FORMS_TOOLS } from './Chat/Tools.js';
 import { executeFormsChatTool } from './Chat/ChatExecutor.js';
 import { withGoogle } from '../../Common.js';
-
 export default defineFeature({
   id: 'forms',
   name: 'Google Forms',
@@ -29,41 +28,36 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async getForm(ctx, { formId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!formId) return { ok: false, error: 'formId is required' };
+      getForm: async (ctx, { formId: formId }) =>
+        withGoogle(ctx, async (credentials) => {
+          if (!formId) return { ok: !1, error: 'formId is required' };
           const form = await FormsAPI.getForm(credentials, formId);
-          return { ok: true, form, questions: FormsAPI.extractQuestions(form) };
-        });
-      },
-
-      async listResponses(ctx, { formId, maxResults = 50, filter } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!formId) return { ok: false, error: 'formId is required' };
-          return {
-            ok: true,
-            ...(await FormsAPI.listResponses(credentials, formId, { maxResults, filter })),
-          };
-        });
-      },
-
-      async getResponse(ctx, { formId, responseId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!formId || !responseId)
-            return { ok: false, error: 'formId and responseId are required' };
-          return {
-            ok: true,
-            response: await FormsAPI.getResponse(credentials, formId, responseId),
-          };
-        });
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeFormsChatTool(ctx, toolName, params);
-      },
+          return { ok: !0, form: form, questions: FormsAPI.extractQuestions(form) };
+        }),
+      listResponses: async (
+        ctx,
+        { formId: formId, maxResults: maxResults = 50, filter: filter } = {},
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          formId
+            ? {
+                ok: !0,
+                ...(await FormsAPI.listResponses(credentials, formId, {
+                  maxResults: maxResults,
+                  filter: filter,
+                })),
+              }
+            : { ok: !1, error: 'formId is required' },
+        ),
+      getResponse: async (ctx, { formId: formId, responseId: responseId }) =>
+        withGoogle(ctx, async (credentials) =>
+          formId && responseId
+            ? { ok: !0, response: await FormsAPI.getResponse(credentials, formId, responseId) }
+            : { ok: !1, error: 'formId and responseId are required' },
+        ),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeFormsChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: FORMS_TOOLS,
-  },
+  renderer: { chatTools: FORMS_TOOLS },
 });

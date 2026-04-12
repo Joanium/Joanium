@@ -1,12 +1,8 @@
-/* ─────────────────────────────────────────────
-   library.css
-   Library modal: backdrop, panel, search,
-   conversation list items, empty state
-───────────────────────────────────────────── */
-
-/* ══════════════════════════════════════════
-   BACKDROP + PANEL
-══════════════════════════════════════════ */
+.lp-delete-btn,
+.lp-item {
+  display: flex;
+  cursor: pointer;
+}
 #library-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -23,12 +19,10 @@
     opacity 0.25s var(--ease-out-ui),
     backdrop-filter 0.25s var(--ease-out-ui);
 }
-
 #library-modal-backdrop.open {
   opacity: 1;
   pointer-events: auto;
 }
-
 #library-panel {
   width: min(820px, calc(100vw - 64px));
   max-height: min(680px, calc(100vh - 64px));
@@ -40,40 +34,28 @@
   transform: translateY(16px) scale(0.97);
   transition: transform 0.28s var(--ease-spring);
 }
-
 #library-modal-backdrop.open #library-panel {
   transform: translateY(0) scale(1);
 }
-
-/* ══════════════════════════════════════════
-   INTERNAL LAYOUT
-══════════════════════════════════════════ */
 .library-modal-body {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
-
-.library-search-shell,
-.library-list-shell {
+.library-list-shell,
+.library-search-shell {
   width: min(100%, 680px);
 }
-
 .library-list-shell {
   min-height: 0;
 }
-
-/* ══════════════════════════════════════════
-   SEARCH BAR
-══════════════════════════════════════════ */
 .lp-search-wrap {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
-
 .lp-search-icon {
   position: absolute;
   left: 16px;
@@ -82,7 +64,11 @@
   color: var(--text-muted);
   pointer-events: none;
 }
-
+#library-search,
+.lp-item-title {
+  font-size: 13px;
+  color: var(--text-primary);
+}
 #library-search {
   width: 100%;
   background: var(--bg-input);
@@ -90,22 +76,15 @@
   border-radius: 16px;
   padding: 12px 14px 12px 42px;
   font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--text-primary);
-  outline: none;
+  outline: 0;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 #library-search:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
-
-/* ══════════════════════════════════════════
-   CONVERSATION LIST
-══════════════════════════════════════════ */
 .lp-list {
   min-height: 320px;
   max-height: 420px;
@@ -116,13 +95,9 @@
   flex-direction: column;
   gap: 10px;
 }
-
-/* ── Item ── */
 .lp-item {
   padding: 14px 16px;
   border-radius: 18px;
-  cursor: pointer;
-  display: flex;
   flex-direction: row !important;
   align-items: center !important;
   gap: 0 !important;
@@ -135,14 +110,12 @@
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .lp-item:hover {
   background: var(--bg-hover);
   border-color: var(--border-subtle);
   transform: translateY(-1px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
-
 .lp-item.active {
   background: var(--accent-dim);
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
@@ -150,8 +123,6 @@
 .lp-item.active .lp-item-title {
   color: var(--accent);
 }
-
-/* ── Item info ── */
 .lp-item-info {
   flex: 1;
   min-width: 0;
@@ -159,35 +130,30 @@
   flex-direction: column;
   gap: 4px;
 }
-
 .lp-item-title {
-  font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color var(--transition-fast);
 }
-
+.lp-delete-btn,
+.lp-empty,
 .lp-item-meta {
-  font-size: 11px;
   color: var(--text-muted);
 }
-
-/* ── Delete button ── */
+.lp-item-meta {
+  font-size: 11px;
+}
 .lp-delete-btn {
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   border-radius: 8px;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
+  background: 0 0;
   opacity: 0;
   transform: scale(0.85);
   margin-left: 8px;
@@ -197,12 +163,10 @@
     background var(--transition-fast),
     color var(--transition-fast);
 }
-
 .lp-item:hover .lp-delete-btn {
   opacity: 1;
   transform: scale(1);
 }
-
 .lp-delete-btn:hover {
   background: rgba(220, 60, 60, 0.12);
   color: #f87171;
@@ -215,23 +179,14 @@
   height: 14px;
   pointer-events: none;
 }
-
-/* ══════════════════════════════════════════
-   EMPTY STATE
-══════════════════════════════════════════ */
 .lp-empty {
   padding: 32px 20px;
   text-align: center;
-  color: var(--text-muted);
   font-size: 13px;
   background: var(--bg-tertiary);
   border: 1px dashed var(--border);
   border-radius: 18px;
 }
-
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
 @media (max-width: 860px) {
   #library-modal-backdrop {
     padding: 18px;

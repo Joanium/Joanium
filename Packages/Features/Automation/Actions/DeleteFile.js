@@ -1,5 +1,4 @@
 import fs from 'fs';
-
 export const actionType = 'delete_file';
 export const actionMeta = {
   label: 'Delete file',

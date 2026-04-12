@@ -7,7 +7,7 @@ export const JOKE_TOOLS = [
     parameters: {
       category: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Joke category: "programming", "pun", "misc", "dark", "spooky", "christmas". Default: any',
       },

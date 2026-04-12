@@ -1,27 +1,29 @@
 let bootPromise = null;
-
-function emptyBoot() {
-  return {
-    features: [],
-    pages: [],
-    connectors: { services: [], free: [] },
-    chat: { tools: [] },
-    automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
-  };
-}
-
 export async function getFeatureBoot() {
-  if (!window.featureAPI?.getBoot) return emptyBoot();
-  if (!bootPromise) {
-    bootPromise = window.featureAPI.getBoot().catch((error) => {
-      console.warn('[FeatureBoot] Failed to load feature boot payload:', error);
-      bootPromise = null;
-      return emptyBoot();
-    });
-  }
-  return bootPromise;
+  return window.featureAPI?.getBoot
+    ? (bootPromise ||
+        (bootPromise = window.featureAPI.getBoot().catch(
+          (error) => (
+            console.warn('[FeatureBoot] Failed to load feature boot payload:', error),
+            (bootPromise = null),
+            {
+              features: [],
+              pages: [],
+              connectors: { services: [], free: [] },
+              chat: { tools: [] },
+              automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
+            }
+          ),
+        )),
+      bootPromise)
+    : {
+        features: [],
+        pages: [],
+        connectors: { services: [], free: [] },
+        chat: { tools: [] },
+        automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
+      };
 }
-
 export function resetFeatureBoot() {
   bootPromise = null;
 }

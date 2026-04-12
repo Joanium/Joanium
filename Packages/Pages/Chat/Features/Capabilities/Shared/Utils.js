@@ -24,19 +24,20 @@ export const WMO_CODES = {
   96: '⛈️ Thunderstorm + hail',
   99: '⛈️ Thunderstorm + heavy hail',
 };
-
 export function fmt(n, decimals = 2) {
-  return n != null ? Number(n).toLocaleString('en-US', { maximumFractionDigits: decimals }) : 'N/A';
+  return null != n ? Number(n).toLocaleString('en-US', { maximumFractionDigits: decimals }) : 'N/A';
 }
-
 export function fmtBig(n) {
-  if (n == null) return 'N/A';
-  if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
-  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
-  if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
-  return `$${fmt(n)}`;
+  return null == n
+    ? 'N/A'
+    : n >= 1e12
+      ? `$${(n / 1e12).toFixed(2)}T`
+      : n >= 1e9
+        ? `$${(n / 1e9).toFixed(2)}B`
+        : n >= 1e6
+          ? `$${(n / 1e6).toFixed(2)}M`
+          : `$${fmt(n)}`;
 }
-
 export async function safeJson(url, opts = {}) {
   const res = await fetch(url, opts);
   if (!res.ok) throw new Error(`HTTP ${res.status} from ${new URL(url).hostname}`);

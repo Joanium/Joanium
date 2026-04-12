@@ -1,65 +1,14 @@
 import { fetchWithTools } from '../../../../../Features/AI/index.js';
 import { modelDropdown } from '../../../../Shared/Core/DOM.js';
-
-/**
- * Block all interaction inside the composer (model switcher, buttons, textarea, attachment actions).
- * Prefers `inert` when available; otherwise toggles disabled on buttons and textarea with restore.
- *
- * @param {HTMLElement | null | undefined} inputBox
- * @param {HTMLTextAreaElement | null | undefined} textarea
- * @returns {() => void} Call to unlock.
- */
-function lockComposerDuringEnhance(inputBox, textarea) {
-  modelDropdown?.classList.remove('open');
-
-  if (!inputBox) {
-    if (textarea) textarea.disabled = true;
-    return () => {
-      if (textarea) textarea.disabled = false;
-    };
-  }
-
-  if (typeof HTMLElement !== 'undefined' && 'inert' in HTMLElement.prototype) {
-    inputBox.inert = true;
-    if (textarea) textarea.disabled = true;
-    return () => {
-      inputBox.inert = false;
-      if (textarea) textarea.disabled = false;
-    };
-  }
-
-  const controls = inputBox.querySelectorAll('button, textarea');
-  /** @type {Map<Element, boolean>} */
-  const prevDisabled = new Map();
-  controls.forEach((el) => {
-    prevDisabled.set(el, el.disabled);
-    el.disabled = true;
-  });
-  return () => {
-    prevDisabled.forEach((was, el) => {
-      el.disabled = was;
-    });
-  };
-}
-
-/**
- * Initialise the ✨ Enhance prompt button feature.
- *
- * @param {{ textarea: HTMLTextAreaElement, enhanceBtn: HTMLButtonElement, state: object }} options
- * @returns {{ cleanup: Function }}
- */
-export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
+export function createEnhanceFeature({ textarea: textarea, enhanceBtn: enhanceBtn, state: state }) {
   const inputBox = textarea?.closest('.input-box');
-  /** @type {(() => void) | null} */
   let enhanceUnlock = null;
-
   function updateEnhanceBtn() {
     if (!enhanceBtn || !textarea) return;
     const has = textarea.value.trim().length > 0;
-    enhanceBtn.classList.toggle('enhance-active', has && !state.isTyping);
-    enhanceBtn.disabled = !has || state.isTyping;
+    (enhanceBtn.classList.toggle('enhance-active', has && !state.isTyping),
+      (enhanceBtn.disabled = !has || state.isTyping));
   }
-
   async function handleEnhance() {
     if (
       !textarea?.value.trim() ||
@@ -68,15 +17,43 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
       !state.selectedModel
     )
       return;
-    enhanceBtn.classList.remove('enhance-active');
-    enhanceBtn.classList.add('enhance-loading');
-    enhanceBtn.disabled = true;
-    inputBox?.classList.add('input-box--enhancing');
-    inputBox?.setAttribute('aria-busy', 'true');
+    (enhanceBtn.classList.remove('enhance-active'),
+      enhanceBtn.classList.add('enhance-loading'),
+      (enhanceBtn.disabled = !0),
+      inputBox?.classList.add('input-box--enhancing'),
+      inputBox?.setAttribute('aria-busy', 'true'));
     const hadFocus = document.activeElement === textarea;
-    enhanceUnlock = lockComposerDuringEnhance(inputBox, textarea);
+    enhanceUnlock = (function (inputBox, textarea) {
+      if ((modelDropdown?.classList.remove('open'), !inputBox))
+        return (
+          textarea && (textarea.disabled = !0),
+          () => {
+            textarea && (textarea.disabled = !1);
+          }
+        );
+      if ('undefined' != typeof HTMLElement && 'inert' in HTMLElement.prototype)
+        return (
+          (inputBox.inert = !0),
+          textarea && (textarea.disabled = !0),
+          () => {
+            ((inputBox.inert = !1), textarea && (textarea.disabled = !1));
+          }
+        );
+      const controls = inputBox.querySelectorAll('button, textarea'),
+        prevDisabled = new Map();
+      return (
+        controls.forEach((el) => {
+          (prevDisabled.set(el, el.disabled), (el.disabled = !0));
+        }),
+        () => {
+          prevDisabled.forEach((was, el) => {
+            el.disabled = was;
+          });
+        }
+      );
+    })(inputBox, textarea);
     const labelEl = enhanceBtn.querySelector('.enhance-btn-label');
-    if (labelEl) labelEl.textContent = 'Enhancing...';
+    labelEl && (labelEl.textContent = 'Enhancing...');
     try {
       const result = await fetchWithTools(
         state.selectedProvider,
@@ -92,39 +69,38 @@ export function createEnhanceFeature({ textarea, enhanceBtn, state }) {
         ].join(' '),
         [],
       );
-      if (result.type === 'text' && result.text && result.text !== '(empty response)') {
-        textarea.value = result.text;
-        textarea.dispatchEvent(new Event('input'));
-      }
+      'text' === result.type &&
+        result.text &&
+        '(empty response)' !== result.text &&
+        ((textarea.value = result.text), textarea.dispatchEvent(new Event('input')));
     } catch (err) {
       console.warn('[Chat] Enhance failed:', err.message);
     } finally {
-      enhanceBtn.classList.remove('enhance-loading');
-      inputBox?.classList.remove('input-box--enhancing');
-      inputBox?.removeAttribute('aria-busy');
-      enhanceUnlock?.();
-      enhanceUnlock = null;
-      if (hadFocus) textarea.focus();
-      if (labelEl) labelEl.textContent = 'Enhance';
-      updateEnhanceBtn();
+      (enhanceBtn.classList.remove('enhance-loading'),
+        inputBox?.classList.remove('input-box--enhancing'),
+        inputBox?.removeAttribute('aria-busy'),
+        enhanceUnlock?.(),
+        (enhanceUnlock = null),
+        hadFocus && textarea.focus(),
+        labelEl && (labelEl.textContent = 'Enhance'),
+        updateEnhanceBtn());
     }
   }
-
-  enhanceBtn?.addEventListener('click', handleEnhance);
-  textarea?.addEventListener('input', updateEnhanceBtn);
-  updateEnhanceBtn();
-
-  return {
-    /** Call when the page unmounts to remove listeners. */
-    cleanup() {
-      enhanceBtn?.removeEventListener('click', handleEnhance);
-      textarea?.removeEventListener('input', updateEnhanceBtn);
-      inputBox?.classList.remove('input-box--enhancing');
-      inputBox?.removeAttribute('aria-busy');
-      enhanceUnlock?.();
-      enhanceUnlock = null;
-      if (inputBox && 'inert' in HTMLElement.prototype) inputBox.inert = false;
-      if (textarea) textarea.disabled = false;
-    },
-  };
+  return (
+    enhanceBtn?.addEventListener('click', handleEnhance),
+    textarea?.addEventListener('input', updateEnhanceBtn),
+    updateEnhanceBtn(),
+    {
+      cleanup() {
+        (enhanceBtn?.removeEventListener('click', handleEnhance),
+          textarea?.removeEventListener('input', updateEnhanceBtn),
+          inputBox?.classList.remove('input-box--enhancing'),
+          inputBox?.removeAttribute('aria-busy'),
+          enhanceUnlock?.(),
+          (enhanceUnlock = null),
+          inputBox && 'inert' in HTMLElement.prototype && (inputBox.inert = !1),
+          textarea && (textarea.disabled = !1));
+      },
+    }
+  );
 }

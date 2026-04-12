@@ -1,56 +1,47 @@
-let _mcpToolNames = new Set();
-let _lastFetch = 0;
-let _refreshPromise = null;
-const CACHE_TTL = 30_000; // 30 s
-
-async function refreshMCPTools() {
-  if (Date.now() - _lastFetch < CACHE_TTL) return;
-  if (_refreshPromise) return _refreshPromise;
-  _refreshPromise = (async () => {
-    try {
-      const res = await window.electronAPI?.invoke?.('mcp-get-tools');
-      if (res?.ok) {
-        _mcpToolNames = new Set((res.tools ?? []).map((t) => t.name));
-        _lastFetch = Date.now();
-      }
-    } catch {
-      /* non-fatal */
-    }
-  })().finally(() => {
-    _refreshPromise = null;
-  });
-  return _refreshPromise;
-}
-
+let _mcpToolNames = new Set(),
+  _lastFetch = 0,
+  _refreshPromise = null;
 export async function handles(toolName) {
-  await refreshMCPTools();
-  return _mcpToolNames.has(toolName);
+  return (
+    await (async function () {
+      if (!(Date.now() - _lastFetch < 3e4))
+        return (
+          _refreshPromise ||
+          ((_refreshPromise = (async () => {
+            try {
+              const res = await window.electronAPI?.invoke?.('mcp-get-tools');
+              res?.ok &&
+                ((_mcpToolNames = new Set((res.tools ?? []).map((t) => t.name))),
+                (_lastFetch = Date.now()));
+            } catch {}
+          })().finally(() => {
+            _refreshPromise = null;
+          })),
+          _refreshPromise)
+        );
+    })(),
+    _mcpToolNames.has(toolName)
+  );
 }
-
-// Synchronous check - used by Index.js normalization lookup
 export function handlesSync(toolName) {
   return _mcpToolNames.has(toolName);
 }
-
-function resolveOnStage(hooksOrOnStage) {
-  if (typeof hooksOrOnStage === 'function') return hooksOrOnStage;
-  if (
-    hooksOrOnStage &&
-    typeof hooksOrOnStage === 'object' &&
-    typeof hooksOrOnStage.onStage === 'function'
-  ) {
-    return hooksOrOnStage.onStage;
-  }
-  return () => {};
-}
-
 export async function execute(toolName, params, hooksOrOnStage = () => {}) {
-  const onStage = resolveOnStage(hooksOrOnStage);
+  const onStage = (function (hooksOrOnStage) {
+    return 'function' == typeof hooksOrOnStage
+      ? hooksOrOnStage
+      : hooksOrOnStage &&
+          'object' == typeof hooksOrOnStage &&
+          'function' == typeof hooksOrOnStage.onStage
+        ? hooksOrOnStage.onStage
+        : () => {};
+  })(hooksOrOnStage);
   onStage(`Calling MCP tool: ${toolName}`);
-
-  const result = await window.electronAPI?.invoke?.('mcp-call-tool', { toolName, args: params });
+  const result = await window.electronAPI?.invoke?.('mcp-call-tool', {
+    toolName: toolName,
+    args: params,
+  });
   if (!result) return 'MCP is not available in this environment.';
   if (!result.ok) throw new Error(result.error ?? 'MCP tool call failed');
-
   return result.result ?? '(no output)';
 }

@@ -2,30 +2,25 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="./UI/Styles/EventsPage.css" />
     <script src="../../Features/Themes/index.js"></script>
   </head>
-
   <body>
     <div id="app">
-      <!-- Body -->
       <div id="body-wrap">
         <aside id="sidebar"></aside>
         <div id="theme-panel"></div>
         <div id="avatar-panel"></div>
-
         <main id="main" class="events-main">
           <div class="events-scroll">
-            <!-- Page header -->
             <div class="events-page-header">
               <div class="events-page-header-copy">
                 <h2>
                   Events
-                  <span class="events-live-badge" id="events-live-badge">
-                    <span class="events-live-dot"></span>
-                    Live
-                  </span>
+                  <span class="events-live-badge" id="events-live-badge"
+                    ><span class="events-live-dot"></span> Live</span
+                  >
                 </h2>
                 <p>
                   Real-time log of every automation and agent run — successes, failures, and what
@@ -51,8 +46,6 @@
                 </button>
               </div>
             </div>
-
-            <!-- Stats bar -->
             <div class="events-stats-bar">
               <div class="events-stat">
                 <span class="events-stat-value" id="stat-total">—</span>
@@ -79,15 +72,11 @@
                 <span class="events-stat-label">Active agents</span>
               </div>
             </div>
-
-            <!-- Loading shimmer (visible by default, hidden after first poll) -->
             <div id="events-loading" class="events-loading">
               <div class="events-shimmer"></div>
               <div class="events-shimmer" style="width: 85%"></div>
               <div class="events-shimmer" style="width: 70%"></div>
             </div>
-
-            <!-- Empty state — JS controls display -->
             <div id="events-empty" class="events-empty" style="display: none">
               <div class="events-empty-icon">
                 <svg
@@ -111,17 +100,11 @@
                 agent and run it to see live logs.
               </p>
             </div>
-
-            <!-- Events feed — JS controls display -->
             <div id="events-feed" class="events-feed" style="display: none"></div>
           </div>
         </main>
       </div>
     </div>
-
-    <!-- ══════════════════════════════════════════
-       EVENT DETAIL MODAL — centered, same as all other modals in the app
-  ══════════════════════════════════════════ -->
     <div id="event-detail-backdrop">
       <div id="event-detail-modal" role="dialog" aria-modal="true">
         <div class="event-detail-header">
@@ -146,12 +129,9 @@
             </svg>
           </button>
         </div>
-
         <div class="event-detail-body" id="detail-body"></div>
       </div>
     </div>
-
-    <!-- ─── Confirm-clear modal ──────────────── -->
     <div id="events-confirm-backdrop" class="modal-backdrop">
       <div class="modal-panel events-confirm-modal">
         <div class="events-confirm-icon">

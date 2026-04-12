@@ -7,12 +7,12 @@ export const HACKERNEWS_TOOLS = [
     parameters: {
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of stories to return (default: 5, max: 15)',
       },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Story type: "top" (default), "new", "best", or "ask"',
       },
     },

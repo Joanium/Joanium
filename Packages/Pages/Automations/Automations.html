@@ -2,25 +2,16 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="./UI/Styles/AutomationsPage.css" />
     <script src="../../Features/Themes/index.js"></script>
   </head>
-
   <body>
     <div id="app">
-      <!-- ── Body wrap ── -->
       <div id="body-wrap">
-        <!-- Sidebar -->
         <aside id="sidebar"></aside>
-
-        <!-- Theme Panel -->
         <div id="theme-panel"></div>
-
-        <!-- Avatar Panel -->
         <div id="avatar-panel"></div>
-
-        <!-- ── Main content ── -->
         <main id="main" class="automations-main">
           <div class="automations-scroll">
             <div class="auto-page-header">
@@ -35,7 +26,6 @@
                 Add Automation
               </button>
             </div>
-
             <div id="auto-empty" class="auto-empty" hidden>
               <div class="auto-empty-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -60,16 +50,11 @@
                 Create your first automation
               </button>
             </div>
-
             <div id="auto-grid" class="auto-grid" hidden></div>
           </div>
         </main>
       </div>
     </div>
-
-    <!-- ════════════════════════════════════════
-     ADD / EDIT AUTOMATION MODAL
-  ═════════════════════════════════════════ -->
     <div id="automation-modal-backdrop">
       <div
         id="automation-modal"
@@ -98,28 +83,23 @@
             </svg>
           </button>
         </div>
-
         <div class="auto-modal-body">
-          <!-- Name -->
           <div class="auto-field">
-            <label class="auto-field-label" for="auto-name">
-              Name <span class="field-required">*</span>
-            </label>
+            <label class="auto-field-label" for="auto-name"
+              >Name <span class="field-required">*</span></label
+            >
             <input
               class="auto-input"
               id="auto-name"
-              type="text"
               placeholder="My automation"
               maxlength="80"
               autocomplete="off"
             />
           </div>
-
-          <!-- Description -->
           <div class="auto-field">
-            <label class="auto-field-label" for="auto-desc">
-              Description <span class="field-optional">optional</span>
-            </label>
+            <label class="auto-field-label" for="auto-desc"
+              >Description <span class="field-optional">optional</span></label
+            >
             <textarea
               class="auto-textarea"
               id="auto-desc"
@@ -127,12 +107,9 @@
               maxlength="300"
             ></textarea>
           </div>
-
-          <!-- Trigger -->
           <div class="auto-section">
             <div class="auto-section-label">Trigger</div>
             <div class="trigger-options">
-              <!-- On startup -->
               <div class="trigger-option selected" data-trigger="on_startup">
                 <div class="trigger-radio"></div>
                 <div>
@@ -140,8 +117,6 @@
                   <div class="trigger-option-sub">Runs every time Joanium is launched</div>
                 </div>
               </div>
-
-              <!-- Interval -->
               <div class="trigger-option" data-trigger="interval">
                 <div class="trigger-radio"></div>
                 <div style="flex: 1">
@@ -161,8 +136,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Hourly -->
               <div class="trigger-option" data-trigger="hourly">
                 <div class="trigger-radio"></div>
                 <div>
@@ -172,8 +145,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Daily -->
               <div class="trigger-option" data-trigger="daily">
                 <div class="trigger-radio"></div>
                 <div style="flex: 1">
@@ -184,8 +155,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Weekly -->
               <div class="trigger-option" data-trigger="weekly">
                 <div class="trigger-radio"></div>
                 <div style="flex: 1">
@@ -207,8 +176,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Actions -->
           <div class="auto-section">
             <div class="auto-section-label">Actions</div>
             <div id="actions-list" class="actions-list"></div>
@@ -220,17 +187,12 @@
             </button>
           </div>
         </div>
-
         <div class="auto-modal-footer">
           <button class="auto-btn-cancel" id="auto-cancel-btn" type="button">Cancel</button>
           <button class="auto-btn-save" id="auto-save-btn" type="button">Save Automation</button>
         </div>
       </div>
     </div>
-
-    <!-- ════════════════════════════════════════
-     DELETE CONFIRM
-  ═════════════════════════════════════════ -->
     <div class="confirm-overlay" id="confirm-overlay">
       <div class="confirm-box">
         <div class="confirm-icon">
@@ -253,7 +215,6 @@
         </div>
       </div>
     </div>
-
     <script type="module" src="./render/index.js"></script>
   </body>
 </html>

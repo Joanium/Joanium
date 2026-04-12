@@ -2,203 +2,45 @@ import { randomUUID } from 'crypto';
 import { net } from 'electron';
 import defineEngine from '../../../System/Contracts/DefineEngine.js';
 import { cloneValue } from '../../../System/Utils/CloneValue.js';
-
-// DEFAULT CHANNEL STATE
 const DEFAULT_STATE = {
   channels: {
-    telegram: {
-      enabled: false,
-      botToken: '',
-      lastUpdateId: 0,
-      connectedAt: null,
-    },
-    whatsapp: {
-      enabled: false,
-      accountSid: '',
-      authToken: '',
-      fromNumber: '',
-      connectedAt: null,
-    },
-    discord: {
-      enabled: false,
-      botToken: '',
-      channelId: '',
-      lastMessageId: null,
-      connectedAt: null,
-    },
-    slack: {
-      enabled: false,
-      botToken: '',
-      channelId: '',
-      lastMessageTs: null,
-      connectedAt: null,
-    },
+    telegram: { enabled: !1, botToken: '', lastUpdateId: 0, connectedAt: null },
+    whatsapp: { enabled: !1, accountSid: '', authToken: '', fromNumber: '', connectedAt: null },
+    discord: { enabled: !1, botToken: '', channelId: '', lastMessageId: null, connectedAt: null },
+    slack: { enabled: !1, botToken: '', channelId: '', lastMessageTs: null, connectedAt: null },
   },
 };
-
-const POLL_FAILURE_LOG_COOLDOWN_MS = 60_000;
-
 async function channelFetch(input, init) {
-  if (typeof net?.fetch === 'function') return net.fetch(input, init);
-  return fetch(input, init);
+  return 'function' == typeof net?.fetch ? net.fetch(input, init) : fetch(input, init);
 }
-
-function getErrorMessage(err) {
-  if (err instanceof Error) return err.message;
-  return String(err ?? 'Unknown error');
-}
-
-/* ══════════════════════════════════════════
-   TELEGRAM  — poll + send
-══════════════════════════════════════════ */
-async function pollTelegram(cfg) {
-  const base = `https://api.telegram.org/bot${cfg.botToken}`;
-  const offset = (cfg.lastUpdateId ?? 0) + 1;
-  const res = await channelFetch(`${base}/getUpdates?offset=${offset}&timeout=5&limit=10`);
-  if (!res.ok) throw new Error(`Telegram getUpdates HTTP ${res.status}`);
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.description ?? 'Telegram API error');
-
-  return (data.result ?? [])
-    .filter((u) => u.message?.text)
-    .map((u) => ({
-      updateId: u.update_id,
-      chatId: u.message.chat.id,
-      text: u.message.text,
-      from: u.message.from?.first_name ?? 'User',
-    }));
-}
-
 async function sendTelegram(botToken, chatId, text) {
   const res = await channelFetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text }),
+    body: JSON.stringify({ chat_id: chatId, text: text }),
   });
   if (!res.ok) {
     const d = await res.json().catch(() => ({}));
     throw new Error(d.description ?? `Telegram sendMessage HTTP ${res.status}`);
   }
 }
-
-/* ══════════════════════════════════════════
-   TWILIO WHATSAPP  — poll + send
-══════════════════════════════════════════ */
-async function pollWhatsApp(cfg) {
-  const encodedTo = encodeURIComponent(cfg.fromNumber);
-  const url = `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json?To=${encodedTo}&PageSize=10`;
-  const auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64');
-  const res = await channelFetch(url, { headers: { Authorization: auth } });
-  if (!res.ok) throw new Error(`Twilio HTTP ${res.status}`);
-  const data = await res.json();
-
-  const seenSids = cfg._seenSids ?? new Set();
-  const messages = [];
-
-  for (const msg of data.messages ?? []) {
-    if (msg.direction !== 'inbound') continue;
-    if (seenSids.has(msg.sid)) continue;
-    const age = Date.now() - new Date(msg.date_created).getTime();
-    if (age > 20_000) continue;
-    messages.push({ sid: msg.sid, from: msg.from, to: msg.to, text: msg.body });
-    seenSids.add(msg.sid);
-  }
-
-  if (seenSids.size > 500) cfg._seenSids = new Set(Array.from(seenSids).slice(-500));
-  else cfg._seenSids = seenSids;
-
-  return messages;
-}
-
 async function sendWhatsApp(cfg, to, text) {
-  const body = new URLSearchParams({ From: cfg.fromNumber, To: to, Body: text });
-  const auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64');
-  const res = await channelFetch(
-    `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json`,
-    {
-      method: 'POST',
-      headers: { Authorization: auth, 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-    },
-  );
+  const body = new URLSearchParams({ From: cfg.fromNumber, To: to, Body: text }),
+    auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64'),
+    res = await channelFetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json`,
+      {
+        method: 'POST',
+        headers: { Authorization: auth, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body,
+      },
+    );
   if (!res.ok) {
     const d = await res.json().catch(() => ({}));
     throw new Error(d.message ?? `Twilio sendMessage HTTP ${res.status}`);
   }
 }
-
-/* ══════════════════════════════════════════
-   DISCORD  — poll + send
-
-   IMPORTANT: For the bot to read message
-   content via REST polling, you MUST enable
-   "Message Content Intent" in the Discord
-   Developer Portal:
-     Bot → Privileged Gateway Intents →
-     Message Content Intent → ON
-
-   The bot must also be invited to your server
-   with at least Read Messages + Send Messages
-   permissions in the target channel.
-══════════════════════════════════════════ */
-async function pollDiscord(cfg) {
-  if (!cfg.channelId || !cfg.botToken) return [];
-
-  // Fetch our own bot user ID on first poll so we can skip self-messages
-  if (!cfg._botUserId) {
-    try {
-      const meRes = await channelFetch('https://discord.com/API/v10/users/@me', {
-        headers: { Authorization: `Bot ${cfg.botToken}` },
-      });
-      if (meRes.ok) {
-        const me = await meRes.json();
-        cfg._botUserId = me.id;
-      }
-    } catch {
-      /* non-fatal — we'll skip by author.bot flag instead */
-    }
-  }
-
-  const url = `https://discord.com/API/v10/channels/${cfg.channelId}/messages?limit=10${
-    cfg.lastMessageId ? `&after=${cfg.lastMessageId}` : ''
-  }`;
-  const res = await channelFetch(url, { headers: { Authorization: `Bot ${cfg.botToken}` } });
-
-  if (res.status === 403) {
-    throw new Error(
-      `Discord 403: Bot cannot access channel ${cfg.channelId}. ` +
-        `Make sure: (1) the bot is invited to your server, ` +
-        `(2) the bot has "View Channel" and "Read Message History" permissions, ` +
-        `(3) the channel ID is correct.`,
-    );
-  }
-  if (res.status === 401) {
-    throw new Error('Discord 401: Invalid bot token. Regenerate it in the Developer Portal.');
-  }
-  if (!res.ok) throw new Error(`Discord HTTP ${res.status}`);
-
-  const messages = await res.json();
-  if (!Array.isArray(messages)) return [];
-
-  return messages
-    .filter((m) => {
-      // Skip all bot messages (including ourselves)
-      if (m.author?.bot) return false;
-      // Skip messages with no readable text
-      if (!m.content?.trim()) return false;
-      return true;
-    })
-    .map((m) => ({
-      id: m.id,
-      channelId: m.channel_id,
-      text: m.content,
-      from: m.author?.username ?? 'User',
-    }))
-    .reverse(); // Oldest first so we process in order
-}
-
 async function sendDiscord(botToken, channelId, text) {
-  // Discord has a 2000 char limit per message — split if needed
   const chunks = splitIntoChunks(text, 1990);
   for (const chunk of chunks) {
     const res = await channelFetch(`https://discord.com/API/v10/channels/${channelId}/messages`, {
@@ -212,419 +54,263 @@ async function sendDiscord(botToken, channelId, text) {
     }
   }
 }
-
-/* ══════════════════════════════════════════
-   SLACK  — poll + send
-
-   The bot token needs these OAuth scopes:
-     channels:history  (read public channels)
-     channels:read     (list channels)
-     chat:write        (send messages)
-     groups:history    (read private channels)
-
-   The bot must also be /invited to the channel.
-
-   IMPORTANT: conversations.history oldest param
-   is EXCLUSIVE (messages after that timestamp,
-   not including it), which is exactly what we
-   want for polling — no duplicate processing.
-══════════════════════════════════════════ */
-async function pollSlack(cfg) {
-  if (!cfg.channelId || !cfg.botToken) return [];
-
-  // Fetch our bot user ID once so we can skip our own messages
-  if (!cfg._botUserId) {
-    try {
-      const authRes = await channelFetch('https://slack.com/API/auth.test', {
-        headers: { Authorization: `Bearer ${cfg.botToken}` },
-      });
-      const authData = await authRes.json();
-      if (authData.ok) cfg._botUserId = authData.bot_id ?? authData.user_id;
-    } catch {
-      /* non-fatal */
-    }
-  }
-
-  // Build URL — oldest is exclusive (messages AFTER this ts, not including it)
-  // This is exactly what we want for polling: no re-processing of last seen message
-  let url = `https://slack.com/API/conversations.history?channel=${cfg.channelId}&limit=10`;
-  if (cfg.lastMessageTs) {
-    url += `&oldest=${cfg.lastMessageTs}`;
-  }
-
-  const res = await channelFetch(url, { headers: { Authorization: `Bearer ${cfg.botToken}` } });
-  if (!res.ok) throw new Error(`Slack HTTP ${res.status}`);
-
-  const data = await res.json();
-
-  if (!data.ok) {
-    if (data.error === 'channel_not_found') {
-      throw new Error(
-        `Slack channel_not_found: Channel ID "${cfg.channelId}" is invalid or ` +
-          `the bot is not a member. Run /invite @YourBotName in the channel.`,
-      );
-    }
-    if (data.error === 'not_in_channel') {
-      throw new Error(
-        `Slack not_in_channel: The bot is not a member of channel ${cfg.channelId}. ` +
-          `Run /invite @YourBotName in the Slack channel.`,
-      );
-    }
-    throw new Error(data.error ?? 'Slack API error');
-  }
-
-  const messages = (data.messages ?? [])
-    .filter((m) => {
-      // Only plain user messages (type: 'message', no subtype = regular user message)
-      if (m.type !== 'message') return false;
-      // Skip bot messages and system messages (subtypes like channel_join, etc.)
-      if (m.subtype) return false;
-      if (m.bot_id) return false;
-      // Skip our own bot if we know its ID
-      if (cfg._botUserId && m.bot_id === cfg._botUserId) return false;
-      if (!m.text?.trim()) return false;
-      return true;
-    })
-    .map((m) => ({
-      ts: m.ts,
-      channelId: cfg.channelId,
-      text: m.text,
-      from: m.user || 'User',
-    }));
-
-  // conversations.history returns newest first — reverse for chronological processing
-  return messages.reverse();
-}
-
 async function sendSlack(botToken, channelId, text) {
-  // Slack has a ~40k char limit but we keep messages reasonable
-  const chunks = splitIntoChunks(text, 3000);
+  const chunks = splitIntoChunks(text, 3e3);
   for (const chunk of chunks) {
     const res = await channelFetch('https://slack.com/API/chat.postMessage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${botToken}` },
       body: JSON.stringify({ channel: channelId, text: chunk }),
     });
-    if (!res.ok) {
-      throw new Error(`Slack sendMessage HTTP ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Slack sendMessage HTTP ${res.status}`);
     const data = await res.json();
     if (!data.ok) throw new Error(data.error ?? 'Slack sendMessage API error');
   }
 }
-
-/* ══════════════════════════════════════════
-   UTILITY
-══════════════════════════════════════════ */
 function splitIntoChunks(text, maxLen) {
   const str = String(text ?? '');
   if (str.length <= maxLen) return [str];
   const chunks = [];
   let i = 0;
-  while (i < str.length) {
-    chunks.push(str.slice(i, i + maxLen));
-    i += maxLen;
-  }
+  for (; i < str.length; ) (chunks.push(str.slice(i, i + maxLen)), (i += maxLen));
   return chunks;
 }
-
-/* ══════════════════════════════════════════
-   CHANNEL ENGINE CLASS
-   The engine is a GATEWAY only — it does NOT
-   call AI itself. All message processing is
-   dispatched to the renderer's full chat
-   pipeline (agentLoop + tools + usage tracking).
-══════════════════════════════════════════ */
 export class ChannelEngine {
   constructor(storage) {
-    this.storage = storage;
-    this._data = null;
-    this._ticker = null;
-    this._processing = false;
-    this._pollFailureState = new Map();
-
-    // mainWindow is set after Electron app ready via setWindow()
-    this._mainWindow = null;
-
-    // Pending reply promises keyed by request id
-    this._pending = new Map();
+    ((this.storage = storage),
+      (this._data = null),
+      (this._ticker = null),
+      (this._processing = !1),
+      (this._pollFailureState = new Map()),
+      (this._mainWindow = null),
+      (this._pending = new Map()));
   }
-
-  /* ── Window reference (injected after BrowserWindow is created) ── */
   setWindow(win) {
     this._mainWindow = win;
   }
-
-  /* ── Resolve a pending reply from the renderer ── */
   resolveReply(id, text) {
     const p = this._pending.get(id);
-    if (p) {
-      this._pending.delete(id);
-      p.resolve(text);
-    }
+    p && (this._pending.delete(id), p.resolve(text));
   }
-
-  /* ── Dispatch to renderer and await reply ── */
   _dispatchToRenderer(channelName, from, text) {
     return new Promise((resolve, reject) => {
-      if (!this._mainWindow || this._mainWindow.isDestroyed()) {
+      if (!this._mainWindow || this._mainWindow.isDestroyed())
         return reject(new Error('App window not available'));
-      }
-      const id = randomUUID();
-      const timer = setTimeout(() => {
-        this._pending.delete(id);
-        reject(new Error('Channel gateway timeout (240s)'));
-      }, 240_000);
-
-      this._pending.set(id, {
+      const id = randomUUID(),
+        timer = setTimeout(() => {
+          (this._pending.delete(id), reject(new Error('Channel gateway timeout (240s)')));
+        }, 24e4);
+      (this._pending.set(id, {
         resolve: (reply) => {
-          clearTimeout(timer);
-          resolve(reply);
+          (clearTimeout(timer), resolve(reply));
         },
         reject: (err) => {
-          clearTimeout(timer);
-          reject(err);
+          (clearTimeout(timer), reject(err));
         },
-      });
-
-      this._mainWindow.webContents.send('channel-incoming', { id, channelName, from, text });
+      }),
+        this._mainWindow.webContents.send('channel-incoming', {
+          id: id,
+          channelName: channelName,
+          from: from,
+          text: text,
+        }));
     });
   }
-
-  /* ── Private helpers ── */
   _load() {
     try {
-      const loaded = this.storage.load(() => cloneValue(DEFAULT_STATE));
-      const channels =
-        loaded?.channels && typeof loaded.channels === 'object' && !Array.isArray(loaded.channels)
-          ? loaded.channels
-          : {};
+      const loaded = this.storage.load(() => cloneValue(DEFAULT_STATE)),
+        channels =
+          loaded?.channels && 'object' == typeof loaded.channels && !Array.isArray(loaded.channels)
+            ? loaded.channels
+            : {};
       this._data = {
-        ...(loaded && typeof loaded === 'object' && !Array.isArray(loaded) ? loaded : {}),
-        channels,
+        ...(loaded && 'object' == typeof loaded && !Array.isArray(loaded) ? loaded : {}),
+        channels: channels,
       };
     } catch {
       this._data = cloneValue(DEFAULT_STATE);
     }
-
     for (const [key, val] of Object.entries(DEFAULT_STATE.channels)) {
       const existing = this._data.channels[key];
       this._data.channels[key] =
-        existing && typeof existing === 'object' && !Array.isArray(existing)
+        existing && 'object' == typeof existing && !Array.isArray(existing)
           ? { ...cloneValue(val), ...existing }
           : cloneValue(val);
     }
-
     return this._data;
   }
-
   _persist() {
     const toSave = cloneValue(this._data);
-    delete toSave.channels.whatsapp._seenSids;
-    // Strip runtime-only cache fields
-    delete toSave.channels.discord._botUserId;
-    delete toSave.channels.slack._botUserId;
-    this.storage.save(toSave);
+    (delete toSave.channels.whatsapp._seenSids,
+      delete toSave.channels.discord._botUserId,
+      delete toSave.channels.slack._botUserId,
+      this.storage.save(toSave));
   }
-
   _clearPollFailure(channel) {
     this._pollFailureState.delete(channel);
   }
-
   _logPollFailure(channel, err) {
-    const message = getErrorMessage(err);
-    const now = Date.now();
-    const previous = this._pollFailureState.get(channel);
-
-    if (
-      previous &&
-      previous.message === message &&
-      now - previous.loggedAt < POLL_FAILURE_LOG_COOLDOWN_MS
-    ) {
-      return;
-    }
-
-    this._pollFailureState.set(channel, { message, loggedAt: now });
-    console.warn(`[ChannelEngine] ${channel} poll failed:`, message);
+    const message = (function (err) {
+        return err instanceof Error ? err.message : String(err ?? 'Unknown error');
+      })(err),
+      now = Date.now(),
+      previous = this._pollFailureState.get(channel);
+    (previous && previous.message === message && now - previous.loggedAt < 6e4) ||
+      (this._pollFailureState.set(channel, { message: message, loggedAt: now }),
+      console.warn(`[ChannelEngine] ${channel} poll failed:`, message));
   }
-
-  /* ── Public channel management API ── */
   getAll() {
     this._load();
     const out = {};
-    for (const [name, c] of Object.entries(this._data.channels)) {
+    for (const [name, c] of Object.entries(this._data.channels))
       out[name] = {
         enabled: c.enabled,
         connectedAt: c.connectedAt,
         configured: this._isConfigured(name, c),
       };
-    }
     return out;
   }
-
   getChannel(name) {
     return this._load().channels[name] ?? null;
   }
-
   saveChannel(name, config) {
     this._load();
-    const existing = this._data.channels[name] ?? {};
-    // Strip system prompt if accidentally passed — channels use global settings
-    const { systemPrompt: _ignored, ...cleanConfig } = config;
-    this._data.channels[name] = {
-      ...existing,
-      ...cleanConfig,
-      enabled: true,
-      connectedAt: new Date().toISOString(),
-    };
-    this._persist();
-    return { ok: true, connectedAt: this._data.channels[name].connectedAt };
+    const existing = this._data.channels[name] ?? {},
+      { systemPrompt: _ignored, ...cleanConfig } = config;
+    return (
+      (this._data.channels[name] = {
+        ...existing,
+        ...cleanConfig,
+        enabled: !0,
+        connectedAt: new Date().toISOString(),
+      }),
+      this._persist(),
+      { ok: !0, connectedAt: this._data.channels[name].connectedAt }
+    );
   }
-
   removeChannel(name) {
-    this._load();
-    this._data.channels[name] = cloneValue(DEFAULT_STATE.channels[name] ?? {});
-    this._data.channels[name].enabled = false;
-    this._persist();
+    (this._load(),
+      (this._data.channels[name] = cloneValue(DEFAULT_STATE.channels[name] ?? {})),
+      (this._data.channels[name].enabled = !1),
+      this._persist());
   }
-
   toggleChannel(name, enabled) {
-    this._load();
-    if (this._data.channels[name]) {
-      this._data.channels[name].enabled = Boolean(enabled);
-      this._persist();
-    }
+    (this._load(),
+      this._data.channels[name] &&
+        ((this._data.channels[name].enabled = Boolean(enabled)), this._persist()));
   }
-
-  /* ── Validation ── */
   async validateTelegram(botToken) {
-    const res = await channelFetch(`https://api.telegram.org/bot${botToken}/getMe`);
-    const data = await res.json();
+    const res = await channelFetch(`https://api.telegram.org/bot${botToken}/getMe`),
+      data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.description ?? 'Invalid bot token');
     return { username: data.result?.username, firstName: data.result?.first_name };
   }
-
   async validateWhatsApp(accountSid, authToken) {
-    const auth = 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64');
-    const res = await channelFetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}.json`,
-      {
+    const auth = 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64'),
+      res = await channelFetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}.json`, {
         headers: { Authorization: auth },
-      },
-    );
-    const data = await res.json();
+      }),
+      data = await res.json();
     if (!res.ok) throw new Error(data.message ?? 'Invalid Twilio credentials');
     return { friendlyName: data.friendly_name };
   }
-
   async validateSlack(botToken) {
     const res = await channelFetch('https://slack.com/API/auth.test', {
-      headers: { Authorization: `Bearer ${botToken}` },
-    });
-    const data = await res.json();
+        headers: { Authorization: `Bearer ${botToken}` },
+      }),
+      data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.error ?? 'Invalid Slack token');
     return { name: data.user, team: data.team };
   }
-
   async validateDiscord(botToken) {
     const res = await channelFetch('https://discord.com/API/v10/users/@me', {
       headers: { Authorization: `Bot ${botToken}` },
     });
     if (!res.ok) throw new Error('Invalid Discord bot token');
-    const data = await res.json();
-    return { username: data.username };
+    return { username: (await res.json()).username };
   }
-
-  /* ── Test that the Discord bot can actually read the channel ── */
   async validateDiscordChannel(botToken, channelId) {
     const res = await channelFetch(`https://discord.com/API/v10/channels/${channelId}`, {
       headers: { Authorization: `Bot ${botToken}` },
     });
-    if (res.status === 403)
+    if (403 === res.status)
       throw new Error(
         `Bot cannot access channel ${channelId}. Invite the bot to your server first.`,
       );
-    if (res.status === 404)
+    if (404 === res.status)
       throw new Error(`Channel ${channelId} not found. Double-check the Channel ID.`);
     if (!res.ok) throw new Error(`Discord HTTP ${res.status}`);
-    const data = await res.json();
-    return { channelName: data.name };
+    return { channelName: (await res.json()).name };
   }
-
-  /* ── Test that the Slack bot can actually read the channel ── */
   async validateSlackChannel(botToken, channelId) {
     const res = await channelFetch(
-      `https://slack.com/API/conversations.info?channel=${channelId}`,
-      {
-        headers: { Authorization: `Bearer ${botToken}` },
-      },
-    );
-    const data = await res.json();
+        `https://slack.com/API/conversations.info?channel=${channelId}`,
+        { headers: { Authorization: `Bearer ${botToken}` } },
+      ),
+      data = await res.json();
     if (!data.ok) {
-      if (data.error === 'channel_not_found') {
+      if ('channel_not_found' === data.error)
         throw new Error(
-          `Channel not found. Make sure the Channel ID is correct (starts with C for public channels).`,
+          'Channel not found. Make sure the Channel ID is correct (starts with C for public channels).',
         );
-      }
       throw new Error(data.error ?? 'Could not validate channel');
     }
     const isMember = data.channel?.is_member;
-    const channelName = data.channel?.name ?? channelId;
-    return { channelName, isMember };
+    return { channelName: data.channel?.name ?? channelId, isMember: isMember };
   }
-
-  /* ── Polling ── */
   start() {
-    this._load();
-    this._ticker = setInterval(() => this._poll(), 5_000);
+    (this._load(), (this._ticker = setInterval(() => this._poll(), 5e3)));
   }
-
   stop() {
-    if (this._ticker) {
-      clearInterval(this._ticker);
-      this._ticker = null;
-    }
-    // Reject all pending replies on shutdown
+    this._ticker && (clearInterval(this._ticker), (this._ticker = null));
     for (const [, p] of this._pending) p.reject(new Error('App shutting down'));
     this._pending.clear();
   }
-
   async _poll() {
-    if (this._processing) return;
-    this._processing = true;
-    try {
-      await this._pollTelegram();
-      await this._pollWhatsApp();
-      await this._pollDiscord();
-      await this._pollSlack();
-    } catch (err) {
-      console.error('[ChannelEngine] Poll error:', err.message);
-    } finally {
-      this._processing = false;
+    if (!this._processing) {
+      this._processing = !0;
+      try {
+        (await this._pollTelegram(),
+          await this._pollWhatsApp(),
+          await this._pollDiscord(),
+          await this._pollSlack());
+      } catch (err) {
+        console.error('[ChannelEngine] Poll error:', err.message);
+      } finally {
+        this._processing = !1;
+      }
     }
   }
-
   async _pollTelegram() {
     this._load();
     const cfg = this._data.channels.telegram;
     if (!cfg?.enabled || !cfg.botToken) return;
-
     let messages;
     try {
-      messages = await pollTelegram(cfg);
+      messages = await (async function (cfg) {
+        const base = `https://api.telegram.org/bot${cfg.botToken}`,
+          offset = (cfg.lastUpdateId ?? 0) + 1,
+          res = await channelFetch(`${base}/getUpdates?offset=${offset}&timeout=5&limit=10`);
+        if (!res.ok) throw new Error(`Telegram getUpdates HTTP ${res.status}`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.description ?? 'Telegram API error');
+        return (data.result ?? [])
+          .filter((u) => u.message?.text)
+          .map((u) => ({
+            updateId: u.update_id,
+            chatId: u.message.chat.id,
+            text: u.message.text,
+            from: u.message.from?.first_name ?? 'User',
+          }));
+      })(cfg);
     } catch (err) {
-      this._logPollFailure('Telegram', err);
-      return;
+      return void this._logPollFailure('Telegram', err);
     }
-    this._clearPollFailure('Telegram');
-
-    if (messages.length) {
+    if ((this._clearPollFailure('Telegram'), messages.length)) {
       const maxId = Math.max(...messages.map((m) => m.updateId));
-      if (maxId >= (cfg.lastUpdateId ?? 0)) cfg.lastUpdateId = maxId;
-      this._persist();
+      (maxId >= (cfg.lastUpdateId ?? 0) && (cfg.lastUpdateId = maxId), this._persist());
     }
-
-    for (const msg of messages) {
+    for (const msg of messages)
       (async () => {
         let typingInterval = null;
         try {
@@ -634,37 +320,51 @@ export class ChannelEngine {
               headers: { 'content-type': 'application/json' },
               body: JSON.stringify({ chat_id: msg.chatId, action: 'typing' }),
             }).catch(() => {});
-
-          sendTyping();
-          typingInterval = setInterval(sendTyping, 4500);
-
+          (sendTyping(), (typingInterval = setInterval(sendTyping, 4500)));
           const reply = await this._dispatchToRenderer('telegram', msg.from, msg.text);
-
-          clearInterval(typingInterval);
-          await sendTelegram(cfg.botToken, msg.chatId, reply);
+          (clearInterval(typingInterval), await sendTelegram(cfg.botToken, msg.chatId, reply));
         } catch (err) {
-          if (typingInterval) clearInterval(typingInterval);
-          console.error(`[ChannelEngine] Telegram reply failed (chat ${msg.chatId}):`, err.message);
+          (typingInterval && clearInterval(typingInterval),
+            console.error(
+              `[ChannelEngine] Telegram reply failed (chat ${msg.chatId}):`,
+              err.message,
+            ));
         }
       })();
-    }
   }
-
   async _pollWhatsApp() {
     this._load();
     const cfg = this._data.channels.whatsapp;
-    if (!cfg?.enabled || !cfg.accountSid || !cfg.authToken || !cfg.fromNumber) return;
-
+    if (!(cfg?.enabled && cfg.accountSid && cfg.authToken && cfg.fromNumber)) return;
     let messages;
     try {
-      messages = await pollWhatsApp(cfg);
+      messages = await (async function (cfg) {
+        const encodedTo = encodeURIComponent(cfg.fromNumber),
+          url = `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json?To=${encodedTo}&PageSize=10`,
+          auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64'),
+          res = await channelFetch(url, { headers: { Authorization: auth } });
+        if (!res.ok) throw new Error(`Twilio HTTP ${res.status}`);
+        const data = await res.json(),
+          seenSids = cfg._seenSids ?? new Set(),
+          messages = [];
+        for (const msg of data.messages ?? [])
+          'inbound' === msg.direction &&
+            (seenSids.has(msg.sid) ||
+              Date.now() - new Date(msg.date_created).getTime() > 2e4 ||
+              (messages.push({ sid: msg.sid, from: msg.from, to: msg.to, text: msg.body }),
+              seenSids.add(msg.sid)));
+        return (
+          seenSids.size > 500
+            ? (cfg._seenSids = new Set(Array.from(seenSids).slice(-500)))
+            : (cfg._seenSids = seenSids),
+          messages
+        );
+      })(cfg);
     } catch (err) {
-      this._logPollFailure('WhatsApp', err);
-      return;
+      return void this._logPollFailure('WhatsApp', err);
     }
     this._clearPollFailure('WhatsApp');
-
-    for (const msg of messages) {
+    for (const msg of messages)
       (async () => {
         try {
           const reply = await this._dispatchToRenderer('whatsapp', msg.from, msg.text);
@@ -673,29 +373,53 @@ export class ChannelEngine {
           console.error(`[ChannelEngine] WhatsApp reply failed (${msg.from}):`, err.message);
         }
       })();
-    }
   }
-
   async _pollDiscord() {
     this._load();
     const cfg = this._data.channels.discord;
     if (!cfg?.enabled || !cfg.botToken || !cfg.channelId) return;
-
     let messages;
     try {
-      messages = await pollDiscord(cfg);
+      messages = await (async function (cfg) {
+        if (!cfg.channelId || !cfg.botToken) return [];
+        if (!cfg._botUserId)
+          try {
+            const meRes = await channelFetch('https://discord.com/API/v10/users/@me', {
+              headers: { Authorization: `Bot ${cfg.botToken}` },
+            });
+            if (meRes.ok) {
+              const me = await meRes.json();
+              cfg._botUserId = me.id;
+            }
+          } catch {}
+        const url = `https://discord.com/API/v10/channels/${cfg.channelId}/messages?limit=10${cfg.lastMessageId ? `&after=${cfg.lastMessageId}` : ''}`,
+          res = await channelFetch(url, { headers: { Authorization: `Bot ${cfg.botToken}` } });
+        if (403 === res.status)
+          throw new Error(
+            `Discord 403: Bot cannot access channel ${cfg.channelId}. Make sure: (1) the bot is invited to your server, (2) the bot has "View Channel" and "Read Message History" permissions, (3) the channel ID is correct.`,
+          );
+        if (401 === res.status)
+          throw new Error('Discord 401: Invalid bot token. Regenerate it in the Developer Portal.');
+        if (!res.ok) throw new Error(`Discord HTTP ${res.status}`);
+        const messages = await res.json();
+        return Array.isArray(messages)
+          ? messages
+              .filter((m) => !m.author?.bot && !!m.content?.trim())
+              .map((m) => ({
+                id: m.id,
+                channelId: m.channel_id,
+                text: m.content,
+                from: m.author?.username ?? 'User',
+              }))
+              .reverse()
+          : [];
+      })(cfg);
     } catch (err) {
-      this._logPollFailure('Discord', err);
-      return;
+      return void this._logPollFailure('Discord', err);
     }
-    this._clearPollFailure('Discord');
-
-    if (messages.length) {
-      cfg.lastMessageId = messages[messages.length - 1].id;
-      this._persist();
-    }
-
-    for (const msg of messages) {
+    (this._clearPollFailure('Discord'),
+      messages.length && ((cfg.lastMessageId = messages[messages.length - 1].id), this._persist()));
+    for (const msg of messages)
       (async () => {
         let typingInterval = null;
         try {
@@ -704,44 +428,74 @@ export class ChannelEngine {
               method: 'POST',
               headers: { Authorization: `Bot ${cfg.botToken}` },
             }).catch(() => {});
-
-          sendTyping();
-          typingInterval = setInterval(sendTyping, 9000); // 10s max per Discord docs
-
+          (sendTyping(), (typingInterval = setInterval(sendTyping, 9e3)));
           const reply = await this._dispatchToRenderer('discord', msg.from, msg.text);
-
-          clearInterval(typingInterval);
-          await sendDiscord(cfg.botToken, msg.channelId, reply);
+          (clearInterval(typingInterval), await sendDiscord(cfg.botToken, msg.channelId, reply));
         } catch (err) {
-          if (typingInterval) clearInterval(typingInterval);
-          console.error(`[ChannelEngine] Discord reply failed (${msg.from}):`, err.message);
+          (typingInterval && clearInterval(typingInterval),
+            console.error(`[ChannelEngine] Discord reply failed (${msg.from}):`, err.message));
         }
       })();
-    }
   }
-
   async _pollSlack() {
     this._load();
     const cfg = this._data.channels.slack;
     if (!cfg?.enabled || !cfg.botToken || !cfg.channelId) return;
-
     let messages;
     try {
-      messages = await pollSlack(cfg);
+      messages = await (async function (cfg) {
+        if (!cfg.channelId || !cfg.botToken) return [];
+        if (!cfg._botUserId)
+          try {
+            const authRes = await channelFetch('https://slack.com/API/auth.test', {
+                headers: { Authorization: `Bearer ${cfg.botToken}` },
+              }),
+              authData = await authRes.json();
+            authData.ok && (cfg._botUserId = authData.bot_id ?? authData.user_id);
+          } catch {}
+        let url = `https://slack.com/API/conversations.history?channel=${cfg.channelId}&limit=10`;
+        cfg.lastMessageTs && (url += `&oldest=${cfg.lastMessageTs}`);
+        const res = await channelFetch(url, {
+          headers: { Authorization: `Bearer ${cfg.botToken}` },
+        });
+        if (!res.ok) throw new Error(`Slack HTTP ${res.status}`);
+        const data = await res.json();
+        if (!data.ok) {
+          if ('channel_not_found' === data.error)
+            throw new Error(
+              `Slack channel_not_found: Channel ID "${cfg.channelId}" is invalid or the bot is not a member. Run /invite @YourBotName in the channel.`,
+            );
+          if ('not_in_channel' === data.error)
+            throw new Error(
+              `Slack not_in_channel: The bot is not a member of channel ${cfg.channelId}. Run /invite @YourBotName in the Slack channel.`,
+            );
+          throw new Error(data.error ?? 'Slack API error');
+        }
+        return (data.messages ?? [])
+          .filter(
+            (m) =>
+              !(
+                'message' !== m.type ||
+                m.subtype ||
+                m.bot_id ||
+                (cfg._botUserId && m.bot_id === cfg._botUserId) ||
+                !m.text?.trim()
+              ),
+          )
+          .map((m) => ({
+            ts: m.ts,
+            channelId: cfg.channelId,
+            text: m.text,
+            from: m.user || 'User',
+          }))
+          .reverse();
+      })(cfg);
     } catch (err) {
-      this._logPollFailure('Slack', err);
-      return;
+      return void this._logPollFailure('Slack', err);
     }
-    this._clearPollFailure('Slack');
-
-    if (messages.length) {
-      // Store the ts of the newest message as our cursor for next poll
-      // conversations.history oldest param is exclusive, so we won't re-fetch this message
-      cfg.lastMessageTs = messages[messages.length - 1].ts;
-      this._persist();
-    }
-
-    for (const msg of messages) {
+    (this._clearPollFailure('Slack'),
+      messages.length && ((cfg.lastMessageTs = messages[messages.length - 1].ts), this._persist()));
+    for (const msg of messages)
       (async () => {
         try {
           const reply = await this._dispatchToRenderer('slack', msg.from, msg.text);
@@ -750,33 +504,22 @@ export class ChannelEngine {
           console.error(`[ChannelEngine] Slack reply failed (${msg.from}):`, err.message);
         }
       })();
-    }
   }
-
   _isConfigured(name, c) {
-    if (name === 'telegram') return Boolean(c.botToken);
-    if (name === 'whatsapp') return Boolean(c.accountSid && c.authToken && c.fromNumber);
-    if (name === 'discord') return Boolean(c.botToken && c.channelId);
-    if (name === 'slack') return Boolean(c.botToken && c.channelId);
-    return false;
+    return 'telegram' === name
+      ? Boolean(c.botToken)
+      : 'whatsapp' === name
+        ? Boolean(c.accountSid && c.authToken && c.fromNumber)
+        : ('discord' === name || 'slack' === name) && Boolean(c.botToken && c.channelId);
   }
 }
-
 export const engineMeta = defineEngine({
   id: 'channels',
   provides: 'channelEngine',
   needs: ['featureStorage'],
   storage: [
-    {
-      key: 'channels',
-      featureKey: 'channels',
-      fileName: 'Channels.json',
-    },
-    {
-      key: 'channelMessages',
-      featureKey: 'channels',
-      fileName: 'ChannelMessages.json',
-    },
+    { key: 'channels', featureKey: 'channels', fileName: 'Channels.json' },
+    { key: 'channelMessages', featureKey: 'channels', fileName: 'ChannelMessages.json' },
   ],
-  create: ({ featureStorage }) => new ChannelEngine(featureStorage.get('channels')),
+  create: ({ featureStorage: featureStorage }) => new ChannelEngine(featureStorage.get('channels')),
 });

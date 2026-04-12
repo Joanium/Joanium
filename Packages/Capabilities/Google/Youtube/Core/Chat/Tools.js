@@ -11,15 +11,15 @@ export const YOUTUBE_TOOLS = [
     description: 'Search YouTube for videos matching a query.',
     category: 'youtube',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query string.' },
+      query: { type: 'string', required: !0, description: 'Search query string.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default: 10, max: 50).',
       },
       order: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Sort order: relevance (default), date, viewCount, rating.',
       },
     },
@@ -32,7 +32,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       video_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'YouTube video ID (e.g. dQw4w9WgXcQ).',
       },
     },
@@ -44,7 +44,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max playlists to return (default: 20).',
       },
     },
@@ -54,10 +54,10 @@ export const YOUTUBE_TOOLS = [
     description: 'List videos inside a YouTube playlist by playlist ID.',
     category: 'youtube',
     parameters: {
-      playlist_id: { type: 'string', required: true, description: 'YouTube playlist ID.' },
+      playlist_id: { type: 'string', required: !0, description: 'YouTube playlist ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max items to return (default: 20).',
       },
     },
@@ -69,7 +69,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max subscriptions to return (default: 20).',
       },
     },
@@ -81,7 +81,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max liked videos to return (default: 20).',
       },
     },
@@ -91,10 +91,10 @@ export const YOUTUBE_TOOLS = [
     description: 'Get top-level comments on a YouTube video.',
     category: 'youtube',
     parameters: {
-      video_id: { type: 'string', required: true, description: 'YouTube video ID.' },
+      video_id: { type: 'string', required: !0, description: 'YouTube video ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max comments to return (default: 20).',
       },
     },
@@ -104,10 +104,10 @@ export const YOUTUBE_TOOLS = [
     description: 'Like, dislike, or remove rating from a YouTube video.',
     category: 'youtube',
     parameters: {
-      video_id: { type: 'string', required: true, description: 'YouTube video ID.' },
+      video_id: { type: 'string', required: !0, description: 'YouTube video ID.' },
       rating: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Rating to apply: like, dislike, or none (to remove).',
       },
     },
@@ -119,7 +119,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max videos to return (default: 20).',
       },
     },
@@ -129,7 +129,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Get details for any YouTube channel by its channel ID.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
     },
   },
   {
@@ -137,10 +137,10 @@ export const YOUTUBE_TOOLS = [
     description: 'List recent videos uploaded by a specific channel.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max videos to return (default: 20).',
       },
     },
@@ -150,11 +150,11 @@ export const YOUTUBE_TOOLS = [
     description: "Create a new YouTube playlist on the authenticated user's channel.",
     category: 'youtube',
     parameters: {
-      title: { type: 'string', required: true, description: 'Playlist title.' },
-      description: { type: 'string', required: false, description: 'Playlist description.' },
+      title: { type: 'string', required: !0, description: 'Playlist title.' },
+      description: { type: 'string', required: !1, description: 'Playlist description.' },
       privacy_status: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Privacy: public, unlisted, or private (default).',
       },
     },
@@ -164,12 +164,12 @@ export const YOUTUBE_TOOLS = [
     description: 'Update the title, description, or privacy of an existing playlist.',
     category: 'youtube',
     parameters: {
-      playlist_id: { type: 'string', required: true, description: 'Playlist ID to update.' },
-      title: { type: 'string', required: false, description: 'New title.' },
-      description: { type: 'string', required: false, description: 'New description.' },
+      playlist_id: { type: 'string', required: !0, description: 'Playlist ID to update.' },
+      title: { type: 'string', required: !1, description: 'New title.' },
+      description: { type: 'string', required: !1, description: 'New description.' },
       privacy_status: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'New privacy: public, unlisted, or private.',
       },
     },
@@ -179,7 +179,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Delete a playlist by its ID.',
     category: 'youtube',
     parameters: {
-      playlist_id: { type: 'string', required: true, description: 'Playlist ID to delete.' },
+      playlist_id: { type: 'string', required: !0, description: 'Playlist ID to delete.' },
     },
   },
   {
@@ -187,8 +187,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Add a video to a playlist.',
     category: 'youtube',
     parameters: {
-      playlist_id: { type: 'string', required: true, description: 'Target playlist ID.' },
-      video_id: { type: 'string', required: true, description: 'Video ID to add.' },
+      playlist_id: { type: 'string', required: !0, description: 'Target playlist ID.' },
+      video_id: { type: 'string', required: !0, description: 'Video ID to add.' },
     },
   },
   {
@@ -198,7 +198,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       playlist_item_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Playlist item ID (from get_playlist_items).',
       },
     },
@@ -208,7 +208,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Subscribe the authenticated user to a YouTube channel.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'Channel ID to subscribe to.' },
+      channel_id: { type: 'string', required: !0, description: 'Channel ID to subscribe to.' },
     },
   },
   {
@@ -218,7 +218,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       subscription_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Subscription ID (from list_subscriptions or check_subscription).',
       },
     },
@@ -228,7 +228,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Check whether the authenticated user is subscribed to a specific channel.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'Channel ID to check.' },
+      channel_id: { type: 'string', required: !0, description: 'Channel ID to check.' },
     },
   },
   {
@@ -236,8 +236,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Post a new top-level comment on a YouTube video.',
     category: 'youtube',
     parameters: {
-      video_id: { type: 'string', required: true, description: 'Video ID to comment on.' },
-      text: { type: 'string', required: true, description: 'Comment text.' },
+      video_id: { type: 'string', required: !0, description: 'Video ID to comment on.' },
+      text: { type: 'string', required: !0, description: 'Comment text.' },
     },
   },
   {
@@ -245,8 +245,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Reply to an existing top-level comment thread.',
     category: 'youtube',
     parameters: {
-      parent_id: { type: 'string', required: true, description: 'Comment thread ID to reply to.' },
-      text: { type: 'string', required: true, description: 'Reply text.' },
+      parent_id: { type: 'string', required: !0, description: 'Comment thread ID to reply to.' },
+      text: { type: 'string', required: !0, description: 'Reply text.' },
     },
   },
   {
@@ -254,7 +254,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Delete one of your own comments by comment ID.',
     category: 'youtube',
     parameters: {
-      comment_id: { type: 'string', required: true, description: 'Comment ID to delete.' },
+      comment_id: { type: 'string', required: !0, description: 'Comment ID to delete.' },
     },
   },
   {
@@ -262,10 +262,10 @@ export const YOUTUBE_TOOLS = [
     description: 'Fetch replies under a specific comment thread.',
     category: 'youtube',
     parameters: {
-      parent_id: { type: 'string', required: true, description: 'Comment thread ID.' },
+      parent_id: { type: 'string', required: !0, description: 'Comment thread ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max replies to return (default: 20).',
       },
     },
@@ -274,9 +274,7 @@ export const YOUTUBE_TOOLS = [
     name: 'youtube_get_video_rating',
     description: "Get the authenticated user's own rating (like/dislike/none) on a specific video.",
     category: 'youtube',
-    parameters: {
-      video_id: { type: 'string', required: true, description: 'Video ID to check.' },
-    },
+    parameters: { video_id: { type: 'string', required: !0, description: 'Video ID to check.' } },
   },
   {
     name: 'youtube_get_trending_videos',
@@ -285,17 +283,17 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       region_code: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 3166-1 alpha-2 country code (default: US).',
       },
       category_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Video category ID to filter by (default: 0 = all).',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max videos to return (default: 20).',
       },
     },
@@ -305,8 +303,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Search YouTube for channels matching a query.',
     category: 'youtube',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query.' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 10).' },
+      query: { type: 'string', required: !0, description: 'Search query.' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 10).' },
     },
   },
   {
@@ -314,8 +312,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Search YouTube for playlists matching a query.',
     category: 'youtube',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query.' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 10).' },
+      query: { type: 'string', required: !0, description: 'Search query.' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 10).' },
     },
   },
   {
@@ -325,7 +323,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       region_code: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 3166-1 alpha-2 country code (default: US).',
       },
     },
@@ -335,20 +333,20 @@ export const YOUTUBE_TOOLS = [
     description: 'Report a video for policy violations.',
     category: 'youtube',
     parameters: {
-      video_id: { type: 'string', required: true, description: 'Video ID to report.' },
+      video_id: { type: 'string', required: !0, description: 'Video ID to report.' },
       reason_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Abuse report reason ID (from youtube_get_video_abuse_report_reasons).',
       },
       secondary_reason_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional secondary reason ID.',
       },
       comments: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional additional comments for the report.',
       },
     },
@@ -360,7 +358,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max disliked videos to return (default: 20).',
       },
     },
@@ -370,8 +368,8 @@ export const YOUTUBE_TOOLS = [
     description: 'Edit / update the text of one of your own existing comments.',
     category: 'youtube',
     parameters: {
-      comment_id: { type: 'string', required: true, description: 'ID of the comment to edit.' },
-      text: { type: 'string', required: true, description: 'New text for the comment.' },
+      comment_id: { type: 'string', required: !0, description: 'ID of the comment to edit.' },
+      text: { type: 'string', required: !0, description: 'New text for the comment.' },
     },
   },
   {
@@ -382,7 +380,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max activities to return (default: 20).',
       },
     },
@@ -392,10 +390,10 @@ export const YOUTUBE_TOOLS = [
     description: "Get a specific channel's public activity feed.",
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max activities to return (default: 20).',
       },
     },
@@ -405,10 +403,10 @@ export const YOUTUBE_TOOLS = [
     description: 'List all public playlists belonging to any channel by its channel ID.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max playlists to return (default: 20).',
       },
     },
@@ -418,19 +416,17 @@ export const YOUTUBE_TOOLS = [
     description:
       'List available caption/subtitle tracks for a YouTube video (language codes, auto-generated flag, etc.).',
     category: 'youtube',
-    parameters: {
-      video_id: { type: 'string', required: true, description: 'YouTube video ID.' },
-    },
+    parameters: { video_id: { type: 'string', required: !0, description: 'YouTube video ID.' } },
   },
   {
     name: 'youtube_search_live_videos',
     description: 'Search for videos that are currently live-streaming on YouTube.',
     category: 'youtube',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query for live streams.' },
+      query: { type: 'string', required: !0, description: 'Search query for live streams.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default: 10).',
       },
     },
@@ -462,7 +458,7 @@ export const YOUTUBE_TOOLS = [
     parameters: {
       video_ids: {
         type: 'array',
-        required: true,
+        required: !0,
         description: 'Array of YouTube video IDs (up to 50 per call).',
       },
     },
@@ -473,7 +469,7 @@ export const YOUTUBE_TOOLS = [
       "Get the featured sections on a YouTube channel's homepage (e.g. Featured, Popular Uploads, Playlists).",
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
     },
   },
   {
@@ -481,7 +477,7 @@ export const YOUTUBE_TOOLS = [
     description: 'Fetch a single comment or reply by its comment ID.',
     category: 'youtube',
     parameters: {
-      comment_id: { type: 'string', required: true, description: 'Comment ID to look up.' },
+      comment_id: { type: 'string', required: !0, description: 'Comment ID to look up.' },
     },
   },
   {
@@ -490,7 +486,7 @@ export const YOUTUBE_TOOLS = [
       "Get a channel's branding settings including banner image URL, profile color, keywords, and country.",
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
     },
   },
   {
@@ -499,26 +495,24 @@ export const YOUTUBE_TOOLS = [
       'Get full details for a single playlist by its ID — title, description, item count, privacy status.',
     category: 'youtube',
     parameters: {
-      playlist_id: { type: 'string', required: true, description: 'YouTube playlist ID.' },
+      playlist_id: { type: 'string', required: !0, description: 'YouTube playlist ID.' },
     },
   },
   {
     name: 'youtube_get_video_tags',
     description: 'Get the full list of tags/keywords attached to a YouTube video.',
     category: 'youtube',
-    parameters: {
-      video_id: { type: 'string', required: true, description: 'YouTube video ID.' },
-    },
+    parameters: { video_id: { type: 'string', required: !0, description: 'YouTube video ID.' } },
   },
   {
     name: 'youtube_get_comment_threads_by_channel',
     description: "Get all recent comment threads across all of a channel's videos at once.",
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max comment threads to return (default: 20, max: 100).',
       },
     },
@@ -529,43 +523,43 @@ export const YOUTUBE_TOOLS = [
       'Advanced video search with extra filters: duration (short/medium/long), definition (hd/sd), published date range, region, and language.',
     category: 'youtube',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query string.' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 10).' },
+      query: { type: 'string', required: !0, description: 'Search query string.' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 10).' },
       order: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Sort: relevance (default), date, viewCount, rating.',
       },
       video_duration: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Duration filter: any (default), short (<4 min), medium (4–20 min), long (>20 min).',
       },
       video_definition: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Definition filter: any (default), hd, sd.',
       },
       published_after: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'ISO 8601 datetime — only return videos published after this date (e.g. 2024-01-01T00:00:00Z).',
       },
       published_before: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 8601 datetime — only return videos published before this date.',
       },
       region_code: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 3166-1 alpha-2 region code to bias results.',
       },
       relevance_language: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 639-1 language code to bias results (e.g. en, hi, ta).',
       },
     },
@@ -575,9 +569,7 @@ export const YOUTUBE_TOOLS = [
     description:
       'Lightweight fetch of just the view count, like count, and comment count for a video — without fetching full snippet or content details.',
     category: 'youtube',
-    parameters: {
-      video_id: { type: 'string', required: true, description: 'YouTube video ID.' },
-    },
+    parameters: { video_id: { type: 'string', required: !0, description: 'YouTube video ID.' } },
   },
   {
     name: 'youtube_get_channel_statistics',
@@ -585,7 +577,7 @@ export const YOUTUBE_TOOLS = [
       'Lightweight fetch of just the subscriber count, total view count, and video count for a channel.',
     category: 'youtube',
     parameters: {
-      channel_id: { type: 'string', required: true, description: 'YouTube channel ID.' },
+      channel_id: { type: 'string', required: !0, description: 'YouTube channel ID.' },
     },
   },
 ];

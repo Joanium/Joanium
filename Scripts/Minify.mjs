@@ -173,11 +173,14 @@ export async function minifyAll(rootDir, opts = {}) {
             return;
           }
 
-          const savedBytes = Buffer.byteLength(original, 'utf8') - Buffer.byteLength(minified, 'utf8');
+          const savedBytes =
+            Buffer.byteLength(original, 'utf8') - Buffer.byteLength(minified, 'utf8');
 
           if (dry) {
             const pct = ((savedBytes / Buffer.byteLength(original, 'utf8')) * 100).toFixed(1);
-            console.log(`  ${path.relative(rootDir, filePath)}  ${savedBytes} bytes saved (${pct}%)`);
+            console.log(
+              `  ${path.relative(rootDir, filePath)}  ${savedBytes} bytes saved (${pct}%)`,
+            );
           } else {
             fs.writeFileSync(filePath, minified, 'utf8');
             totalSavedBytes += savedBytes;

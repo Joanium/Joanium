@@ -1,124 +1,74 @@
-﻿import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
-import * as WeatherExecutor from '../Weather/Executor.js';
-import * as CryptoExecutor from '../Crypto/Executor.js';
-import * as FinanceExecutor from '../Finance/Executor.js';
-import * as PhotoExecutor from '../Photo/Executor.js';
-import * as WikiExecutor from '../Wiki/Executor.js';
-import * as GeoExecutor from '../Geo/Executor.js';
-import * as FunExecutor from '../Fun/Executor.js';
-import * as JokeExecutor from '../Joke/Executor.js';
-import * as QuoteExecutor from '../Quote/Executor.js';
-import * as CountryExecutor from '../Country/Executor.js';
-import * as AstronomyExecutor from '../Astronomy/Executor.js';
-import * as HackerNewsExecutor from '../HackerNews/Executor.js';
-import * as UrlExecutor from '../Url/Executor.js';
+import { getFeatureBoot } from '../../../../../Features/Core/FeatureBoot.js';
+import { MANIFEST_EXECUTORS } from './CapabilityManifest.js';
 import * as TerminalExecutor from '../Terminal/Executor.js';
 import * as UtilityExecutor from '../Utility/Executor.js';
-import * as MCPExecutor from '../MCP/Executor.js';
 import * as SearchExecutor from '../Search/Executor.js';
-import * as DictionaryExecutor from '../Dictionary/Executor.js';
-import * as DateTimeExecutor from '../DateTime/Executor.js';
-import * as PasswordExecutor from '../Password/Executor.js';
-import * as SubAgentsExecutor from '../SubAgents/Executor.js';
 import * as MemoryExecutor from '../Memory/Executor.js';
-
+import * as SubAgentsExecutor from '../SubAgents/Executor.js';
+import * as MCPExecutor from '../MCP/Executor.js';
 const EXECUTORS = [
-  WeatherExecutor,
-  CryptoExecutor,
-  FinanceExecutor,
-  PhotoExecutor,
-  WikiExecutor,
-  GeoExecutor,
-  FunExecutor,
-  JokeExecutor,
-  QuoteExecutor,
-  CountryExecutor,
-  AstronomyExecutor,
-  HackerNewsExecutor,
-  UrlExecutor,
   TerminalExecutor,
   UtilityExecutor,
   SearchExecutor,
-  DictionaryExecutor,
-  DateTimeExecutor,
-  PasswordExecutor,
-  SubAgentsExecutor,
   MemoryExecutor,
+  SubAgentsExecutor,
+  ...MANIFEST_EXECUTORS,
   MCPExecutor,
 ];
-
 function normalizeName(name) {
   return String(name ?? '')
     .trim()
     .toLowerCase()
     .replace(/[\s\-]+/g, '_');
 }
-
 async function executorHandles(executor, toolName) {
-  if (typeof executor.handles !== 'function') return false;
+  if ('function' != typeof executor.handles) return !1;
   const result = executor.handles(toolName);
-  if (result && typeof result.then === 'function') return Boolean(await result);
-  return Boolean(result);
+  return result && 'function' == typeof result.then ? Boolean(await result) : Boolean(result);
 }
-
 async function tryFeatureExecutor(toolName, params) {
   if (!window.featureAPI?.invoke) return null;
-  const boot = await getFeatureBoot();
-  const tool = (boot?.chat?.tools ?? []).find(
-    (item) => item.name === toolName || item.name === normalizeName(toolName),
-  );
-  if (!tool?.featureId) return null;
-  return window.featureAPI.invoke(tool.featureId, 'executeChatTool', {
-    toolName: tool.name,
-    params,
-  });
+  const boot = await getFeatureBoot(),
+    tool = (boot?.chat?.tools ?? []).find(
+      (item) => item.name === toolName || item.name === normalizeName(toolName),
+    );
+  return tool?.featureId
+    ? window.featureAPI.invoke(tool.featureId, 'executeChatTool', {
+        toolName: tool.name,
+        params: params,
+      })
+    : null;
 }
-
-function normalizeExecuteHooks(onStageOrHooks, maybeHooks = null) {
-  const hooks =
-    onStageOrHooks && typeof onStageOrHooks === 'object'
-      ? { ...onStageOrHooks }
-      : { ...(maybeHooks ?? {}) };
-
-  if (typeof onStageOrHooks === 'function') {
-    hooks.onStage = onStageOrHooks;
-  } else if (typeof maybeHooks === 'function') {
-    hooks.onStage = maybeHooks;
-  }
-
-  if (typeof hooks.onStage !== 'function') {
-    hooks.onStage = () => {};
-  }
-
-  return hooks;
-}
-
 export async function executeTool(toolName, params, onStageOrHooks = () => {}, maybeHooks = null) {
-  const hooks = normalizeExecuteHooks(onStageOrHooks, maybeHooks);
-
+  const hooks = (function (onStageOrHooks, maybeHooks = null) {
+    const hooks =
+      onStageOrHooks && 'object' == typeof onStageOrHooks
+        ? { ...onStageOrHooks }
+        : { ...(maybeHooks ?? {}) };
+    return (
+      'function' == typeof onStageOrHooks
+        ? (hooks.onStage = onStageOrHooks)
+        : 'function' == typeof maybeHooks && (hooks.onStage = maybeHooks),
+      'function' != typeof hooks.onStage && (hooks.onStage = () => {}),
+      hooks
+    );
+  })(onStageOrHooks, maybeHooks);
   try {
     const featureResult = await tryFeatureExecutor(toolName, params);
-    if (featureResult != null) return featureResult;
+    if (null != featureResult) return featureResult;
   } catch {}
-
-  for (const executor of EXECUTORS) {
-    if (await executorHandles(executor, toolName)) {
-      return executor.execute(toolName, params, hooks);
-    }
-  }
-
+  for (const executor of EXECUTORS)
+    if (await executorHandles(executor, toolName)) return executor.execute(toolName, params, hooks);
   const normalized = normalizeName(toolName);
   try {
     const normalizedFeatureResult = await tryFeatureExecutor(normalized, params);
-    if (normalizedFeatureResult != null) return normalizedFeatureResult;
+    if (null != normalizedFeatureResult) return normalizedFeatureResult;
   } catch {}
-
-  for (const executor of EXECUTORS) {
-    if (await executorHandles(executor, normalized)) {
-      console.warn(`[Executors] Normalized tool name "${toolName}" -> "${normalized}"`);
-      return executor.execute(normalized, params, hooks);
-    }
-  }
-
+  for (const executor of EXECUTORS)
+    if (await executorHandles(executor, normalized))
+      return (
+        console.warn(`[Executors] Normalized tool name "${toolName}" -> "${normalized}"`),
+        executor.execute(normalized, params, hooks)
+      );
   throw new Error(`Unknown tool: ${toolName}`);
 }

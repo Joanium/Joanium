@@ -1,8 +1,13 @@
-/* ─────────────────────────────────────────────
-   avatar-panel.css
-   Avatar / user profile panel (bottom-left popup)
-───────────────────────────────────────────── */
-
+.ap-badge,
+.ap-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+.ap-settings-btn:hover,
+.ap-theme-option:hover {
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
 #avatar-panel {
   position: absolute;
   bottom: 12px;
@@ -24,73 +29,62 @@
     opacity 0.2s ease,
     transform 0.3s var(--ease-spring);
 }
-
 #avatar-panel.open {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
-
-/* ── Header row ── */
 .ap-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 4px 4px 10px;
 }
-
 .ap-badge {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #333));
   color: #fff;
-  font-weight: 600;
-  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px var(--accent-glow);
 }
-
 .ap-user-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-
+.ap-settings-btn,
+.ap-theme-option {
+  align-items: center;
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
 .ap-name {
-  font-size: 15px;
-  font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.2px;
 }
-
 .ap-subtitle {
   font-size: 11.5px;
   color: var(--text-muted);
 }
-
 .ap-divider {
   height: 1px;
   background: var(--border);
   margin: 10px 0;
   opacity: 0.6;
 }
-
-/* ── Settings button ── */
 .ap-settings-btn {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 14px;
   padding: 14px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  cursor: pointer;
-  font-family: var(--font-ui);
   text-align: left;
   transition:
     border-color var(--transition-fast),
@@ -98,14 +92,10 @@
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .ap-settings-btn:hover {
-  background: var(--bg-hover);
   border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
-  transform: translateY(-1px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
 }
-
 .ap-settings-copy {
   display: flex;
   flex-direction: column;
@@ -121,7 +111,6 @@
   line-height: 1.45;
   color: var(--text-muted);
 }
-
 .ap-settings-btn svg {
   width: 18px;
   height: 18px;
@@ -131,50 +120,39 @@
     transform var(--transition-fast),
     color var(--transition-fast);
 }
-
 .ap-settings-btn:hover svg {
   transform: translateX(2px);
   color: var(--accent);
 }
-
-/* ── Theme grid inside avatar panel ── */
 .ap-themes {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-
 .ap-theme-option {
   display: inline-flex;
-  align-items: center;
   gap: 8px;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
-  background: transparent;
+  background: 0 0;
   border: 1px solid transparent;
-  cursor: pointer;
   font-size: 12.5px;
   color: var(--text-secondary);
-  font-family: var(--font-ui);
   transition:
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
     transform var(--transition-fast);
 }
-
+.ap-provider-name,
 .ap-theme-option:hover {
-  background: var(--bg-hover);
   color: var(--text-primary);
-  transform: translateY(-1px);
 }
 .ap-theme-option.active {
   background: var(--accent-dim);
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   color: var(--accent);
 }
-
-/* ── Provider items ── */
 .ap-provider-item {
   display: flex;
   align-items: center;
@@ -189,12 +167,10 @@
     border-color var(--transition-fast),
     background var(--transition-fast);
 }
-
 .ap-provider-item:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--accent) 18%, var(--border));
 }
-
 .ap-provider-dot {
   width: 10px;
   height: 10px;
@@ -203,14 +179,12 @@
 }
 .ap-provider-name {
   flex: 1;
-  color: var(--text-primary);
   font-weight: 500;
 }
 .ap-provider-status {
   font-size: 11px;
   color: var(--text-muted);
 }
-
 .ap-empty-hint {
   font-size: 12px;
   color: var(--text-muted);

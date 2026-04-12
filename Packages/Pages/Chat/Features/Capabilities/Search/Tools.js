@@ -1,7 +1,4 @@
 export const SEARCH_TOOLS = [
-  // ─────────────────────────────────────────────────────────────────
-  // ORIGINAL TOOLS
-  // ─────────────────────────────────────────────────────────────────
   {
     name: 'search_web',
     description:
@@ -10,13 +7,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The search query (e.g. "latest SpaceX launch", "how to center a div in CSS", "who is the CEO of Apple")',
       },
     },
   },
-
   {
     name: 'search_npm',
     description:
@@ -25,13 +21,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The npm package name or keyword to search for (e.g. "react router", "lodash", "express middleware")',
       },
     },
   },
-
   {
     name: 'search_pypi',
     description:
@@ -40,13 +35,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The Python package name or keyword to search for (e.g. "numpy", "web scraping", "fastapi")',
       },
     },
   },
-
   {
     name: 'search_crates',
     description:
@@ -55,13 +49,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The Rust crate name or keyword to search for (e.g. "tokio", "serde", "http client")',
       },
     },
   },
-
   {
     name: 'search_docker',
     description:
@@ -70,13 +63,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The Docker image name or keyword to search for (e.g. "nginx", "postgres", "node alpine")',
       },
     },
   },
-
   {
     name: 'search_arxiv',
     description:
@@ -85,18 +77,17 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The research topic or paper title to search for (e.g. "attention is all you need", "quantum computing error correction")',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum number of results to return (default: 5, max: 10)',
       },
     },
   },
-
   {
     name: 'search_books',
     description:
@@ -105,13 +96,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Book title, author name, or subject to search for (e.g. "Harry Potter", "Stephen King", "machine learning")',
       },
     },
   },
-
   {
     name: 'search_movies',
     description:
@@ -120,18 +110,17 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Movie or TV show title to search for (e.g. "Inception", "Breaking Bad", "The Dark Knight")',
       },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter by type: "movie", "series", or "episode" (default: any)',
       },
     },
   },
-
   {
     name: 'search_producthunt',
     description:
@@ -140,13 +129,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Product name or category to search for (e.g. "AI writing tool", "productivity app", "open source devtool")',
       },
     },
   },
-
   {
     name: 'search_cve',
     description:
@@ -155,13 +143,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'CVE ID or software/vulnerability keyword to search for (e.g. "CVE-2021-44228", "log4j", "nginx remote code execution")',
       },
     },
   },
-
   {
     name: 'search_wayback',
     description:
@@ -170,23 +157,18 @@ export const SEARCH_TOOLS = [
     parameters: {
       url: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'The full URL to look up in the Wayback Machine (e.g. "https://example.com", "https://old-website.com/page")',
       },
       timestamp: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Optional target timestamp in YYYYMMDDHHmmss format to find the nearest snapshot (e.g. "20200101000000" for Jan 1 2020). Defaults to the most recent snapshot.',
       },
     },
   },
-
-  // ─────────────────────────────────────────────────────────────────
-  // NEW: PACKAGE REGISTRIES
-  // ─────────────────────────────────────────────────────────────────
-
   {
     name: 'search_maven',
     description:
@@ -195,18 +177,17 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name, groupId, or keyword (e.g. "jackson databind", "org.springframework", "okhttp")',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of results to return (default: 5, max: 10)',
       },
     },
   },
-
   {
     name: 'search_nuget',
     description:
@@ -215,13 +196,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "Newtonsoft.Json", "Entity Framework", "Serilog")',
       },
     },
   },
-
   {
     name: 'search_packagist',
     description:
@@ -230,13 +210,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "laravel/framework", "guzzlehttp", "symfony console")',
       },
     },
   },
-
   {
     name: 'search_rubygems',
     description:
@@ -245,13 +224,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Gem name or keyword to search for (e.g. "rails", "devise", "rspec", "sinatra")',
       },
     },
   },
-
   {
     name: 'search_pub',
     description:
@@ -260,13 +238,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "http", "provider", "riverpod", "flutter bloc")',
       },
     },
   },
-
   {
     name: 'search_hex',
     description:
@@ -275,13 +252,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "phoenix", "ecto", "plug", "jason")',
       },
     },
   },
-
   {
     name: 'search_hackage',
     description:
@@ -290,13 +266,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "aeson", "lens", "conduit", "servant")',
       },
     },
   },
-
   {
     name: 'search_cpan',
     description:
@@ -305,13 +280,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Module name or keyword to search for (e.g. "Moose", "LWP::UserAgent", "DBI", "DateTime")',
       },
     },
   },
-
   {
     name: 'search_conda',
     description:
@@ -320,13 +294,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "scikit-learn", "pytorch", "pandas", "opencv")',
       },
     },
   },
-
   {
     name: 'search_swift',
     description:
@@ -335,13 +308,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "Alamofire", "Combine", "SwiftUI charts", "Vapor")',
       },
     },
   },
-
   {
     name: 'search_julia',
     description:
@@ -350,13 +322,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword to search for (e.g. "Flux.jl", "DataFrames", "DifferentialEquations", "Plots")',
       },
     },
   },
-
   {
     name: 'search_gradle',
     description:
@@ -365,13 +336,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Plugin name or keyword to search for (e.g. "android", "shadow jar", "kotlin", "spotless")',
       },
     },
   },
-
   {
     name: 'search_cocoapods',
     description:
@@ -380,17 +350,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Pod name or keyword to search for (e.g. "Alamofire", "SDWebImage", "Firebase", "RxSwift")',
       },
     },
   },
-
-  // ─────────────────────────────────────────────────────────────────
-  // NEW: DEV-TOOL ECOSYSTEMS
-  // ─────────────────────────────────────────────────────────────────
-
   {
     name: 'search_homebrew',
     description:
@@ -399,13 +364,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Formula or cask name to look up (e.g. "ffmpeg", "git", "node", "postgresql"). Works best with exact or near-exact names.',
       },
     },
   },
-
   {
     name: 'search_vscode',
     description:
@@ -414,7 +378,7 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Extension name or keyword to search for (e.g. "Prettier", "ESLint", "GitHub Copilot", "Python")',
       },
@@ -428,18 +392,17 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Provider or module name to search for (e.g. "aws", "kubernetes", "google cloud storage", "vpc")',
       },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter by type: "providers" or "modules" (default: providers)',
       },
     },
   },
-
   {
     name: 'search_ansible',
     description:
@@ -448,13 +411,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Role or collection name to search for (e.g. "nginx", "docker", "kubernetes", "postgresql")',
       },
     },
   },
-
   {
     name: 'search_wordpress_plugins',
     description:
@@ -463,13 +425,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Plugin name or keyword to search for (e.g. "WooCommerce", "Yoast SEO", "contact form", "caching")',
       },
     },
   },
-
   {
     name: 'search_godot',
     description:
@@ -478,7 +439,7 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Asset name or keyword to search for (e.g. "dialogue system", "procedural terrain", "inventory", "shader")',
       },
@@ -492,12 +453,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'R package name or keyword (e.g. "ggplot2", "dplyr", "caret", "time series")',
       },
     },
   },
-
   {
     name: 'search_clojars',
     description:
@@ -506,13 +466,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Library name or keyword (e.g. "ring", "compojure", "reagent", "clojure.core")',
       },
     },
   },
-
   {
     name: 'search_opam',
     description:
@@ -521,12 +480,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package name or keyword (e.g. "lwt", "cohttp", "ppx_deriving", "core")',
       },
     },
   },
-
   {
     name: 'search_elm',
     description:
@@ -535,12 +493,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package name or keyword (e.g. "elm/html", "elm-ui", "Http", "decoder")',
       },
     },
   },
-
   {
     name: 'search_dub',
     description:
@@ -549,13 +506,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword (e.g. "vibe-d", "mir-algorithm", "hunt-framework", "crypto")',
       },
     },
   },
-
   {
     name: 'search_nimble',
     description:
@@ -564,12 +520,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package name or keyword (e.g. "prologue", "karax", "jsony", "sqlite")',
       },
     },
   },
-
   {
     name: 'search_luarocks',
     description:
@@ -578,12 +533,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Module name or keyword (e.g. "lpeg", "luasocket", "penlight", "moonscript")',
       },
     },
   },
-
   {
     name: 'search_crystal',
     description:
@@ -592,12 +546,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Shard name or keyword (e.g. "amber", "kemal", "lucky", "http")',
       },
     },
   },
-
   {
     name: 'search_purescript',
     description:
@@ -606,13 +559,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package or module name (e.g. "purescript-halogen", "Effect", "Aff", "purescript-foreign")',
       },
     },
   },
-
   {
     name: 'search_nix',
     description:
@@ -621,13 +573,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package attribute name or keyword (e.g. "nodejs", "rustc", "ffmpeg", "python3Packages.numpy")',
       },
     },
   },
-
   {
     name: 'search_go',
     description:
@@ -636,13 +587,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Module path, package name, or keyword (e.g. "gin", "cobra", "golang.org/x/net", "grpc")',
       },
     },
   },
-
   {
     name: 'search_conan',
     description:
@@ -651,12 +601,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package name or keyword (e.g. "boost", "openssl", "zlib", "nlohmann_json")',
       },
     },
   },
-
   {
     name: 'search_vcpkg',
     description:
@@ -665,12 +614,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Port name or keyword (e.g. "boost", "sqlite3", "zlib", "opencv")',
       },
     },
   },
-
   {
     name: 'search_haxelib',
     description:
@@ -679,12 +627,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Library name or keyword (e.g. "haxeui", "openfl", "lime", "actuate")',
       },
     },
   },
-
   {
     name: 'search_racket',
     description:
@@ -693,13 +640,12 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword (e.g. "web-server", "data-science", "json", "rackunit")',
       },
     },
   },
-
   {
     name: 'search_spack',
     description:
@@ -708,12 +654,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package name or keyword (e.g. "hdf5", "openmpi", "fftw", "pytorch")',
       },
     },
   },
-
   {
     name: 'search_meson_wrap',
     description:
@@ -722,12 +667,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Wrap package name or keyword (e.g. "zlib", "openssl", "glib", "libpng")',
       },
     },
   },
-
   {
     name: 'search_scoop',
     description:
@@ -736,12 +680,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'App name or keyword (e.g. "git", "nodejs", "python", "ffmpeg")',
       },
     },
   },
-
   {
     name: 'search_winget',
     description:
@@ -750,12 +693,11 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'App name or keyword (e.g. "Git.Git", "Microsoft.VSCode", "Python", "7zip")',
       },
     },
   },
-
   {
     name: 'search_ctan',
     description:
@@ -764,7 +706,7 @@ export const SEARCH_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Package name or keyword (e.g. "tikz", "beamer", "amsmath", "babel", "geometry")',
       },

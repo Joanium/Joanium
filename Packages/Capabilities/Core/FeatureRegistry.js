@@ -1,82 +1,36 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 import { cloneValue as deepClone } from '../../System/Utils/CloneValue.js';
-
 function uniqueBy(items = [], keyFn = (item) => item) {
-  const seen = new Set();
-  const result = [];
-
+  const seen = new Set(),
+    result = [];
   for (const item of items) {
     const key = keyFn(item);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    result.push(item);
+    seen.has(key) || (seen.add(key), result.push(item));
   }
-
   return result;
 }
-
 function normalizeFeatureStorage(feature = {}) {
   const raw = feature.storage;
-  if (!raw) return [];
-
-  const items = Array.isArray(raw) ? raw : Array.isArray(raw.descriptors) ? raw.descriptors : [raw];
-
-  return items
-    .filter((item) => item && typeof item === 'object' && !Array.isArray(item))
-    .map((item) => deepClone(item));
+  return raw
+    ? (Array.isArray(raw) ? raw : Array.isArray(raw.descriptors) ? raw.descriptors : [raw])
+        .filter((item) => item && 'object' == typeof item && !Array.isArray(item))
+        .map((item) => deepClone(item))
+    : [];
 }
-
-function getDefaultFeatureStorageKey(feature = {}) {
-  return normalizeFeatureStorage(feature)[0]?.key ?? feature.id;
-}
-
-function topologicallySortFeatures(features = []) {
-  const byId = new Map(features.map((feature) => [feature.id, feature]));
-  const visiting = new Set();
-  const visited = new Set();
-  const result = [];
-
-  function visit(feature) {
-    if (visited.has(feature.id)) return;
-    if (visiting.has(feature.id)) {
-      throw new Error(`[FeatureRegistry] Circular dependency involving "${feature.id}".`);
-    }
-
-    visiting.add(feature.id);
-
-    for (const dependencyId of feature.dependsOn ?? []) {
-      const dependency = byId.get(dependencyId);
-      if (!dependency) {
-        throw new Error(
-          `[FeatureRegistry] Feature "${feature.id}" depends on missing feature "${dependencyId}".`,
-        );
-      }
-      visit(dependency);
-    }
-
-    visiting.delete(feature.id);
-    visited.add(feature.id);
-    result.push(feature);
-  }
-
-  for (const feature of features) visit(feature);
-  return result;
-}
-
 function sortByOrder(items = []) {
   return [...items].sort((left, right) => {
-    const leftOrder = left.order ?? 999;
-    const rightOrder = right.order ?? 999;
-    if (leftOrder !== rightOrder) return leftOrder - rightOrder;
-    return String(left.name ?? left.id ?? '').localeCompare(String(right.name ?? right.id ?? ''));
+    const leftOrder = left.order ?? 999,
+      rightOrder = right.order ?? 999;
+    return leftOrder !== rightOrder
+      ? leftOrder - rightOrder
+      : String(left.name ?? left.id ?? '').localeCompare(String(right.name ?? right.id ?? ''));
   });
 }
-
 function serializeServiceConnector(featureId, connector) {
   return {
-    featureId,
+    featureId: featureId,
     id: connector.id,
     name: connector.name,
     icon: connector.icon,
@@ -96,16 +50,15 @@ function serializeServiceConnector(featureId, connector) {
     order: connector.order ?? 999,
   };
 }
-
 function serializeFreeConnector(featureId, connector) {
   return {
-    featureId,
+    featureId: featureId,
     id: connector.id,
     name: connector.name,
     icon: connector.icon,
     description: connector.description,
-    noKey: connector.noKey ?? false,
-    optionalKey: connector.optionalKey ?? false,
+    noKey: connector.noKey ?? !1,
+    optionalKey: connector.optionalKey ?? !1,
     keyLabel: connector.keyLabel ?? '',
     keyPlaceholder: connector.keyPlaceholder ?? '',
     keyHint: connector.keyHint ?? '',
@@ -114,137 +67,127 @@ function serializeFreeConnector(featureId, connector) {
     order: connector.order ?? 999,
   };
 }
-
 export class FeatureRegistry {
   static _findFeatureFiles(rootDir) {
     const featureFiles = [];
-
-    function visit(directory) {
-      const entries = fs
-        .readdirSync(directory, { withFileTypes: true })
-        .sort((left, right) => left.name.localeCompare(right.name));
-
-      for (const entry of entries) {
-        const fullPath = path.join(directory, entry.name);
-        if (entry.isDirectory()) {
-          visit(fullPath);
-          continue;
+    return (
+      (function visit(directory) {
+        const entries = fs
+          .readdirSync(directory, { withFileTypes: !0 })
+          .sort((left, right) => left.name.localeCompare(right.name));
+        for (const entry of entries) {
+          const fullPath = path.join(directory, entry.name);
+          entry.isDirectory()
+            ? visit(fullPath)
+            : entry.isFile() && 'Feature.js' === entry.name && featureFiles.push(fullPath);
         }
-
-        if (entry.isFile() && entry.name === 'Feature.js') {
-          featureFiles.push(fullPath);
-        }
-      }
-    }
-
-    visit(rootDir);
-    return featureFiles;
+      })(rootDir),
+      featureFiles
+    );
   }
-
   static async load(featuresRoots = []) {
-    const roots = Array.isArray(featuresRoots)
-      ? featuresRoots
-      : featuresRoots
-        ? [featuresRoots]
-        : [];
-    const existingRoots = roots
-      .filter((root) => typeof root === 'string' && root.trim())
+    const existingRoots = (
+      Array.isArray(featuresRoots) ? featuresRoots : featuresRoots ? [featuresRoots] : []
+    )
+      .filter((root) => 'string' == typeof root && root.trim())
       .map((root) => path.resolve(root))
       .filter((root, index, values) => values.indexOf(root) === index)
       .filter((root) => fs.existsSync(root));
-
-    if (!existingRoots.length) {
-      return new FeatureRegistry([], existingRoots);
-    }
-
+    if (!existingRoots.length) return new FeatureRegistry([], existingRoots);
     const featureFiles = uniqueBy(
-      existingRoots.flatMap((root) => FeatureRegistry._findFeatureFiles(root)),
-      (filePath) => path.resolve(filePath),
-    );
-    const loadedFeatures = [];
-    const featureSources = new Map();
-
+        existingRoots.flatMap((root) => FeatureRegistry._findFeatureFiles(root)),
+        (filePath) => path.resolve(filePath),
+      ),
+      loadedFeatures = [],
+      featureSources = new Map();
     for (const featureFile of featureFiles) {
-      const imported = await import(pathToFileURL(featureFile).href);
-      const feature = imported.default ?? imported.feature ?? imported;
-      if (!feature?.id) {
-        throw new Error(`[FeatureRegistry] Missing feature id in ${featureFile}.`);
-      }
+      const imported = await import(pathToFileURL(featureFile).href),
+        feature = imported.default ?? imported.feature ?? imported;
+      if (!feature?.id) throw new Error(`[FeatureRegistry] Missing feature id in ${featureFile}.`);
       const previousSource = featureSources.get(feature.id);
-      if (previousSource) {
+      if (previousSource)
         throw new Error(
           `[FeatureRegistry] Duplicate feature id "${feature.id}" in ${previousSource} and ${featureFile}.`,
         );
-      }
-      featureSources.set(feature.id, featureFile);
-      loadedFeatures.push(feature);
+      (featureSources.set(feature.id, featureFile), loadedFeatures.push(feature));
     }
-
     return new FeatureRegistry(loadedFeatures, existingRoots);
   }
-
   constructor(features = [], featuresDir = []) {
-    this.featuresDir = Array.isArray(featuresDir) ? [...featuresDir] : featuresDir;
-    this.features = topologicallySortFeatures(features);
-    this.featureMap = new Map(this.features.map((feature) => [feature.id, feature]));
-    this.baseContext = {};
-    this.windows = new Set();
-
-    this.chatToolMap = new Map();
-    this.automationDataSourceMap = new Map();
-    this.automationOutputMap = new Map();
-    this.connectorValidatorMap = new Map();
-
-    this._indexFeatures();
+    ((this.featuresDir = Array.isArray(featuresDir) ? [...featuresDir] : featuresDir),
+      (this.features = (function (features = []) {
+        const byId = new Map(features.map((feature) => [feature.id, feature])),
+          visiting = new Set(),
+          visited = new Set(),
+          result = [];
+        function visit(feature) {
+          if (!visited.has(feature.id)) {
+            if (visiting.has(feature.id))
+              throw new Error(`[FeatureRegistry] Circular dependency involving "${feature.id}".`);
+            visiting.add(feature.id);
+            for (const dependencyId of feature.dependsOn ?? []) {
+              const dependency = byId.get(dependencyId);
+              if (!dependency)
+                throw new Error(
+                  `[FeatureRegistry] Feature "${feature.id}" depends on missing feature "${dependencyId}".`,
+                );
+              visit(dependency);
+            }
+            (visiting.delete(feature.id), visited.add(feature.id), result.push(feature));
+          }
+        }
+        for (const feature of features) visit(feature);
+        return result;
+      })(features)),
+      (this.featureMap = new Map(this.features.map((feature) => [feature.id, feature]))),
+      (this.baseContext = {}),
+      (this.windows = new Set()),
+      (this.chatToolMap = new Map()),
+      (this.automationDataSourceMap = new Map()),
+      (this.automationOutputMap = new Map()),
+      (this.connectorValidatorMap = new Map()),
+      this._indexFeatures());
   }
-
   _indexFeatures() {
     for (const feature of this.features) {
-      for (const tool of feature.renderer?.chatTools ?? []) {
-        if (!tool?.name) continue;
-        this.chatToolMap.set(tool.name, feature.id);
-      }
-
-      for (const dataSource of feature.automation?.dataSources ?? []) {
-        if (!dataSource?.value) continue;
-        this.automationDataSourceMap.set(dataSource.value, feature.id);
-      }
-
-      for (const outputType of feature.automation?.outputTypes ?? []) {
-        if (!outputType?.value) continue;
-        this.automationOutputMap.set(outputType.value, feature.id);
-      }
-
-      for (const connector of feature.connectors?.services ?? []) {
-        if (!connector?.id || typeof connector.validate !== 'function') continue;
-        this.connectorValidatorMap.set(connector.id, feature.id);
-      }
+      for (const tool of feature.renderer?.chatTools ?? [])
+        tool?.name && this.chatToolMap.set(tool.name, feature.id);
+      for (const dataSource of feature.automation?.dataSources ?? [])
+        dataSource?.value && this.automationDataSourceMap.set(dataSource.value, feature.id);
+      for (const outputType of feature.automation?.outputTypes ?? [])
+        outputType?.value && this.automationOutputMap.set(outputType.value, feature.id);
+      for (const connector of feature.connectors?.services ?? [])
+        connector?.id &&
+          'function' == typeof connector.validate &&
+          this.connectorValidatorMap.set(connector.id, feature.id);
     }
   }
   setBaseContext(baseContext = {}) {
     this.baseContext = baseContext;
   }
-
   attachWindow(windowRef) {
-    if (!windowRef) return;
-    this.windows.add(windowRef);
-    windowRef.on?.('closed', () => this.windows.delete(windowRef));
+    windowRef &&
+      (this.windows.add(windowRef), windowRef.on?.('closed', () => this.windows.delete(windowRef)));
   }
-
   emit(featureId, event, payload) {
-    for (const windowRef of this.windows) {
-      if (!windowRef || windowRef.isDestroyed?.()) continue;
-      windowRef.webContents?.send?.('feature:event', { featureId, event, payload });
-    }
+    for (const windowRef of this.windows)
+      windowRef &&
+        !windowRef.isDestroyed?.() &&
+        windowRef.webContents?.send?.('feature:event', {
+          featureId: featureId,
+          event: event,
+          payload: payload,
+        });
   }
-
   _createContext(feature, extraContext = {}) {
-    const paths = this.baseContext.paths ?? {};
-    const defaultStorageKey = getDefaultFeatureStorageKey(feature);
+    const paths = this.baseContext.paths ?? {},
+      defaultStorageKey = (function (feature = {}) {
+        return normalizeFeatureStorage(feature)[0]?.key ?? feature.id;
+      })(feature);
     return {
       ...this.baseContext,
       ...extraContext,
-      feature,
+      feature: feature,
       featureRegistry: this,
       getStorage: (key = defaultStorageKey) => this.baseContext.featureStorage?.get?.(key) ?? null,
       getFeatureDataPath: (...segments) =>
@@ -252,131 +195,94 @@ export class FeatureRegistry {
       emit: (event, payload) => this.emit(feature.id, event, payload),
     };
   }
-
   getFeature(featureId) {
     return this.featureMap.get(featureId) ?? null;
   }
-
   getConnectorDefaults() {
     const defaults = [];
-
     for (const feature of this.features) {
-      for (const connector of feature.connectors?.services ?? []) {
+      for (const connector of feature.connectors?.services ?? [])
         defaults.push({
           id: connector.id,
           defaultState: {
-            enabled: connector.defaultState?.enabled ?? false,
-            isFree: false,
-            noKey: false,
+            enabled: connector.defaultState?.enabled ?? !1,
+            isFree: !1,
+            noKey: !1,
             credentials: deepClone(connector.defaultState?.credentials ?? {}),
             connectedAt: null,
           },
         });
-      }
-
-      for (const connector of feature.connectors?.free ?? []) {
+      for (const connector of feature.connectors?.free ?? [])
         defaults.push({
           id: connector.id,
           defaultState: {
-            enabled: connector.defaultState?.enabled ?? true,
-            isFree: true,
-            noKey: connector.noKey ?? false,
+            enabled: connector.defaultState?.enabled ?? !0,
+            isFree: !0,
+            noKey: connector.noKey ?? !1,
             credentials: deepClone(connector.defaultState?.credentials ?? {}),
             connectedAt: null,
           },
         });
-      }
     }
-
     return defaults;
   }
-
   getStorageDescriptors() {
     const descriptors = [];
-
-    for (const feature of this.features) {
-      descriptors.push(...normalizeFeatureStorage(feature));
-    }
-
+    for (const feature of this.features) descriptors.push(...normalizeFeatureStorage(feature));
     return descriptors;
   }
-
   _buildServiceConnectors() {
     const serviceMap = new Map();
-
-    for (const feature of this.features) {
-      for (const connector of feature.connectors?.services ?? []) {
+    for (const feature of this.features)
+      for (const connector of feature.connectors?.services ?? [])
         serviceMap.set(connector.id, serializeServiceConnector(feature.id, connector));
-      }
-    }
-
-    for (const feature of this.features) {
+    for (const feature of this.features)
       for (const extension of feature.connectors?.serviceExtensions ?? []) {
         if (!extension?.target) continue;
         const current = serviceMap.get(extension.target);
-        if (!current) continue;
-
-        current.subServices = uniqueBy(
-          [...current.subServices, ...deepClone(extension.subServices ?? [])],
-          (item) => item.key,
-        );
-        current.capabilities = uniqueBy(
-          [...current.capabilities, ...deepClone(extension.capabilities ?? [])],
-          (item) => item,
-        );
-        current.automations = uniqueBy(
-          [...current.automations, ...deepClone(extension.automations ?? [])],
-          (item) => `${item.name}:${item.description}`,
-        );
+        current &&
+          ((current.subServices = uniqueBy(
+            [...current.subServices, ...deepClone(extension.subServices ?? [])],
+            (item) => item.key,
+          )),
+          (current.capabilities = uniqueBy(
+            [...current.capabilities, ...deepClone(extension.capabilities ?? [])],
+            (item) => item,
+          )),
+          (current.automations = uniqueBy(
+            [...current.automations, ...deepClone(extension.automations ?? [])],
+            (item) => `${item.name}:${item.description}`,
+          )));
       }
-    }
-
     return sortByOrder([...serviceMap.values()]);
   }
-
   _buildFreeConnectors() {
     const freeConnectors = [];
-
-    for (const feature of this.features) {
-      for (const connector of feature.connectors?.free ?? []) {
+    for (const feature of this.features)
+      for (const connector of feature.connectors?.free ?? [])
         freeConnectors.push(serializeFreeConnector(feature.id, connector));
-      }
-    }
-
     return sortByOrder(freeConnectors);
   }
-
   getBootPayload() {
-    const chatTools = [];
-    const automationDataSources = [];
-    const automationOutputTypes = [];
-    const instructionTemplates = {};
-    const featurePages = [];
-
+    const chatTools = [],
+      automationDataSources = [],
+      automationOutputTypes = [],
+      instructionTemplates = {},
+      featurePages = [];
     for (const feature of this.features) {
-      for (const page of feature.pages ?? []) {
-        if (!page?.id) continue;
-        featurePages.push({ featureId: feature.id, ...deepClone(page) });
-      }
-
-      for (const tool of feature.renderer?.chatTools ?? []) {
+      for (const page of feature.pages ?? [])
+        page?.id && featurePages.push({ featureId: feature.id, ...deepClone(page) });
+      for (const tool of feature.renderer?.chatTools ?? [])
         chatTools.push({ featureId: feature.id, ...deepClone(tool) });
-      }
-
-      for (const dataSource of feature.automation?.dataSources ?? []) {
+      for (const dataSource of feature.automation?.dataSources ?? [])
         automationDataSources.push({ featureId: feature.id, ...deepClone(dataSource) });
-      }
-
-      for (const outputType of feature.automation?.outputTypes ?? []) {
+      for (const outputType of feature.automation?.outputTypes ?? [])
         automationOutputTypes.push({ featureId: feature.id, ...deepClone(outputType) });
-      }
-
       Object.assign(
         instructionTemplates,
         deepClone(feature.automation?.instructionTemplates ?? {}),
       );
     }
-
     return {
       features: this.features.map((feature) => ({
         id: feature.id,
@@ -384,121 +290,97 @@ export class FeatureRegistry {
         dependsOn: [...(feature.dependsOn ?? [])],
       })),
       pages: featurePages,
-      connectors: {
-        services: this._buildServiceConnectors(),
-        free: this._buildFreeConnectors(),
-      },
-      chat: {
-        tools: chatTools,
-      },
+      connectors: { services: this._buildServiceConnectors(), free: this._buildFreeConnectors() },
+      chat: { tools: chatTools },
       automations: {
         dataSources: automationDataSources,
         outputTypes: automationOutputTypes,
-        instructionTemplates,
+        instructionTemplates: instructionTemplates,
       },
     };
   }
-
   async invoke(featureId, method, payload = {}, extraContext = {}) {
     const feature = this.getFeature(featureId);
-    if (!feature) {
-      throw new Error(`[FeatureRegistry] Unknown feature "${featureId}".`);
-    }
-
+    if (!feature) throw new Error(`[FeatureRegistry] Unknown feature "${featureId}".`);
     const handler = feature.main?.methods?.[method];
-    if (typeof handler !== 'function') {
+    if ('function' != typeof handler)
       throw new Error(`[FeatureRegistry] Feature "${featureId}" has no main method "${method}".`);
-    }
-
     return handler(this._createContext(feature, extraContext), payload);
   }
-
   async validateConnector(connectorId, extraContext = {}) {
     const featureId = this.connectorValidatorMap.get(connectorId);
     if (!featureId) return null;
-
-    const feature = this.getFeature(featureId);
-    const connector = (feature.connectors?.services ?? []).find((item) => item.id === connectorId);
-    if (!connector || typeof connector.validate !== 'function') return null;
-
-    return connector.validate(this._createContext(feature, extraContext), connectorId);
+    const feature = this.getFeature(featureId),
+      connector = (feature.connectors?.services ?? []).find((item) => item.id === connectorId);
+    return connector && 'function' == typeof connector.validate
+      ? connector.validate(this._createContext(feature, extraContext), connectorId)
+      : null;
   }
-
   async executeChatTool(toolName, params = {}, extraContext = {}) {
     const featureId = this.chatToolMap.get(toolName);
-    if (!featureId) return null;
-    return {
-      handled: true,
-      result: await this.invoke(featureId, 'executeChatTool', { toolName, params }, extraContext),
-    };
+    return featureId
+      ? {
+          handled: !0,
+          result: await this.invoke(
+            featureId,
+            'executeChatTool',
+            { toolName: toolName, params: params },
+            extraContext,
+          ),
+        }
+      : null;
   }
-
   getAutomationDataSourceDefinition(type) {
     const featureId = this.automationDataSourceMap.get(type);
     if (!featureId) return null;
     const feature = this.getFeature(featureId);
     return (feature.automation?.dataSources ?? []).find((item) => item.value === type) ?? null;
   }
-
   async collectAutomationDataSource(dataSource, extraContext = {}) {
     const featureId = this.automationDataSourceMap.get(dataSource?.type);
     if (!featureId) return null;
-
-    const feature = this.getFeature(featureId);
-    const handler = feature.automation?.dataSourceCollectors?.[dataSource.type];
-    if (typeof handler !== 'function') return null;
-
-    return {
-      handled: true,
-      result: await handler(this._createContext(feature, extraContext), dataSource),
-    };
+    const feature = this.getFeature(featureId),
+      handler = feature.automation?.dataSourceCollectors?.[dataSource.type];
+    return 'function' != typeof handler
+      ? null
+      : {
+          handled: !0,
+          result: await handler(this._createContext(feature, extraContext), dataSource),
+        };
   }
-
   async executeAutomationOutput(output, payload, extraContext = {}) {
     const featureId = this.automationOutputMap.get(output?.type);
     if (!featureId) return null;
-
-    const feature = this.getFeature(featureId);
-    const handler = feature.automation?.outputHandlers?.[output.type];
-    if (typeof handler !== 'function') return null;
-
-    return {
-      handled: true,
-      result: await handler(this._createContext(feature, extraContext), {
-        output,
-        ...payload,
-      }),
-    };
+    const feature = this.getFeature(featureId),
+      handler = feature.automation?.outputHandlers?.[output.type];
+    return 'function' != typeof handler
+      ? null
+      : {
+          handled: !0,
+          result: await handler(this._createContext(feature, extraContext), {
+            output: output,
+            ...payload,
+          }),
+        };
   }
-
   async buildPromptContext(extraContext = {}) {
-    const connectedServices = [];
-    const sections = [];
-
+    const connectedServices = [],
+      sections = [];
     for (const feature of this.features) {
       const getContext = feature.prompt?.getContext;
-      if (typeof getContext !== 'function') continue;
-
+      if ('function' != typeof getContext) continue;
       const promptContext = await getContext(this._createContext(feature, extraContext));
-      if (!promptContext) continue;
-
-      connectedServices.push(...(promptContext.connectedServices ?? []));
-      sections.push(...(promptContext.sections ?? []));
+      promptContext &&
+        (connectedServices.push(...(promptContext.connectedServices ?? [])),
+        sections.push(...(promptContext.sections ?? [])));
     }
-
-    return {
-      connectedServices: uniqueBy(connectedServices),
-      sections,
-    };
+    return { connectedServices: uniqueBy(connectedServices), sections: sections };
   }
-
   async runLifecycle(method, extraContext = {}) {
     for (const feature of this.features) {
       const handler = feature.lifecycle?.[method];
-      if (typeof handler !== 'function') continue;
-      await handler(this._createContext(feature, extraContext));
+      'function' == typeof handler && (await handler(this._createContext(feature, extraContext)));
     }
   }
 }
-
 export default FeatureRegistry;

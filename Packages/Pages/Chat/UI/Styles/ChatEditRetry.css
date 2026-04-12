@@ -1,62 +1,43 @@
-/* ══════════════════════════════════════════
-   EDIT & RETRY BUTTON ADDITIONS
-   Add these rules to Chat.css (or import as
-   a separate file in IndexPage.css)
-══════════════════════════════════════════ */
-
-/* ── Make sure all three user-action buttons are spaced nicely ── */
 .user-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
-
-/* ── Edit-mode: hide actions while textarea is open ── */
 .message-row.user .user-actions[style*='opacity: 0'],
 .message-row.user .user-actions[style*='opacity:0'] {
   pointer-events: none;
 }
-
-/* ── Keyframes ── */
 @keyframes editExpand {
   from {
     opacity: 0;
     transform: scale(0.97) translateX(8px);
   }
-
   to {
     opacity: 1;
     transform: scale(1) translateX(0);
   }
 }
-
 @keyframes editSlideIn {
   from {
     opacity: 0;
     transform: translateY(-6px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
 @keyframes editFadeIn {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
 }
-
-/* ── When editing, bubble expands leftward ── */
 .message-row.user.is-editing {
   justify-content: flex-end;
 }
-
 .message-row.user.is-editing .bubble {
   max-width: min(72%, 720px);
   width: min(72%, 720px);
@@ -65,8 +46,6 @@
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
   animation: editExpand 0.25s var(--ease-spring) both;
 }
-
-/* ── Bubble edit textarea ── */
 .bubble-edit-textarea {
   width: 100%;
   background: var(--bg-input);
@@ -79,22 +58,19 @@
   line-height: 1.6;
   resize: none;
   min-height: 64px;
-  outline: none;
+  outline: 0;
   box-shadow: 0 0 0 3px var(--accent-glow);
   display: block;
   overflow: hidden;
-  animation: editSlideIn 0.2s var(--ease-out-expo) 0.05s both;
+  animation: editSlideIn 0.2s var(--ease-out-expo) 50ms both;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .bubble-edit-textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
-
-/* ── History warning ── */
 .bubble-edit-warning {
   display: flex;
   align-items: center;
@@ -104,16 +80,13 @@
   color: var(--text-muted);
   font-family: var(--font-ui);
   line-height: 1.45;
-  animation: editFadeIn 0.2s ease 0.12s both;
+  animation: 0.2s 0.12s both editFadeIn;
 }
-
 .bubble-edit-warning svg {
   flex-shrink: 0;
   color: color-mix(in srgb, var(--accent) 70%, var(--text-muted));
   opacity: 0.85;
 }
-
-/* ── Edit action row (cancel / save) ── */
 .bubble-edit-actions {
   display: flex;
   align-items: center;
@@ -122,7 +95,6 @@
   justify-content: flex-end;
   animation: editSlideIn 0.2s var(--ease-out-expo) 0.15s both;
 }
-
 .bubble-edit-cancel,
 .bubble-edit-save {
   padding: 7px 16px;
@@ -138,33 +110,28 @@
     box-shadow var(--transition-fast),
     filter var(--transition-fast);
 }
-
 .bubble-edit-cancel {
-  background: transparent;
+  background: 0 0;
   border: 1px solid var(--border);
   color: var(--text-secondary);
 }
-
 .bubble-edit-cancel:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
   transform: translateY(-1px);
 }
-
 .bubble-edit-save {
   background: var(--accent);
   border: 1px solid transparent;
   color: #fff;
   box-shadow: 0 3px 12px var(--accent-glow);
 }
-
 .bubble-edit-save:hover {
   filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow: 0 6px 18px var(--accent-glow);
 }
-
-.bubble-edit-save:active,
-.bubble-edit-cancel:active {
+.bubble-edit-cancel:active,
+.bubble-edit-save:active {
   transform: translateY(0) scale(0.97);
 }

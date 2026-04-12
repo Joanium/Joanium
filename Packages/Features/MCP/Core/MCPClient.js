@@ -2,278 +2,196 @@ import { EventEmitter } from 'events';
 import { spawn } from 'child_process';
 import { createInterface } from 'readline';
 import { getBuiltinBrowserServer } from '../Builtin/BrowserMCPServer.js';
-
-const PROTOCOL_VERSION = '2024-11-05';
 const CLIENT_INFO = { name: 'Joanium', version: '0.1.0' };
-
-// BASE MCP SESSION
 class MCPSession extends EventEmitter {
   constructor() {
-    super();
-    this._nextId = 1;
-    this._pending = new Map(); // id → { resolve, reject }
+    (super(), (this._nextId = 1), (this._pending = new Map()));
   }
-
   _nextReqId() {
     return this._nextId++;
   }
-
   _dispatch(message) {
-    if (message.id != null && this._pending.has(message.id)) {
-      const { resolve, reject } = this._pending.get(message.id);
-      this._pending.delete(message.id);
-      if (message.error) reject(new Error(message.error.message ?? JSON.stringify(message.error)));
-      else resolve(message.result);
-    } else if (message.method) {
-      // Server-sent notification
-      this.emit('notification', message);
-    }
+    if (null != message.id && this._pending.has(message.id)) {
+      const { resolve: resolve, reject: reject } = this._pending.get(message.id);
+      (this._pending.delete(message.id),
+        message.error
+          ? reject(new Error(message.error.message ?? JSON.stringify(message.error)))
+          : resolve(message.result));
+    } else message.method && this.emit('notification', message);
   }
-
   async _request(method, params = {}) {
     const id = this._nextReqId();
     return new Promise((resolve, reject) => {
-      this._pending.set(id, { resolve, reject });
-      this._send({ jsonrpc: '2.0', id, method, params });
+      (this._pending.set(id, { resolve: resolve, reject: reject }),
+        this._send({ jsonrpc: '2.0', id: id, method: method, params: params }));
     });
   }
-
-  /* ── Public MCP methods ── */
-
   async initialize() {
     return this._request('initialize', {
-      protocolVersion: PROTOCOL_VERSION,
+      protocolVersion: '2024-11-05',
       capabilities: { tools: {}, resources: {} },
       clientInfo: CLIENT_INFO,
     });
   }
-
   async listTools() {
     const res = await this._request('tools/list', {});
     return res?.tools ?? [];
   }
-
   async callTool(name, args = {}) {
-    return this._request('tools/call', { name, arguments: args });
+    return this._request('tools/call', { name: name, arguments: args });
   }
-
   async listResources() {
     const res = await this._request('resources/list', {});
     return res?.resources ?? [];
   }
-
   async readResource(uri) {
-    return this._request('resources/read', { uri });
+    return this._request('resources/read', { uri: uri });
   }
-
-  // Subclasses implement _send and must call _dispatch on incoming messages
   _send(_msg) {
     throw new Error('_send() not implemented');
   }
-  async close() {
-    /* override */
-  }
+  async close() {}
 }
-
-/* ══════════════════════════════════════════
-   STDIO TRANSPORT
-   Spawns a local process and communicates
-   via JSON-RPC lines on stdin/stdout.
-══════════════════════════════════════════ */
 export class StdioMCPSession extends MCPSession {
-  constructor({ command, args = [], env = {} }) {
-    super();
-    this._closed = false;
-    this._exitCode = null;
-    this._closedPromise = new Promise((resolve) => {
-      this._resolveClosed = resolve;
-    });
-
-    this._proc = spawn(command, args, {
-      stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env, ...env },
-      shell: process.platform === 'win32',
-    });
-
-    const rl = createInterface({ input: this._proc.stdout });
-    rl.on('line', (line) => {
-      if (!line.trim()) return;
-      try {
-        this._dispatch(JSON.parse(line));
-      } catch {
-        /* ignore non-JSON */
-      }
-    });
-
-    this._proc.stderr?.on('data', (d) => this.emit('stderr', d.toString()));
-
-    this._proc.on('exit', (code) => {
-      this._closed = true;
-      this._exitCode = code;
-      this._resolveClosed?.(code);
-      this.emit('close', code);
-    });
+  constructor({ command: command, args: args = [], env: env = {} }) {
+    (super(),
+      (this._closed = !1),
+      (this._exitCode = null),
+      (this._closedPromise = new Promise((resolve) => {
+        this._resolveClosed = resolve;
+      })),
+      (this._proc = spawn(command, args, {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        env: { ...process.env, ...env },
+        shell: 'win32' === process.platform,
+      })),
+      createInterface({ input: this._proc.stdout }).on('line', (line) => {
+        if (line.trim())
+          try {
+            this._dispatch(JSON.parse(line));
+          } catch {}
+      }),
+      this._proc.stderr?.on('data', (d) => this.emit('stderr', d.toString())),
+      this._proc.on('exit', (code) => {
+        ((this._closed = !0),
+          (this._exitCode = code),
+          this._resolveClosed?.(code),
+          this.emit('close', code));
+      }));
   }
-
   _send(msg) {
     this._proc.stdin?.write(JSON.stringify(msg) + '\n');
   }
-
   async close() {
-    if (this._closed || this._proc.exitCode !== null) return this._closedPromise;
-    this._proc.stdin?.end();
-    return this._closedPromise;
+    return (
+      this._closed || null !== this._proc.exitCode || this._proc.stdin?.end(),
+      this._closedPromise
+    );
   }
 }
-
-/* ══════════════════════════════════════════
-   HTTP TRANSPORT
-   Uses streamable HTTP (POST requests).
-   Compatible with the MCP HTTP transport spec.
-══════════════════════════════════════════ */
 export class HttpMCPSession extends MCPSession {
-  constructor({ url }) {
-    super();
-    this._url = url.endsWith('/') ? url.slice(0, -1) : url;
+  constructor({ url: url }) {
+    (super(), (this._url = url.endsWith('/') ? url.slice(0, -1) : url));
   }
-
-  _send(_msg) {
-    // HTTP transport sends each request independently — see _request override
-  }
-
+  _send(_msg) {}
   async _request(method, params = {}) {
-    const id = this._nextReqId();
-    const res = await fetch(`${this._url}/mcp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', id, method, params }),
-    });
+    const id = this._nextReqId(),
+      res = await fetch(`${this._url}/mcp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: id, method: method, params: params }),
+      });
     if (!res.ok) throw new Error(`MCP HTTP ${res.status}: ${await res.text().catch(() => '')}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error.message ?? JSON.stringify(data.error));
     return data.result;
   }
 }
-
 export class BuiltinMCPSession extends MCPSession {
-  constructor({ builtinType }) {
-    super();
-
-    if (builtinType === 'browser') {
-      this._server = getBuiltinBrowserServer();
-    } else {
+  constructor({ builtinType: builtinType }) {
+    if ((super(), 'browser' !== builtinType))
       throw new Error(`Unknown built-in MCP server: "${builtinType}"`);
-    }
+    this._server = getBuiltinBrowserServer();
   }
-
-  _send(_msg) {
-    // Built-in sessions do not use JSON-RPC transport frames.
-  }
-
+  _send(_msg) {}
   async initialize() {
     return {
-      protocolVersion: PROTOCOL_VERSION,
+      protocolVersion: '2024-11-05',
       capabilities: { tools: {}, resources: {} },
       clientInfo: CLIENT_INFO,
     };
   }
-
   async listTools() {
     return this._server.listTools();
   }
-
   async callTool(name, args = {}) {
-    const text = await this._server.callTool(name, args);
-    return { content: [{ type: 'text', text }] };
+    return { content: [{ type: 'text', text: await this._server.callTool(name, args) }] };
   }
-
   async close() {
     await this._server.close();
   }
 }
-
-/* ══════════════════════════════════════════
-   MCP SERVER REGISTRY
-   Manages a pool of named MCP sessions.
-══════════════════════════════════════════ */
 export class MCPRegistry {
   constructor() {
-    /** @type {Map<string, { session: MCPSession, tools: object[], meta: object }>} */
     this._servers = new Map();
   }
-
-  /** Connect a server and discover its tools. */
   async connect(serverConfig) {
-    const { id, name, transport, url, command, args, env, builtinType } = serverConfig;
-
-    if (this._servers.has(id)) {
-      await this.disconnect(id);
-    }
-
+    const {
+      id: id,
+      name: name,
+      transport: transport,
+      url: url,
+      command: command,
+      args: args,
+      env: env,
+      builtinType: builtinType,
+    } = serverConfig;
     let session;
-    if (transport === 'http') {
-      session = new HttpMCPSession({ url });
-    } else if (transport === 'stdio') {
-      session = new StdioMCPSession({ command, args: args ?? [], env: env ?? {} });
-    } else if (transport === 'builtin') {
-      session = new BuiltinMCPSession({ builtinType });
-    } else {
-      throw new Error(`Unknown MCP transport: "${transport}"`);
+    if ((this._servers.has(id) && (await this.disconnect(id)), 'http' === transport))
+      session = new HttpMCPSession({ url: url });
+    else if ('stdio' === transport)
+      session = new StdioMCPSession({ command: command, args: args ?? [], env: env ?? {} });
+    else {
+      if ('builtin' !== transport) throw new Error(`Unknown MCP transport: "${transport}"`);
+      session = new BuiltinMCPSession({ builtinType: builtinType });
     }
-
-    // Initialize handshake
     try {
       await session.initialize();
     } catch (err) {
-      // Some servers don't respond to initialize — tolerate
       console.warn(`[MCP] initialize() failed for "${name}":`, err.message);
     }
-
-    const tools = await session.listTools().catch(() => []);
-
-    const entry = { session, tools, meta: { id, name, transport } };
-    this._servers.set(id, entry);
-
-    return { tools, name };
+    const tools = await session.listTools().catch(() => []),
+      entry = {
+        session: session,
+        tools: tools,
+        meta: { id: id, name: name, transport: transport },
+      };
+    return (this._servers.set(id, entry), { tools: tools, name: name });
   }
-
-  /** Disconnect a server cleanly. */
   async disconnect(serverId) {
     const entry = this._servers.get(serverId);
-    if (!entry) return;
-    await entry.session.close().catch(() => {});
-    this._servers.delete(serverId);
+    entry && (await entry.session.close().catch(() => {}), this._servers.delete(serverId));
   }
-
-  /** List all tools across all connected servers. */
   getAllTools() {
     const result = [];
-    for (const [id, { tools, meta }] of this._servers) {
-      for (const tool of tools) {
+    for (const [id, { tools: tools, meta: meta }] of this._servers)
+      for (const tool of tools)
         result.push({ ...tool, _mcpServerId: id, _mcpServerName: meta.name });
-      }
-    }
     return result;
   }
-
-  /** Call a tool on the appropriate server. */
   async callTool(toolName, args = {}) {
-    for (const [, { session, tools }] of this._servers) {
+    for (const [, { session: session, tools: tools }] of this._servers)
       if (tools.some((t) => t.name === toolName)) {
         const result = await session.callTool(toolName, args);
-        // MCP tool results: { content: [{ type, text }] }
-        if (Array.isArray(result?.content)) {
-          return result.content
-            .filter((b) => b.type === 'text')
-            .map((b) => b.text)
-            .join('\n');
-        }
-        return JSON.stringify(result);
+        return Array.isArray(result?.content)
+          ? result.content
+              .filter((b) => 'text' === b.type)
+              .map((b) => b.text)
+              .join('\n')
+          : JSON.stringify(result);
       }
-    }
     throw new Error(`Tool "${toolName}" not found in any connected MCP server.`);
   }
-
   getServer(id) {
     return this._servers.get(id);
   }
@@ -283,10 +201,7 @@ export class MCPRegistry {
   isConnected(id) {
     return this._servers.has(id);
   }
-
   async disconnectAll() {
-    for (const id of this._servers.keys()) {
-      await this.disconnect(id).catch(() => {});
-    }
+    for (const id of this._servers.keys()) await this.disconnect(id).catch(() => {});
   }
 }

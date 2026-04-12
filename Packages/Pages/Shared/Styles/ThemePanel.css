@@ -1,8 +1,8 @@
-/* ─────────────────────────────────────────────
-   theme-panel.css  — redesigned
-   Floating theme picker panel + swatch colours
-───────────────────────────────────────────── */
-
+.theme-option,
+.theme-panel-header {
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+}
 #theme-panel {
   position: fixed;
   left: calc(var(--sidebar-w) + 8px);
@@ -26,32 +26,24 @@
     opacity var(--duration-surface) var(--ease-out-ui),
     transform var(--duration-surface) var(--ease-drawer);
 }
-
 #theme-panel.open {
   opacity: 1;
   transform: translateX(0) scale(1);
   pointer-events: all;
 }
-
-/* ── Panel header label ── */
 .theme-panel-header {
   padding: 7px 10px 5px;
-  font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: var(--font-tracking-label);
   text-transform: uppercase;
-  color: var(--text-secondary);
   user-select: none;
 }
-
 .theme-panel-divider {
   height: 0.5px;
   background: var(--border);
   margin: 4px 4px 6px;
 }
-
-/* ── Option rows ── */
 .theme-option {
   display: flex;
   align-items: center;
@@ -62,9 +54,7 @@
   border: none;
   width: 100%;
   text-align: left;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-ui);
+  background: 0 0;
   font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
@@ -72,17 +62,11 @@
     background var(--transition-fast),
     color var(--transition-fast);
 }
-
+.theme-option.active,
 .theme-option:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
-.theme-option.active {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
-/* ── Check icon (auto-hidden, shown when active) ── */
 .theme-option-check {
   margin-left: auto;
   width: 14px;
@@ -94,8 +78,6 @@
 .theme-option.active .theme-option-check {
   opacity: 0.55;
 }
-
-/* ── Color swatches ── */
 .theme-swatch {
   width: 22px;
   height: 22px;
@@ -106,21 +88,17 @@
     transform var(--transition-fast),
     box-shadow var(--transition-mid);
 }
-
 @media (hover: hover) and (pointer: fine) {
   .theme-option:hover .theme-swatch {
     transform: scale(1.06);
   }
 }
-
 .theme-option.active .theme-swatch {
   transform: scale(1.06);
   box-shadow:
     inset 0 0 0 1.5px rgba(255, 255, 255, 0.3),
     0 0 0 2.5px rgba(255, 255, 255, 0.12);
 }
-
-/* conic-gradient gives a clean hard diagonal split vs linear */
 .swatch-dark {
   background: conic-gradient(#1a1a1a 180deg, #cc785c 180deg);
 }

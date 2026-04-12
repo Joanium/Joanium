@@ -1,53 +1,46 @@
 export function shouldRunNow(automation, now = new Date()) {
-  const { trigger, lastRun } = automation;
-  if (!trigger) return false;
-
+  const { trigger: trigger, lastRun: lastRun } = automation;
+  if (!trigger) return !1;
   const last = lastRun ? new Date(lastRun) : null;
-
-  if (trigger.type === 'on_startup') return false;
-
-  // Every N minutes
-  if (trigger.type === 'interval') {
+  if ('on_startup' === trigger.type) return !1;
+  if ('interval' === trigger.type) {
     const minutes = Math.max(1, parseInt(trigger.minutes, 10) || 30);
-    if (!last) return true;
-    return now - last >= minutes * 60_000;
+    return !last || now - last >= 6e4 * minutes;
   }
-
-  if (trigger.type === 'hourly') {
-    if (now.getMinutes() !== 0) return false;
-    if (
-      last &&
-      last.getFullYear() === now.getFullYear() &&
-      last.getMonth() === now.getMonth() &&
-      last.getDate() === now.getDate() &&
-      last.getHours() === now.getHours()
-    )
-      return false;
-    return true;
-  }
-
-  if (trigger.type === 'daily') {
-    if (!trigger.time) return false;
+  if ('hourly' === trigger.type)
+    return (
+      0 === now.getMinutes() &&
+      (!last ||
+        last.getFullYear() !== now.getFullYear() ||
+        last.getMonth() !== now.getMonth() ||
+        last.getDate() !== now.getDate() ||
+        last.getHours() !== now.getHours())
+    );
+  if ('daily' === trigger.type) {
+    if (!trigger.time) return !1;
     const [h, m] = trigger.time.split(':').map(Number);
-    if (now.getHours() !== h || now.getMinutes() !== m) return false;
-    if (last && last.toDateString() === now.toDateString()) return false;
-    return true;
+    return (
+      now.getHours() === h &&
+      now.getMinutes() === m &&
+      (!last || last.toDateString() !== now.toDateString())
+    );
   }
-
-  if (trigger.type === 'weekly') {
+  if ('weekly' === trigger.type) {
     const DAY_MAP = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    if (!trigger.day || DAY_MAP.indexOf(trigger.day) !== now.getDay()) return false;
-    if (!trigger.time) return false;
+    if (!trigger.day || DAY_MAP.indexOf(trigger.day) !== now.getDay()) return !1;
+    if (!trigger.time) return !1;
     const [h, m] = trigger.time.split(':').map(Number);
-    if (now.getHours() !== h || now.getMinutes() !== m) return false;
+    if (now.getHours() !== h || now.getMinutes() !== m) return !1;
     if (last) {
       const weekStart = new Date(now);
-      weekStart.setDate(now.getDate() - now.getDay());
-      weekStart.setHours(0, 0, 0, 0);
-      if (last >= weekStart) return false;
+      if (
+        (weekStart.setDate(now.getDate() - now.getDay()),
+        weekStart.setHours(0, 0, 0, 0),
+        last >= weekStart)
+      )
+        return !1;
     }
-    return true;
+    return !0;
   }
-
-  return false;
+  return !1;
 }

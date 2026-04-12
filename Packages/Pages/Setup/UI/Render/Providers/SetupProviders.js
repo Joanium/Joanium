@@ -1,15 +1,8 @@
 function apiKeyField(placeholder) {
   return [
-    {
-      key: 'apiKey',
-      type: 'password',
-      placeholder,
-      required: true,
-      minLength: 8,
-    },
+    { key: 'apiKey', type: 'password', placeholder: placeholder, required: !0, minLength: 8 },
   ];
 }
-
 function localModelFields(defaultEndpoint, modelIdLabel, modelPlaceholder) {
   return [
     {
@@ -18,7 +11,7 @@ function localModelFields(defaultEndpoint, modelIdLabel, modelPlaceholder) {
       type: 'text',
       placeholder: defaultEndpoint,
       defaultValue: defaultEndpoint,
-      required: true,
+      required: !0,
       minLength: 10,
     },
     {
@@ -26,12 +19,11 @@ function localModelFields(defaultEndpoint, modelIdLabel, modelPlaceholder) {
       label: modelIdLabel,
       type: 'text',
       placeholder: modelPlaceholder,
-      required: false,
+      required: !1,
       minLength: 2,
     },
   ];
 }
-
 export const PROVIDERS = [
   {
     id: 'anthropic',
@@ -154,7 +146,6 @@ export const PROVIDERS = [
     ),
   },
 ];
-
 export const PROVIDERS_BY_ID = Object.fromEntries(
   PROVIDERS.map((provider) => [provider.id, provider]),
 );

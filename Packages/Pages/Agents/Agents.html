@@ -2,28 +2,24 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="./UI/Styles/AgentsPage.css" />
     <script src="../../Features/Themes/index.js"></script>
   </head>
-
   <body>
     <div id="app">
-      <!-- Body -->
       <div id="body-wrap">
         <aside id="sidebar"></aside>
         <div id="theme-panel"></div>
         <div id="avatar-panel"></div>
-
         <main id="main" class="agents-main">
           <div class="agents-scroll">
-            <!-- Page header -->
             <div class="agents-page-header">
               <div class="agents-page-header-copy">
                 <h2>
                   Agents
-                  <span class="agents-tagline-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <span class="agents-tagline-badge"
+                    ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                       <path
                         d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z"
                         stroke-linecap="round"
@@ -33,8 +29,8 @@
                         stroke-linecap="round"
                       />
                     </svg>
-                    Thinks &amp; Reacts
-                  </span>
+                    Thinks &amp; Reacts</span
+                  >
                 </h2>
                 <p>
                   AI-powered employees that monitor, analyze, and act on your behalf — using real
@@ -50,8 +46,6 @@
                 </button>
               </div>
             </div>
-
-            <!-- Empty state -->
             <div id="agents-empty" class="agents-empty" hidden>
               <div class="agents-empty-icon">
                 <svg
@@ -81,20 +75,13 @@
                 + Create your first Agent
               </button>
             </div>
-
-            <!-- Agents grid -->
             <div id="agents-grid" class="agents-grid" hidden></div>
           </div>
         </main>
       </div>
     </div>
-
-    <!-- ══════════════════════════════════
-       AGENT MODAL
-  ══════════════════════════════════════ -->
     <div id="agent-modal-backdrop">
       <div id="agent-modal">
-        <!-- Header -->
         <div class="agent-modal-header">
           <div class="agent-modal-title-group">
             <div class="agent-modal-eyebrow">Configure Agent</div>
@@ -116,10 +103,7 @@
             </svg>
           </button>
         </div>
-
-        <!-- Body -->
         <div class="agent-modal-body" id="agent-modal-body">
-          <!-- Section 1: Identity -->
           <div class="agent-section">
             <div class="agent-section-label">
               <svg
@@ -146,7 +130,6 @@
                 >Agent Name <span style="color: var(--accent)">*</span></label
               >
               <input
-                type="text"
                 id="agent-name"
                 class="agent-input"
                 placeholder="e.g. Inbox Analyst, PR Watcher, Morning Briefer"
@@ -166,8 +149,6 @@
               ></textarea>
             </div>
           </div>
-
-          <!-- Section 2: AI Models -->
           <div class="agent-section">
             <div class="agent-section-label">
               <svg
@@ -183,7 +164,6 @@
               </svg>
               AI Power
             </div>
-
             <div class="agent-field">
               <label class="agent-field-label"
                 >Primary Model <span style="color: var(--accent)">*</span></label
@@ -202,8 +182,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Section 3: Jobs -->
           <div class="agent-section">
             <div class="agent-section-label">
               <svg
@@ -233,9 +211,7 @@
               Each job is a scheduled task: collect data → AI thinks → take action. Max 5 jobs per
               agent.
             </div>
-
             <div id="jobs-list" class="jobs-list"></div>
-
             <button type="button" class="add-job-btn" id="add-job-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 5v14M5 12h14" stroke-linecap="round" />
@@ -244,16 +220,12 @@
             </button>
           </div>
         </div>
-
-        <!-- Footer -->
         <div class="agent-modal-footer">
           <button type="button" class="agent-btn-cancel" id="agent-cancel-btn">Cancel</button>
           <button type="button" class="agent-btn-save" id="agent-save-btn">Save Agent</button>
         </div>
       </div>
     </div>
-
-    <!-- Delete confirm overlay -->
     <div class="agent-confirm-overlay" id="agent-confirm-overlay">
       <div class="agent-confirm-box">
         <div class="agent-confirm-icon">
@@ -273,7 +245,6 @@
         </div>
       </div>
     </div>
-
     <script type="module" src="./render/index.js"></script>
   </body>
 </html>

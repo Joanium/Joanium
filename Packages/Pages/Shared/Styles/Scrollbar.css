@@ -1,14 +1,8 @@
-/* ─────────────────────────────────────────────
-   scrollbar.css
-   Thin custom scrollbar for WebKit browsers +
-   Firefox scrollbar-width / scrollbar-color
-───────────────────────────────────────────── */
-
 ::-webkit-scrollbar {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: 0 0;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border);

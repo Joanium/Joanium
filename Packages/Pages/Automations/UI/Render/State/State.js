@@ -4,7 +4,7 @@ export function createAgentsPageState() {
     allModels: [],
     editingId: null,
     deletingId: null,
-    editingEnabled: true,
+    editingEnabled: !0,
     primaryModel: null,
     jobs: [],
   };

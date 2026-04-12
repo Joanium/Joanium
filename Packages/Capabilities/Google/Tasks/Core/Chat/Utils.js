@@ -11,10 +11,9 @@ export function formatDue(iso) {
     return iso;
   }
 }
-
 export function formatTask(task, index) {
-  const done = task.status === 'completed';
-  const lines = [
+  const done = 'completed' === task.status;
+  return [
     `${index}. ${done ? '~~' : ''}**${task.title ?? '(Untitled)'}**${done ? '~~' : ''} ${done ? '✅' : ''}`,
     `   ID: \`${task.id}\``,
     task.notes
@@ -22,54 +21,55 @@ export function formatTask(task, index) {
       : '',
     task.due ? `   Due: ${formatDue(task.due)}` : '',
     done && task.completed ? `   Completed: ${formatDue(task.completed)}` : '',
-  ];
-  return lines.filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
-
 function startOfDay(date = new Date()) {
   const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d;
+  return (d.setHours(0, 0, 0, 0), d);
 }
-
 function endOfDay(date = new Date()) {
   const d = new Date(date);
-  d.setHours(23, 59, 59, 999);
-  return d;
+  return (d.setHours(23, 59, 59, 999), d);
 }
-
 export function isOverdue(task) {
-  if (!task.due || task.status === 'completed') return false;
-  return new Date(task.due) < startOfDay();
+  return !(!task.due || 'completed' === task.status) && new Date(task.due) < startOfDay();
 }
-
 export function isDueToday(task) {
-  if (!task.due || task.status === 'completed') return false;
+  if (!task.due || 'completed' === task.status) return !1;
   const due = new Date(task.due);
   return due >= startOfDay() && due <= endOfDay();
 }
-
 export function isDueThisWeek(task) {
-  if (!task.due || task.status === 'completed') return false;
-  const due = new Date(task.due);
-  const weekOut = endOfDay(new Date(Date.now() + 6 * 24 * 60 * 60 * 1000));
+  if (!task.due || 'completed' === task.status) return !1;
+  const due = new Date(task.due),
+    weekOut = endOfDay(new Date(Date.now() + 5184e5));
   return due >= startOfDay() && due <= weekOut;
 }
-
-export async function resolveTasks(credentials, task_list_id, { showCompleted = false } = {}) {
-  if (task_list_id) {
-    const tasks = await TasksAPI.listTasks(credentials, task_list_id, {
-      showCompleted,
-      maxResults: 100,
-    });
-    return tasks.map((t) => ({ ...t, _listId: task_list_id }));
-  }
+export async function resolveTasks(
+  credentials,
+  task_list_id,
+  { showCompleted: showCompleted = !1 } = {},
+) {
+  if (task_list_id)
+    return (
+      await TasksAPI.listTasks(credentials, task_list_id, {
+        showCompleted: showCompleted,
+        maxResults: 100,
+      })
+    ).map((t) => ({ ...t, _listId: task_list_id }));
   const lists = await TasksAPI.listTaskLists(credentials);
-  const results = await Promise.all(
-    lists.map(async (l) => {
-      const tasks = await TasksAPI.listTasks(credentials, l.id, { showCompleted, maxResults: 100 });
-      return tasks.map((t) => ({ ...t, _listId: l.id, _listTitle: l.title }));
-    }),
-  );
-  return results.flat();
+  return (
+    await Promise.all(
+      lists.map(async (l) =>
+        (
+          await TasksAPI.listTasks(credentials, l.id, {
+            showCompleted: showCompleted,
+            maxResults: 100,
+          })
+        ).map((t) => ({ ...t, _listId: l.id, _listTitle: l.title })),
+      ),
+    )
+  ).flat();
 }

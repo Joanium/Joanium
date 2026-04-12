@@ -1,9 +1,27 @@
-/* Projects modal, project banner, and missing-folder recovery dialog */
-
-#projects-modal-backdrop,
-#project-missing-backdrop,
+.project-item,
+.project-path-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.project-danger-btn:hover,
+.project-icon-btn:hover,
+.project-item:hover,
+.project-primary-btn:hover,
+.project-secondary-btn:hover {
+  transform: translateY(-1px);
+}
+#edit-project-panel,
+#global-confirm-dialog,
+#project-missing-dialog,
+#projects-panel {
+  background: var(--bg-secondary);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.28s var(--ease-spring);
+}
+#edit-project-backdrop,
 #global-confirm-backdrop,
-#edit-project-backdrop {
+#project-missing-backdrop,
+#projects-modal-backdrop {
   position: fixed;
   inset: 0;
   display: flex;
@@ -17,59 +35,47 @@
   pointer-events: none;
   transition: opacity 0.25s var(--ease-out-ui);
 }
-
 #edit-project-backdrop {
   z-index: 370;
 }
-
 #global-confirm-backdrop {
   z-index: 380;
 }
-
-#projects-modal-backdrop.open,
-#project-missing-backdrop.open,
+#edit-project-backdrop.open,
 #global-confirm-backdrop.open,
-#edit-project-backdrop.open {
+#project-missing-backdrop.open,
+#projects-modal-backdrop.open {
   opacity: 1;
   pointer-events: auto;
 }
-
-#projects-panel,
-#edit-project-panel {
+#edit-project-panel,
+#projects-panel {
   width: min(980px, calc(100vw - 64px));
   max-height: min(740px, calc(100vh - 64px));
   overflow: hidden;
-  background: var(--bg-secondary);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: 24px;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
-  transform: translateY(16px) scale(0.97);
-  transition: transform 0.28s var(--ease-spring);
 }
-
-#projects-modal-backdrop.open #projects-panel,
-#project-missing-backdrop.open #project-missing-dialog,
+#edit-project-backdrop.open #edit-project-panel,
 #global-confirm-backdrop.open #global-confirm-dialog,
-#edit-project-backdrop.open #edit-project-panel {
+#project-missing-backdrop.open #project-missing-dialog,
+#projects-modal-backdrop.open #projects-panel {
   transform: translateY(0) scale(1);
 }
-
 .settings-modal-subtitle {
   margin-top: 6px;
   color: var(--text-muted);
   font-size: 12px;
 }
-
 .settings-modal-body.projects-modal-body {
   display: grid;
   grid-template-columns: minmax(320px, 0.94fr) minmax(360px, 1.06fr);
   gap: 18px;
   align-items: stretch;
 }
-
 .project-create-card,
-.project-list-card,
-.project-edit-card {
+.project-edit-card,
+.project-list-card {
   min-height: 0;
   border-radius: 22px;
   border: 1px solid var(--border-subtle);
@@ -83,32 +89,27 @@
   flex-direction: column;
   gap: 16px;
 }
-
 .project-card-header h3 {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
 }
-
 .project-card-header p {
   margin-top: 6px;
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.5;
 }
-
 .project-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .project-field-label {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
 }
-
 .project-field input,
 .project-field textarea,
 .project-path-row input {
@@ -119,42 +120,36 @@
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 13px;
-  outline: none;
+  outline: 0;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast),
     background var(--transition-fast);
 }
-
 .project-field input,
 .project-path-row input {
   padding: 11px 13px;
 }
-
 .project-field textarea {
   min-height: 128px;
   resize: vertical;
   padding: 12px 13px;
   line-height: 1.6;
 }
-
 .project-field input:focus,
 .project-field textarea:focus,
 .project-path-row input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
-
 .project-path-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
 }
-
+.project-danger-btn,
 .project-primary-btn,
-.project-secondary-btn,
-.project-danger-btn {
+.project-secondary-btn {
   border: none;
   border-radius: 999px;
   font-family: var(--font-ui);
@@ -168,49 +163,41 @@
     color var(--transition-fast),
     border-color var(--transition-fast);
 }
-
-.project-primary-btn,
-.project-danger-btn {
+.project-compact-path,
+.project-item-path {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.project-danger-btn,
+.project-primary-btn {
   padding: 10px 16px;
 }
-
 .project-primary-btn {
   background: var(--accent);
   color: #fff;
   box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 28%, transparent);
 }
-
-.project-primary-btn:hover,
-.project-danger-btn:hover,
-.project-secondary-btn:hover {
-  transform: translateY(-1px);
-}
-
 .project-primary-btn:hover {
   background: var(--accent-hover);
 }
-
 .project-secondary-btn {
   padding: 9px 14px;
-  background: transparent;
+  background: 0 0;
   color: var(--text-secondary);
   border: 1px solid var(--border);
 }
-
 .project-secondary-btn:hover {
   background: var(--bg-hover);
 }
-
 .project-danger-btn {
   background: #8a2d2d;
   color: #fff;
   box-shadow: 0 10px 24px rgba(138, 45, 45, 0.26);
 }
-
 .project-danger-btn:hover {
   background: #a13a3a;
 }
-
 .project-create-footer {
   margin-top: auto;
   display: flex;
@@ -218,21 +205,17 @@
   justify-content: space-between;
   gap: 12px;
 }
-
 .project-status {
   min-height: 18px;
   font-size: 12px;
   color: var(--text-muted);
 }
-
 .project-status.error {
   color: #ef9b9b;
 }
-
 .project-status.success {
   color: #8fd39f;
 }
-
 .project-list {
   min-height: 320px;
   max-height: 490px;
@@ -242,7 +225,10 @@
   flex-direction: column;
   gap: 12px;
 }
-
+.project-compact-path,
+.project-item-path {
+  overflow: hidden;
+}
 .project-empty {
   padding: 30px 22px;
   text-align: center;
@@ -252,10 +238,8 @@
   border: 1px dashed var(--border);
   background: color-mix(in srgb, var(--bg-tertiary) 88%, transparent);
 }
-
 .project-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
   padding: 16px 18px;
@@ -268,50 +252,41 @@
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .project-item:hover {
-  transform: translateY(-1px);
   background: var(--bg-hover);
   border-color: var(--border-subtle);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
 }
-
 .project-item.active {
   border-color: color-mix(in srgb, var(--accent) 42%, transparent);
   background: color-mix(in srgb, var(--accent) 8%, var(--bg-tertiary));
 }
-
 .project-item.is-missing {
   border-color: rgba(239, 155, 155, 0.25);
 }
-
 .project-item-main {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
-
 .project-item-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
-
 .project-item-title {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
 }
-
 .project-item-badges {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
-
 .project-badge {
   display: inline-flex;
   align-items: center;
@@ -322,31 +297,20 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-
 .project-badge.current {
   background: color-mix(in srgb, var(--accent) 18%, transparent);
   color: var(--accent);
 }
-
 .project-badge.missing {
   background: rgba(239, 155, 155, 0.12);
   color: #ef9b9b;
 }
-
-.project-item-path,
-.project-item-context {
+.project-item-context,
+.project-item-path {
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.55;
 }
-
-.project-item-path {
-  font-family: var(--font-mono);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .project-item-context {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -354,15 +318,13 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
 .project-item-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .project-icon-btn {
-  background: transparent;
+  background: 0 0;
   color: var(--text-muted);
   border: 1px solid transparent;
   border-radius: 50%;
@@ -374,29 +336,23 @@
   cursor: pointer;
   transition: all var(--transition-fast);
 }
-
 .project-icon-btn svg {
   width: 16px;
   height: 16px;
 }
-
 .project-icon-btn:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
   border-color: var(--border-subtle);
-  transform: translateY(-1px);
 }
-
 .project-icon-btn.project-open-btn:hover {
   color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
-
 .project-icon-btn.project-delete-btn:hover {
   color: #ef9b9b;
   border-color: rgba(239, 155, 155, 0.35);
 }
-
 #project-context-bar {
   width: min(92%, 960px);
   margin: 16px auto 0;
@@ -411,71 +367,53 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
   animation: fadeScaleIn 0.3s var(--motion-smooth);
 }
-
 #project-context-bar[hidden] {
   display: none !important;
 }
-
 .project-context-compact {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
-
 .project-compact-info {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
-
 .project-compact-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
 }
-
+.project-compact-path,
 .project-divider {
-  color: var(--text-muted);
   font-size: 12px;
+  color: var(--text-muted);
+}
+.project-divider {
   opacity: 0.6;
 }
-
-.project-compact-path {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-family: var(--font-mono);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .project-compact-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
 }
-
-#project-missing-dialog,
-#global-confirm-dialog {
+#global-confirm-dialog,
+#project-missing-dialog {
   width: min(480px, calc(100vw - 40px));
-  background: var(--bg-secondary);
   border-radius: 24px;
   border: 1px solid var(--border-subtle);
   padding: 26px;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 14px;
-  transform: translateY(16px) scale(0.97);
-  transition: transform 0.28s var(--ease-spring);
 }
-
 .project-missing-icon {
   width: 52px;
   height: 52px;
@@ -486,76 +424,61 @@
   background: rgba(239, 155, 155, 0.1);
   color: #ef9b9b;
 }
-
 .project-missing-icon svg {
   width: 24px;
   height: 24px;
 }
-
-#project-missing-dialog h3,
-#global-confirm-dialog h3 {
+#global-confirm-dialog h3,
+#project-missing-dialog h3 {
   font-size: 18px;
   color: var(--text-primary);
 }
-
-#project-missing-copy,
-#global-confirm-copy {
+#global-confirm-copy,
+#project-missing-copy {
   color: var(--text-muted);
   font-size: 13px;
   line-height: 1.65;
 }
-
-.project-missing-actions,
-.global-confirm-actions {
+.global-confirm-actions,
+.project-missing-actions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
 }
-
 @media (max-width: 940px) {
   #projects-panel {
     width: min(100vw - 32px, 920px);
     max-height: calc(100vh - 32px);
   }
-
   .settings-modal-body.projects-modal-body {
     grid-template-columns: 1fr;
   }
-
   .project-list {
     max-height: 320px;
   }
 }
-
 @media (max-width: 680px) {
-  #projects-modal-backdrop,
-  #project-missing-backdrop {
+  #project-missing-backdrop,
+  #projects-modal-backdrop {
     padding: 16px;
   }
-
   #project-context-bar {
     width: min(94%, 960px);
     padding: 16px 18px;
   }
-
   .project-context-head {
     flex-direction: column;
   }
-
   .project-context-actions,
-  .project-item-actions,
-  .project-create-footer {
+  .project-create-footer,
+  .project-item-actions {
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
-
-  .project-item {
-    grid-template-columns: 1fr;
-  }
-
+  .project-item,
   .project-path-row {
     grid-template-columns: 1fr;
   }

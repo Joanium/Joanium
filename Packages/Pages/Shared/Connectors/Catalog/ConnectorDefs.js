@@ -1,6 +1,3 @@
-// Each entry in CONNECTORS produces one card in the UI.
-// Add new Google services by just adding to google.subServices — zero new auth code needed.
-
 export const STATIC_CONNECTORS = [
   {
     id: 'google',
@@ -15,7 +12,6 @@ export const STATIC_CONNECTORS = [
     connectLabel: 'Sign in with Google',
     connectingLabel: 'Opening Google sign-in...',
     serviceRefreshMethod: 'detectServices',
-    // Visually listed under the card after connection to show what was detected
     subServices: [
       {
         key: 'gmail',
@@ -148,7 +144,6 @@ export const STATIC_CONNECTORS = [
     ],
   },
 ];
-
 export const STATIC_FREE_CONNECTORS = [
   {
     id: 'open_meteo',
@@ -156,7 +151,7 @@ export const STATIC_FREE_CONNECTORS = [
     icon: '<img src="../../../Assets/Icons/OpenMeteo.png" alt="OpenMeteo" style="width: 26px; height: 26px; object-fit: contain;" />',
     description:
       'Real-time weather for any city — temperature, humidity, wind, and 3-day forecast.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://open-meteo.com',
     toolHint: 'Ask: "What\'s the weather in Tokyo?"',
   },
@@ -166,7 +161,7 @@ export const STATIC_FREE_CONNECTORS = [
     icon: '<img src="../../../Assets/Icons/CoinGecko.png" alt="CoinGecko" style="width: 26px; height: 26px; object-fit: contain;" />',
     description:
       'Live crypto prices, market caps, 24h changes, and trending coins. 10,000+ tokens.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://coingecko.com',
     toolHint: 'Ask: "What\'s the price of Ethereum?"',
   },
@@ -175,7 +170,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Exchange Rates',
     icon: '💱',
     description: 'Real-time currency exchange rates for 160+ currencies.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://open.er-api.com',
     toolHint: 'Ask: "Convert 100 USD to INR"',
   },
@@ -184,7 +179,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'US Treasury',
     icon: '🏛️',
     description: 'Official US fiscal data — national debt, treasury rates, daily cash balance.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://fiscaldata.treasury.gov',
     toolHint: 'Ask: "What is the current US national debt?"',
   },
@@ -193,8 +188,8 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Federal Reserve (FRED)',
     icon: '📊',
     description: 'Economic indicators — GDP, unemployment, CPI, interest rates, and hundreds more.',
-    noKey: false,
-    optionalKey: true,
+    noKey: !1,
+    optionalKey: !0,
     keyLabel: 'FRED API Key',
     keyPlaceholder: 'Get your free key at fred.stlouisfed.org',
     keyHint: 'Free at fred.stlouisfed.org/docs/API/api_key.html',
@@ -206,8 +201,8 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'OpenWeatherMap',
     icon: '<img src="../../../Assets/Icons/OpenWeatherMap.png" alt="OpenWeatherMap" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'Detailed weather with hourly forecasts, air quality, and historical data.',
-    noKey: false,
-    optionalKey: false,
+    noKey: !1,
+    optionalKey: !1,
     keyLabel: 'OpenWeatherMap API Key',
     keyPlaceholder: 'openweathermap.org/api',
     keyHint: 'Free tier: 1,000 calls/day.',
@@ -219,8 +214,8 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Unsplash',
     icon: '<img src="../../../Assets/Icons/Unsplash.png" alt="Unsplash" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'Search millions of high-quality free photos by topic.',
-    noKey: false,
-    optionalKey: false,
+    noKey: !1,
+    optionalKey: !1,
     keyLabel: 'Unsplash Access Key',
     keyPlaceholder: 'unsplash.com/developers',
     keyHint: 'Free tier: 50 requests/hour.',
@@ -232,7 +227,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Wikipedia',
     icon: '<img src="../../../Assets/Icons/Wikipedia.png" alt="Wikipedia" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'Search any topic — get summaries, descriptions, and direct links.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://en.wikipedia.org',
     toolHint: 'Ask: "Tell me about quantum computing"',
   },
@@ -241,7 +236,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'IP Geolocation',
     icon: '🌍',
     description: 'Look up geolocation, ISP, and timezone info for any IP address.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://ip-api.com',
     toolHint: 'Ask: "What\'s my IP location?"',
   },
@@ -250,7 +245,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Fun Facts & Trivia',
     icon: '🎲',
     description: 'Random fun facts, number trivia, math facts, and date facts.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://uselessfacts.jsph.pl',
     toolHint: 'Ask: "Give me a random fact"',
   },
@@ -259,7 +254,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Jokes',
     icon: '😂',
     description: 'Random jokes — programming, puns, misc, and more.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://v2.jokeapi.dev',
     toolHint: 'Ask: "Tell me a joke"',
   },
@@ -268,7 +263,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Quotes',
     icon: '💬',
     description: 'Inspirational and thought-provoking quotes.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://zenquotes.io',
     toolHint: 'Ask: "Give me an inspirational quote"',
   },
@@ -277,7 +272,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Country Info',
     icon: '🌐',
     description: 'Detailed country data — capital, population, languages, currencies, and more.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://restcountries.com',
     toolHint: 'Ask: "Tell me about Japan"',
   },
@@ -286,8 +281,8 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'NASA / Astronomy',
     icon: '<img src="../../../Assets/Icons/Nasa.png" alt="Nasa" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'NASA Astronomy Picture of the Day and real-time ISS tracking.',
-    noKey: false,
-    optionalKey: true,
+    noKey: !1,
+    optionalKey: !0,
     keyLabel: 'NASA API Key',
     keyPlaceholder: 'api.nasa.gov',
     keyHint: 'Free key with 1,000 req/hr. Works without key (30/hr).',
@@ -299,7 +294,7 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'Hacker News',
     icon: '<img src="../../../Assets/Icons/HackerNews.png" alt="HackerNews" style="width: 26px; height: 26px; object-fit: contain;" />',
     description: 'Top stories from Hacker News — the leading tech and startup news aggregator.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://news.ycombinator.com',
     toolHint: 'Ask: "What\'s on Hacker News?"',
   },
@@ -308,40 +303,36 @@ export const STATIC_FREE_CONNECTORS = [
     name: 'URL Shortener',
     icon: '🔗',
     description: 'Shorten any long URL into a compact, shareable link.',
-    noKey: true,
+    noKey: !0,
     docsUrl: 'https://cleanuri.com',
     toolHint: 'Ask: "Shorten this URL: ..."',
   },
 ];
-
 export let CONNECTORS = [...STATIC_CONNECTORS];
 export let FREE_CONNECTORS = [...STATIC_FREE_CONNECTORS];
-
 function dedupeById(items = []) {
   const map = new Map();
-  for (const item of items) {
-    if (!item?.id || map.has(item.id)) continue;
-    map.set(item.id, item);
-  }
+  for (const item of items) item?.id && !map.has(item.id) && map.set(item.id, item);
   return [...map.values()];
 }
-
 export async function loadFeatureConnectorDefs() {
-  if (!window.featureAPI?.getBoot) {
-    CONNECTORS = [...STATIC_CONNECTORS];
-    FREE_CONNECTORS = [...STATIC_FREE_CONNECTORS];
-    return { services: CONNECTORS, free: FREE_CONNECTORS };
-  }
-
+  if (!window.featureAPI?.getBoot)
+    return (
+      (CONNECTORS = [...STATIC_CONNECTORS]),
+      (FREE_CONNECTORS = [...STATIC_FREE_CONNECTORS]),
+      { services: CONNECTORS, free: FREE_CONNECTORS }
+    );
   try {
     const boot = await window.featureAPI.getBoot();
-    CONNECTORS = dedupeById([...(boot?.connectors?.services ?? []), ...STATIC_CONNECTORS]);
-    FREE_CONNECTORS = dedupeById([...(boot?.connectors?.free ?? []), ...STATIC_FREE_CONNECTORS]);
+    ((CONNECTORS = dedupeById([...(boot?.connectors?.services ?? []), ...STATIC_CONNECTORS])),
+      (FREE_CONNECTORS = dedupeById([
+        ...(boot?.connectors?.free ?? []),
+        ...STATIC_FREE_CONNECTORS,
+      ])));
   } catch (error) {
-    console.warn('[ConnectorDefs] Failed to load feature connector defs:', error);
-    CONNECTORS = [...STATIC_CONNECTORS];
-    FREE_CONNECTORS = [...STATIC_FREE_CONNECTORS];
+    (console.warn('[ConnectorDefs] Failed to load feature connector defs:', error),
+      (CONNECTORS = [...STATIC_CONNECTORS]),
+      (FREE_CONNECTORS = [...STATIC_FREE_CONNECTORS]));
   }
-
   return { services: CONNECTORS, free: FREE_CONNECTORS };
 }

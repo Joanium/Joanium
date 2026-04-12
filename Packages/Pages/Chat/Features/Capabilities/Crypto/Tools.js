@@ -7,12 +7,12 @@ export const CRYPTO_TOOLS = [
     parameters: {
       coin: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Coin name or symbol (e.g. "bitcoin", "ethereum", "solana", "BTC", "ETH")',
       },
       vs_currency: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Quote currency (default: "usd"). Can be "usd", "eur", "inr", "gbp", etc.',
       },
     },
@@ -31,7 +31,7 @@ export const CRYPTO_TOOLS = [
     parameters: {
       coin: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Coin name or symbol (e.g. "bitcoin", "ethereum")',
       },
     },
@@ -44,14 +44,10 @@ export const CRYPTO_TOOLS = [
     parameters: {
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'How many coins to return (default: 10, max: 50)',
       },
-      vs_currency: {
-        type: 'string',
-        required: false,
-        description: 'Quote currency (default: "usd")',
-      },
+      vs_currency: { type: 'string', required: !1, description: 'Quote currency (default: "usd")' },
     },
   },
   {
@@ -59,14 +55,10 @@ export const CRYPTO_TOOLS = [
     description: 'Get the price, market cap, and volume of a coin on a specific historical date.',
     category: 'coingecko',
     parameters: {
-      coin: {
-        type: 'string',
-        required: true,
-        description: 'Coin name or symbol',
-      },
+      coin: { type: 'string', required: !0, description: 'Coin name or symbol' },
       date: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Date in DD-MM-YYYY format (e.g. "01-01-2021")',
       },
     },
@@ -76,21 +68,13 @@ export const CRYPTO_TOOLS = [
     description: 'Get price, market cap, and volume history for a coin over the past N days.',
     category: 'coingecko',
     parameters: {
-      coin: {
-        type: 'string',
-        required: true,
-        description: 'Coin name or symbol',
-      },
+      coin: { type: 'string', required: !0, description: 'Coin name or symbol' },
       days: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of days of history (default: 7). Use 1, 7, 14, 30, 90, 180, 365.',
       },
-      vs_currency: {
-        type: 'string',
-        required: false,
-        description: 'Quote currency (default: "usd")',
-      },
+      vs_currency: { type: 'string', required: !1, description: 'Quote currency (default: "usd")' },
     },
   },
   {
@@ -98,21 +82,13 @@ export const CRYPTO_TOOLS = [
     description: 'Get OHLC (open/high/low/close) candlestick data for a coin over the past N days.',
     category: 'coingecko',
     parameters: {
-      coin: {
-        type: 'string',
-        required: true,
-        description: 'Coin name or symbol',
-      },
+      coin: { type: 'string', required: !0, description: 'Coin name or symbol' },
       days: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Days of OHLC data (default: 7). Allowed: 1, 7, 14, 30, 90, 180, 365.',
       },
-      vs_currency: {
-        type: 'string',
-        required: false,
-        description: 'Quote currency (default: "usd")',
-      },
+      vs_currency: { type: 'string', required: !1, description: 'Quote currency (default: "usd")' },
     },
   },
   {
@@ -144,7 +120,7 @@ export const CRYPTO_TOOLS = [
     parameters: {
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of exchanges to return (default: 10)',
       },
     },
@@ -157,7 +133,7 @@ export const CRYPTO_TOOLS = [
     parameters: {
       exchange_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Exchange ID slug (e.g. "binance", "coinbase", "kraken", "bybit")',
       },
     },
@@ -177,15 +153,11 @@ export const CRYPTO_TOOLS = [
     parameters: {
       category_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Category slug (e.g. "decentralized-finance-defi", "layer-1", "gaming", "nft", "metaverse")',
       },
-      limit: {
-        type: 'number',
-        required: false,
-        description: 'Number of coins (default: 10)',
-      },
+      limit: { type: 'number', required: !1, description: 'Number of coins (default: 10)' },
     },
   },
   {
@@ -193,13 +165,7 @@ export const CRYPTO_TOOLS = [
     description:
       'Get the trading pairs (tickers) for a coin across different exchanges, with last price and volume.',
     category: 'coingecko',
-    parameters: {
-      coin: {
-        type: 'string',
-        required: true,
-        description: 'Coin name or symbol',
-      },
-    },
+    parameters: { coin: { type: 'string', required: !0, description: 'Coin name or symbol' } },
   },
   {
     name: 'convert_crypto',
@@ -209,19 +175,15 @@ export const CRYPTO_TOOLS = [
     parameters: {
       from_coin: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Source coin or currency (e.g. "ethereum", "usd", "BTC")',
       },
       to_coin: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Target coin or currency (e.g. "bitcoin", "inr", "SOL")',
       },
-      amount: {
-        type: 'number',
-        required: false,
-        description: 'Amount to convert (default: 1)',
-      },
+      amount: { type: 'number', required: !1, description: 'Amount to convert (default: 1)' },
     },
   },
   {
@@ -247,14 +209,10 @@ export const CRYPTO_TOOLS = [
     description: 'Get the top gaining and top losing cryptocurrencies in the last 24 hours.',
     category: 'coingecko',
     parameters: {
-      vs_currency: {
-        type: 'string',
-        required: false,
-        description: 'Quote currency (default: "usd")',
-      },
+      vs_currency: { type: 'string', required: !1, description: 'Quote currency (default: "usd")' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of top gainers/losers each (default: 5)',
       },
     },
@@ -273,7 +231,7 @@ export const CRYPTO_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search term (e.g. "pepe", "layer zero", "uniswap")',
       },
     },

@@ -1,5 +1,4 @@
 export const toolsList = [
-  // ── Original 11 ──────────────────────────────────────────────────
   'search_web',
   'search_npm',
   'search_pypi',

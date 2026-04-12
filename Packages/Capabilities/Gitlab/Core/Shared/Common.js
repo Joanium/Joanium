@@ -1,30 +1,22 @@
 import * as GitlabAPI from '../API/GitlabAPI.js';
-
 export function getGitlabCredentials(ctx) {
   const credentials = ctx.connectorEngine?.getCredentials('gitlab');
-  if (!credentials?.token) return null;
-  return credentials;
+  return credentials?.token ? credentials : null;
 }
-
 export function requireGitlabCredentials(ctx) {
   const credentials = getGitlabCredentials(ctx);
-  if (!credentials) {
-    throw new Error('GitLab not connected');
-  }
+  if (!credentials) throw new Error('GitLab not connected');
   return credentials;
 }
-
 export function notConnected() {
-  return { ok: false, error: 'GitLab not connected' };
+  return { ok: !1, error: 'GitLab not connected' };
 }
-
 export function parseCommaList(value = '') {
   return String(value)
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
 }
-
 export function safeDate(value) {
   if (!value) return '';
   try {
@@ -33,5 +25,4 @@ export function safeDate(value) {
     return String(value);
   }
 }
-
 export { GitlabAPI };

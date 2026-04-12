@@ -1,21 +1,25 @@
-/* ── Page layout ── */
+.skill-read-btn,
+.skills-bulk-btn {
+  font-family: var(--font-ui);
+  cursor: pointer;
+}
+.skill-modal-body,
+.skills-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
 .skills-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: fadeIn 0.45s var(--ease-out-expo) 0.05s both;
+  animation: fadeIn 0.45s var(--ease-out-expo) 50ms both;
 }
-
 .skills-scroll {
   flex: 1;
   overflow-y: auto;
   padding: 32px 40px 60px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
-
-/* ── Page header ── */
 .skills-page-header {
   display: flex;
   align-items: flex-start;
@@ -24,7 +28,6 @@
   gap: 20px;
   flex-wrap: wrap;
 }
-
 .skills-page-header-copy h2 {
   font-size: 26px;
   font-weight: 600;
@@ -36,14 +39,11 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-
 .skills-page-header-copy p {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.5;
 }
-
-/* ── Header right-side actions ── */
 .skills-header-actions {
   display: flex;
   align-items: center;
@@ -51,8 +51,6 @@
   flex-wrap: wrap;
   flex-shrink: 0;
 }
-
-/* ── Enabled count pill ── */
 .skills-enabled-count {
   font-size: 11.5px;
   font-weight: 600;
@@ -67,24 +65,19 @@
     background var(--transition-fast),
     border-color var(--transition-fast);
 }
-
 .skills-enabled-count--active {
   color: var(--accent);
   background: var(--accent-dim);
   border-color: color-mix(in srgb, var(--accent) 25%, transparent);
 }
-
-/* ── Bulk action buttons ── */
 .skills-bulk-btn {
   padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: 0 0;
   color: var(--text-secondary);
-  font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 500;
-  cursor: pointer;
   white-space: nowrap;
   transition:
     background var(--transition-fast),
@@ -92,61 +85,54 @@
     border-color var(--transition-fast),
     transform var(--transition-fast);
 }
-
+.page-count,
+.skill-name {
+  font-weight: 600;
+  white-space: nowrap;
+}
 .skills-bulk-btn:hover:not(:disabled) {
   background: var(--bg-hover);
   color: var(--text-primary);
   transform: translateY(-1px);
 }
-
 .skills-bulk-btn.skills-bulk-btn--enable:hover:not(:disabled) {
   background: var(--accent-dim);
   color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 28%, transparent);
 }
-
 .skills-bulk-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
-
-/* ── Shared page count pill ── */
 .page-count {
   font-size: 11.5px;
-  font-weight: 600;
   color: var(--text-muted);
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
   padding: 4px 12px;
   border-radius: 999px;
-  white-space: nowrap;
   flex-shrink: 0;
 }
-
-/* ── No results state ── */
+#skill-modal,
+.skill-card,
 .skills-no-results {
-  grid-column: 1 / -1;
+  background: var(--bg-secondary);
+}
+.skills-no-results {
+  grid-column: 1/-1;
   padding: 48px 24px;
   text-align: center;
   font-size: 13px;
   color: var(--text-muted);
-  background: var(--bg-secondary);
   border: 1.5px dashed var(--border);
   border-radius: var(--radius-lg);
 }
-
-/* ── Skills grid ── */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
 }
-
-/* ══════════════════════════════════════════
-   SKILL CARD
-══════════════════════════════════════════ */
 .skill-card {
-  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 20px;
@@ -162,39 +148,30 @@
     opacity var(--transition-mid);
   animation: messageIn 0.35s var(--ease-out-expo) both;
 }
-
-/* Disabled / inactive cards are slightly dimmed */
 .skill-card:not(.skill-card--enabled) {
   opacity: 0.65;
 }
-
 .skill-card:hover {
   opacity: 1;
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
   transform: translateY(-3px);
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.14);
 }
-
-/* Enabled card gets an accent border glow */
 .skill-card.skill-card--enabled {
   border-color: color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
   opacity: 1;
 }
-
 .skill-card.skill-card--enabled:hover {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
   box-shadow:
     0 0 0 1px var(--accent-dim),
     0 20px 48px rgba(0, 0, 0, 0.14);
 }
-
-/* ── Card head ── */
 .skill-card-head {
   display: flex;
   align-items: flex-start;
   gap: 12px;
 }
-
 .skill-icon {
   width: 40px;
   height: 40px;
@@ -210,79 +187,68 @@
     background var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .skill-card--enabled .skill-icon {
   box-shadow: 0 0 14px var(--accent-glow);
 }
-
 .skill-icon svg {
   width: 20px;
   height: 20px;
 }
-
 .skill-card-title-group {
   flex: 1;
   min-width: 0;
 }
-
 .skill-name-row {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
-
 .skill-name {
   font-size: 15px;
-  font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.2px;
   margin-bottom: 4px;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.skill-badge,
+.skill-verified {
+  border-radius: 999px;
+  color: var(--accent);
+}
 .skill-verified {
   width: 18px;
   height: 18px;
-  border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   background: color-mix(in srgb, var(--accent) 14%, var(--bg-tertiary));
-  color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
   box-shadow: 0 0 16px var(--accent-glow);
 }
-
 .skill-verified svg {
   width: 11px;
   height: 11px;
 }
-
 .skill-meta-row {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
-
 .skill-badge {
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
-  border-radius: 999px;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   background: var(--accent-dim);
-  color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
 }
-
 .skill-publisher {
   display: inline-flex;
   align-items: center;
@@ -290,28 +256,20 @@
   font-weight: 600;
   color: var(--text-muted);
 }
-
-/* ══════════════════════════════════════════
-   SKILL TOGGLE SWITCH
-   Sits in the top-right of each card head.
-══════════════════════════════════════════ */
 .skill-toggle {
   position: relative;
   width: 40px;
   height: 22px;
   flex-shrink: 0;
   cursor: pointer;
-  /* Prevent card click from propagating (handled in JS too) */
   z-index: 2;
 }
-
 .skill-toggle-input {
   opacity: 0;
   width: 0;
   height: 0;
   position: absolute;
 }
-
 .skill-toggle-track {
   position: absolute;
   inset: 0;
@@ -323,7 +281,6 @@
     background 0.22s,
     border-color 0.22s;
 }
-
 .skill-toggle-track::after {
   content: '';
   position: absolute;
@@ -338,31 +295,29 @@
     transform 0.22s var(--ease-spring),
     background 0.22s;
 }
-
+.skill-modal-content code,
+.skill-trigger {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+}
 .skill-toggle-input:checked + .skill-toggle-track {
   background: var(--accent);
   border-color: var(--accent);
 }
-
 .skill-toggle-input:checked + .skill-toggle-track::after {
   transform: translateY(-50%) translateX(18px);
   background: #fff;
 }
-
-/* ── Trigger block ── */
 .skill-trigger {
   display: flex;
   align-items: flex-start;
   gap: 6px;
   padding: 8px 12px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
   border-radius: 12px;
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.5;
 }
-
 .skill-trigger-label {
   font-weight: 700;
   color: var(--accent);
@@ -372,8 +327,6 @@
   letter-spacing: 0.8px;
   margin-top: 1px;
 }
-
-/* ── Description ── */
 .skill-description {
   font-size: 12.5px;
   color: var(--text-muted);
@@ -384,8 +337,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-/* ── Card footer ── */
 .skill-card-footer {
   display: flex;
   align-items: center;
@@ -393,7 +344,6 @@
   padding-top: 10px;
   border-top: 1px solid var(--border-subtle);
 }
-
 .skill-read-btn {
   display: inline-flex;
   align-items: center;
@@ -401,34 +351,29 @@
   padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: 0 0;
   color: var(--text-secondary);
-  font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 500;
-  cursor: pointer;
   transition:
     background var(--transition-fast),
     color var(--transition-fast),
     border-color var(--transition-fast),
     transform var(--transition-fast);
 }
-
+.skill-modal-icon,
+.skill-read-btn:hover {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
 .skill-read-btn svg {
   width: 13px;
   height: 13px;
 }
-
 .skill-read-btn:hover {
-  background: var(--accent-dim);
-  color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   transform: translateY(-1px);
 }
-
-/* ══════════════════════════════════════════
-   SKILL MODAL
-══════════════════════════════════════════ */
 #skill-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -441,21 +386,18 @@
   z-index: 400;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.22s;
 }
-
 #skill-modal-backdrop.open {
   opacity: 1;
   pointer-events: auto;
 }
-
 #skill-modal {
   position: relative;
   width: min(720px, calc(100vw - 48px));
   max-height: min(86vh, 820px);
   display: flex;
   flex-direction: column;
-  background: var(--bg-secondary);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: 28px;
   box-shadow: 0 32px 96px rgba(0, 0, 0, 0.35);
@@ -463,11 +405,9 @@
   transition: transform 0.3s var(--ease-spring);
   overflow: hidden;
 }
-
 #skill-modal-backdrop.open #skill-modal {
   transform: translateY(0) scale(1);
 }
-
 .skill-modal-header {
   display: flex;
   align-items: center;
@@ -477,32 +417,26 @@
   flex-shrink: 0;
   gap: 16px;
 }
-
 .skill-modal-title-group {
   display: flex;
   align-items: center;
   gap: 12px;
   min-width: 0;
 }
-
 .skill-modal-icon {
   width: 36px;
   height: 36px;
   border-radius: 11px;
-  background: var(--accent-dim);
   border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
   flex-shrink: 0;
 }
-
 .skill-modal-icon svg {
   width: 17px;
   height: 17px;
 }
-
 .skill-modal-name {
   font-size: 18px;
   font-weight: 600;
@@ -512,73 +446,57 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .skill-modal-body {
   flex: 1;
   overflow-y: auto;
   padding: 24px 28px 32px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
-
 .skill-modal-content {
   font-size: 13.5px;
   line-height: 1.8;
   color: var(--text-primary);
 }
-
 .skill-modal-content h1 {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 12px;
 }
-
 .skill-modal-content h2 {
   font-size: 16px;
   font-weight: 600;
   margin: 20px 0 8px;
 }
-
 .skill-modal-content h3 {
   font-size: 14px;
   font-weight: 600;
   margin: 16px 0 6px;
   color: var(--text-secondary);
 }
-
 .skill-modal-content p {
   margin-bottom: 12px;
   color: var(--text-secondary);
 }
-
 .skill-modal-content p:last-child {
   margin-bottom: 0;
 }
-
 .skill-modal-content li {
   margin: 4px 0 4px 20px;
   color: var(--text-secondary);
 }
-
 .skill-modal-content strong {
   color: var(--text-primary);
   font-weight: 600;
 }
-
 .skill-modal-content em {
   font-style: italic;
   color: var(--text-muted);
 }
-
 .skill-modal-content code {
   font-family: var(--font-mono);
   font-size: 12px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
   padding: 2px 6px;
   border-radius: 5px;
 }
-
 .skill-modal-content pre {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
@@ -587,9 +505,8 @@
   overflow-x: auto;
   margin: 12px 0;
 }
-
 .skill-modal-content pre code {
-  background: none;
+  background: 0 0;
   border: none;
   padding: 0;
   font-size: 12px;

@@ -5,11 +5,9 @@ export function generateChatId() {
     p = (v) => String(v).padStart(2, '0');
   return `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}_${p(now.getHours())}-${p(now.getMinutes())}-${p(now.getSeconds())}`;
 }
-
 export function currentChatScope() {
   return state.activeProject ? { projectId: state.activeProject.id } : {};
 }
-
 function deriveChatTitle(messages = []) {
   const first = messages.find((message) => 'user' === message.role),
     hasFileAttachment = first?.attachments?.some((attachment) => 'file' === attachment?.type),

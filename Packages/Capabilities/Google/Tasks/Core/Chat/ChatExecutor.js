@@ -8,10 +8,8 @@ import {
   isDueThisWeek,
   resolveTasks,
 } from './Utils.js';
-
 export async function executeTasksChatTool(ctx, toolName, params = {}) {
   const credentials = requireGoogleCredentials(ctx);
-
   switch (toolName) {
     case 'tasks_list_task_lists': {
       const lists = await TasksAPI.listTaskLists(credentials);
@@ -21,36 +19,45 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
       );
       return `Your task lists (${lists.length}):\n\n${lines.join('\n')}`;
     }
-
     case 'tasks_list_tasks': {
-      const { task_list_id = '@default', show_completed = false, max_results = 100 } = params;
-      const tasks = await TasksAPI.listTasks(credentials, task_list_id, {
-        showCompleted: show_completed,
-        maxResults: max_results,
-      });
+      const {
+          task_list_id: task_list_id = '@default',
+          show_completed: show_completed = !1,
+          max_results: max_results = 100,
+        } = params,
+        tasks = await TasksAPI.listTasks(credentials, task_list_id, {
+          showCompleted: show_completed,
+          maxResults: max_results,
+        });
       if (!tasks.length)
         return `No tasks found${show_completed ? '' : ' (completed tasks hidden)'}. Use show_completed: true to include them.`;
-      const pending = tasks.filter((t) => t.status !== 'completed');
-      const done = tasks.filter((t) => t.status === 'completed');
-      const sections = [];
-      if (pending.length)
-        sections.push(
-          `Pending (${pending.length}):\n\n${pending.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
-        );
-      if (done.length)
-        sections.push(
-          `Completed (${done.length}):\n\n${done.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
-        );
-      return sections.join('\n\n');
+      const pending = tasks.filter((t) => 'completed' !== t.status),
+        done = tasks.filter((t) => 'completed' === t.status),
+        sections = [];
+      return (
+        pending.length &&
+          sections.push(
+            `Pending (${pending.length}):\n\n${pending.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
+          ),
+        done.length &&
+          sections.push(
+            `Completed (${done.length}):\n\n${done.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
+          ),
+        sections.join('\n\n')
+      );
     }
-
     case 'tasks_create_task': {
-      const { title, task_list_id = '@default', notes = '', due } = params;
+      const {
+        title: title,
+        task_list_id: task_list_id = '@default',
+        notes: notes = '',
+        due: due,
+      } = params;
       if (!title?.trim()) throw new Error('Missing required param: title');
       const task = await TasksAPI.createTask(credentials, task_list_id, {
         title: title.trim(),
-        notes,
-        due,
+        notes: notes,
+        due: due,
       });
       return [
         'Task created',
@@ -62,15 +69,20 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
     case 'tasks_update_task': {
-      const { task_list_id, task_id, title, notes, due } = params;
+      const {
+        task_list_id: task_list_id,
+        task_id: task_id,
+        title: title,
+        notes: notes,
+        due: due,
+      } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
       const updates = {};
-      if (title !== undefined) updates.title = title;
-      if (notes !== undefined) updates.notes = notes;
-      if (due !== undefined) updates.due = new Date(due).toISOString();
+      (void 0 !== title && (updates.title = title),
+        void 0 !== notes && (updates.notes = notes),
+        void 0 !== due && (updates.due = new Date(due).toISOString()));
       const task = await TasksAPI.updateTask(credentials, task_list_id, task_id, updates);
       return [
         'Task updated',
@@ -82,59 +94,54 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
     case 'tasks_complete_task': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
-      const task = await TasksAPI.completeTask(credentials, task_list_id, task_id);
-      return `Task "${task.title}" marked as completed ✅`;
+      return `Task "${(await TasksAPI.completeTask(credentials, task_list_id, task_id)).title}" marked as completed ✅`;
     }
-
     case 'tasks_reopen_task': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
-      const task = await TasksAPI.reopenTask(credentials, task_list_id, task_id);
-      return `Task "${task.title}" reopened and marked as needs action.`;
+      return `Task "${(await TasksAPI.reopenTask(credentials, task_list_id, task_id)).title}" reopened and marked as needs action.`;
     }
-
     case 'tasks_delete_task': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
-      await TasksAPI.deleteTask(credentials, task_list_id, task_id);
-      return `Task \`${task_id}\` permanently deleted.`;
+      return (
+        await TasksAPI.deleteTask(credentials, task_list_id, task_id),
+        `Task \`${task_id}\` permanently deleted.`
+      );
     }
-
     case 'tasks_clear_completed': {
-      const { task_list_id = '@default' } = params;
-      await TasksAPI.clearCompleted(credentials, task_list_id);
-      return 'All completed tasks cleared from the task list.';
+      const { task_list_id: task_list_id = '@default' } = params;
+      return (
+        await TasksAPI.clearCompleted(credentials, task_list_id),
+        'All completed tasks cleared from the task list.'
+      );
     }
-
     case 'tasks_create_task_list': {
-      const { title } = params;
+      const { title: title } = params;
       if (!title?.trim()) throw new Error('Missing required param: title');
       const list = await TasksAPI.createTaskList(credentials, title.trim());
       return `Task list "${list.title}" created.\nID: \`${list.id}\``;
     }
-
     case 'tasks_delete_task_list': {
-      const { task_list_id } = params;
+      const { task_list_id: task_list_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
-      await TasksAPI.deleteTaskList(credentials, task_list_id);
-      return `Task list \`${task_list_id}\` and all its tasks permanently deleted.`;
+      return (
+        await TasksAPI.deleteTaskList(credentials, task_list_id),
+        `Task list \`${task_list_id}\` and all its tasks permanently deleted.`
+      );
     }
-
-    // ── New tool 1: get single task ───────────────────────────────────────
-
     case 'tasks_get_task': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
-      const task = await TasksAPI.getTask(credentials, task_list_id, task_id);
-      const done = task.status === 'completed';
+      const task = await TasksAPI.getTask(credentials, task_list_id, task_id),
+        done = 'completed' === task.status;
       return [
         `**${task.title ?? '(Untitled)'}** ${done ? '✅ (completed)' : '🔲 (pending)'}`,
         `ID: \`${task.id}\``,
@@ -146,11 +153,8 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
-    // ── New tool 2: get single task list ──────────────────────────────────
-
     case 'tasks_get_task_list': {
-      const { task_list_id } = params;
+      const { task_list_id: task_list_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       const list = await TasksAPI.getTaskList(credentials, task_list_id);
       return [
@@ -161,52 +165,49 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
-    // ── New tool 3: search tasks ──────────────────────────────────────────
-
     case 'tasks_search_tasks': {
-      const { query, task_list_id = '@default', show_completed = false } = params;
+      const {
+        query: query,
+        task_list_id: task_list_id = '@default',
+        show_completed: show_completed = !1,
+      } = params;
       if (!query?.trim()) throw new Error('Missing required param: query');
       const tasks = await TasksAPI.listTasks(credentials, task_list_id, {
-        showCompleted: show_completed,
-        maxResults: 100,
-      });
-      const q = query.toLowerCase();
-      const matches = tasks.filter(
-        (t) =>
-          (t.title ?? '').toLowerCase().includes(q) || (t.notes ?? '').toLowerCase().includes(q),
-      );
-      if (!matches.length) return `No tasks matched "${query}".`;
-      return `Found ${matches.length} task(s) matching "${query}":\n\n${matches.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`;
+          showCompleted: show_completed,
+          maxResults: 100,
+        }),
+        q = query.toLowerCase(),
+        matches = tasks.filter(
+          (t) =>
+            (t.title ?? '').toLowerCase().includes(q) || (t.notes ?? '').toLowerCase().includes(q),
+        );
+      return matches.length
+        ? `Found ${matches.length} task(s) matching "${query}":\n\n${matches.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`
+        : `No tasks matched "${query}".`;
     }
-
-    // ── New tool 4: list all tasks across every list ───────────────────────
-
     case 'tasks_list_all_tasks': {
-      const { show_completed = false } = params;
-      const lists = await TasksAPI.listTaskLists(credentials);
-      const sections = [];
+      const { show_completed: show_completed = !1 } = params,
+        lists = await TasksAPI.listTaskLists(credentials),
+        sections = [];
       for (const list of lists) {
         const tasks = await TasksAPI.listTasks(credentials, list.id, {
           showCompleted: show_completed,
           maxResults: 100,
         });
-        if (!tasks.length) continue;
-        sections.push(
-          `### ${list.title ?? '(Untitled)'}\n\n${tasks.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
-        );
+        tasks.length &&
+          sections.push(
+            `### ${list.title ?? '(Untitled)'}\n\n${tasks.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`,
+          );
       }
       return sections.length
         ? sections.join('\n\n')
         : `No tasks found across any list${show_completed ? '' : ' (completed tasks hidden)'}.`;
     }
-
-    // ── New tool 5: overdue tasks ─────────────────────────────────────────
-
     case 'tasks_list_overdue_tasks': {
-      const { task_list_id } = params;
-      const tasks = await resolveTasks(credentials, task_list_id, { showCompleted: false });
-      const overdue = tasks.filter(isOverdue);
+      const { task_list_id: task_list_id } = params,
+        overdue = (await resolveTasks(credentials, task_list_id, { showCompleted: !1 })).filter(
+          isOverdue,
+        );
       if (!overdue.length) return '🎉 No overdue tasks found!';
       const lines = overdue.map((t, i) => {
         const listLabel = t._listTitle ? ` _(${t._listTitle})_` : '';
@@ -214,13 +215,11 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
       });
       return `Overdue tasks (${overdue.length}):\n\n${lines.join('\n\n')}`;
     }
-
-    // ── New tool 6: due today ─────────────────────────────────────────────
-
     case 'tasks_list_due_today': {
-      const { task_list_id } = params;
-      const tasks = await resolveTasks(credentials, task_list_id, { showCompleted: false });
-      const dueToday = tasks.filter(isDueToday);
+      const { task_list_id: task_list_id } = params,
+        dueToday = (await resolveTasks(credentials, task_list_id, { showCompleted: !1 })).filter(
+          isDueToday,
+        );
       if (!dueToday.length) return 'No tasks due today.';
       const lines = dueToday.map((t, i) => {
         const listLabel = t._listTitle ? ` _(${t._listTitle})_` : '';
@@ -228,13 +227,11 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
       });
       return `Tasks due today (${dueToday.length}):\n\n${lines.join('\n\n')}`;
     }
-
-    // ── New tool 7: due this week ─────────────────────────────────────────
-
     case 'tasks_list_due_this_week': {
-      const { task_list_id } = params;
-      const tasks = await resolveTasks(credentials, task_list_id, { showCompleted: false });
-      const upcoming = tasks.filter(isDueThisWeek);
+      const { task_list_id: task_list_id } = params,
+        upcoming = (await resolveTasks(credentials, task_list_id, { showCompleted: !1 })).filter(
+          isDueThisWeek,
+        );
       if (!upcoming.length) return 'No tasks due in the next 7 days.';
       upcoming.sort((a, b) => new Date(a.due) - new Date(b.due));
       const lines = upcoming.map((t, i) => {
@@ -243,64 +240,56 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
       });
       return `Tasks due this week (${upcoming.length}):\n\n${lines.join('\n\n')}`;
     }
-
-    // ── New tool 8: bulk complete ─────────────────────────────────────────
-
     case 'tasks_bulk_complete_tasks': {
-      const { task_list_id, task_ids } = params;
+      const { task_list_id: task_list_id, task_ids: task_ids } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!Array.isArray(task_ids) || !task_ids.length)
         throw new Error('task_ids must be a non-empty array');
       const results = await Promise.allSettled(
-        task_ids.map((id) => TasksAPI.completeTask(credentials, task_list_id, id)),
-      );
-      const succeeded = results.filter((r) => r.status === 'fulfilled').length;
-      const failed = results.filter((r) => r.status === 'rejected').length;
+          task_ids.map((id) => TasksAPI.completeTask(credentials, task_list_id, id)),
+        ),
+        succeeded = results.filter((r) => 'fulfilled' === r.status).length,
+        failed = results.filter((r) => 'rejected' === r.status).length;
       return `Bulk complete: ${succeeded} task(s) marked completed ✅${failed ? `, ${failed} failed.` : '.'}`;
     }
-
-    // ── New tool 9: bulk delete ───────────────────────────────────────────
-
     case 'tasks_bulk_delete_tasks': {
-      const { task_list_id, task_ids } = params;
+      const { task_list_id: task_list_id, task_ids: task_ids } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!Array.isArray(task_ids) || !task_ids.length)
         throw new Error('task_ids must be a non-empty array');
       const results = await Promise.allSettled(
-        task_ids.map((id) => TasksAPI.deleteTask(credentials, task_list_id, id)),
-      );
-      const succeeded = results.filter((r) => r.status === 'fulfilled').length;
-      const failed = results.filter((r) => r.status === 'rejected').length;
+          task_ids.map((id) => TasksAPI.deleteTask(credentials, task_list_id, id)),
+        ),
+        succeeded = results.filter((r) => 'fulfilled' === r.status).length,
+        failed = results.filter((r) => 'rejected' === r.status).length;
       return `Bulk delete: ${succeeded} task(s) permanently deleted 🗑️${failed ? `, ${failed} failed.` : '.'}`;
     }
-
-    // ── New tool 10: bulk create ──────────────────────────────────────────
-
     case 'tasks_bulk_create_tasks': {
-      const { task_list_id = '@default', tasks } = params;
+      const { task_list_id: task_list_id = '@default', tasks: tasks } = params;
       if (!Array.isArray(tasks) || !tasks.length)
         throw new Error('tasks must be a non-empty array');
       const results = await Promise.allSettled(
-        tasks.map((t) =>
-          TasksAPI.createTask(credentials, task_list_id, {
-            title: t.title,
-            notes: t.notes ?? '',
-            due: t.due ?? null,
-          }),
+          tasks.map((t) =>
+            TasksAPI.createTask(credentials, task_list_id, {
+              title: t.title,
+              notes: t.notes ?? '',
+              due: t.due ?? null,
+            }),
+          ),
         ),
-      );
-      const succeeded = results.filter((r) => r.status === 'fulfilled').map((r) => r.value.title);
-      const failed = results.filter((r) => r.status === 'rejected').length;
+        succeeded = results.filter((r) => 'fulfilled' === r.status).map((r) => r.value.title),
+        failed = results.filter((r) => 'rejected' === r.status).length;
       return [
         `Bulk create: ${succeeded.length} task(s) created${failed ? `, ${failed} failed` : ''}.`,
         ...succeeded.map((title) => `  • ${title}`),
       ].join('\n');
     }
-
-    // ── New tool 11: move task to another list ────────────────────────────
-
     case 'tasks_move_task': {
-      const { source_task_list_id, task_id, dest_task_list_id } = params;
+      const {
+        source_task_list_id: source_task_list_id,
+        task_id: task_id,
+        dest_task_list_id: dest_task_list_id,
+      } = params;
       if (!source_task_list_id?.trim())
         throw new Error('Missing required param: source_task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
@@ -313,18 +302,21 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
       );
       return `Task "${task.title}" moved to list \`${dest_task_list_id}\`.\nNew ID: \`${task.id}\``;
     }
-
-    // ── New tool 12: add subtask ──────────────────────────────────────────
-
     case 'tasks_add_subtask': {
-      const { task_list_id, parent_task_id, title, notes = '', due } = params;
+      const {
+        task_list_id: task_list_id,
+        parent_task_id: parent_task_id,
+        title: title,
+        notes: notes = '',
+        due: due,
+      } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!parent_task_id?.trim()) throw new Error('Missing required param: parent_task_id');
       if (!title?.trim()) throw new Error('Missing required param: title');
       const subtask = await TasksAPI.createSubtask(credentials, task_list_id, parent_task_id, {
         title: title.trim(),
-        notes,
-        due,
+        notes: notes,
+        due: due,
       });
       return [
         'Subtask created',
@@ -337,32 +329,28 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
-    // ── New tool 13: list subtasks ────────────────────────────────────────
-
     case 'tasks_list_subtasks': {
-      const { task_list_id, parent_task_id } = params;
+      const { task_list_id: task_list_id, parent_task_id: parent_task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!parent_task_id?.trim()) throw new Error('Missing required param: parent_task_id');
       const subtasks = await TasksAPI.listSubtasks(credentials, task_list_id, parent_task_id);
-      if (!subtasks.length) return 'No subtasks found for this task.';
-      return `Subtasks (${subtasks.length}):\n\n${subtasks.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`;
+      return subtasks.length
+        ? `Subtasks (${subtasks.length}):\n\n${subtasks.map((t, i) => formatTask(t, i + 1)).join('\n\n')}`
+        : 'No subtasks found for this task.';
     }
-
-    // ── New tool 14: rename task list ─────────────────────────────────────
-
     case 'tasks_rename_task_list': {
-      const { task_list_id, new_title } = params;
+      const { task_list_id: task_list_id, new_title: new_title } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!new_title?.trim()) throw new Error('Missing required param: new_title');
       const list = await TasksAPI.renameTaskList(credentials, task_list_id, new_title.trim());
       return `Task list renamed to "${list.title}".\nID: \`${list.id}\``;
     }
-
-    // ── New tool 15: duplicate task ───────────────────────────────────────
-
     case 'tasks_duplicate_task': {
-      const { task_list_id, task_id, dest_task_list_id } = params;
+      const {
+        task_list_id: task_list_id,
+        task_id: task_id,
+        dest_task_list_id: dest_task_list_id,
+      } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
       const copy = await TasksAPI.duplicateTask(
@@ -382,45 +370,34 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         .filter(Boolean)
         .join('\n');
     }
-
-    // ── New tool 16: set due today ────────────────────────────────────────
-
     case 'tasks_set_due_today': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const task = await TasksAPI.updateTask(credentials, task_list_id, task_id, {
-        due: today.toISOString(),
-      });
-      return `Task "${task.title}" due date set to today (${formatDue(today.toISOString())}).`;
+      return (
+        today.setHours(0, 0, 0, 0),
+        `Task "${(await TasksAPI.updateTask(credentials, task_list_id, task_id, { due: today.toISOString() })).title}" due date set to today (${formatDue(today.toISOString())}).`
+      );
     }
-
-    // ── New tool 17: set due tomorrow ─────────────────────────────────────
-
     case 'tasks_set_due_tomorrow': {
-      const { task_list_id, task_id } = params;
+      const { task_list_id: task_list_id, task_id: task_id } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
       const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      const task = await TasksAPI.updateTask(credentials, task_list_id, task_id, {
-        due: tomorrow.toISOString(),
-      });
-      return `Task "${task.title}" due date set to tomorrow (${formatDue(tomorrow.toISOString())}).`;
+      return (
+        tomorrow.setDate(tomorrow.getDate() + 1),
+        tomorrow.setHours(0, 0, 0, 0),
+        `Task "${(await TasksAPI.updateTask(credentials, task_list_id, task_id, { due: tomorrow.toISOString() })).title}" due date set to tomorrow (${formatDue(tomorrow.toISOString())}).`
+      );
     }
-
-    // ── New tool 18: count tasks ──────────────────────────────────────────
-
     case 'tasks_count_tasks': {
-      const { task_list_id } = params;
-      const all = await resolveTasks(credentials, task_list_id, { showCompleted: true });
-      const pending = all.filter((t) => t.status !== 'completed');
-      const completed = all.filter((t) => t.status === 'completed');
-      const overdue = all.filter(isOverdue);
-      const dueToday = all.filter(isDueToday);
+      const { task_list_id: task_list_id } = params,
+        all = await resolveTasks(credentials, task_list_id, { showCompleted: !0 }),
+        pending = all.filter((t) => 'completed' !== t.status),
+        completed = all.filter((t) => 'completed' === t.status),
+        overdue = all.filter(isOverdue),
+        dueToday = all.filter(isDueToday);
       return [
         task_list_id
           ? `Task counts for list \`${task_list_id}\`:`
@@ -432,60 +409,49 @@ export async function executeTasksChatTool(ctx, toolName, params = {}) {
         `  📊 Total:     ${all.length}`,
       ].join('\n');
     }
-
-    // ── New tool 19: reorder task ─────────────────────────────────────────
-
     case 'tasks_reorder_task': {
-      const { task_list_id, task_id, previous_task_id, parent_task_id } = params;
+      const {
+        task_list_id: task_list_id,
+        task_id: task_id,
+        previous_task_id: previous_task_id,
+        parent_task_id: parent_task_id,
+      } = params;
       if (!task_list_id?.trim()) throw new Error('Missing required param: task_list_id');
       if (!task_id?.trim()) throw new Error('Missing required param: task_id');
-      const task = await TasksAPI.reorderTask(credentials, task_list_id, task_id, {
-        previousTaskId: previous_task_id ?? null,
-        parentTaskId: parent_task_id ?? null,
-      });
       const posLabel = previous_task_id
         ? `after task \`${previous_task_id}\``
         : 'at the top of the list';
-      return `Task "${task.title}" moved ${posLabel}.`;
+      return `Task "${(await TasksAPI.reorderTask(credentials, task_list_id, task_id, { previousTaskId: previous_task_id ?? null, parentTaskId: parent_task_id ?? null })).title}" moved ${posLabel}.`;
     }
-
-    // ── New tool 20: export as markdown ──────────────────────────────────
-
     case 'tasks_export_tasks_markdown': {
-      const { task_list_id = '@default', show_completed = true, include_notes = true } = params;
-      const tasks = await TasksAPI.listTasks(credentials, task_list_id, {
-        showCompleted: show_completed,
-        maxResults: 100,
-      });
+      const {
+          task_list_id: task_list_id = '@default',
+          show_completed: show_completed = !0,
+          include_notes: include_notes = !0,
+        } = params,
+        tasks = await TasksAPI.listTasks(credentials, task_list_id, {
+          showCompleted: show_completed,
+          maxResults: 100,
+        });
       if (!tasks.length) return 'No tasks to export.';
-
       let listTitle = task_list_id;
       try {
-        const listInfo = await TasksAPI.getTaskList(credentials, task_list_id);
-        listTitle = listInfo.title ?? task_list_id;
-      } catch {
-        /* ignore */
-      }
-
-      const lines = [`# ${listTitle}`, ''];
-      const topLevel = tasks.filter((t) => !t.parent);
-      const children = tasks.filter((t) => t.parent);
-
+        listTitle = (await TasksAPI.getTaskList(credentials, task_list_id)).title ?? task_list_id;
+      } catch {}
+      const lines = [`# ${listTitle}`, ''],
+        topLevel = tasks.filter((t) => !t.parent),
+        children = tasks.filter((t) => t.parent);
       function renderTask(t, indent = '') {
-        const done = t.status === 'completed';
-        const checkbox = done ? '[x]' : '[ ]';
-        const due = t.due ? ` _(due ${formatDue(t.due)})_` : '';
-        lines.push(`${indent}- ${checkbox} **${t.title ?? '(Untitled)'}**${due}`);
-        if (include_notes && t.notes) {
-          t.notes.split('\n').forEach((note) => lines.push(`${indent}  > ${note}`));
-        }
-        children.filter((c) => c.parent === t.id).forEach((c) => renderTask(c, indent + '  '));
+        const checkbox = 'completed' === t.status ? '[x]' : '[ ]',
+          due = t.due ? ` _(due ${formatDue(t.due)})_` : '';
+        (lines.push(`${indent}- ${checkbox} **${t.title ?? '(Untitled)'}**${due}`),
+          include_notes &&
+            t.notes &&
+            t.notes.split('\n').forEach((note) => lines.push(`${indent}  > ${note}`)),
+          children.filter((c) => c.parent === t.id).forEach((c) => renderTask(c, indent + '  ')));
       }
-
-      topLevel.forEach((t) => renderTask(t));
-      return lines.join('\n');
+      return (topLevel.forEach((t) => renderTask(t)), lines.join('\n'));
     }
-
     default:
       throw new Error(`Unknown Tasks tool: ${toolName}`);
   }

@@ -1,6 +1,9 @@
-/* ══════════════════════════════════════════
-   INPUT AREA WRAPPER
-══════════════════════════════════════════ */
+.icon-btn::after,
+.send-btn::after {
+  content: '';
+  inset: 0;
+  position: absolute;
+}
 #input-area {
   position: absolute;
   bottom: 0;
@@ -14,10 +17,6 @@
   background: linear-gradient(to top, var(--bg-primary) 65%, transparent);
   animation: riseUp 0.5s var(--ease-out-ui) 0.22s both;
 }
-
-/* ══════════════════════════════════════════
-   INPUT BOX
-══════════════════════════════════════════ */
 .input-box {
   position: relative;
   width: 100%;
@@ -32,11 +31,9 @@
     transform var(--transition-fast),
     background var(--duration-emphasis) var(--ease-in-out-ui);
 }
-
 .input-box:hover {
   background: color-mix(in srgb, var(--bg-input) 92%, var(--accent) 3%);
 }
-
 .input-box:focus-within {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
   box-shadow:
@@ -44,8 +41,6 @@
     var(--shadow-md);
   transform: translateY(-1px);
 }
-
-/* Prompt enhancement in progress — shimmer + glow; removing the class transitions back to normal */
 .input-box.input-box--enhancing,
 .input-box.input-box--enhancing:focus-within,
 .input-box.input-box--enhancing:hover {
@@ -57,7 +52,6 @@
   transform: translateY(-1px);
   background: color-mix(in srgb, var(--bg-input) 88%, var(--accent) 6%);
 }
-
 .input-box.input-box--enhancing::before {
   content: '';
   position: absolute;
@@ -67,29 +61,25 @@
   z-index: 0;
   background: linear-gradient(
     105deg,
-    transparent 0%,
+    transparent 0,
     transparent 38%,
     color-mix(in srgb, var(--accent) 22%, transparent) 50%,
     transparent 62%,
     transparent 100%
   );
   background-size: 220% 100%;
-  animation: input-box-enhance-shimmer 1.35s linear infinite;
+  animation: 1.35s linear infinite input-box-enhance-shimmer;
 }
-
 .input-box.input-box--enhancing > * {
   position: relative;
   z-index: 1;
 }
-
-/* Inert blocks interaction but not visual affordance — match “disabled” look */
-.input-box.input-box--enhancing .model-selector,
+.input-box.input-box--enhancing .composer-attachments button,
 .input-box.input-box--enhancing .input-footer button,
-.input-box.input-box--enhancing .composer-attachments button {
+.input-box.input-box--enhancing .model-selector {
   opacity: 0.55;
   cursor: not-allowed;
 }
-
 @keyframes input-box-enhance-shimmer {
   0% {
     background-position: 100% 0;
@@ -98,12 +88,11 @@
     background-position: -100% 0;
   }
 }
-
 .input-box textarea {
   width: 100%;
-  background: transparent;
+  background: 0 0;
   border: none;
-  outline: none;
+  outline: 0;
   resize: none;
   color: var(--text-primary);
   font-family: var(--font-ui);
@@ -115,14 +104,9 @@
   scrollbar-width: thin;
   transition: color var(--transition-theme);
 }
-
 .input-box textarea::placeholder {
   color: var(--text-muted);
 }
-
-/* ══════════════════════════════════════════
-   COMPOSER ATTACHMENTS
-══════════════════════════════════════════ */
 .composer-attachments {
   display: flex;
   gap: 12px;
@@ -135,11 +119,9 @@
   scrollbar-width: thin;
   scroll-snap-type: x proximity;
 }
-
 .composer-attachments[hidden] {
   display: none !important;
 }
-
 .composer-attachment {
   position: relative;
   flex: 0 0 120px;
@@ -155,28 +137,17 @@
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .composer-attachment:hover {
-    transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
-    box-shadow: var(--shadow-md);
-  }
-}
-
 .composer-attachment-preview {
   width: 100%;
   height: 100%;
   background: var(--bg-secondary);
 }
-
 .composer-attachment-preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
 .composer-attachment-remove {
   position: absolute;
   top: 6px;
@@ -200,22 +171,34 @@
     transform var(--transition-fast),
     border-color var(--transition-fast);
 }
-
+.icon-btn,
+.send-btn {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+.icon-btn,
+.icon-btn.is-disabled:hover {
+  background: 0 0;
+  color: var(--text-muted);
+}
 @media (hover: hover) and (pointer: fine) {
+  .composer-attachment:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
+    box-shadow: var(--shadow-md);
+  }
   .composer-attachment-remove:hover {
     background: color-mix(in srgb, var(--accent) 82%, rgba(18, 20, 28, 0.66));
     border-color: transparent;
     transform: scale(1.04);
   }
 }
-
 .composer-attachment-remove:active {
   transform: scale(0.97);
 }
-
-/* ══════════════════════════════════════════
-   COMPOSER HINT
-══════════════════════════════════════════ */
 .composer-hint {
   min-height: 18px;
   margin-top: 8px;
@@ -228,23 +211,16 @@
     transform 0.18s ease,
     color var(--transition-fast);
 }
-
 .composer-hint.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 .composer-hint.warning {
   color: #d97706;
 }
-
 .composer-hint.info {
   color: var(--text-secondary);
 }
-
-/* ══════════════════════════════════════════
-   INPUT FOOTER
-══════════════════════════════════════════ */
 .input-footer {
   display: flex;
   align-items: center;
@@ -252,54 +228,36 @@
   margin-top: 8px;
   position: relative;
 }
-
-/* ══════════════════════════════════════════
-   INPUT ACTION BUTTONS (icon-btn)
-══════════════════════════════════════════ */
+.icon-btn,
 .input-actions {
-  display: flex;
   align-items: center;
+  display: flex;
+}
+.input-actions {
   gap: 4px;
 }
-
 .icon-btn {
-  width: 30px;
-  height: 30px;
   border-radius: 50%;
   border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
   transition:
     background var(--transition-mid),
     color var(--transition-mid),
     transform var(--transition-fast);
 }
-
-/* Ripple overlay */
 .icon-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0, transparent 70%);
   opacity: 0;
   transform: scale(0.5);
   transition:
-    opacity 0.25s ease,
-    transform 0.35s ease;
+    opacity 0.25s,
+    transform 0.35s;
 }
-
 .icon-btn:active::after {
   opacity: 1;
   transform: scale(2);
   transition: none;
 }
-
 @media (hover: hover) and (pointer: fine) {
   .icon-btn:hover {
     background: var(--bg-hover);
@@ -307,56 +265,36 @@
     transform: scale(1.06);
   }
 }
-
 .icon-btn:active {
   transform: scale(0.97);
 }
-
 .icon-btn svg {
   width: 16px;
   height: 16px;
   stroke-width: 1.8;
 }
-
 .icon-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   pointer-events: none;
 }
-
 .icon-btn.is-disabled:hover {
-  background: transparent;
-  color: var(--text-muted);
   transform: none;
 }
-
-/* ══════════════════════════════════════════
-   SEND BUTTON
-══════════════════════════════════════════ */
 .send-btn {
-  width: 30px;
-  height: 30px;
   border-radius: 50%;
   border: none;
   background: var(--text-muted);
   color: var(--bg-primary);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
   transition:
     background var(--transition-mid),
     transform var(--transition-fast),
     box-shadow var(--transition-mid);
 }
-
-/* Ripple */
 .send-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
   background: rgba(255, 255, 255, 0.2);
   border-radius: inherit;
   opacity: 0;
@@ -365,51 +303,40 @@
     opacity var(--duration-surface) var(--ease-out-ui),
     transform var(--duration-surface) var(--ease-out-ui);
 }
-
 .send-btn:active::after {
   opacity: 1;
   transform: scale(2);
   transition: none;
 }
-
 @media (hover: hover) and (pointer: fine) {
   .send-btn:hover {
     transform: scale(1.06);
   }
-}
-
-.send-btn:active {
-  transform: scale(0.97);
-}
-
-.send-btn.ready {
-  background: var(--accent);
-  box-shadow: 0 2px 12px var(--accent-glow);
-}
-
-@media (hover: hover) and (pointer: fine) {
   .send-btn.ready:hover {
     background: var(--accent-hover);
     box-shadow: 0 4px 20px var(--accent-glow);
     transform: scale(1.08) translateY(-1px);
   }
 }
-
+.send-btn:active {
+  transform: scale(0.97);
+}
+.send-btn.ready {
+  background: var(--accent);
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
 .send-btn:disabled {
   cursor: default;
   opacity: 0.7;
   box-shadow: none;
 }
-
 .send-btn:disabled:hover {
   transform: none;
 }
-
 .send-btn svg {
   width: 15px;
   height: 15px;
 }
-
 .send-btn.is-stop {
   background: var(--accent);
   box-shadow: 0 2px 12px var(--accent-glow);
@@ -418,7 +345,6 @@
     box-shadow var(--transition-mid),
     transform var(--transition-fast);
 }
-
 @media (hover: hover) and (pointer: fine) {
   .send-btn.is-stop:hover {
     background: #e05a5a;
@@ -426,7 +352,6 @@
     transform: scale(1.06);
   }
 }
-
 .send-btn.is-stop:active {
   transform: scale(0.97);
   background: #c94949;

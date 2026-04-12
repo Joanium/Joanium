@@ -1,5 +1,4 @@
 import { openSite } from './Site.js';
-
 export const actionType = 'open_multiple_sites';
 export const actionMeta = {
   label: 'Open multiple sites',
@@ -12,8 +11,6 @@ export async function execute(action) {
     .split('\n')
     .map((u) => u.trim())
     .filter(Boolean);
-  for (const url of urls) {
-    await openSite(url);
-    if (urls.length > 1) await new Promise((r) => setTimeout(r, 400));
-  }
+  for (const url of urls)
+    (await openSite(url), urls.length > 1 && (await new Promise((r) => setTimeout(r, 400))));
 }

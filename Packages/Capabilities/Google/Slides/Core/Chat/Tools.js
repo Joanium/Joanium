@@ -7,7 +7,7 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID (from the URL).',
       },
     },
@@ -20,7 +20,7 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
     },
@@ -30,7 +30,7 @@ export const SLIDES_TOOLS = [
     description: 'Create a new blank Google Slides presentation.',
     category: 'slides',
     parameters: {
-      title: { type: 'string', required: true, description: 'Title for the new presentation.' },
+      title: { type: 'string', required: !0, description: 'Title for the new presentation.' },
     },
   },
   {
@@ -40,12 +40,12 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       insertion_index: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Zero-based index to insert the slide at. Omit to append at the end.',
       },
     },
@@ -58,12 +58,12 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to delete (from slides_read).',
       },
     },
@@ -75,12 +75,12 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to duplicate.',
       },
     },
@@ -93,15 +93,15 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       search_text: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'The text to search for (case-sensitive).',
       },
-      replacement: { type: 'string', required: true, description: 'The text to replace it with.' },
+      replacement: { type: 'string', required: !0, description: 'The text to replace it with.' },
     },
   },
   {
@@ -112,7 +112,7 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
     },
@@ -125,12 +125,12 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to inspect.',
       },
     },
@@ -143,17 +143,17 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_ids: {
         type: 'array',
-        required: true,
+        required: !0,
         description: 'Array of slide object IDs to move, in the order they should appear.',
       },
       insertion_index: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Zero-based index in the presentation where the slides should be placed.',
       },
     },
@@ -166,31 +166,31 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to add the text box to.',
       },
       text: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Text content to place inside the text box.',
       },
       x: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal position in points (default 100).',
       },
       y: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Vertical position in points (default 100).',
       },
-      width: { type: 'number', required: false, description: 'Width in points (default 300).' },
-      height: { type: 'number', required: false, description: 'Height in points (default 60).' },
+      width: { type: 'number', required: !1, description: 'Width in points (default 300).' },
+      height: { type: 'number', required: !1, description: 'Height in points (default 60).' },
     },
   },
   {
@@ -201,17 +201,17 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the shape or text box to update.',
       },
       text: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'New text content to replace the existing text with.',
       },
     },
@@ -224,31 +224,27 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to insert the image on.',
       },
       image_url: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Publicly accessible URL of the image to embed.',
       },
       x: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal position in points (default 50).',
       },
-      y: {
-        type: 'number',
-        required: false,
-        description: 'Vertical position in points (default 50).',
-      },
-      width: { type: 'number', required: false, description: 'Width in points (default 300).' },
-      height: { type: 'number', required: false, description: 'Height in points (default 200).' },
+      y: { type: 'number', required: !1, description: 'Vertical position in points (default 50).' },
+      width: { type: 'number', required: !1, description: 'Width in points (default 300).' },
+      height: { type: 'number', required: !1, description: 'Height in points (default 200).' },
     },
   },
   {
@@ -259,12 +255,12 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the page element to delete.',
       },
     },
@@ -277,31 +273,31 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to add the shape to.',
       },
       shape_type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Shape type constant (e.g. RECTANGLE, ELLIPSE, TRIANGLE). Default RECTANGLE.',
       },
       x: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal position in points (default 100).',
       },
       y: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Vertical position in points (default 100).',
       },
-      width: { type: 'number', required: false, description: 'Width in points (default 200).' },
-      height: { type: 'number', required: false, description: 'Height in points (default 150).' },
+      width: { type: 'number', required: !1, description: 'Width in points (default 200).' },
+      height: { type: 'number', required: !1, description: 'Height in points (default 150).' },
     },
   },
   {
@@ -311,17 +307,17 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide whose background to update.',
       },
-      r: { type: 'number', required: true, description: 'Red component (0–255).' },
-      g: { type: 'number', required: true, description: 'Green component (0–255).' },
-      b: { type: 'number', required: true, description: 'Blue component (0–255).' },
+      r: { type: 'number', required: !0, description: 'Red component (0–255).' },
+      g: { type: 'number', required: !0, description: 'Green component (0–255).' },
+      b: { type: 'number', required: !0, description: 'Blue component (0–255).' },
     },
   },
   {
@@ -332,26 +328,26 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the shape containing the text.',
       },
-      bold: { type: 'boolean', required: false, description: 'Set text bold.' },
-      italic: { type: 'boolean', required: false, description: 'Set text italic.' },
-      underline: { type: 'boolean', required: false, description: 'Set text underline.' },
-      font_size: { type: 'number', required: false, description: 'Font size in points.' },
+      bold: { type: 'boolean', required: !1, description: 'Set text bold.' },
+      italic: { type: 'boolean', required: !1, description: 'Set text italic.' },
+      underline: { type: 'boolean', required: !1, description: 'Set text underline.' },
+      font_size: { type: 'number', required: !1, description: 'Font size in points.' },
       font_family: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Font family name (e.g. "Arial", "Roboto").',
       },
-      r: { type: 'number', required: false, description: 'Text color red component (0–255).' },
-      g: { type: 'number', required: false, description: 'Text color green component (0–255).' },
-      b: { type: 'number', required: false, description: 'Text color blue component (0–255).' },
+      r: { type: 'number', required: !1, description: 'Text color red component (0–255).' },
+      g: { type: 'number', required: !1, description: 'Text color green component (0–255).' },
+      b: { type: 'number', required: !1, description: 'Text color blue component (0–255).' },
     },
   },
   {
@@ -361,34 +357,30 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to add the table to.',
       },
-      rows: { type: 'number', required: false, description: 'Number of rows (default 3).' },
-      columns: { type: 'number', required: false, description: 'Number of columns (default 3).' },
+      rows: { type: 'number', required: !1, description: 'Number of rows (default 3).' },
+      columns: { type: 'number', required: !1, description: 'Number of columns (default 3).' },
       x: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal position in points (default 50).',
       },
       y: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Vertical position in points (default 100).',
       },
-      width: {
-        type: 'number',
-        required: false,
-        description: 'Table width in points (default 450).',
-      },
+      width: { type: 'number', required: !1, description: 'Table width in points (default 450).' },
       height: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Table height in points (default 200).',
       },
     },
@@ -401,16 +393,16 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the page element to move.',
       },
-      x: { type: 'number', required: true, description: 'New horizontal position in points.' },
-      y: { type: 'number', required: true, description: 'New vertical position in points.' },
+      x: { type: 'number', required: !0, description: 'New horizontal position in points.' },
+      y: { type: 'number', required: !0, description: 'New vertical position in points.' },
     },
   },
   {
@@ -420,17 +412,17 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to set speaker notes on.',
       },
       notes: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'The speaker notes text to set (replaces any existing notes).',
       },
     },
@@ -443,17 +435,17 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the shape containing the text.',
       },
       alignment: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Paragraph alignment: START, CENTER, END, or JUSTIFIED.',
       },
     },
@@ -466,18 +458,14 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
-      object_id: {
-        type: 'string',
-        required: true,
-        description: 'Object ID of the shape to fill.',
-      },
-      r: { type: 'number', required: true, description: 'Red component (0–255).' },
-      g: { type: 'number', required: true, description: 'Green component (0–255).' },
-      b: { type: 'number', required: true, description: 'Blue component (0–255).' },
-      alpha: { type: 'number', required: false, description: 'Opacity 0.0–1.0 (default 1.0).' },
+      object_id: { type: 'string', required: !0, description: 'Object ID of the shape to fill.' },
+      r: { type: 'number', required: !0, description: 'Red component (0–255).' },
+      g: { type: 'number', required: !0, description: 'Green component (0–255).' },
+      b: { type: 'number', required: !0, description: 'Blue component (0–255).' },
+      alpha: { type: 'number', required: !1, description: 'Opacity 0.0–1.0 (default 1.0).' },
     },
   },
   {
@@ -488,30 +476,22 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
-      table_object_id: {
-        type: 'string',
-        required: true,
-        description: 'Object ID of the table.',
-      },
+      table_object_id: { type: 'string', required: !0, description: 'Object ID of the table.' },
       row_index: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Zero-based index of the reference row.',
       },
       insert_below: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description:
           'Insert rows below the reference row (default true). Set false to insert above.',
       },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Number of rows to insert (default 1).',
-      },
+      count: { type: 'number', required: !1, description: 'Number of rows to insert (default 1).' },
     },
   },
   {
@@ -521,17 +501,13 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
-      table_object_id: {
-        type: 'string',
-        required: true,
-        description: 'Object ID of the table.',
-      },
+      table_object_id: { type: 'string', required: !0, description: 'Object ID of the table.' },
       row_index: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Zero-based index of the row to delete.',
       },
     },
@@ -544,27 +520,19 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
-      table_object_id: {
-        type: 'string',
-        required: true,
-        description: 'Object ID of the table.',
-      },
-      row_index: {
-        type: 'number',
-        required: true,
-        description: 'Zero-based row index of the cell.',
-      },
+      table_object_id: { type: 'string', required: !0, description: 'Object ID of the table.' },
+      row_index: { type: 'number', required: !0, description: 'Zero-based row index of the cell.' },
       column_index: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Zero-based column index of the cell.',
       },
       text: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Text to place in the cell (replaces existing content).',
       },
     },
@@ -577,37 +545,29 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to draw the line on.',
       },
       line_category: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Line style: STRAIGHT (default), BENT, or CURVED.',
       },
-      x: {
-        type: 'number',
-        required: false,
-        description: 'Start X position in points (default 50).',
-      },
-      y: {
-        type: 'number',
-        required: false,
-        description: 'Start Y position in points (default 50).',
-      },
+      x: { type: 'number', required: !1, description: 'Start X position in points (default 50).' },
+      y: { type: 'number', required: !1, description: 'Start Y position in points (default 50).' },
       width: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal span of the line in points (default 200).',
       },
       height: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Vertical span of the line in points (default 0 for horizontal line).',
       },
     },
@@ -620,31 +580,31 @@ export const SLIDES_TOOLS = [
     parameters: {
       presentation_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Slides presentation ID.',
       },
       slide_object_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Object ID of the slide to embed the video on.',
       },
       video_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'YouTube video ID (e.g. "dQw4w9WgXcQ" from youtube.com/watch?v=dQw4w9WgXcQ).',
       },
       x: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Horizontal position in points (default 100).',
       },
       y: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Vertical position in points (default 100).',
       },
-      width: { type: 'number', required: false, description: 'Width in points (default 320).' },
-      height: { type: 'number', required: false, description: 'Height in points (default 180).' },
+      width: { type: 'number', required: !1, description: 'Width in points (default 320).' },
+      height: { type: 'number', required: !1, description: 'Height in points (default 180).' },
     },
   },
 ];

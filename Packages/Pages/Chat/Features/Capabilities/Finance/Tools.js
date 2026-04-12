@@ -7,12 +7,12 @@ export const FINANCE_TOOLS = [
     parameters: {
       from: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Base currency ISO code (e.g. "USD", "EUR", "INR", "GBP")',
       },
       to: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Target currency ISO code (e.g. "EUR"). If omitted, returns all major rates.',
       },
     },
@@ -25,7 +25,7 @@ export const FINANCE_TOOLS = [
     parameters: {
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Type of data: "debt" (national debt, default), "rates" (average interest rates), or "balance" (daily cash balance)',
       },
@@ -39,13 +39,13 @@ export const FINANCE_TOOLS = [
     parameters: {
       series_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'FRED series ID (e.g. "GDP", "UNRATE" for unemployment, "CPIAUCSL" for CPI/inflation, "FEDFUNDS" for fed rate, "DGS10" for 10-year treasury yield, "SP500")',
       },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of recent observations to return (default: 5)',
       },
     },

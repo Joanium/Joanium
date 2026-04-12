@@ -1,22 +1,7 @@
 import defineFeature from '../Core/DefineFeature.js';
-
 async function getGoogleWorkspaceModule() {
   return import('./GoogleWorkspace.js');
 }
-
-async function getProfileEmail(accessToken) {
-  const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Token validation failed (${response.status})`);
-  }
-
-  const profile = await response.json();
-  return profile.email ?? null;
-}
-
 export default defineFeature({
   id: 'google-workspace',
   name: 'Google Workspace',
@@ -60,70 +45,68 @@ export default defineFeature({
           },
         ],
         automations: [],
-        defaultState: {
-          enabled: false,
-          credentials: {},
-        },
+        defaultState: { enabled: !1, credentials: {} },
         async validate(ctx) {
           const creds = ctx.connectorEngine?.getCredentials('google');
-          if (!creds?.accessToken) return { ok: false, error: 'No credentials stored' };
-
-          const { getFreshCreds } = await getGoogleWorkspaceModule();
-          const freshCreds = await getFreshCreds(creds);
-          const email = await getProfileEmail(freshCreds.accessToken);
-          if (email) ctx.connectorEngine?.updateCredentials('google', { email });
-          return { ok: true, email };
+          if (!creds?.accessToken) return { ok: !1, error: 'No credentials stored' };
+          const { getFreshCreds: getFreshCreds } = await getGoogleWorkspaceModule(),
+            freshCreds = await getFreshCreds(creds),
+            email = await (async function (accessToken) {
+              const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                headers: { Authorization: `Bearer ${accessToken}` },
+              });
+              if (!response.ok) throw new Error(`Token validation failed (${response.status})`);
+              return (await response.json()).email ?? null;
+            })(freshCreds.accessToken);
+          return (
+            email && ctx.connectorEngine?.updateCredentials('google', { email: email }),
+            { ok: !0, email: email }
+          );
         },
       },
     ],
   },
   lifecycle: {
     async onBoot(ctx) {
-      const { setConnectorEngine } = await getGoogleWorkspaceModule();
+      const { setConnectorEngine: setConnectorEngine } = await getGoogleWorkspaceModule();
       setConnectorEngine(ctx.connectorEngine);
     },
   },
   main: {
     methods: {
-      async oauthStart(ctx, { clientId, clientSecret }) {
-        if (!clientId?.trim() || !clientSecret?.trim()) {
-          return { ok: false, error: 'Client ID and Client Secret are required' };
-        }
-
-        const { startOAuthFlow, detectServices } = await getGoogleWorkspaceModule();
-        const tokens = await startOAuthFlow(clientId.trim(), clientSecret.trim());
-        const services = await detectServices(tokens).catch(() => ({}));
-        tokens.services = services;
-
-        ctx.connectorEngine?.saveConnector('google', tokens);
-        ctx.invalidateSystemPrompt?.();
-
-        return { ok: true, email: tokens.email, services };
+      async oauthStart(ctx, { clientId: clientId, clientSecret: clientSecret }) {
+        if (!clientId?.trim() || !clientSecret?.trim())
+          return { ok: !1, error: 'Client ID and Client Secret are required' };
+        const { startOAuthFlow: startOAuthFlow, detectServices: detectServices } =
+            await getGoogleWorkspaceModule(),
+          tokens = await startOAuthFlow(clientId.trim(), clientSecret.trim()),
+          services = await detectServices(tokens).catch(() => ({}));
+        return (
+          (tokens.services = services),
+          ctx.connectorEngine?.saveConnector('google', tokens),
+          ctx.invalidateSystemPrompt?.(),
+          { ok: !0, email: tokens.email, services: services }
+        );
       },
-
       async detectServices(ctx) {
         const creds = ctx.connectorEngine?.getCredentials('google');
-        if (!creds?.accessToken) {
-          return { ok: false, error: 'Google Workspace not connected' };
-        }
-
-        const { detectServices } = await getGoogleWorkspaceModule();
-        const services = await detectServices(creds);
-        ctx.connectorEngine?.updateCredentials('google', { services });
-        ctx.invalidateSystemPrompt?.();
-        return { ok: true, services };
+        if (!creds?.accessToken) return { ok: !1, error: 'Google Workspace not connected' };
+        const { detectServices: detectServices } = await getGoogleWorkspaceModule(),
+          services = await detectServices(creds);
+        return (
+          ctx.connectorEngine?.updateCredentials('google', { services: services }),
+          ctx.invalidateSystemPrompt?.(),
+          { ok: !0, services: services }
+        );
       },
     },
   },
   prompt: {
     async getContext(ctx) {
       const creds = ctx.connectorEngine?.getCredentials('google');
-      if (!creds?.email) return null;
-
-      return {
-        connectedServices: [`Google Workspace (${creds.email})`],
-        sections: [],
-      };
+      return creds?.email
+        ? { connectedServices: [`Google Workspace (${creds.email})`], sections: [] }
+        : null;
     },
   },
 });

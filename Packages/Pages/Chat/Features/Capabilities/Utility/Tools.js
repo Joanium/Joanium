@@ -7,13 +7,13 @@ export const UTILITY_TOOLS = [
     parameters: {
       expression: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Math expression to evaluate, for example "(42 * 1.08) / 3" or "sqrt(144) + pi".',
       },
       precision: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum decimal places in the displayed result (default: 6, max: 12).',
       },
     },
@@ -24,24 +24,20 @@ export const UTILITY_TOOLS = [
       'Convert a numeric value between common length, weight, temperature, volume, and speed units.',
     category: 'utility',
     parameters: {
-      value: {
-        type: 'number',
-        required: true,
-        description: 'Numeric value to convert.',
-      },
+      value: { type: 'number', required: !0, description: 'Numeric value to convert.' },
       from_unit: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Source unit, for example "km", "lb", "celsius", "liter", or "mph".',
       },
       to_unit: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Target unit, for example "mi", "kg", "fahrenheit", "cup", or "m/s".',
       },
       precision: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum decimal places in the displayed result (default: 6, max: 12).',
       },
     },
@@ -54,12 +50,12 @@ export const UTILITY_TOOLS = [
     parameters: {
       timezone: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'IANA timezone name such as "Asia/Kolkata" or "America/Los_Angeles".',
       },
       locale: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional locale for formatting, for example "en-US" or "en-GB".',
       },
     },
@@ -71,12 +67,12 @@ export const UTILITY_TOOLS = [
     parameters: {
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'How many UUIDs to generate (default: 1, max: 20).',
       },
       uppercase: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to return uppercase UUIDs.',
       },
     },
@@ -86,14 +82,10 @@ export const UTILITY_TOOLS = [
     description: 'Hash text using SHA-1, SHA-256, SHA-384, or SHA-512.',
     category: 'utility',
     parameters: {
-      text: {
-        type: 'string',
-        required: true,
-        description: 'Text to hash.',
-      },
+      text: { type: 'string', required: !0, description: 'Text to hash.' },
       algorithm: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Hash algorithm: "sha256" (default), "sha1", "sha384", or "sha512".',
       },
     },
@@ -102,13 +94,7 @@ export const UTILITY_TOOLS = [
     name: 'encode_base64',
     description: 'Encode UTF-8 text to Base64.',
     category: 'utility',
-    parameters: {
-      text: {
-        type: 'string',
-        required: true,
-        description: 'Plain text to encode.',
-      },
-    },
+    parameters: { text: { type: 'string', required: !0, description: 'Plain text to encode.' } },
   },
   {
     name: 'decode_base64',
@@ -117,7 +103,7 @@ export const UTILITY_TOOLS = [
     parameters: {
       base64: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Base64-encoded text. URL-safe Base64 is also accepted.',
       },
     },
@@ -127,19 +113,15 @@ export const UTILITY_TOOLS = [
     description: 'Validate and pretty-print JSON, optionally sorting object keys recursively.',
     category: 'utility',
     parameters: {
-      json: {
-        type: 'string',
-        required: true,
-        description: 'JSON text to format.',
-      },
+      json: { type: 'string', required: !0, description: 'JSON text to format.' },
       indent: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Indent size in spaces (default: 2, max: 8).',
       },
       sort_keys: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to sort object keys recursively before formatting.',
       },
     },
@@ -150,14 +132,10 @@ export const UTILITY_TOOLS = [
       'Convert text into lower, upper, title, sentence, camel, pascal, snake, kebab, or constant case.',
     category: 'utility',
     parameters: {
-      text: {
-        type: 'string',
-        required: true,
-        description: 'Text to transform.',
-      },
+      text: { type: 'string', required: !0, description: 'Text to transform.' },
       target_case: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Target case: "lower", "upper", "title", "sentence", "camel", "pascal", "snake", "kebab", or "constant".',
       },
@@ -168,12 +146,6 @@ export const UTILITY_TOOLS = [
     description:
       'Summarize text length, words, lines, sentences, paragraphs, average word length, and estimated reading time.',
     category: 'utility',
-    parameters: {
-      text: {
-        type: 'string',
-        required: true,
-        description: 'Text to analyze.',
-      },
-    },
+    parameters: { text: { type: 'string', required: !0, description: 'Text to analyze.' } },
   },
 ];

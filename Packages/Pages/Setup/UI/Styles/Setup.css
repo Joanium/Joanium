@@ -1,56 +1,77 @@
-/* ══════════════════════════════════════════
-       STEP 0 — Splash / T&C screen
-    ══════════════════════════════════════════ */
-
+#done-title,
+.done-sub,
+.name-field input,
+.p-name,
+.splash-tagline,
+.step-eyebrow,
+.step-sub,
+.step-title {
+  text-align: center;
+}
+.btn-primary.ready,
+.dot.active,
+.dot.done,
+.particle {
+  background: var(--accent);
+}
+.provider-card.selected .p-check svg,
+.tc-checkbox-row input:checked ~ .tc-box svg {
+  stroke: #fff;
+}
+.p-icon,
+.splash-canvas,
+body {
+  overflow: hidden;
+}
+.btn-primary,
+.p-icon-image,
+.splash-canvas,
+.step.leaving {
+  pointer-events: none;
+}
+.key-input,
+.name-field input {
+  outline: 0;
+  box-sizing: border-box;
+}
 .splash-canvas {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
-  overflow: hidden;
 }
-
 .particle {
   position: absolute;
   border-radius: 50%;
-  background: var(--accent);
   opacity: 0;
   animation: particleDrift var(--dur) var(--delay) ease-in-out infinite;
 }
-
 @keyframes particleDrift {
   0% {
     opacity: 0;
     transform: translateY(0) scale(0.5);
   }
-
   20% {
     opacity: 0.18;
   }
-
   80% {
     opacity: 0.1;
   }
-
   100% {
     opacity: 0;
     transform: translateY(-120px) scale(1);
   }
 }
-
 #step-splash {
   z-index: 1;
   gap: 0;
   max-width: 520px;
   align-items: center;
 }
-
 .splash-wordmark-wrap {
   overflow: hidden;
   padding-bottom: 4px;
   margin-bottom: 20px;
 }
-
 .splash-wordmark {
   font-family: var(--font-ui);
   font-size: clamp(52px, 11vw, 80px);
@@ -65,43 +86,44 @@
   transform: translateY(72px);
   animation: wordmarkRise 0.9s var(--ease-out-expo) 0.15s forwards;
 }
-
+.progress-track,
+.setup-footer-credit {
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+}
 .splash-wordmark .w-world {
   color: var(--accent);
 }
-
+.splash-tagline,
+.tc-text {
+  color: var(--text-secondary);
+}
 @keyframes wordmarkRise {
   0% {
     opacity: 0;
     transform: translateY(72px);
   }
-
   60% {
     opacity: 1;
   }
-
   100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
 .splash-tagline {
   font-size: 15px;
-  color: var(--text-secondary);
-  text-align: center;
   line-height: 1.75;
   max-width: 360px;
   opacity: 0;
   animation: splashFadeUp 0.7s var(--ease-out-expo) 0.75s forwards;
   margin-bottom: 44px;
 }
-
 .splash-tagline strong {
   color: var(--text-primary);
   font-weight: 500;
 }
-
 .splash-divider {
   width: 40px;
   height: 1px;
@@ -110,7 +132,10 @@
   opacity: 0;
   animation: splashFadeUp 0.5s var(--ease-out-expo) 1.05s forwards;
 }
-
+.name-field input,
+.tc-box {
+  background: var(--bg-input);
+}
 .splash-tc-block {
   width: 100%;
   display: flex;
@@ -120,7 +145,6 @@
   opacity: 0;
   animation: splashFadeUp 0.6s var(--ease-out-expo) 1.15s forwards;
 }
-
 .tc-checkbox-row {
   display: flex;
   align-items: flex-start;
@@ -129,21 +153,18 @@
   max-width: 380px;
   user-select: none;
 }
-
 .tc-checkbox-row input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
-
 .tc-box {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
   border-radius: 6px;
   border: 1.5px solid var(--border);
-  background: var(--bg-input);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,31 +175,31 @@
     transform 0.2s var(--ease-spring);
   margin-top: 1px;
 }
-
+.progress-track,
+body {
+  align-items: center;
+  display: flex;
+}
+.p-check,
+body {
+  justify-content: center;
+}
 .tc-box svg {
   width: 11px;
   height: 11px;
   stroke: transparent;
   transition: stroke 0.15s;
 }
-
 .tc-checkbox-row input:checked ~ .tc-box {
   background: var(--accent);
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
   transform: scale(1.12);
 }
-
-.tc-checkbox-row input:checked ~ .tc-box svg {
-  stroke: #fff;
-}
-
 .tc-text {
   font-size: 13px;
-  color: var(--text-secondary);
   line-height: 1.65;
 }
-
 .tc-link {
   color: var(--accent);
   text-decoration: none;
@@ -186,76 +207,49 @@
   border-bottom: 1px solid transparent;
   transition: border-color 0.15s;
 }
-
 .tc-link:hover {
   border-bottom-color: var(--accent);
 }
-
 #splash-continue {
   width: 100%;
   max-width: 380px;
 }
-
 @keyframes splashFadeUp {
   from {
     opacity: 0;
     transform: translateY(16px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-/* ══════════════════════════════════════════
-       SETUP — page-specific styles
-    ══════════════════════════════════════════ */
-
 body {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
 }
-
-/* ── Footer ── */
 .setup-footer-credit {
-  position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 11.5px;
   color: var(--text-muted);
   white-space: nowrap;
   animation: fadeIn 1s var(--ease-out-expo) 1.4s both;
   z-index: 10;
 }
-
+.setup-footer-credit .credit-name:hover,
+.setup-logo {
+  color: var(--accent);
+}
 .setup-footer-credit .credit-name {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.15s;
 }
-
-.setup-footer-credit .credit-name:hover {
-  color: var(--accent);
-}
-
-/* ── Progress dots ── */
 .progress-track {
-  position: fixed;
   top: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
   gap: 8px;
-  align-items: center;
   z-index: 50;
   animation: fadeIn 0.6s var(--ease-out-expo) both;
 }
-
 .dot {
   width: 6px;
   height: 6px;
@@ -265,18 +259,12 @@ body {
     background 0.4s var(--ease-smooth),
     transform 0.4s var(--ease-spring);
 }
-
 .dot.active {
-  background: var(--accent);
   transform: scale(1.35);
 }
-
 .dot.done {
-  background: var(--accent);
   opacity: 0.5;
 }
-
-/* ── Logo ── */
 .setup-logo {
   position: fixed;
   top: 22px;
@@ -284,15 +272,12 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--accent);
   animation: slideInLeft 0.5s var(--ease-out-expo) both;
 }
-
 .setup-logo svg {
   width: 22px;
   height: 22px;
 }
-
 .setup-logo-name {
   font-family: var(--font-ui);
   font-size: 13px;
@@ -300,8 +285,6 @@ body {
   color: var(--text-secondary);
   letter-spacing: 0.5px;
 }
-
-/* ── Step wrapper ── */
 .step {
   display: flex;
   flex-direction: column;
@@ -315,83 +298,67 @@ body {
     opacity 0.32s var(--ease-smooth),
     transform 0.32s var(--ease-out-expo);
 }
-
 .step.entering {
   opacity: 0;
   transform: translateY(24px) scale(0.97);
 }
-
 .step.leaving {
   opacity: 0;
   transform: translateY(-20px) scale(0.97);
-  pointer-events: none;
 }
-
 .step.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-
-/* ── Headings ── */
 .step-eyebrow {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  text-align: center;
 }
-
+.name-field input,
+.step-title {
+  color: var(--text-primary);
+  font-weight: 500;
+}
 .step-title {
   font-size: 28px;
-  font-weight: 500;
-  color: var(--text-primary);
   letter-spacing: -0.5px;
-  text-align: center;
   line-height: 1.2;
   margin-top: -8px;
 }
-
+.btn-primary,
+.name-field input {
+  font-family: var(--font-ui);
+  letter-spacing: 0.3px;
+  width: 100%;
+}
 .step-sub {
   font-size: 13px;
   color: var(--text-secondary);
-  text-align: center;
   line-height: 1.7;
   margin-top: -10px;
   max-width: 340px;
 }
-
-/* ── Name input ── */
 .name-field {
   width: 100%;
   position: relative;
 }
-
 .name-field input {
-  width: 100%;
-  background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 13px 18px;
-  font-family: var(--font-ui);
   font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  outline: none;
   transition:
     border-color 0.2s,
     box-shadow 0.2s,
     transform 0.15s;
-  text-align: center;
-  letter-spacing: 0.3px;
-  box-sizing: border-box;
 }
-
 .name-field input::placeholder {
   color: var(--text-muted);
   font-weight: 400;
 }
-
 .name-field input:focus {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
   box-shadow:
@@ -399,10 +366,7 @@ body {
     var(--shadow-md);
   transform: translateY(-1px);
 }
-
-/* ── Primary button ── */
 .btn-primary {
-  width: 100%;
   max-width: 380px;
   height: 48px;
   padding: 0 24px;
@@ -413,39 +377,27 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.3px;
   cursor: pointer;
   transition:
     background 0.2s,
     box-shadow 0.2s,
     transform 0.15s;
-  pointer-events: none;
 }
-
 .btn-primary.ready {
-  background: var(--accent);
   box-shadow: 0 4px 20px var(--accent-glow);
   pointer-events: all;
 }
-
 .btn-primary.ready:hover {
   background: var(--accent-hover);
   box-shadow: 0 6px 28px var(--accent-glow);
   transform: translateY(-2px);
 }
-
 .btn-primary.ready:active {
   transform: translateY(0) scale(0.98);
 }
-
-/* ══════════════════════════════════════════
-       STEP 2 — Provider picker
-    ══════════════════════════════════════════ */
-
 #step-providers {
   max-width: 900px !important;
   max-height: 100vh;
@@ -454,8 +406,6 @@ body {
   padding: 60px 0 64px;
   gap: 20px !important;
 }
-
-/* ── Provider scroll row ── */
 #provider-grid {
   width: 100%;
   overflow-x: auto;
@@ -473,23 +423,18 @@ body {
   padding: 10px 0 12px;
   cursor: grab;
 }
-
 #provider-grid:active {
   cursor: grabbing;
 }
-
 #provider-grid::-webkit-scrollbar {
   display: none;
 }
-
 .provider-row {
   display: flex;
   gap: 10px;
   width: max-content;
   padding: 0 60px;
 }
-
-/* ── Provider card ── */
 .provider-card {
   position: relative;
   width: 86px;
@@ -510,20 +455,17 @@ body {
     box-shadow 0.2s;
   user-select: none;
 }
-
 .provider-card:hover {
   border-color: color-mix(in srgb, var(--p-color) 55%, var(--border));
   background: color-mix(in srgb, var(--p-color) 7%, var(--bg-secondary));
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
 }
-
 .provider-card:focus-visible {
-  outline: none;
+  outline: 0;
   border-color: var(--p-color);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-color) 22%, transparent);
 }
-
 .provider-card.selected {
   border-color: var(--p-color);
   background: color-mix(in srgb, var(--p-color) 11%, var(--bg-secondary));
@@ -531,7 +473,6 @@ body {
     0 0 0 1px color-mix(in srgb, var(--p-color) 55%, transparent),
     0 12px 28px color-mix(in srgb, var(--p-color) 16%, transparent);
 }
-
 .p-card-stack {
   width: 100%;
   display: flex;
@@ -539,8 +480,11 @@ body {
   align-items: center;
   gap: 7px;
 }
-
-/* ── Check badge ── */
+.p-check,
+.p-icon {
+  display: flex;
+  align-items: center;
+}
 .p-check {
   position: absolute;
   top: 7px;
@@ -549,54 +493,37 @@ body {
   height: 18px;
   border-radius: 50%;
   border: 1.5px solid color-mix(in srgb, var(--border) 70%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: color-mix(in srgb, var(--bg-primary) 80%, transparent);
   transition:
     background 0.2s,
     border-color 0.2s,
     transform 0.25s var(--ease-spring);
 }
-
 .p-check svg {
   width: 9px;
   height: 9px;
   stroke: transparent;
   transition: stroke 0.15s;
 }
-
 .provider-card.selected .p-check {
   background: var(--p-color);
   border-color: var(--p-color);
   transform: scale(1.1);
 }
-
-.provider-card.selected .p-check svg {
-  stroke: #fff;
-}
-
-/* ── Icon ── */
 .p-icon {
   width: 38px;
   height: 38px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
   border-radius: 12px;
 }
-
 .provider-card[data-icon-frame='soft'] .p-icon {
   background: color-mix(in srgb, var(--p-color) 13%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--p-color) 18%, transparent);
 }
-
 .provider-card[data-icon-frame='solid'] .p-icon {
   background: var(--p-color);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--p-color) 30%, transparent);
 }
-
 .p-icon-image {
   width: calc(var(--p-icon-size, 28px) - 2px);
   height: calc(var(--p-icon-size, 28px) - 2px);
@@ -604,9 +531,7 @@ body {
   max-height: 100%;
   object-fit: contain;
   user-select: none;
-  pointer-events: none;
 }
-
 .p-icon-fallback {
   display: none;
   align-items: center;
@@ -616,38 +541,35 @@ body {
   letter-spacing: 0.06em;
   color: var(--p-color);
 }
-
+#keys-section,
+.keys-copy {
+  flex-direction: column;
+  display: flex;
+}
 .provider-card.icon-missing .p-icon-image {
   display: none;
 }
-
 .provider-card.icon-missing .p-icon-fallback {
   display: inline-flex;
 }
-
 .p-name {
   font-size: 11.5px;
   font-weight: 600;
   color: var(--text-primary);
-  text-align: center;
   line-height: 1.2;
 }
-
+.keys-heading,
+.keys-subheading,
 .p-caption {
-  font-size: 10px;
   color: var(--text-muted);
   text-align: center;
+}
+.p-caption {
+  font-size: 10px;
   letter-spacing: 0.02em;
 }
-
-/* ══════════════════════════════════════════
-       API key fields
-    ══════════════════════════════════════════ */
-
 #keys-section {
   width: min(100%, 640px);
-  display: flex;
-  flex-direction: column;
   gap: 8px;
   max-height: 340px;
   overflow-y: auto;
@@ -655,46 +577,32 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
-
 #keys-section::-webkit-scrollbar {
   width: 3px;
 }
-
 #keys-section::-webkit-scrollbar-track {
-  background: transparent;
+  background: 0 0;
 }
-
 #keys-section::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 99px;
 }
-
 .keys-copy {
-  display: flex;
-  flex-direction: column;
   gap: 4px;
   margin-bottom: 4px;
 }
-
 .keys-heading {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--text-muted);
-  text-align: center;
   margin: 0;
 }
-
 .keys-subheading {
   margin: 0;
   font-size: 12px;
   line-height: 1.55;
-  color: var(--text-muted);
-  text-align: center;
 }
-
-/* ── Config card ── */
 .provider-config-card {
   display: flex;
   flex-direction: column;
@@ -705,14 +613,12 @@ body {
   border: 1px solid color-mix(in srgb, var(--p-color) 16%, var(--border));
   animation: messageIn 0.25s var(--ease-out-expo) both;
 }
-
 .provider-config-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
-
 .provider-config-title {
   font-size: 11.5px;
   font-weight: 600;
@@ -721,7 +627,6 @@ body {
   align-items: center;
   gap: 6px;
 }
-
 .provider-config-badge {
   font-size: 10px;
   font-weight: 600;
@@ -731,35 +636,33 @@ body {
   background: color-mix(in srgb, var(--bg-primary) 70%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
 }
-
 .provider-config-fields {
   display: grid;
   gap: 8px;
 }
-
 .provider-config-fields--multi {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-
 @media (max-width: 640px) {
   .provider-config-fields--multi {
     grid-template-columns: 1fr;
   }
 }
-
 .config-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-
 .config-field-label {
   font-size: 10.5px;
   font-weight: 600;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
 }
-
+#done-title,
+.key-input {
+  color: var(--text-primary);
+}
 .key-dot {
   width: 5px;
   height: 5px;
@@ -767,11 +670,9 @@ body {
   background: var(--p-color);
   flex-shrink: 0;
 }
-
 .key-input-wrap {
   position: relative;
 }
-
 .key-input {
   width: 100%;
   height: 34px;
@@ -781,29 +682,23 @@ body {
   padding: 0 34px 0 10px;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: var(--text-primary);
-  outline: none;
   transition:
     border-color 0.18s,
     box-shadow 0.18s;
-  box-sizing: border-box;
 }
-
 .key-input::placeholder {
   color: var(--text-muted);
 }
-
 .key-input:focus {
   border-color: var(--p-color);
   box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--p-color) 16%, transparent);
 }
-
 .key-eye {
   position: absolute;
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
+  background: 0 0;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
@@ -813,27 +708,19 @@ body {
   border-radius: 4px;
   transition: color 0.12s;
 }
-
 .key-eye:hover {
   color: var(--text-secondary);
 }
-
 .key-eye svg {
   width: 13px;
   height: 13px;
 }
-
 .provider-config-hint {
   margin: 0;
   font-size: 10.5px;
   line-height: 1.5;
   color: var(--text-muted);
 }
-
-/* ══════════════════════════════════════════
-       STEP 3 — Done
-    ══════════════════════════════════════════ */
-
 .done-anim {
   width: 68px;
   height: 68px;
@@ -846,46 +733,32 @@ body {
     iconPop 0.5s var(--ease-spring) both,
     glowPulse 3s ease-in-out infinite 0.5s;
 }
-
 .done-anim svg {
   width: 34px;
   height: 34px;
 }
-
 #done-title {
   font-size: 24px;
   font-weight: 500;
-  color: var(--text-primary);
   letter-spacing: -0.3px;
-  text-align: center;
 }
-
 .done-sub {
   font-size: 13px;
   color: var(--text-secondary);
-  text-align: center;
 }
-
-/* ══════════════════════════════════════════
-       Shared keyframes
-    ══════════════════════════════════════════ */
-
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
 }
-
 @keyframes messageIn {
   from {
     opacity: 0;
     transform: translateY(6px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);

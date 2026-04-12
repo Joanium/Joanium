@@ -1,13 +1,8 @@
-/* ══════════════════════════════════════════
-   MEMORY FIELD EXTRAS
-══════════════════════════════════════════ */
-
 .settings-field-label--with-badge {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .memory-badge {
   display: inline-flex;
   align-items: center;
@@ -23,12 +18,10 @@
   border-radius: 999px;
   line-height: 1.4;
 }
-
 .memory-badge svg {
   opacity: 0.85;
   flex-shrink: 0;
 }
-
 .settings-field-hint {
   font-size: 11px;
   color: var(--text-muted);

@@ -1,8 +1,12 @@
-/* ─────────────────────────────────────────────
-   code-block.css
-   Code block wrapper, language label, copy + download buttons
-───────────────────────────────────────────── */
-
+.code-header,
+.copy-code-btn,
+.download-code-btn,
+.preview-code-btn {
+  display: flex;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-family: var(--font-ui);
+}
 .code-wrapper {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -11,67 +15,49 @@
   margin: 12px 0;
   animation: fadeScaleIn 0.35s var(--motion-smooth);
 }
-
 .code-header {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 6px 12px;
   background: rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid var(--border);
-  font-family: var(--font-ui);
-  font-size: 11.5px;
-  color: var(--text-muted);
 }
-
 .code-lang {
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
-
-/* ── Action buttons group ── */
 .code-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
-
-/* Shared styles for copy + download buttons */
 .copy-code-btn,
-.preview-code-btn,
-.download-code-btn {
-  display: flex;
+.download-code-btn,
+.preview-code-btn {
   align-items: center;
   gap: 5px;
-  background: transparent;
+  background: 0 0;
   border: none;
-  color: var(--text-muted);
   cursor: pointer;
-  font-size: 11.5px;
   padding: 4px 8px;
   border-radius: 5px;
-  font-family: var(--font-ui);
   transition:
     background var(--transition-fast),
     color var(--transition-fast);
 }
-
 .copy-code-btn:hover,
-.preview-code-btn:hover,
-.download-code-btn:hover {
+.download-code-btn:hover,
+.preview-code-btn:hover {
   color: var(--text-primary);
   background: var(--bg-hover);
 }
-
-/* Subtle divider between copy and download */
-.preview-code-btn,
-.download-code-btn {
+.download-code-btn,
+.preview-code-btn {
   position: relative;
 }
-
-.preview-code-btn::before,
-.download-code-btn::before {
+.download-code-btn::before,
+.preview-code-btn::before {
   content: '';
   position: absolute;
   left: -2px;

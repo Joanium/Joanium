@@ -5,16 +5,17 @@ import { getRepoRoot, loadWorkspacePackages } from '../Packages/Main/Core/Worksp
 
 const REPO_ROOT = getRepoRoot();
 const WORKSPACE_PACKAGES = loadWorkspacePackages();
-const IMPORT_PATTERN = /(?:import|export)\s+(?:[^'"]*?\s+from\s+)?['"](\.{1,2}\/[^'"]+)['"]|import\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g;
+const IMPORT_PATTERN =
+  /(?:import|export)\s+(?:[^'"]*?\s+from\s+)?['"](\.{1,2}\/[^'"]+)['"]|import\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g;
 const JS_FILE_PATTERN = /\.(?:m?js)$/i;
 const CONTRIBUTION_PATTERNS = {
-  engines: filePath => {
+  engines: (filePath) => {
     if (!path.basename(filePath).endsWith('Engine.js')) return false;
     return /\bengineMeta\b/.test(fs.readFileSync(filePath, 'utf8'));
   },
-  ipc: filePath => /IPC\.js$/i.test(path.basename(filePath)),
-  pages: filePath => path.basename(filePath) === 'Page.js',
-  services: filePath => path.basename(filePath).endsWith('Service.js'),
+  ipc: (filePath) => /IPC\.js$/i.test(path.basename(filePath)),
+  pages: (filePath) => path.basename(filePath) === 'Page.js',
+  services: (filePath) => path.basename(filePath).endsWith('Service.js'),
 };
 
 function walkFiles(dir, predicate, results = []) {
@@ -43,10 +44,12 @@ function relativeToRepo(filePath) {
 }
 
 function findPackageForPath(filePath) {
-  return WORKSPACE_PACKAGES.find(pkg => {
-    const relative = path.relative(pkg.rootDir, filePath);
-    return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-  }) ?? null;
+  return (
+    WORKSPACE_PACKAGES.find((pkg) => {
+      const relative = path.relative(pkg.rootDir, filePath);
+      return relative && !relative.startsWith('..') && !path.isAbsolute(relative);
+    }) ?? null
+  );
 }
 
 function resolveImportTarget(sourceFile, specifier) {
@@ -59,11 +62,11 @@ function resolveImportTarget(sourceFile, specifier) {
     path.join(baseTarget, 'index.mjs'),
   ];
 
-  return candidates.find(candidate => fs.existsSync(candidate)) ?? baseTarget;
+  return candidates.find((candidate) => fs.existsSync(candidate)) ?? baseTarget;
 }
 
 function detectCrossPackageImports(pkg) {
-  const jsFiles = walkFiles(pkg.rootDir, filePath => JS_FILE_PATTERN.test(filePath));
+  const jsFiles = walkFiles(pkg.rootDir, (filePath) => JS_FILE_PATTERN.test(filePath));
   const crossings = [];
 
   for (const filePath of jsFiles) {
@@ -93,7 +96,7 @@ function detectCrossPackageImports(pkg) {
 }
 
 function summarizeDiscovery(pkg) {
-  const discovery = DISCOVERY_PACKAGES.find(entry => entry.name === pkg.name)?.discovery;
+  const discovery = DISCOVERY_PACKAGES.find((entry) => entry.name === pkg.name)?.discovery;
   if (!discovery) return [];
 
   return Object.entries(discovery)
@@ -102,11 +105,11 @@ function summarizeDiscovery(pkg) {
 }
 
 function validateDeclaredDiscovery(pkg, errors) {
-  const discovery = DISCOVERY_PACKAGES.find(entry => entry.name === pkg.name)?.discovery;
+  const discovery = DISCOVERY_PACKAGES.find((entry) => entry.name === pkg.name)?.discovery;
   const allFiles = walkFiles(pkg.rootDir, () => true);
 
   for (const [kind, hasContribution] of Object.entries(CONTRIBUTION_PATTERNS)) {
-    const detected = allFiles.some(filePath => hasContribution(filePath));
+    const detected = allFiles.some((filePath) => hasContribution(filePath));
     const declared = Boolean(discovery?.[kind]?.length);
 
     if (detected && !declared) {

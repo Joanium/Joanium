@@ -3,7 +3,6 @@ import * as TasksAPI from './API/TasksAPI.js';
 import { TASKS_TOOLS } from './Chat/Tools.js';
 import { executeTasksChatTool } from './Chat/ChatExecutor.js';
 import { withGoogle } from '../../Common.js';
-
 export default defineFeature({
   id: 'tasks',
   name: 'Google Tasks',
@@ -26,86 +25,79 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async listTaskLists(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+      listTaskLists: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           lists: await TasksAPI.listTaskLists(credentials),
-        }));
-      },
-
-      async listTasks(
+        })),
+      listTasks: async (
         ctx,
-        { taskListId = '@default', showCompleted = false, maxResults = 100 } = {},
-      ) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
-          tasks: await TasksAPI.listTasks(credentials, taskListId, { showCompleted, maxResults }),
-        }));
-      },
-
-      async createTask(ctx, { taskListId = '@default', taskData = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!taskData.title) return { ok: false, error: 'Task title is required' };
-          return { ok: true, task: await TasksAPI.createTask(credentials, taskListId, taskData) };
-        });
-      },
-
-      async updateTask(ctx, { taskListId, taskId, updates = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!taskListId || !taskId)
-            return { ok: false, error: 'taskListId and taskId are required' };
-          return {
-            ok: true,
-            task: await TasksAPI.updateTask(credentials, taskListId, taskId, updates),
-          };
-        });
-      },
-
-      async completeTask(ctx, { taskListId, taskId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!taskListId || !taskId)
-            return { ok: false, error: 'taskListId and taskId are required' };
-          return { ok: true, task: await TasksAPI.completeTask(credentials, taskListId, taskId) };
-        });
-      },
-
-      async deleteTask(ctx, { taskListId, taskId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!taskListId || !taskId)
-            return { ok: false, error: 'taskListId and taskId are required' };
-          await TasksAPI.deleteTask(credentials, taskListId, taskId);
-          return { ok: true };
-        });
-      },
-
-      async clearCompleted(ctx, { taskListId = '@default' } = {}) {
-        return withGoogle(ctx, async (credentials) => {
-          await TasksAPI.clearCompleted(credentials, taskListId);
-          return { ok: true };
-        });
-      },
-
-      async createTaskList(ctx, { title }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!title) return { ok: false, error: 'title is required' };
-          return { ok: true, list: await TasksAPI.createTaskList(credentials, title) };
-        });
-      },
-
-      async deleteTaskList(ctx, { taskListId }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!taskListId) return { ok: false, error: 'taskListId is required' };
-          await TasksAPI.deleteTaskList(credentials, taskListId);
-          return { ok: true };
-        });
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeTasksChatTool(ctx, toolName, params);
-      },
+        {
+          taskListId: taskListId = '@default',
+          showCompleted: showCompleted = !1,
+          maxResults: maxResults = 100,
+        } = {},
+      ) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
+          tasks: await TasksAPI.listTasks(credentials, taskListId, {
+            showCompleted: showCompleted,
+            maxResults: maxResults,
+          }),
+        })),
+      createTask: async (
+        ctx,
+        { taskListId: taskListId = '@default', taskData: taskData = {} } = {},
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          taskData.title
+            ? { ok: !0, task: await TasksAPI.createTask(credentials, taskListId, taskData) }
+            : { ok: !1, error: 'Task title is required' },
+        ),
+      updateTask: async (
+        ctx,
+        { taskListId: taskListId, taskId: taskId, updates: updates = {} } = {},
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          taskListId && taskId
+            ? { ok: !0, task: await TasksAPI.updateTask(credentials, taskListId, taskId, updates) }
+            : { ok: !1, error: 'taskListId and taskId are required' },
+        ),
+      completeTask: async (ctx, { taskListId: taskListId, taskId: taskId }) =>
+        withGoogle(ctx, async (credentials) =>
+          taskListId && taskId
+            ? { ok: !0, task: await TasksAPI.completeTask(credentials, taskListId, taskId) }
+            : { ok: !1, error: 'taskListId and taskId are required' },
+        ),
+      deleteTask: async (ctx, { taskListId: taskListId, taskId: taskId }) =>
+        withGoogle(ctx, async (credentials) =>
+          taskListId && taskId
+            ? (await TasksAPI.deleteTask(credentials, taskListId, taskId), { ok: !0 })
+            : { ok: !1, error: 'taskListId and taskId are required' },
+        ),
+      clearCompleted: async (ctx, { taskListId: taskListId = '@default' } = {}) =>
+        withGoogle(
+          ctx,
+          async (credentials) => (
+            await TasksAPI.clearCompleted(credentials, taskListId),
+            { ok: !0 }
+          ),
+        ),
+      createTaskList: async (ctx, { title: title }) =>
+        withGoogle(ctx, async (credentials) =>
+          title
+            ? { ok: !0, list: await TasksAPI.createTaskList(credentials, title) }
+            : { ok: !1, error: 'title is required' },
+        ),
+      deleteTaskList: async (ctx, { taskListId: taskListId }) =>
+        withGoogle(ctx, async (credentials) =>
+          taskListId
+            ? (await TasksAPI.deleteTaskList(credentials, taskListId), { ok: !0 })
+            : { ok: !1, error: 'taskListId is required' },
+        ),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeTasksChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: TASKS_TOOLS,
-  },
+  renderer: { chatTools: TASKS_TOOLS },
 });

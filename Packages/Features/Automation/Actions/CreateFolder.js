@@ -1,5 +1,4 @@
 import fs from 'fs';
-
 export const actionType = 'create_folder';
 export const actionMeta = {
   label: 'Create folder',
@@ -9,5 +8,5 @@ export const actionMeta = {
 };
 export async function execute(action) {
   if (!action.path) throw new Error('create_folder: no path provided');
-  fs.mkdirSync(action.path, { recursive: true });
+  fs.mkdirSync(action.path, { recursive: !0 });
 }

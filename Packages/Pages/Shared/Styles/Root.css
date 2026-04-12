@@ -1,28 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
-/* ══════════════════════════════════════════
-   SHARED TOKENS
-══════════════════════════════════════════ */
+@import url(https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap);
 :root {
   --titlebar-h: 36px;
   --sidebar-w: 52px;
-
-  /* M3 Expressive–aligned shape: generous corners, continuous surfaces */
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-full: 9999px;
-
   --font-ui: 'Sora', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-tracking-display: -0.02em;
   --font-tracking-label: 0.06em;
-
-  /*
-      Motion: custom curves (avoid generic CSS easings; UI stays responsive).
-      --ease-out-ui: enter / emphasis; --ease-in-out-ui: on-screen moves; --ease-drawer: sheets
-    */
   --ease-out-ui: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-ui: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
@@ -30,19 +18,14 @@
   --ease-out-expo: var(--ease-out-ui);
   --ease-in-out: var(--ease-in-out-ui);
   --ease-smooth: var(--ease-out-ui);
-
-  /* Durations: most interactive UI stays under ~300ms */
   --duration-press: 160ms;
   --duration-tooltip: 160ms;
   --duration-surface: 220ms;
   --duration-emphasis: 280ms;
-
   --transition-fast: var(--duration-press) var(--ease-out-ui);
   --transition-mid: var(--duration-surface) var(--ease-out-ui);
   --transition-slow: var(--duration-emphasis) var(--ease-in-out-ui);
   --transition-theme: 0.4s var(--ease-in-out-ui);
-
-  /* Layered elevation (reads theme shadow; no extra hues) */
   --shadow-sm:
     0 1px 2px color-mix(in srgb, var(--shadow-color) 55%, transparent),
     0 1px 3px 1px var(--shadow-color);
@@ -53,55 +36,42 @@
     0 4px 16px color-mix(in srgb, var(--shadow-color) 40%, transparent),
     0 8px 24px 6px var(--shadow-color);
 }
-
-/* ══════════════════════════════════════════
-   RESET
-══════════════════════════════════════════ */
 *,
-*::before,
-*::after {
+::after,
+::before {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 [hidden] {
   display: none !important;
 }
-
-/* ══════════════════════════════════════════
-   THEME TRANSITIONS
-══════════════════════════════════════════ */
-body,
 #app,
 #body-wrap,
+#main,
 #page-outlet,
 #sidebar,
-#main,
 #titlebar,
-.input-box,
+#welcome,
+.assistant-icon,
 .chip,
-.sidebar-btn,
+.icon-btn,
+.input-box,
 .message-row .bubble,
 .message-row .content,
-.assistant-icon,
-#welcome,
 .model-selector,
 .send-btn,
-.icon-btn,
-.sidebar-avatar {
+.sidebar-avatar,
+.sidebar-btn,
+body {
   transition:
     background-color var(--transition-theme),
     border-color var(--transition-theme),
     color var(--transition-theme),
     box-shadow var(--transition-theme);
 }
-
-/* ══════════════════════════════════════════
-   BASE
-══════════════════════════════════════════ */
-html,
-body {
+body,
+html {
   height: 100%;
   font-family: var(--font-ui);
   background: var(--bg-primary);
@@ -113,22 +83,15 @@ body {
   user-select: none;
   text-rendering: optimizeLegibility;
 }
-
-/* Smooth programmatic scrolling (buttons/scrollTo/scrollIntoView) */
+*,
 html {
   scroll-behavior: smooth;
 }
-
-* {
-  scroll-behavior: smooth;
-}
-
 h1,
 h2,
 h3 {
   letter-spacing: var(--font-tracking-display);
 }
-
 body::before {
   content: '';
   position: fixed;
@@ -140,18 +103,16 @@ body::before {
   z-index: 0;
   transition: background var(--transition-theme);
 }
-
-/* Prefer opacity/color over motion when user requests reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  #body-wrap,
+  #input-area,
+  #main,
   #sidebar,
   #titlebar,
-  #body-wrap,
-  #main,
-  #input-area,
-  .sidebar-logo svg,
-  .welcome-icon,
   .footer-credit,
-  .setup-footer-credit {
+  .setup-footer-credit,
+  .sidebar-logo svg,
+  .welcome-icon {
     animation: none !important;
   }
 }

@@ -7,18 +7,18 @@ export const SUBAGENT_TOOLS = [
     parameters: {
       tasks: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'JSON array of sub-agent task objects. Each task should include a title and goal, and may include context or deliverable. Example: [{"title":"Trace auth bug","goal":"Find the login failure root cause","deliverable":"Root cause and likely fix"}]',
       },
       coordination_goal: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional overall mission that explains how the delegated tasks fit together.',
       },
       synthesis_style: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'How the delegated results should be merged for the coordinator, for example brief, detailed, action_items, or comparison.',
       },

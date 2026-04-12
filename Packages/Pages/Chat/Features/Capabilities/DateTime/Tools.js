@@ -7,28 +7,27 @@ export const DATETIME_TOOLS = [
     parameters: {
       operation: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Operation to perform: "day_of_week", "days_between" (needs date2), "add_days" (needs amount), "subtract_days", "add_months", "add_years", "countdown", "date_info"',
       },
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Primary date in YYYY-MM-DD format. Defaults to today.',
       },
       date2: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Second date for "days_between" in YYYY-MM-DD format.',
       },
       amount: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of days/months/years to add or subtract.',
       },
     },
   },
-
   {
     name: 'convert_timezone',
     description:
@@ -37,28 +36,27 @@ export const DATETIME_TOOLS = [
     parameters: {
       time: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Time to convert in HH:MM 24-hour format (e.g. "14:30").',
       },
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
       from_timezone: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Source IANA timezone (e.g. "America/New_York", "Europe/London", "Asia/Tokyo").',
       },
       to_timezone: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Target IANA timezone (e.g. "America/Los_Angeles", "Australia/Sydney").',
       },
     },
   },
-
   {
     name: 'is_weekend',
     description:
@@ -67,31 +65,21 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date to check in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'business_days_between',
     description:
       'Count the number of business days (Monday–Friday, excluding weekends) between two dates.',
     category: 'datetime',
     parameters: {
-      date: {
-        type: 'string',
-        required: true,
-        description: 'Start date in YYYY-MM-DD format.',
-      },
-      date2: {
-        type: 'string',
-        required: true,
-        description: 'End date in YYYY-MM-DD format.',
-      },
+      date: { type: 'string', required: !0, description: 'Start date in YYYY-MM-DD format.' },
+      date2: { type: 'string', required: !0, description: 'End date in YYYY-MM-DD format.' },
     },
   },
-
   {
     name: 'add_business_days',
     description:
@@ -100,17 +88,16 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Start date in YYYY-MM-DD format. Defaults to today.',
       },
       amount: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Number of business days to add (positive) or subtract (negative).',
       },
     },
   },
-
   {
     name: 'next_weekday_occurrence',
     description:
@@ -119,23 +106,22 @@ export const DATETIME_TOOLS = [
     parameters: {
       weekday: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Day of the week to find: "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", or "Sunday".',
       },
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Reference date in YYYY-MM-DD format. Defaults to today.',
       },
       direction: {
         type: 'string',
-        required: false,
+        required: !1,
         description: '"next" (default) or "previous" — which direction to search.',
       },
     },
   },
-
   {
     name: 'age_calculator',
     description:
@@ -144,17 +130,16 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Birth or start date in YYYY-MM-DD format.',
       },
       date2: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Target date to calculate age at, in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'days_until_birthday',
     description:
@@ -163,12 +148,11 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Birthday in YYYY-MM-DD or MM-DD format (e.g. "1990-07-15" or "07-15").',
       },
     },
   },
-
   {
     name: 'get_season',
     description:
@@ -177,17 +161,16 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
       hemisphere: {
         type: 'string',
-        required: false,
+        required: !1,
         description: '"northern" (default) or "southern".',
       },
     },
   },
-
   {
     name: 'get_month_info',
     description:
@@ -196,13 +179,12 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Any date within the target month in YYYY-MM-DD format. Defaults to current month.',
       },
     },
   },
-
   {
     name: 'get_quarter_info',
     description:
@@ -211,12 +193,11 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'lunar_phase',
     description:
@@ -225,12 +206,11 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'week_bounds',
     description:
@@ -239,17 +219,16 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Any date within the week in YYYY-MM-DD format. Defaults to today.',
       },
       week_start: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'First day of the week: "sunday" (default) or "monday".',
       },
     },
   },
-
   {
     name: 'month_bounds',
     description:
@@ -258,13 +237,12 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Any date within the target month in YYYY-MM-DD format. Defaults to current month.',
       },
     },
   },
-
   {
     name: 'year_progress',
     description:
@@ -273,31 +251,21 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'detailed_difference',
     description:
       'Get the precise difference between two dates broken down into years, months, days — plus total weeks, hours, minutes, and seconds.',
     category: 'datetime',
     parameters: {
-      date: {
-        type: 'string',
-        required: true,
-        description: 'Start date in YYYY-MM-DD format.',
-      },
-      date2: {
-        type: 'string',
-        required: true,
-        description: 'End date in YYYY-MM-DD format.',
-      },
+      date: { type: 'string', required: !0, description: 'Start date in YYYY-MM-DD format.' },
+      date2: { type: 'string', required: !0, description: 'End date in YYYY-MM-DD format.' },
     },
   },
-
   {
     name: 'nth_weekday_of_month',
     description:
@@ -306,25 +274,24 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Any date in the target month in YYYY-MM-DD format. Defaults to current month.',
       },
       nth: {
         type: 'number',
-        required: true,
+        required: !0,
         description:
           'Which occurrence: 1 (first), 2 (second), 3 (third), 4 (fourth), 5 (fifth), or -1 (last).',
       },
       weekday: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Day of the week: "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", or "Sunday".',
       },
     },
   },
-
   {
     name: 'timezone_overlap',
     description:
@@ -333,22 +300,21 @@ export const DATETIME_TOOLS = [
     parameters: {
       timezone1: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'First IANA timezone (e.g. "America/New_York").',
       },
       timezone2: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Second IANA timezone (e.g. "Europe/Berlin").',
       },
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date to calculate for in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'century_decade_info',
     description:
@@ -357,12 +323,11 @@ export const DATETIME_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Defaults to today.',
       },
     },
   },
-
   {
     name: 'unix_converter',
     description:
@@ -371,41 +336,36 @@ export const DATETIME_TOOLS = [
     parameters: {
       operation: {
         type: 'string',
-        required: true,
+        required: !0,
         description: '"to_unix" (date → timestamp) or "from_unix" (timestamp → date).',
       },
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format. Required for "to_unix".',
       },
       unix_timestamp: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Unix timestamp in seconds. Required for "from_unix".',
       },
     },
   },
-
   {
     name: 'time_until_datetime',
     description:
       'Get a precise countdown (days, hours, minutes, seconds) until a specific date and time — or how long ago an event was. Supports optional timezone for the target time.',
     category: 'datetime',
     parameters: {
-      date: {
-        type: 'string',
-        required: true,
-        description: 'Target date in YYYY-MM-DD format.',
-      },
+      date: { type: 'string', required: !0, description: 'Target date in YYYY-MM-DD format.' },
       time: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Target time in HH:MM 24-hour format (e.g. "09:00"). Defaults to midnight.',
       },
       timezone: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'IANA timezone for the target time (e.g. "America/Chicago"). Defaults to local system time.',
       },

@@ -1,120 +1,92 @@
-async function getFreshGoogleCreds(creds) {
-  const { getFreshCreds } = await import('../../../GoogleWorkspace.js');
-  return getFreshCreds(creds);
-}
-
 const SLIDES_BASE = 'https://slides.googleapis.com/v1/presentations';
-const PT_TO_EMU = 12700;
-
 async function slidesFetch(creds, url, options = {}) {
-  const fresh = await getFreshGoogleCreds(creds);
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${fresh.accessToken}`,
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
-  });
-
+  const fresh = await (async function (creds) {
+      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
+      return getFreshCreds(creds);
+    })(creds),
+    res = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${fresh.accessToken}`,
+        'Content-Type': 'application/json',
+        ...(options.headers ?? {}),
+      },
+    });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(
       `Slides API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
     );
   }
-
-  if (res.status === 204) return null;
-  return res.json();
+  return 204 === res.status ? null : res.json();
 }
-
 function pt(value) {
-  return { magnitude: value * PT_TO_EMU, unit: 'EMU' };
+  return { magnitude: 12700 * value, unit: 'EMU' };
 }
-
 function elementProperties(pageObjectId, x, y, width, height) {
   return {
-    pageObjectId,
-    size: {
-      width: pt(width),
-      height: pt(height),
-    },
-    transform: {
-      scaleX: 1,
-      scaleY: 1,
-      translateX: x * PT_TO_EMU,
-      translateY: y * PT_TO_EMU,
-      unit: 'EMU',
-    },
+    pageObjectId: pageObjectId,
+    size: { width: pt(width), height: pt(height) },
+    transform: { scaleX: 1, scaleY: 1, translateX: 12700 * x, translateY: 12700 * y, unit: 'EMU' },
   };
 }
-
 export async function getPresentation(creds, presentationId) {
   return slidesFetch(creds, `${SLIDES_BASE}/${presentationId}`);
 }
-
 export async function createPresentation(creds, title) {
   return slidesFetch(creds, SLIDES_BASE, {
     method: 'POST',
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ title: title }),
   });
 }
-
 export function extractSlideText(slide) {
   const texts = [];
   for (const element of slide.pageElements ?? []) {
     const textContent =
-      element.shape?.text ??
-      element.table?.tableRows
-        ?.flatMap((row) => row.tableCells ?? [])
-        ?.flatMap((cell) => (cell.text ? [cell.text] : []));
-
-    const textObj = Array.isArray(textContent) ? textContent[0] : textContent;
+        element.shape?.text ??
+        element.table?.tableRows
+          ?.flatMap((row) => row.tableCells ?? [])
+          ?.flatMap((cell) => (cell.text ? [cell.text] : [])),
+      textObj = Array.isArray(textContent) ? textContent[0] : textContent;
     if (!textObj) continue;
-
     const text = (textObj.textElements ?? [])
       .map((el) => el.textRun?.content ?? '')
       .join('')
       .trim();
-
-    if (text) texts.push(text);
+    text && texts.push(text);
   }
   return texts;
 }
-
-export async function addSlide(creds, presentationId, { insertionIndex, layoutId } = {}) {
+export async function addSlide(
+  creds,
+  presentationId,
+  { insertionIndex: insertionIndex, layoutId: layoutId } = {},
+) {
   const request = { createSlide: {} };
-  if (insertionIndex != null) request.createSlide.insertionIndex = insertionIndex;
-  if (layoutId) request.createSlide.slideLayoutReference = { layoutId };
-
+  (null != insertionIndex && (request.createSlide.insertionIndex = insertionIndex),
+    layoutId && (request.createSlide.slideLayoutReference = { layoutId: layoutId }));
   const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
     method: 'POST',
     body: JSON.stringify({ requests: [request] }),
   });
-
   return result.replies?.[0]?.createSlide ?? null;
 }
-
 export async function deleteSlide(creds, presentationId, slideObjectId) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [{ deleteObject: { objectId: slideObjectId } }],
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: [{ deleteObject: { objectId: slideObjectId } }] }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function duplicateSlide(creds, presentationId, slideObjectId) {
   const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
     method: 'POST',
-    body: JSON.stringify({
-      requests: [{ duplicateObject: { objectId: slideObjectId } }],
-    }),
+    body: JSON.stringify({ requests: [{ duplicateObject: { objectId: slideObjectId } }] }),
   });
   return result.replies?.[0]?.duplicateObject ?? null;
 }
-
 export async function replaceAllText(creds, presentationId, searchText, replacement) {
   const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
     method: 'POST',
@@ -122,7 +94,7 @@ export async function replaceAllText(creds, presentationId, searchText, replacem
       requests: [
         {
           replaceAllText: {
-            containsText: { text: searchText, matchCase: true },
+            containsText: { text: searchText, matchCase: !0 },
             replaceText: replacement,
           },
         },
@@ -131,10 +103,8 @@ export async function replaceAllText(creds, presentationId, searchText, replacem
   });
   return result.replies?.[0]?.replaceAllText ?? null;
 }
-
 export async function listSlides(creds, presentationId) {
-  const pres = await getPresentation(creds, presentationId);
-  return (pres.slides ?? []).map((slide, i) => ({
+  return ((await getPresentation(creds, presentationId)).slides ?? []).map((slide, i) => ({
     index: i + 1,
     objectId: slide.objectId,
     speakerNotesObjectId:
@@ -142,190 +112,204 @@ export async function listSlides(creds, presentationId) {
     elementCount: (slide.pageElements ?? []).length,
   }));
 }
-
 export async function getSlide(creds, presentationId, slideObjectId) {
-  const pres = await getPresentation(creds, presentationId);
-  const slide = (pres.slides ?? []).find((s) => s.objectId === slideObjectId);
+  const slide = ((await getPresentation(creds, presentationId)).slides ?? []).find(
+    (s) => s.objectId === slideObjectId,
+  );
   if (!slide) throw new Error(`Slide "${slideObjectId}" not found in presentation.`);
   return slide;
 }
-
 export async function reorderSlides(creds, presentationId, slideObjectIds, insertionIndex) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [{ updateSlidesPosition: { slideObjectIds, insertionIndex } }],
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateSlidesPosition: {
+              slideObjectIds: slideObjectIds,
+              insertionIndex: insertionIndex,
+            },
+          },
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function addTextBox(
   creds,
   presentationId,
   slideObjectId,
-  { text = '', x = 100, y = 100, width = 300, height = 60 } = {},
+  { text: text = '', x: x = 100, y: y = 100, width: width = 300, height: height = 60 } = {},
 ) {
-  const boxId = `textbox_${Date.now()}`;
-  const requests = [
-    {
-      createShape: {
-        objectId: boxId,
-        shapeType: 'TEXT_BOX',
-        elementProperties: elementProperties(slideObjectId, x, y, width, height),
+  const boxId = `textbox_${Date.now()}`,
+    requests = [
+      {
+        createShape: {
+          objectId: boxId,
+          shapeType: 'TEXT_BOX',
+          elementProperties: elementProperties(slideObjectId, x, y, width, height),
+        },
       },
-    },
-  ];
-  if (text) {
-    requests.push({ insertText: { objectId: boxId, insertionIndex: 0, text } });
-  }
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests }),
-  });
-  return { objectId: boxId, replies: result.replies };
+    ];
+  return (
+    text && requests.push({ insertText: { objectId: boxId, insertionIndex: 0, text: text } }),
+    {
+      objectId: boxId,
+      replies: (
+        await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+          method: 'POST',
+          body: JSON.stringify({ requests: requests }),
+        })
+      ).replies,
+    }
+  );
 }
-
 export async function updateShapeText(creds, presentationId, objectId, newText) {
   const requests = [
-    { deleteText: { objectId, textRange: { type: 'ALL' } } },
-    { insertText: { objectId, insertionIndex: 0, text: newText } },
+    { deleteText: { objectId: objectId, textRange: { type: 'ALL' } } },
+    { insertText: { objectId: objectId, insertionIndex: 0, text: newText } },
   ];
   return slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
     method: 'POST',
-    body: JSON.stringify({ requests }),
+    body: JSON.stringify({ requests: requests }),
   });
 }
-
 export async function addImage(
   creds,
   presentationId,
   slideObjectId,
-  { imageUrl, x = 50, y = 50, width = 300, height = 200 } = {},
+  { imageUrl: imageUrl, x: x = 50, y: y = 50, width: width = 300, height: height = 200 } = {},
 ) {
-  const imgId = `image_${Date.now()}`;
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          createImage: {
-            objectId: imgId,
-            url: imageUrl,
-            elementProperties: elementProperties(slideObjectId, x, y, width, height),
+  const imgId = `image_${Date.now()}`,
+    result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            createImage: {
+              objectId: imgId,
+              url: imageUrl,
+              elementProperties: elementProperties(slideObjectId, x, y, width, height),
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return { objectId: imgId, reply: result.replies?.[0] ?? null };
 }
-
 export async function deleteElement(creds, presentationId, objectId) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests: [{ deleteObject: { objectId } }] }),
-  });
-  return true;
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: [{ deleteObject: { objectId: objectId } }] }),
+    }),
+    !0
+  );
 }
-
 export async function addShape(
   creds,
   presentationId,
   slideObjectId,
-  { shapeType = 'RECTANGLE', x = 100, y = 100, width = 200, height = 150 } = {},
+  {
+    shapeType: shapeType = 'RECTANGLE',
+    x: x = 100,
+    y: y = 100,
+    width: width = 200,
+    height: height = 150,
+  } = {},
 ) {
-  const shapeId = `shape_${Date.now()}`;
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          createShape: {
-            objectId: shapeId,
-            shapeType,
-            elementProperties: elementProperties(slideObjectId, x, y, width, height),
+  const shapeId = `shape_${Date.now()}`,
+    result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            createShape: {
+              objectId: shapeId,
+              shapeType: shapeType,
+              elementProperties: elementProperties(slideObjectId, x, y, width, height),
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return { objectId: shapeId, reply: result.replies?.[0] ?? null };
 }
-
-export async function updateSlideBackground(creds, presentationId, slideObjectId, { r, g, b }) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updatePageProperties: {
-            objectId: slideObjectId,
-            pageProperties: {
-              pageBackgroundFill: {
-                solidFill: {
-                  color: {
-                    rgbColor: { red: r / 255, green: g / 255, blue: b / 255 },
+export async function updateSlideBackground(
+  creds,
+  presentationId,
+  slideObjectId,
+  { r: r, g: g, b: b },
+) {
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updatePageProperties: {
+              objectId: slideObjectId,
+              pageProperties: {
+                pageBackgroundFill: {
+                  solidFill: {
+                    color: { rgbColor: { red: r / 255, green: g / 255, blue: b / 255 } },
                   },
                 },
               },
+              fields: 'pageBackgroundFill',
             },
-            fields: 'pageBackgroundFill',
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function updateTextStyle(
   creds,
   presentationId,
   objectId,
-  { bold, italic, underline, fontSize, fontFamily, r, g, b } = {},
+  {
+    bold: bold,
+    italic: italic,
+    underline: underline,
+    fontSize: fontSize,
+    fontFamily: fontFamily,
+    r: r,
+    g: g,
+    b: b,
+  } = {},
 ) {
-  const style = {};
-  const fieldList = [];
-
-  if (bold != null) {
-    style.bold = bold;
-    fieldList.push('bold');
-  }
-  if (italic != null) {
-    style.italic = italic;
-    fieldList.push('italic');
-  }
-  if (underline != null) {
-    style.underline = underline;
-    fieldList.push('underline');
-  }
-  if (fontSize != null) {
-    style.fontSize = { magnitude: fontSize, unit: 'PT' };
-    fieldList.push('fontSize');
-  }
-  if (fontFamily != null) {
-    style.fontFamily = fontFamily;
-    fieldList.push('fontFamily');
-  }
-  if (r != null && g != null && b != null) {
-    style.foregroundColor = {
-      opaqueColor: { rgbColor: { red: r / 255, green: g / 255, blue: b / 255 } },
-    };
-    fieldList.push('foregroundColor');
-  }
-
-  if (!fieldList.length) throw new Error('No style properties provided.');
-
+  const style = {},
+    fieldList = [];
+  if (
+    (null != bold && ((style.bold = bold), fieldList.push('bold')),
+    null != italic && ((style.italic = italic), fieldList.push('italic')),
+    null != underline && ((style.underline = underline), fieldList.push('underline')),
+    null != fontSize &&
+      ((style.fontSize = { magnitude: fontSize, unit: 'PT' }), fieldList.push('fontSize')),
+    null != fontFamily && ((style.fontFamily = fontFamily), fieldList.push('fontFamily')),
+    null != r &&
+      null != g &&
+      null != b &&
+      ((style.foregroundColor = {
+        opaqueColor: { rgbColor: { red: r / 255, green: g / 255, blue: b / 255 } },
+      }),
+      fieldList.push('foregroundColor')),
+    !fieldList.length)
+  )
+    throw new Error('No style properties provided.');
   return slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
     method: 'POST',
     body: JSON.stringify({
       requests: [
         {
           updateTextStyle: {
-            objectId,
+            objectId: objectId,
             textRange: { type: 'ALL' },
-            style,
+            style: style,
             fields: fieldList.join(','),
           },
         },
@@ -333,166 +317,178 @@ export async function updateTextStyle(
     }),
   });
 }
-
 export async function addTable(
   creds,
   presentationId,
   slideObjectId,
-  { rows = 3, columns = 3, x = 50, y = 100, width = 450, height = 200 } = {},
+  {
+    rows: rows = 3,
+    columns: columns = 3,
+    x: x = 50,
+    y: y = 100,
+    width: width = 450,
+    height: height = 200,
+  } = {},
 ) {
-  const tableId = `table_${Date.now()}`;
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          createTable: {
-            objectId: tableId,
-            rows,
-            columns,
-            elementProperties: elementProperties(slideObjectId, x, y, width, height),
+  const tableId = `table_${Date.now()}`,
+    result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            createTable: {
+              objectId: tableId,
+              rows: rows,
+              columns: columns,
+              elementProperties: elementProperties(slideObjectId, x, y, width, height),
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return { objectId: tableId, reply: result.replies?.[0] ?? null };
 }
-
 export async function moveElement(
   creds,
   presentationId,
   objectId,
-  { x, y, scaleX = 1, scaleY = 1 },
+  { x: x, y: y, scaleX: scaleX = 1, scaleY: scaleY = 1 },
 ) {
   const transform = {
-    scaleX,
-    scaleY,
-    translateX: x * PT_TO_EMU,
-    translateY: y * PT_TO_EMU,
+    scaleX: scaleX,
+    scaleY: scaleY,
+    translateX: 12700 * x,
+    translateY: 12700 * y,
     unit: 'EMU',
   };
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updatePageElementTransform: {
-            objectId,
-            transform,
-            applyMode: 'ABSOLUTE',
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updatePageElementTransform: {
+              objectId: objectId,
+              transform: transform,
+              applyMode: 'ABSOLUTE',
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function addSpeakerNotes(creds, presentationId, slideObjectId, notes) {
-  const pres = await getPresentation(creds, presentationId);
-  const slide = (pres.slides ?? []).find((s) => s.objectId === slideObjectId);
+  const slide = ((await getPresentation(creds, presentationId)).slides ?? []).find(
+    (s) => s.objectId === slideObjectId,
+  );
   if (!slide) throw new Error(`Slide "${slideObjectId}" not found.`);
-
   const speakerNotesId = slide.slideProperties?.notesPage?.notesProperties?.speakerNotesObjectId;
   if (!speakerNotesId) throw new Error('Could not find speaker notes object for this slide.');
-
   const requests = [
     { deleteText: { objectId: speakerNotesId, textRange: { type: 'ALL' } } },
     { insertText: { objectId: speakerNotesId, insertionIndex: 0, text: notes } },
   ];
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests }),
-  });
-  return true;
-}
-
-export async function updateParagraphAlignment(creds, presentationId, objectId, alignment) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updateParagraphStyle: {
-            objectId,
-            textRange: { type: 'ALL' },
-            style: { alignment },
-            fields: 'alignment',
-          },
-        },
-      ],
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: requests }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
-export async function updateShapeFill(creds, presentationId, objectId, { r, g, b, alpha = 1.0 }) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updateShapeProperties: {
-            objectId,
-            shapeProperties: {
-              shapeBackgroundFill: {
-                solidFill: {
-                  color: { rgbColor: { red: r / 255, green: g / 255, blue: b / 255 } },
-                  alpha,
+export async function updateParagraphAlignment(creds, presentationId, objectId, alignment) {
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateParagraphStyle: {
+              objectId: objectId,
+              textRange: { type: 'ALL' },
+              style: { alignment: alignment },
+              fields: 'alignment',
+            },
+          },
+        ],
+      }),
+    }),
+    !0
+  );
+}
+export async function updateShapeFill(
+  creds,
+  presentationId,
+  objectId,
+  { r: r, g: g, b: b, alpha: alpha = 1 },
+) {
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateShapeProperties: {
+              objectId: objectId,
+              shapeProperties: {
+                shapeBackgroundFill: {
+                  solidFill: {
+                    color: { rgbColor: { red: r / 255, green: g / 255, blue: b / 255 } },
+                    alpha: alpha,
+                  },
                 },
               },
+              fields: 'shapeBackgroundFill',
             },
-            fields: 'shapeBackgroundFill',
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function insertTableRows(
   creds,
   presentationId,
   tableObjectId,
-  { rowIndex = 0, insertBelow = true, count = 1 } = {},
+  { rowIndex: rowIndex = 0, insertBelow: insertBelow = !0, count: count = 1 } = {},
 ) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          insertTableRows: {
-            tableObjectId,
-            cellLocation: { rowIndex },
-            insertBelow,
-            number: count,
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            insertTableRows: {
+              tableObjectId: tableObjectId,
+              cellLocation: { rowIndex: rowIndex },
+              insertBelow: insertBelow,
+              number: count,
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function deleteTableRow(creds, presentationId, tableObjectId, rowIndex) {
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          deleteTableRow: {
-            tableObjectId,
-            cellLocation: { rowIndex },
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            deleteTableRow: { tableObjectId: tableObjectId, cellLocation: { rowIndex: rowIndex } },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function updateTableCellText(
   creds,
   presentationId,
@@ -505,77 +501,83 @@ export async function updateTableCellText(
     {
       deleteText: {
         objectId: tableObjectId,
-        cellLocation: { rowIndex, columnIndex },
+        cellLocation: { rowIndex: rowIndex, columnIndex: columnIndex },
         textRange: { type: 'ALL' },
       },
     },
     {
       insertText: {
         objectId: tableObjectId,
-        cellLocation: { rowIndex, columnIndex },
+        cellLocation: { rowIndex: rowIndex, columnIndex: columnIndex },
         insertionIndex: 0,
-        text,
+        text: text,
       },
     },
   ];
-  await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests }),
-  });
-  return true;
+  return (
+    await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: requests }),
+    }),
+    !0
+  );
 }
-
 export async function addLine(
   creds,
   presentationId,
   slideObjectId,
-  { lineCategory = 'STRAIGHT', x = 50, y = 50, width = 200, height = 0 } = {},
+  {
+    lineCategory: lineCategory = 'STRAIGHT',
+    x: x = 50,
+    y: y = 50,
+    width: width = 200,
+    height: height = 0,
+  } = {},
 ) {
-  const lineId = `line_${Date.now()}`;
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          createLine: {
-            objectId: lineId,
-            lineCategory,
-            elementProperties: elementProperties(
-              slideObjectId,
-              x,
-              y,
-              Math.max(width, 1),
-              Math.max(height, 1),
-            ),
+  const lineId = `line_${Date.now()}`,
+    result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            createLine: {
+              objectId: lineId,
+              lineCategory: lineCategory,
+              elementProperties: elementProperties(
+                slideObjectId,
+                x,
+                y,
+                Math.max(width, 1),
+                Math.max(height, 1),
+              ),
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return { objectId: lineId, reply: result.replies?.[0] ?? null };
 }
-
 export async function addVideo(
   creds,
   presentationId,
   slideObjectId,
-  { videoId, x = 100, y = 100, width = 320, height = 180 } = {},
+  { videoId: videoId, x: x = 100, y: y = 100, width: width = 320, height: height = 180 } = {},
 ) {
-  const vidId = `video_${Date.now()}`;
-  const result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          createVideo: {
-            objectId: vidId,
-            source: 'YOUTUBE',
-            id: videoId,
-            elementProperties: elementProperties(slideObjectId, x, y, width, height),
+  const vidId = `video_${Date.now()}`,
+    result = await slidesFetch(creds, `${SLIDES_BASE}/${presentationId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            createVideo: {
+              objectId: vidId,
+              source: 'YOUTUBE',
+              id: videoId,
+              elementProperties: elementProperties(slideObjectId, x, y, width, height),
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return { objectId: vidId, reply: result.replies?.[0] ?? null };
 }

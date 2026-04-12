@@ -12,18 +12,18 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Task list ID (default: @default — the primary list). Get IDs from tasks_list_task_lists.',
       },
       show_completed: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Include completed tasks (default: false).',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max tasks to return (default: 100).',
       },
     },
@@ -33,16 +33,16 @@ export const TASKS_TOOLS = [
     description: 'Create a new task in a task list.',
     category: 'tasks',
     parameters: {
-      title: { type: 'string', required: true, description: 'Task title.' },
+      title: { type: 'string', required: !0, description: 'Task title.' },
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to add to (default: primary list).',
       },
-      notes: { type: 'string', required: false, description: 'Optional task notes / description.' },
+      notes: { type: 'string', required: !1, description: 'Optional task notes / description.' },
       due: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Due date in ISO 8601 or YYYY-MM-DD format.',
       },
     },
@@ -54,15 +54,15 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing the task.',
       },
-      task_id: { type: 'string', required: true, description: 'Task ID to update.' },
-      title: { type: 'string', required: false, description: 'New title.' },
-      notes: { type: 'string', required: false, description: 'New notes / description.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to update.' },
+      title: { type: 'string', required: !1, description: 'New title.' },
+      notes: { type: 'string', required: !1, description: 'New notes / description.' },
       due: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'New due date in ISO 8601 or YYYY-MM-DD format.',
       },
     },
@@ -72,8 +72,8 @@ export const TASKS_TOOLS = [
     description: 'Mark a task as completed.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to complete.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to complete.' },
     },
   },
   {
@@ -81,8 +81,8 @@ export const TASKS_TOOLS = [
     description: 'Reopen a completed task (mark as needs action).',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to reopen.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to reopen.' },
     },
   },
   {
@@ -90,8 +90,8 @@ export const TASKS_TOOLS = [
     description: 'Permanently delete a task.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to delete.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to delete.' },
     },
   },
   {
@@ -101,7 +101,7 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to clear (default: primary list).',
       },
     },
@@ -111,7 +111,7 @@ export const TASKS_TOOLS = [
     description: 'Create a new task list.',
     category: 'tasks',
     parameters: {
-      title: { type: 'string', required: true, description: 'Name for the new task list.' },
+      title: { type: 'string', required: !0, description: 'Name for the new task list.' },
     },
   },
   {
@@ -119,7 +119,7 @@ export const TASKS_TOOLS = [
     description: 'Permanently delete a task list and all its tasks.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID to delete.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID to delete.' },
     },
   },
   {
@@ -129,10 +129,10 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID that contains the task.',
       },
-      task_id: { type: 'string', required: true, description: 'Task ID to retrieve.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to retrieve.' },
     },
   },
   {
@@ -140,7 +140,7 @@ export const TASKS_TOOLS = [
     description: 'Fetch details (title, ID, updated timestamp) of a specific task list.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID to retrieve.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID to retrieve.' },
     },
   },
   {
@@ -148,15 +148,15 @@ export const TASKS_TOOLS = [
     description: 'Search tasks by keyword within a task list (matches title and notes).',
     category: 'tasks',
     parameters: {
-      query: { type: 'string', required: true, description: 'Keyword or phrase to search for.' },
+      query: { type: 'string', required: !0, description: 'Keyword or phrase to search for.' },
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to search (default: primary list).',
       },
       show_completed: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Also search completed tasks (default: false).',
       },
     },
@@ -168,7 +168,7 @@ export const TASKS_TOOLS = [
     parameters: {
       show_completed: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Include completed tasks (default: false).',
       },
     },
@@ -180,7 +180,7 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to check (default: all lists).',
       },
     },
@@ -192,7 +192,7 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to check (default: all lists).',
       },
     },
@@ -204,7 +204,7 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to check (default: all lists).',
       },
     },
@@ -216,12 +216,12 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing all the tasks.',
       },
       task_ids: {
         type: 'array',
-        required: true,
+        required: !0,
         description: 'Array of task ID strings to complete.',
       },
     },
@@ -233,14 +233,10 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing all the tasks.',
       },
-      task_ids: {
-        type: 'array',
-        required: true,
-        description: 'Array of task ID strings to delete.',
-      },
+      task_ids: { type: 'array', required: !0, description: 'Array of task ID strings to delete.' },
     },
   },
   {
@@ -250,12 +246,12 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to add tasks to (default: primary list).',
       },
       tasks: {
         type: 'array',
-        required: true,
+        required: !0,
         description:
           'Array of task objects. Each object must have `title` and may include `notes` and `due` (ISO date).',
       },
@@ -269,15 +265,11 @@ export const TASKS_TOOLS = [
     parameters: {
       source_task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID the task currently belongs to.',
       },
-      task_id: { type: 'string', required: true, description: 'Task ID to move.' },
-      dest_task_list_id: {
-        type: 'string',
-        required: true,
-        description: 'Destination task list ID.',
-      },
+      task_id: { type: 'string', required: !0, description: 'Task ID to move.' },
+      dest_task_list_id: { type: 'string', required: !0, description: 'Destination task list ID.' },
     },
   },
   {
@@ -287,19 +279,15 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing the parent task.',
       },
-      parent_task_id: {
-        type: 'string',
-        required: true,
-        description: 'Task ID of the parent task.',
-      },
-      title: { type: 'string', required: true, description: 'Subtask title.' },
-      notes: { type: 'string', required: false, description: 'Optional subtask notes.' },
+      parent_task_id: { type: 'string', required: !0, description: 'Task ID of the parent task.' },
+      title: { type: 'string', required: !0, description: 'Subtask title.' },
+      notes: { type: 'string', required: !1, description: 'Optional subtask notes.' },
       due: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional due date (ISO 8601 or YYYY-MM-DD).',
       },
     },
@@ -311,12 +299,12 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing the parent task.',
       },
       parent_task_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task ID whose children to list.',
       },
     },
@@ -326,8 +314,8 @@ export const TASKS_TOOLS = [
     description: 'Rename an existing task list.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID to rename.' },
-      new_title: { type: 'string', required: true, description: 'New name for the task list.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID to rename.' },
+      new_title: { type: 'string', required: !0, description: 'New name for the task list.' },
     },
   },
   {
@@ -337,13 +325,13 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Task list ID containing the task to duplicate.',
       },
-      task_id: { type: 'string', required: true, description: 'Task ID to duplicate.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to duplicate.' },
       dest_task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Destination task list ID (defaults to the same list).',
       },
     },
@@ -353,8 +341,8 @@ export const TASKS_TOOLS = [
     description: "Quickly set a task's due date to today.",
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to update.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to update.' },
     },
   },
   {
@@ -362,8 +350,8 @@ export const TASKS_TOOLS = [
     description: "Quickly set a task's due date to tomorrow.",
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to update.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to update.' },
     },
   },
   {
@@ -374,7 +362,7 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to count (default: all lists).',
       },
     },
@@ -385,17 +373,17 @@ export const TASKS_TOOLS = [
       'Reorder a task within its list by placing it after a sibling task. Pass null for previous_task_id to move it to the top.',
     category: 'tasks',
     parameters: {
-      task_list_id: { type: 'string', required: true, description: 'Task list ID.' },
-      task_id: { type: 'string', required: true, description: 'Task ID to reorder.' },
+      task_list_id: { type: 'string', required: !0, description: 'Task list ID.' },
+      task_id: { type: 'string', required: !0, description: 'Task ID to reorder.' },
       previous_task_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'The task ID that should immediately precede this task. Omit or pass null to move to the top.',
       },
       parent_task_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional: re-parent the task under a new parent at the same time.',
       },
     },
@@ -408,17 +396,17 @@ export const TASKS_TOOLS = [
     parameters: {
       task_list_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Task list ID to export (default: primary list).',
       },
       show_completed: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Include completed tasks (default: true).',
       },
       include_notes: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Append task notes as indented sub-lines (default: true).',
       },
     },

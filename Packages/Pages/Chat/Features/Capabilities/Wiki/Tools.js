@@ -7,7 +7,7 @@ export const WIKI_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Topic to search for (e.g. "quantum computing", "Roman Empire", "photosynthesis")',
       },
@@ -21,7 +21,7 @@ export const WIKI_TOOLS = [
     parameters: {
       title: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Exact or approximate Wikipedia article title (e.g. "Albert Einstein")',
       },
     },
@@ -31,14 +31,10 @@ export const WIKI_TOOLS = [
     description: 'Fetch the text content of a specific named section from a Wikipedia article.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       section: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Section name to retrieve (e.g. "Early life", "Legacy")',
       },
     },
@@ -49,14 +45,10 @@ export const WIKI_TOOLS = [
       'Search Wikipedia and return multiple matching article titles and snippets — not just the top result. Good for browsing options when the topic is ambiguous.',
     category: 'wikipedia',
     parameters: {
-      query: {
-        type: 'string',
-        required: true,
-        description: 'Search query',
-      },
+      query: { type: 'string', required: !0, description: 'Search query' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of results to return (default 5, max 10)',
       },
     },
@@ -66,26 +58,14 @@ export const WIKI_TOOLS = [
     description:
       'Retrieve the full plain-text content of a Wikipedia article (all sections combined). Use when a summary is not enough and the complete text is needed.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_categories',
     description:
       'List all categories that a Wikipedia article belongs to. Useful for understanding how a topic is classified.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_languages',
@@ -93,11 +73,7 @@ export const WIKI_TOOLS = [
       'List all languages in which a Wikipedia article is available, along with the localized title in each language.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title (in English)',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title (in English)' },
     },
   },
   {
@@ -106,14 +82,10 @@ export const WIKI_TOOLS = [
       'Fetch the summary of a Wikipedia article in a specific language (e.g. French, Spanish, German).',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title (in English)',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title (in English)' },
       lang: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Two-letter language code (e.g. "fr" for French, "de" for German, "es" for Spanish)',
       },
@@ -124,13 +96,7 @@ export const WIKI_TOOLS = [
     description:
       'Get a list of images used in a Wikipedia article, including their URLs and captions.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_linked_articles',
@@ -138,14 +104,10 @@ export const WIKI_TOOLS = [
       'Get a list of all Wikipedia articles that are linked from within a given article. Useful for exploring related topics.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max number of links to return (default 20)',
       },
     },
@@ -170,19 +132,11 @@ export const WIKI_TOOLS = [
       'Get a list of notable historical events, births, and deaths that occurred on a specific calendar date (month and day).',
     category: 'wikipedia',
     parameters: {
-      month: {
-        type: 'number',
-        required: true,
-        description: 'Month number (1–12)',
-      },
-      day: {
-        type: 'number',
-        required: true,
-        description: 'Day of the month (1–31)',
-      },
+      month: { type: 'number', required: !0, description: 'Month number (1–12)' },
+      day: { type: 'number', required: !0, description: 'Day of the month (1–31)' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Type of events to fetch: "events", "births", "deaths", or "all" (default "all")',
       },
@@ -196,12 +150,12 @@ export const WIKI_TOOLS = [
     parameters: {
       date: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Date in YYYY-MM-DD format (defaults to yesterday if not provided)',
       },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of top articles to return (default 10)',
       },
     },
@@ -212,19 +166,15 @@ export const WIKI_TOOLS = [
       'Get daily page view statistics for a Wikipedia article over a date range, showing how popular a topic is over time.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       start: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Start date in YYYYMMDD format (e.g. "20240101")',
       },
       end: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'End date in YYYYMMDD format (e.g. "20240131")',
       },
     },
@@ -242,19 +192,11 @@ export const WIKI_TOOLS = [
       "Find Wikipedia articles about places geographically near a given latitude/longitude coordinate. Great for exploring what's notable around a location.",
     category: 'wikipedia',
     parameters: {
-      lat: {
-        type: 'number',
-        required: true,
-        description: 'Latitude (e.g. 48.8566 for Paris)',
-      },
-      lon: {
-        type: 'number',
-        required: true,
-        description: 'Longitude (e.g. 2.3522 for Paris)',
-      },
+      lat: { type: 'number', required: !0, description: 'Latitude (e.g. 48.8566 for Paris)' },
+      lon: { type: 'number', required: !0, description: 'Longitude (e.g. 2.3522 for Paris)' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of nearby articles to return (default 10)',
       },
     },
@@ -265,14 +207,10 @@ export const WIKI_TOOLS = [
       'Get the recent edit/revision history of a Wikipedia article, showing who edited it and when.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of recent revisions to return (default 10)',
       },
     },
@@ -285,7 +223,7 @@ export const WIKI_TOOLS = [
     parameters: {
       term: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Ambiguous term to look up (e.g. "Mercury", "Python", "Phoenix")',
       },
     },
@@ -298,12 +236,12 @@ export const WIKI_TOOLS = [
     parameters: {
       topic_a: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'First topic to compare (e.g. "Buddhism")',
       },
       topic_b: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Second topic to compare (e.g. "Hinduism")',
       },
     },
@@ -313,13 +251,7 @@ export const WIKI_TOOLS = [
     description:
       'Get all external reference/citation URLs used in a Wikipedia article. Useful for finding primary sources behind Wikipedia claims.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_backlinks',
@@ -327,14 +259,10 @@ export const WIKI_TOOLS = [
       'Find all Wikipedia articles that link TO a given article ("what links here"). Great for understanding a topic\'s broader context and influence.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max number of backlinks to return (default 20, max 50)',
       },
     },
@@ -345,14 +273,10 @@ export const WIKI_TOOLS = [
       'List the top named contributors (editors) to a Wikipedia article, along with their profile links. Also shows the count of anonymous contributors.',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of contributors to return (default 15, max 50)',
       },
     },
@@ -362,52 +286,28 @@ export const WIKI_TOOLS = [
     description:
       'List all external (non-Wikipedia) URLs that appear in a Wikipedia article. Useful for discovering related web resources.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_infobox',
     description:
       'Extract structured key-value data from the infobox of a Wikipedia article (e.g. born, nationality, occupation for a person; area, population for a country). Returns plain text fields.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_article_stats',
     description:
       "Get size statistics for a Wikipedia article: byte size, estimated word count, approximate reading time, and last-edited timestamp. Useful for gauging an article's depth.",
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_article_created',
     description:
       "Find out when a Wikipedia article was first created, who created it, and what the initial edit summary said. Useful for understanding an article's history.",
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_picture_of_day',
@@ -431,7 +331,7 @@ export const WIKI_TOOLS = [
     parameters: {
       title: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Wikipedia article title for a place (e.g. "Eiffel Tower", "Tokyo")',
       },
     },
@@ -441,13 +341,7 @@ export const WIKI_TOOLS = [
     description:
       'Find links from a Wikipedia article to sister Wikimedia projects such as Wikidata, Wikimedia Commons, Wikiquote, Wiktionary, Wikisource, Wikinews, and Wikispecies.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_category_members',
@@ -457,13 +351,13 @@ export const WIKI_TOOLS = [
     parameters: {
       category: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Category name, with or without the "Category:" prefix (e.g. "Mammals" or "Category:Mammals")',
       },
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max number of articles to return (default 20, max 50)',
       },
     },
@@ -474,21 +368,9 @@ export const WIKI_TOOLS = [
       'Compare two specific revisions of a Wikipedia article and see what changed between them. Requires two revision IDs (obtainable from get_wikipedia_revision_history).',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-      from_rev: {
-        type: 'number',
-        required: true,
-        description: 'Older revision ID to compare from',
-      },
-      to_rev: {
-        type: 'number',
-        required: true,
-        description: 'Newer revision ID to compare to',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
+      from_rev: { type: 'number', required: !0, description: 'Older revision ID to compare from' },
+      to_rev: { type: 'number', required: !0, description: 'Newer revision ID to compare to' },
     },
   },
   {
@@ -496,13 +378,7 @@ export const WIKI_TOOLS = [
     description:
       'Check whether a Wikipedia article is protected from editing, what protection level is applied (e.g. semi-protected, fully protected), and when the protection expires.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_new_articles',
@@ -512,7 +388,7 @@ export const WIKI_TOOLS = [
     parameters: {
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of new articles to return (default 10, max 25)',
       },
     },
@@ -525,7 +401,7 @@ export const WIKI_TOOLS = [
     parameters: {
       limit: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of trending articles to return (default 10)',
       },
     },
@@ -536,11 +412,7 @@ export const WIKI_TOOLS = [
       'Get a summary of notable deaths that occurred in a given year, pulled from the Wikipedia "Deaths in YYYY" article.',
     category: 'wikipedia',
     parameters: {
-      year: {
-        type: 'number',
-        required: true,
-        description: 'Year to look up (e.g. 2023)',
-      },
+      year: { type: 'number', required: !0, description: 'Year to look up (e.g. 2023)' },
     },
   },
   {
@@ -548,26 +420,14 @@ export const WIKI_TOOLS = [
     description:
       "Check a Wikipedia article's editorial quality rating as assessed by WikiProject editors — classes range from Stub and Start up through C, B, Good Article (GA), and Featured Article (FA).",
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_hatnotes',
     description:
       'Extract hatnotes from the top of a Wikipedia article — short notices like "For other uses, see…", "This article is about… For X, see Y", or "Main article: …". Helpful for navigating related topics.',
     category: 'wikipedia',
-    parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
-    },
+    parameters: { title: { type: 'string', required: !0, description: 'Wikipedia article title' } },
   },
   {
     name: 'get_wikipedia_table',
@@ -575,14 +435,10 @@ export const WIKI_TOOLS = [
       'Extract a specific data table from a Wikipedia article as plain text rows. Specify which table by index (0 = first table, 1 = second, etc.).',
     category: 'wikipedia',
     parameters: {
-      title: {
-        type: 'string',
-        required: true,
-        description: 'Wikipedia article title',
-      },
+      title: { type: 'string', required: !0, description: 'Wikipedia article title' },
       table_index: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Zero-based index of the table to extract (default 0 = first table)',
       },
     },

@@ -21,7 +21,7 @@ if (!fs.existsSync(manifestPath)) {
 const manifestRaw = fs.readFileSync(manifestPath, 'utf8');
 const manifest = JSON.parse(manifestRaw);
 
-const base = dateBase(new Date());          // e.g. "2026.406"
+const base = dateBase(new Date()); // e.g. "2026.406"
 const prevVersion = manifest.version ?? ''; // e.g. "2026.406.0"
 
 // Determine the patch component:

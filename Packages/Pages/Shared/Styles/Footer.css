@@ -1,68 +1,40 @@
-/* ─────────────────────────────────────────────
-   footer.css
-   Footer credit lines (main view + setup screen)
-   and chip helpers (currently display: none)
-───────────────────────────────────────────── */
-
-/* ══════════════════════════════════════════
-   CHIPS (hidden — kept for potential future use)
-══════════════════════════════════════════ */
-.chips,
-.chip {
-  display: none;
+.footer-credit,
+.footer-credit .credit-name,
+.setup-footer-credit {
+  transition: color var(--transition-theme);
 }
-
-/* ══════════════════════════════════════════
-   MAIN FOOTER CREDIT
-══════════════════════════════════════════ */
-.footer-credit {
+.footer-credit,
+.setup-footer-credit {
   font-size: 11px;
   color: var(--text-muted);
   font-family: var(--font-ui);
   text-align: center;
   letter-spacing: 0.3px;
-  animation: chipIn 0.5s var(--ease-out-expo) 0.72s both;
-  transition: color var(--transition-theme);
   user-select: none;
 }
-
-.footer-credit .credit-heart {
+.footer-credit .credit-heart,
+.setup-footer-credit .credit-heart {
   display: inline-block;
 }
-
-.footer-credit .credit-name {
+.footer-credit .credit-name,
+.setup-footer-credit .credit-name {
   color: var(--accent);
   font-weight: 500;
   text-decoration: none;
-  transition: color var(--transition-theme);
 }
-
-/* ══════════════════════════════════════════
-   SETUP SCREEN FOOTER CREDIT
-══════════════════════════════════════════ */
+.chip,
+.chips {
+  display: none;
+}
+.footer-credit {
+  animation: chipIn 0.5s var(--ease-out-expo) 0.72s both;
+}
 .setup-footer-credit {
   position: fixed;
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 11px;
-  color: var(--text-muted);
-  font-family: var(--font-ui);
-  text-align: center;
-  letter-spacing: 0.3px;
   z-index: 10;
   white-space: nowrap;
   animation: fadeIn 0.6s var(--ease-out-expo) 0.5s both;
-  transition: color var(--transition-theme);
-  user-select: none;
-}
-
-.setup-footer-credit .credit-heart {
-  display: inline-block;
-}
-
-.setup-footer-credit .credit-name {
-  color: var(--accent);
-  font-weight: 500;
-  text-decoration: none;
 }

@@ -1,4 +1,4 @@
-﻿export const GITHUB_TOOLS = [
+export const GITHUB_TOOLS = [
   {
     name: 'github_list_repos',
     description: "List the user's GitHub repositories.",
@@ -12,8 +12,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -22,8 +22,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -32,11 +32,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       filePath: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file inside the repository',
       },
     },
@@ -47,8 +47,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -64,8 +64,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -74,11 +74,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Issue title' },
-      body: { type: 'string', required: false, description: 'Issue body in markdown' },
-      labels: { type: 'string', required: false, description: 'Comma-separated label names' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Issue title' },
+      body: { type: 'string', required: !1, description: 'Issue body in markdown' },
+      labels: { type: 'string', required: !1, description: 'Comma-separated label names' },
     },
   },
   {
@@ -87,9 +87,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -98,9 +98,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -109,10 +109,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
-      body: { type: 'string', required: true, description: 'Comment body in markdown' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
+      body: { type: 'string', required: !0, description: 'Comment body in markdown' },
     },
   },
   {
@@ -121,8 +121,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -131,11 +131,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of releases to fetch (default 5, max 20)',
       },
     },
@@ -146,9 +146,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      action: { type: 'string', required: false, description: 'star (default) or unstar' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      action: { type: 'string', required: !1, description: 'star (default) or unstar' },
     },
   },
   {
@@ -157,10 +157,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      description: { type: 'string', required: false, description: 'Gist description' },
-      filename: { type: 'string', required: true, description: 'Primary file name' },
-      content: { type: 'string', required: true, description: 'Primary file content' },
-      public: { type: 'boolean', required: false, description: 'Set true to make the gist public' },
+      description: { type: 'string', required: !1, description: 'Gist description' },
+      filename: { type: 'string', required: !0, description: 'Primary file name' },
+      content: { type: 'string', required: !0, description: 'Primary file content' },
+      public: { type: 'boolean', required: !1, description: 'Set true to make the gist public' },
     },
   },
   {
@@ -176,8 +176,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -186,19 +186,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Pull request title' },
-      head: { type: 'string', required: true, description: 'Source branch' },
-      base: { type: 'string', required: true, description: 'Target branch' },
-      body: {
-        type: 'string',
-        required: false,
-        description: 'Pull request description in markdown',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Pull request title' },
+      head: { type: 'string', required: !0, description: 'Source branch' },
+      base: { type: 'string', required: !0, description: 'Target branch' },
+      body: { type: 'string', required: !1, description: 'Pull request description in markdown' },
       draft: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to open as a draft pull request',
       },
     },
@@ -209,13 +205,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
-      merge_method: { type: 'string', required: false, description: 'merge, squash, or rebase' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
+      merge_method: { type: 'string', required: !1, description: 'merge, squash, or rebase' },
       commit_title: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional custom merge commit title',
       },
     },
@@ -226,9 +222,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -237,10 +233,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
-      labels: { type: 'string', required: true, description: 'Comma-separated label names' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
+      labels: { type: 'string', required: !0, description: 'Comma-separated label names' },
     },
   },
   {
@@ -249,14 +245,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
-      assignees: {
-        type: 'string',
-        required: true,
-        description: 'Comma-separated GitHub usernames',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
+      assignees: { type: 'string', required: !0, description: 'Comma-separated GitHub usernames' },
     },
   },
   {
@@ -265,15 +257,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       workflow_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Workflow file name or numeric ID',
       },
-      ref: { type: 'string', required: false, description: 'Branch or tag to run the workflow on' },
-      inputs: { type: 'string', required: false, description: 'JSON string of workflow inputs' },
+      ref: { type: 'string', required: !1, description: 'Branch or tag to run the workflow on' },
+      inputs: { type: 'string', required: !1, description: 'JSON string of workflow inputs' },
     },
   },
   {
@@ -282,14 +274,14 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       workflow_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Workflow file name or numeric ID',
       },
-      branch: { type: 'string', required: false, description: 'Optional branch filter' },
+      branch: { type: 'string', required: !1, description: 'Optional branch filter' },
     },
   },
   {
@@ -298,8 +290,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -315,16 +307,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       focus_paths: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated path prefixes to focus on',
       },
       max_files: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum number of files to load (default 20, max 40)',
       },
     },
@@ -335,9 +327,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      query: { type: 'string', required: true, description: 'Search query' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      query: { type: 'string', required: !0, description: 'Search query' },
     },
   },
   {
@@ -346,9 +338,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -357,18 +349,18 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
-      body: { type: 'string', required: true, description: 'Overall review body' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
+      body: { type: 'string', required: !0, description: 'Overall review body' },
       verdict: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'APPROVE, REQUEST_CHANGES, or COMMENT',
       },
       inline_comments: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'JSON array of inline comments',
       },
     },
@@ -379,9 +371,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -390,9 +382,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -401,9 +393,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -412,13 +404,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub owner or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch: { type: 'string', required: false, description: 'Optional branch filter' },
-      event: { type: 'string', required: false, description: 'Optional GitHub event filter' },
+      owner: { type: 'string', required: !0, description: 'GitHub owner or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch: { type: 'string', required: !1, description: 'Optional branch filter' },
+      event: { type: 'string', required: !1, description: 'Optional GitHub event filter' },
       per_page: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum number of runs to return (default 20)',
       },
     },
@@ -429,8 +421,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -439,9 +431,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -450,20 +442,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
-      title: { type: 'string', required: false, description: 'New title' },
-      body: { type: 'string', required: false, description: 'New body in markdown' },
-      state: { type: 'string', required: false, description: 'open or closed' },
-      labels: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated label names to set',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
+      title: { type: 'string', required: !1, description: 'New title' },
+      body: { type: 'string', required: !1, description: 'New body in markdown' },
+      state: { type: 'string', required: !1, description: 'open or closed' },
+      labels: { type: 'string', required: !1, description: 'Comma-separated label names to set' },
       assignees: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated GitHub usernames to set',
       },
     },
@@ -474,8 +462,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -484,8 +472,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -494,8 +482,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -504,9 +492,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: { type: 'string', required: false, description: 'open (default), closed, or all' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), closed, or all' },
     },
   },
   {
@@ -515,13 +503,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Milestone title' },
-      description: { type: 'string', required: false, description: 'Optional description' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Milestone title' },
+      description: { type: 'string', required: !1, description: 'Optional description' },
       due_on: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 8601 due date, e.g. 2025-12-31T00:00:00Z',
       },
     },
@@ -532,10 +520,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch_name: { type: 'string', required: true, description: 'New branch name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA to branch from' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch_name: { type: 'string', required: !0, description: 'New branch name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA to branch from' },
     },
   },
   {
@@ -544,9 +532,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch_name: { type: 'string', required: true, description: 'Branch to delete' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch_name: { type: 'string', required: !0, description: 'Branch to delete' },
     },
   },
   {
@@ -555,8 +543,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -565,8 +553,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -575,8 +563,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -585,10 +573,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      base: { type: 'string', required: true, description: 'Base branch or SHA' },
-      head: { type: 'string', required: true, description: 'Head branch or SHA to compare' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      base: { type: 'string', required: !0, description: 'Base branch or SHA' },
+      head: { type: 'string', required: !0, description: 'Head branch or SHA to compare' },
     },
   },
   {
@@ -605,8 +593,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -615,19 +603,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
-      reviewers: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated GitHub usernames',
-      },
-      team_reviewers: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated team slugs',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
+      reviewers: { type: 'string', required: !1, description: 'Comma-separated GitHub usernames' },
+      team_reviewers: { type: 'string', required: !1, description: 'Comma-separated team slugs' },
     },
   },
   {
@@ -636,9 +616,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -647,9 +627,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -658,10 +638,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username to look up' },
+      username: { type: 'string', required: !0, description: 'GitHub username to look up' },
     },
   },
-
   {
     name: 'github_search_repos',
     description: 'Search GitHub repositories globally by keyword.',
@@ -670,12 +649,12 @@
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search query (e.g. "react hooks stars:>1000")',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -688,12 +667,12 @@
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search query (e.g. "is:open label:bug repo:owner/repo")',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -704,14 +683,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
   {
@@ -721,9 +696,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Full or abbreviated commit SHA' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Full or abbreviated commit SHA' },
     },
   },
   {
@@ -732,9 +707,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: { type: 'number', required: false, description: 'Max tags to return (default 20)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max tags to return (default 20)' },
     },
   },
   {
@@ -743,28 +718,20 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       tag_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Tag name for the release (e.g. v1.2.0)',
       },
-      name: {
-        type: 'string',
-        required: false,
-        description: 'Release title (defaults to tag name)',
-      },
-      body: { type: 'string', required: false, description: 'Release notes in markdown' },
-      draft: { type: 'boolean', required: false, description: 'Set true to create as a draft' },
-      prerelease: {
-        type: 'boolean',
-        required: false,
-        description: 'Set true to mark as pre-release',
-      },
+      name: { type: 'string', required: !1, description: 'Release title (defaults to tag name)' },
+      body: { type: 'string', required: !1, description: 'Release notes in markdown' },
+      draft: { type: 'boolean', required: !1, description: 'Set true to create as a draft' },
+      prerelease: { type: 'boolean', required: !1, description: 'Set true to mark as pre-release' },
       target_commitish: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch or commit SHA to tag (defaults to default branch)',
       },
     },
@@ -776,11 +743,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'Owner of the repository to fork' },
-      repo: { type: 'string', required: true, description: 'Repository name to fork' },
+      owner: { type: 'string', required: !0, description: 'Owner of the repository to fork' },
+      repo: { type: 'string', required: !0, description: 'Repository name to fork' },
       organization: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Organization to fork into (omit to fork into personal account)',
       },
     },
@@ -791,13 +758,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
-      title: { type: 'string', required: false, description: 'New title' },
-      body: { type: 'string', required: false, description: 'New description in markdown' },
-      state: { type: 'string', required: false, description: 'open or closed' },
-      base: { type: 'string', required: false, description: 'New base branch name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
+      title: { type: 'string', required: !1, description: 'New title' },
+      body: { type: 'string', required: !1, description: 'New description in markdown' },
+      state: { type: 'string', required: !1, description: 'open or closed' },
+      base: { type: 'string', required: !1, description: 'New base branch name' },
     },
   },
   {
@@ -806,8 +773,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -816,15 +783,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      name: { type: 'string', required: true, description: 'Label name' },
-      color: { type: 'string', required: true, description: 'Hex color without # (e.g. ff0000)' },
-      description: {
-        type: 'string',
-        required: false,
-        description: 'Short description of the label',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      name: { type: 'string', required: !0, description: 'Label name' },
+      color: { type: 'string', required: !0, description: 'Hex color without # (e.g. ff0000)' },
+      description: { type: 'string', required: !1, description: 'Short description of the label' },
     },
   },
   {
@@ -833,9 +796,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      name: { type: 'string', required: true, description: 'Exact label name to delete' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      name: { type: 'string', required: !0, description: 'Exact label name to delete' },
     },
   },
   {
@@ -846,12 +809,12 @@
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search query (e.g. "location:London language:python")',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -862,8 +825,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -872,14 +835,14 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       file_path: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file (e.g. src/index.js)',
       },
-      count: { type: 'number', required: false, description: 'Max commits to return (default 15)' },
+      count: { type: 'number', required: !1, description: 'Max commits to return (default 15)' },
     },
   },
   {
@@ -888,12 +851,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       lock_reason: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'off-topic, too heated, resolved, or spam',
       },
     },
@@ -904,9 +867,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
     },
   },
   {
@@ -915,11 +878,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max deployments to return (default 20)',
       },
     },
@@ -931,9 +894,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      username: { type: 'string', required: true, description: 'GitHub username to check' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      username: { type: 'string', required: !0, description: 'GitHub username to check' },
     },
   },
   {
@@ -942,12 +905,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       labels: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Comma-separated label names to remove',
       },
     },
@@ -958,9 +921,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -970,8 +933,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -980,8 +943,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -990,9 +953,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      action: { type: 'string', required: false, description: 'watch (default) or unwatch' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      action: { type: 'string', required: !1, description: 'watch (default) or unwatch' },
     },
   },
   {
@@ -1001,8 +964,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: { type: 'number', required: false, description: 'Max events to return (default 20)' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max events to return (default 20)' },
     },
   },
   {
@@ -1011,8 +974,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1021,8 +984,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1031,13 +994,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: {
-        type: 'string',
-        required: false,
-        description: 'open (default), dismissed, or fixed',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), dismissed, or fixed' },
     },
   },
   {
@@ -1046,15 +1005,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       since: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'ISO 8601 start date e.g. 2024-01-01T00:00:00Z',
       },
-      until: { type: 'string', required: false, description: 'ISO 8601 end date (optional)' },
-      count: { type: 'number', required: false, description: 'Max commits to return (default 20)' },
+      until: { type: 'string', required: !1, description: 'ISO 8601 end date (optional)' },
+      count: { type: 'number', required: !1, description: 'Max commits to return (default 20)' },
     },
   },
   {
@@ -1063,9 +1022,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch: { type: 'string', required: true, description: 'Branch name e.g. main' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch: { type: 'string', required: !0, description: 'Branch name e.g. main' },
     },
   },
   {
@@ -1073,9 +1032,7 @@
     description: 'List the public organizations a GitHub user belongs to.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-    },
+    parameters: { username: { type: 'string', required: !0, description: 'GitHub username' } },
   },
   {
     name: 'github_get_traffic_clones',
@@ -1083,8 +1040,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1094,8 +1051,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1104,8 +1061,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1114,8 +1071,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      count: { type: 'number', required: false, description: 'Max members to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      count: { type: 'number', required: !1, description: 'Max members to return (default 30)' },
     },
   },
   {
@@ -1124,8 +1081,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      count: { type: 'number', required: false, description: 'Max teams to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      count: { type: 'number', required: !1, description: 'Max teams to return (default 30)' },
     },
   },
   {
@@ -1134,13 +1091,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
       team_slug: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Team slug (from github_list_org_teams)',
       },
-      count: { type: 'number', required: false, description: 'Max members to return (default 30)' },
+      count: { type: 'number', required: !1, description: 'Max members to return (default 30)' },
     },
   },
   {
@@ -1149,9 +1106,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
     },
   },
   {
@@ -1160,8 +1117,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1170,8 +1127,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1180,8 +1137,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1190,8 +1147,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1200,8 +1157,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1210,8 +1167,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1220,12 +1177,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max followers to return (default 30)',
-      },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max followers to return (default 30)' },
     },
   },
   {
@@ -1234,12 +1187,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max following to return (default 30)',
-      },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max following to return (default 30)' },
     },
   },
   {
@@ -1248,8 +1197,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: { type: 'number', required: false, description: 'Max gists to return (default 20)' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max gists to return (default 20)' },
     },
   },
   {
@@ -1260,7 +1209,7 @@
     parameters: {
       gist_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Gist ID (from github_get_gists or github_get_user_gists)',
       },
     },
@@ -1271,9 +1220,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
     },
   },
   {
@@ -1282,9 +1231,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      ref: { type: 'string', required: true, description: 'Commit SHA, branch, or tag' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      ref: { type: 'string', required: !0, description: 'Commit SHA, branch, or tag' },
     },
   },
   {
@@ -1293,8 +1242,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1302,9 +1251,7 @@
     description: 'Get public profile and metadata for a GitHub organization.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitHub organization name' } },
   },
   {
     name: 'github_search_commits',
@@ -1314,12 +1261,12 @@
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search query e.g. "fix bug repo:owner/repo author:alice"',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -1330,11 +1277,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       deployment_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Deployment ID (from github_get_deployments)',
       },
     },
@@ -1345,8 +1292,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1362,8 +1309,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1372,11 +1319,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       workflow_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Workflow file name or numeric ID',
       },
     },
@@ -1387,8 +1334,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1397,8 +1344,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1407,8 +1354,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1417,9 +1364,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      team_slug: { type: 'string', required: true, description: 'Team slug' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      team_slug: { type: 'string', required: !0, description: 'Team slug' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -1428,8 +1375,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -1439,9 +1386,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -1449,9 +1396,7 @@
     description: 'List org-level GitHub Actions secret names (values are never exposed).',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitHub organization name' } },
   },
   {
     name: 'github_get_single_comment',
@@ -1459,9 +1404,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID' },
     },
   },
   {
@@ -1470,8 +1415,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1480,12 +1425,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
       review_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Review ID (from github_list_pr_reviews)',
       },
     },
@@ -1495,9 +1440,7 @@
     description: 'List org-level GitHub Actions variables.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitHub organization name' } },
   },
   {
     name: 'github_get_repo_autolinks',
@@ -1505,8 +1448,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1516,11 +1459,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       check_run_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Check run ID (from github_get_pr_checks)',
       },
     },
@@ -1531,14 +1474,14 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      name: { type: 'string', required: true, description: 'Repository name' },
-      description: { type: 'string', required: false, description: 'Short description' },
+      name: { type: 'string', required: !0, description: 'Repository name' },
+      description: { type: 'string', required: !1, description: 'Short description' },
       private: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to create as private (default false)',
       },
-      auto_init: { type: 'boolean', required: false, description: 'Initialize with a README' },
+      auto_init: { type: 'boolean', required: !1, description: 'Initialize with a README' },
     },
   },
   {
@@ -1548,15 +1491,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      description: { type: 'string', required: false, description: 'New description' },
-      homepage: { type: 'string', required: false, description: 'Homepage URL' },
-      private: { type: 'boolean', required: false, description: 'Set visibility (true = private)' },
-      default_branch: { type: 'string', required: false, description: 'New default branch' },
-      has_issues: { type: 'boolean', required: false, description: 'Enable or disable issues' },
-      has_wiki: { type: 'boolean', required: false, description: 'Enable or disable wiki' },
-      has_projects: { type: 'boolean', required: false, description: 'Enable or disable projects' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      description: { type: 'string', required: !1, description: 'New description' },
+      homepage: { type: 'string', required: !1, description: 'Homepage URL' },
+      private: { type: 'boolean', required: !1, description: 'Set visibility (true = private)' },
+      default_branch: { type: 'string', required: !1, description: 'New default branch' },
+      has_issues: { type: 'boolean', required: !1, description: 'Enable or disable issues' },
+      has_wiki: { type: 'boolean', required: !1, description: 'Enable or disable wiki' },
+      has_projects: { type: 'boolean', required: !1, description: 'Enable or disable projects' },
     },
   },
   {
@@ -1565,8 +1508,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1575,14 +1518,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      path: {
-        type: 'string',
-        required: false,
-        description: 'Path within the repo (empty for root)',
-      },
-      ref: { type: 'string', required: false, description: 'Branch, tag, or SHA (optional)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      path: { type: 'string', required: !1, description: 'Path within the repo (empty for root)' },
+      ref: { type: 'string', required: !1, description: 'Branch, tag, or SHA (optional)' },
     },
   },
   {
@@ -1592,23 +1531,23 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       file_path: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file (e.g. src/index.js)',
       },
-      message: { type: 'string', required: true, description: 'Commit message' },
-      content: { type: 'string', required: true, description: 'Base64-encoded file content' },
+      message: { type: 'string', required: !0, description: 'Commit message' },
+      content: { type: 'string', required: !0, description: 'Base64-encoded file content' },
       sha: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Blob SHA of the file being replaced (required for updates)',
       },
       branch: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch to commit to (defaults to default branch)',
       },
     },
@@ -1619,18 +1558,18 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      file_path: { type: 'string', required: true, description: 'Path to the file to delete' },
-      message: { type: 'string', required: true, description: 'Commit message' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      file_path: { type: 'string', required: !0, description: 'Path to the file to delete' },
+      message: { type: 'string', required: !0, description: 'Commit message' },
       sha: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Blob SHA of the file (from github_get_file or github_get_repo_contents)',
       },
       branch: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch to commit to (defaults to default branch)',
       },
     },
@@ -1641,9 +1580,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA' },
     },
   },
   {
@@ -1652,20 +1591,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA' },
-      body: { type: 'string', required: true, description: 'Comment body' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA' },
+      body: { type: 'string', required: !0, description: 'Comment body' },
       path: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'File path to attach comment to (optional)',
       },
-      position: {
-        type: 'number',
-        required: false,
-        description: 'Line index in the diff (optional)',
-      },
+      position: { type: 'number', required: !1, description: 'Line index in the diff (optional)' },
     },
   },
   {
@@ -1674,15 +1609,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Pull request number' },
       review_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Review ID (from github_list_pr_reviews)',
       },
-      message: { type: 'string', required: true, description: 'Reason for dismissal' },
+      message: { type: 'string', required: !0, description: 'Reason for dismissal' },
     },
   },
   {
@@ -1691,11 +1626,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       run_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Workflow run ID (from github_get_workflow_runs)',
       },
     },
@@ -1706,9 +1641,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Workflow run ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Workflow run ID' },
     },
   },
   {
@@ -1717,14 +1652,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Workflow run ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max artifacts to return (default 20)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Workflow run ID' },
+      count: { type: 'number', required: !1, description: 'Max artifacts to return (default 20)' },
     },
   },
   {
@@ -1733,8 +1664,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1743,7 +1674,7 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username to follow' },
+      username: { type: 'string', required: !0, description: 'GitHub username to follow' },
     },
   },
   {
@@ -1752,7 +1683,7 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username to unfollow' },
+      username: { type: 'string', required: !0, description: 'GitHub username to unfollow' },
     },
   },
   {
@@ -1761,10 +1692,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
-      count: { type: 'number', required: false, description: 'Max events to return (default 30)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
+      count: { type: 'number', required: !1, description: 'Max events to return (default 30)' },
     },
   },
   {
@@ -1773,11 +1704,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-      description: { type: 'string', required: false, description: 'New description' },
+      gist_id: { type: 'string', required: !0, description: 'Gist ID' },
+      description: { type: 'string', required: !1, description: 'New description' },
       files: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'JSON object of file changes e.g. {"file.js":{"content":"..."}}',
       },
     },
@@ -1787,9 +1718,7 @@
     description: 'Permanently delete a GitHub Gist.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID to delete' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Gist ID to delete' } },
   },
   {
     name: 'github_transfer_issue',
@@ -1797,10 +1726,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'Current repo owner' },
-      repo: { type: 'string', required: true, description: 'Current repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number to transfer' },
-      new_owner: { type: 'string', required: true, description: 'Owner of the target repository' },
+      owner: { type: 'string', required: !0, description: 'Current repo owner' },
+      repo: { type: 'string', required: !0, description: 'Current repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number to transfer' },
+      new_owner: { type: 'string', required: !0, description: 'Owner of the target repository' },
     },
   },
   {
@@ -1809,11 +1738,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       topics: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Comma-separated list of topic names (pass empty string to clear all)',
       },
     },
@@ -1832,10 +1761,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID to edit' },
-      body: { type: 'string', required: true, description: 'New comment body in markdown' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID to edit' },
+      body: { type: 'string', required: !0, description: 'New comment body in markdown' },
     },
   },
   {
@@ -1844,9 +1773,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID to delete' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID to delete' },
     },
   },
   {
@@ -1855,12 +1784,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       content: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
       },
     },
@@ -1871,12 +1800,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID' },
       content: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
       },
     },
@@ -1887,13 +1816,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: {
-        type: 'string',
-        required: false,
-        description: 'open (default), dismissed, or fixed',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), dismissed, or fixed' },
     },
   },
   {
@@ -1902,13 +1827,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: {
-        type: 'string',
-        required: false,
-        description: 'open (default) or resolved',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default) or resolved' },
     },
   },
   {
@@ -1917,9 +1838,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Workflow run ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Workflow run ID' },
     },
   },
   {
@@ -1928,12 +1849,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Workflow run ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Workflow run ID' },
       filter: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'latest (default) or all — whether to return latest or all job attempts',
       },
     },
@@ -1944,9 +1865,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      team_slug: { type: 'string', required: true, description: 'Team slug' },
-      username: { type: 'string', required: true, description: 'GitHub username to check' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      team_slug: { type: 'string', required: !0, description: 'Team slug' },
+      username: { type: 'string', required: !0, description: 'GitHub username to check' },
     },
   },
   {
@@ -1955,12 +1876,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      gist_id: { type: 'string', required: !0, description: 'Gist ID' },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
   {
@@ -1969,8 +1886,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-      body: { type: 'string', required: true, description: 'Comment body in markdown' },
+      gist_id: { type: 'string', required: !0, description: 'Gist ID' },
+      body: { type: 'string', required: !0, description: 'Comment body in markdown' },
     },
   },
   {
@@ -1980,8 +1897,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1989,9 +1906,7 @@
     description: 'List webhooks configured at the organization level.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitHub organization name' } },
   },
   {
     name: 'github_list_user_repo_invitations',
@@ -2009,7 +1924,7 @@
     parameters: {
       invitation_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Invitation ID (from github_list_user_repo_invitations)',
       },
     },
@@ -2022,7 +1937,7 @@
     parameters: {
       invitation_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Invitation ID (from github_list_user_repo_invitations)',
       },
     },
@@ -2032,9 +1947,7 @@
     description: "List a GitHub user's public SSH keys.",
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
-    },
+    parameters: { username: { type: 'string', required: !0, description: 'GitHub username' } },
   },
   {
     name: 'github_star_gist',
@@ -2042,8 +1955,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-      action: { type: 'string', required: false, description: 'star (default) or unstar' },
+      gist_id: { type: 'string', required: !0, description: 'Gist ID' },
+      action: { type: 'string', required: !1, description: 'star (default) or unstar' },
     },
   },
   {
@@ -2051,9 +1964,7 @@
     description: 'Check whether the authenticated user has starred a specific Gist.',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Gist ID' } },
   },
   {
     name: 'github_get_traffic_referrers',
@@ -2062,8 +1973,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2072,8 +1983,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2083,11 +1994,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       namespace: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional namespace filter: heads (branches), tags, or leave empty for all',
       },
     },
@@ -2098,11 +2009,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Full ref path without refs/ prefix, e.g. heads/main or tags/v1.0.0',
       },
     },
@@ -2113,9 +2024,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA to look up' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA to look up' },
     },
   },
   {
@@ -2124,15 +2035,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      milestone_number: { type: 'number', required: true, description: 'Milestone number' },
-      title: { type: 'string', required: false, description: 'New title' },
-      description: { type: 'string', required: false, description: 'New description' },
-      state: { type: 'string', required: false, description: 'open or closed' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      milestone_number: { type: 'number', required: !0, description: 'Milestone number' },
+      title: { type: 'string', required: !1, description: 'New title' },
+      description: { type: 'string', required: !1, description: 'New description' },
+      state: { type: 'string', required: !1, description: 'open or closed' },
       due_on: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 8601 due date, e.g. 2025-12-31T00:00:00Z',
       },
     },
@@ -2143,13 +2054,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      milestone_number: {
-        type: 'number',
-        required: true,
-        description: 'Milestone number to delete',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      milestone_number: { type: 'number', required: !0, description: 'Milestone number to delete' },
     },
   },
   {
@@ -2158,8 +2065,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2168,8 +2075,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2179,8 +2086,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2189,27 +2096,23 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      url: { type: 'string', required: true, description: 'Payload delivery URL' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      url: { type: 'string', required: !0, description: 'Payload delivery URL' },
       events: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated events to subscribe to (default: push)',
       },
-      content_type: {
-        type: 'string',
-        required: false,
-        description: 'json (default) or form',
-      },
+      content_type: { type: 'string', required: !1, description: 'json (default) or form' },
       secret: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional HMAC secret for payload signature',
       },
       active: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Whether the webhook is active (default true)',
       },
     },
@@ -2220,11 +2123,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       hook_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Webhook ID (from github_get_repo_webhooks)',
       },
     },
@@ -2235,9 +2138,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      ref: { type: 'string', required: true, description: 'Commit SHA, branch, or tag' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      ref: { type: 'string', required: !0, description: 'Commit SHA, branch, or tag' },
     },
   },
   {
@@ -2246,11 +2149,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       check_suite_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Check suite ID (from github_list_check_suites)',
       },
     },
@@ -2261,8 +2164,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID' },
-      count: { type: 'number', required: false, description: 'Max forks to return (default 20)' },
+      gist_id: { type: 'string', required: !0, description: 'Gist ID' },
+      count: { type: 'number', required: !1, description: 'Max forks to return (default 20)' },
     },
   },
   {
@@ -2270,9 +2173,7 @@
     description: "Fork a GitHub Gist into the authenticated user's account.",
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Gist ID to fork' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Gist ID to fork' } },
   },
   {
     name: 'github_get_workflow_run_usage',
@@ -2280,9 +2181,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Workflow run ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Workflow run ID' },
     },
   },
   {
@@ -2291,12 +2192,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      username: { type: 'string', required: true, description: 'GitHub username to invite' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      username: { type: 'string', required: !0, description: 'GitHub username to invite' },
       permission: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'pull, triage, push (default), maintain, or admin',
       },
     },
@@ -2307,9 +2208,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      username: { type: 'string', required: true, description: 'GitHub username to remove' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      username: { type: 'string', required: !0, description: 'GitHub username to remove' },
     },
   },
   {
@@ -2318,12 +2219,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       milestone_number: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Milestone number to assign (omit or set null to clear the milestone)',
       },
     },
@@ -2334,9 +2235,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: { type: 'number', required: false, description: 'Max users to return (default 30)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max users to return (default 30)' },
     },
   },
   {
@@ -2345,9 +2246,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      assignee: { type: 'string', required: true, description: 'GitHub username to check' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      assignee: { type: 'string', required: !0, description: 'GitHub username to check' },
     },
   },
   {
@@ -2356,9 +2257,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'Current repository owner' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      new_owner: { type: 'string', required: true, description: 'Username or org to transfer to' },
+      owner: { type: 'string', required: !0, description: 'Current repository owner' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      new_owner: { type: 'string', required: !0, description: 'Username or org to transfer to' },
     },
   },
   {
@@ -2367,11 +2268,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       archive: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'true to archive (default), false to unarchive',
       },
     },
@@ -2382,17 +2283,17 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      tag_name: { type: 'string', required: true, description: 'The tag for the new release' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      tag_name: { type: 'string', required: !0, description: 'The tag for the new release' },
       previous_tag_name: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Tag to start from (defaults to last release)',
       },
       target_commitish: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch or SHA for the new release tag',
       },
     },
@@ -2403,11 +2304,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       check_suite_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Check suite ID (from github_list_check_suites)',
       },
     },
@@ -2418,9 +2319,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: { type: 'number', required: false, description: 'Max events to return (default 20)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max events to return (default 20)' },
     },
   },
   {
@@ -2429,13 +2330,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max stargazers to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max stargazers to return (default 30)' },
     },
   },
   {
@@ -2444,14 +2341,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max reactions to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID' },
+      count: { type: 'number', required: !1, description: 'Max reactions to return (default 30)' },
     },
   },
   {
@@ -2461,9 +2354,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Full commit SHA' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Full commit SHA' },
     },
   },
   {
@@ -2472,7 +2365,7 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username to check' },
+      username: { type: 'string', required: !0, description: 'GitHub username to check' },
     },
   },
   {
@@ -2481,12 +2374,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Tree SHA (from github_get_git_commit)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Tree SHA (from github_get_git_commit)' },
       recursive: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to recursively list all nested entries',
       },
     },
@@ -2497,9 +2390,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Blob SHA (from github_get_git_tree)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Blob SHA (from github_get_git_tree)' },
     },
   },
   {
@@ -2516,11 +2409,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch, tag, or SHA to check (defaults to default branch)',
       },
     },
@@ -2531,12 +2424,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       assignees: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Comma-separated GitHub usernames to remove',
       },
     },
@@ -2547,14 +2440,14 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       dir_path: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Directory path to look for a README in (e.g. docs/). Leave empty for root.',
       },
-      ref: { type: 'string', required: false, description: 'Branch, tag, or SHA (optional)' },
+      ref: { type: 'string', required: !1, description: 'Branch, tag, or SHA (optional)' },
     },
   },
   {
@@ -2563,18 +2456,18 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      tag: { type: 'string', required: true, description: 'Tag name (e.g. v2.0.0)' },
-      message: { type: 'string', required: true, description: 'Tag annotation message' },
-      object: { type: 'string', required: true, description: 'SHA of the object to tag' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      tag: { type: 'string', required: !0, description: 'Tag name (e.g. v2.0.0)' },
+      message: { type: 'string', required: !0, description: 'Tag annotation message' },
+      object: { type: 'string', required: !0, description: 'SHA of the object to tag' },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Object type: commit (default), tree, or blob',
       },
-      tagger_name: { type: 'string', required: false, description: 'Tagger display name' },
-      tagger_email: { type: 'string', required: false, description: 'Tagger email address' },
+      tagger_name: { type: 'string', required: !1, description: 'Tagger display name' },
+      tagger_email: { type: 'string', required: !1, description: 'Tagger email address' },
     },
   },
   {
@@ -2583,12 +2476,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue or pull request number' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or pull request number' },
       reaction_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Reaction ID (from github_get_issue_reactions)',
       },
     },
@@ -2600,8 +2493,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -2610,17 +2503,13 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
       package_type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Filter by type: npm, maven, rubygems, docker, nuget, or container',
       },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max packages to return (default 30)',
-      },
+      count: { type: 'number', required: !1, description: 'Max packages to return (default 30)' },
     },
   },
   {
@@ -2629,18 +2518,14 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitHub username' },
+      username: { type: 'string', required: !0, description: 'GitHub username' },
       package_type: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Package type: npm, maven, rubygems, docker, nuget, or container',
       },
-      package_name: { type: 'string', required: true, description: 'Package name' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max versions to return (default 20)',
-      },
+      package_name: { type: 'string', required: !0, description: 'Package name' },
+      count: { type: 'number', required: !1, description: 'Max versions to return (default 20)' },
     },
   },
   {
@@ -2649,21 +2534,17 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      ref: { type: 'string', required: true, description: 'Branch, SHA, or tag to deploy' },
-      task: { type: 'string', required: false, description: 'Task name (default: deploy)' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      ref: { type: 'string', required: !0, description: 'Branch, SHA, or tag to deploy' },
+      task: { type: 'string', required: !1, description: 'Task name (default: deploy)' },
       environment: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Target environment (default: production)',
       },
-      description: {
-        type: 'string',
-        required: false,
-        description: 'Optional deployment description',
-      },
-      payload: { type: 'string', required: false, description: 'Optional JSON metadata string' },
+      description: { type: 'string', required: !1, description: 'Optional deployment description' },
+      payload: { type: 'string', required: !1, description: 'Optional JSON metadata string' },
     },
   },
   {
@@ -2673,29 +2554,25 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       deployment_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Deployment ID (from github_create_deployment or github_get_deployments)',
       },
       state: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Status state: error, failure, inactive, in_progress, queued, pending, or success',
       },
-      log_url: { type: 'string', required: false, description: 'URL for the deployment logs' },
-      description: {
-        type: 'string',
-        required: false,
-        description: 'Short description of the status',
-      },
-      environment: { type: 'string', required: false, description: 'Environment name' },
+      log_url: { type: 'string', required: !1, description: 'URL for the deployment logs' },
+      description: { type: 'string', required: !1, description: 'Short description of the status' },
+      environment: { type: 'string', required: !1, description: 'Environment name' },
       environment_url: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Public URL for the deployed environment',
       },
     },
@@ -2707,16 +2584,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       event_type: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Custom event name (e.g. build, deploy, trigger-tests)',
       },
       client_payload: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional JSON string passed as payload to triggered workflows',
       },
     },
@@ -2728,11 +2605,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       tag_sha: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'SHA of the annotated tag object (not the tagged commit SHA)',
       },
     },
@@ -2743,16 +2620,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       check_run_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description: 'Check run ID (from github_get_pr_checks or github_get_check_run_details)',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max annotations to return (default 50)',
       },
     },
@@ -2764,9 +2641,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      ref: { type: 'string', required: true, description: 'Commit SHA, branch name, or tag' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      ref: { type: 'string', required: !0, description: 'Commit SHA, branch name, or tag' },
     },
   },
   {
@@ -2776,11 +2653,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref_pattern: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Ref prefix to match, e.g. "heads/feat" or "tags/v2"',
       },
     },
@@ -2791,17 +2668,17 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Ref path without refs/ prefix, e.g. heads/main or tags/v1.0.0',
       },
-      sha: { type: 'string', required: true, description: 'New SHA to point the ref at' },
+      sha: { type: 'string', required: !0, description: 'New SHA to point the ref at' },
       force: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to allow non-fast-forward updates (default false)',
       },
     },
@@ -2812,15 +2689,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Full ref path including refs/ prefix, e.g. refs/heads/my-branch or refs/tags/v1.0.0',
       },
-      sha: { type: 'string', required: true, description: 'Commit SHA the ref should point to' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA the ref should point to' },
     },
   },
   {
@@ -2829,23 +2706,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sort: {
-        type: 'string',
-        required: false,
-        description: 'Sort by: created (default) or updated',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sort: { type: 'string', required: !1, description: 'Sort by: created (default) or updated' },
       direction: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Sort direction: desc (default) or asc',
       },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
   {
@@ -2854,9 +2723,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Review comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Review comment ID' },
     },
   },
   {
@@ -2865,10 +2734,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Review comment ID to edit' },
-      body: { type: 'string', required: true, description: 'New comment body in markdown' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Review comment ID to edit' },
+      body: { type: 'string', required: !0, description: 'New comment body in markdown' },
     },
   },
   {
@@ -2877,9 +2746,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Review comment ID to delete' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Review comment ID to delete' },
     },
   },
   {
@@ -2888,9 +2757,9 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA to check' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA to check' },
     },
   },
   {
@@ -2899,9 +2768,7 @@
       'Get the GitHub Actions permissions policy for an organization (which repos and action types are allowed).',
     category: 'github',
     connectorId: 'github',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitHub organization name' } },
   },
   {
     name: 'github_list_org_blocked_users',
@@ -2909,12 +2776,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max users to return (default 30)',
-      },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      count: { type: 'number', required: !1, description: 'Max users to return (default 30)' },
     },
   },
   {
@@ -2923,16 +2786,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       format: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Archive format: zipball (default) or tarball',
       },
       ref: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch, tag, or SHA to archive (defaults to default branch)',
       },
     },
@@ -2943,11 +2806,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       ref: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch, tag, or SHA (defaults to default branch)',
       },
     },
@@ -2969,7 +2832,7 @@
     parameters: {
       name: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Template name (e.g. Node, Python, Java — from github_get_gitignore_templates)',
       },
@@ -2992,7 +2855,7 @@
     parameters: {
       license_key: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'SPDX license key (e.g. mit, apache-2.0, gpl-3.0 — from github_list_licenses)',
       },
     },
@@ -3004,15 +2867,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      text: { type: 'string', required: true, description: 'Markdown text to render' },
+      text: { type: 'string', required: !0, description: 'Markdown text to render' },
       mode: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'markdown (default) or gfm (GitHub Flavored Markdown with repo context)',
       },
       context: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Repo context for gfm mode, e.g. owner/repo — enables #issue and @mention linking',
       },
@@ -3035,7 +2898,7 @@
     parameters: {
       thread_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Thread ID (visible in notification list results)',
       },
     },
@@ -3046,7 +2909,7 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+      thread_id: { type: 'string', required: !0, description: 'Notification thread ID' },
     },
   },
   {
@@ -3056,7 +2919,7 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+      thread_id: { type: 'string', required: !0, description: 'Notification thread ID' },
     },
   },
   {
@@ -3065,15 +2928,15 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      thread_id: { type: 'string', required: true, description: 'Notification thread ID' },
+      thread_id: { type: 'string', required: !0, description: 'Notification thread ID' },
       subscribed: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'true to subscribe (default), false to unsubscribe',
       },
       ignored: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'true to mute all future notifications for this thread (default false)',
       },
     },
@@ -3085,16 +2948,16 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       unread_only: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'true to show only unread (default), false to show all',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max notifications to return (default 20)',
       },
     },
@@ -3105,8 +2968,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -3115,10 +2978,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max invitations to return (default 30)',
       },
     },
@@ -3129,8 +2992,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitHub organization name' },
-      count: { type: 'number', required: false, description: 'Max runners to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitHub organization name' },
+      count: { type: 'number', required: !1, description: 'Max runners to return (default 30)' },
     },
   },
   {
@@ -3142,12 +3005,12 @@
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search query (e.g. "react", "machine-learning")',
       },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -3159,8 +3022,8 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -3169,14 +3032,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'PR review comment ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max reactions to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'PR review comment ID' },
+      count: { type: 'number', required: !1, description: 'Max reactions to return (default 30)' },
     },
   },
   {
@@ -3185,12 +3044,12 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'PR review comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'PR review comment ID' },
       content: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
       },
     },
@@ -3202,11 +3061,11 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       comment_id: {
         type: 'number',
-        required: true,
+        required: !0,
         description:
           'Commit comment ID (from github_get_commit_comments or github_list_all_commit_comments)',
       },
@@ -3219,15 +3078,10 @@
     category: 'github',
     connectorId: 'github',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitHub username or organization' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitHub username or organization' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
 ];
-
 export default GITHUB_TOOLS;

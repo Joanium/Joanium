@@ -1,12 +1,14 @@
 export function formatSize(bytes) {
-  if (bytes == null) return 'unknown size';
+  if (null == bytes) return 'unknown size';
   const value = Number(bytes);
-  if (value >= 1_073_741_824) return `${(value / 1_073_741_824).toFixed(2)} GB`;
-  if (value >= 1_048_576) return `${(value / 1_048_576).toFixed(1)} MB`;
-  if (value >= 1_024) return `${(value / 1_024).toFixed(0)} KB`;
-  return `${value} B`;
+  return value >= 1073741824
+    ? `${(value / 1073741824).toFixed(2)} GB`
+    : value >= 1048576
+      ? `${(value / 1048576).toFixed(1)} MB`
+      : value >= 1024
+        ? `${(value / 1024).toFixed(0)} KB`
+        : `${value} B`;
 }
-
 export function formatDate(iso) {
   if (!iso) return '';
   try {
@@ -19,19 +21,21 @@ export function formatDate(iso) {
     return iso;
   }
 }
-
 export function mimeLabel(mimeType = '') {
-  const map = {
-    'application/vnd.google-apps.document': 'Google Doc',
-    'application/vnd.google-apps.spreadsheet': 'Google Sheet',
-    'application/vnd.google-apps.presentation': 'Google Slides',
-    'application/vnd.google-apps.folder': 'Folder',
-    'application/pdf': 'PDF',
-    'text/plain': 'Text',
-    'text/csv': 'CSV',
-    'application/json': 'JSON',
-    'image/jpeg': 'Image (JPEG)',
-    'image/png': 'Image (PNG)',
-  };
-  return map[mimeType] ?? mimeType.split('/').pop() ?? 'File';
+  return (
+    {
+      'application/vnd.google-apps.document': 'Google Doc',
+      'application/vnd.google-apps.spreadsheet': 'Google Sheet',
+      'application/vnd.google-apps.presentation': 'Google Slides',
+      'application/vnd.google-apps.folder': 'Folder',
+      'application/pdf': 'PDF',
+      'text/plain': 'Text',
+      'text/csv': 'CSV',
+      'application/json': 'JSON',
+      'image/jpeg': 'Image (JPEG)',
+      'image/png': 'Image (PNG)',
+    }[mimeType] ??
+    mimeType.split('/').pop() ??
+    'File'
+  );
 }

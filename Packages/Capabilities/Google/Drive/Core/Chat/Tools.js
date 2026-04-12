@@ -6,12 +6,12 @@ export const DRIVE_TOOLS = [
     parameters: {
       folder_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional folder ID to list files inside. Omit for root.',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max number of files to return (default: 20).',
       },
     },
@@ -23,12 +23,12 @@ export const DRIVE_TOOLS = [
     parameters: {
       query: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Search term - matches file names and content.',
       },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max number of results (default: 20).',
       },
     },
@@ -38,9 +38,7 @@ export const DRIVE_TOOLS = [
     description:
       'Read the text content of a Google Drive file. Works for Docs, Sheets, plain text, JSON, CSV, and code files.',
     category: 'drive',
-    parameters: {
-      file_id: { type: 'string', required: true, description: 'Google Drive file ID.' },
-    },
+    parameters: { file_id: { type: 'string', required: !0, description: 'Google Drive file ID.' } },
   },
   {
     name: 'drive_get_storage',
@@ -54,11 +52,11 @@ export const DRIVE_TOOLS = [
     description: 'Create a new text file in Google Drive.',
     category: 'drive',
     parameters: {
-      name: { type: 'string', required: true, description: 'File name (e.g. "notes.txt").' },
-      content: { type: 'string', required: true, description: 'Text content of the file.' },
+      name: { type: 'string', required: !0, description: 'File name (e.g. "notes.txt").' },
+      content: { type: 'string', required: !0, description: 'Text content of the file.' },
       folder_id: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional folder ID to create the file in.',
       },
     },
@@ -70,7 +68,7 @@ export const DRIVE_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max folders to return (default: 20).',
       },
     },

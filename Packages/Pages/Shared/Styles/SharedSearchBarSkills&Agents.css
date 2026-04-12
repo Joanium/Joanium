@@ -1,10 +1,6 @@
-/* ══════════════════════════════════════════
-   SHARED SEARCH BAR  (used by Skills + Agents)
-══════════════════════════════════════════ */
 .page-search-wrapper {
   margin-bottom: 24px;
 }
-
 .page-search-box {
   position: relative;
   display: flex;
@@ -12,43 +8,40 @@
   width: 100%;
   max-width: 560px;
 }
-
+.page-search-clear,
 .page-search-icon {
   position: absolute;
+  pointer-events: none;
+}
+.page-search-icon {
   left: 16px;
   width: 15px;
   height: 15px;
   color: var(--text-muted);
-  pointer-events: none;
   flex-shrink: 0;
 }
-
 .page-search-input {
   width: 100%;
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 11px 42px 11px 42px;
+  padding: 11px 42px;
   font-family: var(--font-ui);
   font-size: 13px;
   color: var(--text-primary);
-  outline: none;
+  outline: 0;
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-
 .page-search-input::placeholder {
   color: var(--text-muted);
 }
-
 .page-search-input:focus {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
-
 .page-search-clear {
-  position: absolute;
   right: 12px;
   width: 22px;
   height: 22px;
@@ -56,25 +49,22 @@
   align-items: center;
   justify-content: center;
   border: none;
-  background: transparent;
+  background: 0 0;
   color: var(--text-muted);
   cursor: pointer;
   border-radius: 50%;
   padding: 0;
   opacity: 0;
-  pointer-events: none;
   transition:
     opacity var(--transition-fast),
     background var(--transition-fast),
     color var(--transition-fast);
 }
-
-.page-search-input:not(:placeholder-shown) + .page-search-clear,
-.page-search-clear.visible {
+.page-search-clear.visible,
+.page-search-input:not(:placeholder-shown) + .page-search-clear {
   opacity: 1;
   pointer-events: auto;
 }
-
 .page-search-clear svg {
   width: 12px;
   height: 12px;

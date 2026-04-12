@@ -6,80 +6,73 @@ import {
   timeAgo,
   fullDateTime,
 } from '../../../../../System/Utils.js';
-
 export { escapeHtml, capitalize, formatTrigger, timeAgo, fullDateTime };
-
 export function generateAgentId() {
   return generateId('agent');
 }
-
 export function generateJobId() {
   return generateId('job');
 }
-
 export function resolveModelLabel(allModels, providerId, modelId) {
   const entry = allModels.find(
     (model) => model.providerId === providerId && model.modelId === modelId,
   );
   return entry ? `${entry.modelName} (${entry.provider})` : (modelId ?? '');
 }
-
 export function getAgentHealth(agent) {
   const allRuns = (agent.jobs ?? []).flatMap((job) => job.history ?? []);
   if (!allRuns.length) return 'none';
-
   const latestRun = [...allRuns].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
-  if (latestRun.error) return 'error';
-  if (latestRun.nothingToReport || latestRun.skipped) return 'skipped';
-  if (latestRun.acted) return 'acted';
-  return 'none';
+  return latestRun.error
+    ? 'error'
+    : latestRun.nothingToReport || latestRun.skipped
+      ? 'skipped'
+      : latestRun.acted
+        ? 'acted'
+        : 'none';
 }
-
 export function getSourceCount(job) {
-  if (Array.isArray(job?.dataSources) && job.dataSources.length) return job.dataSources.length;
-  return job?.dataSource?.type ? 1 : 0;
+  return Array.isArray(job?.dataSources) && job.dataSources.length
+    ? job.dataSources.length
+    : job?.dataSource?.type
+      ? 1
+      : 0;
 }
-
 export function getPrimarySourceType(job) {
-  if (Array.isArray(job?.dataSources) && job.dataSources.length)
-    return job.dataSources[0]?.type ?? '';
-  return job?.dataSource?.type ?? '';
+  return Array.isArray(job?.dataSources) && job.dataSources.length
+    ? (job.dataSources[0]?.type ?? '')
+    : (job?.dataSource?.type ?? '');
 }
-
 export function getJobLabel(job, dataSourceTypes, fallback = 'Job') {
-  const sourceType = getPrimarySourceType(job);
-  const dataSource = dataSourceTypes.find((item) => item.value === sourceType);
+  const sourceType = getPrimarySourceType(job),
+    dataSource = dataSourceTypes.find((item) => item.value === sourceType);
   return job?.name || dataSource?.label || fallback;
 }
-
 export function normalizeJobDataSources(job) {
-  if (Array.isArray(job?.dataSources) && job.dataSources.length) {
-    return job.dataSources.map((source) => ({ ...source }));
-  }
-
-  if (job?.dataSource?.type) return [{ ...job.dataSource }];
-  return [{ type: '' }];
+  return Array.isArray(job?.dataSources) && job.dataSources.length
+    ? job.dataSources.map((source) => ({ ...source }))
+    : job?.dataSource?.type
+      ? [{ ...job.dataSource }]
+      : [{ type: '' }];
 }
-
 export function ensureJobDataSources(job) {
-  if (!Array.isArray(job.dataSources) || !job.dataSources.length) {
-    job.dataSources = normalizeJobDataSources(job);
-  }
-  return job.dataSources;
+  return (
+    (Array.isArray(job.dataSources) && job.dataSources.length) ||
+      (job.dataSources = normalizeJobDataSources(job)),
+    job.dataSources
+  );
 }
-
 export function cloneJobsForEditing(agent) {
-  if (!agent?.jobs) return [];
-
-  return agent.jobs.map((job) => ({
-    ...job,
-    dataSources: normalizeJobDataSources(job),
-    output: { ...(job.output ?? { type: '' }) },
-    trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
-    history: job.history ?? [],
-  }));
+  return agent?.jobs
+    ? agent.jobs.map((job) => ({
+        ...job,
+        dataSources: normalizeJobDataSources(job),
+        output: { ...(job.output ?? { type: '' }) },
+        trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
+        history: job.history ?? [],
+      }))
+    : [];
 }
-
 export function createNewJob() {
   return {
     id: generateJobId(),

@@ -1,4 +1,4 @@
-﻿import defineFeature from '../../Core/DefineFeature.js';
+import defineFeature from '../../Core/DefineFeature.js';
 import { GithubAPI, getGithubCredentials, notConnected } from './Shared/Common.js';
 import { GITHUB_TOOLS } from './Chat/Tools.js';
 import { executeGithubChatTool } from './Chat/ChatExecutor.js';
@@ -6,281 +6,12 @@ import {
   githubDataSourceCollectors,
   githubOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
 function withGithub(ctx, callback) {
   const credentials = getGithubCredentials(ctx);
-  if (!credentials) return notConnected();
-  return callback(credentials).catch((error) => ({ ok: false, error: error.message }));
+  return credentials
+    ? callback(credentials).catch((error) => ({ ok: !1, error: error.message }))
+    : notConnected();
 }
-
-const GITHUB_DATA_SOURCES = [
-  { value: 'github_notifications', label: 'GitHub - Notifications', group: 'GitHub' },
-  {
-    value: 'github_repos',
-    label: 'GitHub - All my repos',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'maxResults',
-        label: 'Max repos',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 30,
-        placeholder: '30',
-      },
-    ],
-  },
-  {
-    value: 'github_prs',
-    label: 'GitHub - Pull requests',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      {
-        key: 'state',
-        label: 'State',
-        type: 'select',
-        options: ['open', 'closed', 'all'],
-        defaultValue: 'open',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max results',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 20,
-        placeholder: '20',
-      },
-    ],
-  },
-  {
-    value: 'github_issues',
-    label: 'GitHub - Issues',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      {
-        key: 'state',
-        label: 'State',
-        type: 'select',
-        options: ['open', 'closed', 'all'],
-        defaultValue: 'open',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max results',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 20,
-        placeholder: '20',
-      },
-    ],
-  },
-  {
-    value: 'github_commits',
-    label: 'GitHub - Recent commits',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max commits',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 10,
-        placeholder: '10',
-      },
-    ],
-  },
-  {
-    value: 'github_releases',
-    label: 'GitHub - Releases',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max releases',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 10,
-        placeholder: '10',
-      },
-    ],
-  },
-  {
-    value: 'github_workflow_runs',
-    label: 'GitHub - Workflow runs',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      { key: 'branch', label: 'Branch', type: 'text', placeholder: 'main' },
-      {
-        key: 'event',
-        label: 'Event',
-        type: 'text',
-        placeholder: 'push, pull_request, workflow_dispatch',
-      },
-      {
-        key: 'maxResults',
-        label: 'Max runs',
-        type: 'number',
-        min: 1,
-        max: 100,
-        defaultValue: 20,
-        placeholder: '20',
-      },
-    ],
-  },
-  {
-    value: 'github_repo_stats',
-    label: 'GitHub - Repo stats',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-    ],
-  },
-];
-
-const GITHUB_OUTPUT_TYPES = [
-  {
-    value: 'github_pr_review',
-    label: 'Post GitHub PR review',
-    group: 'GitHub',
-    params: [
-      {
-        key: 'owner',
-        label: 'Owner / org',
-        type: 'text',
-        required: true,
-        placeholder: 'github-username or org',
-      },
-      {
-        key: 'repo',
-        label: 'Repository',
-        type: 'text',
-        required: true,
-        placeholder: 'repository-name',
-      },
-      {
-        key: 'prNumber',
-        label: 'PR number',
-        type: 'number',
-        required: true,
-        min: 1,
-        placeholder: '12',
-      },
-      {
-        key: 'event',
-        label: 'Review event',
-        type: 'select',
-        options: ['COMMENT', 'APPROVE', 'REQUEST_CHANGES'],
-        defaultValue: 'COMMENT',
-      },
-    ],
-  },
-];
-
-const GITHUB_INSTRUCTION_TEMPLATES = {
-  github_notifications:
-    'Review these GitHub notifications. Group them by type and list the most urgent action items first.',
-  github_repos: 'Review my repositories and summarize which ones need attention.',
-  github_prs:
-    'Analyze these pull requests. Summarize what each one does, whether it is ready to merge, and any blockers.',
-  github_issues:
-    'Review these issues. Categorize by priority and flag anything blocked, unclear, or ready to close.',
-  github_commits:
-    'Analyze recent commits. Summarize what changed and flag any risky or unusually large changes.',
-  github_releases:
-    'Review these releases. Summarize what shipped, any breaking changes, and whether any follow-up is needed.',
-  github_workflow_runs:
-    'Review these workflow runs. Identify failures, flaky checks, or anything that needs attention.',
-  github_repo_stats: 'Analyze this repository data and highlight any important trends or changes.',
-};
-
 export default defineFeature({
   id: 'github',
   name: 'GitHub',
@@ -322,153 +53,150 @@ export default defineFeature({
             description: 'Hourly, notify if there are unread notifications',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
+        defaultState: { enabled: !1, credentials: {} },
         async validate(ctx) {
           const credentials = ctx.connectorEngine?.getCredentials('github');
-          if (!credentials?.token) return { ok: false, error: 'No credentials stored' };
+          if (!credentials?.token) return { ok: !1, error: 'No credentials stored' };
           const user = await GithubAPI.getUser(credentials);
-          ctx.connectorEngine?.updateCredentials('github', {
-            username: user.login,
-            avatar: user.avatar_url,
-          });
-          return { ok: true, username: user.login, avatar: user.avatar_url };
+          return (
+            ctx.connectorEngine?.updateCredentials('github', {
+              username: user.login,
+              avatar: user.avatar_url,
+            }),
+            { ok: !0, username: user.login, avatar: user.avatar_url }
+          );
         },
       },
     ],
   },
   main: {
     methods: {
-      async getRepos(ctx) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+      getRepos: async (ctx) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           repos: await GithubAPI.getRepos(credentials),
-        }));
-      },
-      async getFile(ctx, { owner, repo, filePath }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getFile: async (ctx, { owner: owner, repo: repo, filePath: filePath }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           ...(await GithubAPI.getFileContent(credentials, owner, repo, filePath)),
-        }));
-      },
-      async getTree(ctx, { owner, repo, branch }) {
-        return withGithub(ctx, async (credentials) => {
+        })),
+      getTree: async (ctx, { owner: owner, repo: repo, branch: branch }) =>
+        withGithub(ctx, async (credentials) => {
           const tree = await GithubAPI.getRepoTree(credentials, owner, repo, branch);
-          return { ok: true, tree: tree?.tree ?? [] };
-        });
-      },
-      async getIssues(ctx, { owner, repo, state = 'open' }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+          return { ok: !0, tree: tree?.tree ?? [] };
+        }),
+      getIssues: async (ctx, { owner: owner, repo: repo, state: state = 'open' }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           issues: await GithubAPI.getIssues(credentials, owner, repo, state),
-        }));
-      },
-      async getPRs(ctx, { owner, repo, state = 'open' }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getPRs: async (ctx, { owner: owner, repo: repo, state: state = 'open' }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           prs: await GithubAPI.getPullRequests(credentials, owner, repo, state),
-        }));
-      },
-      async getNotifications(ctx) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getNotifications: async (ctx) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           notifications: await GithubAPI.getNotifications(credentials),
-        }));
-      },
-      async getCommits(ctx, { owner, repo, perPage = 20 }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getCommits: async (ctx, { owner: owner, repo: repo, perPage: perPage = 20 }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           commits: await GithubAPI.getCommits(credentials, owner, repo, perPage),
-        }));
-      },
-      async searchCode(ctx, { owner, repo, query }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      searchCode: async (ctx, { owner: owner, repo: repo, query: query }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           ...(await GithubAPI.searchCode(
             credentials,
             query,
             owner && repo ? `${owner}/${repo}` : '',
           )),
-        }));
-      },
-      async getPRDiff(ctx, { owner, repo, prNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getPRDiff: async (ctx, { owner: owner, repo: repo, prNumber: prNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           diff: await GithubAPI.getPRDiff(credentials, owner, repo, prNumber),
-        }));
-      },
-      async getPRDetails(ctx, { owner, repo, prNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getPRDetails: async (ctx, { owner: owner, repo: repo, prNumber: prNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           pr: await GithubAPI.getPRDetails(credentials, owner, repo, prNumber),
-        }));
-      },
-      async createPRReview(ctx, { owner, repo, prNumber, review = {} }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      createPRReview: async (
+        ctx,
+        { owner: owner, repo: repo, prNumber: prNumber, review: review = {} },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           ...(await GithubAPI.createPRReview(credentials, owner, repo, prNumber, review)),
-        }));
-      },
-      async getPRChecks(ctx, { owner, repo, prNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getPRChecks: async (ctx, { owner: owner, repo: repo, prNumber: prNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           checks: await GithubAPI.getPRChecks(credentials, owner, repo, prNumber),
-        }));
-      },
-      async getWorkflowRuns(ctx, { owner, repo, branch = '', event = '', perPage = 20 }) {
-        return withGithub(ctx, async (credentials) => {
+        })),
+      getWorkflowRuns: async (
+        ctx,
+        { owner: owner, repo: repo, branch: branch = '', event: event = '', perPage: perPage = 20 },
+      ) =>
+        withGithub(ctx, async (credentials) => {
           const runs = await GithubAPI.getWorkflowRuns(credentials, owner, repo, {
-            branch,
-            event,
-            perPage,
+            branch: branch,
+            event: event,
+            perPage: perPage,
           });
-          return { ok: true, runs: runs.workflow_runs ?? [], total_count: runs.total_count ?? 0 };
-        });
-      },
-      async getPRComments(ctx, { owner, repo, prNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+          return { ok: !0, runs: runs.workflow_runs ?? [], total_count: runs.total_count ?? 0 };
+        }),
+      getPRComments: async (ctx, { owner: owner, repo: repo, prNumber: prNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           comments: await GithubAPI.getPRComments(credentials, owner, repo, prNumber),
-        }));
-      },
-      async getRepoStats(ctx, { owner, repo }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getRepoStats: async (ctx, { owner: owner, repo: repo }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           stats: await GithubAPI.getRepoStats(credentials, owner, repo),
-        }));
-      },
-      async starRepo(ctx, { owner, repo }) {
-        return withGithub(ctx, async (credentials) => {
-          await GithubAPI.starRepo(credentials, owner, repo);
-          return { ok: true };
-        });
-      },
-      async unstarRepo(ctx, { owner, repo }) {
-        return withGithub(ctx, async (credentials) => {
-          await GithubAPI.unstarRepo(credentials, owner, repo);
-          return { ok: true };
-        });
-      },
-      async getReleases(ctx, { owner, repo, perPage = 10 }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      starRepo: async (ctx, { owner: owner, repo: repo }) =>
+        withGithub(
+          ctx,
+          async (credentials) => (await GithubAPI.starRepo(credentials, owner, repo), { ok: !0 }),
+        ),
+      unstarRepo: async (ctx, { owner: owner, repo: repo }) =>
+        withGithub(
+          ctx,
+          async (credentials) => (await GithubAPI.unstarRepo(credentials, owner, repo), { ok: !0 }),
+        ),
+      getReleases: async (ctx, { owner: owner, repo: repo, perPage: perPage = 10 }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           releases: await GithubAPI.getReleases(credentials, owner, repo, perPage),
-        }));
-      },
-      async getLatestRelease(ctx, { owner, repo }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getLatestRelease: async (ctx, { owner: owner, repo: repo }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           release: await GithubAPI.getLatestRelease(credentials, owner, repo),
-        }));
-      },
-      async createPR(ctx, { owner, repo, options = {} }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      createPR: async (ctx, { owner: owner, repo: repo, options: options = {} }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           pr: await GithubAPI.createPR(credentials, owner, repo, options),
-        }));
-      },
-      async mergePR(ctx, { owner, repo, prNumber, mergeMethod = 'merge', commitTitle = '' }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      mergePR: async (
+        ctx,
+        {
+          owner: owner,
+          repo: repo,
+          prNumber: prNumber,
+          mergeMethod: mergeMethod = 'merge',
+          commitTitle: commitTitle = '',
+        },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           ...(await GithubAPI.mergePR(
             credentials,
             owner,
@@ -477,92 +205,375 @@ export default defineFeature({
             mergeMethod,
             commitTitle,
           )),
-        }));
-      },
-      async closePR(ctx, { owner, repo, prNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      closePR: async (ctx, { owner: owner, repo: repo, prNumber: prNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           pr: await GithubAPI.closePR(credentials, owner, repo, prNumber),
-        }));
-      },
-      async createIssue(ctx, { owner, repo, title, body = '', labels = [] }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      createIssue: async (
+        ctx,
+        { owner: owner, repo: repo, title: title, body: body = '', labels: labels = [] },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           issue: await GithubAPI.createIssue(credentials, owner, repo, title, body, labels),
-        }));
-      },
-      async closeIssue(ctx, { owner, repo, issueNumber, reason = 'completed' }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      closeIssue: async (
+        ctx,
+        { owner: owner, repo: repo, issueNumber: issueNumber, reason: reason = 'completed' },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           issue: await GithubAPI.closeIssue(credentials, owner, repo, issueNumber, reason),
-        }));
-      },
-      async reopenIssue(ctx, { owner, repo, issueNumber }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      reopenIssue: async (ctx, { owner: owner, repo: repo, issueNumber: issueNumber }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           issue: await GithubAPI.reopenIssue(credentials, owner, repo, issueNumber),
-        }));
-      },
-      async commentIssue(ctx, { owner, repo, issueNumber, body }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      commentIssue: async (
+        ctx,
+        { owner: owner, repo: repo, issueNumber: issueNumber, body: body },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           comment: await GithubAPI.addIssueComment(credentials, owner, repo, issueNumber, body),
-        }));
-      },
-      async addLabels(ctx, { owner, repo, issueNumber, labels = [] }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      addLabels: async (
+        ctx,
+        { owner: owner, repo: repo, issueNumber: issueNumber, labels: labels = [] },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           labels: await GithubAPI.addLabels(credentials, owner, repo, issueNumber, labels),
-        }));
-      },
-      async addAssignees(ctx, { owner, repo, issueNumber, assignees = [] }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      addAssignees: async (
+        ctx,
+        { owner: owner, repo: repo, issueNumber: issueNumber, assignees: assignees = [] },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           result: await GithubAPI.addAssignees(credentials, owner, repo, issueNumber, assignees),
-        }));
-      },
-      async markNotificationsRead(ctx) {
-        return withGithub(ctx, async (credentials) => {
-          await GithubAPI.markAllNotificationsRead(credentials);
-          return { ok: true };
-        });
-      },
-      async triggerWorkflow(ctx, { owner, repo, workflowId, ref = 'main', inputs = {} }) {
-        return withGithub(ctx, async (credentials) => {
-          await GithubAPI.triggerWorkflow(credentials, owner, repo, workflowId, ref, inputs);
-          return { ok: true };
-        });
-      },
-      async getLatestWorkflowRun(ctx, { owner, repo, workflowId, branch = '' }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      markNotificationsRead: async (ctx) =>
+        withGithub(
+          ctx,
+          async (credentials) => (
+            await GithubAPI.markAllNotificationsRead(credentials),
+            { ok: !0 }
+          ),
+        ),
+      triggerWorkflow: async (
+        ctx,
+        {
+          owner: owner,
+          repo: repo,
+          workflowId: workflowId,
+          ref: ref = 'main',
+          inputs: inputs = {},
+        },
+      ) =>
+        withGithub(
+          ctx,
+          async (credentials) => (
+            await GithubAPI.triggerWorkflow(credentials, owner, repo, workflowId, ref, inputs),
+            { ok: !0 }
+          ),
+        ),
+      getLatestWorkflowRun: async (
+        ctx,
+        { owner: owner, repo: repo, workflowId: workflowId, branch: branch = '' },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           run: await GithubAPI.getLatestWorkflowRun(credentials, owner, repo, workflowId, branch),
-        }));
-      },
-      async createGist(ctx, { description, files, isPublic = false }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      createGist: async (
+        ctx,
+        { description: description, files: files, isPublic: isPublic = !1 },
+      ) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           gist: await GithubAPI.createGist(credentials, description, files, isPublic),
-        }));
-      },
-      async getBranches(ctx, { owner, repo }) {
-        return withGithub(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      getBranches: async (ctx, { owner: owner, repo: repo }) =>
+        withGithub(ctx, async (credentials) => ({
+          ok: !0,
           branches: await GithubAPI.getBranches(credentials, owner, repo),
-        }));
-      },
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeGithubChatTool(ctx, toolName, params);
-      },
+        })),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeGithubChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: GITHUB_TOOLS,
-  },
+  renderer: { chatTools: GITHUB_TOOLS },
   automation: {
-    dataSources: GITHUB_DATA_SOURCES,
-    outputTypes: GITHUB_OUTPUT_TYPES,
-    instructionTemplates: GITHUB_INSTRUCTION_TEMPLATES,
+    dataSources: [
+      { value: 'github_notifications', label: 'GitHub - Notifications', group: 'GitHub' },
+      {
+        value: 'github_repos',
+        label: 'GitHub - All my repos',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'maxResults',
+            label: 'Max repos',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 30,
+            placeholder: '30',
+          },
+        ],
+      },
+      {
+        value: 'github_prs',
+        label: 'GitHub - Pull requests',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          {
+            key: 'state',
+            label: 'State',
+            type: 'select',
+            options: ['open', 'closed', 'all'],
+            defaultValue: 'open',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max results',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 20,
+            placeholder: '20',
+          },
+        ],
+      },
+      {
+        value: 'github_issues',
+        label: 'GitHub - Issues',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          {
+            key: 'state',
+            label: 'State',
+            type: 'select',
+            options: ['open', 'closed', 'all'],
+            defaultValue: 'open',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max results',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 20,
+            placeholder: '20',
+          },
+        ],
+      },
+      {
+        value: 'github_commits',
+        label: 'GitHub - Recent commits',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max commits',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 10,
+            placeholder: '10',
+          },
+        ],
+      },
+      {
+        value: 'github_releases',
+        label: 'GitHub - Releases',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max releases',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 10,
+            placeholder: '10',
+          },
+        ],
+      },
+      {
+        value: 'github_workflow_runs',
+        label: 'GitHub - Workflow runs',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          { key: 'branch', label: 'Branch', type: 'text', placeholder: 'main' },
+          {
+            key: 'event',
+            label: 'Event',
+            type: 'text',
+            placeholder: 'push, pull_request, workflow_dispatch',
+          },
+          {
+            key: 'maxResults',
+            label: 'Max runs',
+            type: 'number',
+            min: 1,
+            max: 100,
+            defaultValue: 20,
+            placeholder: '20',
+          },
+        ],
+      },
+      {
+        value: 'github_repo_stats',
+        label: 'GitHub - Repo stats',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+        ],
+      },
+    ],
+    outputTypes: [
+      {
+        value: 'github_pr_review',
+        label: 'Post GitHub PR review',
+        group: 'GitHub',
+        params: [
+          {
+            key: 'owner',
+            label: 'Owner / org',
+            type: 'text',
+            required: !0,
+            placeholder: 'github-username or org',
+          },
+          {
+            key: 'repo',
+            label: 'Repository',
+            type: 'text',
+            required: !0,
+            placeholder: 'repository-name',
+          },
+          {
+            key: 'prNumber',
+            label: 'PR number',
+            type: 'number',
+            required: !0,
+            min: 1,
+            placeholder: '12',
+          },
+          {
+            key: 'event',
+            label: 'Review event',
+            type: 'select',
+            options: ['COMMENT', 'APPROVE', 'REQUEST_CHANGES'],
+            defaultValue: 'COMMENT',
+          },
+        ],
+      },
+    ],
+    instructionTemplates: {
+      github_notifications:
+        'Review these GitHub notifications. Group them by type and list the most urgent action items first.',
+      github_repos: 'Review my repositories and summarize which ones need attention.',
+      github_prs:
+        'Analyze these pull requests. Summarize what each one does, whether it is ready to merge, and any blockers.',
+      github_issues:
+        'Review these issues. Categorize by priority and flag anything blocked, unclear, or ready to close.',
+      github_commits:
+        'Analyze recent commits. Summarize what changed and flag any risky or unusually large changes.',
+      github_releases:
+        'Review these releases. Summarize what shipped, any breaking changes, and whether any follow-up is needed.',
+      github_workflow_runs:
+        'Review these workflow runs. Identify failures, flaky checks, or anything that needs attention.',
+      github_repo_stats:
+        'Analyze this repository data and highlight any important trends or changes.',
+    },
     dataSourceCollectors: githubDataSourceCollectors,
     outputHandlers: githubOutputHandlers,
   },
@@ -571,11 +582,7 @@ export default defineFeature({
       const credentials = getGithubCredentials(ctx);
       if (!credentials) return null;
       const username = credentials.username ?? null;
-
-      return {
-        connectedServices: [username ? `GitHub (@${username})` : 'GitHub'],
-        sections: [],
-      };
+      return { connectedServices: [username ? `GitHub (@${username})` : 'GitHub'], sections: [] };
     },
   },
 });

@@ -1,6 +1,3 @@
-/* ══════════════════════════════════════════
-   ABOUT MODAL
-══════════════════════════════════════════ */
 #about-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -13,14 +10,12 @@
   z-index: 400;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.22s;
 }
-
 #about-modal-backdrop.open {
   opacity: 1;
   pointer-events: auto;
 }
-
 #about-modal {
   position: relative;
   width: min(380px, calc(100vw - 48px));
@@ -32,18 +27,15 @@
   transition: transform 0.3s var(--ease-spring);
   overflow: hidden;
 }
-
 #about-modal-backdrop.open #about-modal {
   transform: translateY(0) scale(1);
 }
-
 .about-modal-close {
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 10;
 }
-
 .about-modal-body {
   display: flex;
   flex-direction: column;
@@ -52,7 +44,6 @@
   gap: 0;
   text-align: center;
 }
-
 .about-logo-wrap {
   width: 72px;
   height: 72px;
@@ -69,24 +60,21 @@
     aboutLogoPop 0.5s var(--ease-spring) both,
     glowPulse 4s ease-in-out infinite 0.5s;
 }
-
 @keyframes aboutLogoPop {
   from {
     transform: scale(0.6) rotate(-15deg);
     opacity: 0;
   }
   to {
-    transform: scale(1) rotate(0deg);
+    transform: scale(1) rotate(0);
     opacity: 1;
   }
 }
-
 .about-logo-icon {
   width: 36px;
   height: 36px;
   stroke-width: 1.4;
 }
-
 .about-app-name {
   font-size: 22px;
   font-weight: 600;
@@ -94,7 +82,6 @@
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 }
-
 .about-version {
   display: inline-block;
   font-size: 11px;
@@ -109,7 +96,6 @@
   margin-bottom: 14px;
   font-family: var(--font-mono);
 }
-
 .about-description {
   font-size: 13px;
   color: var(--text-muted);
@@ -117,7 +103,6 @@
   max-width: 260px;
   margin-bottom: 0;
 }
-
 .about-divider {
   width: 48px;
   height: 1px;
@@ -125,7 +110,6 @@
   margin: 24px 0;
   opacity: 0.6;
 }
-
 .about-sponsor-btn {
   display: inline-flex;
   align-items: center;
@@ -147,26 +131,19 @@
     filter var(--transition-fast);
   box-shadow: 0 4px 20px var(--accent-glow);
 }
-
 .about-sponsor-btn svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
-
 .about-sponsor-btn:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 8px 28px var(--accent-glow);
   filter: brightness(1.08);
 }
-
 .about-sponsor-btn:active {
   transform: translateY(0) scale(0.98);
 }
-
-/* ══════════════════════════════════════════
-   ABOUT MODAL — UPDATE DOWNLOAD PROGRESS
-══════════════════════════════════════════ */
 .about-update-progress {
   display: none;
   flex-direction: column;
@@ -176,11 +153,9 @@
   background: color-mix(in srgb, var(--accent) 5%, var(--bg-secondary));
   animation: aboutProgressSlideIn 0.35s var(--ease-spring) both;
 }
-
 .about-update-progress.active {
   display: flex;
 }
-
 @keyframes aboutProgressSlideIn {
   from {
     opacity: 0;
@@ -191,26 +166,22 @@
     transform: translateY(0);
   }
 }
-
 .about-update-progress-header {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .about-update-icon {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
   color: var(--accent);
-  animation: aboutIconBounce 1.4s ease-in-out infinite;
+  animation: 1.4s ease-in-out infinite aboutIconBounce;
 }
-
 .about-update-progress.done .about-update-icon {
   animation: none;
   color: var(--success, #34d399);
 }
-
 @keyframes aboutIconBounce {
   0%,
   100% {
@@ -220,7 +191,6 @@
     transform: translateY(-3px);
   }
 }
-
 .about-update-label {
   flex: 1;
   font-size: 12px;
@@ -228,11 +198,9 @@
   color: var(--text-secondary);
   letter-spacing: 0.1px;
 }
-
 .about-update-progress.done .about-update-label {
   color: var(--success, #34d399);
 }
-
 .about-update-pct {
   font-size: 11px;
   font-weight: 600;
@@ -242,11 +210,9 @@
   text-align: right;
   letter-spacing: 0.5px;
 }
-
 .about-update-progress.done .about-update-pct {
   display: none;
 }
-
 .about-update-track {
   width: 100%;
   height: 5px;
@@ -254,7 +220,6 @@
   background: color-mix(in srgb, var(--accent) 15%, transparent);
   overflow: hidden;
 }
-
 .about-update-fill {
   height: 100%;
   width: 0%;
@@ -263,7 +228,6 @@
   box-shadow: 0 0 8px var(--accent-glow);
   transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 .about-update-progress.done .about-update-fill {
   background: linear-gradient(90deg, #34d399, #10b981);
   box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);

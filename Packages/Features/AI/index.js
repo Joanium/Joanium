@@ -1,7 +1,6 @@
 function extractBase64(dataUrl) {
   return String(dataUrl ?? '').split(',', 2)[1] ?? '';
 }
-
 function normalizeMessage(msg) {
   return {
     role: msg?.role ?? 'user',
@@ -9,151 +8,119 @@ function normalizeMessage(msg) {
     attachments: Array.isArray(msg?.attachments)
       ? msg.attachments.filter(
           (a) =>
-            (a?.type === 'image' || a?.type === 'file') &&
-            (typeof a.dataUrl === 'string' || typeof a.textContent === 'string'),
+            !(
+              ('image' !== a?.type && 'file' !== a?.type) ||
+              ('string' != typeof a.dataUrl && 'string' != typeof a.textContent)
+            ),
         )
       : [],
   };
 }
-
-const MAX_HISTORY_MESSAGES = 14;
-const MIN_HISTORY_MESSAGES = 8;
-const MAX_HISTORY_CHARS = 24_000;
-const MAX_FILE_ATTACHMENT_CHARS = 4_000;
-const MAX_TOTAL_FILE_ATTACHMENT_CHARS = 12_000;
-const RECENT_FILE_ATTACHMENT_WINDOW = 3;
-
 function estimateMessageSize(message) {
-  const contentSize = String(message?.content ?? '').length;
-  const attachmentSize = Array.isArray(message?.attachments)
-    ? message.attachments.reduce((total, attachment) => {
-        if (attachment?.type !== 'file') return total;
-        return (
-          total + Math.min(String(attachment?.textContent ?? '').length, MAX_FILE_ATTACHMENT_CHARS)
-        );
-      }, 0)
-    : 0;
-
-  return contentSize + attachmentSize;
+  return (
+    String(message?.content ?? '').length +
+    (Array.isArray(message?.attachments)
+      ? message.attachments.reduce(
+          (total, attachment) =>
+            'file' !== attachment?.type
+              ? total
+              : total + Math.min(String(attachment?.textContent ?? '').length, 4e3),
+          0,
+        )
+      : 0)
+  );
 }
-
 function buildHistoryWindow(messages = []) {
-  const normalized = messages.map(normalizeMessage);
-  const selected = [];
+  const normalized = messages.map(normalizeMessage),
+    selected = [];
   let totalChars = 0;
-
   for (let index = normalized.length - 1; index >= 0; index -= 1) {
-    const message = normalized[index];
-    const estimatedSize = estimateMessageSize(message);
-    const wouldExceedBudget = totalChars + estimatedSize > MAX_HISTORY_CHARS;
-    const wouldExceedCount = selected.length >= MAX_HISTORY_MESSAGES;
-    const mustKeep = selected.length < MIN_HISTORY_MESSAGES;
-
-    if (!mustKeep && (wouldExceedBudget || wouldExceedCount)) {
-      break;
-    }
-
-    selected.push(message);
-    totalChars += estimatedSize;
+    const message = normalized[index],
+      estimatedSize = estimateMessageSize(message),
+      wouldExceedBudget = totalChars + estimatedSize > 24e3,
+      wouldExceedCount = selected.length >= 14;
+    if (!(selected.length < 8) && (wouldExceedBudget || wouldExceedCount)) break;
+    (selected.push(message), (totalChars += estimatedSize));
   }
-
   return selected.reverse();
 }
-
 function buildEmbeddedFileBlock(fileAttachment, maxChars, isRecentMessage) {
-  const filename = fileAttachment?.name || 'attachment';
-  const rawText = String(fileAttachment?.textContent ?? '');
-  if (!rawText.trim()) {
-    return `\n\nFile: ${filename}\n[file attached]`;
-  }
-
-  if (maxChars <= 0) {
+  const filename = fileAttachment?.name || 'attachment',
+    rawText = String(fileAttachment?.textContent ?? '');
+  if (!rawText.trim()) return `\n\nFile: ${filename}\n[file attached]`;
+  if (maxChars <= 0)
     return `\n\nFile: ${filename}\n[file attached: content omitted to keep the request fast]`;
-  }
-
   const cappedLength = isRecentMessage ? maxChars : Math.min(maxChars, 1200);
-  const trimmed = rawText.length > cappedLength;
-  const body = trimmed ? `${rawText.slice(0, cappedLength)}\n...(truncated for speed)` : rawText;
-  return `\n\nFile: ${filename}\n\`\`\`\n${body}\n\`\`\``;
+  return `\n\nFile: ${filename}\n\`\`\`\n${rawText.length > cappedLength ? `${rawText.slice(0, cappedLength)}\n...(truncated for speed)` : rawText}\n\`\`\``;
 }
-
 function embedFileAttachments(messages) {
-  let remainingAttachmentChars = MAX_TOTAL_FILE_ATTACHMENT_CHARS;
-
+  let remainingAttachmentChars = 12e3;
   return messages.map((m, index) => {
-    const fileAttachments = m.attachments ? m.attachments.filter((a) => a.type === 'file') : [];
-    const imageAttachments = m.attachments ? m.attachments.filter((a) => a.type === 'image') : [];
-
+    const fileAttachments = m.attachments ? m.attachments.filter((a) => 'file' === a.type) : [],
+      imageAttachments = m.attachments ? m.attachments.filter((a) => 'image' === a.type) : [];
     let newContent = String(m.content || '');
-    const isRecentMessage = index >= messages.length - RECENT_FILE_ATTACHMENT_WINDOW;
+    const isRecentMessage = index >= messages.length - 3;
     for (const f of fileAttachments) {
-      const rawText = String(f?.textContent ?? '');
-      const allowedChars = Math.min(remainingAttachmentChars, MAX_FILE_ATTACHMENT_CHARS);
-      newContent += buildEmbeddedFileBlock(f, allowedChars, isRecentMessage);
-      remainingAttachmentChars = Math.max(
-        0,
-        remainingAttachmentChars - Math.min(rawText.length, allowedChars),
-      );
+      const rawText = String(f?.textContent ?? ''),
+        allowedChars = Math.min(remainingAttachmentChars, 4e3);
+      ((newContent += buildEmbeddedFileBlock(f, allowedChars, isRecentMessage)),
+        (remainingAttachmentChars = Math.max(
+          0,
+          remainingAttachmentChars - Math.min(rawText.length, allowedChars),
+        )));
     }
-
-    return {
-      ...m,
-      content: newContent,
-      attachments: imageAttachments,
-    };
+    return { ...m, content: newContent, attachments: imageAttachments };
   });
 }
-
 function buildAnthropicContent(msg) {
   const blocks = [];
-  if (msg.content) blocks.push({ type: 'text', text: msg.content });
-  msg.attachments.forEach((a) =>
-    blocks.push({
-      type: 'image',
-      source: {
-        type: 'base64',
-        media_type: a.mimeType || 'image/png',
-        data: extractBase64(a.dataUrl),
-      },
-    }),
+  return (
+    msg.content && blocks.push({ type: 'text', text: msg.content }),
+    msg.attachments.forEach((a) =>
+      blocks.push({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: a.mimeType || 'image/png',
+          data: extractBase64(a.dataUrl),
+        },
+      }),
+    ),
+    1 === blocks.length && 'text' === blocks[0].type ? msg.content : blocks
   );
-  if (blocks.length === 1 && blocks[0].type === 'text') return msg.content;
-  return blocks;
 }
-
 function buildGoogleParts(msg) {
   const parts = [];
-  if (msg.content) parts.push({ text: msg.content });
-  msg.attachments.forEach((a) =>
-    parts.push({
-      inlineData: { mimeType: a.mimeType || 'image/png', data: extractBase64(a.dataUrl) },
-    }),
+  return (
+    msg.content && parts.push({ text: msg.content }),
+    msg.attachments.forEach((a) =>
+      parts.push({
+        inlineData: { mimeType: a.mimeType || 'image/png', data: extractBase64(a.dataUrl) },
+      }),
+    ),
+    parts
   );
-  return parts;
 }
-
 function buildOpenAIContent(msg) {
   if (!msg.attachments.length) return msg.content;
   const parts = [];
-  if (msg.content) parts.push({ type: 'text', text: msg.content });
-  msg.attachments.forEach((a) => parts.push({ type: 'image_url', image_url: { url: a.dataUrl } }));
-  return parts;
+  return (
+    msg.content && parts.push({ type: 'text', text: msg.content }),
+    msg.attachments.forEach((a) =>
+      parts.push({ type: 'image_url', image_url: { url: a.dataUrl } }),
+    ),
+    parts
+  );
 }
-
 function buildOpenAIStyleHeaders(providerId, authHeader, authPrefix, apiKey) {
   return {
     'content-type': 'application/json',
     ...(authHeader && apiKey ? { [authHeader]: `${authPrefix}${apiKey}` } : {}),
-    ...(providerId === 'openrouter'
+    ...('openrouter' === providerId
       ? { 'HTTP-Referer': 'https://www.joanium.com', 'X-Title': 'Joanium' }
       : {}),
   };
 }
-
-/* ══════════════════════════════════════════
-   TOOL FORMAT CONVERTERS
-══════════════════════════════════════════ */
-
 function toAnthropicTools(tools) {
   return tools.map((t) => ({
     name: t.name,
@@ -172,7 +139,6 @@ function toAnthropicTools(tools) {
     },
   }));
 }
-
 function toOpenAITools(tools) {
   return tools.map((t) => ({
     type: 'function',
@@ -194,7 +160,6 @@ function toOpenAITools(tools) {
     },
   }));
 }
-
 function toGoogleTools(tools) {
   return [
     {
@@ -217,11 +182,6 @@ function toGoogleTools(tools) {
     },
   ];
 }
-
-/* ══════════════════════════════════════════
-   RETRY HELPERS
-══════════════════════════════════════════ */
-
 function isTransientError(err) {
   const msg = String(err?.message ?? '').toLowerCase();
   return (
@@ -237,145 +197,123 @@ function isTransientError(err) {
     msg.includes('network')
   );
 }
-
 export async function withRetry(fn, maxAttempts = 3, baseDelayMs = 600) {
   let lastErr;
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++)
     try {
       return await fn();
     } catch (err) {
-      lastErr = err;
-      if (err.noRetry) throw err;
-      // Don't retry AbortErrors
-      if (err.name === 'AbortError') throw err;
+      if (((lastErr = err), err.noRetry)) throw err;
+      if ('AbortError' === err.name) throw err;
       if (!isTransientError(err) || attempt >= maxAttempts - 1) throw err;
-      const delay = baseDelayMs * Math.pow(2, attempt) + Math.random() * 300;
-      console.warn(
+      const delay = baseDelayMs * Math.pow(2, attempt) + 300 * Math.random();
+      (console.warn(
         `[AIProvider] Retry ${attempt + 1}/${maxAttempts - 1} in ${Math.round(delay)}ms — ${err.message}`,
-      );
-      await new Promise((r) => setTimeout(r, delay));
+      ),
+        await new Promise((r) => setTimeout(r, delay)));
     }
-  }
   throw lastErr;
 }
-
-/* ══════════════════════════════════════════
-   SSE PARSER
-══════════════════════════════════════════ */
-
 async function* parseSSE(response) {
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
+  const reader = response.body.getReader(),
+    decoder = new TextDecoder();
   let buffer = '';
   try {
-    while (true) {
-      const { done, value } = await reader.read();
+    for (;;) {
+      const { done: done, value: value } = await reader.read();
       if (done) break;
-      buffer += decoder.decode(value, { stream: true });
+      buffer += decoder.decode(value, { stream: !0 });
       const lines = buffer.split('\n');
       buffer = lines.pop() ?? '';
       for (const line of lines) {
         const trimmed = line.trim();
         if (!trimmed.startsWith('data: ')) continue;
         const payload = trimmed.slice(6);
-        if (payload === '[DONE]') return;
-        if (payload) yield payload;
+        if ('[DONE]' === payload) return;
+        payload && (yield payload);
       }
     }
     if (buffer.startsWith('data: ')) {
       const payload = buffer.slice(6).trim();
-      if (payload && payload !== '[DONE]') yield payload;
+      payload && '[DONE]' !== payload && (yield payload);
     }
   } finally {
     try {
       reader.releaseLock();
-    } catch {
-      /* already released */
-    }
+    } catch {}
   }
 }
-
 function flattenChunkText(value) {
-  if (!value) return '';
-  if (typeof value === 'string') return value;
-  if (Array.isArray(value)) return value.map(flattenChunkText).filter(Boolean).join('');
-  if (typeof value !== 'object') return '';
-
-  if (typeof value.text === 'string') return value.text;
-  if (typeof value.content === 'string') return value.content;
-  if (Array.isArray(value.content)) return flattenChunkText(value.content);
-  if (Array.isArray(value.parts)) return flattenChunkText(value.parts);
-  if (Array.isArray(value.details)) return flattenChunkText(value.details);
-  if (Array.isArray(value.summary)) return flattenChunkText(value.summary);
-
-  return '';
+  return value
+    ? 'string' == typeof value
+      ? value
+      : Array.isArray(value)
+        ? value.map(flattenChunkText).filter(Boolean).join('')
+        : 'object' != typeof value
+          ? ''
+          : 'string' == typeof value.text
+            ? value.text
+            : 'string' == typeof value.content
+              ? value.content
+              : Array.isArray(value.content)
+                ? flattenChunkText(value.content)
+                : Array.isArray(value.parts)
+                  ? flattenChunkText(value.parts)
+                  : Array.isArray(value.details)
+                    ? flattenChunkText(value.details)
+                    : Array.isArray(value.summary)
+                      ? flattenChunkText(value.summary)
+                      : ''
+    : '';
 }
-
 function extractOpenAITextChunk(delta) {
-  if (!delta) return '';
-  if (typeof delta.content === 'string') return delta.content;
-
-  if (Array.isArray(delta.content)) {
-    return delta.content
-      .map((part) => {
-        if (part?.type === 'text') return flattenChunkText(part);
-        return '';
-      })
-      .filter(Boolean)
-      .join('');
-  }
-
-  return '';
+  return delta
+    ? 'string' == typeof delta.content
+      ? delta.content
+      : Array.isArray(delta.content)
+        ? delta.content
+            .map((part) => ('text' === part?.type ? flattenChunkText(part) : ''))
+            .filter(Boolean)
+            .join('')
+        : ''
+    : '';
 }
-
 function extractOpenAIReasoningChunk(delta) {
-  if (!delta) return '';
-
-  const directReasoning = [
-    delta.reasoning,
-    delta.reasoning_content,
-    delta.reasoning_details,
-    delta.reasoning_summary,
-    delta.thinking,
-    delta.thinking_content,
-    delta.summary,
-  ]
-    .map(flattenChunkText)
-    .find(Boolean);
-
-  if (directReasoning) return directReasoning;
-
-  if (Array.isArray(delta.content)) {
-    return delta.content
-      .map((part) =>
-        /reasoning|thinking|summary/.test(String(part?.type ?? '')) ? flattenChunkText(part) : '',
-      )
-      .filter(Boolean)
-      .join('');
-  }
-
-  return '';
+  return delta
+    ? [
+        delta.reasoning,
+        delta.reasoning_content,
+        delta.reasoning_details,
+        delta.reasoning_summary,
+        delta.thinking,
+        delta.thinking_content,
+        delta.summary,
+      ]
+        .map(flattenChunkText)
+        .find(Boolean) ||
+        (Array.isArray(delta.content)
+          ? delta.content
+              .map((part) =>
+                /reasoning|thinking|summary/.test(String(part?.type ?? ''))
+                  ? flattenChunkText(part)
+                  : '',
+              )
+              .filter(Boolean)
+              .join('')
+          : '')
+    : '';
 }
-
 function shouldRequestReasoning(provider, modelId) {
   const providerId = provider?.provider;
-  if (providerId !== 'openrouter' && providerId !== 'minimax') return false;
-  if (providerId === 'minimax') return true;
-
-  const modelInfo = provider.models?.[modelId] ?? {};
-  const haystack = [modelId, modelInfo.name, modelInfo.description]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-
+  if ('openrouter' !== providerId && 'minimax' !== providerId) return !1;
+  if ('minimax' === providerId) return !0;
+  const modelInfo = provider.models?.[modelId] ?? {},
+    haystack = [modelId, modelInfo.name, modelInfo.description]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
   return /thinking|reasoning|reasoner|o1|o3|o4|r1|k2|deepseek/.test(haystack);
 }
-
-/* ══════════════════════════════════════════
-   STREAMING FETCH — WITH NATIVE TOOL CALLING
-   signal param allows external AbortController
-   to cancel the fetch mid-stream.
-══════════════════════════════════════════ */
 export async function fetchStreamingWithTools(
   provider,
   modelId,
@@ -387,26 +325,24 @@ export async function fetchStreamingWithTools(
   signal = null,
 ) {
   if (!provider?.configured) throw new Error('Provider is not configured.');
-  const { provider: providerId, endpoint, auth_header, auth_prefix = '' } = provider;
-  const api = String(provider.api ?? '').trim();
-  if (provider.requires_api_key !== false && !api) {
-    throw new Error(`No API key for "${providerId}"`);
-  }
-  const _history = buildHistoryWindow(messages);
-  const history = embedFileAttachments(_history);
-
-  /* ── Anthropic ── */
-  if (providerId === 'anthropic') {
-    const maxTokens = provider.models?.[modelId]?.max_output ?? 4096;
+  const {
+      provider: providerId,
+      endpoint: endpoint,
+      auth_header: auth_header,
+      auth_prefix: auth_prefix = '',
+    } = provider,
+    api = String(provider.api ?? '').trim();
+  if (!1 !== provider.requires_api_key && !api) throw new Error(`No API key for "${providerId}"`);
+  const history = embedFileAttachments(buildHistoryWindow(messages));
+  if ('anthropic' === providerId) {
     const body = {
       model: modelId,
-      max_tokens: maxTokens,
-      stream: true,
+      max_tokens: provider.models?.[modelId]?.max_output ?? 4096,
+      stream: !0,
       messages: history.map((m) => ({ role: m.role, content: buildAnthropicContent(m) })),
     };
-    if (sysPrompt) body.system = sysPrompt;
-    if (tools.length) body.tools = toAnthropicTools(tools);
-
+    (sysPrompt && (body.system = sysPrompt),
+      tools.length && (body.tools = toAnthropicTools(tools)));
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -415,20 +351,17 @@ export async function fetchStreamingWithTools(
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(body),
-      signal,
+      signal: signal,
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
     }
-
     let fullText = '';
-    let toolName = null;
-    let toolId = null;
-    let toolInputJson = '';
-    let inputTokens = 0;
-    let outputTokens = 0;
-
+    const toolBlocks = new Map();
+    let currentToolBlockIndex = -1,
+      inputTokens = 0,
+      outputTokens = 0;
     for await (const raw of parseSSE(res)) {
       let ev;
       try {
@@ -436,83 +369,90 @@ export async function fetchStreamingWithTools(
       } catch {
         continue;
       }
-
       switch (ev.type) {
         case 'message_start':
           inputTokens = ev.message?.usage?.input_tokens ?? 0;
           break;
-
         case 'content_block_start':
-          if (ev.content_block?.type === 'tool_use') {
-            toolName = ev.content_block.name;
-            toolId = ev.content_block.id;
-            toolInputJson = '';
-          }
+          'tool_use' === ev.content_block?.type &&
+            ((currentToolBlockIndex = ev.index ?? toolBlocks.size),
+            toolBlocks.set(currentToolBlockIndex, {
+              name: ev.content_block.name,
+              id: ev.content_block.id,
+              inputJson: '',
+            }));
           break;
-
         case 'content_block_delta': {
           const d = ev.delta;
-          if (d?.type === 'text_delta' && d.text) {
-            fullText += d.text;
-            onToken?.(d.text);
-          } else if (d?.type === 'thinking_delta' && d.thinking) {
-            onReasoning?.(d.thinking);
-          } else if (d?.type === 'input_json_delta') {
-            toolInputJson += d.partial_json ?? '';
+          if ('text_delta' === d?.type && d.text) ((fullText += d.text), onToken?.(d.text));
+          else if ('thinking_delta' === d?.type && d.thinking) onReasoning?.(d.thinking);
+          else if ('input_json_delta' === d?.type) {
+            const blockIdx = ev.index ?? currentToolBlockIndex,
+              block = toolBlocks.get(blockIdx);
+            block && (block.inputJson += d.partial_json ?? '');
           }
           break;
         }
-
         case 'message_delta':
           outputTokens = ev.usage?.output_tokens ?? 0;
-          break;
       }
     }
-
-    const usage = { inputTokens, outputTokens };
-    if (toolName) {
+    const usage = { inputTokens: inputTokens, outputTokens: outputTokens },
+      toolBlockList = [...toolBlocks.values()];
+    if (1 === toolBlockList.length) {
+      const block = toolBlockList[0];
       let params = {};
       try {
-        params = JSON.parse(toolInputJson);
-      } catch {
-        /* malformed JSON */
-      }
-      return { type: 'tool_call', name: toolName, params, callId: toolId, usage };
+        params = JSON.parse(block.inputJson);
+      } catch {}
+      return {
+        type: 'tool_call',
+        name: block.name,
+        params: params,
+        callId: block.id,
+        usage: usage,
+      };
     }
-    return { type: 'text', text: fullText || '(empty response)', usage };
+    return toolBlockList.length > 1
+      ? {
+          type: 'tool_calls',
+          calls: toolBlockList.map((block) => {
+            let params = {};
+            try {
+              params = JSON.parse(block.inputJson);
+            } catch {}
+            return { name: block.name, params: params, callId: block.id };
+          }),
+          usage: usage,
+        }
+      : { type: 'text', text: fullText || '(empty response)', usage: usage };
   }
-
-  /* ── Google Gemini ── */
-  if (providerId === 'google') {
+  if ('google' === providerId) {
     const streamUrl =
-      endpoint.replace('{model}', modelId).replace(':generateContent', ':streamGenerateContent') +
-      `?key=${api}&alt=sse`;
-
-    const body = {
-      contents: history.map((m) => ({
-        role: m.role === 'assistant' ? 'model' : 'user',
-        parts: buildGoogleParts(m),
-      })),
-    };
-    if (sysPrompt) body.systemInstruction = { parts: [{ text: sysPrompt }] };
-    if (tools.length) body.tools = toGoogleTools(tools);
-
+        endpoint.replace('{model}', modelId).replace(':generateContent', ':streamGenerateContent') +
+        `?key=${api}&alt=sse`,
+      body = {
+        contents: history.map((m) => ({
+          role: 'assistant' === m.role ? 'model' : 'user',
+          parts: buildGoogleParts(m),
+        })),
+      };
+    (sysPrompt && (body.systemInstruction = { parts: [{ text: sysPrompt }] }),
+      tools.length && (body.tools = toGoogleTools(tools)));
     const res = await fetch(streamUrl, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body),
-      signal,
+      signal: signal,
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
     }
-
     let fullText = '';
-    let fnCall = null;
-    let inputTokens = 0;
-    let outputTokens = 0;
-
+    const fnCalls = [];
+    let inputTokens = 0,
+      outputTokens = 0;
     for await (const raw of parseSSE(res)) {
       let ev;
       try {
@@ -520,82 +460,63 @@ export async function fetchStreamingWithTools(
       } catch {
         continue;
       }
-
       const parts = ev.candidates?.[0]?.content?.parts ?? [];
-      for (const part of parts) {
-        if (part.text) {
-          if (part.thought) {
-            onReasoning?.(part.text);
-          } else {
-            fullText += part.text;
-            onToken?.(part.text);
-          }
-        } else if (part.functionCall && !fnCall) {
-          fnCall = part.functionCall;
+      for (const part of parts)
+        part.text
+          ? part.thought
+            ? onReasoning?.(part.text)
+            : ((fullText += part.text), onToken?.(part.text))
+          : part.functionCall && fnCalls.push(part.functionCall);
+      ev.usageMetadata &&
+        ((inputTokens = ev.usageMetadata.promptTokenCount ?? inputTokens),
+        (outputTokens = ev.usageMetadata.candidatesTokenCount ?? outputTokens));
+    }
+    const usage = { inputTokens: inputTokens, outputTokens: outputTokens };
+    return 1 === fnCalls.length
+      ? {
+          type: 'tool_call',
+          name: fnCalls[0].name,
+          params: fnCalls[0].args ?? {},
+          callId: null,
+          usage: usage,
         }
-      }
-      if (ev.usageMetadata) {
-        inputTokens = ev.usageMetadata.promptTokenCount ?? inputTokens;
-        outputTokens = ev.usageMetadata.candidatesTokenCount ?? outputTokens;
-      }
-    }
-
-    const usage = { inputTokens, outputTokens };
-    if (fnCall) {
-      return {
-        type: 'tool_call',
-        name: fnCall.name,
-        params: fnCall.args ?? {},
-        callId: null,
-        usage,
-      };
-    }
-    return { type: 'text', text: fullText || '(empty response)', usage };
+      : fnCalls.length > 1
+        ? {
+            type: 'tool_calls',
+            calls: fnCalls.map((fc) => ({ name: fc.name, params: fc.args ?? {}, callId: null })),
+            usage: usage,
+          }
+        : { type: 'text', text: fullText || '(empty response)', usage: usage };
   }
-
-  /* ── OpenAI / OpenRouter / Mistral ── */
   const openAIMessages = [
-    ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
-    ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
-  ];
-
-  const maxTokens = provider.models?.[modelId]?.max_output ?? 4096;
-  const body = {
-    model: modelId,
-    max_tokens: maxTokens,
-    messages: openAIMessages,
-    stream: true,
-  };
-  if (providerId === 'openai' || providerId === 'ollama') {
-    body.stream_options = { include_usage: true };
-  }
-  if (shouldRequestReasoning(provider, modelId)) {
-    if (providerId === 'minimax') body.reasoning_split = true;
-    else body.include_reasoning = true;
-  }
-  if (tools.length) {
-    body.tools = toOpenAITools(tools);
-    body.tool_choice = 'auto';
-  }
-
+      ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
+      ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
+    ],
+    body = {
+      model: modelId,
+      max_tokens: provider.models?.[modelId]?.max_output ?? 4096,
+      messages: openAIMessages,
+      stream: !0,
+    };
+  (('openai' !== providerId && 'ollama' !== providerId) ||
+    (body.stream_options = { include_usage: !0 }),
+    shouldRequestReasoning(provider, modelId) &&
+      ('minimax' === providerId ? (body.reasoning_split = !0) : (body.include_reasoning = !0)),
+    tools.length && ((body.tools = toOpenAITools(tools)), (body.tool_choice = 'auto')));
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: buildOpenAIStyleHeaders(providerId, auth_header, auth_prefix, api),
     body: JSON.stringify(body),
-    signal,
+    signal: signal,
   });
   if (!res.ok) {
     const e = await res.json().catch(() => ({}));
     throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
   }
-
   let fullText = '';
-  let toolName = null;
-  let toolId = null;
-  let toolArgsJson = '';
-  let inputTokens = 0;
-  let outputTokens = 0;
-
+  const toolCallsMap = new Map();
+  let inputTokens = 0,
+    outputTokens = 0;
   for await (const raw of parseSSE(res)) {
     let ev;
     try {
@@ -603,50 +524,49 @@ export async function fetchStreamingWithTools(
     } catch {
       continue;
     }
-
-    if (ev.usage) {
-      inputTokens = ev.usage.prompt_tokens ?? inputTokens;
-      outputTokens = ev.usage.completion_tokens ?? outputTokens;
-    }
-
+    ev.usage &&
+      ((inputTokens = ev.usage.prompt_tokens ?? inputTokens),
+      (outputTokens = ev.usage.completion_tokens ?? outputTokens));
     const delta = ev.choices?.[0]?.delta;
     if (!delta) continue;
-
     const reasoningChunk = extractOpenAIReasoningChunk(delta);
-    if (reasoningChunk) {
-      onReasoning?.(reasoningChunk);
-    }
-
+    reasoningChunk && onReasoning?.(reasoningChunk);
     const textChunk = extractOpenAITextChunk(delta);
-    if (textChunk) {
-      fullText += textChunk;
-      onToken?.(textChunk);
-    }
-
-    const tc = delta.tool_calls?.[0];
-    if (tc) {
-      if (tc.id) toolId = tc.id;
-      if (tc.function?.name) toolName = tc.function.name;
-      if (tc.function?.arguments) toolArgsJson += tc.function.arguments;
+    textChunk && ((fullText += textChunk), onToken?.(textChunk));
+    const tcs = delta.tool_calls ?? [];
+    for (const tc of tcs) {
+      const idx = tc.index ?? 0;
+      toolCallsMap.has(idx) || toolCallsMap.set(idx, { name: '', id: null, argsJson: '' });
+      const entry = toolCallsMap.get(idx);
+      (tc.id && (entry.id = tc.id),
+        tc.function?.name && (entry.name = tc.function.name),
+        tc.function?.arguments && (entry.argsJson += tc.function.arguments));
     }
   }
-
-  const usage = { inputTokens, outputTokens };
-  if (toolName) {
+  const usage = { inputTokens: inputTokens, outputTokens: outputTokens },
+    toolCallEntries = [...toolCallsMap.values()].filter((e) => e.name);
+  if (1 === toolCallEntries.length) {
+    const entry = toolCallEntries[0];
     let params = {};
     try {
-      params = JSON.parse(toolArgsJson);
-    } catch {
-      /* malformed */
-    }
-    return { type: 'tool_call', name: toolName, params, callId: toolId, usage };
+      params = JSON.parse(entry.argsJson);
+    } catch {}
+    return { type: 'tool_call', name: entry.name, params: params, callId: entry.id, usage: usage };
   }
-  return { type: 'text', text: fullText || '(empty response)', usage };
+  return toolCallEntries.length > 1
+    ? {
+        type: 'tool_calls',
+        calls: toolCallEntries.map((entry) => {
+          let params = {};
+          try {
+            params = JSON.parse(entry.argsJson);
+          } catch {}
+          return { name: entry.name, params: params, callId: entry.id };
+        }),
+        usage: usage,
+      }
+    : { type: 'text', text: fullText || '(empty response)', usage: usage };
 }
-
-/* ══════════════════════════════════════════
-   NON-STREAMING FETCH
-══════════════════════════════════════════ */
 export async function fetchWithTools(
   provider,
   modelId,
@@ -656,25 +576,23 @@ export async function fetchWithTools(
   signal = null,
 ) {
   if (!provider?.configured) throw new Error('Provider is not configured.');
-  const { provider: providerId, endpoint, auth_header, auth_prefix = '' } = provider;
-  const api = String(provider.api ?? '').trim();
-  if (provider.requires_api_key !== false && !api) {
-    throw new Error(`No API key for "${providerId}"`);
-  }
-  const _history = buildHistoryWindow(messages);
-  const history = embedFileAttachments(_history);
-
-  /* ── Anthropic ── */
-  if (providerId === 'anthropic') {
-    const maxTokens = provider.models?.[modelId]?.max_output ?? 4096;
+  const {
+      provider: providerId,
+      endpoint: endpoint,
+      auth_header: auth_header,
+      auth_prefix: auth_prefix = '',
+    } = provider,
+    api = String(provider.api ?? '').trim();
+  if (!1 !== provider.requires_api_key && !api) throw new Error(`No API key for "${providerId}"`);
+  const history = embedFileAttachments(buildHistoryWindow(messages));
+  if ('anthropic' === providerId) {
     const body = {
       model: modelId,
-      max_tokens: maxTokens,
+      max_tokens: provider.models?.[modelId]?.max_output ?? 4096,
       messages: history.map((m) => ({ role: m.role, content: buildAnthropicContent(m) })),
     };
-    if (sysPrompt) body.system = sysPrompt;
-    if (tools.length) body.tools = toAnthropicTools(tools);
-
+    (sysPrompt && (body.system = sysPrompt),
+      tools.length && (body.tools = toAnthropicTools(tools)));
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -683,121 +601,138 @@ export async function fetchWithTools(
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(body),
-      signal,
+      signal: signal,
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
     }
-
-    const data = await res.json();
-    const usage = {
-      inputTokens: data.usage?.input_tokens ?? 0,
-      outputTokens: data.usage?.output_tokens ?? 0,
-    };
-
-    const toolUseBlock = data.content?.find((b) => b.type === 'tool_use');
-    if (toolUseBlock) {
-      return {
-        type: 'tool_call',
-        name: toolUseBlock.name,
-        params: toolUseBlock.input ?? {},
-        callId: toolUseBlock.id,
-        usage,
-      };
-    }
-    return {
-      type: 'text',
-      text: data.content?.find((b) => b.type === 'text')?.text ?? '(empty response)',
-      usage,
-    };
+    const data = await res.json(),
+      usage = {
+        inputTokens: data.usage?.input_tokens ?? 0,
+        outputTokens: data.usage?.output_tokens ?? 0,
+      },
+      toolUseBlocks = (data.content ?? []).filter((b) => 'tool_use' === b.type);
+    return 1 === toolUseBlocks.length
+      ? {
+          type: 'tool_call',
+          name: toolUseBlocks[0].name,
+          params: toolUseBlocks[0].input ?? {},
+          callId: toolUseBlocks[0].id,
+          usage: usage,
+        }
+      : toolUseBlocks.length > 1
+        ? {
+            type: 'tool_calls',
+            calls: toolUseBlocks.map((b) => ({
+              name: b.name,
+              params: b.input ?? {},
+              callId: b.id,
+            })),
+            usage: usage,
+          }
+        : {
+            type: 'text',
+            text: data.content?.find((b) => 'text' === b.type)?.text ?? '(empty response)',
+            usage: usage,
+          };
   }
-
-  /* ── Google Gemini ── */
-  if (providerId === 'google') {
-    const url = endpoint.replace('{model}', modelId) + `?key=${api}`;
-    const body = {
-      contents: history.map((m) => ({
-        role: m.role === 'assistant' ? 'model' : 'user',
-        parts: buildGoogleParts(m),
-      })),
-    };
-    if (sysPrompt) body.systemInstruction = { parts: [{ text: sysPrompt }] };
-    if (tools.length) body.tools = toGoogleTools(tools);
-
+  if ('google' === providerId) {
+    const url = endpoint.replace('{model}', modelId) + `?key=${api}`,
+      body = {
+        contents: history.map((m) => ({
+          role: 'assistant' === m.role ? 'model' : 'user',
+          parts: buildGoogleParts(m),
+        })),
+      };
+    (sysPrompt && (body.systemInstruction = { parts: [{ text: sysPrompt }] }),
+      tools.length && (body.tools = toGoogleTools(tools)));
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body),
-      signal,
+      signal: signal,
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
     }
-
-    const data = await res.json();
-    const usage = {
-      inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
-      outputTokens: data.usageMetadata?.candidatesTokenCount ?? 0,
-    };
-    const part = data.candidates?.[0]?.content?.parts?.[0];
-
-    if (part?.functionCall) {
+    const data = await res.json(),
+      usage = {
+        inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
+        outputTokens: data.usageMetadata?.candidatesTokenCount ?? 0,
+      },
+      allParts = data.candidates?.[0]?.content?.parts ?? [],
+      fnParts = allParts.filter((p) => p?.functionCall);
+    if (1 === fnParts.length)
       return {
         type: 'tool_call',
-        name: part.functionCall.name,
-        params: part.functionCall.args ?? {},
+        name: fnParts[0].functionCall.name,
+        params: fnParts[0].functionCall.args ?? {},
         callId: null,
-        usage,
+        usage: usage,
       };
-    }
-    return { type: 'text', text: part?.text ?? '(empty response)', usage };
+    if (fnParts.length > 1)
+      return {
+        type: 'tool_calls',
+        calls: fnParts.map((p) => ({
+          name: p.functionCall.name,
+          params: p.functionCall.args ?? {},
+          callId: null,
+        })),
+        usage: usage,
+      };
+    const textPart = allParts.find((p) => p?.text);
+    return { type: 'text', text: textPart?.text ?? '(empty response)', usage: usage };
   }
-
-  /* ── OpenAI / OpenRouter / Mistral ── */
   const openAIMessages = [
-    ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
-    ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
-  ];
-
-  const maxTokensNS = provider.models?.[modelId]?.max_output ?? 4096;
-  const body = { model: modelId, max_tokens: maxTokensNS, messages: openAIMessages };
-  if (shouldRequestReasoning(provider, modelId) && providerId === 'minimax') {
-    body.reasoning_split = true;
-  }
-  if (tools.length) {
-    body.tools = toOpenAITools(tools);
-    body.tool_choice = 'auto';
-  }
-
+      ...(sysPrompt ? [{ role: 'system', content: sysPrompt }] : []),
+      ...history.map((m) => ({ role: m.role, content: buildOpenAIContent(m) })),
+    ],
+    body = {
+      model: modelId,
+      max_tokens: provider.models?.[modelId]?.max_output ?? 4096,
+      messages: openAIMessages,
+    };
+  (shouldRequestReasoning(provider, modelId) &&
+    'minimax' === providerId &&
+    (body.reasoning_split = !0),
+    tools.length && ((body.tools = toOpenAITools(tools)), (body.tool_choice = 'auto')));
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: buildOpenAIStyleHeaders(providerId, auth_header, auth_prefix, api),
     body: JSON.stringify(body),
-    signal,
+    signal: signal,
   });
   if (!res.ok) {
     const e = await res.json().catch(() => ({}));
     throw new Error(e?.error?.message ?? `HTTP ${res.status}`);
   }
-
-  const data = await res.json();
-  const usage = {
-    inputTokens: data.usage?.prompt_tokens ?? 0,
-    outputTokens: data.usage?.completion_tokens ?? 0,
-  };
-  const message = data.choices?.[0]?.message;
-
-  if (message?.tool_calls?.length) {
+  const data = await res.json(),
+    usage = {
+      inputTokens: data.usage?.prompt_tokens ?? 0,
+      outputTokens: data.usage?.completion_tokens ?? 0,
+    },
+    message = data.choices?.[0]?.message;
+  if (1 === message?.tool_calls?.length) {
     const tc = message.tool_calls[0];
     return {
       type: 'tool_call',
       name: tc.function.name,
       params: JSON.parse(tc.function.arguments ?? '{}'),
       callId: tc.id,
-      usage,
+      usage: usage,
     };
   }
-  return { type: 'text', text: message?.content ?? '(empty response)', usage };
+  return message?.tool_calls?.length > 1
+    ? {
+        type: 'tool_calls',
+        calls: message.tool_calls.map((tc) => ({
+          name: tc.function.name,
+          params: JSON.parse(tc.function.arguments ?? '{}'),
+          callId: tc.id,
+        })),
+        usage: usage,
+      }
+    : { type: 'text', text: message?.content ?? '(empty response)', usage: usage };
 }

@@ -3,7 +3,6 @@ import * as ContactsAPI from './API/ContactsAPI.js';
 import { CONTACTS_TOOLS } from './Chat/Tools.js';
 import { executeContactsChatTool } from './Chat/ChatExecutor.js';
 import { withGoogle } from '../../Common.js';
-
 export default defineFeature({
   id: 'contacts',
   name: 'Google Contacts',
@@ -26,73 +25,63 @@ export default defineFeature({
   },
   main: {
     methods: {
-      async getMyProfile(ctx) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+      getMyProfile: async (ctx) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           profile: await ContactsAPI.getMyProfile(credentials),
-        }));
-      },
-
-      async listContacts(ctx, { maxResults = 50 } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
-          ...(await ContactsAPI.listContacts(credentials, { maxResults })),
-        }));
-      },
-
-      async searchContacts(ctx, { query, maxResults = 10 }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!query?.trim()) return { ok: false, error: 'query is required' };
-          return {
-            ok: true,
-            contacts: await ContactsAPI.searchContacts(credentials, query, maxResults),
-          };
-        });
-      },
-
-      async getContact(ctx, { resourceName }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!resourceName) return { ok: false, error: 'resourceName is required' };
-          return { ok: true, contact: await ContactsAPI.getContact(credentials, resourceName) };
-        });
-      },
-
-      async createContact(ctx, { contactData = {} } = {}) {
-        return withGoogle(ctx, async (credentials) => ({
-          ok: true,
+        })),
+      listContacts: async (ctx, { maxResults: maxResults = 50 } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
+          ...(await ContactsAPI.listContacts(credentials, { maxResults: maxResults })),
+        })),
+      searchContacts: async (ctx, { query: query, maxResults: maxResults = 10 }) =>
+        withGoogle(ctx, async (credentials) =>
+          query?.trim()
+            ? { ok: !0, contacts: await ContactsAPI.searchContacts(credentials, query, maxResults) }
+            : { ok: !1, error: 'query is required' },
+        ),
+      getContact: async (ctx, { resourceName: resourceName }) =>
+        withGoogle(ctx, async (credentials) =>
+          resourceName
+            ? { ok: !0, contact: await ContactsAPI.getContact(credentials, resourceName) }
+            : { ok: !1, error: 'resourceName is required' },
+        ),
+      createContact: async (ctx, { contactData: contactData = {} } = {}) =>
+        withGoogle(ctx, async (credentials) => ({
+          ok: !0,
           contact: await ContactsAPI.createContact(credentials, contactData),
-        }));
-      },
-
-      async updateContact(ctx, { resourceName, updateData = {}, updatePersonFields }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!resourceName) return { ok: false, error: 'resourceName is required' };
-          return {
-            ok: true,
-            contact: await ContactsAPI.updateContact(
-              credentials,
-              resourceName,
-              updateData,
-              updatePersonFields,
-            ),
-          };
-        });
-      },
-
-      async deleteContact(ctx, { resourceName }) {
-        return withGoogle(ctx, async (credentials) => {
-          if (!resourceName) return { ok: false, error: 'resourceName is required' };
-          await ContactsAPI.deleteContact(credentials, resourceName);
-          return { ok: true };
-        });
-      },
-
-      async executeChatTool(ctx, { toolName, params }) {
-        return executeContactsChatTool(ctx, toolName, params);
-      },
+        })),
+      updateContact: async (
+        ctx,
+        {
+          resourceName: resourceName,
+          updateData: updateData = {},
+          updatePersonFields: updatePersonFields,
+        },
+      ) =>
+        withGoogle(ctx, async (credentials) =>
+          resourceName
+            ? {
+                ok: !0,
+                contact: await ContactsAPI.updateContact(
+                  credentials,
+                  resourceName,
+                  updateData,
+                  updatePersonFields,
+                ),
+              }
+            : { ok: !1, error: 'resourceName is required' },
+        ),
+      deleteContact: async (ctx, { resourceName: resourceName }) =>
+        withGoogle(ctx, async (credentials) =>
+          resourceName
+            ? (await ContactsAPI.deleteContact(credentials, resourceName), { ok: !0 })
+            : { ok: !1, error: 'resourceName is required' },
+        ),
+      executeChatTool: async (ctx, { toolName: toolName, params: params }) =>
+        executeContactsChatTool(ctx, toolName, params),
     },
   },
-  renderer: {
-    chatTools: CONTACTS_TOOLS,
-  },
+  renderer: { chatTools: CONTACTS_TOOLS },
 });

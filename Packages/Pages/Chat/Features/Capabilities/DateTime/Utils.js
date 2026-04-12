@@ -1,5 +1,3 @@
-// ─── CONSTANTS ────────────────────────────────────────────────────────────────
-
 export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const MONTHS = [
   'January',
@@ -15,7 +13,6 @@ export const MONTHS = [
   'November',
   'December',
 ];
-
 const ZODIAC = [
   ['Capricorn', [12, 22], [1, 19]],
   ['Aquarius', [1, 20], [2, 18]],
@@ -30,15 +27,12 @@ const ZODIAC = [
   ['Scorpio', [10, 23], [11, 21]],
   ['Sagittarius', [11, 22], [12, 21]],
 ];
-
-// Astronomical season start months for Northern hemisphere (approx.)
 export const SEASONS_NORTH = [
   { name: 'Winter', emoji: '❄️', months: [12, 1, 2] },
   { name: 'Spring', emoji: '🌸', months: [3, 4, 5] },
   { name: 'Summer', emoji: '☀️', months: [6, 7, 8] },
   { name: 'Autumn', emoji: '🍂', months: [9, 10, 11] },
 ];
-
 export function parseDate(str) {
   if (!str) return new Date();
   const parts = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -47,74 +41,58 @@ export function parseDate(str) {
   if (isNaN(d.getTime())) throw new Error(`Invalid date: ${str}`);
   return d;
 }
-
 export function formatDate(d) {
   return `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
-
 export function toISO(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
-
 export function isLeapYear(year) {
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
-
 export function getZodiac(month, day) {
-  for (const [sign, [sm, sd], [em, ed]] of ZODIAC) {
+  for (const [sign, [sm, sd], [em, ed]] of ZODIAC)
     if ((month === sm && day >= sd) || (month === em && day <= ed)) return sign;
-  }
   return 'Capricorn';
 }
-
 export function getDayNumber(d) {
-  const start = new Date(d.getFullYear(), 0, 0);
-  const diff = d - start;
-  return Math.floor(diff / 86_400_000);
+  const start = new Date(d.getFullYear(), 0, 0),
+    diff = d - start;
+  return Math.floor(diff / 864e5);
 }
-
 export function getWeekNumber(d) {
   const jan1 = new Date(d.getFullYear(), 0, 1);
   return Math.ceil((getDayNumber(d) + jan1.getDay()) / 7);
 }
-
 export function daysInMonth(year, month) {
-  return new Date(year, month, 0).getDate(); // month is 1-based here
+  return new Date(year, month, 0).getDate();
 }
-
-/** Get the UTC equivalent of a local time expressed in a given IANA timezone. */
 export function localToUTC(dateStr, timeStr, timezone) {
-  const [y, mo, d] = dateStr.split('-').map(Number);
-  const [hh, mm] = (timeStr || '00:00').split(':').map(Number);
-  const approxUtc = new Date(Date.UTC(y, mo - 1, d, hh, mm, 0));
-  // Get what local time the timezone shows at this approximate UTC
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: timezone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }).formatToParts(approxUtc);
-  const get = (t) => parseInt(parts.find((p) => p.type === t)?.value ?? '0', 10);
-  const localMs = Date.UTC(
-    get('year'),
-    get('month') - 1,
-    get('day'),
-    get('hour'),
-    get('minute'),
-    get('second'),
-  );
-  const offset = localMs - approxUtc.getTime();
+  const [y, mo, d] = dateStr.split('-').map(Number),
+    [hh, mm] = (timeStr || '00:00').split(':').map(Number),
+    approxUtc = new Date(Date.UTC(y, mo - 1, d, hh, mm, 0)),
+    parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: !1,
+    }).formatToParts(approxUtc),
+    get = (t) => parseInt(parts.find((p) => p.type === t)?.value ?? '0', 10),
+    offset =
+      Date.UTC(
+        get('year'),
+        get('month') - 1,
+        get('day'),
+        get('hour'),
+        get('minute'),
+        get('second'),
+      ) - approxUtc.getTime();
   return new Date(approxUtc.getTime() - offset);
 }
-
-/** Format a UTC instant as local time in the given IANA timezone. */
 export function formatInTimezone(utcDate, timezone, opts = {}) {
   return new Intl.DateTimeFormat('en-US', {
     timeZone: timezone,
@@ -124,121 +102,93 @@ export function formatInTimezone(utcDate, timezone, opts = {}) {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true,
+    hour12: !0,
     ...opts,
   }).format(utcDate);
 }
-
-/** Count business days (Mon–Fri) between two Date objects, inclusive. */
 export function countBusinessDays(d1, d2) {
-  const start = new Date(Math.min(d1, d2));
-  const end = new Date(Math.max(d1, d2));
-  start.setHours(0, 0, 0, 0);
-  end.setHours(0, 0, 0, 0);
+  const start = new Date(Math.min(d1, d2)),
+    end = new Date(Math.max(d1, d2));
+  (start.setHours(0, 0, 0, 0), end.setHours(0, 0, 0, 0));
   let count = 0;
   const cur = new Date(start);
-  while (cur <= end) {
+  for (; cur <= end; ) {
     const dow = cur.getDay();
-    if (dow !== 0 && dow !== 6) count++;
-    cur.setDate(cur.getDate() + 1);
+    (0 !== dow && 6 !== dow && count++, cur.setDate(cur.getDate() + 1));
   }
   return count;
 }
-
-/** Add (or subtract) N business days to a Date. */
 export function addBusinessDaysToDate(d, amount) {
-  const result = new Date(d);
-  const sign = amount >= 0 ? 1 : -1;
+  const result = new Date(d),
+    sign = amount >= 0 ? 1 : -1;
   let remaining = Math.abs(Math.round(amount));
-  while (remaining > 0) {
-    result.setDate(result.getDate() + sign);
-    if (result.getDay() !== 0 && result.getDay() !== 6) remaining--;
-  }
+  for (; remaining > 0; )
+    (result.setDate(result.getDate() + sign),
+      0 !== result.getDay() && 6 !== result.getDay() && remaining--);
   return result;
 }
-
-/** Approximate lunar phase for a date. */
 export function getLunarPhase(date) {
-  const knownNewMoon = new Date('2000-01-06T18:14:00Z');
-  const synodicPeriod = 29.53059;
-  const elapsed = (date.getTime() - knownNewMoon.getTime()) / 86_400_000;
-  const phase = ((elapsed % synodicPeriod) + synodicPeriod) % synodicPeriod;
-
+  const knownNewMoon = new Date('2000-01-06T18:14:00Z'),
+    phase =
+      ((((date.getTime() - knownNewMoon.getTime()) / 864e5) % 29.53059) + 29.53059) % 29.53059;
   let phaseName, emoji;
-  if (phase < 1.85) {
-    phaseName = 'New Moon';
-    emoji = '🌑';
-  } else if (phase < 7.38) {
-    phaseName = 'Waxing Crescent';
-    emoji = '🌒';
-  } else if (phase < 9.22) {
-    phaseName = 'First Quarter';
-    emoji = '🌓';
-  } else if (phase < 14.77) {
-    phaseName = 'Waxing Gibbous';
-    emoji = '🌔';
-  } else if (phase < 16.61) {
-    phaseName = 'Full Moon';
-    emoji = '🌕';
-  } else if (phase < 22.15) {
-    phaseName = 'Waning Gibbous';
-    emoji = '🌖';
-  } else if (phase < 23.99) {
-    phaseName = 'Last Quarter';
-    emoji = '🌗';
-  } else {
-    phaseName = 'Waning Crescent';
-    emoji = '🌘';
-  }
-
-  const illumination = Math.round(50 * (1 - Math.cos((phase / synodicPeriod) * 2 * Math.PI)));
-  const daysUntilFull =
-    phase < 14.77 ? (14.77 - phase).toFixed(1) : (synodicPeriod - phase + 14.77).toFixed(1);
-
-  return { phaseName, emoji, phase: phase.toFixed(2), illumination, daysUntilFull };
+  phase < 1.85
+    ? ((phaseName = 'New Moon'), (emoji = '🌑'))
+    : phase < 7.38
+      ? ((phaseName = 'Waxing Crescent'), (emoji = '🌒'))
+      : phase < 9.22
+        ? ((phaseName = 'First Quarter'), (emoji = '🌓'))
+        : phase < 14.77
+          ? ((phaseName = 'Waxing Gibbous'), (emoji = '🌔'))
+          : phase < 16.61
+            ? ((phaseName = 'Full Moon'), (emoji = '🌕'))
+            : phase < 22.15
+              ? ((phaseName = 'Waning Gibbous'), (emoji = '🌖'))
+              : phase < 23.99
+                ? ((phaseName = 'Last Quarter'), (emoji = '🌗'))
+                : ((phaseName = 'Waning Crescent'), (emoji = '🌘'));
+  const illumination = Math.round(50 * (1 - Math.cos((phase / 29.53059) * 2 * Math.PI))),
+    daysUntilFull =
+      phase < 14.77 ? (14.77 - phase).toFixed(1) : (29.53059 - phase + 14.77).toFixed(1);
+  return {
+    phaseName: phaseName,
+    emoji: emoji,
+    phase: phase.toFixed(2),
+    illumination: illumination,
+    daysUntilFull: daysUntilFull,
+  };
 }
-
-/** Detailed calendar diff: years, months, days between two dates. */
 export function detailedDiff(d1, d2) {
-  const start = new Date(Math.min(d1, d2));
-  const end = new Date(Math.max(d1, d2));
-
-  let years = end.getFullYear() - start.getFullYear();
-  let months = end.getMonth() - start.getMonth();
-  let days = end.getDate() - start.getDate();
-
-  if (days < 0) {
-    months--;
-    days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  const totalDays = Math.round(Math.abs(end - start) / 86_400_000);
-  const totalWeeks = (totalDays / 7).toFixed(1);
-  const totalHours = totalDays * 24;
-  const totalMinutes = totalHours * 60;
-
-  return { years, months, days, totalDays, totalWeeks, totalHours, totalMinutes };
+  const start = new Date(Math.min(d1, d2)),
+    end = new Date(Math.max(d1, d2));
+  let years = end.getFullYear() - start.getFullYear(),
+    months = end.getMonth() - start.getMonth(),
+    days = end.getDate() - start.getDate();
+  (days < 0 && (months--, (days += new Date(end.getFullYear(), end.getMonth(), 0).getDate())),
+    months < 0 && (years--, (months += 12)));
+  const totalDays = Math.round(Math.abs(end - start) / 864e5),
+    totalHours = 24 * totalDays;
+  return {
+    years: years,
+    months: months,
+    days: days,
+    totalDays: totalDays,
+    totalWeeks: (totalDays / 7).toFixed(1),
+    totalHours: totalHours,
+    totalMinutes: 60 * totalHours,
+  };
 }
-
-/** Find the Nth weekday of a month. nth=-1 means last. */
 export function getNthWeekdayOfMonth(year, month, nth, weekdayName) {
   const targetDay = DAYS.indexOf(weekdayName);
-  if (targetDay === -1)
+  if (-1 === targetDay)
     throw new Error(`Unknown weekday "${weekdayName}". Use Monday, Tuesday, etc.`);
-
-  if (nth === -1) {
+  if (-1 === nth) {
     const lastDay = new Date(year, month, 0);
-    while (lastDay.getDay() !== targetDay) lastDay.setDate(lastDay.getDate() - 1);
+    for (; lastDay.getDay() !== targetDay; ) lastDay.setDate(lastDay.getDate() - 1);
     return lastDay;
   }
-
-  const firstOfMonth = new Date(year, month - 1, 1);
-  const offset = (targetDay - firstOfMonth.getDay() + 7) % 7;
-  const result = new Date(year, month - 1, 1 + offset + (nth - 1) * 7);
+  const offset = (targetDay - new Date(year, month - 1, 1).getDay() + 7) % 7,
+    result = new Date(year, month - 1, 1 + offset + 7 * (nth - 1));
   if (result.getMonth() !== month - 1)
     throw new Error(`There is no ${nth}th ${weekdayName} in that month.`);
   return result;

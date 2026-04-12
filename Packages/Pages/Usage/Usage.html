@@ -2,10 +2,9 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="./UI/Styles/UsagePage.css" />
     <style>
-      /* ── Refresh button ── */
       .usage-refresh-btn {
         padding: 8px 16px;
         border-radius: 10px;
@@ -23,29 +22,23 @@
         align-items: center;
         gap: 6px;
       }
-
       .usage-refresh-btn:hover {
         background: var(--bg-hover);
         color: var(--text-primary);
       }
-
       .usage-refresh-btn svg {
         width: 13px;
         height: 13px;
       }
-
       .usage-refresh-btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
       }
-
-      /* ── Insights strip ── */
       #insights-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
         gap: 12px;
       }
-
       .insight-card {
         display: flex;
         align-items: flex-start;
@@ -59,26 +52,22 @@
           border-color var(--transition-fast),
           transform var(--transition-fast);
       }
-
       .insight-card:hover {
         border-color: color-mix(in srgb, var(--accent) 25%, var(--border));
         transform: translateY(-1px);
       }
-
       .insight-icon {
         font-size: 20px;
         flex-shrink: 0;
         line-height: 1;
         margin-top: 1px;
       }
-
       .insight-body {
         display: flex;
         flex-direction: column;
         gap: 4px;
         min-width: 0;
       }
-
       .insight-title {
         font-size: 10.5px;
         font-weight: 700;
@@ -86,31 +75,25 @@
         text-transform: uppercase;
         color: var(--text-muted);
       }
-
       .insight-text {
         font-size: 13px;
         color: var(--text-secondary);
         line-height: 1.5;
       }
-
       .insight-text strong {
         color: var(--text-primary);
         font-weight: 600;
       }
-
       .insight-empty {
         font-size: 13px;
         color: var(--text-muted);
         padding: 16px;
       }
-
-      /* ── Hourly heatmap ── */
       #heatmap-wrap {
         display: grid;
         grid-template-columns: repeat(24, 1fr);
         gap: 4px;
       }
-
       .heatmap-cell {
         display: flex;
         flex-direction: column;
@@ -118,7 +101,6 @@
         gap: 4px;
         cursor: default;
       }
-
       .heatmap-cell > div.heatmap-block {
         width: 100%;
         aspect-ratio: 1;
@@ -129,11 +111,9 @@
           opacity 0.2s,
           transform 0.15s;
       }
-
       .heatmap-cell:hover > div.heatmap-block {
         transform: scaleY(1.08);
       }
-
       .heatmap-label {
         font-size: 8px;
         color: var(--text-muted);
@@ -141,19 +121,15 @@
         white-space: nowrap;
         overflow: hidden;
       }
-
       .heatmap-count {
         font-size: 8.5px;
         color: var(--accent);
         font-weight: 700;
         font-family: var(--font-mono);
       }
-
-      /* rebuild heatmap cells properly */
       .heatmap-cell {
         position: relative;
       }
-
       .heatmap-cell::before {
         content: '';
         display: block;
@@ -166,18 +142,15 @@
           opacity 0.2s,
           transform 0.15s;
       }
-
       .heatmap-cell:hover::before {
         transform: scaleY(1.1);
       }
-
       .heatmap-label {
         font-size: 7.5px;
         color: var(--text-muted);
         font-family: var(--font-mono);
         white-space: nowrap;
       }
-
       .heatmap-count {
         position: absolute;
         top: 2px;
@@ -189,34 +162,28 @@
         font-family: var(--font-mono);
         pointer-events: none;
       }
-
-      /* ── DOW breakdown ── */
       #dow-wrap {
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
-
       .dow-row {
         display: grid;
         grid-template-columns: 36px 1fr 80px 60px;
         align-items: center;
         gap: 10px;
       }
-
       .dow-label {
         font-size: 12px;
         font-weight: 600;
         color: var(--text-secondary);
       }
-
       .dow-bar-track {
         height: 8px;
         background: var(--bg-tertiary);
         border-radius: 999px;
         overflow: hidden;
       }
-
       .dow-bar-fill {
         height: 100%;
         border-radius: 999px;
@@ -227,28 +194,23 @@
         );
         transition: width 0.5s var(--ease-out-expo);
       }
-
       .dow-stat {
         font-size: 11px;
         color: var(--text-muted);
         font-family: var(--font-mono);
         text-align: right;
       }
-
       .dow-cost {
         font-size: 11px;
         color: var(--accent);
         font-family: var(--font-mono);
         text-align: right;
       }
-
-      /* ── Cost breakdown table ── */
       #cost-table-body {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
-
       .cost-row {
         display: grid;
         grid-template-columns: 22px 1fr 120px 100px;
@@ -262,23 +224,19 @@
           border-color var(--transition-fast),
           transform var(--transition-fast);
       }
-
       .cost-row:hover {
         border-color: color-mix(in srgb, var(--accent) 20%, var(--border));
         transform: translateX(2px);
       }
-
       .cost-row-rank {
         font-size: 11px;
         font-weight: 700;
         color: var(--text-muted);
         font-family: var(--font-mono);
       }
-
       .cost-row-info {
         min-width: 0;
       }
-
       .cost-row-name {
         font-size: 13px;
         font-weight: 500;
@@ -287,20 +245,17 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-
       .cost-row-meta {
         font-size: 10.5px;
         color: var(--text-muted);
         margin-top: 2px;
       }
-
       .cost-row-bar-wrap {
         height: 6px;
         background: var(--bg-secondary);
         border-radius: 999px;
         overflow: hidden;
       }
-
       .cost-row-bar {
         height: 100%;
         border-radius: 999px;
@@ -308,38 +263,31 @@
         opacity: 0.75;
         transition: width 0.5s var(--ease-out-expo);
       }
-
       .cost-row-figures {
         text-align: right;
       }
-
       .cost-row-total {
         font-size: 13px;
         font-weight: 600;
         color: var(--accent);
         font-family: var(--font-mono);
       }
-
       .cost-row-share {
         font-size: 10.5px;
         color: var(--text-muted);
         margin-top: 2px;
       }
-
       .cost-empty {
         font-size: 13px;
         color: var(--text-muted);
         padding: 12px 0;
       }
-
-      /* ── Two-col layout for heatmap + dow ── */
       .usage-two-col {
         display: grid;
         grid-template-columns: 1.6fr 1fr;
         gap: 18px;
         margin-bottom: 18px;
       }
-
       @media (max-width: 900px) {
         .usage-two-col {
           grid-template-columns: 1fr;
@@ -348,17 +296,14 @@
     </style>
     <script src="../../Features/Themes/index.js"></script>
   </head>
-
   <body>
     <div id="app">
       <div id="body-wrap">
         <aside id="sidebar"></aside>
         <div id="theme-panel"></div>
         <div id="avatar-panel"></div>
-
         <main id="main" class="usage-main">
           <div class="usage-scroll">
-            <!-- Header -->
             <div class="usage-page-header">
               <div class="usage-page-header-copy">
                 <h2>Usage</h2>
@@ -395,11 +340,7 @@
                 </button>
               </div>
             </div>
-
-            <!-- Summary cards -->
             <div class="usage-summary-grid" id="summary-grid"></div>
-
-            <!-- Auto insights -->
             <div class="usage-section-full" id="insights-section">
               <div class="usage-section-header">
                 <span class="usage-section-title">✦ Insights</span>
@@ -407,8 +348,6 @@
               </div>
               <div id="insights-list"></div>
             </div>
-
-            <!-- Daily chart + Provider breakdown -->
             <div class="usage-sections">
               <div class="usage-section" id="chart-section">
                 <div class="usage-section-header">
@@ -424,8 +363,6 @@
                 <div class="provider-grid" id="provider-grid"></div>
               </div>
             </div>
-
-            <!-- Hourly heatmap + Day of week -->
             <div class="usage-two-col">
               <div class="usage-section" id="heatmap-section">
                 <div class="usage-section-header">
@@ -442,8 +379,6 @@
                 <div id="dow-wrap"></div>
               </div>
             </div>
-
-            <!-- Cost breakdown by model -->
             <div class="usage-section-full" id="cost-table-section">
               <div class="usage-section-header">
                 <span class="usage-section-title">Cost by model</span>
@@ -451,8 +386,6 @@
               </div>
               <div id="cost-table-body"></div>
             </div>
-
-            <!-- Recent activity -->
             <div class="usage-section-full" id="activity-section">
               <div class="usage-section-header">
                 <span class="usage-section-title">Recent activity</span>
@@ -464,8 +397,6 @@
         </main>
       </div>
     </div>
-
-    <!-- Confirm clear overlay -->
     <div class="usage-confirm-overlay" id="confirm-overlay">
       <div class="usage-confirm-box">
         <h3>Clear all usage data?</h3>
@@ -476,7 +407,6 @@
         </div>
       </div>
     </div>
-
     <script type="module" src="./render/index.js"></script>
   </body>
 </html>

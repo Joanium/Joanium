@@ -7,7 +7,7 @@ export const COUNTRY_TOOLS = [
     parameters: {
       country: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Country name or code (e.g. "India", "US", "Japan", "Brazil", "DE")',
       },
     },

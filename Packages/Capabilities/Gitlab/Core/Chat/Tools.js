@@ -12,8 +12,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -22,8 +22,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -32,11 +32,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       filePath: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file inside the repository',
       },
     },
@@ -47,8 +47,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -64,8 +64,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -74,11 +74,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Issue title' },
-      body: { type: 'string', required: false, description: 'Issue body in markdown' },
-      labels: { type: 'string', required: false, description: 'Comma-separated label names' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Issue title' },
+      body: { type: 'string', required: !1, description: 'Issue body in markdown' },
+      labels: { type: 'string', required: !1, description: 'Comma-separated label names' },
     },
   },
   {
@@ -87,9 +87,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -98,9 +98,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -109,14 +109,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
-      body: { type: 'string', required: true, description: 'Comment body in markdown' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
+      body: { type: 'string', required: !0, description: 'Comment body in markdown' },
     },
   },
   {
@@ -125,8 +121,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -135,11 +131,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Number of releases to fetch (default 5, max 20)',
       },
     },
@@ -150,9 +146,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      action: { type: 'string', required: false, description: 'star (default) or unstar' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      action: { type: 'string', required: !1, description: 'star (default) or unstar' },
     },
   },
   {
@@ -161,14 +157,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      description: { type: 'string', required: false, description: 'Snippet description' },
-      filename: { type: 'string', required: true, description: 'Primary file name' },
-      content: { type: 'string', required: true, description: 'Primary file content' },
-      public: {
-        type: 'boolean',
-        required: false,
-        description: 'Set true to make the snippet public',
-      },
+      description: { type: 'string', required: !1, description: 'Snippet description' },
+      filename: { type: 'string', required: !0, description: 'Primary file name' },
+      content: { type: 'string', required: !0, description: 'Primary file content' },
+      public: { type: 'boolean', required: !1, description: 'Set true to make the snippet public' },
     },
   },
   {
@@ -184,8 +176,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -194,19 +186,15 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Merge request title' },
-      head: { type: 'string', required: true, description: 'Source branch' },
-      base: { type: 'string', required: true, description: 'Target branch' },
-      body: {
-        type: 'string',
-        required: false,
-        description: 'Merge request description in markdown',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Merge request title' },
+      head: { type: 'string', required: !0, description: 'Source branch' },
+      base: { type: 'string', required: !0, description: 'Target branch' },
+      body: { type: 'string', required: !1, description: 'Merge request description in markdown' },
       draft: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to open as a draft merge request',
       },
     },
@@ -217,13 +205,13 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      merge_method: { type: 'string', required: false, description: 'merge, squash, or rebase' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      merge_method: { type: 'string', required: !1, description: 'merge, squash, or rebase' },
       commit_title: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Optional custom merge commit title',
       },
     },
@@ -234,9 +222,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -245,14 +233,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
-      labels: { type: 'string', required: true, description: 'Comma-separated label names' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
+      labels: { type: 'string', required: !0, description: 'Comma-separated label names' },
     },
   },
   {
@@ -261,18 +245,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
-      assignees: {
-        type: 'string',
-        required: true,
-        description: 'Comma-separated GitLab usernames',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
+      assignees: { type: 'string', required: !0, description: 'Comma-separated GitLab usernames' },
     },
   },
   {
@@ -281,11 +257,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      workflow_id: { type: 'string', required: true, description: 'Pipeline schedule ID' },
-      ref: { type: 'string', required: false, description: 'Branch or tag to run the pipeline on' },
-      inputs: { type: 'string', required: false, description: 'JSON string of pipeline variables' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      workflow_id: { type: 'string', required: !0, description: 'Pipeline schedule ID' },
+      ref: { type: 'string', required: !1, description: 'Branch or tag to run the pipeline on' },
+      inputs: { type: 'string', required: !1, description: 'JSON string of pipeline variables' },
     },
   },
   {
@@ -294,10 +270,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      workflow_id: { type: 'string', required: true, description: 'Pipeline schedule ID' },
-      branch: { type: 'string', required: false, description: 'Optional branch filter' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      workflow_id: { type: 'string', required: !0, description: 'Pipeline schedule ID' },
+      branch: { type: 'string', required: !1, description: 'Optional branch filter' },
     },
   },
   {
@@ -306,8 +282,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -323,16 +299,16 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       focus_paths: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated path prefixes to focus on',
       },
       max_files: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum number of files to load (default 20, max 40)',
       },
     },
@@ -343,9 +319,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      query: { type: 'string', required: true, description: 'Search query' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      query: { type: 'string', required: !0, description: 'Search query' },
     },
   },
   {
@@ -354,9 +330,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -365,18 +341,18 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      body: { type: 'string', required: true, description: 'Overall review body' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      body: { type: 'string', required: !0, description: 'Overall review body' },
       verdict: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'APPROVE, REQUEST_CHANGES, or COMMENT',
       },
       inline_comments: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'JSON array of inline comments',
       },
     },
@@ -387,9 +363,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -398,9 +374,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -409,9 +385,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -420,13 +396,13 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab owner or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch: { type: 'string', required: false, description: 'Optional branch filter' },
-      event: { type: 'string', required: false, description: 'Optional pipeline source filter' },
+      owner: { type: 'string', required: !0, description: 'GitLab owner or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch: { type: 'string', required: !1, description: 'Optional branch filter' },
+      event: { type: 'string', required: !1, description: 'Optional pipeline source filter' },
       per_page: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Maximum number of runs to return (default 20)',
       },
     },
@@ -437,8 +413,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -447,9 +423,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -458,20 +434,16 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
-      title: { type: 'string', required: false, description: 'New title' },
-      body: { type: 'string', required: false, description: 'New body in markdown' },
-      state: { type: 'string', required: false, description: 'open or closed' },
-      labels: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated label names to set',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
+      title: { type: 'string', required: !1, description: 'New title' },
+      body: { type: 'string', required: !1, description: 'New body in markdown' },
+      state: { type: 'string', required: !1, description: 'open or closed' },
+      labels: { type: 'string', required: !1, description: 'Comma-separated label names to set' },
       assignees: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Comma-separated GitLab usernames to set',
       },
     },
@@ -482,8 +454,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -492,8 +464,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -502,8 +474,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -512,9 +484,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: { type: 'string', required: false, description: 'open (default), closed, or all' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), closed, or all' },
     },
   },
   {
@@ -523,13 +495,13 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      title: { type: 'string', required: true, description: 'Milestone title' },
-      description: { type: 'string', required: false, description: 'Optional description' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      title: { type: 'string', required: !0, description: 'Milestone title' },
+      description: { type: 'string', required: !1, description: 'Optional description' },
       due_on: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'ISO 8601 due date, e.g. 2025-12-31T00:00:00Z',
       },
     },
@@ -540,10 +512,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch_name: { type: 'string', required: true, description: 'New branch name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA to branch from' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch_name: { type: 'string', required: !0, description: 'New branch name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA to branch from' },
     },
   },
   {
@@ -552,9 +524,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch_name: { type: 'string', required: true, description: 'Branch to delete' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch_name: { type: 'string', required: !0, description: 'Branch to delete' },
     },
   },
   {
@@ -563,8 +535,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -573,8 +545,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -583,8 +555,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -593,10 +565,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      base: { type: 'string', required: true, description: 'Base branch or SHA' },
-      head: { type: 'string', required: true, description: 'Head branch or SHA to compare' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      base: { type: 'string', required: !0, description: 'Base branch or SHA' },
+      head: { type: 'string', required: !0, description: 'Head branch or SHA to compare' },
     },
   },
   {
@@ -612,8 +584,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -622,19 +594,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      reviewers: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated GitLab usernames',
-      },
-      team_reviewers: {
-        type: 'string',
-        required: false,
-        description: 'Comma-separated team slugs',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      reviewers: { type: 'string', required: !1, description: 'Comma-separated GitLab usernames' },
+      team_reviewers: { type: 'string', required: !1, description: 'Comma-separated team slugs' },
     },
   },
   {
@@ -643,9 +607,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -654,9 +618,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -665,7 +629,7 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username to look up' },
+      username: { type: 'string', required: !0, description: 'GitLab username to look up' },
     },
   },
   {
@@ -674,10 +638,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query' },
+      query: { type: 'string', required: !0, description: 'Search query' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -688,10 +652,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query' },
+      query: { type: 'string', required: !0, description: 'Search query' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -702,18 +666,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
   {
@@ -723,9 +679,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Full or abbreviated commit SHA' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Full or abbreviated commit SHA' },
     },
   },
   {
@@ -734,9 +690,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      count: { type: 'number', required: false, description: 'Max tags to return (default 20)' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      count: { type: 'number', required: !1, description: 'Max tags to return (default 20)' },
     },
   },
   {
@@ -745,28 +701,20 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       tag_name: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Tag name for the release (e.g. v1.2.0)',
       },
-      name: {
-        type: 'string',
-        required: false,
-        description: 'Release title (defaults to tag name)',
-      },
-      body: { type: 'string', required: false, description: 'Release notes in markdown' },
-      draft: { type: 'boolean', required: false, description: 'Set true to create as a draft' },
-      prerelease: {
-        type: 'boolean',
-        required: false,
-        description: 'Set true to mark as pre-release',
-      },
+      name: { type: 'string', required: !1, description: 'Release title (defaults to tag name)' },
+      body: { type: 'string', required: !1, description: 'Release notes in markdown' },
+      draft: { type: 'boolean', required: !1, description: 'Set true to create as a draft' },
+      prerelease: { type: 'boolean', required: !1, description: 'Set true to mark as pre-release' },
       target_commitish: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch or commit SHA to tag',
       },
     },
@@ -778,11 +726,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'Owner of the repository to fork' },
-      repo: { type: 'string', required: true, description: 'Repository name to fork' },
+      owner: { type: 'string', required: !0, description: 'Owner of the repository to fork' },
+      repo: { type: 'string', required: !0, description: 'Repository name to fork' },
       organization: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Group to fork into (omit to fork into personal account)',
       },
     },
@@ -793,13 +741,13 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      title: { type: 'string', required: false, description: 'New title' },
-      body: { type: 'string', required: false, description: 'New description in markdown' },
-      state: { type: 'string', required: false, description: 'open or closed' },
-      base: { type: 'string', required: false, description: 'New target branch name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      title: { type: 'string', required: !1, description: 'New title' },
+      body: { type: 'string', required: !1, description: 'New description in markdown' },
+      state: { type: 'string', required: !1, description: 'open or closed' },
+      base: { type: 'string', required: !1, description: 'New target branch name' },
     },
   },
   {
@@ -808,8 +756,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -818,15 +766,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      name: { type: 'string', required: true, description: 'Label name' },
-      color: { type: 'string', required: true, description: 'Hex color without # (e.g. ff0000)' },
-      description: {
-        type: 'string',
-        required: false,
-        description: 'Short description of the label',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      name: { type: 'string', required: !0, description: 'Label name' },
+      color: { type: 'string', required: !0, description: 'Hex color without # (e.g. ff0000)' },
+      description: { type: 'string', required: !1, description: 'Short description of the label' },
     },
   },
   {
@@ -835,9 +779,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      name: { type: 'string', required: true, description: 'Exact label name to delete' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      name: { type: 'string', required: !0, description: 'Exact label name to delete' },
     },
   },
   {
@@ -846,10 +790,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query' },
+      query: { type: 'string', required: !0, description: 'Search query' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -860,8 +804,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -870,14 +814,14 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       file_path: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file (e.g. src/index.js)',
       },
-      count: { type: 'number', required: false, description: 'Max commits to return (default 15)' },
+      count: { type: 'number', required: !1, description: 'Max commits to return (default 15)' },
     },
   },
   {
@@ -886,14 +830,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
-      lock_reason: { type: 'string', required: false, description: 'Reason for locking' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
+      lock_reason: { type: 'string', required: !1, description: 'Reason for locking' },
     },
   },
   {
@@ -902,13 +842,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
     },
   },
   {
@@ -917,11 +853,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max deployments to return (default 20)',
       },
     },
@@ -932,9 +868,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      username: { type: 'string', required: true, description: 'GitLab username to check' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      username: { type: 'string', required: !0, description: 'GitLab username to check' },
     },
   },
   {
@@ -943,16 +879,12 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
       labels: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Comma-separated label names to remove',
       },
     },
@@ -963,9 +895,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -975,8 +907,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -985,8 +917,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -995,9 +927,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      action: { type: 'string', required: false, description: 'watch (default) or unwatch' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      action: { type: 'string', required: !1, description: 'watch (default) or unwatch' },
     },
   },
   {
@@ -1006,8 +938,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: { type: 'number', required: false, description: 'Max events to return (default 20)' },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max events to return (default 20)' },
     },
   },
   {
@@ -1016,8 +948,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1026,8 +958,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1036,13 +968,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: {
-        type: 'string',
-        required: false,
-        description: 'open (default), dismissed, or fixed',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), dismissed, or fixed' },
     },
   },
   {
@@ -1051,15 +979,15 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       since: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'ISO 8601 start date e.g. 2024-01-01T00:00:00Z',
       },
-      until: { type: 'string', required: false, description: 'ISO 8601 end date (optional)' },
-      count: { type: 'number', required: false, description: 'Max commits to return (default 20)' },
+      until: { type: 'string', required: !1, description: 'ISO 8601 end date (optional)' },
+      count: { type: 'number', required: !1, description: 'Max commits to return (default 20)' },
     },
   },
   {
@@ -1068,9 +996,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      branch: { type: 'string', required: true, description: 'Branch name e.g. main' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      branch: { type: 'string', required: !0, description: 'Branch name e.g. main' },
     },
   },
   {
@@ -1078,9 +1006,7 @@ export const GITLAB_TOOLS = [
     description: 'List the public groups a GitLab user belongs to.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-    },
+    parameters: { username: { type: 'string', required: !0, description: 'GitLab username' } },
   },
   {
     name: 'gitlab_get_traffic_clones',
@@ -1088,8 +1014,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1098,8 +1024,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1108,8 +1034,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1118,8 +1044,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      count: { type: 'number', required: false, description: 'Max members to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      count: { type: 'number', required: !1, description: 'Max members to return (default 30)' },
     },
   },
   {
@@ -1128,12 +1054,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max subgroups to return (default 30)',
-      },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      count: { type: 'number', required: !1, description: 'Max subgroups to return (default 30)' },
     },
   },
   {
@@ -1142,9 +1064,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      team_slug: { type: 'string', required: true, description: 'Subgroup slug' },
-      count: { type: 'number', required: false, description: 'Max members to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      team_slug: { type: 'string', required: !0, description: 'Subgroup slug' },
+      count: { type: 'number', required: !1, description: 'Max members to return (default 30)' },
     },
   },
   {
@@ -1153,13 +1075,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
     },
   },
   {
@@ -1168,8 +1086,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1178,8 +1096,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1188,8 +1106,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1198,8 +1116,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1208,8 +1126,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1218,8 +1136,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1228,12 +1146,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max followers to return (default 30)',
-      },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max followers to return (default 30)' },
     },
   },
   {
@@ -1242,12 +1156,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max following to return (default 30)',
-      },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max following to return (default 30)' },
     },
   },
   {
@@ -1256,12 +1166,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max snippets to return (default 20)',
-      },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max snippets to return (default 20)' },
     },
   },
   {
@@ -1269,9 +1175,7 @@ export const GITLAB_TOOLS = [
     description: 'Get full details and file contents of a specific GitLab Snippet.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Snippet ID' } },
   },
   {
     name: 'gitlab_get_pr_commits',
@@ -1279,9 +1183,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
     },
   },
   {
@@ -1290,9 +1194,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      ref: { type: 'string', required: true, description: 'Commit SHA, branch, or tag' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      ref: { type: 'string', required: !0, description: 'Commit SHA, branch, or tag' },
     },
   },
   {
@@ -1301,8 +1205,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1310,9 +1214,7 @@ export const GITLAB_TOOLS = [
     description: 'Get public profile and metadata for a GitLab group.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitLab group name' } },
   },
   {
     name: 'gitlab_search_commits',
@@ -1320,10 +1222,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      query: { type: 'string', required: true, description: 'Search query' },
+      query: { type: 'string', required: !0, description: 'Search query' },
       count: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max results to return (default 20, max 50)',
       },
     },
@@ -1334,9 +1236,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      deployment_id: { type: 'number', required: true, description: 'Deployment ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      deployment_id: { type: 'number', required: !0, description: 'Deployment ID' },
     },
   },
   {
@@ -1345,8 +1247,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1362,8 +1264,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1372,9 +1274,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      workflow_id: { type: 'string', required: true, description: 'Pipeline schedule ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      workflow_id: { type: 'string', required: !0, description: 'Pipeline schedule ID' },
     },
   },
   {
@@ -1383,8 +1285,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1393,8 +1295,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1403,8 +1305,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1413,9 +1315,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      team_slug: { type: 'string', required: true, description: 'Subgroup slug' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      team_slug: { type: 'string', required: !0, description: 'Subgroup slug' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -1424,8 +1326,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-      count: { type: 'number', required: false, description: 'Max repos to return (default 30)' },
+      username: { type: 'string', required: !0, description: 'GitLab username' },
+      count: { type: 'number', required: !1, description: 'Max repos to return (default 30)' },
     },
   },
   {
@@ -1434,9 +1336,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
     },
   },
   {
@@ -1444,9 +1346,7 @@ export const GITLAB_TOOLS = [
     description: 'List group-level GitLab CI/CD variable names.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitLab group name' } },
   },
   {
     name: 'gitlab_get_single_comment',
@@ -1454,9 +1354,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID' },
     },
   },
   {
@@ -1465,8 +1365,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1475,10 +1375,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      review_id: { type: 'number', required: true, description: 'Note/review ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      review_id: { type: 'number', required: !0, description: 'Note/review ID' },
     },
   },
   {
@@ -1486,9 +1386,7 @@ export const GITLAB_TOOLS = [
     description: 'List group-level GitLab CI/CD variables.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitLab group name' } },
   },
   {
     name: 'gitlab_get_repo_autolinks',
@@ -1496,8 +1394,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1506,9 +1404,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      check_run_id: { type: 'number', required: true, description: 'Job ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      check_run_id: { type: 'number', required: !0, description: 'Job ID' },
     },
   },
   {
@@ -1517,14 +1415,14 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      name: { type: 'string', required: true, description: 'Repository name' },
-      description: { type: 'string', required: false, description: 'Short description' },
+      name: { type: 'string', required: !0, description: 'Repository name' },
+      description: { type: 'string', required: !1, description: 'Short description' },
       private: {
         type: 'boolean',
-        required: false,
+        required: !1,
         description: 'Set true to create as private (default false)',
       },
-      auto_init: { type: 'boolean', required: false, description: 'Initialize with a README' },
+      auto_init: { type: 'boolean', required: !1, description: 'Initialize with a README' },
     },
   },
   {
@@ -1534,15 +1432,15 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      description: { type: 'string', required: false, description: 'New description' },
-      homepage: { type: 'string', required: false, description: 'Homepage URL' },
-      private: { type: 'boolean', required: false, description: 'Set visibility (true = private)' },
-      default_branch: { type: 'string', required: false, description: 'New default branch' },
-      has_issues: { type: 'boolean', required: false, description: 'Enable or disable issues' },
-      has_wiki: { type: 'boolean', required: false, description: 'Enable or disable wiki' },
-      has_projects: { type: 'boolean', required: false, description: 'Enable or disable snippets' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      description: { type: 'string', required: !1, description: 'New description' },
+      homepage: { type: 'string', required: !1, description: 'Homepage URL' },
+      private: { type: 'boolean', required: !1, description: 'Set visibility (true = private)' },
+      default_branch: { type: 'string', required: !1, description: 'New default branch' },
+      has_issues: { type: 'boolean', required: !1, description: 'Enable or disable issues' },
+      has_wiki: { type: 'boolean', required: !1, description: 'Enable or disable wiki' },
+      has_projects: { type: 'boolean', required: !1, description: 'Enable or disable snippets' },
     },
   },
   {
@@ -1551,8 +1449,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1561,14 +1459,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      path: {
-        type: 'string',
-        required: false,
-        description: 'Path within the repo (empty for root)',
-      },
-      ref: { type: 'string', required: false, description: 'Branch, tag, or SHA (optional)' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      path: { type: 'string', required: !1, description: 'Path within the repo (empty for root)' },
+      ref: { type: 'string', required: !1, description: 'Branch, tag, or SHA (optional)' },
     },
   },
   {
@@ -1577,27 +1471,23 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       file_path: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Path to the file (e.g. src/index.js)',
       },
-      message: { type: 'string', required: true, description: 'Commit message' },
-      content: {
-        type: 'string',
-        required: true,
-        description: 'File content (plain text or base64)',
-      },
+      message: { type: 'string', required: !0, description: 'Commit message' },
+      content: { type: 'string', required: !0, description: 'File content (plain text or base64)' },
       sha: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Blob SHA of the file being replaced (required for updates)',
       },
       branch: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch to commit to (defaults to default branch)',
       },
     },
@@ -1608,14 +1498,14 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      file_path: { type: 'string', required: true, description: 'Path to the file to delete' },
-      message: { type: 'string', required: true, description: 'Commit message' },
-      sha: { type: 'string', required: true, description: 'Blob SHA of the file' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      file_path: { type: 'string', required: !0, description: 'Path to the file to delete' },
+      message: { type: 'string', required: !0, description: 'Commit message' },
+      sha: { type: 'string', required: !0, description: 'Blob SHA of the file' },
       branch: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Branch to commit to (defaults to default branch)',
       },
     },
@@ -1626,9 +1516,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA' },
     },
   },
   {
@@ -1637,20 +1527,16 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      sha: { type: 'string', required: true, description: 'Commit SHA' },
-      body: { type: 'string', required: true, description: 'Comment body' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      sha: { type: 'string', required: !0, description: 'Commit SHA' },
+      body: { type: 'string', required: !0, description: 'Comment body' },
       path: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'File path to attach comment to (optional)',
       },
-      position: {
-        type: 'number',
-        required: false,
-        description: 'Line index in the diff (optional)',
-      },
+      position: { type: 'number', required: !1, description: 'Line index in the diff (optional)' },
     },
   },
   {
@@ -1659,11 +1545,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      pr_number: { type: 'number', required: true, description: 'Merge request number' },
-      review_id: { type: 'number', required: true, description: 'Note/review ID' },
-      message: { type: 'string', required: true, description: 'Reason for dismissal' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      pr_number: { type: 'number', required: !0, description: 'Merge request number' },
+      review_id: { type: 'number', required: !0, description: 'Note/review ID' },
+      message: { type: 'string', required: !0, description: 'Reason for dismissal' },
     },
   },
   {
@@ -1672,9 +1558,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Pipeline ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Pipeline ID' },
     },
   },
   {
@@ -1683,9 +1569,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Pipeline ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Pipeline ID' },
     },
   },
   {
@@ -1694,14 +1580,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Pipeline ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max artifacts to return (default 20)',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Pipeline ID' },
+      count: { type: 'number', required: !1, description: 'Max artifacts to return (default 20)' },
     },
   },
   {
@@ -1710,8 +1592,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1720,7 +1602,7 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username to follow' },
+      username: { type: 'string', required: !0, description: 'GitLab username to follow' },
     },
   },
   {
@@ -1729,7 +1611,7 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username to unfollow' },
+      username: { type: 'string', required: !0, description: 'GitLab username to unfollow' },
     },
   },
   {
@@ -1738,10 +1620,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number' },
-      count: { type: 'number', required: false, description: 'Max events to return (default 30)' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number' },
+      count: { type: 'number', required: !1, description: 'Max events to return (default 30)' },
     },
   },
   {
@@ -1750,11 +1632,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-      description: { type: 'string', required: false, description: 'New description' },
+      gist_id: { type: 'string', required: !0, description: 'Snippet ID' },
+      description: { type: 'string', required: !1, description: 'New description' },
       files: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'JSON object of file changes e.g. {"file.js":{"content":"..."}}',
       },
     },
@@ -1764,9 +1646,7 @@ export const GITLAB_TOOLS = [
     description: 'Permanently delete a GitLab Snippet.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID to delete' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Snippet ID to delete' } },
   },
   {
     name: 'gitlab_transfer_issue',
@@ -1774,10 +1654,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'Current repo owner' },
-      repo: { type: 'string', required: true, description: 'Current repository name' },
-      issue_number: { type: 'number', required: true, description: 'Issue number to transfer' },
-      new_owner: { type: 'string', required: true, description: 'Owner of the target repository' },
+      owner: { type: 'string', required: !0, description: 'Current repo owner' },
+      repo: { type: 'string', required: !0, description: 'Current repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue number to transfer' },
+      new_owner: { type: 'string', required: !0, description: 'Owner of the target repository' },
     },
   },
   {
@@ -1786,11 +1666,11 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
       topics: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Comma-separated list of topic names (pass empty string to clear all)',
       },
     },
@@ -1808,10 +1688,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID to edit' },
-      body: { type: 'string', required: true, description: 'New comment body in markdown' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID to edit' },
+      body: { type: 'string', required: !0, description: 'New comment body in markdown' },
     },
   },
   {
@@ -1820,9 +1700,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID to delete' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID to delete' },
     },
   },
   {
@@ -1831,16 +1711,12 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      issue_number: {
-        type: 'number',
-        required: true,
-        description: 'Issue or merge request number',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      issue_number: { type: 'number', required: !0, description: 'Issue or merge request number' },
       content: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
       },
     },
@@ -1851,12 +1727,12 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      comment_id: { type: 'number', required: true, description: 'Comment ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      comment_id: { type: 'number', required: !0, description: 'Comment ID' },
       content: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Reaction: +1, -1, laugh, hooray, confused, heart, rocket, or eyes',
       },
     },
@@ -1867,13 +1743,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: {
-        type: 'string',
-        required: false,
-        description: 'open (default), dismissed, or fixed',
-      },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default), dismissed, or fixed' },
     },
   },
   {
@@ -1882,9 +1754,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      state: { type: 'string', required: false, description: 'open (default) or resolved' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      state: { type: 'string', required: !1, description: 'open (default) or resolved' },
     },
   },
   {
@@ -1893,9 +1765,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Pipeline ID' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Pipeline ID' },
     },
   },
   {
@@ -1904,10 +1776,10 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
-      run_id: { type: 'number', required: true, description: 'Pipeline ID' },
-      filter: { type: 'string', required: false, description: 'latest (default) or all' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
+      run_id: { type: 'number', required: !0, description: 'Pipeline ID' },
+      filter: { type: 'string', required: !1, description: 'latest (default) or all' },
     },
   },
   {
@@ -1916,9 +1788,9 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-      team_slug: { type: 'string', required: true, description: 'Subgroup slug' },
-      username: { type: 'string', required: true, description: 'GitLab username to check' },
+      org: { type: 'string', required: !0, description: 'GitLab group name' },
+      team_slug: { type: 'string', required: !0, description: 'Subgroup slug' },
+      username: { type: 'string', required: !0, description: 'GitLab username to check' },
     },
   },
   {
@@ -1927,12 +1799,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-      count: {
-        type: 'number',
-        required: false,
-        description: 'Max comments to return (default 30)',
-      },
+      gist_id: { type: 'string', required: !0, description: 'Snippet ID' },
+      count: { type: 'number', required: !1, description: 'Max comments to return (default 30)' },
     },
   },
   {
@@ -1941,8 +1809,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-      body: { type: 'string', required: true, description: 'Comment body in markdown' },
+      gist_id: { type: 'string', required: !0, description: 'Snippet ID' },
+      body: { type: 'string', required: !0, description: 'Comment body in markdown' },
     },
   },
   {
@@ -1951,8 +1819,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      owner: { type: 'string', required: true, description: 'GitLab username or group' },
-      repo: { type: 'string', required: true, description: 'Repository name' },
+      owner: { type: 'string', required: !0, description: 'GitLab username or group' },
+      repo: { type: 'string', required: !0, description: 'Repository name' },
     },
   },
   {
@@ -1960,9 +1828,7 @@ export const GITLAB_TOOLS = [
     description: 'List webhooks configured at the group level.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      org: { type: 'string', required: true, description: 'GitLab group name' },
-    },
+    parameters: { org: { type: 'string', required: !0, description: 'GitLab group name' } },
   },
   {
     name: 'gitlab_list_user_repo_invitations',
@@ -1977,27 +1843,21 @@ export const GITLAB_TOOLS = [
     description: 'Accept a pending repository collaboration invitation.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      invitation_id: { type: 'number', required: true, description: 'Invitation ID' },
-    },
+    parameters: { invitation_id: { type: 'number', required: !0, description: 'Invitation ID' } },
   },
   {
     name: 'gitlab_decline_repo_invitation',
     description: 'Decline a pending repository collaboration invitation.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      invitation_id: { type: 'number', required: true, description: 'Invitation ID' },
-    },
+    parameters: { invitation_id: { type: 'number', required: !0, description: 'Invitation ID' } },
   },
   {
     name: 'gitlab_get_user_public_keys',
     description: "List a GitLab user's public SSH keys.",
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      username: { type: 'string', required: true, description: 'GitLab username' },
-    },
+    parameters: { username: { type: 'string', required: !0, description: 'GitLab username' } },
   },
   {
     name: 'gitlab_star_gist',
@@ -2005,8 +1865,8 @@ export const GITLAB_TOOLS = [
     category: 'gitlab',
     connectorId: 'gitlab',
     parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-      action: { type: 'string', required: false, description: 'star (default) or unstar' },
+      gist_id: { type: 'string', required: !0, description: 'Snippet ID' },
+      action: { type: 'string', required: !1, description: 'star (default) or unstar' },
     },
   },
   {
@@ -2014,10 +1874,7 @@ export const GITLAB_TOOLS = [
     description: 'Check whether the authenticated user has starred a specific Snippet.',
     category: 'gitlab',
     connectorId: 'gitlab',
-    parameters: {
-      gist_id: { type: 'string', required: true, description: 'Snippet ID' },
-    },
+    parameters: { gist_id: { type: 'string', required: !0, description: 'Snippet ID' } },
   },
 ];
-
 export default GITLAB_TOOLS;

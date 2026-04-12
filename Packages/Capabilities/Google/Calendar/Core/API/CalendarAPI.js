@@ -1,340 +1,272 @@
-async function getFreshGoogleCreds(creds) {
-  const { getFreshCreds } = await import('../../../GoogleWorkspace.js');
-  return getFreshCreds(creds);
-}
-
 const CALENDAR_BASE = 'https://www.googleapis.com/calendar/v3';
-
 async function calFetch(creds, url, options = {}) {
-  const fresh = await getFreshGoogleCreds(creds);
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${fresh.accessToken}`,
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
-  });
-
+  const fresh = await (async function (creds) {
+      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
+      return getFreshCreds(creds);
+    })(creds),
+    res = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${fresh.accessToken}`,
+        'Content-Type': 'application/json',
+        ...(options.headers ?? {}),
+      },
+    });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(
       `Calendar API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
     );
   }
-
-  if (res.status === 204) return null;
-  return res.json();
+  return 204 === res.status ? null : res.json();
 }
-
 function toRFC3339(dateStr) {
   if (!dateStr) return null;
   const date = new Date(dateStr);
   if (Number.isNaN(date.getTime())) throw new Error(`Invalid date: "${dateStr}"`);
   return date.toISOString();
 }
-
-// ─── Existing API ────────────────────────────────────────────────────────────
-
 export async function listCalendars(creds) {
-  const data = await calFetch(creds, `${CALENDAR_BASE}/users/me/calendarList?maxResults=50`);
-  return data.items ?? [];
+  return (
+    (await calFetch(creds, `${CALENDAR_BASE}/users/me/calendarList?maxResults=50`)).items ?? []
+  );
 }
-
 export async function listEvents(
   creds,
   calendarId = 'primary',
-  { maxResults = 20, timeMin, timeMax, singleEvents = true, orderBy = 'startTime', query } = {},
+  {
+    maxResults: maxResults = 20,
+    timeMin: timeMin,
+    timeMax: timeMax,
+    singleEvents: singleEvents = !0,
+    orderBy: orderBy = 'startTime',
+    query: query,
+  } = {},
 ) {
   const params = new URLSearchParams({
     maxResults: String(Math.min(maxResults, 100)),
     singleEvents: String(singleEvents),
-    orderBy,
+    orderBy: orderBy,
   });
-
-  if (timeMin) params.set('timeMin', toRFC3339(timeMin));
-  if (timeMax) params.set('timeMax', toRFC3339(timeMax));
-  if (query) params.set('q', query);
-  if (!timeMin && !timeMax) params.set('timeMin', new Date().toISOString());
-
-  const data = await calFetch(
-    creds,
-    `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events?${params}`,
+  return (
+    timeMin && params.set('timeMin', toRFC3339(timeMin)),
+    timeMax && params.set('timeMax', toRFC3339(timeMax)),
+    query && params.set('q', query),
+    timeMin || timeMax || params.set('timeMin', new Date().toISOString()),
+    (
+      await calFetch(
+        creds,
+        `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events?${params}`,
+      )
+    ).items ?? []
   );
-  return data.items ?? [];
 }
-
 export async function getEvent(creds, calendarId, eventId) {
   return calFetch(
     creds,
     `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${eventId}`,
   );
 }
-
 export async function createEvent(
   creds,
   calendarId = 'primary',
   {
-    summary,
-    description = '',
-    location = '',
-    startDateTime,
-    endDateTime,
-    attendees = [],
-    allDay = false,
-    timeZone,
-    recurrence = [],
-    colorId,
-    reminders,
-    visibility,
-    status,
+    summary: summary,
+    description: description = '',
+    location: location = '',
+    startDateTime: startDateTime,
+    endDateTime: endDateTime,
+    attendees: attendees = [],
+    allDay: allDay = !1,
+    timeZone: timeZone,
+    recurrence: recurrence = [],
+    colorId: colorId,
+    reminders: reminders,
+    visibility: visibility,
+    status: status,
   } = {},
 ) {
   if (!summary) throw new Error('Event summary (title) is required');
   if (!startDateTime) throw new Error('Start date/time is required');
-
-  let start;
-  let end;
-
+  let start, end;
   if (allDay) {
     const startDate = startDateTime.split('T')[0];
-    const endDate = endDateTime ? endDateTime.split('T')[0] : startDate;
-    start = { date: startDate };
-    end = { date: endDate };
+    ((start = { date: startDate }),
+      (end = { date: endDateTime ? endDateTime.split('T')[0] : startDate }));
   } else {
     const tz = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
-    start = { dateTime: toRFC3339(startDateTime), timeZone: tz };
-    end = { dateTime: toRFC3339(endDateTime || startDateTime), timeZone: tz };
+    ((start = { dateTime: toRFC3339(startDateTime), timeZone: tz }),
+      (end = { dateTime: toRFC3339(endDateTime || startDateTime), timeZone: tz }));
   }
-
   const body = {
-    summary,
-    description,
-    location,
-    start,
-    end,
+    summary: summary,
+    description: description,
+    location: location,
+    start: start,
+    end: end,
     ...(attendees.length ? { attendees: attendees.map((email) => ({ email: email.trim() })) } : {}),
-    ...(recurrence.length ? { recurrence } : {}),
+    ...(recurrence.length ? { recurrence: recurrence } : {}),
     ...(colorId ? { colorId: String(colorId) } : {}),
-    ...(reminders ? { reminders } : {}),
-    ...(visibility ? { visibility } : {}),
-    ...(status ? { status } : {}),
+    ...(reminders ? { reminders: reminders } : {}),
+    ...(visibility ? { visibility: visibility } : {}),
+    ...(status ? { status: status } : {}),
   };
-
   return calFetch(creds, `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events`, {
     method: 'POST',
     body: JSON.stringify(body),
   });
 }
-
 export async function updateEvent(creds, calendarId = 'primary', eventId, updates = {}) {
-  const existing = await getEvent(creds, calendarId, eventId);
-  const merged = { ...existing, ...updates };
+  const merged = { ...(await getEvent(creds, calendarId, eventId)), ...updates };
   return calFetch(
     creds,
     `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${eventId}`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(merged),
-    },
+    { method: 'PUT', body: JSON.stringify(merged) },
   );
 }
-
 export async function deleteEvent(creds, calendarId = 'primary', eventId) {
   return calFetch(
     creds,
     `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${eventId}`,
-    {
-      method: 'DELETE',
-    },
+    { method: 'DELETE' },
   );
 }
-
 export async function getUpcomingEvents(creds, days = 7, maxResults = 20) {
-  const timeMin = new Date().toISOString();
-  const timeMax = new Date(Date.now() + days * 86_400_000).toISOString();
   return listEvents(creds, 'primary', {
-    timeMin,
-    timeMax,
-    maxResults,
-    singleEvents: true,
+    timeMin: new Date().toISOString(),
+    timeMax: new Date(Date.now() + 864e5 * days).toISOString(),
+    maxResults: maxResults,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
 export async function getTodayEvents(creds) {
   const now = new Date();
-  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
-  const endOfDay = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    23,
-    59,
-    59,
-  ).toISOString();
   return listEvents(creds, 'primary', {
-    timeMin: startOfDay,
-    timeMax: endOfDay,
+    timeMin: new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString(),
+    timeMax: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString(),
     maxResults: 50,
-    singleEvents: true,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
 export async function searchEvents(creds, query, maxResults = 20) {
-  const timeMin = new Date(Date.now() - 30 * 86_400_000).toISOString();
   return listEvents(creds, 'primary', {
-    query,
-    timeMin,
-    maxResults,
-    singleEvents: true,
+    query: query,
+    timeMin: new Date(Date.now() - 2592e6).toISOString(),
+    maxResults: maxResults,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
-// ─── New API helpers ──────────────────────────────────────────────────────────
-
-/** Events for the current calendar week (Mon–Sun). */
 export async function getThisWeekEvents(creds) {
-  const now = new Date();
-  const day = now.getDay(); // 0 = Sun
-  const diffToMon = day === 0 ? -6 : 1 - day;
-  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMon);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  sunday.setHours(23, 59, 59);
-  return listEvents(creds, 'primary', {
-    timeMin: monday.toISOString(),
-    timeMax: sunday.toISOString(),
-    maxResults: 100,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
+  const now = new Date(),
+    day = now.getDay(),
+    diffToMon = 0 === day ? -6 : 1 - day,
+    monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMon),
+    sunday = new Date(monday);
+  return (
+    sunday.setDate(monday.getDate() + 6),
+    sunday.setHours(23, 59, 59),
+    listEvents(creds, 'primary', {
+      timeMin: monday.toISOString(),
+      timeMax: sunday.toISOString(),
+      maxResults: 100,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    })
+  );
 }
-
-/** Events for next calendar week. */
 export async function getNextWeekEvents(creds) {
-  const now = new Date();
-  const day = now.getDay();
-  const diffToMon = day === 0 ? 1 : 8 - day;
-  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMon);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  sunday.setHours(23, 59, 59);
-  return listEvents(creds, 'primary', {
-    timeMin: monday.toISOString(),
-    timeMax: sunday.toISOString(),
-    maxResults: 100,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
+  const now = new Date(),
+    day = now.getDay(),
+    diffToMon = 0 === day ? 1 : 8 - day,
+    monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToMon),
+    sunday = new Date(monday);
+  return (
+    sunday.setDate(monday.getDate() + 6),
+    sunday.setHours(23, 59, 59),
+    listEvents(creds, 'primary', {
+      timeMin: monday.toISOString(),
+      timeMax: sunday.toISOString(),
+      maxResults: 100,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    })
+  );
 }
-
-/** Events for the current calendar month. */
 export async function getThisMonthEvents(creds) {
   const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString();
   return listEvents(creds, 'primary', {
-    timeMin: start,
-    timeMax: end,
+    timeMin: new Date(now.getFullYear(), now.getMonth(), 1).toISOString(),
+    timeMax: new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString(),
     maxResults: 100,
-    singleEvents: true,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
-/** The single next upcoming event from now. */
 export async function getNextEvent(creds) {
-  const events = await listEvents(creds, 'primary', {
-    timeMin: new Date().toISOString(),
-    maxResults: 1,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  return events[0] ?? null;
+  return (
+    (
+      await listEvents(creds, 'primary', {
+        timeMin: new Date().toISOString(),
+        maxResults: 1,
+        singleEvents: !0,
+        orderBy: 'startTime',
+      })
+    )[0] ?? null
+  );
 }
-
-/**
- * Find free slots of at least `minMinutes` within working hours on a given date.
- * @param {string} dateStr - YYYY-MM-DD
- * @param {number} workStart - hour (0-23), default 9
- * @param {number} workEnd   - hour (0-23), default 18
- * @param {number} minMinutes - minimum slot length in minutes, default 30
- */
 export async function getFreeSlots(creds, dateStr, workStart = 9, workEnd = 18, minMinutes = 30) {
-  const dayStart = new Date(`${dateStr}T${String(workStart).padStart(2, '0')}:00:00`);
-  const dayEnd = new Date(`${dateStr}T${String(workEnd).padStart(2, '0')}:00:00`);
-  const events = await listEvents(creds, 'primary', {
-    timeMin: dayStart.toISOString(),
-    timeMax: dayEnd.toISOString(),
-    maxResults: 50,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-
-  const busy = events
-    .filter((e) => e.start?.dateTime)
-    .map((e) => ({ start: new Date(e.start.dateTime), end: new Date(e.end.dateTime) }))
-    .sort((a, b) => a.start - b.start);
-
-  const slots = [];
+  const dayStart = new Date(`${dateStr}T${String(workStart).padStart(2, '0')}:00:00`),
+    dayEnd = new Date(`${dateStr}T${String(workEnd).padStart(2, '0')}:00:00`),
+    busy = (
+      await listEvents(creds, 'primary', {
+        timeMin: dayStart.toISOString(),
+        timeMax: dayEnd.toISOString(),
+        maxResults: 50,
+        singleEvents: !0,
+        orderBy: 'startTime',
+      })
+    )
+      .filter((e) => e.start?.dateTime)
+      .map((e) => ({ start: new Date(e.start.dateTime), end: new Date(e.end.dateTime) }))
+      .sort((a, b) => a.start - b.start),
+    slots = [];
   let cursor = dayStart;
-
-  for (const { start, end } of busy) {
-    if (cursor < start) {
-      const gapMins = (start - cursor) / 60_000;
-      if (gapMins >= minMinutes) slots.push({ start: new Date(cursor), end: new Date(start) });
-    }
-    if (end > cursor) cursor = end;
-  }
-  if (cursor < dayEnd) {
-    const gapMins = (dayEnd - cursor) / 60_000;
-    if (gapMins >= minMinutes) slots.push({ start: new Date(cursor), end: new Date(dayEnd) });
-  }
-
-  return slots;
+  for (const { start: start, end: end } of busy)
+    (cursor < start &&
+      (start - cursor) / 6e4 >= minMinutes &&
+      slots.push({ start: new Date(cursor), end: new Date(start) }),
+      end > cursor && (cursor = end));
+  return (
+    cursor < dayEnd &&
+      (dayEnd - cursor) / 6e4 >= minMinutes &&
+      slots.push({ start: new Date(cursor), end: new Date(dayEnd) }),
+    slots
+  );
 }
-
-/**
- * Count events in a time range.
- */
 export async function countEvents(creds, calendarId = 'primary', timeMin, timeMax) {
-  const events = await listEvents(creds, calendarId, {
-    timeMin: toRFC3339(timeMin),
-    timeMax: toRFC3339(timeMax),
-    maxResults: 100,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  return events.length;
+  return (
+    await listEvents(creds, calendarId, {
+      timeMin: toRFC3339(timeMin),
+      timeMax: toRFC3339(timeMax),
+      maxResults: 100,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    })
+  ).length;
 }
-
-/**
- * Find events that include a specific attendee email.
- */
 export async function getEventsByAttendee(creds, attendeeEmail, maxResults = 20) {
   return searchEvents(creds, attendeeEmail, maxResults);
 }
-
-/**
- * Patch specific fields on an event without a full replace.
- */
 export async function patchEvent(creds, calendarId = 'primary', eventId, patch = {}) {
   return calFetch(
     creds,
     `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${eventId}`,
-    {
-      method: 'PATCH',
-      body: JSON.stringify(patch),
-    },
+    { method: 'PATCH', body: JSON.stringify(patch) },
   );
 }
-
-/**
- * Move event to a different calendar.
- */
 export async function moveEvent(
   creds,
   sourceCalendarId = 'primary',
@@ -346,55 +278,41 @@ export async function moveEvent(
   return calFetch(
     creds,
     `${CALENDAR_BASE}/calendars/${encodeURIComponent(sourceCalendarId)}/events/${eventId}/move?${params}`,
-    {
-      method: 'POST',
-    },
+    { method: 'POST' },
   );
 }
-
-/**
- * Duplicate an existing event, optionally shifting its time.
- * @param {number} shiftDays - days to shift the duplicate (default 0 = same time)
- */
 export async function duplicateEvent(creds, calendarId = 'primary', eventId, shiftDays = 0) {
-  const event = await getEvent(creds, calendarId, eventId);
-  const clone = { ...event };
-  delete clone.id;
-  delete clone.iCalUID;
-  delete clone.etag;
-  delete clone.htmlLink;
-  delete clone.recurringEventId;
-
-  if (shiftDays !== 0) {
-    const shift = shiftDays * 86_400_000;
-    if (clone.start?.dateTime) {
-      clone.start = {
+  const clone = { ...(await getEvent(creds, calendarId, eventId)) };
+  if (
+    (delete clone.id,
+    delete clone.iCalUID,
+    delete clone.etag,
+    delete clone.htmlLink,
+    delete clone.recurringEventId,
+    0 !== shiftDays)
+  ) {
+    const shift = 864e5 * shiftDays;
+    if (clone.start?.dateTime)
+      ((clone.start = {
         ...clone.start,
         dateTime: new Date(new Date(clone.start.dateTime).getTime() + shift).toISOString(),
-      };
-      clone.end = {
-        ...clone.end,
-        dateTime: new Date(new Date(clone.end.dateTime).getTime() + shift).toISOString(),
-      };
-    } else if (clone.start?.date) {
-      const shiftDate = (d) => {
-        const shifted = new Date(new Date(`${d}T00:00:00`).getTime() + shift);
-        return shifted.toISOString().split('T')[0];
-      };
-      clone.start = { date: shiftDate(clone.start.date) };
-      clone.end = { date: shiftDate(clone.end.date) };
+      }),
+        (clone.end = {
+          ...clone.end,
+          dateTime: new Date(new Date(clone.end.dateTime).getTime() + shift).toISOString(),
+        }));
+    else if (clone.start?.date) {
+      const shiftDate = (d) =>
+        new Date(new Date(`${d}T00:00:00`).getTime() + shift).toISOString().split('T')[0];
+      ((clone.start = { date: shiftDate(clone.start.date) }),
+        (clone.end = { date: shiftDate(clone.end.date) }));
     }
   }
-
   return calFetch(creds, `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events`, {
     method: 'POST',
     body: JSON.stringify(clone),
   });
 }
-
-/**
- * Get events within a specific date range on any named calendar.
- */
 export async function getEventsInRange(
   creds,
   calendarId = 'primary',
@@ -405,142 +323,120 @@ export async function getEventsInRange(
   return listEvents(creds, calendarId, {
     timeMin: toRFC3339(startDate),
     timeMax: toRFC3339(endDate),
-    maxResults,
-    singleEvents: true,
+    maxResults: maxResults,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
-/**
- * Delete all events on a given date (YYYY-MM-DD). Returns count of deleted events.
- */
 export async function clearDay(creds, calendarId = 'primary', dateStr) {
-  const start = new Date(`${dateStr}T00:00:00`).toISOString();
-  const end = new Date(`${dateStr}T23:59:59`).toISOString();
-  const events = await listEvents(creds, calendarId, {
-    timeMin: start,
-    timeMax: end,
-    maxResults: 50,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  await Promise.all(events.map((e) => deleteEvent(creds, calendarId, e.id)));
-  return events.length;
+  const start = new Date(`${dateStr}T00:00:00`).toISOString(),
+    end = new Date(`${dateStr}T23:59:59`).toISOString(),
+    events = await listEvents(creds, calendarId, {
+      timeMin: start,
+      timeMax: end,
+      maxResults: 50,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    });
+  return (
+    await Promise.all(events.map((e) => deleteEvent(creds, calendarId, e.id))),
+    events.length
+  );
 }
-
-/**
- * Get all events involving a specific location keyword.
- */
 export async function getEventsByLocation(creds, locationQuery, maxResults = 20) {
   return searchEvents(creds, locationQuery, maxResults);
 }
-
-/**
- * Query the Freebusy API to get busy intervals for a list of calendars.
- * Returns { calendars: { [id]: { busy: [{start, end}] } } }
- */
 export async function getFreeBusy(creds, calendarIds = ['primary'], timeMin, timeMax) {
   const body = {
     timeMin: toRFC3339(timeMin),
     timeMax: toRFC3339(timeMax),
-    items: calendarIds.map((id) => ({ id })),
+    items: calendarIds.map((id) => ({ id: id })),
   };
   return calFetch(creds, `${CALENDAR_BASE}/freeBusy`, {
     method: 'POST',
     body: JSON.stringify(body),
   });
 }
-
-/**
- * Convenience: list events for a specific named day (today/tomorrow/yesterday or YYYY-MM-DD).
- */
 export async function getEventsOnDate(creds, dateStr) {
-  const lower = (dateStr ?? '').toLowerCase().trim();
-  const now = new Date();
+  const lower = (dateStr ?? '').toLowerCase().trim(),
+    now = new Date();
   let target;
-  if (lower === 'today') target = now;
-  else if (lower === 'tomorrow') target = new Date(now.getTime() + 86_400_000);
-  else if (lower === 'yesterday') target = new Date(now.getTime() - 86_400_000);
-  else target = new Date(dateStr);
-  if (Number.isNaN(target.getTime())) throw new Error(`Invalid date: "${dateStr}"`);
-  const y = target.getFullYear();
-  const m = target.getMonth();
-  const d = target.getDate();
-  const start = new Date(y, m, d).toISOString();
-  const end = new Date(y, m, d, 23, 59, 59).toISOString();
+  if (
+    ((target =
+      'today' === lower
+        ? now
+        : 'tomorrow' === lower
+          ? new Date(now.getTime() + 864e5)
+          : 'yesterday' === lower
+            ? new Date(now.getTime() - 864e5)
+            : new Date(dateStr)),
+    Number.isNaN(target.getTime()))
+  )
+    throw new Error(`Invalid date: "${dateStr}"`);
+  const y = target.getFullYear(),
+    m = target.getMonth(),
+    d = target.getDate();
   return listEvents(creds, 'primary', {
-    timeMin: start,
-    timeMax: end,
+    timeMin: new Date(y, m, d).toISOString(),
+    timeMax: new Date(y, m, d, 23, 59, 59).toISOString(),
     maxResults: 50,
-    singleEvents: true,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
 }
-
-// 21 – rename only the title
 export async function renameEvent(creds, calendarId = 'primary', eventId, newSummary) {
   if (!newSummary?.trim()) throw new Error('newSummary is required');
   return patchEvent(creds, calendarId, eventId, { summary: newSummary.trim() });
 }
-
-// 22 – set event color (colorId 1–11)
 export async function setEventColor(creds, calendarId = 'primary', eventId, colorId) {
   return patchEvent(creds, calendarId, eventId, { colorId: String(colorId) });
 }
-
-// 23 – this weekend (Sat + Sun)
 export async function getThisWeekendEvents(creds) {
-  const now = new Date();
-  const day = now.getDay(); // 0=Sun,6=Sat
-  const diffToSat = day === 0 ? -1 : 6 - day;
-  const sat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToSat);
-  const sun = new Date(sat);
-  sun.setDate(sat.getDate() + 1);
-  sun.setHours(23, 59, 59);
-  return listEvents(creds, 'primary', {
-    timeMin: sat.toISOString(),
-    timeMax: sun.toISOString(),
-    maxResults: 50,
-    singleEvents: true,
-    orderBy: 'startTime',
+  const now = new Date(),
+    day = now.getDay(),
+    diffToSat = 0 === day ? -1 : 6 - day,
+    sat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diffToSat),
+    sun = new Date(sat);
+  return (
+    sun.setDate(sat.getDate() + 1),
+    sun.setHours(23, 59, 59),
+    listEvents(creds, 'primary', {
+      timeMin: sat.toISOString(),
+      timeMax: sun.toISOString(),
+      maxResults: 50,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    })
+  );
+}
+export async function setEventReminders(creds, calendarId = 'primary', eventId, minutesList = []) {
+  return patchEvent(creds, calendarId, eventId, {
+    reminders: minutesList.length
+      ? {
+          useDefault: !1,
+          overrides: minutesList.map((m) => ({ method: 'popup', minutes: Number(m) })),
+        }
+      : { useDefault: !0 },
   });
 }
-
-// 24 – replace all reminders on an event
-export async function setEventReminders(creds, calendarId = 'primary', eventId, minutesList = []) {
-  const reminders = minutesList.length
-    ? {
-        useDefault: false,
-        overrides: minutesList.map((m) => ({ method: 'popup', minutes: Number(m) })),
-      }
-    : { useDefault: true };
-  return patchEvent(creds, calendarId, eventId, { reminders });
-}
-
-// 25 – bulk create events from an array
 export async function bulkCreateEvents(creds, calendarId = 'primary', eventDataArray = []) {
   if (!eventDataArray.length) throw new Error('eventDataArray must not be empty');
   return Promise.all(eventDataArray.map((ed) => createEvent(creds, calendarId, ed)));
 }
-
-// 26 – get all events that have a Google Meet / video conference link
 export async function getEventsWithVideoConference(creds, days = 30, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => e.conferenceData?.entryPoints?.length > 0);
+  return (await getUpcomingEvents(creds, days, maxResults)).filter(
+    (e) => e.conferenceData?.entryPoints?.length > 0,
+  );
 }
-
-// 27 – accept / decline / tentative RSVP on an event
 export async function rsvpEvent(creds, calendarId = 'primary', eventId, selfEmail, status) {
   const VALID = ['accepted', 'declined', 'tentative'];
   if (!VALID.includes(status)) throw new Error(`status must be one of: ${VALID.join(', ')}`);
-  const event = await getEvent(creds, calendarId, eventId);
-  const attendees = (event.attendees ?? []).map((a) =>
-    a.email.toLowerCase() === selfEmail.toLowerCase() ? { ...a, responseStatus: status } : a,
-  );
-  return patchEvent(creds, calendarId, eventId, { attendees });
+  return patchEvent(creds, calendarId, eventId, {
+    attendees: ((await getEvent(creds, calendarId, eventId)).attendees ?? []).map((a) =>
+      a.email.toLowerCase() === selfEmail.toLowerCase() ? { ...a, responseStatus: status } : a,
+    ),
+  });
 }
-
-// 28 – get events added / updated since a given timestamp (changelog)
 export async function getRecentlyModifiedEvents(
   creds,
   calendarId = 'primary',
@@ -555,14 +451,15 @@ export async function getRecentlyModifiedEvents(
     orderBy: 'updated',
     showDeleted: 'false',
   });
-  const data = await calFetch(
-    creds,
-    `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events?${params}`,
+  return (
+    (
+      await calFetch(
+        creds,
+        `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events?${params}`,
+      )
+    ).items ?? []
   );
-  return data.items ?? [];
 }
-
-// 29 – list all instances of a recurring event
 export async function getRecurringEventInstances(
   creds,
   calendarId = 'primary',
@@ -571,52 +468,49 @@ export async function getRecurringEventInstances(
 ) {
   if (!recurringEventId) throw new Error('recurringEventId is required');
   const params = new URLSearchParams({ maxResults: String(Math.min(maxResults, 100)) });
-  const data = await calFetch(
-    creds,
-    `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${recurringEventId}/instances?${params}`,
+  return (
+    (
+      await calFetch(
+        creds,
+        `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events/${recurringEventId}/instances?${params}`,
+      )
+    ).items ?? []
   );
-  return data.items ?? [];
 }
-
-// 30 – summarise how many hours of meetings are scheduled in a range
 export async function getMeetingHours(creds, calendarId = 'primary', timeMin, timeMax) {
-  const events = await listEvents(creds, calendarId, {
-    timeMin: new Date(timeMin).toISOString(),
-    timeMax: new Date(timeMax).toISOString(),
-    maxResults: 100,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  const timedEvents = events.filter((e) => e.start?.dateTime && e.end?.dateTime);
-  const totalMs = timedEvents.reduce(
-    (sum, e) => sum + (new Date(e.end.dateTime) - new Date(e.start.dateTime)),
-    0,
-  );
-  const totalMinutes = Math.round(totalMs / 60_000);
-  return { count: timedEvents.length, totalMinutes, totalHours: +(totalMinutes / 60).toFixed(2) };
+  const timedEvents = (
+      await listEvents(creds, calendarId, {
+        timeMin: new Date(timeMin).toISOString(),
+        timeMax: new Date(timeMax).toISOString(),
+        maxResults: 100,
+        singleEvents: !0,
+        orderBy: 'startTime',
+      })
+    ).filter((e) => e.start?.dateTime && e.end?.dateTime),
+    totalMs = timedEvents.reduce(
+      (sum, e) => sum + (new Date(e.end.dateTime) - new Date(e.start.dateTime)),
+      0,
+    ),
+    totalMinutes = Math.round(totalMs / 6e4);
+  return {
+    count: timedEvents.length,
+    totalMinutes: totalMinutes,
+    totalHours: +(totalMinutes / 60).toFixed(2),
+  };
 }
-
-// 31 – get all declined events
 export async function getDeclinedEvents(creds, days = 30, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => e.attendees?.some((a) => a.self && a.responseStatus === 'declined'));
-}
-
-// 32 – get events where response is still needs-action (no RSVP yet)
-export async function getUnansweredInvites(creds, days = 30, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) =>
-    e.attendees?.some((a) => a.self && a.responseStatus === 'needsAction'),
+  return (await getUpcomingEvents(creds, days, maxResults)).filter((e) =>
+    e.attendees?.some((a) => a.self && 'declined' === a.responseStatus),
   );
 }
-
-// 33 – get events the user organised (they are the organiser)
-export async function getOrganisedEvents(creds, days = 30, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => e.organizer?.self === true);
+export async function getUnansweredInvites(creds, days = 30, maxResults = 20) {
+  return (await getUpcomingEvents(creds, days, maxResults)).filter((e) =>
+    e.attendees?.some((a) => a.self && 'needsAction' === a.responseStatus),
+  );
 }
-
-// 34 – get only all-day events in a range
+export async function getOrganisedEvents(creds, days = 30, maxResults = 20) {
+  return (await getUpcomingEvents(creds, days, maxResults)).filter((e) => !0 === e.organizer?.self);
+}
 export async function getAllDayEvents(
   creds,
   calendarId = 'primary',
@@ -624,90 +518,80 @@ export async function getAllDayEvents(
   timeMax,
   maxResults = 50,
 ) {
-  const events = await listEvents(creds, calendarId, {
-    timeMin: new Date(timeMin).toISOString(),
-    timeMax: new Date(timeMax).toISOString(),
-    maxResults,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  return events.filter((e) => !!e.start?.date);
+  return (
+    await listEvents(creds, calendarId, {
+      timeMin: new Date(timeMin).toISOString(),
+      timeMax: new Date(timeMax).toISOString(),
+      maxResults: maxResults,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    })
+  ).filter((e) => !!e.start?.date);
 }
-
-// 35 – add a description / notes to an event (append or replace)
 export async function setEventDescription(
   creds,
   calendarId = 'primary',
   eventId,
   description,
-  append = false,
+  append = !1,
 ) {
   if (append) {
-    const existing = await getEvent(creds, calendarId, eventId);
-    const current = existing.description ?? '';
+    const current = (await getEvent(creds, calendarId, eventId)).description ?? '';
     description = current ? `${current}\n\n${description}` : description;
   }
-  return patchEvent(creds, calendarId, eventId, { description });
+  return patchEvent(creds, calendarId, eventId, { description: description });
 }
-
-// 36 – update event location only
 export async function setEventLocation(creds, calendarId = 'primary', eventId, location) {
-  return patchEvent(creds, calendarId, eventId, { location });
+  return patchEvent(creds, calendarId, eventId, { location: location });
 }
-
-// 37 – get events that overlap with a specific time window (conflict detection)
 export async function getConflictingEvents(creds, startISO, endISO, calendarId = 'primary') {
   const events = await listEvents(creds, calendarId, {
-    timeMin: new Date(startISO).toISOString(),
-    timeMax: new Date(endISO).toISOString(),
-    maxResults: 50,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  const start = new Date(startISO);
-  const end = new Date(endISO);
+      timeMin: new Date(startISO).toISOString(),
+      timeMax: new Date(endISO).toISOString(),
+      maxResults: 50,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    }),
+    start = new Date(startISO),
+    end = new Date(endISO);
   return events.filter((e) => {
-    if (!e.start?.dateTime) return false;
-    const eStart = new Date(e.start.dateTime);
-    const eEnd = new Date(e.end.dateTime);
+    if (!e.start?.dateTime) return !1;
+    const eStart = new Date(e.start.dateTime),
+      eEnd = new Date(e.end.dateTime);
     return eStart < end && eEnd > start;
   });
 }
-
-// 38 – snooze an event forward by N minutes
 export async function snoozeEvent(creds, calendarId = 'primary', eventId, minutes = 30) {
   const event = await getEvent(creds, calendarId, eventId);
   if (!event.start?.dateTime) throw new Error('Cannot snooze an all-day event');
-  const shift = minutes * 60_000;
-  const newStart = new Date(new Date(event.start.dateTime).getTime() + shift).toISOString();
-  const newEnd = new Date(new Date(event.end.dateTime).getTime() + shift).toISOString();
-  const tz = event.start.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const shift = 6e4 * minutes,
+    newStart = new Date(new Date(event.start.dateTime).getTime() + shift).toISOString(),
+    newEnd = new Date(new Date(event.end.dateTime).getTime() + shift).toISOString(),
+    tz = event.start.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
   return patchEvent(creds, calendarId, eventId, {
     start: { dateTime: newStart, timeZone: tz },
     end: { dateTime: newEnd, timeZone: tz },
   });
 }
-
-// 39 – get events created by a specific person (by creator email)
 export async function getEventsByCreator(creds, creatorEmail, days = 30, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => e.creator?.email?.toLowerCase() === creatorEmail.toLowerCase());
+  return (await getUpcomingEvents(creds, days, maxResults)).filter(
+    (e) => e.creator?.email?.toLowerCase() === creatorEmail.toLowerCase(),
+  );
 }
-
-// 40 – extend an event's end time by N minutes
 export async function extendEvent(creds, calendarId = 'primary', eventId, minutes = 30) {
   const event = await getEvent(creds, calendarId, eventId);
   if (!event.end?.dateTime) throw new Error('Cannot extend an all-day event');
-  const newEnd = new Date(new Date(event.end.dateTime).getTime() + minutes * 60_000).toISOString();
-  const tz = event.end.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return patchEvent(creds, calendarId, eventId, { end: { dateTime: newEnd, timeZone: tz } });
+  return patchEvent(creds, calendarId, eventId, {
+    end: {
+      dateTime: new Date(new Date(event.end.dateTime).getTime() + 6e4 * minutes).toISOString(),
+      timeZone: event.end.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  });
 }
-
-// 41 – shorten an event's end time by N minutes
 export async function shortenEvent(creds, calendarId = 'primary', eventId, minutes = 15) {
   const event = await getEvent(creds, calendarId, eventId);
   if (!event.end?.dateTime) throw new Error('Cannot shorten an all-day event');
-  const newEnd = new Date(new Date(event.end.dateTime).getTime() - minutes * 60_000);
+  const newEnd = new Date(new Date(event.end.dateTime).getTime() - 6e4 * minutes);
   if (newEnd <= new Date(event.start.dateTime))
     throw new Error('Shortening by that amount would make the event end before or at its start');
   const tz = event.end.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -715,163 +599,139 @@ export async function shortenEvent(creds, calendarId = 'primary', eventId, minut
     end: { dateTime: newEnd.toISOString(), timeZone: tz },
   });
 }
-
-// 42 – get a daily breakdown (event count + total hours) for a date range
 export async function getDailyBreakdown(creds, calendarId = 'primary', timeMin, timeMax) {
   const events = await listEvents(creds, calendarId, {
-    timeMin: new Date(timeMin).toISOString(),
-    timeMax: new Date(timeMax).toISOString(),
-    maxResults: 100,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-  const days = {};
+      timeMin: new Date(timeMin).toISOString(),
+      timeMax: new Date(timeMax).toISOString(),
+      maxResults: 100,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    }),
+    days = {};
   for (const e of events) {
     const dateKey = (e.start?.dateTime ?? e.start?.date ?? '').slice(0, 10);
-    if (!dateKey) continue;
-    if (!days[dateKey]) days[dateKey] = { count: 0, totalMinutes: 0 };
-    days[dateKey].count += 1;
-    if (e.start?.dateTime && e.end?.dateTime) {
-      days[dateKey].totalMinutes += Math.round(
-        (new Date(e.end.dateTime) - new Date(e.start.dateTime)) / 60_000,
-      );
-    }
+    dateKey &&
+      (days[dateKey] || (days[dateKey] = { count: 0, totalMinutes: 0 }),
+      (days[dateKey].count += 1),
+      e.start?.dateTime &&
+        e.end?.dateTime &&
+        (days[dateKey].totalMinutes += Math.round(
+          (new Date(e.end.dateTime) - new Date(e.start.dateTime)) / 6e4,
+        )));
   }
-  return days; // { 'YYYY-MM-DD': { count, totalMinutes } }
+  return days;
 }
-
-// 43 – find the longest gap (free block) between events on a given day
 export async function getLongestFreeBlock(creds, dateStr, workStart = 9, workEnd = 18) {
   const slots = await getFreeSlots(creds, dateStr, workStart, workEnd, 0);
-  if (!slots.length) return null;
-  return slots.reduce((best, s) => (s.end - s.start > best.end - best.start ? s : best), slots[0]);
+  return slots.length
+    ? slots.reduce((best, s) => (s.end - s.start > best.end - best.start ? s : best), slots[0])
+    : null;
 }
-
-// 44 – copy all events from one day to another day
 export async function copyDayEvents(creds, calendarId = 'primary', sourceDateStr, targetDateStr) {
-  const sourceStart = new Date(`${sourceDateStr}T00:00:00`).toISOString();
-  const sourceEnd = new Date(`${sourceDateStr}T23:59:59`).toISOString();
-  const events = await listEvents(creds, calendarId, {
-    timeMin: sourceStart,
-    timeMax: sourceEnd,
-    maxResults: 50,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
+  const sourceStart = new Date(`${sourceDateStr}T00:00:00`).toISOString(),
+    sourceEnd = new Date(`${sourceDateStr}T23:59:59`).toISOString(),
+    events = await listEvents(creds, calendarId, {
+      timeMin: sourceStart,
+      timeMax: sourceEnd,
+      maxResults: 50,
+      singleEvents: !0,
+      orderBy: 'startTime',
+    });
   if (!events.length) return [];
-  const sourceDate = new Date(`${sourceDateStr}T00:00:00`);
-  const targetDate = new Date(`${targetDateStr}T00:00:00`);
-  const shiftMs = targetDate - sourceDate;
+  const sourceDate = new Date(`${sourceDateStr}T00:00:00`),
+    shiftMs = new Date(`${targetDateStr}T00:00:00`) - sourceDate;
   return Promise.all(
     events.map((e) => {
       const clone = { ...e };
-      delete clone.id;
-      delete clone.iCalUID;
-      delete clone.etag;
-      delete clone.htmlLink;
-      delete clone.recurringEventId;
-      if (clone.start?.dateTime) {
-        clone.start = {
+      if (
+        (delete clone.id,
+        delete clone.iCalUID,
+        delete clone.etag,
+        delete clone.htmlLink,
+        delete clone.recurringEventId,
+        clone.start?.dateTime)
+      )
+        ((clone.start = {
           ...clone.start,
           dateTime: new Date(new Date(clone.start.dateTime).getTime() + shiftMs).toISOString(),
-        };
-        clone.end = {
-          ...clone.end,
-          dateTime: new Date(new Date(clone.end.dateTime).getTime() + shiftMs).toISOString(),
-        };
-      } else if (clone.start?.date) {
+        }),
+          (clone.end = {
+            ...clone.end,
+            dateTime: new Date(new Date(clone.end.dateTime).getTime() + shiftMs).toISOString(),
+          }));
+      else if (clone.start?.date) {
         const shift = (d) =>
           new Date(new Date(`${d}T00:00:00`).getTime() + shiftMs).toISOString().slice(0, 10);
-        clone.start = { date: shift(clone.start.date) };
-        clone.end = { date: shift(clone.end.date) };
+        ((clone.start = { date: shift(clone.start.date) }),
+          (clone.end = { date: shift(clone.end.date) }));
       }
       return calFetch(
         creds,
         `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId)}/events`,
-        {
-          method: 'POST',
-          body: JSON.stringify(clone),
-        },
+        { method: 'POST', body: JSON.stringify(clone) },
       );
     }),
   );
 }
-
-// 45 – set event visibility (default / public / private / confidential)
 export async function setEventVisibility(creds, calendarId = 'primary', eventId, visibility) {
   const VALID = ['default', 'public', 'private', 'confidential'];
   if (!VALID.includes(visibility))
     throw new Error(`visibility must be one of: ${VALID.join(', ')}`);
-  return patchEvent(creds, calendarId, eventId, { visibility });
+  return patchEvent(creds, calendarId, eventId, { visibility: visibility });
 }
-
-// 46 – set event status (confirmed / tentative / cancelled)
 export async function setEventStatus(creds, calendarId = 'primary', eventId, status) {
   const VALID = ['confirmed', 'tentative', 'cancelled'];
   if (!VALID.includes(status)) throw new Error(`status must be one of: ${VALID.join(', ')}`);
-  return patchEvent(creds, calendarId, eventId, { status });
+  return patchEvent(creds, calendarId, eventId, { status: status });
 }
-
-// 47 – get events that have no attendees (solo / personal events only)
 export async function getSoloEvents(creds, days = 14, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => !e.attendees || e.attendees.length === 0);
+  return (await getUpcomingEvents(creds, days, maxResults)).filter(
+    (e) => !e.attendees || 0 === e.attendees.length,
+  );
 }
-
-// 48 – get events with a guest count above a threshold (large meetings)
 export async function getLargeMeetings(creds, minAttendees = 5, days = 14, maxResults = 20) {
-  const events = await getUpcomingEvents(creds, days, maxResults);
-  return events.filter((e) => (e.attendees?.length ?? 0) >= minAttendees);
+  return (await getUpcomingEvents(creds, days, maxResults)).filter(
+    (e) => (e.attendees?.length ?? 0) >= minAttendees,
+  );
 }
-
-// 49 – reschedule an event to a completely new start (preserves duration)
 export async function rescheduleEvent(creds, calendarId = 'primary', eventId, newStartISO) {
   const event = await getEvent(creds, calendarId, eventId);
   if (!event.start?.dateTime) throw new Error('Cannot reschedule an all-day event with this tool');
-  const durationMs = new Date(event.end.dateTime) - new Date(event.start.dateTime);
-  const newStart = new Date(newStartISO);
-  const newEnd = new Date(newStart.getTime() + durationMs);
-  const tz = event.start.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const durationMs = new Date(event.end.dateTime) - new Date(event.start.dateTime),
+    newStart = new Date(newStartISO),
+    newEnd = new Date(newStart.getTime() + durationMs),
+    tz = event.start.timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
   return patchEvent(creds, calendarId, eventId, {
     start: { dateTime: newStart.toISOString(), timeZone: tz },
     end: { dateTime: newEnd.toISOString(), timeZone: tz },
   });
 }
-
-// 50 – get a plain-text agenda summary string for a date range (for sharing / email)
 export async function getAgendaSummary(creds, timeMin, timeMax, maxResults = 50) {
   const events = await listEvents(creds, 'primary', {
     timeMin: new Date(timeMin).toISOString(),
     timeMax: new Date(timeMax).toISOString(),
-    maxResults,
-    singleEvents: true,
+    maxResults: maxResults,
+    singleEvents: !0,
     orderBy: 'startTime',
   });
-  if (!events.length) return 'No events scheduled in this period.';
-  const lines = events.map((e) => {
-    const start = e.start?.dateTime
-      ? new Date(e.start.dateTime).toLocaleString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
+  return events.length
+    ? events
+        .map((e) => {
+          const parts = [
+            `• ${e.start?.dateTime ? new Date(e.start.dateTime).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : new Date(`${e.start.date}T00:00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' (all day)'} — ${e.summary || '(No title)'}`,
+          ];
+          return (
+            e.location && parts.push(`  📍 ${e.location}`),
+            e.attendees?.length &&
+              parts.push(
+                `  👥 ${e.attendees
+                  .slice(0, 3)
+                  .map((a) => a.displayName || a.email)
+                  .join(', ')}${e.attendees.length > 3 ? ' +' + (e.attendees.length - 3) : ''}`,
+              ),
+            parts.join('\n')
+          );
         })
-      : new Date(`${e.start.date}T00:00:00`).toLocaleDateString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-        }) + ' (all day)';
-    const parts = [`• ${start} — ${e.summary || '(No title)'}`];
-    if (e.location) parts.push(`  📍 ${e.location}`);
-    if (e.attendees?.length)
-      parts.push(
-        `  👥 ${e.attendees
-          .slice(0, 3)
-          .map((a) => a.displayName || a.email)
-          .join(', ')}${e.attendees.length > 3 ? ` +${e.attendees.length - 3}` : ''}`,
-      );
-    return parts.join('\n');
-  });
-  return lines.join('\n');
+        .join('\n')
+    : 'No events scheduled in this period.';
 }

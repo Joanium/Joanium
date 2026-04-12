@@ -1,9 +1,3 @@
-/* ─────────────────────────────────────────────
-   providers.css
-   Provider row — compact API key entry UI
-   (used inside the Providers settings panel)
-───────────────────────────────────────────── */
-
 .settings-provider-row {
   display: grid;
   grid-template-columns: 40px 1fr auto;
@@ -18,16 +12,6 @@
     transform var(--transition-fast),
     box-shadow var(--transition-mid);
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .settings-provider-row:hover {
-    border-color: color-mix(in srgb, var(--p-color) 30%, var(--border));
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-  }
-}
-
-/* ── Provider icon ── */
 .spr-icon {
   width: 36px;
   height: 36px;
@@ -39,36 +23,28 @@
   justify-content: center;
   overflow: hidden;
 }
-
 .spr-icon-img {
   width: 20px;
   height: 20px;
   object-fit: contain;
 }
-
 .spr-icon-fallback {
   font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
 }
-
 .spr-icon.icon-missing .spr-icon-img {
   display: none;
 }
-
-/* ── Key input ── */
 .spr-key-wrap {
   width: 100%;
 }
-
 .spr-key-input {
   width: 100%;
   border-radius: 12px;
   padding: 10px 40px 10px 12px;
   font-size: 12px;
 }
-
-/* ── Save button ── */
 .spr-save-btn {
   padding: 8px 14px;
   border-radius: var(--radius-full);
@@ -83,18 +59,20 @@
     box-shadow var(--transition-mid),
     opacity var(--transition-mid);
 }
-
 @media (hover: hover) and (pointer: fine) {
+  .settings-provider-row:hover {
+    border-color: color-mix(in srgb, var(--p-color) 30%, var(--border));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
   .spr-save-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 18px color-mix(in srgb, var(--p-color) 40%, transparent);
   }
 }
-
 .spr-save-btn:active {
   transform: scale(0.97);
 }
-
 .spr-save-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;

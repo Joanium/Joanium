@@ -7,7 +7,7 @@ export const DICTIONARY_TOOLS = [
     parameters: {
       word: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'The word to look up (e.g. "ephemeral", "serendipity", "ubiquitous")',
       },
     },

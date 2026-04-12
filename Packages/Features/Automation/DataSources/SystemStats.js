@@ -1,5 +1,4 @@
 import os from 'os';
-
 export const type = 'system_stats';
 export const meta = { label: 'System Stats', group: 'System' };
 export async function collect() {

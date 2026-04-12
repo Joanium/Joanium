@@ -1,52 +1,37 @@
-/* ─────────────────────────────────────────────
-   chat.css
-   Chat view, message rows, bubbles, assistant icon,
-   rendered markdown styles, streaming dot cursor,
-   and token footer (always visible).
-───────────────────────────────────────────── */
-
-/* ══════════════════════════════════════════
-   CHAT VIEW SHELL
-══════════════════════════════════════════ */
-#main.chat-workspace {
+#main.chat-workspace,
+.browser-preview-mount,
+.browser-preview-panel,
+.chat-column {
   position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+#main.chat-workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr;
-  min-height: 0;
-  overflow: hidden;
 }
-
 #main.chat-workspace.has-browser-preview {
   grid-template-columns: minmax(340px, 2fr) minmax(0, 3fr);
 }
-
 .chat-column {
-  position: relative;
   flex: 1;
   min-width: 0;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
-
 .chat-column .input-box {
   width: min(100%, 880px);
   max-width: min(100%, 880px);
 }
-
 .browser-preview-panel {
-  position: relative;
   min-width: 0;
-  min-height: 0;
   height: 100%;
   display: flex;
   justify-content: flex-end;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  overflow: hidden;
   z-index: 2;
   transform: translateX(18px);
   transition:
@@ -54,22 +39,19 @@
     visibility 0.22s ease,
     transform 0.28s var(--ease-out-expo);
 }
-
 .browser-preview-panel[hidden] {
   display: none !important;
 }
-
+#chat-view,
 .browser-preview-panel::before {
   display: none;
 }
-
 .browser-preview-panel.is-active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(0);
 }
-
 .browser-preview-card {
   position: relative;
   pointer-events: auto;
@@ -86,21 +68,19 @@
   border-width: 1px 0 1px 1px;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--bg-secondary) 98%, white 2%),
-    color-mix(in srgb, var(--bg-primary) 99%, white 1%)
+    color-mix(in srgb, var(--bg-secondary) 98%, #fff 2%),
+    color-mix(in srgb, var(--bg-primary) 99%, #fff 1%)
   );
   box-shadow:
     -18px 0 32px -24px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
-
 .browser-preview-panel.is-reading .browser-preview-card {
   box-shadow:
     -18px 0 32px -24px rgba(0, 0, 0, 0.28),
     -18px 0 52px -34px color-mix(in srgb, var(--accent) 22%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
-
 .browser-preview-header {
   display: flex;
   align-items: flex-start;
@@ -115,18 +95,16 @@
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--bg-secondary) 97%, white 3%),
+      color-mix(in srgb, var(--bg-secondary) 97%, #fff 3%),
       color-mix(in srgb, var(--bg-primary) 99%, transparent)
     );
 }
-
 .browser-preview-copy {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
 .browser-preview-eyebrow {
   font-size: 11px;
   font-weight: 700;
@@ -134,14 +112,12 @@
   text-transform: uppercase;
   color: var(--text-muted);
 }
-
 .browser-preview-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
-
 .browser-preview-title {
   margin: 0;
   font-size: 18px;
@@ -150,14 +126,12 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
-
 .browser-preview-activity {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 }
-
 .browser-preview-activity-lights {
   display: inline-flex;
   align-items: center;
@@ -165,10 +139,9 @@
   opacity: 0;
   transform: translateY(2px);
   transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
+    opacity 0.18s,
+    transform 0.18s;
 }
-
 .browser-preview-activity-lights span {
   width: 6px;
   height: 6px;
@@ -177,24 +150,19 @@
   box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.18);
   opacity: 0.35;
 }
-
 .browser-preview-panel.is-reading .browser-preview-activity-lights {
   opacity: 1;
   transform: translateY(0);
 }
-
 .browser-preview-panel.is-reading .browser-preview-activity-lights span {
-  animation: browserPreviewReadPulse 1.15s ease-in-out infinite;
+  animation: 1.15s ease-in-out infinite browserPreviewReadPulse;
 }
-
 .browser-preview-panel.is-reading .browser-preview-activity-lights span:nth-child(2) {
   animation-delay: 0.16s;
 }
-
 .browser-preview-panel.is-reading .browser-preview-activity-lights span:nth-child(3) {
   animation-delay: 0.32s;
 }
-
 .browser-preview-status-dot {
   width: 10px;
   height: 10px;
@@ -207,28 +175,23 @@
     box-shadow var(--transition-fast),
     transform var(--transition-fast);
 }
-
 .browser-preview-status-dot.is-loading {
   background: #f59e0b;
   box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.16);
-  animation: streamDotPulse 0.9s ease-in-out infinite;
+  animation: 0.9s ease-in-out infinite streamDotPulse;
 }
-
 .browser-preview-status-dot.is-live {
   background: #10b981;
   box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.16);
 }
-
 .browser-preview-status-dot.is-paused {
   background: #6366f1;
   box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.14);
 }
-
 .browser-preview-status-dot.is-error {
   background: #ef4444;
   box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.14);
 }
-
 .browser-preview-url {
   margin: 0;
   color: var(--text-secondary);
@@ -236,7 +199,6 @@
   line-height: 1.5;
   word-break: break-word;
 }
-
 .browser-preview-status-row {
   display: flex;
   align-items: center;
@@ -245,7 +207,6 @@
   padding: 0 28px 14px;
   border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 85%, transparent);
 }
-
 .browser-preview-status-label {
   font-size: 11px;
   font-weight: 700;
@@ -253,39 +214,29 @@
   text-transform: uppercase;
   color: var(--text-muted);
 }
-
 .browser-preview-status {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
 }
-
 .browser-preview-status.is-live {
   color: #059669;
 }
-
 .browser-preview-status.is-paused {
   color: #4f46e5;
 }
-
 .browser-preview-status.is-loading {
   color: #d97706;
 }
-
 .browser-preview-status.is-error {
   color: #dc2626;
 }
-
 .browser-preview-mount {
-  position: relative;
   flex: 1;
-  min-height: 0;
-  overflow: hidden;
   padding: 0;
   box-sizing: border-box;
-  background: transparent;
+  background: 0 0;
 }
-
 .browser-preview-viewport {
   position: absolute;
   top: 0;
@@ -293,9 +244,8 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
-  background: transparent;
+  background: 0 0;
 }
-
 .browser-preview-empty {
   position: absolute;
   inset: 0;
@@ -308,32 +258,27 @@
   text-align: center;
   color: var(--text-secondary);
 }
-
 .browser-preview-empty svg {
   width: 42px;
   height: 42px;
   color: var(--accent);
   opacity: 0.9;
 }
-
 .browser-preview-empty-title {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
 }
-
 .browser-preview-empty-copy {
   margin: 0;
   max-width: 28ch;
   font-size: 13px;
   line-height: 1.65;
 }
-
 .browser-preview-panel.has-page .browser-preview-empty {
   opacity: 0;
 }
-
 @keyframes browserPreviewReadPulse {
   0%,
   100% {
@@ -347,18 +292,14 @@
     box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.12);
   }
 }
-
 #chat-view {
-  display: none;
   flex: 1;
   flex-direction: column;
   overflow: hidden;
 }
-
 #chat-view.active {
   display: flex;
 }
-
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -371,10 +312,6 @@
   scrollbar-color: var(--border) transparent;
   scroll-behavior: smooth;
 }
-
-/* ══════════════════════════════════════════
-   MESSAGE ROWS
-══════════════════════════════════════════ */
 .message-row {
   box-sizing: border-box;
   width: min(100%, 960px);
@@ -384,14 +321,11 @@
   will-change: transform, opacity;
   animation: messageIn 0.35s var(--ease-out-expo) both;
 }
-
-/* ── User message ── */
 .message-row.user {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
 }
-
 .message-row.user .bubble {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -406,24 +340,26 @@
     background var(--transition-theme),
     border-color var(--transition-theme);
 }
-
+.agent-reply,
+.message-row.assistant .content {
+  font-size: 14px;
+  line-height: 1.8;
+  user-select: text;
+}
 .message-row.user .bubble.has-attachments {
   padding: 10px;
 }
-
 .bubble-attachments {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 8px;
 }
-
 .bubble-attachment {
   width: 100%;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--bg-secondary);
 }
-
 .bubble-attachment img {
   width: 100%;
   height: 100%;
@@ -431,22 +367,18 @@
   display: block;
   object-fit: cover;
 }
-
 .bubble-text {
   margin-top: 8px;
 }
 .bubble:not(.has-attachments) .bubble-text {
   margin-top: 0;
 }
-
-/* ── Assistant message ── */
 .message-row.assistant {
   display: flex;
   gap: 12px;
   align-items: flex-start;
   overflow: visible;
 }
-
 .assistant-icon {
   width: 28px;
   height: 28px;
@@ -462,78 +394,42 @@
   margin-top: 2px;
   animation: iconPop 0.4s var(--ease-spring) both;
 }
-
 .assistant-icon svg {
   width: 15px;
   height: 15px;
 }
-
 .content-wrapper {
   flex: 1;
   min-width: 0;
 }
-
 .message-row.assistant .content {
   flex: 1;
-  font-size: 14px;
   color: var(--text-primary);
-  line-height: 1.8;
-  user-select: text;
 }
-
 .message-row.assistant .content:hover {
   transform: translateY(-1px);
   transition: transform 0.2s var(--motion-smooth);
 }
-
-/* ══════════════════════════════════════════
-   AGENT REPLY WRAPPER
-══════════════════════════════════════════ */
 .agent-reply {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 14px;
   color: var(--text-primary);
-  line-height: 1.8;
-  user-select: text;
   word-break: break-word;
 }
-
 .agent-reply-media {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
-.agent-reply-media:empty {
-  display: none;
-}
-
+.agent-reply-media:empty,
 .agent-reply-text:empty {
   display: none;
 }
-
-/* ══════════════════════════════════════════
-   STREAMING CURSOR
-   renderMarkdown() wraps text in <p> tags.
-   JS appends <span.stream-cursor> as the last
-   child of .agent-reply, so the DOM looks like:
-
-     .agent-reply.is-streaming
-       <p>last paragraph of text</p>   ← sibling
-       <span.stream-cursor />           ← sibling
-
-   Making the last <p> inside a streaming reply
-   display:inline causes it and the cursor span
-   that follows it to sit on the same line.
-   The cursor itself is a simple inline-block dot.
-══════════════════════════════════════════ */
-.agent-reply.is-streaming > p:last-of-type,
-.agent-reply-text.is-streaming > p:last-of-type {
+.agent-reply-text.is-streaming > p:last-of-type,
+.agent-reply.is-streaming > p:last-of-type {
   display: inline;
 }
-
 .stream-cursor {
   display: inline-block;
   width: 6px;
@@ -544,9 +440,8 @@
   vertical-align: middle;
   margin-left: 4px;
   margin-bottom: 2px;
-  animation: streamDotPulse 0.85s ease-in-out infinite;
+  animation: 0.85s ease-in-out infinite streamDotPulse;
 }
-
 @keyframes streamDotPulse {
   0%,
   100% {
@@ -558,17 +453,12 @@
     transform: scale(0.55);
   }
 }
-
-/* ══════════════════════════════════════════
-   MARKDOWN INSIDE ASSISTANT CONTENT
-══════════════════════════════════════════ */
 .message-row.assistant .content p {
   margin-bottom: 10px;
 }
 .message-row.assistant .content p:last-child {
   margin-bottom: 0;
 }
-
 .message-row.assistant .content h1,
 .message-row.assistant .content h2,
 .message-row.assistant .content h3 {
@@ -576,7 +466,6 @@
   margin: 12px 0 6px;
   color: var(--text-primary);
 }
-
 .message-row.assistant .content h1 {
   font-size: 18px;
 }
@@ -586,7 +475,6 @@
 .message-row.assistant .content h3 {
   font-size: 14px;
 }
-
 .message-row.assistant .content li {
   margin-bottom: 4px;
   margin-left: 18px;
@@ -597,7 +485,6 @@
 .message-row.assistant .content em {
   font-style: italic;
 }
-
 .message-row.assistant .content code {
   font-family: var(--font-mono);
   font-size: 12.5px;
@@ -606,29 +493,21 @@
   padding: 1px 5px;
   border-radius: 4px;
 }
-
 .message-row.assistant .content pre {
-  background: transparent;
+  background: 0 0;
   border: none;
   border-radius: 0;
   padding: 14px 16px;
   overflow-x: auto;
   margin: 0;
 }
-
 .message-row.assistant .content pre code {
-  background: none;
+  background: 0 0;
   border: none;
   padding: 0;
   font-size: 12.5px;
   line-height: 1.7;
 }
-
-/* ══════════════════════════════════════════
-   TOKEN FOOTER
-   Always visible (html.show-tokens added
-   at module load in Chat.js).
-══════════════════════════════════════════ */
 .token-footer {
   display: none;
   align-items: center;
@@ -641,11 +520,9 @@
   width: fit-content;
   animation: tokenFooterIn 0.3s var(--ease-spring) both;
 }
-
 html.show-tokens .token-footer {
   display: flex;
 }
-
 @keyframes tokenFooterIn {
   from {
     opacity: 0;
@@ -656,7 +533,6 @@ html.show-tokens .token-footer {
     transform: none;
   }
 }
-
 .tf-item {
   font-size: 11px;
   font-family: var(--font-mono);
@@ -664,26 +540,20 @@ html.show-tokens .token-footer {
   color: var(--text-muted);
   white-space: nowrap;
 }
-
 .tf-sep {
   font-size: 11px;
   color: var(--border);
   user-select: none;
 }
-
-.tf-in {
-  color: var(--text-muted);
-}
+.tf-in,
 .tf-out {
   color: var(--text-muted);
 }
-
 .tf-cost {
   color: var(--accent);
   font-weight: 600;
   animation: tokenCostPop 0.35s var(--ease-spring) both;
 }
-
 @keyframes tokenCostPop {
   from {
     transform: scale(0.8);
@@ -694,10 +564,6 @@ html.show-tokens .token-footer {
     opacity: 1;
   }
 }
-
-/* ══════════════════════════════════════════
-   TYPING INDICATOR
-══════════════════════════════════════════ */
 .typing-dot {
   display: inline-block;
   width: 7px;
@@ -708,8 +574,7 @@ html.show-tokens .token-footer {
   opacity: 0.7;
   animation: typingBounce 1.1s var(--ease-in-out) infinite;
 }
-
-.typing-dot:nth-child(1) {
+.typing-dot:first-child {
   animation-delay: 0s;
 }
 .typing-dot:nth-child(2) {
@@ -718,12 +583,10 @@ html.show-tokens .token-footer {
 .typing-dot:nth-child(3) {
   animation-delay: 0.36s;
 }
-
 @media (max-width: 980px) {
   #main.chat-workspace.has-browser-preview {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .browser-preview-panel {
     position: absolute;
     top: 0;
@@ -731,21 +594,17 @@ html.show-tokens .token-footer {
     bottom: 0;
     width: 100%;
   }
-
   .browser-preview-card {
     width: 100%;
     min-width: 0;
     border-radius: 24px 0 0 24px;
   }
-
   .browser-preview-header {
     padding: 18px 20px 14px;
   }
-
   .browser-preview-status-row {
     padding: 0 20px 14px;
   }
-
   .browser-preview-mount {
     padding: 0;
   }

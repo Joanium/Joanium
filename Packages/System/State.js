@@ -1,22 +1,16 @@
 export const state = {
-  // Chat
-  messages: [], // { role, content, attachments[] }
-  composerAttachments: [], // { id, type, mimeType, name, dataUrl }
-  isTyping: false,
+  messages: [],
+  composerAttachments: [],
+  isTyping: !1,
   currentChatId: null,
   conversationSummary: '',
   conversationSummaryMessageCount: 0,
-
-  // Models
-  allProviders: [], // every provider regardless of whether a key is set
-  providers: [], // providers that are ready to use
+  allProviders: [],
+  providers: [],
   selectedProvider: null,
   selectedModel: null,
-
   userName: '',
-
-  // System
-  systemPrompt: '', // built by main process; refreshed after settings save
+  systemPrompt: '',
   workspacePath: null,
   activeProject: null,
 };

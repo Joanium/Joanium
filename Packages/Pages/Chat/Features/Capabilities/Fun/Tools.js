@@ -14,13 +14,13 @@ export const FUN_TOOLS = [
     parameters: {
       number: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'A number (e.g. "42", "1969") or a date in month/day format (e.g. "3/14" for March 14th)',
       },
       type: {
         type: 'string',
-        required: false,
+        required: !1,
         description: 'Fact type: "trivia" (default), "math", "year", or "date"',
       },
     },

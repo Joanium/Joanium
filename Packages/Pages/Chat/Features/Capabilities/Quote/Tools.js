@@ -7,7 +7,7 @@ export const QUOTE_TOOLS = [
     parameters: {
       tag: {
         type: 'string',
-        required: false,
+        required: !1,
         description:
           'Quote topic/tag (e.g. "wisdom", "technology", "love", "life", "humor", "happiness")',
       },

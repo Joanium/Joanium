@@ -1,39 +1,30 @@
-async function getFreshGoogleCreds(creds) {
-  const { getFreshCreds } = await import('../../../GoogleWorkspace.js');
-  return getFreshCreds(creds);
-}
-
 const SHEETS_BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
-
 async function sheetsFetch(creds, url, options = {}) {
-  const fresh = await getFreshGoogleCreds(creds);
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${fresh.accessToken}`,
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
-  });
-
+  const fresh = await (async function (creds) {
+      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
+      return getFreshCreds(creds);
+    })(creds),
+    res = await fetch(url, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${fresh.accessToken}`,
+        'Content-Type': 'application/json',
+        ...(options.headers ?? {}),
+      },
+    });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(
       `Sheets API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
     );
   }
-
-  if (res.status === 204) return null;
-  return res.json();
+  return 204 === res.status ? null : res.json();
 }
-
 export async function getSpreadsheetInfo(creds, spreadsheetId) {
   return sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}?includeGridData=false`);
 }
-
 export async function listSheets(creds, spreadsheetId) {
-  const info = await getSpreadsheetInfo(creds, spreadsheetId);
-  return (info.sheets ?? []).map((s) => ({
+  return ((await getSpreadsheetInfo(creds, spreadsheetId)).sheets ?? []).map((s) => ({
     sheetId: s.properties?.sheetId,
     title: s.properties?.title,
     index: s.properties?.index,
@@ -41,184 +32,162 @@ export async function listSheets(creds, spreadsheetId) {
     columnCount: s.properties?.gridProperties?.columnCount,
   }));
 }
-
 export async function readRange(creds, spreadsheetId, range) {
-  const encoded = encodeURIComponent(range);
-  const data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}`);
-  return {
-    range: data.range,
-    values: data.values ?? [],
-    majorDimension: data.majorDimension,
-  };
+  const encoded = encodeURIComponent(range),
+    data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}`);
+  return { range: data.range, values: data.values ?? [], majorDimension: data.majorDimension };
 }
-
 export async function readMultipleRanges(creds, spreadsheetId, ranges = []) {
   const params = new URLSearchParams();
-  ranges.forEach((r) => params.append('ranges', r));
-  const data = await sheetsFetch(
-    creds,
-    `${SHEETS_BASE}/${spreadsheetId}/values:batchGet?${params}`,
+  return (
+    ranges.forEach((r) => params.append('ranges', r)),
+    (await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values:batchGet?${params}`))
+      .valueRanges ?? []
   );
-  return data.valueRanges ?? [];
 }
-
 export async function writeRange(
   creds,
   spreadsheetId,
   range,
   values,
-  { valueInputOption = 'USER_ENTERED' } = {},
+  { valueInputOption: valueInputOption = 'USER_ENTERED' } = {},
 ) {
   const encoded = encodeURIComponent(range);
-  const data = await sheetsFetch(
+  return await sheetsFetch(
     creds,
     `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}?valueInputOption=${valueInputOption}`,
     {
       method: 'PUT',
-      body: JSON.stringify({ range, majorDimension: 'ROWS', values }),
+      body: JSON.stringify({ range: range, majorDimension: 'ROWS', values: values }),
     },
   );
-  return data;
 }
-
 export async function appendValues(
   creds,
   spreadsheetId,
   range,
   values,
-  { valueInputOption = 'USER_ENTERED' } = {},
+  { valueInputOption: valueInputOption = 'USER_ENTERED' } = {},
 ) {
   const encoded = encodeURIComponent(range);
-  const data = await sheetsFetch(
+  return await sheetsFetch(
     creds,
     `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}:append?valueInputOption=${valueInputOption}&insertDataOption=INSERT_ROWS`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ majorDimension: 'ROWS', values }),
-    },
+    { method: 'POST', body: JSON.stringify({ majorDimension: 'ROWS', values: values }) },
   );
-  return data;
 }
-
 export async function clearRange(creds, spreadsheetId, range) {
   const encoded = encodeURIComponent(range);
   return sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}:clear`, {
     method: 'POST',
   });
 }
-
 export async function createSpreadsheet(creds, title, sheetTitles = []) {
-  const body = { properties: { title } };
-  if (sheetTitles.length) {
-    body.sheets = sheetTitles.map((t, i) => ({ properties: { title: t, index: i } }));
-  }
-  return sheetsFetch(creds, SHEETS_BASE, { method: 'POST', body: JSON.stringify(body) });
+  const body = { properties: { title: title } };
+  return (
+    sheetTitles.length &&
+      (body.sheets = sheetTitles.map((t, i) => ({ properties: { title: t, index: i } }))),
+    sheetsFetch(creds, SHEETS_BASE, { method: 'POST', body: JSON.stringify(body) })
+  );
 }
-
 export async function addSheet(creds, spreadsheetId, title) {
   const data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
     method: 'POST',
-    body: JSON.stringify({
-      requests: [{ addSheet: { properties: { title } } }],
-    }),
+    body: JSON.stringify({ requests: [{ addSheet: { properties: { title: title } } }] }),
   });
   return data.replies?.[0]?.addSheet?.properties ?? null;
 }
-
 export async function deleteSheet(creds, spreadsheetId, sheetId) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests: [{ deleteSheet: { sheetId } }] }),
-  });
-  return true;
-}
-
-export async function renameSheet(creds, spreadsheetId, sheetId, newTitle) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updateSheetProperties: {
-            properties: { sheetId, title: newTitle },
-            fields: 'title',
-          },
-        },
-      ],
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: [{ deleteSheet: { sheetId: sheetId } }] }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
+export async function renameSheet(creds, spreadsheetId, sheetId, newTitle) {
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateSheetProperties: {
+              properties: { sheetId: sheetId, title: newTitle },
+              fields: 'title',
+            },
+          },
+        ],
+      }),
+    }),
+    !0
+  );
+}
 export async function batchWriteRanges(
   creds,
   spreadsheetId,
   data = [],
-  { valueInputOption = 'USER_ENTERED' } = {},
+  { valueInputOption: valueInputOption = 'USER_ENTERED' } = {},
 ) {
-  // data: [{ range, values }]
   return sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values:batchUpdate`, {
     method: 'POST',
-    body: JSON.stringify({ valueInputOption, data }),
+    body: JSON.stringify({ valueInputOption: valueInputOption, data: data }),
   });
 }
-
 export async function batchClearRanges(creds, spreadsheetId, ranges = []) {
   return sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/values:batchClear`, {
     method: 'POST',
-    body: JSON.stringify({ ranges }),
+    body: JSON.stringify({ ranges: ranges }),
   });
 }
-
 export async function getFormulas(creds, spreadsheetId, range) {
-  const encoded = encodeURIComponent(range);
-  const data = await sheetsFetch(
-    creds,
-    `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}?valueRenderOption=FORMULA`,
-  );
+  const encoded = encodeURIComponent(range),
+    data = await sheetsFetch(
+      creds,
+      `${SHEETS_BASE}/${spreadsheetId}/values/${encoded}?valueRenderOption=FORMULA`,
+    );
   return { range: data.range, values: data.values ?? [] };
 }
-
 export async function copySheet(creds, spreadsheetId, sheetId, destinationSpreadsheetId) {
   return sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}/sheets/${sheetId}:copyTo`, {
     method: 'POST',
-    body: JSON.stringify({ destinationSpreadsheetId }),
+    body: JSON.stringify({ destinationSpreadsheetId: destinationSpreadsheetId }),
   });
 }
-
 export async function duplicateSheet(
   creds,
   spreadsheetId,
   sheetId,
-  { newSheetName, insertSheetIndex } = {},
+  { newSheetName: newSheetName, insertSheetIndex: insertSheetIndex } = {},
 ) {
   const req = { sourceSheetId: sheetId };
-  if (newSheetName != null) req.newSheetName = newSheetName;
-  if (insertSheetIndex != null) req.insertSheetIndex = insertSheetIndex;
+  (null != newSheetName && (req.newSheetName = newSheetName),
+    null != insertSheetIndex && (req.insertSheetIndex = insertSheetIndex));
   const data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
     method: 'POST',
     body: JSON.stringify({ requests: [{ duplicateSheet: req }] }),
   });
   return data.replies?.[0]?.duplicateSheet?.properties ?? null;
 }
-
 export async function moveSheet(creds, spreadsheetId, sheetId, newIndex) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updateSheetProperties: {
-            properties: { sheetId, index: newIndex },
-            fields: 'index',
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateSheetProperties: {
+              properties: { sheetId: sheetId, index: newIndex },
+              fields: 'index',
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function insertDimension(
   creds,
   spreadsheetId,
@@ -226,24 +195,30 @@ export async function insertDimension(
   dimension,
   startIndex,
   endIndex,
-  inheritFromBefore = false,
+  inheritFromBefore = !1,
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          insertDimension: {
-            range: { sheetId, dimension, startIndex, endIndex },
-            inheritFromBefore,
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            insertDimension: {
+              range: {
+                sheetId: sheetId,
+                dimension: dimension,
+                startIndex: startIndex,
+                endIndex: endIndex,
+              },
+              inheritFromBefore: inheritFromBefore,
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function deleteDimension(
   creds,
   spreadsheetId,
@@ -252,21 +227,27 @@ export async function deleteDimension(
   startIndex,
   endIndex,
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          deleteDimension: {
-            range: { sheetId, dimension, startIndex, endIndex },
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            deleteDimension: {
+              range: {
+                sheetId: sheetId,
+                dimension: dimension,
+                startIndex: startIndex,
+                endIndex: endIndex,
+              },
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function autoResizeDimensions(
   creds,
   spreadsheetId,
@@ -275,21 +256,27 @@ export async function autoResizeDimensions(
   startIndex,
   endIndex,
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          autoResizeDimensions: {
-            dimensions: { sheetId, dimension, startIndex, endIndex },
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            autoResizeDimensions: {
+              dimensions: {
+                sheetId: sheetId,
+                dimension: dimension,
+                startIndex: startIndex,
+                endIndex: endIndex,
+              },
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function mergeCells(
   creds,
   spreadsheetId,
@@ -300,22 +287,29 @@ export async function mergeCells(
   endColumnIndex,
   mergeType = 'MERGE_ALL',
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          mergeCells: {
-            mergeType,
-            range: { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex },
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            mergeCells: {
+              mergeType: mergeType,
+              range: {
+                sheetId: sheetId,
+                startRowIndex: startRowIndex,
+                endRowIndex: endRowIndex,
+                startColumnIndex: startColumnIndex,
+                endColumnIndex: endColumnIndex,
+              },
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function unmergeCells(
   creds,
   spreadsheetId,
@@ -325,21 +319,28 @@ export async function unmergeCells(
   startColumnIndex,
   endColumnIndex,
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          unmergeCells: {
-            range: { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex },
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            unmergeCells: {
+              range: {
+                sheetId: sheetId,
+                startRowIndex: startRowIndex,
+                endRowIndex: endRowIndex,
+                startColumnIndex: startColumnIndex,
+                endColumnIndex: endColumnIndex,
+              },
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function freezeRowsColumns(
   creds,
   spreadsheetId,
@@ -347,22 +348,29 @@ export async function freezeRowsColumns(
   frozenRowCount = 0,
   frozenColumnCount = 0,
 ) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          updateSheetProperties: {
-            properties: { sheetId, gridProperties: { frozenRowCount, frozenColumnCount } },
-            fields: 'gridProperties.frozenRowCount,gridProperties.frozenColumnCount',
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            updateSheetProperties: {
+              properties: {
+                sheetId: sheetId,
+                gridProperties: {
+                  frozenRowCount: frozenRowCount,
+                  frozenColumnCount: frozenColumnCount,
+                },
+              },
+              fields: 'gridProperties.frozenRowCount,gridProperties.frozenColumnCount',
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function formatRange(
   creds,
   spreadsheetId,
@@ -373,61 +381,62 @@ export async function formatRange(
   endColumnIndex,
   format = {},
 ) {
-  // format: { bold, italic, fontSize, foregroundColor: {red,green,blue}, backgroundColor: {red,green,blue}, horizontalAlignment }
-  const userEnteredFormat = {};
-  const fields = [];
-
-  if (format.bold != null) {
-    userEnteredFormat.textFormat = { ...(userEnteredFormat.textFormat ?? {}), bold: format.bold };
-    fields.push('userEnteredFormat.textFormat.bold');
-  }
-  if (format.italic != null) {
-    userEnteredFormat.textFormat = {
-      ...(userEnteredFormat.textFormat ?? {}),
-      italic: format.italic,
-    };
-    fields.push('userEnteredFormat.textFormat.italic');
-  }
-  if (format.fontSize != null) {
-    userEnteredFormat.textFormat = {
-      ...(userEnteredFormat.textFormat ?? {}),
-      fontSize: format.fontSize,
-    };
-    fields.push('userEnteredFormat.textFormat.fontSize');
-  }
-  if (format.foregroundColor) {
-    userEnteredFormat.textFormat = {
-      ...(userEnteredFormat.textFormat ?? {}),
-      foregroundColor: format.foregroundColor,
-    };
-    fields.push('userEnteredFormat.textFormat.foregroundColor');
-  }
-  if (format.backgroundColor) {
-    userEnteredFormat.backgroundColor = format.backgroundColor;
-    fields.push('userEnteredFormat.backgroundColor');
-  }
-  if (format.horizontalAlignment) {
-    userEnteredFormat.horizontalAlignment = format.horizontalAlignment;
-    fields.push('userEnteredFormat.horizontalAlignment');
-  }
-
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          repeatCell: {
-            range: { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex },
-            cell: { userEnteredFormat },
-            fields: fields.join(','),
+  const userEnteredFormat = {},
+    fields = [];
+  return (
+    null != format.bold &&
+      ((userEnteredFormat.textFormat = {
+        ...(userEnteredFormat.textFormat ?? {}),
+        bold: format.bold,
+      }),
+      fields.push('userEnteredFormat.textFormat.bold')),
+    null != format.italic &&
+      ((userEnteredFormat.textFormat = {
+        ...(userEnteredFormat.textFormat ?? {}),
+        italic: format.italic,
+      }),
+      fields.push('userEnteredFormat.textFormat.italic')),
+    null != format.fontSize &&
+      ((userEnteredFormat.textFormat = {
+        ...(userEnteredFormat.textFormat ?? {}),
+        fontSize: format.fontSize,
+      }),
+      fields.push('userEnteredFormat.textFormat.fontSize')),
+    format.foregroundColor &&
+      ((userEnteredFormat.textFormat = {
+        ...(userEnteredFormat.textFormat ?? {}),
+        foregroundColor: format.foregroundColor,
+      }),
+      fields.push('userEnteredFormat.textFormat.foregroundColor')),
+    format.backgroundColor &&
+      ((userEnteredFormat.backgroundColor = format.backgroundColor),
+      fields.push('userEnteredFormat.backgroundColor')),
+    format.horizontalAlignment &&
+      ((userEnteredFormat.horizontalAlignment = format.horizontalAlignment),
+      fields.push('userEnteredFormat.horizontalAlignment')),
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            repeatCell: {
+              range: {
+                sheetId: sheetId,
+                startRowIndex: startRowIndex,
+                endRowIndex: endRowIndex,
+                startColumnIndex: startColumnIndex,
+                endColumnIndex: endColumnIndex,
+              },
+              cell: { userEnteredFormat: userEnteredFormat },
+              fields: fields.join(','),
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function sortRange(
   creds,
   spreadsheetId,
@@ -438,32 +447,36 @@ export async function sortRange(
   endColumnIndex,
   sortSpecs = [],
 ) {
-  // sortSpecs: [{ dimensionIndex, sortOrder: 'ASCENDING'|'DESCENDING' }]
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          sortRange: {
-            range: { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex },
-            sortSpecs,
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            sortRange: {
+              range: {
+                sheetId: sheetId,
+                startRowIndex: startRowIndex,
+                endRowIndex: endRowIndex,
+                startColumnIndex: startColumnIndex,
+                endColumnIndex: endColumnIndex,
+              },
+              sortSpecs: sortSpecs,
+            },
           },
-        },
-      ],
+        ],
+      }),
     }),
-  });
-  return true;
+    !0
+  );
 }
-
 export async function listNamedRanges(creds, spreadsheetId) {
-  const info = await getSpreadsheetInfo(creds, spreadsheetId);
-  return (info.namedRanges ?? []).map((nr) => ({
+  return ((await getSpreadsheetInfo(creds, spreadsheetId)).namedRanges ?? []).map((nr) => ({
     namedRangeId: nr.namedRangeId,
     name: nr.name,
     range: nr.range,
   }));
 }
-
 export async function addNamedRange(
   creds,
   spreadsheetId,
@@ -481,8 +494,14 @@ export async function addNamedRange(
         {
           addNamedRange: {
             namedRange: {
-              name,
-              range: { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex },
+              name: name,
+              range: {
+                sheetId: sheetId,
+                startRowIndex: startRowIndex,
+                endRowIndex: endRowIndex,
+                startColumnIndex: startColumnIndex,
+                endColumnIndex: endColumnIndex,
+              },
             },
           },
         },
@@ -491,60 +510,75 @@ export async function addNamedRange(
   });
   return data.replies?.[0]?.addNamedRange?.namedRange ?? null;
 }
-
 export async function deleteNamedRange(creds, spreadsheetId, namedRangeId) {
-  await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({ requests: [{ deleteNamedRange: { namedRangeId } }] }),
-  });
-  return true;
+  return (
+    await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({ requests: [{ deleteNamedRange: { namedRangeId: namedRangeId } }] }),
+    }),
+    !0
+  );
 }
-
 export async function findReplace(
   creds,
   spreadsheetId,
   find,
   replacement,
-  { sheetId, matchCase = false, matchEntireCell = false, searchByRegex = false } = {},
+  {
+    sheetId: sheetId,
+    matchCase: matchCase = !1,
+    matchEntireCell: matchEntireCell = !1,
+    searchByRegex: searchByRegex = !1,
+  } = {},
 ) {
-  const req = { find, replacement, matchCase, matchEntireCell, searchByRegex };
-  if (sheetId != null) req.sheetId = sheetId;
-  else req.allSheets = true;
+  const req = {
+    find: find,
+    replacement: replacement,
+    matchCase: matchCase,
+    matchEntireCell: matchEntireCell,
+    searchByRegex: searchByRegex,
+  };
+  null != sheetId ? (req.sheetId = sheetId) : (req.allSheets = !0);
   const data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
     method: 'POST',
     body: JSON.stringify({ requests: [{ findReplace: req }] }),
   });
   return data.replies?.[0]?.findReplace ?? {};
 }
-
 export async function protectRange(
   creds,
   spreadsheetId,
   sheetId,
   {
-    startRowIndex,
-    endRowIndex,
-    startColumnIndex,
-    endColumnIndex,
-    description = '',
-    warningOnly = true,
+    startRowIndex: startRowIndex,
+    endRowIndex: endRowIndex,
+    startColumnIndex: startColumnIndex,
+    endColumnIndex: endColumnIndex,
+    description: description = '',
+    warningOnly: warningOnly = !0,
   } = {},
 ) {
   const range =
-    endRowIndex != null
-      ? { sheetId, startRowIndex, endRowIndex, startColumnIndex, endColumnIndex }
-      : { sheetId };
-  const data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
-    method: 'POST',
-    body: JSON.stringify({
-      requests: [
-        {
-          addProtectedRange: {
-            protectedRange: { range, description, warningOnly },
+      null != endRowIndex
+        ? {
+            sheetId: sheetId,
+            startRowIndex: startRowIndex,
+            endRowIndex: endRowIndex,
+            startColumnIndex: startColumnIndex,
+            endColumnIndex: endColumnIndex,
+          }
+        : { sheetId: sheetId },
+    data = await sheetsFetch(creds, `${SHEETS_BASE}/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      body: JSON.stringify({
+        requests: [
+          {
+            addProtectedRange: {
+              protectedRange: { range: range, description: description, warningOnly: warningOnly },
+            },
           },
-        },
-      ],
-    }),
-  });
+        ],
+      }),
+    });
   return data.replies?.[0]?.addProtectedRange?.protectedRange ?? null;
 }

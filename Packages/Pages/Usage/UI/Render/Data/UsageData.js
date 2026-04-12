@@ -24,7 +24,6 @@ export function tokenCost(model, inputTokens, outputTokens) {
   const pricing = _pricing[model] ?? { in: 1, out: 3 };
   return (inputTokens / 1e6) * pricing.in + (outputTokens / 1e6) * pricing.out;
 }
-
 export function sinceDate(range) {
   const now = new Date();
   if ('today' === range) return new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -38,12 +37,10 @@ export function sinceDate(range) {
   }
   return null;
 }
-
 export function filteredRecords() {
   const since = sinceDate(_range);
   return since ? _records.filter((record) => new Date(record.timestamp) >= since) : _records;
 }
-
 export function computeStats(records) {
   let totalInput = 0,
     totalOutput = 0,
@@ -106,7 +103,6 @@ export function computeStats(records) {
     byDow: byDow,
   };
 }
-
 export async function loadRecords() {
   try {
     const result = await window.electronAPI?.invoke?.('get-usage');

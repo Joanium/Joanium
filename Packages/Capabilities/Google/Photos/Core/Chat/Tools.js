@@ -6,7 +6,7 @@ export const PHOTOS_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max albums to return (default: 20, max: 50).',
       },
     },
@@ -18,7 +18,7 @@ export const PHOTOS_TOOLS = [
     parameters: {
       album_id: {
         type: 'string',
-        required: true,
+        required: !0,
         description: 'Google Photos album ID (from photos_list_albums).',
       },
     },
@@ -30,7 +30,7 @@ export const PHOTOS_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max shared albums to return (default: 20).',
       },
     },
@@ -43,7 +43,7 @@ export const PHOTOS_TOOLS = [
     parameters: {
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max media items to return (default: 20, max: 100).',
       },
     },
@@ -53,11 +53,7 @@ export const PHOTOS_TOOLS = [
     description: 'Get full details for a specific photo or video by its media item ID.',
     category: 'photos',
     parameters: {
-      media_item_id: {
-        type: 'string',
-        required: true,
-        description: 'Google Photos media item ID.',
-      },
+      media_item_id: { type: 'string', required: !0, description: 'Google Photos media item ID.' },
     },
   },
   {
@@ -65,10 +61,10 @@ export const PHOTOS_TOOLS = [
     description: 'List all photos and videos inside a specific Google Photos album.',
     category: 'photos',
     parameters: {
-      album_id: { type: 'string', required: true, description: 'Album ID to list media from.' },
+      album_id: { type: 'string', required: !0, description: 'Album ID to list media from.' },
       max_results: {
         type: 'number',
-        required: false,
+        required: !1,
         description: 'Max items to return (default: 20).',
       },
     },
@@ -78,13 +74,9 @@ export const PHOTOS_TOOLS = [
     description: 'Search Google Photos for media items within a specific date range.',
     category: 'photos',
     parameters: {
-      start_date: {
-        type: 'string',
-        required: true,
-        description: 'Start date in YYYY-MM-DD format.',
-      },
-      end_date: { type: 'string', required: true, description: 'End date in YYYY-MM-DD format.' },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+      start_date: { type: 'string', required: !0, description: 'Start date in YYYY-MM-DD format.' },
+      end_date: { type: 'string', required: !0, description: 'End date in YYYY-MM-DD format.' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 20).' },
     },
   },
   {
@@ -95,11 +87,11 @@ export const PHOTOS_TOOLS = [
     parameters: {
       categories: {
         type: 'string',
-        required: true,
+        required: !0,
         description:
           'Comma-separated content categories. Options: ANIMALS, ARTS, BIRTHDAYS, CITYSCAPES, CRAFTS, DOCUMENTS, FASHION, FLOWERS, FOOD, GARDENS, HOLIDAYS, HOUSES, LANDMARKS, LANDSCAPES, NIGHT, PEOPLE, PERFORMANCES, PETS, RECEIPTS, SCREENSHOTS, SELFIES, SPORT, TRAVEL, UTILITY, WEDDINGS, WHITEBOARDS.',
       },
-      max_results: { type: 'number', required: false, description: 'Max results (default: 20).' },
+      max_results: { type: 'number', required: !1, description: 'Max results (default: 20).' },
     },
   },
 ];

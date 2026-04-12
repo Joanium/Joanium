@@ -1,26 +1,18 @@
 import { exec } from 'child_process';
 import { shell } from 'electron';
-
 export function openFolder(folderPath) {
   if (!folderPath) throw new Error('openFolder: no path provided');
   return new Promise((resolve, reject) => {
-    if (process.platform === 'win32') {
-      exec(`start "" "${folderPath}"`, { shell: 'cmd.exe' }, (err) => {
-        if (err) {
-          console.error('[AutomationEngine] openFolder error:', err);
-          return reject(err);
-        }
-        resolve();
-      });
-    } else {
-      shell.openPath(folderPath).then((result) => {
-        if (result) reject(new Error(result));
-        else resolve();
-      });
-    }
+    'win32' === process.platform
+      ? exec(`start "" "${folderPath}"`, { shell: 'cmd.exe' }, (err) => {
+          if (err) return (console.error('[AutomationEngine] openFolder error:', err), reject(err));
+          resolve();
+        })
+      : shell.openPath(folderPath).then((result) => {
+          result ? reject(new Error(result)) : resolve();
+        });
   });
 }
-
 export const actionType = 'open_folder';
 export const actionMeta = {
   label: 'Open folder',
@@ -29,9 +21,8 @@ export const actionMeta = {
   requiredFields: ['path'],
 };
 export async function execute(action) {
-  await openFolder(action.path);
-  if (action.openTerminal) {
-    const { openTerminalAtPath } = await import('./Terminal.js');
+  if ((await openFolder(action.path), action.openTerminal)) {
+    const { openTerminalAtPath: openTerminalAtPath } = await import('./Terminal.js');
     await openTerminalAtPath(action.path, action.terminalCommand || '');
   }
 }

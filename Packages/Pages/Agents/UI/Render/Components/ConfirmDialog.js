@@ -1,36 +1,36 @@
-export function createConfirmDialog({ state, overlayEl, cancelBtn, deleteBtn, nameEl, onDelete }) {
-  function open(id, name) {
-    state.deletingId = id;
-    if (nameEl) nameEl.textContent = name;
-    overlayEl?.classList.add('open');
-  }
-
+export function createConfirmDialog({
+  state: state,
+  overlayEl: overlayEl,
+  cancelBtn: cancelBtn,
+  deleteBtn: deleteBtn,
+  nameEl: nameEl,
+  onDelete: onDelete,
+}) {
   function close() {
-    overlayEl?.classList.remove('open');
-    state.deletingId = null;
+    (overlayEl?.classList.remove('open'), (state.deletingId = null));
   }
-
   const onOverlayClick = (event) => {
-    if (event.target === overlayEl) close();
-  };
-
-  const onDeleteClick = async () => {
-    if (!state.deletingId) return;
-    await onDelete(state.deletingId);
-    close();
-  };
-
-  cancelBtn?.addEventListener('click', close);
-  overlayEl?.addEventListener('click', onOverlayClick);
-  deleteBtn?.addEventListener('click', onDeleteClick);
-
-  return {
-    open,
-    close,
-    cleanup() {
-      cancelBtn?.removeEventListener('click', close);
-      overlayEl?.removeEventListener('click', onOverlayClick);
-      deleteBtn?.removeEventListener('click', onDeleteClick);
+      event.target === overlayEl && close();
     },
-  };
+    onDeleteClick = async () => {
+      state.deletingId && (await onDelete(state.deletingId), close());
+    };
+  return (
+    cancelBtn?.addEventListener('click', close),
+    overlayEl?.addEventListener('click', onOverlayClick),
+    deleteBtn?.addEventListener('click', onDeleteClick),
+    {
+      open: function (id, name) {
+        ((state.deletingId = id),
+          nameEl && (nameEl.textContent = name),
+          overlayEl?.classList.add('open'));
+      },
+      close: close,
+      cleanup() {
+        (cancelBtn?.removeEventListener('click', close),
+          overlayEl?.removeEventListener('click', onOverlayClick),
+          deleteBtn?.removeEventListener('click', onDeleteClick));
+      },
+    }
+  );
 }

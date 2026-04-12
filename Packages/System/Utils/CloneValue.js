@@ -1,15 +1,9 @@
 export function cloneValue(value) {
-  if (value == null || typeof value !== 'object') return value;
-
-  if (typeof globalThis.structuredClone === 'function') {
+  if (null == value || 'object' != typeof value) return value;
+  if ('function' == typeof globalThis.structuredClone)
     try {
       return globalThis.structuredClone(value);
-    } catch {
-      // Fall through to the JSON clone path for plain data payloads.
-    }
-  }
-
+    } catch {}
   return JSON.parse(JSON.stringify(value));
 }
-
 export default cloneValue;

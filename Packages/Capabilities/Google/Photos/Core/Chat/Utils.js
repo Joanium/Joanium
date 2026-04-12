@@ -10,14 +10,12 @@ function formatDate(iso) {
     return iso;
   }
 }
-
 export function formatMediaItem(item, index) {
-  const meta = item.mediaMetadata ?? {};
-  const photo = meta.photo ?? {};
-  const video = meta.video ?? {};
-  const isVideo = Boolean(meta.video);
-
-  const lines = [
+  const meta = item.mediaMetadata ?? {},
+    photo = meta.photo ?? {},
+    video = meta.video ?? {},
+    isVideo = Boolean(meta.video);
+  return [
     `${index}. **${item.filename ?? '(unnamed)'}** [${isVideo ? 'Video' : 'Photo'}]`,
     `   ID: \`${item.id}\``,
     meta.creationTime ? `   Taken: ${formatDate(meta.creationTime)}` : '',
@@ -26,17 +24,18 @@ export function formatMediaItem(item, index) {
     isVideo && video.fps ? `   FPS: ${video.fps}` : '',
     item.description ? `   Description: ${item.description.slice(0, 80)}` : '',
     item.productUrl ? `   Link: ${item.productUrl}` : '',
-  ];
-  return lines.filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
-
 export function formatAlbum(album, index) {
-  const lines = [
+  return [
     `${index}. **${album.title ?? '(Untitled)'}**`,
     `   ID: \`${album.id}\``,
     album.mediaItemsCount ? `   Items: ${album.mediaItemsCount}` : '',
     album.productUrl ? `   Link: ${album.productUrl}` : '',
     album.coverPhotoMediaItemId ? `   Cover photo ID: \`${album.coverPhotoMediaItemId}\`` : '',
-  ];
-  return lines.filter(Boolean).join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
