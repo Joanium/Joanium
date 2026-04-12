@@ -14,30 +14,36 @@ async function channelFetch(input, init) {
   return 'function' == typeof net?.fetch ? net.fetch(input, init) : fetch(input, init);
 }
 async function sendTelegram(botToken, chatId, text) {
-  const res = await channelFetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text: text }),
-  });
-  if (!res.ok) {
-    const d = await res.json().catch(() => ({}));
-    throw new Error(d.description ?? `Telegram sendMessage HTTP ${res.status}`);
+  const chunks = splitIntoChunks(text, 4000); // Telegram limit is 4096
+  for (const chunk of chunks) {
+    const res = await channelFetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: chunk }),
+    });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.description ?? `Telegram sendMessage HTTP ${res.status}`);
+    }
   }
 }
 async function sendWhatsApp(cfg, to, text) {
-  const body = new URLSearchParams({ From: cfg.fromNumber, To: to, Body: text }),
-    auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64'),
-    res = await channelFetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: { Authorization: auth, 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body,
-      },
-    );
-  if (!res.ok) {
-    const d = await res.json().catch(() => ({}));
-    throw new Error(d.message ?? `Twilio sendMessage HTTP ${res.status}`);
+  const chunks = splitIntoChunks(text, 1500); // WhatsApp limit via Twilio is usually 1600
+  for (const chunk of chunks) {
+    const body = new URLSearchParams({ From: cfg.fromNumber, To: to, Body: chunk }),
+      auth = 'Basic ' + Buffer.from(`${cfg.accountSid}:${cfg.authToken}`).toString('base64'),
+      res = await channelFetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${cfg.accountSid}/Messages.json`,
+        {
+          method: 'POST',
+          headers: { Authorization: auth, 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body,
+        },
+      );
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.message ?? `Twilio sendMessage HTTP ${res.status}`);
+    }
   }
 }
 async function sendDiscord(botToken, channelId, text) {
@@ -107,11 +113,17 @@ export class ChannelEngine {
       const id = randomUUID(),
         timer = setTimeout(() => {
           this._pending.delete(id);
-          reject(new Error('Channel gateway timeout (120s)'));
-        }, 12e4);
+          reject(new Error('Channel gateway timeout (1800s)'));
+        }, 1800000); //30 mins
       this._pending.set(id, {
-        resolve: (reply) => { clearTimeout(timer); resolve(reply); },
-        reject: (err)  => { clearTimeout(timer); reject(err); },
+        resolve: (reply) => {
+          clearTimeout(timer);
+          resolve(reply);
+        },
+        reject: (err) => {
+          clearTimeout(timer);
+          reject(err);
+        },
       });
       this._mainWindow.webContents.send('channel-incoming', {
         id,
@@ -278,7 +290,10 @@ export class ChannelEngine {
   }
   stop() {
     this._running = false;
-    if (this._ticker) { clearTimeout(this._ticker); this._ticker = null; }
+    if (this._ticker) {
+      clearTimeout(this._ticker);
+      this._ticker = null;
+    }
     for (const [, p] of this._pending) p.reject(new Error('App shutting down'));
     this._pending.clear();
   }
@@ -310,10 +325,9 @@ export class ChannelEngine {
         const base = `https://api.telegram.org/bot${cfg.botToken}`,
           offset = (cfg.lastUpdateId ?? 0) + 1,
           // timeout=2 gives headroom below the 3s poll interval — prevents overlap
-          res = await channelFetch(
-            `${base}/getUpdates?offset=${offset}&timeout=2&limit=10`,
-            { signal: ac.signal },
-          );
+          res = await channelFetch(`${base}/getUpdates?offset=${offset}&timeout=2&limit=10`, {
+            signal: ac.signal,
+          });
         if (!res.ok) throw new Error(`Telegram getUpdates HTTP ${res.status}`);
         const data = await res.json();
         if (!data.ok) throw new Error(data.description ?? 'Telegram API error');
@@ -333,7 +347,10 @@ export class ChannelEngine {
     }
     if ((this._clearPollFailure('Telegram'), messages.length)) {
       const maxId = Math.max(...messages.map((m) => m.updateId));
-      if (maxId >= (cfg.lastUpdateId ?? 0)) { cfg.lastUpdateId = maxId; this._persist(); }
+      if (maxId >= (cfg.lastUpdateId ?? 0)) {
+        cfg.lastUpdateId = maxId;
+        this._persist();
+      }
     }
     for (const msg of messages)
       (async () => {
@@ -376,9 +393,7 @@ export class ChannelEngine {
               (messages.push({ sid: msg.sid, from: msg.from, to: msg.to, text: msg.body }),
               seenSids.add(msg.sid)));
         // Cap at 200 (down from 500) — WhatsApp sandbox rates are low
-        cfg._seenSids = seenSids.size > 200
-          ? new Set(Array.from(seenSids).slice(-200))
-          : seenSids;
+        cfg._seenSids = seenSids.size > 200 ? new Set(Array.from(seenSids).slice(-200)) : seenSids;
         return messages;
       })(cfg);
     } catch (err) {

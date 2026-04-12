@@ -152,6 +152,40 @@
         "input": 0.01,
         "output": 0.02
       }
+    },
+    "z-ai/glm5": {
+      "name": "GLM 5",
+      "description": "Z-AI's GLM 5 model",
+      "rank": 11,
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.01,
+        "output": 0.02
+      }
+    },
+    "minimaxai/minimax-m2.7": {
+      "name": "Minimax M2.7",
+      "description": "Minimax M2.7 model",
+      "rank": 12,
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.01,
+        "output": 0.02
+      }
     }
   }
 }

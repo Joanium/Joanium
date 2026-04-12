@@ -1,8 +1,4 @@
-import {
-  agentLoop,
-  planRequest,
-  selectSkillsForMessages,
-} from '../../Chat/Features/Core/Agent.js';
+import { agentLoop, planRequest, selectSkillsForMessages } from '../../Chat/Features/Core/Agent.js';
 import { trackUsage } from '../../Chat/Features/Data/ChatPersistence.js';
 import { state } from '../../../System/State.js';
 
@@ -41,9 +37,9 @@ export function initChannelGateway() {
 }
 
 async function _processChannelMessage(id, channelName, from, text) {
-  // Per-message abort controller — 120-second hard cap
+  // Per-message abort controller — 1800-second hard cap
   const abort = new AbortController();
-  const timer = setTimeout(() => abort.abort(), 120_000);
+  const timer = setTimeout(() => abort.abort(), 1_800_000); // 30mins
 
   try {
     // Ensure persona / system prompt is loaded (same pattern as Agents Gateway)
@@ -76,7 +72,9 @@ async function _processChannelMessage(id, channelName, from, text) {
 
     try {
       plannedSkills = await selectSkillsForMessages(messages).catch(() => []);
-    } catch { /* non-fatal */ }
+    } catch {
+      /* non-fatal */
+    }
 
     // Step 2: Planning step (same as Agents Gateway — identifies tools + skills)
     try {
@@ -132,7 +130,9 @@ async function _processChannelMessage(id, channelName, from, text) {
         : `Sorry, something went wrong: ${err.message}`;
     try {
       await api.invoke('channel-reply', id, msg);
-    } catch { /* best-effort */ }
+    } catch {
+      /* best-effort */
+    }
   } finally {
     clearTimeout(timer);
   }
