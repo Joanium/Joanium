@@ -56,13 +56,15 @@ export function setupAutoUpdates() {
       const message = err?.stack ?? err?.message ?? String(err);
       log.warn('[AutoUpdate] Auto update error:', message);
     }));
-  try {
-    autoUpdater.checkForUpdates().catch((err) => {
+  setTimeout(() => {
+    try {
+      autoUpdater.checkForUpdates().catch((err) => {
+        const message = err?.stack ?? err?.message ?? String(err);
+        log.warn('[AutoUpdate] checkForUpdates failed:', message);
+      });
+    } catch (err) {
       const message = err?.stack ?? err?.message ?? String(err);
-      log.warn('[AutoUpdate] checkForUpdates failed:', message);
-    });
-  } catch (err) {
-    const message = err?.stack ?? err?.message ?? String(err);
-    log.warn('[AutoUpdate] Failed to start update check:', message);
-  }
+      log.warn('[AutoUpdate] Failed to start update check:', message);
+    }
+  }, 15000);
 }
