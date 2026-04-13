@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import * as MCPIPC from '#features/MCP/IPC/MCPIPC.js';
 import { boot, startEngines, stopEngines } from '#main/Boot.js';
 import { ensureDir } from '#main/Core/FileSystem.js';
@@ -58,6 +58,23 @@ function shutdownEngines() {
 }
 (app.whenReady().then(async () => {
   try {
+    app.on('web-contents-created', (_, contents) => {
+      contents.setWindowOpenHandler(({ url }) => {
+        shell.openExternal(url);
+        return { action: 'deny' };
+      });
+      contents.on('will-navigate', (event, url) => {
+        try {
+          const appOrigin = new URL(contents.getURL()).origin;
+          if (new URL(url).origin !== appOrigin) {
+            event.preventDefault();
+            shell.openExternal(url);
+          }
+        } catch {
+          event.preventDefault();
+        }
+      });
+    });
     (app.isPackaged && !process.argv.includes('--dev') && setupAutoUpdates(),
       (function () {
         for (const dir of REQUIRED_RUNTIME_DIRS) ensureDir(dir);
