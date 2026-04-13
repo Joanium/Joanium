@@ -1015,6 +1015,26 @@ const BROWSER_TOOLS = [
       description: 'Get the currently selected (highlighted) text on the page.',
       inputSchema: { type: 'object', properties: {}, required: [] },
     },
+    {
+      name: 'browser_wait_for_page_ready',
+      description:
+        'Wait until the current page has finished loading and all network requests have settled. Use this after browser_navigate or clicks that trigger async data loading, before calling browser_snapshot.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          waitUntil: {
+            type: 'string',
+            description:
+              '"load" = HTML downloaded only, "networkidle" = no XHR/fetch for 500ms (default), "stable" = networkidle + no DOM mutations for 250ms.',
+          },
+          timeoutMs: {
+            type: 'number',
+            description: 'Maximum time to wait in milliseconds. Defaults to 15000.',
+          },
+        },
+        required: [],
+      },
+    },
   ],
   PAGE_HELPERS = String.raw`
   const normalizeText = value => String(value ?? '').replace(/\s+/g, ' ').trim();
@@ -1426,6 +1446,8 @@ export class BrowserMCPServer {
         return this._uploadFile(args.target, args.filePath);
       case 'browser_get_selection':
         return this._getSelection();
+      case 'browser_wait_for_page_ready':
+        return this._waitForPageReady(args.waitUntil, args.timeoutMs);
       default:
         throw new Error(`Unknown built-in browser tool "${name}".`);
     }
@@ -1475,7 +1497,10 @@ export class BrowserMCPServer {
   }
   async _waitForActionNavigation(webContents, timeoutMs = 1500) {
     try {
-      return (await this._waitForPotentialNavigation(webContents, timeoutMs), '');
+      await this._waitForPotentialNavigation(webContents, timeoutMs);
+      // After load stop, wait for any AJAX triggered by the action to settle (cap at 3s)
+      await this._preview.waitForNetworkIdle(3000).catch(() => {});
+      return '';
     } catch (err) {
       if (
         !(function (error) {
@@ -1564,7 +1589,12 @@ export class BrowserMCPServer {
       return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
     })(url);
     this._preview.setStatus(`Navigating to ${target}`);
-    const webContents = await this._preview.loadURL(target),
+    // Use networkidle so we wait for AJAX/hydration to settle after did-stop-loading,
+    // capped at 8s inside loadURL to avoid hanging on polling-heavy sites.
+    const webContents = await this._preview.loadURL(target, {
+        waitUntil: 'networkidle',
+        timeoutMs: 30000,
+      }),
       title = webContents.getTitle() || '(untitled page)',
       pageSummary = await this._getCurrentPageSummary(webContents, { includeExcerpt: !0 });
     return (this._preview.setStatus(`Opened ${title}`), `Requested URL: ${target}\n${pageSummary}`);
@@ -1900,10 +1930,34 @@ export class BrowserMCPServer {
   async _waitForNavigation(timeoutMs = 15e3) {
     const webContents = await this._getWebContents(),
       timeout = normalizeTimeout(timeoutMs, 15e3);
-    (this._preview.setStatus('Waiting for navigation'),
-      await this._waitForPotentialNavigation(webContents, timeout));
+    this._preview.setStatus('Waiting for navigation');
+    // Phase 1: wait for the base page load event
+    await this._waitForPotentialNavigation(webContents, timeout);
+    // Phase 2: wait for AJAX/XHR to settle (capped at 8s)
+    await this._preview.waitForNetworkIdle(Math.min(timeout, 8000)).catch(() => {});
     const pageSummary = await this._getCurrentPageSummary(webContents);
     return (this._preview.clearStatus(), `Navigation finished.\n${pageSummary}`);
+  }
+  async _waitForPageReady(waitUntil = 'networkidle', timeoutMs) {
+    const timeout = normalizeTimeout(timeoutMs, 15e3);
+    const webContents = await this._getWebContents();
+    this._preview.setStatus('Waiting for page to be ready...');
+    // Phase 1: base load stop
+    if (webContents.isLoading()) {
+      await this._waitForLoadStop(webContents, timeout).catch(() => {});
+    }
+    // Phase 2: network idle
+    const mode = String(waitUntil ?? 'networkidle').toLowerCase();
+    if (mode === 'networkidle' || mode === 'stable') {
+      await this._preview.waitForNetworkIdle(Math.min(timeout, 10000)).catch(() => {});
+    }
+    // Phase 3: DOM stability
+    if (mode === 'stable') {
+      await this._preview.waitForDomStability(Math.min(timeout, 5000)).catch(() => {});
+    }
+    const pageSummary = await this._getCurrentPageSummary(webContents);
+    this._preview.clearStatus();
+    return `Page is ready.\n${pageSummary}`;
   }
   async _screenshot(fileName) {
     const webContents = await this._getWebContents();

@@ -132,7 +132,11 @@ export class BrowserPreviewService extends EventEmitter {
       (this._status = 'Ready'),
       (this._loading = !1),
       (this._sessionConfigured = !1),
-      (this._lastEmittedState = null));
+      (this._lastEmittedState = null),
+      // Network idle tracking
+      (this._pendingRequests = 0),
+      (this._networkIdleCallbacks = []),
+      (this._networkIdleTimer = null));
   }
   attachToWindow(win) {
     this._window !== win &&
@@ -185,39 +189,57 @@ export class BrowserPreviewService extends EventEmitter {
     }
     return (this.show(), getViewWebContents(this._view));
   }
-  async loadURL(url, { referrer: referrer = '' } = {}) {
+  async loadURL(
+    url,
+    {
+      referrer: referrer = '',
+      waitUntil: waitUntil = 'networkidle',
+      timeoutMs: timeoutMs = 30000,
+    } = {},
+  ) {
     const webContents = await this.ensureWebContents(),
       loadOptions = {
         userAgent: BUILTIN_BROWSER_USER_AGENT,
         extraHeaders: buildExtraHeaders(url, referrer),
       };
-    return (
-      referrer && (loadOptions.httpReferrer = referrer),
-      await new Promise((resolve) => {
-        let settled = !1;
-        const settle = () => {
-            settled ||
-              ((settled = !0),
-              clearTimeout(timer),
-              webContents.removeListener('did-stop-loading', settle),
-              webContents.removeListener('destroyed', settle),
-              resolve());
-          },
-          timer = setTimeout(settle, 3e4);
-        (webContents.once('did-stop-loading', settle),
-          webContents.once('destroyed', settle),
-          webContents.loadURL(url, loadOptions).catch((err) => {
-            !(function (error) {
-              const message = String(error?.message ?? '');
-              return message.includes('ERR_HTTP2_PROTOCOL_ERROR') || message.includes('(-337)');
-            })(err)
-              ? settle()
-              : (webContents.session.clearCache().catch(() => {}),
-                webContents.loadURL(url, loadOptions).catch(() => settle()));
-          }));
-      }),
-      webContents
-    );
+    referrer && (loadOptions.httpReferrer = referrer);
+
+    // Phase 1: wait for base network load (did-stop-loading)
+    await new Promise((resolve) => {
+      let settled = !1;
+      const settle = () => {
+          settled ||
+            ((settled = !0),
+            clearTimeout(timer),
+            webContents.removeListener('did-stop-loading', settle),
+            webContents.removeListener('destroyed', settle),
+            resolve());
+        },
+        timer = setTimeout(settle, timeoutMs);
+      (webContents.once('did-stop-loading', settle),
+        webContents.once('destroyed', settle),
+        webContents.loadURL(url, loadOptions).catch((err) => {
+          !(function (error) {
+            const message = String(error?.message ?? '');
+            return message.includes('ERR_HTTP2_PROTOCOL_ERROR') || message.includes('(-337)');
+          })(err)
+            ? settle()
+            : (webContents.session.clearCache().catch(() => {}),
+              webContents.loadURL(url, loadOptions).catch(() => settle()));
+        }));
+    });
+
+    // Phase 2: network idle (no XHR/fetch for 500ms), capped at 8s to avoid hanging on polling sites
+    if (waitUntil === 'networkidle' || waitUntil === 'stable') {
+      await this.waitForNetworkIdle(Math.min(timeoutMs, 8000)).catch(() => {});
+    }
+
+    // Phase 3: DOM stability (no mutations for 250ms), only for 'stable' mode
+    if (waitUntil === 'stable') {
+      await this.waitForDomStability(Math.min(timeoutMs, 5000)).catch(() => {});
+    }
+
+    return webContents;
   }
   show() {
     ((this._visible = !0), this._attachIfNeeded(), this._emitState(!0));
@@ -288,10 +310,17 @@ export class BrowserPreviewService extends EventEmitter {
         ((this._loading = !0), (this._status = 'Loading page...'), this._emitState());
       }),
       webContents.on('did-start-navigation', (_event, url, _isInPlace, isMainFrame) => {
-        isMainFrame &&
+        if (isMainFrame) {
           ((this._url = url || this._url),
-          (this._status = url ? `Opening ${url}` : 'Loading page...'),
-          this._emitState());
+            (this._status = url ? `Opening ${url}` : 'Loading page...'));
+          // Reset network tracking for each new top-level navigation
+          this._pendingRequests = 0;
+          if (this._networkIdleTimer) clearTimeout(this._networkIdleTimer);
+          this._networkIdleTimer = null;
+          const stale = this._networkIdleCallbacks.splice(0);
+          stale.forEach((cb) => cb()); // resolve any stale waiters immediately
+          this._emitState();
+        }
       }),
       webContents.on('did-stop-loading', () => {
         ((this._loading = !1),
@@ -330,13 +359,86 @@ export class BrowserPreviewService extends EventEmitter {
           this._emitState());
       }));
   }
+  _isTrackedRequest(details) {
+    const type = details.resourceType ?? '';
+    return ['mainFrame', 'subFrame', 'xhr', 'fetch'].includes(type);
+  }
+  _checkNetworkIdle() {
+    if (this._pendingRequests > 0) return;
+    if (this._networkIdleTimer) clearTimeout(this._networkIdleTimer);
+    this._networkIdleTimer = setTimeout(() => {
+      if (this._pendingRequests > 0) return;
+      const cbs = this._networkIdleCallbacks.splice(0);
+      cbs.forEach((cb) => cb());
+    }, 500);
+  }
+  waitForNetworkIdle(timeoutMs = 10000) {
+    return new Promise((resolve, reject) => {
+      if (this._pendingRequests === 0) {
+        // Already idle — still honour the 500ms grace window
+        const t = setTimeout(resolve, 500);
+        const guard = setTimeout(() => {
+          clearTimeout(t);
+          resolve();
+        }, timeoutMs);
+        void guard;
+        return;
+      }
+      const timer = setTimeout(() => {
+        const idx = this._networkIdleCallbacks.indexOf(cb);
+        if (idx !== -1) this._networkIdleCallbacks.splice(idx, 1);
+        // Resolve anyway rather than reject — callers use .catch(() => {})
+        resolve();
+      }, timeoutMs);
+      const cb = () => {
+        clearTimeout(timer);
+        resolve();
+      };
+      this._networkIdleCallbacks.push(cb);
+    });
+  }
+  async waitForDomStability(timeoutMs = 5000) {
+    const webContents = getViewWebContents(this._view);
+    if (!webContents || webContents.isDestroyed()) return;
+    await webContents
+      .executeJavaScript(
+        `new Promise((resolve) => {
+        let timer = setTimeout(resolve, 250);
+        const obs = new MutationObserver(() => {
+          clearTimeout(timer);
+          timer = setTimeout(() => { obs.disconnect(); resolve(); }, 250);
+        });
+        const root = document.body || document.documentElement;
+        if (root) obs.observe(root, { childList: true, subtree: true, attributes: true, characterData: true });
+        else resolve();
+        setTimeout(() => { obs.disconnect(); resolve(); }, ${Number(timeoutMs)});
+      })`,
+        false,
+      )
+      .catch(() => {});
+  }
   _configureSession(session) {
-    session &&
-      !this._sessionConfigured &&
-      (session.webRequest.onBeforeSendHeaders((details, callback) => {
-        callback({ requestHeaders: buildRequestHeaders(details) });
-      }),
-      (this._sessionConfigured = !0));
+    if (!session || this._sessionConfigured) return;
+    session.webRequest.onBeforeSendHeaders((details, callback) => {
+      callback({ requestHeaders: buildRequestHeaders(details) });
+    });
+    session.webRequest.onBeforeRequest((details, callback) => {
+      if (this._isTrackedRequest(details)) this._pendingRequests++;
+      callback({});
+    });
+    session.webRequest.onCompleted((details) => {
+      if (this._isTrackedRequest(details)) {
+        this._pendingRequests = Math.max(0, this._pendingRequests - 1);
+        this._checkNetworkIdle();
+      }
+    });
+    session.webRequest.onErrorOccurred((details) => {
+      if (this._isTrackedRequest(details)) {
+        this._pendingRequests = Math.max(0, this._pendingRequests - 1);
+        this._checkNetworkIdle();
+      }
+    });
+    this._sessionConfigured = !0;
   }
   _attachIfNeeded() {
     this._window &&
