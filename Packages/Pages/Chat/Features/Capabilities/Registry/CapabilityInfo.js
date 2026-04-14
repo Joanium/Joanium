@@ -73,7 +73,6 @@ import { Trigger as NetlifyTrigger } from '../../../../../Capabilities/Netlify/C
 
 //// Design
 import { Trigger as FigmaTrigger } from '../../../../../Capabilities/Figma/Core/Trigger.js';
-import { Trigger as CanvaTrigger } from '../../../../../Capabilities/Canva/Core/Trigger.js';
 
 //// Project Management
 import { Trigger as NotionTrigger } from '../../../../../Capabilities/Notion/Core/Trigger.js';
@@ -379,15 +378,6 @@ export const CAPABILITY_MANIFESTS = [
     executor: null,
     featureCategories: ['figma'],
     connectors: { figma: 'figma' },
-  },
-  {
-    name: 'canva',
-    description: 'Canva designs, folders, and creative assets',
-    triggers: CanvaTrigger,
-    tools: [],
-    executor: null,
-    featureCategories: ['canva'],
-    connectors: { canva: 'canva' },
   },
   {
     name: 'netlify',
