@@ -37,6 +37,11 @@ export async function executeNotionChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
+    if (toolName === 'notion_restore_page') {
+      const result = await NotionAPI.restorePage(creds, params.page_id);
+      return { ok: true, ...result };
+    }
+
     if (toolName === 'notion_get_page_property') {
       const data = await NotionAPI.getPageProperty(creds, params.page_id, params.property_id);
       return { ok: true, property: data };
@@ -52,11 +57,59 @@ export async function executeNotionChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
+    if (toolName === 'notion_set_page_icon') {
+      const result = await NotionAPI.setPageIcon(creds, params.page_id, {
+        type: params.type ?? 'emoji',
+        value: params.value,
+      });
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_set_page_cover') {
+      const result = await NotionAPI.setPageCover(creds, params.page_id, params.image_url);
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_update_page_properties') {
+      const result = await NotionAPI.updatePageProperties(creds, params.page_id, params.properties);
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_get_child_pages') {
+      const pages = await NotionAPI.getChildPages(creds, params.page_id);
+      return { ok: true, pages };
+    }
+
     // ─── Blocks ───────────────────────────────────────────────────────────────
 
     if (toolName === 'notion_get_page_content') {
       const blocks = await NotionAPI.getBlockChildren(creds, params.block_id, params.limit ?? 50);
       return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_get_block') {
+      const block = await NotionAPI.getBlock(creds, params.block_id);
+      return { ok: true, block };
+    }
+
+    if (toolName === 'notion_update_block_text') {
+      const result = await NotionAPI.updateBlockText(creds, params.block_id, params.text);
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_get_full_page_content') {
+      const result = await NotionAPI.getFullPageContent(creds, params.page_id, params.depth ?? 2);
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_export_page_as_text') {
+      const result = await NotionAPI.exportPageAsText(creds, params.page_id);
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_clear_page_content') {
+      const result = await NotionAPI.clearPageContent(creds, params.page_id);
+      return { ok: true, ...result };
     }
 
     if (toolName === 'notion_append_text_block') {
@@ -109,6 +162,64 @@ export async function executeNotionChatTool(ctx, toolName, params) {
       return { ok: true, blocks };
     }
 
+    if (toolName === 'notion_append_toggle_block') {
+      const blocks = await NotionAPI.appendToggleBlock(creds, params.block_id, params.text);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_callout_block') {
+      const blocks = await NotionAPI.appendCalloutBlock(
+        creds,
+        params.block_id,
+        params.text,
+        params.emoji ?? '💡',
+      );
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_quote_block') {
+      const blocks = await NotionAPI.appendQuoteBlock(creds, params.block_id, params.text);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_image_block') {
+      const blocks = await NotionAPI.appendImageBlock(creds, params.block_id, params.image_url);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_video_block') {
+      const blocks = await NotionAPI.appendVideoBlock(creds, params.block_id, params.video_url);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_embed_block') {
+      const blocks = await NotionAPI.appendEmbedBlock(creds, params.block_id, params.url);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_bookmark_block') {
+      const blocks = await NotionAPI.appendBookmarkBlock(
+        creds,
+        params.block_id,
+        params.url,
+        params.caption ?? '',
+      );
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_table_of_contents') {
+      const blocks = await NotionAPI.appendTableOfContents(creds, params.block_id);
+      return { ok: true, blocks };
+    }
+
+    if (toolName === 'notion_append_table_block') {
+      const blocks = await NotionAPI.appendTableBlock(creds, params.block_id, {
+        headers: params.headers ?? [],
+        rows: params.rows ?? [],
+      });
+      return { ok: true, blocks };
+    }
+
     if (toolName === 'notion_delete_block') {
       const result = await NotionAPI.deleteBlock(creds, params.block_id);
       return { ok: true, ...result };
@@ -151,6 +262,54 @@ export async function executeNotionChatTool(ctx, toolName, params) {
       return { ok: true, entries };
     }
 
+    if (toolName === 'notion_sort_database') {
+      const entries = await NotionAPI.sortDatabase(
+        creds,
+        params.database_id,
+        params.sorts,
+        params.limit ?? 20,
+      );
+      return { ok: true, entries };
+    }
+
+    if (toolName === 'notion_filter_and_sort_database') {
+      const entries = await NotionAPI.filterAndSortDatabase(
+        creds,
+        params.database_id,
+        params.filter,
+        params.sorts,
+        params.limit ?? 20,
+      );
+      return { ok: true, entries };
+    }
+
+    if (toolName === 'notion_search_database_by_title') {
+      const entries = await NotionAPI.searchDatabaseByTitle(
+        creds,
+        params.database_id,
+        params.query,
+        params.limit ?? 20,
+      );
+      return { ok: true, entries };
+    }
+
+    if (toolName === 'notion_count_database_entries') {
+      const result = await NotionAPI.countDatabaseEntries(
+        creds,
+        params.database_id,
+        params.filter ?? null,
+      );
+      return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_update_database') {
+      const result = await NotionAPI.updateDatabase(creds, params.database_id, {
+        title: params.title,
+        description: params.description,
+      });
+      return { ok: true, ...result };
+    }
+
     if (toolName === 'notion_create_database') {
       const result = await NotionAPI.createDatabase(creds, {
         parentPageId: params.parent_page_id,
@@ -168,6 +327,15 @@ export async function executeNotionChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
+    if (toolName === 'notion_bulk_create_database_entries') {
+      const results = await NotionAPI.bulkCreateDatabaseEntries(
+        creds,
+        params.database_id,
+        params.entries ?? [],
+      );
+      return { ok: true, results };
+    }
+
     if (toolName === 'notion_update_database_entry') {
       const result = await NotionAPI.updateDatabaseEntry(creds, params.page_id, params.properties);
       return { ok: true, ...result };
@@ -176,6 +344,18 @@ export async function executeNotionChatTool(ctx, toolName, params) {
     if (toolName === 'notion_archive_database_entry') {
       const result = await NotionAPI.archiveDatabaseEntry(creds, params.page_id);
       return { ok: true, ...result };
+    }
+
+    if (toolName === 'notion_restore_database_entry') {
+      const result = await NotionAPI.restoreDatabaseEntry(creds, params.page_id);
+      return { ok: true, ...result };
+    }
+
+    // ─── Search ───────────────────────────────────────────────────────────────
+
+    if (toolName === 'notion_search_all') {
+      const results = await NotionAPI.searchAll(creds, params?.query ?? '', params?.limit ?? 20);
+      return { ok: true, results };
     }
 
     // ─── Comments ─────────────────────────────────────────────────────────────
@@ -205,6 +385,11 @@ export async function executeNotionChatTool(ctx, toolName, params) {
     if (toolName === 'notion_get_bot_info') {
       const bot = await NotionAPI.getBot(creds);
       return { ok: true, bot };
+    }
+
+    if (toolName === 'notion_get_workspace_info') {
+      const workspace = await NotionAPI.getWorkspaceInfo(creds);
+      return { ok: true, workspace };
     }
 
     return null; // unknown tool
