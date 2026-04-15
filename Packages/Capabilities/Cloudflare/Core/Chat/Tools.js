@@ -84,6 +84,28 @@ export const CLOUDFLARE_TOOLS = [
     },
   },
 
+  // ─── NEW: Zone Pause / Unpause ─────────────────────────────────────────────
+  {
+    name: 'cloudflare_pause_zone',
+    description:
+      'Pause Cloudflare on a zone, routing traffic directly to the origin server and disabling all Cloudflare features (CDN, WAF, etc.). Use with caution.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID to pause.' },
+    },
+  },
+  {
+    name: 'cloudflare_unpause_zone',
+    description:
+      'Re-enable Cloudflare on a previously paused zone, restoring CDN, WAF, and all Cloudflare features.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID to unpause.' },
+    },
+  },
+
   // ─── DNS Records ───────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_dns_records',
@@ -393,6 +415,428 @@ export const CLOUDFLARE_TOOLS = [
     connectorId: 'cloudflare',
     parameters: {
       zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+
+  // ─── NEW: Worker Routes ────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_create_worker_route',
+    description:
+      'Create a new Worker route that maps a URL pattern to a specific Worker script for a zone.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      pattern: {
+        type: 'string',
+        description: 'URL pattern with optional wildcards, e.g. "example.com/api/*".',
+      },
+      script: {
+        type: 'string',
+        description:
+          'Name of the Worker script to invoke. Leave empty to disable Workers on this route.',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_worker_route',
+    description: 'Delete an existing Worker route from a zone by its route ID.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      routeId: { type: 'string', description: 'The Worker route ID to delete.' },
+    },
+  },
+
+  // ─── NEW: Rate Limiting ────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_rate_limits',
+    description:
+      'List all rate limiting rules configured for a zone, showing their thresholds, periods, and actions.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_rate_limit',
+    description:
+      'Create a rate limiting rule that blocks or challenges clients exceeding a request threshold within a time period.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      threshold: {
+        type: 'number',
+        description: 'Number of requests allowed before the rule triggers.',
+      },
+      period: {
+        type: 'number',
+        description: 'Time window in seconds (1–86400) in which the threshold is counted.',
+      },
+      action: {
+        type: 'string',
+        description:
+          'Action when limit is exceeded: "block", "challenge", "js_challenge", or "simulate".',
+      },
+      urlPattern: {
+        type: 'string',
+        description: 'URL pattern to match, e.g. "example.com/login*". Supports wildcards.',
+      },
+      description: { type: 'string', description: 'Optional description of the rule.' },
+      disabled: {
+        type: 'boolean',
+        description: 'Set to true to create the rule in a disabled state.',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_rate_limit',
+    description: 'Delete a rate limiting rule from a Cloudflare zone.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      rateLimitId: { type: 'string', description: 'The rate limit rule ID to delete.' },
+    },
+  },
+
+  // ─── NEW: KV Storage ───────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_kv_namespaces',
+    description: 'List all Workers KV namespaces in a Cloudflare account.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_kv_namespace',
+    description: 'Create a new Workers KV namespace in a Cloudflare account.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      title: { type: 'string', description: 'A human-readable name for the KV namespace.' },
+    },
+  },
+  {
+    name: 'cloudflare_delete_kv_namespace',
+    description: 'Delete a Workers KV namespace and all its keys from a Cloudflare account.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      namespaceId: { type: 'string', description: 'The KV namespace ID to delete.' },
+    },
+  },
+  {
+    name: 'cloudflare_list_kv_keys',
+    description: 'List keys stored in a Workers KV namespace, with optional prefix filtering.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      namespaceId: { type: 'string', description: 'The KV namespace ID.' },
+      prefix: { type: 'string', description: 'Optional key prefix to filter results.' },
+      limit: {
+        type: 'number',
+        description: 'Maximum number of keys to return (default 100, max 1000).',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_get_kv_value',
+    description: 'Read the value of a specific key from a Workers KV namespace.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      namespaceId: { type: 'string', description: 'The KV namespace ID.' },
+      key: { type: 'string', description: 'The key whose value to retrieve.' },
+    },
+  },
+  {
+    name: 'cloudflare_put_kv_value',
+    description: 'Write or overwrite a value for a key in a Workers KV namespace.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      namespaceId: { type: 'string', description: 'The KV namespace ID.' },
+      key: { type: 'string', description: 'The key to write.' },
+      value: { type: 'string', description: 'The value to store (plain text or serialised JSON).' },
+      expiration: {
+        type: 'number',
+        description: 'Optional absolute Unix timestamp for key expiry.',
+      },
+      expirationTtl: {
+        type: 'number',
+        description: 'Optional TTL in seconds from now for key expiry.',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_kv_value',
+    description: 'Delete a specific key-value pair from a Workers KV namespace.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      namespaceId: { type: 'string', description: 'The KV namespace ID.' },
+      key: { type: 'string', description: 'The key to delete.' },
+    },
+  },
+
+  // ─── NEW: R2 Storage ───────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_r2_buckets',
+    description: 'List all R2 object storage buckets in a Cloudflare account.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_r2_bucket',
+    description: 'Create a new R2 object storage bucket in a Cloudflare account.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      name: {
+        type: 'string',
+        description: 'Globally unique bucket name (lowercase, hyphens allowed).',
+      },
+      locationHint: {
+        type: 'string',
+        description: 'Optional region hint: "apac", "eeur", "enam", "oc", or "weur".',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_r2_bucket',
+    description:
+      'Delete an empty R2 bucket from a Cloudflare account. The bucket must be empty before deletion.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      bucketName: { type: 'string', description: 'The name of the R2 bucket to delete.' },
+    },
+  },
+
+  // ─── NEW: Load Balancers ───────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_load_balancers',
+    description: 'List all load balancers configured for a Cloudflare zone.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_list_load_balancer_pools',
+    description:
+      'List all load balancer origin pools in a Cloudflare account, including health status and origins.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_load_balancer_pool',
+    description:
+      'Create a new origin pool for a Cloudflare load balancer with one or more origin servers.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      name: { type: 'string', description: 'A short name for the pool (no spaces).' },
+      origins: {
+        type: 'array',
+        description:
+          'Array of origin objects, each with "name", "address", and optionally "enabled" (boolean) and "weight" (number).',
+      },
+      description: { type: 'string', description: 'Optional description of the pool.' },
+      enabled: { type: 'boolean', description: 'Whether the pool is enabled (default true).' },
+      minimumOrigins: {
+        type: 'number',
+        description:
+          'Minimum number of healthy origins required to consider the pool healthy (default 1).',
+      },
+    },
+  },
+
+  // ─── NEW: Custom Hostnames ─────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_custom_hostnames',
+    description: 'List all custom hostnames (SSL for SaaS) configured for a Cloudflare zone.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_custom_hostname',
+    description:
+      'Add a custom hostname (SSL for SaaS) to a Cloudflare zone, provisioning a certificate for it.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      hostname: {
+        type: 'string',
+        description: 'The custom hostname to add, e.g. "app.customer.com".',
+      },
+      sslMethod: {
+        type: 'string',
+        description: 'SSL validation method: "http" (default) or "txt" (DNS TXT record).',
+      },
+      sslType: {
+        type: 'string',
+        description: 'Certificate type: "dv" for Domain Validation (default).',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_custom_hostname',
+    description: 'Remove a custom hostname from a Cloudflare zone, revoking its certificate.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      customHostnameId: { type: 'string', description: 'The custom hostname ID to delete.' },
+    },
+  },
+
+  // ─── NEW: Tunnels ──────────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_tunnels',
+    description:
+      'List all Cloudflare Tunnels (cloudflared) in an account, showing their status and active connections.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_get_tunnel',
+    description:
+      'Get detailed information about a specific Cloudflare Tunnel, including its active connector connections.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      tunnelId: { type: 'string', description: 'The tunnel ID to retrieve.' },
+    },
+  },
+
+  // ─── NEW: Access ───────────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_access_applications',
+    description:
+      'List all Cloudflare Access applications in an account, showing their domains and session durations.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_list_access_policies',
+    description:
+      'List all policies attached to a specific Cloudflare Access application, showing who is allowed or denied.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      accountId: { type: 'string', description: 'The Cloudflare account ID.' },
+      appId: { type: 'string', description: 'The Access application ID.' },
+    },
+  },
+
+  // ─── NEW: Logpush ──────────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_logpush_jobs',
+    description:
+      'List all Logpush jobs configured for a zone, showing their dataset, destination, and health status.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+
+  // ─── NEW: Health Checks ────────────────────────────────────────────────────
+  {
+    name: 'cloudflare_list_health_checks',
+    description:
+      'List all standalone health checks configured for a Cloudflare zone, including their current status and failure reasons.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+    },
+  },
+  {
+    name: 'cloudflare_create_health_check',
+    description:
+      'Create a standalone health check that monitors an origin server and reports its availability.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      name: { type: 'string', description: 'A short name for this health check.' },
+      address: {
+        type: 'string',
+        description: 'The hostname or IP address of the origin to check.',
+      },
+      type: {
+        type: 'string',
+        description: 'Protocol type: "HTTPS" (default), "HTTP", or "TCP".',
+      },
+      path: {
+        type: 'string',
+        description: 'HTTP path to request for HTTP/HTTPS checks (default "/").',
+      },
+      interval: {
+        type: 'number',
+        description: 'Seconds between health check runs (default 60).',
+      },
+      retries: {
+        type: 'number',
+        description: 'Number of retries before marking the origin unhealthy (default 2).',
+      },
+      timeout: {
+        type: 'number',
+        description: 'Seconds to wait for a response before timing out (default 5).',
+      },
+      enabled: {
+        type: 'boolean',
+        description: 'Whether to enable the check immediately (default true).',
+      },
+      description: {
+        type: 'string',
+        description: 'Optional description of what this check monitors.',
+      },
+    },
+  },
+  {
+    name: 'cloudflare_delete_health_check',
+    description: 'Delete a standalone health check from a Cloudflare zone.',
+    category: 'cloudflare',
+    connectorId: 'cloudflare',
+    parameters: {
+      zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
+      healthCheckId: { type: 'string', description: 'The health check ID to delete.' },
     },
   },
 ];
