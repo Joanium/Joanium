@@ -8,7 +8,6 @@
     "deepseek-reasoner": {
       "name": "DeepSeek Reasoner",
       "description": "Thinking mode with Chain-of-Thought, powered by DeepSeek-V3.2",
-      "rank": 1,
       "context_window": 128000,
       "max_output": 65536,
       "inputs": {
@@ -25,7 +24,6 @@
     "deepseek-chat": {
       "name": "DeepSeek Chat",
       "description": "General chat mode powered by DeepSeek-V3.2",
-      "rank": 2,
       "context_window": 128000,
       "max_output": 8192,
       "inputs": {

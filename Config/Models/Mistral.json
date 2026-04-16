@@ -8,7 +8,6 @@
     "mistral-large-latest": {
       "name": "Mistral Large 3",
       "description": "Flagship reasoning with multimodal capabilities",
-      "rank": 1,
       "context_window": 131000,
       "max_output": 8192,
       "inputs": {
@@ -25,7 +24,6 @@
     "codestral-latest": {
       "name": "Codestral",
       "description": "Optimized for code generation with 256K context",
-      "rank": 2,
       "context_window": 256000,
       "max_output": 8192,
       "inputs": {
@@ -42,7 +40,6 @@
     "mistral-small-latest": {
       "name": "Mistral Small",
       "description": "Cost-efficient, fast for high-volume tasks",
-      "rank": 3,
       "context_window": 32000,
       "max_output": 8192,
       "inputs": {

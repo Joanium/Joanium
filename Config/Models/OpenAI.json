@@ -8,7 +8,6 @@
     "o1": {
       "name": "o1",
       "description": "Deep reasoning model for complex problems",
-      "rank": 1,
       "context_window": 200000,
       "max_output": 100000,
       "inputs": {
@@ -25,7 +24,6 @@
     "gpt-4o": {
       "name": "GPT-4o",
       "description": "Multimodal model with vision and 128K context",
-      "rank": 2,
       "context_window": 128000,
       "max_output": 16384,
       "inputs": {
@@ -42,7 +40,6 @@
     "gpt-4-turbo": {
       "name": "GPT-4 Turbo",
       "description": "Legacy high-intelligence model",
-      "rank": 3,
       "context_window": 128000,
       "max_output": 4096,
       "inputs": {
@@ -59,7 +56,6 @@
     "o3-mini": {
       "name": "o3 Mini",
       "description": "Compact reasoning model",
-      "rank": 4,
       "context_window": 200000,
       "max_output": 100000,
       "inputs": {
@@ -76,7 +72,6 @@
     "gpt-4o-mini": {
       "name": "GPT-4o Mini",
       "description": "Fast and affordable for focused tasks",
-      "rank": 5,
       "context_window": 128000,
       "max_output": 16384,
       "inputs": {

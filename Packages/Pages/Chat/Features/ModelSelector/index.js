@@ -1,7 +1,7 @@
 import { state } from '../../../../System/State.js';
 import { modelLabel, modelDropdown, modelSelectorBtn } from '../../../Shared/Core/DOM.js';
 function sortedModelEntries(models = {}) {
-  return Object.entries(models).sort(([, a], [, b]) => (a.rank ?? 999) - (b.rank ?? 999));
+  return Object.entries(models);
 }
 export function getSelectedModelInfo() {
   return state.selectedProvider?.models?.[state.selectedModel] ?? null;
@@ -90,15 +90,10 @@ export async function loadProviders() {
       ((state.selectedProvider = prevProvider), (state.selectedModel = prevModelId));
     else {
       const { bestProvider: bestProvider, bestModelId: bestModelId } = (function (providers) {
-        let bestProvider = null,
-          bestModelId = null,
-          bestRank = 1 / 0;
-        for (const provider of providers)
-          for (const [modelId, info] of Object.entries(provider.models ?? {})) {
-            const rank = info.rank ?? 999;
-            rank < bestRank &&
-              ((bestRank = rank), (bestProvider = provider), (bestModelId = modelId));
-          }
+        const bestProvider = providers[0] ?? null;
+        const bestModelId = bestProvider
+          ? (Object.keys(bestProvider.models ?? {})[0] ?? null)
+          : null;
         return { bestProvider: bestProvider, bestModelId: bestModelId };
       })(state.providers);
       ((state.selectedProvider = bestProvider ?? state.providers[0]),

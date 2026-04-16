@@ -8,7 +8,6 @@
     "deepseek/deepseek-r1": {
       "name": "DeepSeek R1",
       "description": "State-of-the-art reasoning model",
-      "rank": 1,
       "context_window": 64000,
       "max_output": 8000,
       "inputs": {
@@ -25,7 +24,6 @@
     "mistralai/mistral-large": {
       "name": "Mistral Large",
       "description": "Top-tier reasoning and code generation",
-      "rank": 2,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -42,7 +40,6 @@
     "meta-llama/llama-3.3-70b-instruct": {
       "name": "Llama 3.3 70B Instruct",
       "description": "Meta\u0027s latest open-weight powerhouse",
-      "rank": 3,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -59,7 +56,6 @@
     "qwen/qwen-2.5-72b-instruct": {
       "name": "Qwen 2.5 72B",
       "description": "Alibaba\u0027s flagship instruction model",
-      "rank": 4,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -76,7 +72,6 @@
     "google/gemma-3-27b-it": {
       "name": "Gemma 3 27B",
       "description": "Google\u0027s open model via OpenRouter",
-      "rank": 5,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {

@@ -7,7 +7,6 @@
     "claude-opus-4-6": {
       "name": "Claude Opus 4.6",
       "description": "Latest flagship model with 1M context window",
-      "rank": 1,
       "context_window": 1000000,
       "max_output": 8192,
       "inputs": {
@@ -24,7 +23,6 @@
     "claude-sonnet-4-6": {
       "name": "Claude Sonnet 4.6",
       "description": "Latest balanced model with 1M context window",
-      "rank": 2,
       "context_window": 1000000,
       "max_output": 8192,
       "inputs": {
@@ -41,7 +39,6 @@
     "claude-opus-4-5": {
       "name": "Claude Opus 4.5",
       "description": "Previous flagship model for complex tasks",
-      "rank": 3,
       "context_window": 200000,
       "max_output": 8192,
       "inputs": {
@@ -58,7 +55,6 @@
     "claude-sonnet-4-5": {
       "name": "Claude Sonnet 4.5",
       "description": "Balanced performance and speed",
-      "rank": 4,
       "context_window": 200000,
       "max_output": 8192,
       "inputs": {
@@ -75,7 +71,6 @@
     "claude-haiku-4-5": {
       "name": "Claude Haiku 4.5",
       "description": "Fast and compact for everyday tasks",
-      "rank": 5,
       "context_window": 200000,
       "max_output": 8192,
       "inputs": {

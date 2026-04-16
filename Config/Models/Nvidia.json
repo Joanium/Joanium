@@ -6,10 +6,25 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "minimaxai/minimax-m2.7": {
+      "name": "Minimax M2.7",
+      "description": "Minimax M2.7 model",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.01,
+        "output": 0.02
+      }
+    },
     "moonshotai/kimi-k2-thinking": {
       "name": "Kimi K2 Thinking",
       "description": "MoonshotAI reasoning model",
-      "rank": 3,
       "max_output": 16384,
       "inputs": {
         "text": true,
@@ -23,7 +38,6 @@
     "deepseek-ai/deepseek-v3.2": {
       "name": "DeepSeek V3.2",
       "description": "DeepSeek's latest flagship model",
-      "rank": 4,
       "max_output": 8192,
       "inputs": {
         "text": true,
@@ -37,7 +51,6 @@
     "z-ai/glm4.7": {
       "name": "GLM 4.7",
       "description": "Z-AI's GLM 4.7 model",
-      "rank": 8,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -54,7 +67,6 @@
     "qwen/qwen3.5-397b-a17b": {
       "name": "Qwen 3.5 397B A17B",
       "description": "Qwen 3.5 397B A17B model",
-      "rank": 10,
       "context_window": 131072,
       "max_output": 16384,
       "inputs": {
@@ -71,7 +83,6 @@
     "qwen/qwen3-coder-480b-a35b-instruct": {
       "name": "Qwen 3 Coder 480B A35B Instruct",
       "description": "Qwen 3 Coder 480B A35B Instruct model",
-      "rank": 8,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -88,7 +99,6 @@
     "moonshotai/kimi-k2-instruct": {
       "name": "Kimi K2 Instruct",
       "description": "MoonshotAI instruct model",
-      "rank": 8,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -105,7 +115,6 @@
     "google/gemma-4-31b-it": {
       "name": "Gemma 4 31B IT",
       "description": "Google's Gemma 4 31B IT model",
-      "rank": 8,
       "context_window": 131072,
       "max_output": 16384,
       "inputs": {
@@ -122,7 +131,6 @@
     "openai/gpt-oss-20b": {
       "name": "GPT OSS 20B",
       "description": "Open-source GPT model",
-      "rank": 7,
       "context_window": 131072,
       "max_output": 8192,
       "inputs": {
@@ -139,7 +147,6 @@
     "nvidia/nemotron-3-super-120b-a12b": {
       "name": "Nemotron 3 Super 120B A12B",
       "description": "NVIDIA's Nemotron 3 Super 120B A12B model",
-      "rank": 9,
       "context_window": 131072,
       "max_output": 16384,
       "inputs": {
@@ -156,24 +163,6 @@
     "minimaxai/minimax-m2.5": {
       "name": "Minimax M2.5",
       "description": "Minimax M2.5 model",
-      "rank": 12,
-      "context_window": 131072,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.01,
-        "output": 0.02
-      }
-    },
-    "minimaxai/minimax-m2.7": {
-      "name": "Minimax M2.7",
-      "description": "Minimax M2.7 model",
-      "rank": 12,
       "context_window": 131072,
       "max_output": 16384,
       "inputs": {

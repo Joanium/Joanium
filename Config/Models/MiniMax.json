@@ -8,7 +8,6 @@
     "MiniMax-M2.5": {
       "name": "MiniMax M2.5",
       "description": "Latest reasoning and coding flagship",
-      "rank": 1,
       "context_window": 204800,
       "max_output": 8192,
       "inputs": {
@@ -25,7 +24,6 @@
     "MiniMax-M2.5-highspeed": {
       "name": "MiniMax M2.5 High-Speed",
       "description": "Faster M2.5 throughput with the same family",
-      "rank": 2,
       "context_window": 204800,
       "max_output": 8192,
       "inputs": {
@@ -42,7 +40,6 @@
     "MiniMax-M2.1": {
       "name": "MiniMax M2.1",
       "description": "Strong multilingual and coding performance",
-      "rank": 3,
       "context_window": 204800,
       "max_output": 8192,
       "inputs": {
@@ -59,7 +56,6 @@
     "MiniMax-M2.1-highspeed": {
       "name": "MiniMax M2.1 High-Speed",
       "description": "Lower-latency M2.1 variant",
-      "rank": 4,
       "context_window": 204800,
       "max_output": 8192,
       "inputs": {
@@ -76,7 +72,6 @@
     "MiniMax-M2": {
       "name": "MiniMax M2",
       "description": "Agentic reasoning model with long context",
-      "rank": 5,
       "context_window": 204800,
       "max_output": 8192,
       "inputs": {
