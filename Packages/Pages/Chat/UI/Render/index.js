@@ -175,7 +175,8 @@ export function mount(outlet, { settings: settings, navigate: navigate }) {
         const hasAtt = state.composerAttachments?.length > 0;
         if (hasText || hasAtt) {
           return (
-            (sendBtn.innerHTML = '<span style="font-size: 11px;font-weight: 600;">Queue</span>'),
+            (sendBtn.innerHTML =
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13"><path d="M22 2L11 13" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke-width="2" stroke-linejoin="round"/></svg>'),
             sendBtn.classList.add('ready', 'is-queue'),
             sendBtn.classList.remove('is-stop'),
             (sendBtn.disabled = !1),
