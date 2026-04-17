@@ -156,7 +156,7 @@ export function initSettingsModal() {
           .filter(Boolean);
         return parts.length >= 2
           ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-          : (parts[0] ?? 'OW').slice(0, 2).toUpperCase();
+          : (parts[0] ?? 'JO').slice(0, 2).toUpperCase();
       })(displayName)));
     const wt = document.querySelector('.welcome-title');
     (wt && (wt.textContent = rawName ? `Welcome, ${firstName}` : 'Welcome'),

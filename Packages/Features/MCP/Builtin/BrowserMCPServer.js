@@ -1498,8 +1498,10 @@ export class BrowserMCPServer {
   async _waitForActionNavigation(webContents, timeoutMs = 1500) {
     try {
       await this._waitForPotentialNavigation(webContents, timeoutMs);
-      // After load stop, wait for any AJAX triggered by the action to settle (cap at 3s)
-      await this._preview.waitForNetworkIdle(3000).catch(() => {});
+      // After load stop, give a brief window for any immediate AJAX triggered by the action.
+      // Capped at 800ms — enough to catch instant post-click fetches without stalling on
+      // polling-heavy or SPA sites that never fully go idle.
+      await this._preview.waitForNetworkIdle(800).catch(() => {});
       return '';
     } catch (err) {
       if (
@@ -1589,8 +1591,8 @@ export class BrowserMCPServer {
       return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
     })(url);
     this._preview.setStatus(`Navigating to ${target}`);
-    // Use networkidle so we wait for AJAX/hydration to settle after did-stop-loading,
-    // capped at 8s inside loadURL to avoid hanging on polling-heavy sites.
+    // Use networkidle so we wait for AJAX/hydration to settle after did-stop-loading.
+    // Network idle cap is enforced in loadURL (2500ms) to avoid hanging on polling-heavy sites.
     const webContents = await this._preview.loadURL(target, {
         waitUntil: 'networkidle',
         timeoutMs: 30000,
@@ -1933,8 +1935,8 @@ export class BrowserMCPServer {
     this._preview.setStatus('Waiting for navigation');
     // Phase 1: wait for the base page load event
     await this._waitForPotentialNavigation(webContents, timeout);
-    // Phase 2: wait for AJAX/XHR to settle (capped at 8s)
-    await this._preview.waitForNetworkIdle(Math.min(timeout, 8000)).catch(() => {});
+    // Phase 2: wait for AJAX/XHR to settle — capped at 2500ms to avoid stalling on polling sites
+    await this._preview.waitForNetworkIdle(Math.min(timeout, 2500)).catch(() => {});
     const pageSummary = await this._getCurrentPageSummary(webContents);
     return (this._preview.clearStatus(), `Navigation finished.\n${pageSummary}`);
   }
@@ -1946,10 +1948,10 @@ export class BrowserMCPServer {
     if (webContents.isLoading()) {
       await this._waitForLoadStop(webContents, timeout).catch(() => {});
     }
-    // Phase 2: network idle
+    // Phase 2: network idle — capped at 3000ms to avoid long hangs on polling/SPA sites
     const mode = String(waitUntil ?? 'networkidle').toLowerCase();
     if (mode === 'networkidle' || mode === 'stable') {
-      await this._preview.waitForNetworkIdle(Math.min(timeout, 10000)).catch(() => {});
+      await this._preview.waitForNetworkIdle(Math.min(timeout, 3000)).catch(() => {});
     }
     // Phase 3: DOM stability
     if (mode === 'stable') {

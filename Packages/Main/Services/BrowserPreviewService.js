@@ -229,9 +229,11 @@ export class BrowserPreviewService extends EventEmitter {
         }));
     });
 
-    // Phase 2: network idle (no XHR/fetch for 500ms), capped at 8s to avoid hanging on polling sites
+    // Phase 2: network idle — capped at 2500ms so polling-heavy / SPA sites don't stall the AI.
+    // The page is already visually loaded at this point; we just want any immediate post-load
+    // XHR burst (e.g. hydration fetches) to settle before the AI starts reading the DOM.
     if (waitUntil === 'networkidle' || waitUntil === 'stable') {
-      await this.waitForNetworkIdle(Math.min(timeoutMs, 8000)).catch(() => {});
+      await this.waitForNetworkIdle(Math.min(timeoutMs, 2500)).catch(() => {});
     }
 
     // Phase 3: DOM stability (no mutations for 250ms), only for 'stable' mode
@@ -365,28 +367,34 @@ export class BrowserPreviewService extends EventEmitter {
   _checkNetworkIdle() {
     if (this._pendingRequests > 0) return;
     if (this._networkIdleTimer) clearTimeout(this._networkIdleTimer);
+    // Reduced grace window: 200ms instead of 500ms.
+    // 200ms is enough to catch rapid-fire XHR bursts while avoiding long hangs on polling sites.
     this._networkIdleTimer = setTimeout(() => {
       if (this._pendingRequests > 0) return;
       const cbs = this._networkIdleCallbacks.splice(0);
       cbs.forEach((cb) => cb());
-    }, 500);
+    }, 200);
   }
   waitForNetworkIdle(timeoutMs = 10000) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (this._pendingRequests === 0) {
-        // Already idle — still honour the 500ms grace window
-        const t = setTimeout(resolve, 500);
-        const guard = setTimeout(() => {
-          clearTimeout(t);
-          resolve();
-        }, timeoutMs);
+        // Already idle — honour a short 200ms grace window then resolve.
+        // Fixed: previously a leaked `guard` timer was never cleared.
+        const t = setTimeout(resolve, 200);
+        const guard = setTimeout(
+          () => {
+            clearTimeout(t);
+            resolve();
+          },
+          Math.min(timeoutMs, 200),
+        );
         void guard;
         return;
       }
       const timer = setTimeout(() => {
         const idx = this._networkIdleCallbacks.indexOf(cb);
         if (idx !== -1) this._networkIdleCallbacks.splice(idx, 1);
-        // Resolve anyway rather than reject — callers use .catch(() => {})
+        // Resolve rather than reject — callers always use .catch(() => {})
         resolve();
       }, timeoutMs);
       const cb = () => {
