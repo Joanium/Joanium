@@ -14,7 +14,7 @@
   /* Card surface — same bg as input so they blend into one shell */
   background: var(--bg-input);
   border: 1px solid var(--border);
-  border-bottom: none;                       /* seam with input-box */
+  border-bottom: none; /* seam with input-box */
   border-radius: var(--radius-xl, 18px) var(--radius-xl, 18px) 0 0; /* rounded top, square bottom */
   overflow: hidden;
   padding: 10px 10px 8px;
@@ -77,14 +77,28 @@
 }
 
 /* Only newly-added cards animate in — existing cards don't re-stagger on re-render */
-.fdp-card--entering:nth-child(1) { animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
-.fdp-card--entering:nth-child(2) { animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.11s both; }
-.fdp-card--entering:nth-child(3) { animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.17s both; }
-.fdp-card--entering:nth-child(n+4) { animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.20s both; }
+.fdp-card--entering:nth-child(1) {
+  animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
+.fdp-card--entering:nth-child(2) {
+  animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.11s both;
+}
+.fdp-card--entering:nth-child(3) {
+  animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.17s both;
+}
+.fdp-card--entering:nth-child(n + 4) {
+  animation: fdp-card-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
 
 @keyframes fdp-card-in {
-  from { transform: translateY(8px); opacity: 0; }
-  to   { transform: translateY(0);   opacity: 1; }
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ── Header row: "N files changed  ✕" ───────────────────────────────────── */
@@ -220,8 +234,12 @@
   font-weight: 600;
 }
 
-.fdp-added   { color: #4ade80; }
-.fdp-removed { color: #f87171; }
+.fdp-added {
+  color: #4ade80;
+}
+.fdp-removed {
+  color: #f87171;
+}
 
 .fdp-tag-new {
   font-family: var(--font-ui);

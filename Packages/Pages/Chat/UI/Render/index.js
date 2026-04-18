@@ -325,8 +325,8 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     document.addEventListener('dragleave', onDragLeave),
     document.addEventListener('drop', onDrop),
     shouldStartFresh && !pendingId
-    ? startNewChatAndReset()
-    : !pendingId &&
+      ? startNewChatAndReset()
+      : !pendingId &&
         state.messages.length > 0 &&
         state.messages.length &&
         (showChatView(),

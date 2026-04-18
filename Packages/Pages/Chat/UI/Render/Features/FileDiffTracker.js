@@ -3,7 +3,7 @@ import { state } from '../../../../../System/State.js';
 // ─── Diff engine ────────────────────────────────────────────────────────────
 
 const MAX_DIFF_LINES = 400; // above this cap, skip LCS and show stats only
-const CONTEXT = 2;          // unchanged lines shown around each hunk
+const CONTEXT = 2; // unchanged lines shown around each hunk
 
 /**
  * Compute a line-level unified diff between two strings.
@@ -12,7 +12,7 @@ const CONTEXT = 2;          // unchanged lines shown around each hunk
  */
 function computeDiff(before, after) {
   const a = before ? before.split('\n') : [];
-  const b = after  ? after.split('\n')  : [];
+  const b = after ? after.split('\n') : [];
 
   if (a.length > MAX_DIFF_LINES || b.length > MAX_DIFF_LINES) {
     // Fast approximation for large files
@@ -20,42 +20,47 @@ function computeDiff(before, after) {
     const bSet = new Set(b);
     return {
       ops: null,
-      added:   b.filter(l => !aSet.has(l)).length,
-      removed: a.filter(l => !bSet.has(l)).length,
+      added: b.filter((l) => !aSet.has(l)).length,
+      removed: a.filter((l) => !bSet.has(l)).length,
       tooLarge: true,
     };
   }
 
   // LCS via dynamic programming
-  const m = a.length, n = b.length;
+  const m = a.length,
+    n = b.length;
   const dp = new Array(m + 1);
   for (let i = 0; i <= m; i++) dp[i] = new Int32Array(n + 1);
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      dp[i][j] = a[i - 1] === b[j - 1]
-        ? dp[i - 1][j - 1] + 1
-        : Math.max(dp[i - 1][j], dp[i][j - 1]);
+      dp[i][j] =
+        a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]);
     }
   }
 
   // Back-trace
   const ops = [];
-  let i = m, j = n;
+  let i = m,
+    j = n;
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
-      ops.push({ t: 'eq',  l: a[i - 1] }); i--; j--;
+      ops.push({ t: 'eq', l: a[i - 1] });
+      i--;
+      j--;
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-      ops.push({ t: 'add', l: b[j - 1] }); j--;
+      ops.push({ t: 'add', l: b[j - 1] });
+      j--;
     } else {
-      ops.push({ t: 'rem', l: a[i - 1] }); i--;
+      ops.push({ t: 'rem', l: a[i - 1] });
+      i--;
     }
   }
   ops.reverse();
 
   return {
     ops,
-    added:   ops.filter(o => o.t === 'add').length,
-    removed: ops.filter(o => o.t === 'rem').length,
+    added: ops.filter((o) => o.t === 'add').length,
+    removed: ops.filter((o) => o.t === 'rem').length,
     tooLarge: false,
   };
 }
@@ -83,9 +88,9 @@ function buildDiffHTML(ops) {
       html += '<div class="fdp-hunk-sep">&#8943;</div>';
     }
     const { t, l } = ops[i];
-    const cls    = t === 'add' ? 'fdp-line--add' : t === 'rem' ? 'fdp-line--rem' : 'fdp-line--eq';
+    const cls = t === 'add' ? 'fdp-line--add' : t === 'rem' ? 'fdp-line--rem' : 'fdp-line--eq';
     const prefix = t === 'add' ? '+' : t === 'rem' ? '-' : '\u00a0';
-    const text   = (l || ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const text = (l || ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     html += `<div class="fdp-line ${cls}"><span class="fdp-prefix">${prefix}</span><span class="fdp-text">${text}</span></div>`;
     lastShown = i;
   }
@@ -119,7 +124,7 @@ export function createFileDiffTracker() {
     // Preserve original `before` across multiple writes to the same file
     const existing = changes.get(filePath);
     const originalBefore = existing ? existing.before : (before ?? '');
-    const isNew = existing ? existing.isNew : (originalBefore === '');
+    const isNew = existing ? existing.isNew : originalBefore === '';
     const diff = computeDiff(originalBefore, after ?? '');
     changes.set(filePath, { before: originalBefore, after: after ?? '', diff, isNew });
     render();
@@ -137,7 +142,9 @@ export function createFileDiffTracker() {
     }
 
     panel.hidden = false;
-    const workspaceRoot = (state.workspacePath ?? state.activeProject?.rootPath ?? '').replace(/\\/g, '/').replace(/\/$/, '');
+    const workspaceRoot = (state.workspacePath ?? state.activeProject?.rootPath ?? '')
+      .replace(/\\/g, '/')
+      .replace(/\/$/, '');
 
     const cardHTMLs = Array.from(changes.entries()).map(([filePath, { diff, isNew }], idx) => {
       // Relative path display
@@ -145,12 +152,12 @@ export function createFileDiffTracker() {
       if (workspaceRoot && rel.startsWith(workspaceRoot)) {
         rel = rel.slice(workspaceRoot.length).replace(/^\//, '');
       }
-      const slashIdx  = rel.lastIndexOf('/');
-      const filename  = slashIdx >= 0 ? rel.slice(slashIdx + 1) : rel;
-      const dirPart   = slashIdx >= 0 ? rel.slice(0, slashIdx + 1) : '';
-      const safeId    = `fdp-dv-${idx}`;
-      const diffHTML  = diff.ops
-        ? (buildDiffHTML(diff.ops) || '<div class="fdp-large-note">No line changes detected</div>')
+      const slashIdx = rel.lastIndexOf('/');
+      const filename = slashIdx >= 0 ? rel.slice(slashIdx + 1) : rel;
+      const dirPart = slashIdx >= 0 ? rel.slice(0, slashIdx + 1) : '';
+      const safeId = `fdp-dv-${idx}`;
+      const diffHTML = diff.ops
+        ? buildDiffHTML(diff.ops) || '<div class="fdp-large-note">No line changes detected</div>'
         : `<div class="fdp-large-note">File is large \u2014 showing summary only</div>`;
 
       const escapedPath = filePath.replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -169,7 +176,7 @@ export function createFileDiffTracker() {
             ${dirPart ? `<span class="fdp-dirpath">${dirPart}</span>` : ''}
             <span class="fdp-stats">
               ${isNew ? '<span class="fdp-tag-new">new</span>' : ''}
-              ${diff.added   > 0 ? `<span class="fdp-added">+${diff.added}</span>`   : ''}
+              ${diff.added > 0 ? `<span class="fdp-added">+${diff.added}</span>` : ''}
               ${diff.removed > 0 ? `<span class="fdp-removed">-${diff.removed}</span>` : ''}
             </span>
             <svg class="fdp-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -204,7 +211,7 @@ export function createFileDiffTracker() {
       </div>`;
 
     // Wire card expand/collapse
-    panel.querySelectorAll('.fdp-card-hd').forEach(btn => {
+    panel.querySelectorAll('.fdp-card-hd').forEach((btn) => {
       btn.addEventListener('click', () => {
         const dv = document.getElementById(btn.dataset.dv);
         if (!dv) return;
@@ -225,7 +232,10 @@ export function createFileDiffTracker() {
     changes.clear();
     renderedPaths.clear();
     const panel = getPanel();
-    if (panel) { panel.hidden = true; panel.innerHTML = ''; }
+    if (panel) {
+      panel.hidden = true;
+      panel.innerHTML = '';
+    }
   }
 
   function init() {

@@ -376,15 +376,22 @@ export const { handles: handles, execute: execute } = createExecutor({
       const append = !0 === params.append || 'true' === params.append;
       onStage(`✍️ ${append ? 'Appending to' : 'Writing'} ${filePath}`);
       let _diffBefore = '';
-      try { _diffBefore = (await ipcReadFile(filePath)).content; } catch { _diffBefore = ''; }
+      try {
+        _diffBefore = (await ipcReadFile(filePath)).content;
+      } catch {
+        _diffBefore = '';
+      }
       const result = await window.electronAPI?.invoke?.('write-ai-file', {
         filePath: filePath,
         content: content,
         append: append,
       });
       if (!result?.ok) throw new Error(result?.error ?? 'File write failed');
-      if (append) { _readAndEmitFileDiff(filePath, _diffBefore); }
-      else { _emitFileDiff(filePath, _diffBefore, content); }
+      if (append) {
+        _readAndEmitFileDiff(filePath, _diffBefore);
+      } else {
+        _emitFileDiff(filePath, _diffBefore, content);
+      }
       return `✅ File ${append ? 'appended' : 'written'}: ${result.path} (${result.bytes} bytes)`;
     },
     apply_file_patch: async (params, onStage) => {
@@ -395,7 +402,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       if ('string' != typeof replace) throw new Error('Missing required param: replace');
       onStage(`🩹 Patching ${filePath}`);
       let _diffBefore = '';
-      try { _diffBefore = (await ipcReadFile(filePath)).content; } catch { _diffBefore = ''; }
+      try {
+        _diffBefore = (await ipcReadFile(filePath)).content;
+      } catch {
+        _diffBefore = '';
+      }
       const result = await window.electronAPI?.invoke?.('apply-file-patch', {
         filePath: filePath,
         search: search,
@@ -419,7 +430,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       if ('string' != typeof replacement) throw new Error('Missing required param: replacement');
       onStage(`Replacing lines ${start_line}-${end_line} in ${filePath}`);
       let _diffBefore = '';
-      try { _diffBefore = (await ipcReadFile(filePath)).content; } catch { _diffBefore = ''; }
+      try {
+        _diffBefore = (await ipcReadFile(filePath)).content;
+      } catch {
+        _diffBefore = '';
+      }
       const result = await window.electronAPI?.invoke?.('replace-lines-in-file', {
         filePath: filePath,
         startLine: start_line,
@@ -436,7 +451,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       if ('string' != typeof content) throw new Error('Missing required param: content');
       onStage(`Inserting text into ${filePath}`);
       let _diffBefore = '';
-      try { _diffBefore = (await ipcReadFile(filePath)).content; } catch { _diffBefore = ''; }
+      try {
+        _diffBefore = (await ipcReadFile(filePath)).content;
+      } catch {
+        _diffBefore = '';
+      }
       const result = await window.electronAPI?.invoke?.('insert-into-file', {
         filePath: filePath,
         content: content,
@@ -462,7 +481,9 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (!destination_path?.trim()) throw new Error('Missing required param: destination_path');
       onStage(`Copying ${source_path}`);
       let _destBefore = '';
-      try { _destBefore = (await ipcReadFile(destination_path)).content; } catch {}
+      try {
+        _destBefore = (await ipcReadFile(destination_path)).content;
+      } catch {}
       const result = await window.electronAPI?.invoke?.('copy-item', {
         sourcePath: source_path,
         destinationPath: destination_path,
@@ -478,9 +499,13 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (!destination_path?.trim()) throw new Error('Missing required param: destination_path');
       onStage(`Moving ${source_path}`);
       let _srcBefore = '';
-      try { _srcBefore = (await ipcReadFile(source_path)).content; } catch {}
+      try {
+        _srcBefore = (await ipcReadFile(source_path)).content;
+      } catch {}
       let _destBefore = '';
-      try { _destBefore = (await ipcReadFile(destination_path)).content; } catch {}
+      try {
+        _destBefore = (await ipcReadFile(destination_path)).content;
+      } catch {}
       const result = await window.electronAPI?.invoke?.('move-item', {
         sourcePath: source_path,
         destinationPath: destination_path,
@@ -589,7 +614,9 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (!itemPath?.trim()) throw new Error('Missing required param: path');
       onStage(`🗑️ Deleting ${itemPath}`);
       let _before = '';
-      try { _before = (await ipcReadFile(itemPath)).content; } catch {}
+      try {
+        _before = (await ipcReadFile(itemPath)).content;
+      } catch {}
       const result = await window.electronAPI?.invoke?.('delete-item', { itemPath: itemPath });
       if (!result?.ok) throw new Error(result?.error ?? 'Delete failed');
       _emitFileDiff(itemPath, _before, '');
