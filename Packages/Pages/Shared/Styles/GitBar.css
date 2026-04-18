@@ -86,7 +86,10 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -138,7 +141,10 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -158,7 +164,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .pcb-git-action-toggle:hover:not(.is-disabled) {
@@ -185,7 +194,9 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.28),
+    0 2px 8px rgba(0, 0, 0, 0.12);
   z-index: 400;
   overflow: hidden;
   padding: 6px;
@@ -226,7 +237,9 @@
   font-size: 12.5px;
   text-align: left;
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .pcb-dropdown-item:hover:not(.is-muted):not([disabled]) {
@@ -270,7 +283,10 @@
   color: var(--text-muted);
   cursor: pointer;
   opacity: 0;
-  transition: background var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .pcb-branch-row:hover .pcb-branch-delete-btn {
@@ -374,7 +390,9 @@
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
   flex-shrink: 0;
 }
 
@@ -439,16 +457,22 @@
   transform: translateX(-50%) translateY(8px);
   background: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 16px;
+  border-radius: 12px;
+  padding: 8px 16px;
   font-size: 12.5px;
   color: var(--text-primary);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
   z-index: 9999;
   opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   pointer-events: none;
-  white-space: nowrap;
+  max-width: min(480px, calc(100vw - 48px));
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .pcb-toast.pcb-toast-show {

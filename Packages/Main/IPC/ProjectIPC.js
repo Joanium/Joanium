@@ -1,5 +1,7 @@
 import { ipcMain } from 'electron';
 import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 import * as ProjectService from '../Services/ProjectService.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
 export const ipcMeta = { needs: [] };
@@ -92,6 +94,11 @@ export function register() {
   ipcMain.handle('git-commit', async (_e, { workingDir, message }) => {
     if (!workingDir?.trim()) return { ok: false, error: 'No working directory provided.' };
     if (!message?.trim()) return { ok: false, error: 'No commit message provided.' };
+    // Remove stale lock file that blocks git add/commit
+    try {
+      const lockFile = path.join(workingDir, '.git', 'index.lock');
+      if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile);
+    } catch {}
     const stageRes = await runGit('git add -A', workingDir);
     if (!stageRes.ok) return stageRes;
     const safeMsg = message.replace(/"/g, '\\"');
@@ -100,13 +107,22 @@ export function register() {
 
   ipcMain.handle('git-push', async (_e, { workingDir }) => {
     if (!workingDir?.trim()) return { ok: false, error: 'No working directory provided.' };
-    return runGit('git push', workingDir);
+    // Try normal push first; if it fails due to no upstream, set it automatically
+    const res = await runGit('git push', workingDir);
+    if (!res.ok && /no upstream|set-upstream|has no tracked/i.test(res.stderr)) {
+      return runGit('git push -u origin HEAD', workingDir);
+    }
+    return res;
   });
 
   ipcMain.handle('git-push-sync', async (_e, { workingDir }) => {
     if (!workingDir?.trim()) return { ok: false, error: 'No working directory provided.' };
     const pullRes = await runGit('git pull', workingDir);
     if (!pullRes.ok) return pullRes;
-    return runGit('git push', workingDir);
+    const res = await runGit('git push', workingDir);
+    if (!res.ok && /no upstream|set-upstream|has no tracked/i.test(res.stderr)) {
+      return runGit('git push -u origin HEAD', workingDir);
+    }
+    return res;
   });
 }

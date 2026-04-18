@@ -30,9 +30,12 @@ async function gitCall(ch, args = {}) {
 }
 
 function showToast(msg, err = false) {
+  const text = String(msg || '').trim();
+  const firstLine = text.split('\n').find((l) => l.trim()) || text;
+  const display = firstLine.length > 120 ? firstLine.slice(0, 117) + '…' : firstLine;
   const t = Object.assign(document.createElement('div'), {
     className: `pcb-toast${err ? ' pcb-toast-error' : ''}`,
-    textContent: msg,
+    textContent: display,
   });
   document.body.appendChild(t);
   requestAnimationFrame(() => t.classList.add('pcb-toast-show'));
@@ -282,12 +285,7 @@ function onDocClick(e) {
     ad = $('pcb-action-dropdown');
   if (bd && !bd.hidden && !$('pcb-branch-btn')?.contains(e.target) && !bd.contains(e.target))
     bd.hidden = true;
-  if (
-    ad &&
-    !ad.hidden &&
-    !$('pcb-git-action-toggle')?.contains(e.target) &&
-    !ad.contains(e.target)
-  )
+  if (ad && !ad.hidden && !$('pcb-git-action-toggle')?.contains(e.target) && !ad.contains(e.target))
     ad.hidden = true;
 }
 
