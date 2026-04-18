@@ -8,7 +8,8 @@ export const STACKOVERFLOW_TOOLS = [
       query: {
         type: 'string',
         required: !0,
-        description: 'Search query — can be a keyword, error message, or tech question (e.g. "react useEffect cleanup", "TypeError: cannot read property")',
+        description:
+          'Search query — can be a keyword, error message, or tech question (e.g. "react useEffect cleanup", "TypeError: cannot read property")',
       },
       count: {
         type: 'number',
@@ -26,7 +27,8 @@ export const STACKOVERFLOW_TOOLS = [
       question_id: {
         type: 'string',
         required: !0,
-        description: 'Stack Overflow question ID (the number in the URL, e.g. "927358" from stackoverflow.com/questions/927358)',
+        description:
+          'Stack Overflow question ID (the number in the URL, e.g. "927358" from stackoverflow.com/questions/927358)',
       },
       count: {
         type: 'number',
@@ -44,7 +46,8 @@ export const STACKOVERFLOW_TOOLS = [
       tag: {
         type: 'string',
         required: !0,
-        description: 'Stack Overflow tag name (e.g. "javascript", "python", "react", "docker", "git")',
+        description:
+          'Stack Overflow tag name (e.g. "javascript", "python", "react", "docker", "git")',
       },
       count: {
         type: 'number',
@@ -80,7 +83,8 @@ export const STACKOVERFLOW_TOOLS = [
       title: {
         type: 'string',
         required: !0,
-        description: 'An error message or question title to find similar questions for (e.g. "CORS error fetch request blocked", "cannot find module after npm install")',
+        description:
+          'An error message or question title to find similar questions for (e.g. "CORS error fetch request blocked", "cannot find module after npm install")',
       },
       count: {
         type: 'number',

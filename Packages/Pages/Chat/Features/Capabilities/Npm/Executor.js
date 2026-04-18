@@ -16,7 +16,11 @@ function fmtDownloads(n) {
 function fmtDate(iso) {
   if (!iso) return 'N/A';
   try {
-    return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return new Date(iso).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
   } catch {
     return iso;
   }
@@ -81,14 +85,14 @@ export const { handles, execute } = createExecutor({
       const devDeps = Object.keys(pkg.devDependencies ?? {}).length;
       const peerDeps = Object.keys(pkg.peerDependencies ?? {}).length;
       const repo =
-        typeof pkg.repository === 'string'
-          ? pkg.repository
-          : pkg.repository?.url ?? null;
+        typeof pkg.repository === 'string' ? pkg.repository : (pkg.repository?.url ?? null);
       const repoClean = repo
-        ? repo.replace(/^git\+/, '').replace(/\.git$/, '').replace(/^git:\/\//, 'https://')
+        ? repo
+            .replace(/^git\+/, '')
+            .replace(/\.git$/, '')
+            .replace(/^git:\/\//, 'https://')
         : null;
-      const author =
-        typeof pkg.author === 'string' ? pkg.author : pkg.author?.name ?? null;
+      const author = typeof pkg.author === 'string' ? pkg.author : (pkg.author?.name ?? null);
       const engines = pkg.engines
         ? Object.entries(pkg.engines)
             .map(([k, v]) => `${k}: ${v}`)
@@ -165,9 +169,15 @@ export const { handles, execute } = createExecutor({
       const lines = [
         `📦 **${name}** — Download Statistics`,
         '',
-        week ? `📅 Last week:  ${fmtDownloads(week.downloads)} (${week.start} → ${week.end})` : null,
-        month ? `📅 Last month: ${fmtDownloads(month.downloads)} (${month.start} → ${month.end})` : null,
-        year ? `📅 Last year:  ${fmtDownloads(year.downloads)} (${year.start} → ${year.end})` : null,
+        week
+          ? `📅 Last week:  ${fmtDownloads(week.downloads)} (${week.start} → ${week.end})`
+          : null,
+        month
+          ? `📅 Last month: ${fmtDownloads(month.downloads)} (${month.start} → ${month.end})`
+          : null,
+        year
+          ? `📅 Last year:  ${fmtDownloads(year.downloads)} (${year.start} → ${year.end})`
+          : null,
         '',
         `🔗 https://www.npmjs.com/package/${name}`,
       ].filter(Boolean);
@@ -195,7 +205,7 @@ export const { handles, execute } = createExecutor({
 
       function col(pkg, dl) {
         const deps = Object.keys(pkg.dependencies ?? {}).length;
-        const author = typeof pkg.author === 'string' ? pkg.author : pkg.author?.name ?? '—';
+        const author = typeof pkg.author === 'string' ? pkg.author : (pkg.author?.name ?? '—');
         return [
           `**${pkg.name}**`,
           `Version:      ${pkg.version}`,
@@ -214,12 +224,7 @@ export const { handles, execute } = createExecutor({
 
       const rows = colA.map((lineA, i) => `${lineA.padEnd(maxLen + 2)}  ${colB[i]}`);
 
-      return [
-        `📦 npm Comparison`,
-        '─'.repeat(60),
-        ...rows,
-        '─'.repeat(60),
-      ].join('\n');
+      return [`📦 npm Comparison`, '─'.repeat(60), ...rows, '─'.repeat(60)].join('\n');
     },
   },
 });

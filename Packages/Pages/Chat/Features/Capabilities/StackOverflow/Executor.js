@@ -64,7 +64,9 @@ export const { handles, execute } = createExecutor({
     },
 
     stackoverflow_question_answers: async (params, onStage) => {
-      const id = String(params.question_id ?? '').trim().replace(/\D/g, '');
+      const id = String(params.question_id ?? '')
+        .trim()
+        .replace(/\D/g, '');
       const count = Math.min(Math.max(Number(params.count) || 3, 1), 5);
       if (!id) return '❌ Please provide a valid Stack Overflow question ID.';
 
@@ -73,7 +75,9 @@ export const { handles, execute } = createExecutor({
       // Fetch question title + answers with body in one parallel call
       const [qData, aData] = await Promise.all([
         safeJson(`${SE}/questions/${id}?site=${SITE}`),
-        safeJson(`${SE}/questions/${id}/answers?order=desc&sort=votes&site=${SITE}&pagesize=${count}&filter=withbody`),
+        safeJson(
+          `${SE}/questions/${id}/answers?order=desc&sort=votes&site=${SITE}&pagesize=${count}&filter=withbody`,
+        ),
       ]);
 
       const question = qData?.items?.[0];
@@ -99,7 +103,9 @@ export const { handles, execute } = createExecutor({
     },
 
     stackoverflow_questions_by_tag: async (params, onStage) => {
-      const tag = String(params.tag ?? '').trim().toLowerCase();
+      const tag = String(params.tag ?? '')
+        .trim()
+        .toLowerCase();
       const count = Math.min(Math.max(Number(params.count) || 5, 1), 10);
       if (!tag) return '❌ Please provide a tag name.';
 
@@ -113,15 +119,13 @@ export const { handles, execute } = createExecutor({
 
       const lines = items.map((q, i) => fmtQuestion(q, i));
 
-      return [
-        `🏷 Stack Overflow — Top questions tagged [${tag}]`,
-        '',
-        ...lines,
-      ].join('\n');
+      return [`🏷 Stack Overflow — Top questions tagged [${tag}]`, '', ...lines].join('\n');
     },
 
     stackoverflow_hot: async (params, onStage) => {
-      const tag = String(params.tag ?? '').trim().toLowerCase();
+      const tag = String(params.tag ?? '')
+        .trim()
+        .toLowerCase();
       const count = Math.min(Math.max(Number(params.count) || 5, 1), 10);
 
       const tagLabel = tag ? ` [${tag}]` : '';
@@ -136,11 +140,7 @@ export const { handles, execute } = createExecutor({
 
       const lines = items.map((q, i) => fmtQuestion(q, i));
 
-      return [
-        `🔥 Stack Overflow — Hot Questions${tagLabel}`,
-        '',
-        ...lines,
-      ].join('\n');
+      return [`🔥 Stack Overflow — Hot Questions${tagLabel}`, '', ...lines].join('\n');
     },
 
     stackoverflow_similar: async (params, onStage) => {
