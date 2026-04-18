@@ -83,6 +83,8 @@ function updatePrimaryBtn() {
     toggle.hidden = !show;
     toggle.disabled = !show;
     toggle.classList.toggle('is-disabled', !show);
+    // Full pill when solo, half-pill when paired with toggle
+    btn?.classList.toggle('pcb-solo', !show);
   };
 
   if (_isDirty) {

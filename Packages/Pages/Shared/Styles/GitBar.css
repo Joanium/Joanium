@@ -429,6 +429,17 @@
   right: auto;
 }
 
+/* Author display:flex overrides the UA [hidden] rule — this restores correct behaviour */
+.pcb-commit-popover[hidden] {
+  display: none;
+}
+
+/* When the toggle is hidden (Pull state), make the action btn a proper full pill */
+.pcb-git-action-btn.pcb-solo {
+  border-radius: 999px;
+  border-right: 1px solid var(--border);
+}
+
 .pcb-commit-textarea {
   width: 100%;
   border: 1px solid var(--border);
