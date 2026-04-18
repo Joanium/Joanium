@@ -2,6 +2,10 @@ import { randomUUID } from 'crypto';
 import defineEngine from '../../../System/Contracts/DefineEngine.js';
 import { shouldRunNow } from '../../Automation/Scheduling/Scheduling.js';
 const DEFAULT_TRIGGER = { type: 'interval', minutes: 30 };
+// Maximum time a single agent run is allowed to take before it is forcibly
+// cancelled. 24 hours gives long-running agentic tasks (deep research, large
+// codebases, multi-step automation) enough headroom without hanging forever.
+const MAX_AGENT_RUN_TIMEOUT_MS = 24 * 60 * 60 * 1000; // 24 hours
 function normalizeTrigger(trigger = {}) {
   const type = trigger?.type ?? DEFAULT_TRIGGER.type;
   return 'interval' === type
@@ -249,10 +253,11 @@ export class AgentsEngine {
       if (!this._mainWindow || this._mainWindow.isDestroyed())
         return void reject(new Error('App window not available.'));
       const requestId = randomUUID(),
+        timeoutHours = Math.round(MAX_AGENT_RUN_TIMEOUT_MS / 3600000),
         timer = setTimeout(() => {
           (this._pending.delete(requestId),
-            reject(new Error('Scheduled agent run timed out after 10 minutes.')));
-        }, 6e5);
+            reject(new Error(`Scheduled agent run timed out after ${timeoutHours} hours.`)));
+        }, MAX_AGENT_RUN_TIMEOUT_MS);
       (this._pending.set(requestId, {
         resolve: (payload) => {
           (clearTimeout(timer), resolve(payload));

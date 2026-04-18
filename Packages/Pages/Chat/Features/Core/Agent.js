@@ -74,6 +74,15 @@ const INTERNAL_TOOL_LEAK_PATTERNS = [
   skillsCache = { value: null, expiresAt: 0, promise: null },
   toolsCache = new Map(),
   workspaceSummaryCache = new Map();
+
+// Maximum number of agentic loop turns before forcing a final answer.
+// Raised from 100 to 1000 to support long-running, multi-step agent sessions.
+const MAX_AGENT_LOOP_TURNS = 1000;
+
+// Maximum number of times the loop will retry a leaky/internal reply before
+// giving up and surfacing the best available answer. Raised from 5 to 100.
+const MAX_REWRITE_ATTEMPTS = 100;
+
 function isRateLimitError(err) {
   const message = String(err?.message ?? '').toLowerCase();
   return (
@@ -1100,7 +1109,7 @@ export async function agentLoop(
   ]
     .filter(Boolean)
     .join('\n\n');
-  for (let turn = 0; turn < 100; turn++) {
+  for (let turn = 0; turn < MAX_AGENT_LOOP_TURNS; turn++) {
     if (state.queuedSteeringMessages?.length) {
       const msgs = state.queuedSteeringMessages.splice(0, state.queuedSteeringMessages.length);
       for (const msg of msgs) {
@@ -1111,7 +1120,7 @@ export async function agentLoop(
         });
       }
     }
-    const forceFinalAnswer = turn >= 99,
+    const forceFinalAnswer = turn >= MAX_AGENT_LOOP_TURNS - 1,
       toolsThisTurn = forceFinalAnswer ? [] : availableTools,
       allPlannedToolsDone =
         !plannedToolCalls?.length || executedToolCount >= plannedToolCalls.length,
@@ -1236,7 +1245,7 @@ export async function agentLoop(
     ) {
       const finalText = String(bufferedReply || result.text || '').trim() || '(empty response)';
       if (looksLikeInternalToolLeak(finalText)) {
-        if (((rewriteAttempts += 1), rewriteAttempts > 5)) {
+        if (((rewriteAttempts += 1), rewriteAttempts > MAX_REWRITE_ATTEMPTS)) {
           const recovered = tryRecoverLeakyAssistantReply(finalText);
           if (recovered)
             return (
