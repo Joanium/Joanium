@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { exec } from 'child_process';
+import { exec, execFile } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import * as ProjectService from '../Services/ProjectService.js';
@@ -62,6 +62,28 @@ function classifyGitError(stderr = '', stdout = '') {
       hint: 'Network error. Check your connection and remote URL.',
     };
   return { category: GitErrorCategory.UNKNOWN, hint: stderr.trim() || 'Unknown git error.' };
+}
+
+// Safe variant: takes an args array and uses execFile — no shell, no injection risk.
+function runGitArgs(args, workingDir, opts = {}) {
+  const timeout = opts.timeout ?? 20_000;
+  return new Promise((resolve) => {
+    const [cmd, ...cmdArgs] = args;
+    execFile(
+      cmd,
+      cmdArgs,
+      { cwd: workingDir, timeout, maxBuffer: 512_000 },
+      (err, stdout, stderr) => {
+        const exitCode = typeof err?.code === 'number' ? err.code : 0;
+        if (!err) {
+          resolve({ ok: true, stdout: stdout || '', stderr: stderr || '', exitCode });
+        } else {
+          const { category, hint } = classifyGitError(stderr, stdout);
+          resolve({ ok: false, stdout: stdout || '', stderr: stderr || '', exitCode, category, hint });
+        }
+      },
+    );
+  });
 }
 
 function runGit(command, workingDir, opts = {}) {
@@ -159,8 +181,7 @@ export function register() {
       };
     if (!branch?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No branch name provided.' };
-    const safeB = branch.replace(/"/g, '\\"');
-    return runGit(`git branch -D "${safeB}"`, workingDir);
+    return runGitArgs(['git', 'branch', '-D', branch], workingDir);
   });
 
   ipcMain.handle('git-branches', async (_e, { workingDir }) => {
@@ -193,7 +214,7 @@ export function register() {
       };
     if (!branch?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No branch name provided.' };
-    return runGit(`git checkout "${branch}"`, workingDir);
+    return runGitArgs(['git', 'checkout', branch], workingDir);
   });
 
   ipcMain.handle('git-commit', async (_e, { workingDir, message }) => {
@@ -222,8 +243,7 @@ export function register() {
     const stageRes = await runGit('git add -A', workingDir);
     if (!stageRes.ok) return stageRes;
 
-    const safeMsg = message.replace(/"/g, '\\"');
-    const commitRes = await runGitCommit(`git commit -m "${safeMsg}"`, workingDir);
+    const commitRes = await runGitArgs(['git', 'commit', '-m', message], workingDir);
 
     if (!commitRes.ok && commitRes.category === GitErrorCategory.NOTHING) {
       return { ...commitRes, ok: true, noop: true };
