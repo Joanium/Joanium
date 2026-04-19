@@ -404,9 +404,15 @@ export const { handles: handles, execute: execute } = createExecutor({
           `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:producthunt.com')}&format=json&no_redirect=1&no_html=1`,
         ),
         lines = [`🚀 Product Hunt Search: "${query}"`, ''],
-        related = (data.RelatedTopics ?? []).filter(
-          (t) => t.Text && t.FirstURL && t.FirstURL.includes('producthunt.com'),
-        );
+        related = (data.RelatedTopics ?? []).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'producthunt.com' || h.endsWith('.producthunt.com');
+          } catch {
+            return false;
+          }
+        });
       return 0 === related.length
         ? (lines.push(`No Product Hunt results found for "${query}".`),
           lines.push(`🔗 https://www.producthunt.com/search?q=${encodeURIComponent(query)}`),
@@ -752,7 +758,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:hackage.haskell.org')}&format=json&no_redirect=1&no_html=1`,
             )
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('hackage.haskell.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'hackage.haskell.org' || h.endsWith('.hackage.haskell.org');
+          } catch {
+            return false;
+          }
+        });
         if (0 === related.length)
           return (
             lines.push(`No Hackage results for "${query}".`),
@@ -926,7 +940,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:plugins.gradle.org')}&format=json&no_redirect=1&no_html=1`,
             )
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('plugins.gradle.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'plugins.gradle.org' || h.endsWith('.plugins.gradle.org');
+          } catch {
+            return false;
+          }
+        });
         return 0 === related.length
           ? (lines.push(`No Gradle plugins found for "${query}".`),
             lines.push(`🔗 https://plugins.gradle.org/search?term=${encodeURIComponent(query)}`),
@@ -1004,7 +1026,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:cocoapods.org/pods')}&format=json&no_redirect=1&no_html=1`,
             )
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('cocoapods.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'cocoapods.org' || h.endsWith('.cocoapods.org');
+          } catch {
+            return false;
+          }
+        });
         if (0 === related.length)
           return (
             lines.push(`No CocoaPods results for "${query}".`),
@@ -1401,7 +1431,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:opam.ocaml.org/packages')}&format=json&no_redirect=1&no_html=1`,
             ).then((r) => r.json())
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('opam.ocaml.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'opam.ocaml.org' || h.endsWith('.opam.ocaml.org');
+          } catch {
+            return false;
+          }
+        });
         if (0 === related.length)
           return (
             lines.push(`No OPAM results found for "${query}".`),
@@ -1584,7 +1622,15 @@ export const { handles: handles, execute: execute } = createExecutor({
             `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:luarocks.org/modules')}&format=json&no_redirect=1&no_html=1`,
           ).then((r) => r.json())
         ).RelatedTopics ?? []
-      ).filter((t) => t.Text && t.FirstURL?.includes('luarocks.org'));
+      ).filter((t) => {
+        if (!t.Text || !t.FirstURL) return false;
+        try {
+          const h = new URL(t.FirstURL).hostname;
+          return h === 'luarocks.org' || h.endsWith('.luarocks.org');
+        } catch {
+          return false;
+        }
+      });
       return 0 === related.length
         ? (lines.push(`No LuaRocks results for "${query}".`),
           lines.push(`🔗 https://luarocks.org/search?q=${encodeURIComponent(query)}`),
@@ -1763,7 +1809,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:search.nixos.org/packages')}&format=json&no_redirect=1&no_html=1`,
             ).then((r) => r.json())
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('nixos.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'nixos.org' || h.endsWith('.nixos.org');
+          } catch {
+            return false;
+          }
+        });
         related.length > 0
           ? related.slice(0, 5).forEach((t, i) => {
               (lines.push(`**${i + 1}.** ${t.Text.slice(0, 140)}`),
