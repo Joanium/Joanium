@@ -599,9 +599,19 @@ export const { handles: handles, execute: execute } = createExecutor({
         data = await safeJson(
           `https://en.wikipedia.org/w/api.php?action=parse&page=${encoded}&prop=externallinks&format=json&origin=*`,
         ),
-        refs = (data?.parse?.externallinks ?? []).filter(
-          (l) => !l.includes('wikimedia.org') && !l.includes('wikipedia.org'),
-        );
+        refs = (data?.parse?.externallinks ?? []).filter((l) => {
+          try {
+            const host = new URL(l).hostname;
+            return (
+              host !== 'wikimedia.org' &&
+              !host.endsWith('.wikimedia.org') &&
+              host !== 'wikipedia.org' &&
+              !host.endsWith('.wikipedia.org')
+            );
+          } catch {
+            return false;
+          }
+        });
       if (0 === refs.length) return `No external references found for "${resolved}".`;
       const lines = [
         `📎 References in "${data.parse.title || resolved}" (${refs.length} found)`,
