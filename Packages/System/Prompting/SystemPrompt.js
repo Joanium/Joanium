@@ -252,6 +252,13 @@ try {
   fs.existsSync(spPath) && (systemPromptConfig = JSON.parse(fs.readFileSync(spPath, 'utf-8')));
 } catch {}
 
+// Read app version once at module load from package.json
+let _appVersion = 'unknown';
+try {
+  const pkgPath = path.join(PROJECT_ROOT, 'package.json');
+  _appVersion = JSON.parse(fs.readFileSync(pkgPath, 'utf-8')).version ?? 'unknown';
+} catch {}
+
 const getConfig = (key, fallback = null) => systemPromptConfig[key] || fallback;
 
 async function fetchGeoInfo() {
@@ -394,6 +401,10 @@ export async function buildSystemPrompt({
   } else {
     push(getConfig('joaniumPersona'));
   }
+
+  blank();
+  push('# Application');
+  push(`- Joanium version: ${_appVersion}`);
 
   blank();
   push('# User');

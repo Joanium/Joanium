@@ -6,6 +6,19 @@ const api = window.electronAPI;
 
 let _initialised = false;
 
+// Strip thinking blocks emitted by extended-thinking models.
+// Covers all common tag variants across model families:
+//   <think>        — DeepSeek R1, Qwen QwQ
+//   <thinking>     — Claude extended thinking, Grok
+//   <reasoning>    — various open-source models
+//   <reflection>   — various fine-tunes
+// The \1 backreference ensures the closing tag always matches the opening one.
+function stripThinking(text) {
+  return String(text ?? '')
+    .replace(/<(think|thinking|reasoning|reflection)>[\s\S]*?<\/\1>/gi, '')
+    .trim();
+}
+
 // Serial queue — channel messages processed one at a time, no contention with chat
 let _channelChain = Promise.resolve();
 
@@ -169,7 +182,8 @@ async function _processChannelMessage(id, channelName, from, text, metadata = {}
       console.warn('[ChannelGateway] trackUsage failed:', error?.message);
     });
 
-    const finalReply = reply ?? '(no response)';
+    // Strip any thinking blocks before sending — no user on any channel should see those
+    const finalReply = stripThinking(reply ?? '(no response)');
     await persistChannelMessage({
       channelName,
       from,
