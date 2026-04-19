@@ -1,3 +1,6 @@
+import { state } from '../../../../../System/State.js';
+import { fetchWithTools } from '../../../../../Features/AI/index.js';
+
 let _workingDir = null,
   _pollTimer = null,
   _isDirty = false,
@@ -72,7 +75,6 @@ function setCommitPopoverBusy(busy, label = '') {
   if (textarea) textarea.disabled = busy;
 }
 
-/** Show/hide the small status line inside the commit popover (e.g. "Running hooks\u2026"). */
 function setCommitStatus(text) {
   const el = $('pcb-commit-status');
   if (!el) return;
@@ -96,31 +98,27 @@ function updatePrimaryBtn() {
     toggle.hidden = !show;
     toggle.disabled = !show;
     toggle.classList.toggle('is-disabled', !show);
-    // Full pill when solo, half-pill when paired with toggle
     btn?.classList.toggle('pcb-solo', !show);
   };
 
   if (_isDirty) {
-    // Unstaged changes → primary action is Commit
     btn.textContent = 'Commit';
     btn.dataset.action = 'commit';
     btn.disabled = false;
     btn.classList.remove('is-disabled');
-    enableToggle(true); // dropdown shows "Commit & Push"
+    enableToggle(true);
   } else if (_unpushedCount > 0) {
-    // Committed but not yet pushed → primary action is Push
     btn.textContent = `Push (${_unpushedCount})`;
     btn.dataset.action = 'push';
     btn.disabled = false;
     btn.classList.remove('is-disabled');
-    enableToggle(true); // dropdown shows "Push & Sync"
+    enableToggle(true);
   } else {
-    // All clean → primary action is Pull
     btn.textContent = 'Pull';
     btn.dataset.action = 'pull';
     btn.disabled = false;
     btn.classList.remove('is-disabled');
-    enableToggle(false); // no meaningful secondary action
+    enableToggle(false);
   }
 }
 
@@ -154,7 +152,6 @@ function buildActionMenu() {
   const d = $('pcb-action-dropdown');
   if (!d) return;
 
-  // Only show the one meaningful secondary action for the current state
   let opts;
   if (_isDirty) {
     opts = [
@@ -327,6 +324,7 @@ function closeCommitPopover() {
     m.value = '';
     m.disabled = false;
   }
+  _setAiGenerating(false);
   setCommitStatus('');
   _pendingAction = null;
 }
@@ -344,8 +342,6 @@ async function performCommit() {
   setCommitPopoverBusy(true, isPushAfter ? 'Commit & Push' : 'Commit');
   setCommitStatus('Staging files\u2026');
 
-  // After 2.5 s of silence, switch to a "hooks are running" message so the
-  // user knows the operation is alive — not frozen or failed.
   const hooksTimer = setTimeout(
     () => setCommitStatus('Running commit hooks\u2026 (may take a while)'),
     2500,
@@ -368,7 +364,6 @@ async function performCommit() {
       if (pushRes?.ok) {
         showToast('Committed & pushed successfully');
       } else {
-        // Commit worked but push failed — surface the actionable hint
         showToast(
           'Committed. Push failed: ' + (pushRes?.hint || pushRes?.stderr || 'unknown error'),
           true,
@@ -385,14 +380,115 @@ async function performCommit() {
     closeCommitPopover();
   } finally {
     clearTimeout(hooksTimer);
-    // setGitBusy(false) MUST come before refreshStatus() — otherwise refreshStatus
-    // sees _busy=true and bails out, leaving the UI stale.
     setGitBusy(false);
     setCommitStatus('');
     setCommitPopoverBusy(false, isPushAfter ? 'Commit & Push' : 'Commit');
     await refreshStatus();
   }
 }
+
+// ── AI commit message generation ──────────────────────────────────────────────
+
+/** Toggle the shimmer animation + locked state on the textarea wrap. */
+function _setAiGenerating(on) {
+  const wrap = $('pcb-commit-msg')?.closest('.pcb-commit-textarea-wrap');
+  if (wrap) wrap.classList.toggle('pcb-commit-generating', on);
+
+  const aiBtn = $('pcb-ai-commit-btn');
+  if (aiBtn) {
+    aiBtn.disabled = on;
+    aiBtn.classList.toggle('pcb-ai-commit-btn--loading', on);
+  }
+
+  // Disable Commit and Cancel while the AI is writing
+  const confirm = $('pcb-commit-confirm');
+  const cancel = $('pcb-commit-cancel');
+  if (confirm) confirm.disabled = on;
+  if (cancel) cancel.disabled = on;
+
+  const textarea = $('pcb-commit-msg');
+  if (textarea) textarea.disabled = on;
+}
+
+/** Write text into the textarea one character at a time (typewriter effect). */
+async function _typeIntoTextarea(textarea, text, charDelayMs = 14) {
+  textarea.value = '';
+  for (let i = 0; i < text.length; i++) {
+    if (!document.contains(textarea)) return; // bail if popover was closed
+    textarea.value = text.slice(0, i + 1);
+    await new Promise((r) => setTimeout(r, charDelayMs));
+  }
+}
+
+async function generateAICommitMessage() {
+  if (_busy) return;
+
+  if (!state.selectedProvider || !state.selectedModel) {
+    showToast('Select an AI model first', true);
+    return;
+  }
+
+  // Start shimmer immediately — feels instant
+  _setAiGenerating(true);
+
+  try {
+    // The existing 'git-diff' handler in TerminalIPC accepts { workingDir, staged }
+    // and returns { ok, stdout, ... }. We fetch both staged + unstaged in parallel
+    // to give the AI the full picture of all pending changes.
+    const [unstagedRes, stagedRes] = await Promise.all([
+      gitCall('git-diff', { staged: false }),
+      gitCall('git-diff', { staged: true }),
+    ]);
+
+    const combined = [stagedRes?.stdout, unstagedRes?.stdout]
+      .map((s) => (s || '').trim())
+      .filter(Boolean)
+      .join('\n');
+
+    if (!combined) {
+      showToast('No changes found to summarise', true);
+      return;
+    }
+
+    // Cap at 8 000 chars so we never blow the model's context window
+    const diff =
+      combined.length > 8000
+        ? combined.slice(0, 8000) + '\n\n…(diff truncated for length)'
+        : combined;
+
+    const result = await fetchWithTools(
+      state.selectedProvider,
+      state.selectedModel,
+      [{ role: 'user', content: `Git diff:\n\n${diff}`, attachments: [] }],
+      [
+        'You are a commit message generator.',
+        'Read the provided git diff and write a concise, imperative-mood commit message.',
+        'Use conventional-commit prefixes (feat:, fix:, refactor:, chore:, docs:, style:, test:, perf:) when they fit naturally.',
+        'The first line must be a short summary under 72 characters.',
+        'If extra context is useful, add a blank line then a short body (2–4 lines max).',
+        'Return ONLY the raw commit message text — no markdown, no quotes, no explanation.',
+      ].join(' '),
+      [],
+    );
+
+    const textarea = $('pcb-commit-msg');
+    if (!textarea) return;
+
+    if (result.type === 'text' && result.text && result.text !== '(empty response)') {
+      // Typewriter reveal while the shimmer is still running
+      await _typeIntoTextarea(textarea, result.text.trim());
+    } else {
+      showToast('AI returned an empty response', true);
+    }
+  } catch (err) {
+    showToast('AI generation failed: ' + (err?.message ?? String(err)), true);
+  } finally {
+    _setAiGenerating(false);
+    $('pcb-commit-msg')?.focus();
+  }
+}
+
+// ── Confirm popover (branch delete) ──────────────────────────────────────────
 
 function showConfirm(message, okLabel, onConfirm) {
   _confirmCallback = onConfirm;
@@ -476,7 +572,7 @@ export function createGitBar() {
     $('pcb-branch-dropdown')?.addEventListener('click', async (e) => {
       const del = e.target.closest('[data-delete-branch]');
       if (del) {
-        e.stopPropagation(); // prevent the document click listener from instantly dismissing the confirm dialog
+        e.stopPropagation();
         const branchToDelete = del.dataset.deleteBranch;
         $('pcb-branch-dropdown').hidden = true;
         showConfirm(
@@ -540,6 +636,13 @@ export function createGitBar() {
     $('pcb-commit-msg')?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) performCommit();
     });
+
+    // ── AI commit message button ──────────────────────────────────────────────
+    $('pcb-ai-commit-btn')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      generateAICommitMessage();
+    });
+
     document.addEventListener('click', (e) => {
       onDocClick(e);
       const cp = $('pcb-confirm-popover');

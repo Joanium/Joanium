@@ -33,7 +33,14 @@ export function getChatHTML() {
         </div>
       </div>
       <div id="pcb-commit-popover" class="pcb-commit-popover" hidden>
-        <textarea id="pcb-commit-msg" class="pcb-commit-textarea" placeholder="Commit message\u2026" rows="2"></textarea>
+        <div class="pcb-commit-textarea-wrap">
+          <textarea id="pcb-commit-msg" class="pcb-commit-textarea" placeholder="Commit message\u2026" rows="2"></textarea>
+          <button id="pcb-ai-commit-btn" class="pcb-ai-commit-btn" type="button" title="Generate commit message with AI">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13">
+              <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+            </svg>
+          </button>
+        </div>
         <p id="pcb-commit-status" class="pcb-commit-status" hidden></p>
         <div class="pcb-commit-footer">
           <button id="pcb-commit-cancel" class="project-secondary-btn" type="button">Cancel</button>

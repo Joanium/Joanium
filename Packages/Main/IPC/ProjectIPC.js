@@ -18,10 +18,6 @@ const GitErrorCategory = {
   UNKNOWN: 'unknown',
 };
 
-/**
- * Classify raw git stderr+stdout into a category + human-readable hint.
- * Mirrors VS Code's git extension error parsing.
- */
 function classifyGitError(stderr = '', stdout = '') {
   const s = (stderr + stdout).toLowerCase();
   if (/nothing to commit|nothing added to commit|no changes added/.test(s))
@@ -68,12 +64,6 @@ function classifyGitError(stderr = '', stdout = '') {
   return { category: GitErrorCategory.UNKNOWN, hint: stderr.trim() || 'Unknown git error.' };
 }
 
-/**
- * Run a git command. Returns { ok, stdout, stderr, exitCode, category?, hint? }.
- * @param {string} command
- * @param {string} workingDir
- * @param {{ timeout?: number }} [opts]
- */
 function runGit(command, workingDir, opts = {}) {
   const timeout = opts.timeout ?? 20_000;
   return new Promise((resolve) => {
@@ -105,16 +95,9 @@ function runGit(command, workingDir, opts = {}) {
   });
 }
 
-/** runGit with extended timeout for network operations (push / pull / fetch). */
 const runGitNet = (cmd, dir) => runGit(cmd, dir, { timeout: 60_000 });
-
-/**
- * runGit for commit — pre-commit hooks (linters, formatters, tests) can run
- * for several minutes, so we give them a generous timeout (5 min).
- */
 const runGitCommit = (cmd, dir) => runGit(cmd, dir, { timeout: 300_000 });
 
-/** Remove stale .git/index.lock — safe to call unconditionally. */
 function clearLockFile(workingDir) {
   try {
     const f = path.join(workingDir, '.git', 'index.lock');
@@ -163,7 +146,6 @@ export function register() {
         hint: 'No working directory provided.',
       };
     const res = await runGitNet('git pull --rebase=false', workingDir);
-    // "already up to date" is informational, not an error
     if (!res.ok && res.category === GitErrorCategory.NOTHING) return { ...res, ok: true };
     return res;
   });
@@ -178,7 +160,6 @@ export function register() {
     if (!branch?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No branch name provided.' };
     const safeB = branch.replace(/"/g, '\\"');
-    // -D (force) — user already confirmed via UI dialog
     return runGit(`git branch -D "${safeB}"`, workingDir);
   });
 
@@ -225,10 +206,8 @@ export function register() {
     if (!message?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No commit message provided.' };
 
-    // ① Always clear stale lock file first
     clearLockFile(workingDir);
 
-    // ② Check status before staging — avoids a spurious "nothing to commit" failure
     const statusRes = await runGit('git status --porcelain', workingDir);
     if (!statusRes.ok) return statusRes;
     if (!statusRes.stdout.trim()) {
@@ -240,16 +219,12 @@ export function register() {
       };
     }
 
-    // ③ Stage all (fast, local op — 20s is fine)
     const stageRes = await runGit('git add -A', workingDir);
     if (!stageRes.ok) return stageRes;
 
-    // ④ Commit — use hook-aware 5-minute timeout so pre-commit hooks
-    //    (linters, formatters, test runners) don't get killed mid-run.
     const safeMsg = message.replace(/"/g, '\\"');
     const commitRes = await runGitCommit(`git commit -m "${safeMsg}"`, workingDir);
 
-    // "nothing to commit" from git commit itself is still a soft success
     if (!commitRes.ok && commitRes.category === GitErrorCategory.NOTHING) {
       return { ...commitRes, ok: true, noop: true };
     }
@@ -264,21 +239,17 @@ export function register() {
         hint: 'No working directory provided.',
       };
 
-    // ① Normal push
     let res = await runGitNet('git push', workingDir);
     if (res.ok) return res;
 
-    // ② No upstream → set automatically (VS Code "publishBranch" flow)
     if (res.category === GitErrorCategory.NO_UPSTREAM) {
       return runGitNet('git push -u origin HEAD', workingDir);
     }
 
-    // ③ Diverged → pull --rebase then retry (VS Code "Sync" flow)
     if (res.category === GitErrorCategory.DIVERGED) {
       const pullRes = await runGitNet('git pull --rebase', workingDir);
-      if (!pullRes.ok) return pullRes; // surface conflict / auth error from pull
+      if (!pullRes.ok) return pullRes;
       res = await runGitNet('git push', workingDir);
-      // Edge case: still no upstream after rebase
       if (!res.ok && res.category === GitErrorCategory.NO_UPSTREAM) {
         return runGitNet('git push -u origin HEAD', workingDir);
       }
@@ -296,15 +267,12 @@ export function register() {
         hint: 'No working directory provided.',
       };
 
-    // ① Pull with rebase (VS Code Sync = pull rebase + push)
     const pullRes = await runGitNet('git pull --rebase', workingDir);
     if (!pullRes.ok && pullRes.category !== GitErrorCategory.NOTHING) return pullRes;
 
-    // ② Push
     let res = await runGitNet('git push', workingDir);
     if (res.ok) return res;
 
-    // ③ No upstream → auto-set
     if (res.category === GitErrorCategory.NO_UPSTREAM) {
       return runGitNet('git push -u origin HEAD', workingDir);
     }

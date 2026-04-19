@@ -442,6 +442,119 @@
   border-right: 1px solid var(--border);
 }
 
+/* ── Commit textarea wrapper ─────────────────── */
+/* Wraps the <textarea> + AI button, hosts the shimmer pseudo-element */
+.pcb-commit-textarea-wrap {
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Shimmer overlay — rendered on top of the textarea via pointer-events:none */
+.pcb-commit-textarea-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    color-mix(in srgb, var(--accent) 28%, transparent) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  transition: opacity 0.2s ease;
+}
+
+/* Activate shimmer + accent border while AI is writing */
+.pcb-commit-textarea-wrap.pcb-commit-generating::before {
+  opacity: 1;
+  animation: pcb-commit-shimmer 1.35s linear infinite;
+}
+
+.pcb-commit-textarea-wrap.pcb-commit-generating .pcb-commit-textarea {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent-glow) 85%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent) 12%, transparent);
+  background: color-mix(in srgb, var(--bg-input) 88%, var(--accent) 5%);
+}
+
+@keyframes pcb-commit-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+/* ── AI generate button ──────────────────────── */
+.pcb-ai-commit-btn {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.pcb-ai-commit-btn:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-hover));
+  color: var(--accent);
+  transform: scale(1.15) rotate(15deg);
+}
+
+.pcb-ai-commit-btn:active:not([disabled]) {
+  transform: scale(0.94);
+}
+
+.pcb-ai-commit-btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Pulsing star animation while loading */
+.pcb-ai-commit-btn--loading {
+  color: var(--accent) !important;
+  animation: pcb-ai-star-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pcb-ai-star-pulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.25) rotate(20deg);
+    opacity: 0.85;
+  }
+  60% {
+    transform: scale(0.9) rotate(-10deg);
+    opacity: 0.7;
+  }
+}
+
 .pcb-commit-textarea {
   width: 100%;
   border: 1px solid var(--border);
@@ -450,10 +563,13 @@
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 13px;
-  padding: 9px 11px;
+  padding: 9px 34px 9px 11px; /* right padding leaves room for the AI button */
   resize: none;
   outline: none;
-  transition: border-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
   box-sizing: border-box;
 }
 
