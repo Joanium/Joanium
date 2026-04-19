@@ -4,8 +4,12 @@ import { buildChatPayload } from '../Data/ChatPersistence.js';
 
 let _memorySyncChain = Promise.resolve();
 const _queuedSignatures = new Set();
-// Abort controller for the active memory-sync LLM call — cancelled when a new one starts
+// Abort controller for the active per-session memory-sync LLM call — cancelled when a new one starts
 let _activeMemoryAbort = null;
+// Abort controller for the active batch (catch-up) memory-sync LLM call.
+// Killed immediately when the user sends a new message so it never competes
+// with a live user query for API quota.
+let _activeBatchMemoryAbort = null;
 const _MAX_QUEUED_SIGNATURES = 100;
 
 // Tracks the last time the user interacted (sent a message, loaded a chat, etc.).
@@ -13,9 +17,20 @@ const _MAX_QUEUED_SIGNATURES = 100;
 const MIN_IDLE_BEFORE_FLUSH_MS = 10_000; // 10 s of quiet before touching the API
 let _lastActivityAt = 0; // 0 = unknown, treated as very old
 
-/** Call this whenever the user sends a message or loads a chat. */
+/** Call this whenever the user sends a message or loads a chat.
+ *  Aborts ALL in-flight background memory LLM calls so the user's real
+ *  query gets full API capacity — both the legacy batch path and the
+ *  micro-queue path are killed instantly. */
 export function markMemoryActivity() {
   _lastActivityAt = Date.now();
+  if (_activeBatchMemoryAbort) {
+    _activeBatchMemoryAbort.abort();
+    _activeBatchMemoryAbort = null;
+  }
+  if (_microSyncAbort) {
+    _microSyncAbort.abort();
+    _microSyncAbort = null;
+  }
 }
 
 function buildSnapshotScope(projectId = null) {
@@ -310,7 +325,7 @@ export function queueCurrentSessionMemorySync(reason = 'session-end') {
   return enqueueSnapshotMemorySync(snapshot, 'Updating memory...');
 }
 
-async function processBatchedMemorySync(chats) {
+async function processBatchedMemorySync(chats, signal = null) {
   const { provider, modelId } = resolveProvider();
   if (!provider || !modelId) return;
 
@@ -359,6 +374,7 @@ async function processBatchedMemorySync(chats) {
     [{ role: 'user', content: prompt, attachments: [] }],
     'You update a personal memory library. Return only valid JSON.',
     [],
+    signal,
   );
 
   if (result.type !== 'text') return;
@@ -389,21 +405,161 @@ export async function flushPendingPersonalMemorySyncs(limit = 10) {
 
   if (!meaningful.length) return;
 
+  // Create a fresh abort controller for this batch run and store it so
+  // markMemoryActivity() can kill it the moment the user sends a message.
+  const batchAbort = new AbortController();
+  _activeBatchMemoryAbort = batchAbort;
+
   const hideIndicator = showMemoryIndicator('Catching up memory...');
   try {
-    await processBatchedMemorySync(meaningful);
+    await processBatchedMemorySync(meaningful, batchAbort.signal);
 
-    for (const chat of meaningful) {
+    // Only mark chats as synced if the run wasn't aborted mid-flight.
+    if (!batchAbort.signal.aborted) {
+      for (const chat of meaningful) {
+        const snapshot = {
+          ...chat,
+          reason: 'pending-chat',
+          scope: buildSnapshotScope(chat.projectId ?? null),
+        };
+        await markSnapshotSynced(snapshot);
+      }
+    }
+  } catch (err) {
+    if (err?.name !== 'AbortError') {
+      console.error('[Chat] Batch memory sync failed:', err);
+    }
+    // AbortError means the user started a query — stay silent and let the
+    // next idle window (scheduled by joanium:user-activity) retry.
+  } finally {
+    hideIndicator();
+    // Clear the stored ref only if it's still ours (markMemoryActivity may
+    // have already nulled it and set a new one).
+    if (_activeBatchMemoryAbort === batchAbort) {
+      _activeBatchMemoryAbort = null;
+    }
+  }
+}
+
+// ─── Micro-sync queue ──────────────────────────────────────────────────────────────────────
+// Processes pending chats ONE AT A TIME in the natural idle windows that
+// already exist in conversation (user reading a response, planner thinking).
+// Each run is short so aborting is instantaneous — zero latency impact.
+
+let _microQueue = [];
+let _microQueueLoaded = false;
+let _microSyncAbort = null;
+let _microSyncRunning = false;
+
+/**
+ * Load all pending-memory chats into the micro-queue once per session.
+ * Sorted most-recent-first so the freshest memories land first.
+ * Idempotent — safe to call multiple times.
+ */
+export async function initMemoryMicroQueue() {
+  if (_microQueueLoaded) return;
+  _microQueueLoaded = true;
+  try {
+    const pending =
+      (await window.electronAPI?.invoke?.('get-pending-personal-memory-chats', { limit: 50 })) ??
+      [];
+    _microQueue = pending.filter((chat) => chat?.id && hasMeaningfulConversation(chat.messages));
+    // Most-recent conversations first — they’re most likely to be relevant
+    // to whatever the user is working on right now.
+    _microQueue.sort((a, b) => {
+      const tA = new Date(a.updatedAt ?? 0).getTime();
+      const tB = new Date(b.updatedAt ?? 0).getTime();
+      return tB - tA;
+    });
+  } catch {
+    _microQueue = [];
+  }
+}
+
+/**
+ * Re-order the micro-queue so pending chats that share topic tokens with the
+ * user’s current message float to the front. Call this before each agentLoop
+ * so the most contextually-relevant memories are caught up first — if they’re
+ * relevant to right now, they should be processed before ones that aren’t.
+ */
+export function reprioritizeMemoryQueue(userText = '') {
+  if (_microQueue.length < 2 || !userText.trim()) return;
+  const tokens = new Set(userText.toLowerCase().match(/[a-z0-9]{4,}/g) ?? []);
+  if (!tokens.size) return;
+  _microQueue.sort((a, b) => _scoreTopicMatch(b, tokens) - _scoreTopicMatch(a, tokens));
+}
+
+function _scoreTopicMatch(chat, tokens) {
+  const haystack = [
+    chat.title ?? '',
+    ...(chat.messages ?? []).slice(-6).map((m) => String(m.content ?? '').slice(0, 300)),
+  ]
+    .join(' ')
+    .toLowerCase();
+  let score = 0;
+  for (const token of tokens) if (haystack.includes(token)) score++;
+  return score;
+}
+
+/**
+ * Process the NEXT pending chat from the micro-queue.
+ *
+ * Designed to be called at two natural idle points:
+ *  1. RIGHT AFTER each AI response completes (user is reading = free window)
+ *  2. IN PARALLEL with the planning phase (planning takes ~500ms anyway)
+ *
+ * One chat per call keeps each LLM round short. If the user starts typing
+ * before it finishes, markMemoryActivity() kills it instantly via the abort
+ * signal — the chat stays in the queue and retries at the next idle window.
+ */
+export async function triggerMicroSync() {
+  if (_microSyncRunning || !_microQueue.length) return;
+  const { provider, modelId } = resolveProvider();
+  if (!provider || !modelId) return;
+
+  // Brief yield: let the UI finish painting before opening a background
+  // network connection. Keeps the response render feeling snappy.
+  await new Promise((r) => setTimeout(r, 800));
+
+  // If the user became active during the yield, stand down.
+  if (
+    state.isTyping ||
+    (_lastActivityAt > 0 && Date.now() - _lastActivityAt < MIN_IDLE_BEFORE_FLUSH_MS)
+  )
+    return;
+
+  const chat = _microQueue[0];
+  if (!chat) return;
+
+  _microSyncRunning = true;
+  const abort = new AbortController();
+  _microSyncAbort = abort;
+
+  const hideIndicator = showMemoryIndicator('Catching up memory…');
+  try {
+    // Re-use the existing batch processor with a single-element array —
+    // same logic, same prompt, same quality. Just one chat at a time.
+    await processBatchedMemorySync([chat], abort.signal);
+
+    if (!abort.signal.aborted) {
+      _microQueue.shift(); // only pop on confirmed success
       const snapshot = {
         ...chat,
-        reason: 'pending-chat',
+        reason: 'micro-sync',
         scope: buildSnapshotScope(chat.projectId ?? null),
       };
       await markSnapshotSynced(snapshot);
     }
   } catch (err) {
-    console.error('[Chat] Batch memory sync failed:', err);
+    if (err?.name !== 'AbortError') {
+      // Persistent failure — skip so the rest of the queue isn’t blocked
+      _microQueue.shift();
+      console.warn('[Chat] Micro-sync skipped after error:', err?.message);
+    }
+    // AbortError: user became active — leave in queue, retry next gap
   } finally {
     hideIndicator();
+    _microSyncRunning = false;
+    if (_microSyncAbort === abort) _microSyncAbort = null;
   }
 }

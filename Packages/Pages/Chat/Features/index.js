@@ -11,8 +11,12 @@ import {
   sanitizeMessagesForUI,
 } from './UI/ChatBubble.js';
 import { updateTimeline, setupScrollFeatures, bumpScrollBadge } from './UI/ChatTimeline.js';
-import { queueCurrentSessionMemorySync } from './Core/ChatMemory.js';
-import { markMemoryActivity } from './Core/ChatMemory.js';
+import {
+  queueCurrentSessionMemorySync,
+  markMemoryActivity,
+  triggerMicroSync,
+  reprioritizeMemoryQueue,
+} from './Core/ChatMemory.js';
 import {
   queueConversationCompaction,
   resetConversationSummary,
@@ -130,6 +134,12 @@ async function doSendFromState() {
   };
   // Latency monitor end
   _currentLiveRow = live;
+  // Kill any in-flight background memory sync and reprioritize the queue
+  // so pending chats that match this topic float to the front.
+  // Both happen before we touch the API — user query always goes first.
+  markMemoryActivity();
+  reprioritizeMemoryQueue(text);
+
   live.push('Thinking…');
   let plannedSkills = [],
     plannedToolCalls = [];
@@ -292,6 +302,9 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
       }),
       saveCurrentChat(),
       queueConversationCompaction().catch(() => {}),
+      // Use the post-response window (user is reading) to catch up one
+      // pending memory sync. Natural idle time, zero added latency.
+      triggerMicroSync().catch(() => {}),
       bumpScrollBadge(),
       setTimeout(updateTimeline, 100));
   } catch (err) {

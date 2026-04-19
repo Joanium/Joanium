@@ -37,8 +37,9 @@ import {
   prewarmAgentContext,
 } from '../../Features/index.js';
 import {
-  flushPendingPersonalMemorySyncs,
   queueCurrentSessionMemorySync,
+  initMemoryMicroQueue,
+  triggerMicroSync,
 } from '../../Features/Core/ChatMemory.js';
 import { initTerminalObserver } from '../../Features/UI/TerminalComponent.js';
 import { getChatHTML, ensureDropOverlay, getDropOverlay } from './Templates/ChatTemplate.js';
@@ -49,19 +50,18 @@ import { createBrowserPreviewFeature } from './Features/BrowserPreview.js';
 let _memoryFlushTimer = null;
 let gitBar;
 
-function scheduleMemoryFlush(delayMs = 30000) {
+// Fallback timer: if the user opens the app but never sends a message,
+// this fires triggerMicroSync after a quiet period so catch-up still happens.
+// When messages ARE exchanged, triggerMicroSync fires naturally after each
+// response — this timer is purely a no-activity safety net.
+function scheduleMemoryFlush(delayMs = 45_000) {
   if (_memoryFlushTimer) clearTimeout(_memoryFlushTimer);
   _memoryFlushTimer = setTimeout(() => {
     _memoryFlushTimer = null;
     if (window.requestIdleCallback) {
-      window.requestIdleCallback(
-        () => {
-          flushPendingPersonalMemorySyncs().catch(() => {});
-        },
-        { timeout: 60000 },
-      );
+      window.requestIdleCallback(() => triggerMicroSync().catch(() => {}), { timeout: 60_000 });
     } else {
-      flushPendingPersonalMemorySyncs().catch(() => {});
+      triggerMicroSync().catch(() => {});
     }
   }, delayMs);
 }
@@ -339,6 +339,9 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       syncCapabilities(),
       await refreshSystemPrompt(),
       prewarmAgentContext().catch(() => {}),
+      // Load the micro-queue once so reprioritization and triggerMicroSync
+      // have data to work with from the very first message onward.
+      initMemoryMicroQueue().catch(() => {}),
       pendingId &&
         !pendingChatRestored &&
         ((pendingChatRestored = !0),
@@ -347,7 +350,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
           buildModelDropdown: buildModelDropdown,
           notifyModelSelectionChanged: notifyModelSelectionChanged,
         })),
-      scheduleMemoryFlush());
+      scheduleMemoryFlush(45_000));
   }
   const offBackendReady = window.electronAPI?.on?.('backend-ready', () => {
     initializeChatBackend().catch(() => {});
