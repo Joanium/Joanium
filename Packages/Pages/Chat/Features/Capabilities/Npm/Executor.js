@@ -27,12 +27,12 @@ function fmtDate(iso) {
 }
 
 async function fetchLatest(name) {
-  return safeJson(`${NPM_REGISTRY}/${encodeURIComponent(name).replace('%40', '@')}/latest`);
+  return safeJson(`${NPM_REGISTRY}/${encodeURIComponent(name).replace(/%40/g, '@')}/latest`);
 }
 
 async function fetchPackument(name) {
   // Abbreviated packument — much smaller than full registry doc
-  const res = await fetch(`${NPM_REGISTRY}/${encodeURIComponent(name).replace('%40', '@')}`, {
+  const res = await fetch(`${NPM_REGISTRY}/${encodeURIComponent(name).replace(/%40/g, '@')}`, {
     headers: { Accept: 'application/vnd.npm.install-v1+json' },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} — package "${name}" not found on npm`);
@@ -40,7 +40,7 @@ async function fetchPackument(name) {
 }
 
 async function fetchDownloads(name, period = 'last-week') {
-  return safeJson(`${NPM_DOWNLOADS}/${period}/${encodeURIComponent(name).replace('%40', '@')}`);
+  return safeJson(`${NPM_DOWNLOADS}/${period}/${encodeURIComponent(name).replace(/%40/g, '@')}`);
 }
 
 export const { handles, execute } = createExecutor({
