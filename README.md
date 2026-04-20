@@ -120,7 +120,7 @@ Switch models anytime, even mid-conversation. No lock-in, ever.
 | Provider       | Models                                                            |
 | -------------- | ----------------------------------------------------------------- |
 | **Anthropic**  | Claude Opus 4.7, Claude Sonnet 4.6, Claude Haiku 4.5, and more    |
-| **OpenAI**     | GPT-5, GPT-4.1, o3, o4-mini, GPT-4o, and more                     |
+| **OpenAI**     | GPT-5.4, GPT-5.3, GPT-5.2, GPT-5.1, GPT-4.1, o3, o4-mini, GPT-4o, and more                     |
 | **Google**     | Gemini 2.5 Pro, Gemini 2.5 Flash, Gemini 2.5 Flash-Lite           |
 | **OpenRouter** | 200+ models via one key                                           |
 | **Mistral**    | Mistral Large 3, Mistral Medium 3.1, Codestral, Devstral 2        |
