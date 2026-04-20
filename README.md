@@ -119,7 +119,7 @@ Switch models anytime, even mid-conversation. No lock-in, ever.
 
 | Provider       | Models                                     |
 | -------------- | ------------------------------------------ |
-| **Anthropic**  | Claude 3.5, Claude 3 Opus, and more        |
+| **Anthropic**  | Claude 4.6, Claude 4.7 Opus, and more        |
 | **OpenAI**     | GPT-4o, o1, o3, and more                   |
 | **Google**     | Gemini 2.0 Flash, Gemini 1.5 Pro, and more |
 | **OpenRouter** | 200+ models via one key                    |
