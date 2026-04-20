@@ -39,9 +39,7 @@
 
 ## 🎬 Demo
 
-<!-- TODO: Add a screen recording / GIF here — even a short one will dramatically increase engagement -->
-
-> 📸 Screenshots and a demo GIF are coming soon. In the meantime, [download the app](https://www.joanium.com/download) and see it for yourself.
+<img width="1919" height="1016" alt="3" src="https://github.com/user-attachments/assets/7e930197-4750-4385-9532-c21170b64cbc" />
 
 ---
 
