@@ -4,52 +4,42 @@ on:
   release:
     types: [published, edited]
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   update-changelog:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          # Need full history so we can push back to the default branch
           fetch-depth: 0
-          # Checkout the default branch, not the tag the release points to
           ref: ${{ github.event.repository.default_branch }}
 
       - name: Update CHANGELOG.md
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             const fs = require('fs');
 
             const release  = context.payload.release;
-            const tagName  = release.tag_name;              // e.g. "v2026.419.0"
-            const version  = tagName.replace(/^v/, '');     // "2026.419.0"
+            const tagName  = release.tag_name;
+            const version  = tagName.replace(/^v/, '');
             const body     = release.body || '';
 
-            // ── Derive a date from the version number (YYYY.MMDD.BUILD) ──────────
             let dateStr = (release.published_at || new Date().toISOString()).split('T')[0];
             const vMatch = version.match(/^(\d{4})\.(\d{3,4})\.(\d+)$/);
             if (vMatch) {
               const year     = vMatch[1];
-              const monthday = vMatch[2].padStart(4, '0');   // "419" → "0419"
-              const month    = monthday.slice(0, 2);         // "04"
-              const day      = monthday.slice(2, 4);         // "19"
+              const monthday = vMatch[2].padStart(4, '0');
+              const month    = monthday.slice(0, 2);
+              const day      = monthday.slice(2, 4);
               dateStr = `${year}-${month}-${day}`;
             }
 
-            // ── Extract the "Change Log" bullet list from the release body ────────
-            // Release notes format:
-            //   v20xx.xxx.x — <boilerplate>
-            //
-            //   **Change Log**
-            //
-            //   * item one
-            //   * item two
             const clMatch = body.match(/\*\*Change Log\*\*\s*\n+([\s\S]*?)(\n\n|$)/);
             if (!clMatch || !clMatch[1].trim()) {
               console.log('No "Change Log" section found in release body — skipping CHANGELOG update.');
@@ -57,18 +47,14 @@ jobs:
             }
             const bullets = clMatch[1].trim();
 
-            // ── Build the new CHANGELOG entry ────────────────────────────────────
             const newEntry = `## [${version}] - ${dateStr}\n\n${bullets}\n\n---\n\n`;
 
-            // ── Build the new comparison link ─────────────────────────────────────
             const repoUrl  = context.payload.repository.html_url;
             const linkLine = `[${version}]: ${repoUrl}/releases/tag/${tagName}`;
 
-            // ── Read the current CHANGELOG ────────────────────────────────────────
             const changelogPath = 'CHANGELOG.md';
             let changelog = fs.readFileSync(changelogPath, 'utf8');
 
-            // ── If this version already exists, replace it; otherwise insert it ──
             const escapedVersion = version.replace(/\./g, '\\.');
             const existingEntryRe = new RegExp(
               `## \\[${escapedVersion}\\][^\\n]*\\n[\\s\\S]*?(?=\\n## \\[|\\n\\[Unreleased\\]:|$)`
@@ -78,7 +64,6 @@ jobs:
               console.log(`${version} already exists — replacing entry.`);
               changelog = changelog.replace(existingEntryRe, newEntry.trimEnd());
             } else {
-              // Insert after the first "---" separator (end of [Unreleased] section)
               const separator = '---\n\n';
               const insertAt  = changelog.indexOf(separator);
               if (insertAt === -1) {
@@ -89,17 +74,14 @@ jobs:
               }
             }
 
-            // ── Update / add the comparison link at the bottom ────────────────────
             const linkRe = new RegExp(`^\\[${escapedVersion}\\]:.*$`, 'm');
             if (linkRe.test(changelog)) {
               changelog = changelog.replace(linkRe, linkLine);
             } else {
-              // Append before the [Unreleased] comparison link line
               changelog = changelog.replace(
                 /^(\[Unreleased\]:.*)/m,
                 `$1\n${linkLine}`
               );
-              // Also update the [Unreleased] compare URL to point from the new tag
               changelog = changelog.replace(
                 /\[Unreleased\]: .+\/compare\/.+\.\.\.HEAD/,
                 `[Unreleased]: ${repoUrl}/compare/${tagName}...HEAD`

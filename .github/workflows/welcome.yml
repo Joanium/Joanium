@@ -6,15 +6,17 @@ on:
   issues:
     types: [opened]
 
-permissions:
-  issues: write
-  pull-requests: write
+permissions: read-all
 
 jobs:
   welcome:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
     steps:
-      - uses: actions/first-interaction@v1
+      - uses: actions/first-interaction@1a85b9b4b7e6e9f8c7a5c3f8a6b1e7c0d4a2f9e1 # v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 

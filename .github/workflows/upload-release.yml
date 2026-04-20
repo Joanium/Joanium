@@ -3,6 +3,8 @@ name: Upload Release Asset
 on:
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   prepare-release:
     runs-on: ubuntu-latest
@@ -14,12 +16,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 'latest'
 
@@ -31,12 +33,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Determine base version from today's date (e.g. 2026.419)
           BASE_VERSION="$(node ./Scripts/SetVersionByDate.mjs)"
           git fetch --tags
 
-          # Increment build counter if multiple releases happen on the same day
-          # e.g. first → 2026.419.0, second → 2026.419.1
           COUNTER=0
           VERSION="${BASE_VERSION}.${COUNTER}"
           TAG_NAME="v${VERSION}"
@@ -49,7 +48,6 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
 
-          # Bump version in package.json
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
@@ -69,7 +67,6 @@ jobs:
           git tag "${TAG_NAME}"
           git push origin "${TAG_NAME}"
 
-          # Build release notes from commits since the last tag
           PREV_TAG="$(git describe --tags --abbrev=0 "${TAG_NAME}^" 2>/dev/null || true)"
           if [ -n "${PREV_TAG}" ]; then
             CHANGES="$(git log "${PREV_TAG}..${TAG_NAME}" --no-merges --pretty=format:'* %s' | head -30)"
@@ -102,12 +99,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ needs.prepare-release.outputs.tag_name }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 'latest'
 

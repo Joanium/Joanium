@@ -8,3 +8,12 @@ updates:
       - 'dependencies'
     reviewers:
       - 'withinjoel'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    labels:
+      - 'dependencies'
+    reviewers:
+      - 'withinjoel'
