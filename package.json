@@ -79,7 +79,7 @@
     "clean-css": "5.3.3",
     "electron": "41.2.1",
     "electron-builder": "^26.9.0",
-    "eslint": "10.2.0",
+    "eslint": "10.2.1",
     "eslint-plugin-unused-imports": "4.4.1",
     "html-minifier-terser": "7.2.0",
     "husky": "9.1.7",
