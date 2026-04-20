@@ -1,5 +1,6 @@
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
+import { getPromptConfigs } from '../../../../system/Prompting/PromptConfig.js';
 import { buildChatPayload, currentChatScope } from '../Data/ChatPersistence.js';
 let summaryChain = Promise.resolve();
 const queuedSignatures = new Set();
@@ -23,7 +24,63 @@ function trimLineForSummary(value = '') {
   const text = String(value ?? '')
     .replace(/\s+/g, ' ')
     .trim();
-  return text ? (text.length > 500 ? `${text.slice(0, 500)}...` : text) : '(empty)';
+  return text ? (text.length > 500 ? `${text.slice(0, 500)}...` : text) : '';
+}
+function fillTemplate(template = '', values = {}) {
+  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
+    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
+  );
+}
+function buildCompactionTranscript(messages = [], cp = {}) {
+  const transcriptConfig = cp.transcript ?? {},
+    lines = [];
+  let totalChars = 0;
+  for (const message of messages) {
+    const attachments = Array.isArray(message?.attachments)
+        ? message.attachments
+            .map((attachment) => attachment?.name ?? attachment?.type ?? '')
+            .filter(Boolean)
+            .join(', ')
+        : '',
+      role =
+        'assistant' === message?.role
+          ? transcriptConfig.assistantLabel
+          : transcriptConfig.userLabel,
+      content =
+        trimLineForSummary(message?.content ?? '') || transcriptConfig.emptyContentPlaceholder,
+      line = attachments
+        ? fillTemplate(transcriptConfig.lineWithAttachmentsTemplate, {
+            role,
+            content,
+            attachments,
+          })
+        : fillTemplate(transcriptConfig.lineWithoutAttachmentsTemplate, { role, content });
+    if (totalChars + line.length > 14e3 && lines.length > 0) {
+      transcriptConfig.omittedChunkLabel && lines.push(transcriptConfig.omittedChunkLabel);
+      break;
+    }
+    (lines.push(line), (totalChars += line.length));
+  }
+  return lines.join('\n');
+}
+function buildCompactionPrompt(snapshot, transcript, cp = {}) {
+  return [
+    cp.intro,
+    '',
+    cp.rulesLabel,
+    ...(cp.rules ?? []).map((rule) => `- ${rule}`),
+    '',
+    cp.structureLabel,
+    ...(cp.structure ?? []),
+    '',
+    cp.previousSummaryLabel,
+    normalizeSummaryText(snapshot.conversationSummary) || cp.emptySummaryPlaceholder,
+    '',
+    cp.newTurnsLabel,
+    transcript,
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
 export function resetConversationSummary() {
   ((state.conversationSummary = ''), (state.conversationSummaryMessageCount = 0));
@@ -84,58 +141,10 @@ export function queueConversationCompaction() {
                 snapshot.targetCount,
               );
               if (!incomingMessages.length) return !1;
-              const transcript = (function (messages = []) {
-                const lines = [];
-                let totalChars = 0;
-                for (const message of messages) {
-                  const attachments = Array.isArray(message?.attachments)
-                      ? message.attachments
-                          .map((attachment) => attachment?.name ?? attachment?.type ?? '')
-                          .filter(Boolean)
-                          .join(', ')
-                      : '',
-                    prefix = 'assistant' === message?.role ? 'Assistant' : 'User',
-                    content = trimLineForSummary(message?.content ?? ''),
-                    line = attachments
-                      ? `${prefix}: ${content} [Attachments: ${attachments}]`
-                      : `${prefix}: ${content}`;
-                  if (totalChars + line.length > 14e3 && lines.length > 0) {
-                    lines.push('...(older turns omitted from this update chunk)');
-                    break;
-                  }
-                  (lines.push(line), (totalChars += line.length));
-                }
-                return lines.join('\n');
-              })(incomingMessages);
+              const cp = (await getPromptConfigs()).compaction ?? {},
+                transcript = buildCompactionTranscript(incomingMessages, cp);
               if (!transcript.trim()) return !1;
-              const prompt = [
-                'You maintain a compact hidden conversation summary for an AI assistant.',
-                'Merge the previous summary with the newly provided older chat turns.',
-                '',
-                'Rules:',
-                '- Preserve the user goal, constraints, preferences, project/workspace context, file paths, technical findings, decisions, and unresolved threads.',
-                '- Keep concrete facts that matter for future turns.',
-                '- Do not include tool chatter, UI logs, or internal execution details.',
-                '- Prefer crisp markdown bullet points and short sections.',
-                '- Return ONLY the updated summary in markdown.',
-                '- Keep it dense and high-signal.',
-                '',
-                'Recommended structure:',
-                '## Goal',
-                '- ...',
-                '## Constraints',
-                '- ...',
-                '## Decisions',
-                '- ...',
-                '## Open Threads',
-                '- ...',
-                '',
-                'Previous summary:',
-                normalizeSummaryText(snapshot.conversationSummary) || '(none)',
-                '',
-                'New older chat turns to merge:',
-                transcript,
-              ].join('\n');
+              const prompt = buildCompactionPrompt(snapshot, transcript, cp);
 
               // Event-loop yield — lets channel events dispatch before LLM call
               await new Promise((r) => setTimeout(r, 0));
@@ -149,7 +158,7 @@ export function queueConversationCompaction() {
                 provider,
                 modelId,
                 [{ role: 'user', content: prompt, attachments: [] }],
-                'You compress chat history into a compact, high-retention markdown summary.',
+                cp.systemPrompt,
                 [],
                 compactionSignal,
               );

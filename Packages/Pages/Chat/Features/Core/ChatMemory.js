@@ -1,5 +1,6 @@
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
+import { getPromptConfigs } from '../../../../system/Prompting/PromptConfig.js';
 import { buildChatPayload } from '../Data/ChatPersistence.js';
 
 let _memorySyncChain = Promise.resolve();
@@ -52,8 +53,14 @@ function normalizeForSignature(value = '') {
     .slice(0, 200);
 }
 
-function buildMemoryCatalogBlock(entries = []) {
-  const fileList = entries.map((entry) => entry.filename).join(', '),
+function fillTemplate(template = '', values = {}) {
+  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
+    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
+  );
+}
+function buildMemoryCatalogBlock(entries = [], mp = {}) {
+  const catalogConfig = mp.catalog ?? {},
+    fileList = entries.map((entry) => entry.filename).join(', '),
     nonEmptyEntries = entries.filter((entry) => {
       const lines = String(entry.content ?? '')
         .replace(/\r\n/g, '\n')
@@ -62,14 +69,21 @@ function buildMemoryCatalogBlock(entries = []) {
     }),
     sections = [];
   return (
-    fileList && sections.push(`Available files: ${fileList}`),
+    fileList &&
+      sections.push(fillTemplate(catalogConfig.availableFilesTemplate, { files: fileList })),
     nonEmptyEntries.length &&
       sections.push(
         nonEmptyEntries
           .map((entry) =>
-            [`FILE: ${entry.filename}`, 'CONTENT:', entry.content?.trim() || '(empty)'].join('\n'),
+            [
+              fillTemplate(catalogConfig.fileHeaderTemplate, { filename: entry.filename }),
+              catalogConfig.contentLabel,
+              entry.content?.trim() || catalogConfig.emptyContentPlaceholder,
+            ]
+              .filter(Boolean)
+              .join('\n'),
           )
-          .join('\n\n---\n\n'),
+          .join(catalogConfig.separator),
       ),
     sections.join('\n\n')
   );
@@ -129,17 +143,26 @@ function resolveProvider(snapshot = {}) {
     : { provider: null, modelId: null };
 }
 
-function buildTranscript(messages = []) {
+function buildTranscript(messages = [], mp = {}) {
+  const transcriptConfig = mp.transcript ?? {};
   return messages
     .map((message) => {
-      const role = 'assistant' === message.role ? 'Assistant' : 'User';
+      const role =
+        'assistant' === message.role ? transcriptConfig.assistantLabel : transcriptConfig.userLabel;
       const attachments = Array.isArray(message.attachments)
         ? message.attachments
             .map((attachment) => attachment?.name ?? attachment?.type ?? '')
             .filter(Boolean)
         : [];
-      const attachmentLine = attachments.length ? `\nAttachments: ${attachments.join(', ')}` : '';
-      return `${role}: ${String(message.content ?? '').trim() || '(no text)'}${attachmentLine}`;
+      const attachmentLine = attachments.length
+        ? `\n${fillTemplate(transcriptConfig.attachmentsTemplate, {
+            attachments: attachments.join(', '),
+          })}`
+        : '';
+      return `${fillTemplate(transcriptConfig.messageTemplate, {
+        role,
+        content: String(message.content ?? '').trim() || transcriptConfig.noTextPlaceholder,
+      })}${attachmentLine}`;
     })
     .join('\n\n');
 }
@@ -159,6 +182,33 @@ function normalizePayload(payload = {}) {
       .map(normalizeMemoryEntry)
       .filter(Boolean),
   };
+}
+function buildMemorySyncPrompt(
+  { catalogBlock = '', transcript = '', conversationCount = null } = {},
+  mp = {},
+) {
+  const intro =
+    null == conversationCount
+      ? mp.singleChatIntro
+      : `${mp.batchChatIntroPrefix ?? ''}${conversationCount}${mp.batchChatIntroSuffix ?? ''}`;
+  return [
+    intro,
+    '',
+    mp.rulesLabel,
+    ...(mp.rules ?? []).map((rule) => `- ${rule}`),
+    '',
+    mp.outputFormat,
+    '',
+    mp.catalogLabel,
+    catalogBlock,
+    '',
+    null == conversationCount
+      ? mp.singleTranscriptLabel
+      : fillTemplate(mp.batchTranscriptLabelTemplate, { n: conversationCount }),
+    transcript,
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
 
 function showMemoryIndicator(label = 'Updating memory...') {
@@ -219,8 +269,9 @@ function enqueueSnapshotMemorySync(snapshot, label = 'Updating memory...') {
         const { provider, modelId } = resolveProvider(snapshot);
         if (!provider || !modelId) return false;
 
-        const catalog = (await window.electronAPI?.invoke?.('get-personal-memory-catalog')) ?? [];
-        const transcript = buildTranscript(snapshot.messages);
+        const mp = (await getPromptConfigs()).memory ?? {},
+          catalog = (await window.electronAPI?.invoke?.('get-personal-memory-catalog')) ?? [],
+          transcript = buildTranscript(snapshot.messages, mp);
 
         if (!transcript.trim()) {
           await markSnapshotSynced(snapshot);
@@ -228,30 +279,13 @@ function enqueueSnapshotMemorySync(snapshot, label = 'Updating memory...') {
           return true;
         }
 
-        const prompt = [
-          'You maintain a persistent personal-memory library for one user.',
-          'Use the completed conversation to decide which personal memory markdown files should change.',
-          '',
-          'Rules:',
-          '- These files are ONLY for personal information.',
-          '- Never store repo names, code, bug reports, workspace details, project tasks, file paths, stack traces, or other work/project context.',
-          '- Keep only durable personal facts: likes, dislikes, family, friends, relationships, education, career aspirations, values, wellbeing, support preferences, habits, important dates, and communication preferences.',
-          '- Do not store one-off troubleshooting requests, temporary work context, or random passing thoughts.',
-          '- Do not repeat facts that already exist anywhere in the memory library.',
-          '- Prefer updating existing files. Create a new .md file only when the current files are clearly not enough.',
-          '- When you update a file, return the FULL final markdown for that file.',
-          '- Preserve useful existing content and merge new facts cleanly.',
-          '- If nothing should change, return exactly {"updates":[],"newFiles":[]}.',
-          '',
-          'Return ONLY valid JSON with this shape:',
-          '{"updates":[{"filename":"Likes.md","content":"# Likes\\n- ..."}],"newFiles":[{"filename":"Custom.md","content":"# Custom\\n- ..."}]}',
-          '',
-          'Existing personal memory files:',
-          buildMemoryCatalogBlock(catalog),
-          '',
-          'Completed conversation transcript:',
-          transcript,
-        ].join('\n');
+        const prompt = buildMemorySyncPrompt(
+          {
+            catalogBlock: buildMemoryCatalogBlock(catalog, mp),
+            transcript,
+          },
+          mp,
+        );
 
         // Event-loop yield — lets channel events and other microtasks run
         // before we start a potentially long LLM call
@@ -266,7 +300,7 @@ function enqueueSnapshotMemorySync(snapshot, label = 'Updating memory...') {
           provider,
           modelId,
           [{ role: 'user', content: prompt, attachments: [] }],
-          'You update a personal memory library. Return only valid JSON.',
+          mp.systemPrompt,
           [],
           signal,
         );
@@ -329,42 +363,31 @@ async function processBatchedMemorySync(chats, signal = null) {
   const { provider, modelId } = resolveProvider();
   if (!provider || !modelId) return;
 
-  const catalog = (await window.electronAPI?.invoke?.('get-personal-memory-catalog')) ?? [];
+  const mp = (await getPromptConfigs()).memory ?? {},
+    transcriptConfig = mp.transcript ?? {},
+    catalog = (await window.electronAPI?.invoke?.('get-personal-memory-catalog')) ?? [];
 
   const combinedTranscripts = chats
     .map((chat, idx) => {
-      const transcript = buildTranscript(chat.messages);
-      return `--- CONVERSATION ${idx + 1} ---\n${transcript}`;
+      const transcript = buildTranscript(chat.messages, mp);
+      return fillTemplate(transcriptConfig.conversationDividerTemplate, {
+        n: idx + 1,
+        transcript,
+      });
     })
     .filter((t) => t.trim().length > 0)
     .join('\n\n');
 
   if (!combinedTranscripts.trim()) return;
 
-  const prompt = [
-    'You maintain a persistent personal-memory library for one user.',
-    `You are reviewing ${chats.length} completed conversation(s) to decide which personal memory files should change.`,
-    '',
-    'Rules:',
-    '- These files are ONLY for personal information.',
-    '- Never store repo names, code, bug reports, workspace details, project tasks, file paths, stack traces, or other work/project context.',
-    '- Keep only durable personal facts: likes, dislikes, family, friends, relationships, education, career aspirations, values, wellbeing, support preferences, habits, important dates, and communication preferences.',
-    '- Do not store one-off troubleshooting requests, temporary work context, or random passing thoughts.',
-    '- Do not repeat facts that already exist anywhere in the memory library.',
-    '- Prefer updating existing files. Create a new .md file only when the current files are clearly not enough.',
-    '- When you update a file, return the FULL final markdown for that file.',
-    '- Preserve useful existing content and merge new facts cleanly.',
-    '- If nothing should change, return exactly {"updates":[],"newFiles":[]}.',
-    '',
-    'Return ONLY valid JSON with this shape:',
-    '{"updates":[{"filename":"Likes.md","content":"# Likes\\n- ..."}],"newFiles":[{"filename":"Custom.md","content":"# Custom\\n- ..."}]}',
-    '',
-    'Existing personal memory files:',
-    buildMemoryCatalogBlock(catalog),
-    '',
-    `Completed conversation transcripts (${chats.length} conversations):`,
-    combinedTranscripts,
-  ].join('\n');
+  const prompt = buildMemorySyncPrompt(
+    {
+      catalogBlock: buildMemoryCatalogBlock(catalog, mp),
+      transcript: combinedTranscripts,
+      conversationCount: chats.length,
+    },
+    mp,
+  );
 
   await waitForUserIdle();
 
@@ -372,7 +395,7 @@ async function processBatchedMemorySync(chats, signal = null) {
     provider,
     modelId,
     [{ role: 'user', content: prompt, attachments: [] }],
-    'You update a personal memory library. Return only valid JSON.',
+    mp.systemPrompt,
     [],
     signal,
   );

@@ -1,0 +1,35 @@
+{
+  "systemPrompt": "You compress chat history into a compact, high-retention markdown summary.",
+  "intro": "You maintain a compact hidden conversation summary for an AI assistant.\nMerge the previous summary with the newly provided older chat turns.",
+  "rulesLabel": "Rules:",
+  "rules": [
+    "Preserve the user goal, constraints, preferences, project or workspace context, file paths, technical findings, decisions, and unresolved threads.",
+    "Keep concrete facts that matter for future turns.",
+    "Do not include tool chatter, UI logs, or internal execution details.",
+    "Prefer crisp markdown bullet points and short sections.",
+    "Return ONLY the updated summary in markdown.",
+    "Keep it dense and high-signal."
+  ],
+  "structureLabel": "Recommended structure:",
+  "structure": [
+    "## Goal",
+    "- ...",
+    "## Constraints",
+    "- ...",
+    "## Decisions",
+    "- ...",
+    "## Open Threads",
+    "- ..."
+  ],
+  "previousSummaryLabel": "Previous summary:",
+  "emptySummaryPlaceholder": "(none)",
+  "newTurnsLabel": "New older chat turns to merge:",
+  "transcript": {
+    "assistantLabel": "Assistant",
+    "userLabel": "User",
+    "emptyContentPlaceholder": "(empty)",
+    "lineWithAttachmentsTemplate": "{role}: {content} [Attachments: {attachments}]",
+    "lineWithoutAttachmentsTemplate": "{role}: {content}",
+    "omittedChunkLabel": "...(older turns omitted from this update chunk)"
+  }
+}

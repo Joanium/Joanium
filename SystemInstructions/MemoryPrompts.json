@@ -1,0 +1,37 @@
+{
+  "systemPrompt": "You update a personal memory library. Return only valid JSON.",
+  "singleChatIntro": "You maintain a persistent personal-memory library for one user. Use the completed conversation to decide which personal memory markdown files should change.",
+  "batchChatIntroPrefix": "You maintain a persistent personal-memory library for one user.You are reviewing ",
+  "batchChatIntroSuffix": " completed conversation(s) to decide which personal memory files should change.",
+  "rulesLabel": "Rules:",
+  "rules": [
+    "These files are ONLY for personal information.",
+    "Never store repo names, code, bug reports, workspace details, project tasks, file paths, stack traces, or other work or project context.",
+    "Keep only durable personal facts: likes, dislikes, family, friends, relationships, education, career aspirations, values, wellbeing, support preferences, habits, important dates, and communication preferences.",
+    "Do not store one-off troubleshooting requests, temporary work context, or random passing thoughts.",
+    "Do not repeat facts that already exist anywhere in the memory library.",
+    "Prefer updating existing files. Create a new .md file only when the current files are clearly not enough.",
+    "When you update a file, return the FULL final markdown for that file.",
+    "Preserve useful existing content and merge new facts cleanly.",
+    "If nothing should change, return exactly {\"updates\":[],\"newFiles\":[]}."
+  ],
+  "outputFormat": "Return ONLY valid JSON with this shape:\n{\"updates\":[{\"filename\":\"Likes.md\",\"content\":\"# Likes\\n- ...\"}],\"newFiles\":[{\"filename\":\"Custom.md\",\"content\":\"# Custom\\n- ...\"}]}",
+  "catalogLabel": "Existing personal memory files:",
+  "singleTranscriptLabel": "Completed conversation transcript:",
+  "batchTranscriptLabelTemplate": "Completed conversation transcripts ({n} conversations):",
+  "catalog": {
+    "availableFilesTemplate": "Available files: {files}",
+    "fileHeaderTemplate": "FILE: {filename}",
+    "contentLabel": "CONTENT:",
+    "emptyContentPlaceholder": "(empty)",
+    "separator": "\n\n---\n\n"
+  },
+  "transcript": {
+    "assistantLabel": "Assistant",
+    "userLabel": "User",
+    "messageTemplate": "{role}: {content}",
+    "attachmentsTemplate": "Attachments: {attachments}",
+    "noTextPlaceholder": "(no text)",
+    "conversationDividerTemplate": "--- CONVERSATION {n} ---\n{transcript}"
+  }
+}
