@@ -1,6 +1,6 @@
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
-import { getPromptConfigs } from '../../../../system/Prompting/PromptConfig.js';
+import { getPromptConfigs } from '../../../../System/Prompting/PromptConfig.js';
 import { buildChatPayload, currentChatScope } from '../Data/ChatPersistence.js';
 let summaryChain = Promise.resolve();
 const queuedSignatures = new Set();
