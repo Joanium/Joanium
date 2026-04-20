@@ -102,22 +102,11 @@ Browse and install community-built Skills and Personas with one click. Publish y
 
 ## ⬇️ Install in 60 seconds
 
-**Option A — Download the app**
-
 ```
 1. Go to https://joanium.com
 2. Click Download  (Windows · macOS · Linux — all supported)
 3. Install and run the onboarding wizard
 4. Add an API key for your preferred AI provider
-```
-
-**Option B — Run from source**
-
-```bash
-git clone https://github.com/joanium/joanium.git
-cd joanium
-npm install
-npm run dev
 ```
 
 > 💡 **No paid API key?** Joanium supports **[Ollama](https://ollama.com)** and **LM Studio** for free fully-local models with zero extra configuration.
@@ -130,7 +119,7 @@ Switch models anytime, even mid-conversation. No lock-in, ever.
 
 | Provider       | Models                                     |
 | -------------- | ------------------------------------------ |
-| **Anthropic**  | Claude 3.5, Claude 3 Opus, and more        |
+| **Anthropic**  | Claude 4.6, Claude 4.7 Opus, and more        |
 | **OpenAI**     | GPT-4o, o1, o3, and more                   |
 | **Google**     | Gemini 2.0 Flash, Gemini 1.5 Pro, and more |
 | **OpenRouter** | 200+ models via one key                    |
