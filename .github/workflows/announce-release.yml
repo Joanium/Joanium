@@ -1,22 +1,33 @@
 name: Announce Release
 
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ['Upload Release Asset']
+    types: [completed]
 
 jobs:
   discord:
     name: Post to Discord
     runs-on: ubuntu-latest
-    if: ${{ vars.SKIP_DISCORD != 'true' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && vars.SKIP_DISCORD != 'true' }}
 
     steps:
+      - name: Fetch latest release info
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE=$(gh api repos/${{ github.repository }}/releases/latest)
+          echo "tag=$(echo $RELEASE | jq -r '.tag_name')" >> "$GITHUB_OUTPUT"
+          echo "url=$(echo $RELEASE | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
+          echo "body=$(echo $RELEASE | jq -r '.body')" >> "$GITHUB_OUTPUT"
+
       - name: Send embed
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          TAG: ${{ github.event.release.tag_name }}
-          URL: ${{ github.event.release.html_url }}
-          BODY: ${{ github.event.release.body }}
+          TAG: ${{ steps.release.outputs.tag }}
+          URL: ${{ steps.release.outputs.url }}
+          BODY: ${{ steps.release.outputs.body }}
           REPO: ${{ github.event.repository.html_url }}
         run: |
           if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
@@ -52,18 +63,32 @@ jobs:
   github-discussion:
     name: Create GitHub Discussion
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       discussions: write
 
     steps:
+      - name: Fetch latest release info
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE=$(gh api repos/${{ github.repository }}/releases/latest)
+          echo "tag=$(echo $RELEASE | jq -r '.tag_name')" >> "$GITHUB_OUTPUT"
+          echo "url=$(echo $RELEASE | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
+          echo "body=$(echo $RELEASE | jq -r '.body')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/github-script@v7
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_URL: ${{ steps.release.outputs.url }}
+          RELEASE_BODY: ${{ steps.release.outputs.body }}
         with:
           script: |
-            const release    = context.payload.release;
-            const tag        = release.tag_name;
+            const tag        = process.env.RELEASE_TAG;
             const version    = tag.replace(/^v/, '');
-            const body       = release.body || '';
-            const releaseUrl = release.html_url;
+            const body       = process.env.RELEASE_BODY || '';
+            const releaseUrl = process.env.RELEASE_URL;
             const repoUrl    = context.payload.repository.html_url;
 
             const clMatch = body.match(/\*\*Change Log\*\*\s*\n+([\s\S]*?)(\n\n|$)/);
