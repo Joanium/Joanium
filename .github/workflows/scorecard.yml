@@ -7,16 +7,17 @@ on:
     - cron: '0 4 * * 1' # Every Monday at 4AM UTC
   workflow_dispatch:
 
-permissions:
-  security-events: write
-  id-token: write
-  contents: read
-  actions: read
+permissions: read-all
 
 jobs:
   analysis:
     name: Scorecard Analysis
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read
 
     steps:
       - name: Checkout code
