@@ -24,7 +24,9 @@ jobs:
           RELEASE=$(gh api repos/${{ github.repository }}/releases/latest)
           echo "tag=$(echo $RELEASE | jq -r '.tag_name')" >> "$GITHUB_OUTPUT"
           echo "url=$(echo $RELEASE | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
-          echo "body=$(echo $RELEASE | jq -r '.body')" >> "$GITHUB_OUTPUT"
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RELEASE" | jq -r '.body' >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Send embed
         env:
@@ -81,7 +83,9 @@ jobs:
           RELEASE=$(gh api repos/${{ github.repository }}/releases/latest)
           echo "tag=$(echo $RELEASE | jq -r '.tag_name')" >> "$GITHUB_OUTPUT"
           echo "url=$(echo $RELEASE | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
-          echo "body=$(echo $RELEASE | jq -r '.body')" >> "$GITHUB_OUTPUT"
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RELEASE" | jq -r '.body' >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
