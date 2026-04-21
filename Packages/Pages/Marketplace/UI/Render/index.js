@@ -111,12 +111,6 @@ function buildMetaChips(item) {
   ];
   var type;
   return (
-    'skills' === item.type &&
-      item.trigger &&
-      chips.push(`<span class="marketplace-chip">${escapeHtml(item.trigger)}</span>`),
-    'personas' === item.type &&
-      item.personality &&
-      chips.push(`<span class="marketplace-chip">${escapeHtml(item.personality)}</span>`),
     item.downloads > 0 &&
       chips.push(`<span class="marketplace-chip">${item.downloads} downloads</span>`),
     item.stars > 0 && chips.push(`<span class="marketplace-chip">${item.stars} stars</span>`),
@@ -150,7 +144,7 @@ function updateCard(card, item) {
     (card.querySelector('.marketplace-card-name').textContent = item.name),
     (card.querySelector('.marketplace-card-publisher').textContent = item.publisher),
     (card.querySelector('.marketplace-card-description').textContent =
-      item.description || item.excerpt || 'Open to read the full file.'),
+      'Open to read the full file.'),
     (card.querySelector('.marketplace-card-tags').innerHTML = buildMetaChips(item)),
     (card.querySelector('.marketplace-card-verified').hidden = !0 !== item.isVerified));
   const statusEl = card.querySelector('.marketplace-card-status');

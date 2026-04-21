@@ -94,6 +94,8 @@ export function getMarketplaceHTML() {
         <div class="marketplace-modal-title-copy">
           <div class="marketplace-modal-name-row">
             <div class="marketplace-modal-name" id="marketplace-modal-name">Marketplace Item</div>
+            </div>
+          <div id="marketplace-modal-meta" class="marketplace-modal-meta">
             <span id="marketplace-modal-verified" class="marketplace-verified-pill" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 12.75l2.25 2.25L15 9.75" stroke-linecap="round" stroke-linejoin="round" />
@@ -102,7 +104,6 @@ export function getMarketplaceHTML() {
               Verified
             </span>
           </div>
-          <div id="marketplace-modal-meta" class="marketplace-modal-meta"></div>
         </div>
       </div>
 
