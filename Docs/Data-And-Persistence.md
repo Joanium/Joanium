@@ -1,199 +1,305 @@
-# 💾 Data and Persistence
+# Data and Persistence
 
-Joanium is strongly local-first. This doc explains where state lives, how that changes between dev and packaged builds, and which files matter for backup, migration, and debugging.
+Joanium is local-first. User settings, chats, projects, connector credentials,
+skills, personas, memory, MCP servers, usage records, agents, automations, and
+channel state are stored as local files.
 
-## 1. 🏠 State Roots
+## State Roots
 
-`Packages/Main/Core/Paths.js` defines two runtime roots.
+`Packages/Main/Core/Paths.js` defines two important roots.
 
-### Bundled root
+| Root         | Development | Packaged build                     |
+| ------------ | ----------- | ---------------------------------- |
+| Bundled root | Repo root   | `process.resourcesPath`            |
+| State root   | Repo root   | Electron `app.getPath("userData")` |
 
-Where read-only bundled assets (model catalogs, seeded content) live.
+The bundled root is used for read-only packaged resources such as model
+catalogs, prompt configuration, seed skills, and seed personas.
 
-- **In development:** the repo root
-- **In packaged builds:** `process.resourcesPath`
+The state root is used for mutable runtime files such as settings, chats,
+projects, MCP server config, usage, memory, and feature state.
 
-### State root
+## Development Warning
 
-Where mutable runtime state (chats, config, feature state) is stored.
+In development mode, the repo root is the state root. Running the app locally can
+create or modify runtime files inside the repository.
 
-- **In development:** the repo root
-- **In packaged builds:** `app.getPath('userData')`
+Before committing, check for accidental runtime data such as:
 
-## 2. ⚠️ Why This Matters (Dev Warning)
+- `Config/User.json`
+- `Config/System.json`
+- `Config/WindowState.json`
+- `Data/**`
+- `Instructions/CustomInstructions.md`
+- `Memories/**`
+- Edited or installed `Skills/**`
+- Edited or installed `Personas/**`
 
-> In development mode, **the repo itself is the app's state directory.**
+Never commit personal API keys, chats, connector tokens, or personal memory.
 
-That means:
+## Main Storage Map
 
-- Local chats, usage records, feature state, and memory files show up in `git status`
-- You can accidentally commit personal API keys or chat history
-- **Always check before pushing**
+| Path                                             | Purpose                                                                                          |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `Config/User.json`                               | User profile, setup status, API keys, local provider endpoint/model preferences, app preferences |
+| `Config/System.json`                             | Reserved system-level config path                                                                |
+| `Config/WindowState.json`                        | Window dimensions and placement                                                                  |
+| `Config/Models/index.json`                       | Provider catalog file list                                                                       |
+| `Config/Models/*.json`                           | Bundled provider/model definitions                                                               |
+| `Data/Chats/*.json`                              | Global chat history                                                                              |
+| `Data/Projects/<projectId>/Project.json`         | Project metadata                                                                                 |
+| `Data/Projects/<projectId>/Chats/*.json`         | Project-scoped chat history                                                                      |
+| `Data/Skills.json`                               | Skill enablement map                                                                             |
+| `Data/ActivePersona.json`                        | Current persona selection                                                                        |
+| `Data/Usage.json`                                | Token/model usage records                                                                        |
+| `Data/MCPServers.json`                           | User-configured MCP servers                                                                      |
+| `Data/Features/connectors/Connectors.json`       | Connector state and credentials                                                                  |
+| `Data/Features/automations/Automations.json`     | Automation definitions, job history, last-run metadata                                           |
+| `Data/Features/agenticAgents/AgenticAgents.json` | Agent definitions, history, last-run metadata                                                    |
+| `Data/Features/channels/Channels.json`           | Channel credentials/state                                                                        |
+| `Data/Features/channels/ChannelMessages.json`    | Channel message history                                                                          |
+| `Instructions/CustomInstructions.md`             | User custom instructions                                                                         |
+| `Memories/*.md`                                  | Personal memory markdown files                                                                   |
+| `Skills/**/*.md`                                 | Installed and custom skills                                                                      |
+| `Personas/**/*.md`                               | Installed and custom personas                                                                    |
 
-In packaged builds, all mutable state moves cleanly outside the installed application into Electron's `userData` folder. Users never have to worry about this.
+Storage descriptors are declared by engines and features, then normalized by
+`Packages/Features/Core/FeatureStorage.js`. Do not assume a storage folder name
+always matches a package name.
 
-## 3. 🗺️ Full Storage Map
+## User Service
 
-| Path                                     | What's stored                                |
-| ---------------------------------------- | -------------------------------------------- |
-| `Config/User.json`                       | User profile, provider keys, app preferences |
-| `Config/WindowState.json`                | Window size and position                     |
-| `Config/Models/*.json`                   | Bundled provider and model catalogs          |
-| `Data/Chats/*.json`                      | Global chat history (outside any project)    |
-| `Data/Projects/<id>/Project.json`        | Project metadata and state                   |
-| `Data/Projects/<id>/Chats/*.json`        | Project-scoped chat history                  |
-| `Data/Skills.json`                       | Which skills are enabled/disabled            |
-| `Data/ActivePersona.json`                | Currently active persona                     |
-| `Data/Usage.json`                        | Token and model usage records                |
-| `Data/MCPServers.json`                   | User-configured MCP server definitions       |
-| `Data/Features/<featureKey>/<file>.json` | Engine/feature-specific state                |
-| `Instructions/CustomInstructions.md`     | Your custom instruction file                 |
-| `Memories/*.md`                          | Personal memory markdown files               |
-| `Skills/**/*.md`                         | Installed skill markdown files               |
-| `Personas/**/*.md`                       | Installed persona markdown files             |
+`Packages/Main/Services/UserService.js` owns:
 
-## 4. 🌱 Seeded Libraries vs User Libraries
+- Default user shape
+- First-run detection
+- API key persistence
+- Provider setting persistence
+- Provider/model catalog loading
+- Local model endpoint normalization
+- Ollama and LM Studio model discovery
 
-Joanium ships with **seed libraries** for skills and personas. On first run, `ContentLibraryService.js` copies them into the user library if it's empty.
+Cloud provider configuration is considered complete when an API key exists.
+Local provider configuration is considered complete when the endpoint is valid
+and at least one model is available or configured.
 
-```
-Seed source (bundled, read-only)  →  User library (editable, yours)
-     Skills/                      →       Skills/
-     Personas/                    →       Personas/
-```
+## Chat Persistence
 
-- **In development:** the repo folders ARE the active library roots (seed = user library)
-- **In packaged builds:** user copies live separately under the state root
+`Packages/Main/Services/ChatService.js` stores chats as JSON files.
 
-This lets the app ship useful defaults while giving users fully editable local copies.
+There are two chat buckets:
 
-## 5. 🧠 Personal Memory Files
+- Global chats under `Data/Chats`
+- Project chats under `Data/Projects/<projectId>/Chats`
 
-`Packages/Main/Services/MemoryService.js` manages the `Memories/` folder.
+Chat save behavior:
 
-These are **plain markdown files** — not an opaque database. That means:
+- Validates chat IDs
+- Resolves optional project ID
+- Sanitizes internal tool-only messages before writing
+- Marks chats for personal memory sync when user messages exist
+- Stores sync markers after memory processing
 
-- ✅ Easy to read and inspect
-- ✅ Easy to back up (just copy the folder)
-- ✅ Easy to edit manually
-- ✅ Easy to version in your own git repo
+## Project Persistence
 
-Treat them as user content, not code assets. Don't commit them.
+`Packages/Main/Services/ProjectService.js` stores project metadata.
 
-## 6. 💬 Chat Persistence
+Each project gets:
 
-`Packages/Main/Services/ChatService.js` handles chat storage.
-
-Two buckets:
-
-| Type          | Location                    | When it's used                    |
-| ------------- | --------------------------- | --------------------------------- |
-| Global chats  | `Data/Chats/`               | Conversations outside any project |
-| Project chats | `Data/Projects/<id>/Chats/` | Conversations inside a project    |
-
-Other things that happen during save:
-
-- Internal tool-only messages are stripped (clean history)
-- Chats can be flagged for personal memory synchronisation
-
-## 7. 📁 Project Persistence
-
-Each project gets its own folder:
-
-```
+```text
 Data/Projects/<projectId>/
-  Project.json        ← project metadata and state
-  Chats/              ← project-specific chat history
-    <chatId>.json
+  Project.json
+  Chats/
 ```
 
-Clean per-project boundaries, no database server needed.
+Project IDs are sanitized and path-checked before deletion. Project metadata
+includes name, root path, optional context, created/updated timestamps, and
+last-opened timestamp.
 
-## 8. ⚙️ Feature and Engine Storage
+## Feature and Engine Storage
 
-Feature and engine state lives in `Data/Features/`.
+Feature/engine storage lives under `Data/Features`.
 
-How it works:
+The storage process:
 
-1. Engines declare storage in `engineMeta.storage`
-2. Features declare storage in `feature.storage`
-3. Boot collects all descriptors and creates typed storage handles
-4. Each handle persists JSON to `Data/Features/<featureKey>/<fileName>`
+1. Engines declare `engineMeta.storage`.
+2. Features declare `feature.storage`.
+3. Boot collects all descriptors.
+4. Duplicate storage keys throw at startup.
+5. Each descriptor becomes a JSON storage handle.
 
-### Current examples
+Current important storage keys:
 
+- `connectors`
+- `automations`
+- `agenticAgents`
+- `channels`
+- `channelMessages`
+
+## Connector State
+
+`Packages/Features/Connectors/Core/ConnectorEngine.js` stores connector state.
+
+It merges feature-provided defaults with existing saved connector data. Service
+connectors store credentials and connected timestamps. Free connectors store
+enabled state, no-key flags, optional API keys, and credentials.
+
+`getSafeCredentials()` removes sensitive fields such as access tokens, refresh
+tokens, API keys, and client secrets before exposing credential previews.
+
+## Automation State
+
+`AutomationEngine` stores automation definitions and job history in
+`Data/Features/automations/Automations.json`.
+
+Each job keeps up to 30 history entries. Usage records from automation model
+calls are written to `Data/Usage.json` and capped to the latest 20,000 records.
+
+## Agent State
+
+`AgentsEngine` stores agent definitions and history in
+`Data/Features/agenticAgents/AgenticAgents.json`.
+
+Each agent keeps up to 30 history entries. Runtime-only queue/running state is
+not persisted.
+
+## Channel State
+
+`ChannelEngine` stores channel configuration in
+`Data/Features/channels/Channels.json`.
+
+Runtime-only fields such as seen WhatsApp IDs and cached Discord/Slack bot IDs
+are stripped before persistence.
+
+## Content Libraries
+
+`Packages/Main/Services/ContentLibraryService.js` manages skills and personas.
+
+In packaged builds:
+
+- Seed libraries are read from `process.resourcesPath/Skills` and `process.resourcesPath/Personas`
+- User libraries live under the state root in `Skills` and `Personas`
+- Seed files are copied only when the user library is empty
+
+In development:
+
+- Seed and user library roots both resolve to the repo folders
+- Editing `Skills` or `Personas` changes the active development library
+
+Skills and personas are markdown files with optional frontmatter. Publisher
+folders are part of the content ID, for example:
+
+```text
+skills:Joanium/APIDesign.md
+personas:Joanium/Joana.md
 ```
-Data/Features/agenticAgents/AgenticAgents.json
-Data/Features/Agents/Agents.json
-Data/Features/Automations/Automations.json
-Data/Features/Channels/Channels.json
-Data/Features/Connectors/Connectors.json
+
+## Personal Memory
+
+`Packages/Main/Services/MemoryService.js` initializes and manages the
+`Memories` folder.
+
+The app creates a set of markdown memory files such as:
+
+- `Memory.md`
+- `User.md`
+- `Likes.md`
+- `Dislikes.md`
+- `Family.md`
+- `Friends.md`
+- `Relationships.md`
+- `Education.md`
+- `Career.md`
+- `Goals.md`
+- `Health.md`
+- `Wellbeing.md`
+- `Projects.md`
+- `Context.md`
+
+Memory is plain markdown by design. It is readable, editable, and easy to back
+up. Hidden files beginning with `Archive-`, `Legacy-`, or `_` are reserved and
+not shown as visible memory files.
+
+## MCP Server State
+
+Custom MCP servers are stored in `Data/MCPServers.json`.
+
+The builtin browser MCP server is added at runtime, so the user file represents
+only custom server entries.
+
+## Prompt Data
+
+Runtime prompt assembly draws from:
+
+- `SystemInstructions/SystemPrompt.json`
+- `SystemInstructions/AgentPrompts.json`
+- `SystemInstructions/CompactionPrompts.json`
+- `SystemInstructions/MemoryPrompts.json`
+- `Config/User.json`
+- `Instructions/CustomInstructions.md`
+- Active persona markdown
+- Enabled/matched skills
+- Connector and feature prompt context
+- Personal memory files
+- Runtime system info and date/time
+
+Prompt caching is in `SystemPromptService`. Call prompt invalidation when
+changing connector state or prompt-affecting user data.
+
+## Packaged Resources
+
+`electron-builder.json` packages:
+
+- `App.js`
+- `Core/**/*`
+- `Packages/**/*`
+- `Public/**/*`
+- `Assets/**/*`
+- `SystemInstructions/**/*`
+
+It also adds these extra resources:
+
+- `Config/Models`
+- `Config/WindowState.json`
+- `Skills/**/*.md`
+- `Personas/**/*.md`
+
+Packaged resources are used to bootstrap first-run state and libraries without
+requiring network access.
+
+## Backup Guidance
+
+For a full user backup, copy these from the packaged state root:
+
+```text
+Config/User.json
+Config/WindowState.json
+Data/
+Instructions/
+Memories/
+Skills/
+Personas/
 ```
 
-> 💡 Feature storage keys are descriptor-driven. Don't assume every folder maps 1:1 to a package name.
+For a safer minimal backup, copy:
 
-## 9. 📊 Usage Data
-
-All usage is written to `Data/Usage.json`.
-
-- Chat usage → written by the chat side after each model call
-- Automation usage → written by the automation engine after each run
-
-This powers the Usage page and is a great local debugging source. Can grow large over time — trim it manually if needed.
-
-## 10. 🔌 MCP Server Persistence
-
-Custom MCP server entries live in `Data/MCPServers.json`.
-
-The builtin browser MCP server is merged in at runtime — so the user file represents your _additions_, not the full effective set.
-
-## 11. 📝 Prompt and Instruction Data
-
-Prompt assembly draws from both bundled and user-owned data:
-
-| Source                                 | Type                            |
-| -------------------------------------- | ------------------------------- |
-| `SystemInstructions/SystemPrompt.json` | Bundled (read-only)             |
-| `Config/User.json`                     | User-owned                      |
-| `Instructions/CustomInstructions.md`   | User-owned                      |
-| `Data/ActivePersona.json`              | Runtime-owned                   |
-| `Memories/*.md`                        | User-owned                      |
-| `Data/Features/`                       | Runtime-owned (connector state) |
-
-> 💡 If a prompt-related bug appears, you may need to check more than one of these files.
-
-## 12. 🗃️ Packaged Resources
-
-`electron-builder.json` bundles these for packaged builds:
-
-- `Config/Models/` — provider and model catalogs
-- `Config/WindowState.json` — default window dimensions
-- `Skills/*.md` — seed skill library
-- `Personas/*.md` — seed persona library
-
-Packaged builds always have everything they need to bootstrap libraries and catalogs — even on first install with no internet connection.
-
-## 13. 🗄️ What to Back Up
-
-If you want to preserve your full Joanium setup, copy these:
-
-```
-Config/User.json          ← your API keys and profile
-Data/                     ← all chats, projects, usage, feature state
-Instructions/             ← your custom instructions
-Memories/                 ← your personal memory files
-Skills/                   ← your installed and custom skills
-Personas/                 ← your installed and custom personas
+```text
+Data/
+Instructions/
+Memories/
+Skills/
+Personas/
 ```
 
-> 💡 For a minimal backup (just your content and preferences), those folders are all you need.
+Avoid sharing `Config/User.json` publicly because it may contain API keys.
 
-## 14. ✏️ Safe Manual Editing
+## Safe Manual Editing
 
-If you need to edit runtime state files directly:
+When editing runtime files directly:
 
-- ✅ Edit the smallest relevant file, not whole folders
-- ✅ Keep JSON valid and preserve expected top-level keys
-- ⚠️ Be careful with `Data/Usage.json` — it can get large
-- ⚠️ Be careful with `Data/Features/*` — engines expect specific shapes
-- ⚠️ The app may rewrite some files after the next run
+- Stop the app first when possible.
+- Edit the smallest file needed.
+- Preserve valid JSON.
+- Preserve expected top-level keys.
+- Back up files before changing connector, automation, agent, or channel state.
+- Expect the app to rewrite some files after the next run.

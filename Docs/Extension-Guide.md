@@ -1,418 +1,363 @@
-# 🔧 Extension Guide
+# Extension Guide
 
-How to add new capabilities to Joanium without fighting the architecture.
+This guide explains how to add new behavior to Joanium while staying inside the
+discovery-based architecture.
 
-## 1. 🧠 The Mental Model
+## Choose the Right Extension Point
 
-> Joanium is extended through **discovery**, not by editing one giant central file.
+| You want to add                       | Best extension point                                                    |
+| ------------------------------------- | ----------------------------------------------------------------------- |
+| External service integration          | `Packages/Capabilities/<Name>` with `Feature.js`                        |
+| Chat tools for an existing service    | Existing capability package                                             |
+| Connector setup and credentials       | Capability feature `connectors.services`                                |
+| Free/no-auth connector                | `Packages/Capabilities/FreeConnectors/Feature.js`                       |
+| Background runtime with timers/queues | `Packages/Features/<Name>/Core/*Engine.js`                              |
+| Renderer-to-main API                  | `*IPC.js` under a discovered IPC root                                   |
+| Reusable main-process helper          | `*Service.js` under `Packages/Main/Services` or another services root   |
+| New top-level UI surface              | `Packages/Pages/<Page>/Page.js` and renderer folder                     |
+| Feature-owned page                    | `pages` contribution from a feature                                     |
+| New AI provider                       | `Config/Models`, setup provider UI, and `Packages/Features/AI/index.js` |
+| Automation source/output              | Automation built-ins or feature automation contributions                |
 
-In practice, you add one of:
+## Discovery Metadata
 
-- a workspace package
-- a feature manifest
-- an engine
-- an IPC module
-- a service
-- a page manifest
+Every package contribution starts in a workspace package `package.json`.
 
-The boot layer discovers and assembles them automatically.
+Use only the discovery roots that the package actually needs:
 
-## 2. 🔍 Starting Point: `joanium.discovery`
-
-Every extension starts with a workspace package `package.json`. Declare what your package contributes under `joanium.discovery`:
-
-```jsonc
+```json
 {
-  "name": "@joanium/my-package",
+  "name": "@Joanium/example",
   "private": true,
   "type": "module",
   "joanium": {
     "discovery": {
-      "features": ["./Core"], // Feature.js — connectors, chat tools, prompt context
-      "engines": ["./Core"], // *Engine.js — long-lived background systems
-      "ipc": ["./IPC"], // *IPC.js — main-process APIs for the renderer
-      "pages": ["."], // Page.js — new sidebar pages
-      "services": ["./Services"], // *Service.js — reusable main-process helpers
-    },
-  },
+      "features": ["./Core"],
+      "engines": ["./Core"],
+      "ipc": ["./IPC"],
+      "pages": ["."],
+      "services": ["./Services"]
+    }
+  }
 }
 ```
 
-Only include the kinds your package actually uses.
+After adding or moving discovery roots, run:
 
-## 3. 🧩 Adding a New Feature Package
+```bash
+npm run packages:audit
+```
 
-Use a feature package when you want to contribute **any combination of:**
+## Adding a Capability Feature
 
-- service connectors (appear in setup UI)
-- free connectors (no auth)
-- chat tools (callable mid-conversation)
-- automation data sources
-- automation outputs
-- prompt context sections
-- feature pages
-- lifecycle hooks
-- storage
+Use a capability feature when integrating a third-party service or contributing
+cross-surface behavior such as connectors, tools, prompt context, and
+automation hooks.
 
-### Minimal example
+Minimal shape:
 
 ```js
-// Packages/Capabilities/Acme/Core/Feature.js
-import { defineFeature } from '../../Core/defineFeature.js';
+import defineFeature from '../../Core/DefineFeature.js';
 
 export default defineFeature({
   id: 'acme',
   name: 'Acme',
 
-  storage: {
-    key: 'Acme',
-    featureKey: 'Acme',
-    fileName: 'Acme.json',
+  connectors: {
+    services: [
+      {
+        id: 'acme',
+        name: 'Acme',
+        description: 'Connect your Acme workspace',
+        fields: [{ key: 'apiKey', label: 'API Key', type: 'password', required: true }],
+      },
+    ],
   },
 
   renderer: {
     chatTools: [
       {
-        name: 'acme_lookup',
-        description: 'Search Acme for data',
+        name: 'acme_search',
+        description: 'Search Acme',
+        category: 'acme',
+        connectorId: 'acme',
         parameters: {
-          query: { type: 'string', description: 'What to search for', required: true },
+          query: { type: 'string', required: true, description: 'Search query' },
         },
       },
     ],
   },
 
   main: {
-    methods: {
-      async executeChatTool(ctx, { toolName, params }) {
-        if (toolName !== 'acme_lookup') return null;
-        return `Acme result for: ${params.query}`;
-      },
+    async executeChatTool(ctx, { toolName, params }) {
+      if (toolName !== 'acme_search') return null;
+      return `Result for ${params.query}`;
     },
   },
 
   prompt: {
-    async getContext() {
+    async getContext(ctx) {
+      if (!ctx.connectorEngine?.isConnected?.('acme')) return null;
       return {
         connectedServices: ['Acme'],
-        sections: ['Acme is connected. You can use the acme_lookup tool to search it.'],
+        sections: [{ title: 'Acme', body: 'Acme is connected.' }],
       };
     },
   },
 });
 ```
 
-### What this gives you
+Rules:
 
-- ✅ A chat tool the assistant can call: `acme_lookup`
-- ✅ Prompt context injected into every system prompt: "Acme is connected"
-- ✅ A storage file at `Data/Features/Acme/Acme.json`
+- Feature IDs must be globally unique.
+- Tool names must be globally unique.
+- Connector IDs must be globally unique.
+- Use `dependsOn` when extending a root feature, such as Google Workspace.
+- Keep integration API logic close to the feature package.
 
-### Things to keep in mind
+## Adding a Service Connector
 
-- Feature `id` values must be **unique** across the whole app
-- Use `dependsOn` if your feature extends another feature family (e.g. a Google sub-service depends on the Google root)
-- Storage keys must be unique across both features and engines
+Service connectors appear in setup/settings and persist credentials through the
+connector engine.
 
-## 4. ⚙️ Adding a New Engine
+Connector definitions should include:
 
-Use an engine when you need **long-lived runtime behavior** — scheduling, polling, background queues, persisted runtime state, or a service that should start with the app.
+- `id`
+- `name`
+- `description`
+- `icon`
+- `fields`
+- Optional `setupSteps`
+- Optional `capabilities`
+- Optional `validate`
 
-### Minimal example
+Credential state is owned by `ConnectorEngine`. Do not store connector tokens in
+renderer-only state.
+
+## Adding a Google Workspace Sub-Service
+
+Google Workspace is a root feature with ID `google-workspace`. Sub-services such
+as Calendar and Gmail depend on it and extend the root connector.
+
+Pattern:
 
 ```js
-// Packages/Features/Acme/Core/AcmeEngine.js
+export default defineFeature({
+  id: 'my-google-service',
+  name: 'Google Example',
+  dependsOn: ['google-workspace'],
+  connectors: {
+    serviceExtensions: [
+      {
+        target: 'google',
+        subServices: [{ key: 'example', label: 'Example' }],
+        capabilities: ['Example service support'],
+      },
+    ],
+  },
+});
+```
+
+Keep service-specific API helpers under the relevant Google subfolder.
+
+## Adding Feature-Contributed Automation Pieces
+
+Features can contribute data sources, output types, and instruction templates.
+
+```js
+automation: {
+  dataSources: [
+    { value: 'acme_updates', label: 'Acme - Updates', group: 'Acme' },
+  ],
+  dataSourceCollectors: {
+    async acme_updates(ctx, dataSource) {
+      return 'Collected Acme data';
+    },
+  },
+  outputTypes: [
+    { value: 'acme_create_item', label: 'Create Acme item', group: 'Acme' },
+  ],
+  outputHandlers: {
+    async acme_create_item(ctx, payload) {
+      return { ok: true };
+    },
+  },
+  instructionTemplates: {
+    acme_updates: 'Review these Acme updates and summarize anything actionable.',
+  },
+}
+```
+
+Use feature-contributed automation pieces for service-specific behavior. Use
+`Packages/Features/Automation/DataSources` and `Actions` for generic platform
+behavior.
+
+## Adding an Engine
+
+Use an engine for long-lived main-process behavior: scheduling, polling,
+queues, runtime state, or persistent background systems.
+
+```js
 import defineEngine from '../../../System/Contracts/DefineEngine.js';
 
 export const engineMeta = defineEngine({
-  id: 'acme-engine',
-  provides: 'acmeEngine', // injected into boot context under this key
-  needs: ['paths'], // wait for 'paths' before creating this engine
+  id: 'acme',
+  provides: 'acmeEngine',
+  needs: ['featureStorage'],
+  storage: { key: 'acme', featureKey: 'acme', fileName: 'Acme.json' },
 
-  storage: {
-    key: 'Acme',
-    featureKey: 'Acme',
-    fileName: 'Acme.json',
-  },
-
-  create(context) {
-    let interval;
+  create({ featureStorage }) {
+    const storage = featureStorage.get('acme');
+    let timer = null;
 
     return {
       start() {
-        // Start a background polling loop
-        interval = setInterval(() => {
-          console.log('Acme engine polling...');
-        }, 60_000);
+        timer = setInterval(() => {}, 60_000);
       },
-
       stop() {
-        clearInterval(interval);
+        clearInterval(timer);
       },
-
       getAll() {
-        return context.featureStorage.get('Acme')?.load(() => ({ items: [] }));
+        return storage.load(() => ({ items: [] }));
       },
     };
   },
 });
 ```
 
-### When to use an engine vs a feature
+Rules:
 
-| Use an engine when...                   | Use a feature when...                        |
-| --------------------------------------- | -------------------------------------------- |
-| You need background timers or polling   | You're contributing chat tools or connectors |
-| You need to persist runtime state       | You're adding prompt context                 |
-| You need lifecycle (`start`/`stop`)     | You're adding automation building blocks     |
-| You're building a platform-level system | You're integrating a third-party service     |
+- `provides` must be unique.
+- Declare every dependency in `needs`.
+- Declare storage descriptors when persisting state.
+- Implement `stop()` for timers, polling loops, queues, and pending promises.
 
-## 5. 🌉 Adding a New IPC Module
+## Adding IPC
 
-Use an IPC module when the renderer needs to call something in the main process.
-
-### Minimal example
+Use IPC when renderer code needs main-process behavior.
 
 ```js
-// Packages/Features/Acme/IPC/AcmeIPC.js
 import { ipcMain } from 'electron';
 
 export const ipcMeta = { needs: ['acmeEngine'] };
 
 export function register(acmeEngine) {
   ipcMain.handle('acme:list', () => acmeEngine.getAll());
-
-  ipcMain.handle('acme:create', (_, data) => acmeEngine.create(data));
-
-  ipcMain.handle('acme:delete', (_, id) => acmeEngine.delete(id));
 }
 ```
 
-### Auto-injection rules
+`DiscoverIPC.js` injects dependencies listed in `ipcMeta.needs`. Dependencies
+can be engines, services, paths, feature registry, feature storage, and other
+boot context values.
 
-`DiscoverIPC.js` injects dependencies into `register()` based on `ipcMeta.needs`:
+Rules:
 
-- Service names like `'chatService'` → injected from discovered services
-- Engine names like `'acmeEngine'` → injected from boot context
-- `'paths'` → injected path helpers
+- Keep channel names stable and specific.
+- Return JSON-serializable data.
+- Do validation in the main process for filesystem, shell, network, and credential operations.
+- Use `wrapHandler` from main IPC modules when you want consistent `{ ok, error }` shapes.
 
-## 6. 🛠️ Adding a New Service
+## Adding a Service
 
-Use a service when you want a **reusable main-process helper** that may also be auto-injected into IPC modules.
+Services are reusable main-process helpers loaded from discovered service roots.
+Files ending in `Service.js` are imported and exposed to IPC injection by
+camel-cased filename.
+
+Example: `ProjectService.js` becomes `projectService`.
+
+Use services for:
+
+- File-backed data stores
+- Shared API helpers
+- Prompt or content library helpers
+- App-wide state helpers
+
+Avoid using services as renderer UI containers.
+
+## Adding a Page
+
+Top-level app pages are discovered from `Page.js` files.
 
 ```js
-// Packages/Main/Services/AcmeService.js
-export class AcmeService {
-  constructor(paths) {
-    this.paths = paths;
-  }
-
-  async getData() {
-    // ... read from disk, call an API, etc.
-  }
-}
-```
-
-Service files ending in `Service.js` are discovered and exposed in camelCase: `AcmeService.js` → `acmeService` in IPC injection context.
-
-## 7. 📄 Adding a New Page
-
-Use a page when the user needs a **dedicated surface in the app shell**.
-
-### Page manifest
-
-```js
-// Packages/Pages/Acme/Page.js
 import definePage from '../../System/Contracts/DefinePage.js';
 
 export default definePage({
   id: 'acme',
   label: 'Acme',
-  icon: 'sparkles', // Lucide icon name
-  order: 80, // position in sidebar
-  section: 'top', // 'top' or 'bottom'
-  moduleUrl: './UI/Render/index.js',
-  css: './UI/Styles/AcmePage.css',
+  icon: '<svg viewBox="0 0 24 24"></svg>',
+  css: new URL('./UI/Styles/AcmePage.css', import.meta.url).href,
+  order: 80,
+  section: 'top',
+  moduleUrl: new URL('./UI/Render/index.js', import.meta.url).href,
 });
 ```
 
-### Typical page folder structure
+Expected renderer module shape:
+
+```js
+export function mount(outlet, context) {
+  outlet.innerHTML = '<section>Acme</section>';
+  return () => {};
+}
+```
+
+Use `showInSidebar: false` for setup-like pages that should not appear in
+navigation.
+
+## Adding an AI Provider
+
+Provider support touches three areas:
+
+| Area            | Files                                                          |
+| --------------- | -------------------------------------------------------------- |
+| Catalog         | `Config/Models/index.json` and `Config/Models/<Provider>.json` |
+| Setup UI        | `Packages/Pages/Setup/UI/Render/Providers/SetupProviders.js`   |
+| Request adapter | `Packages/Features/AI/index.js`                                |
+
+If the provider is OpenAI-compatible, add a catalog and setup entry first. If it
+needs custom message, tool, streaming, or usage parsing behavior, extend the AI
+adapter.
+
+Local providers should set `requires_api_key: false` and use provider settings
+for endpoint/model values.
+
+## Adding Built-In Chat Tools
+
+Built-in chat tools live under:
 
 ```text
-Packages/Pages/Acme/
-  Page.js                  ← manifest
-  UI/
-    Render/
-      index.js             ← page mounting logic
-    Styles/
-      AcmePage.css
-  Components/              ← reusable UI components
-  Features/                ← page-specific logic
-  State/                   ← local state management
+Packages/Pages/Chat/Features/Capabilities/<Group>/
+  Tools.js
+  Executor.js
+  Trigger.js
+  ToolsList.js
 ```
 
-### Built-in vs feature-contributed pages
+Use this for generic, non-connector-specific tool groups. For service-specific
+tools, prefer feature-contributed tools inside the capability package.
 
-- **Built-in page** (above) — discovered from page roots, always present
-- **Feature-contributed page** — returned through the feature boot payload, only present when the feature is loaded
+## Validation Checklist
 
-Use a built-in page for core app surfaces. Use a feature-contributed page when it belongs tightly to a specific integration.
+After structural changes:
 
-## 8. 🔌 Adding a New Integration (Capability Package)
-
-This is the most common extension type. The typical path:
-
-```
-1. Create Packages/Capabilities/<Name>/
-2. Add package.json with joanium.discovery
-3. Write Feature.js with connector, tools, prompt context, automation hooks
-4. Optionally add API helpers, IPC, services
+```text
+[ ] npm run packages:audit
+[ ] npm run lint
+[ ] Start the app
+[ ] Confirm boot logs have no duplicate feature/page/storage/engine IDs
+[ ] Confirm the page/connector/tool/engine appears where expected
+[ ] Verify packaged resources if new seed/config files were added
 ```
 
-### A full example: "Notion" integration
+## Common Pitfalls
 
-```
-Packages/Capabilities/Notion/
-  package.json             ← declares discovery roots
-  Core/
-    Feature.js             ← connector, chat tools, prompt context, automation
-    NotionAPI.js           ← API wrapper
-  IPC/
-    NotionIPC.js           ← main-process handlers (if needed)
-```
-
-```js
-// Feature.js for Notion
-export default defineFeature({
-  id: 'notion',
-  name: 'Notion',
-
-  connectors: [{
-    id: 'notion',
-    name: 'Notion',
-    description: 'Connect your Notion workspace',
-    fields: [{ key: 'apiKey', label: 'Integration Token', type: 'password' }],
-  }],
-
-  renderer: {
-    chatTools: [
-      { name: 'notion_search', description: 'Search Notion pages', parameters: { query: { type: 'string' } } },
-      { name: 'notion_create_page', description: 'Create a Notion page', parameters: { title: { type: 'string' }, content: { type: 'string' } } },
-    ],
-  },
-
-  main: {
-    methods: {
-      async executeChatTool(ctx, { toolName, params }) {
-        if (toolName === 'notion_search') return searchNotion(params.query);
-        if (toolName === 'notion_create_page') return createPage(params);
-        return null;
-      },
-    },
-  },
-
-  prompt: {
-    async getContext() {
-      return {
-        connectedServices: ['Notion'],
-        sections: ['Notion is connected. You can search pages and create new ones.'],
-      };
-    },
-  },
-
-  automation: {
-    dataSources: [{ id: 'notion_pages', label: 'Notion Pages', ... }],
-    outputTypes: [{ id: 'notion_create', label: 'Create Notion Page', ... }],
-  },
-});
-```
-
-## 9. 🤖 Adding a New AI Provider
-
-Provider support touches multiple files:
-
-| File                                         | What to change                           |
-| -------------------------------------------- | ---------------------------------------- |
-| `Config/Models/index.json`                   | Register the new provider                |
-| `Config/Models/<Provider>.json`              | Model catalog for this provider          |
-| `Packages/Pages/Setup/.../SetupProviders.js` | Setup UI — label, color, icon, fields    |
-| `Packages/Features/AI/index.js`              | Request formatting and streaming adapter |
-
-## 10. 🏗️ Adding Automation Building Blocks
-
-### Built-in automation building blocks
-
-Live under `Packages/Features/Automation/DataSources` and `Packages/Features/Automation/Actions`. Use for generic platform behavior.
-
-### Feature-contributed automation building blocks
-
-Contribute via `Feature.js`:
-
-```js
-automation: {
-  dataSources: [
-    { id: 'my_source', label: 'My Source', collect: async () => ({ data: '...' }) },
-  ],
-  dataSourceCollectors: [...],
-  outputTypes: [
-    { id: 'my_output', label: 'My Output' },
-  ],
-  outputHandlers: [
-    { id: 'my_output', handle: async (data) => { /* do something */ } },
-  ],
-  instructionTemplates: [
-    { id: 'my_template', label: 'My Template', template: 'Summarise: {{data}}' },
-  ],
-},
-```
-
-Use capability features for integration-specific behavior (e.g. "post to Notion", "create a GitHub issue").
-
-## 11. ✅ Validation Checklist
-
-After adding a new package or discovery root:
-
-```
-□ npm run packages:audit  — confirm discovery hooks are visible
-□ Start the app           — confirm no duplicate IDs in boot logs
-□ Verify engine/feature   — confirm instantiation succeeds at boot
-□ Verify packaged assets  — if your feature needs bundled files, check electron-builder.json
-```
-
-> 💡 On Windows PowerShell, use `cmd /c npm run packages:audit` if script execution is restricted.
-
-## 12. 🪤 Common Pitfalls
-
-| Pitfall                                | Fix                                                                                            |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Discovery doesn't fire                 | Check `joanium.discovery` is in `package.json` and the root workspace glob covers your package |
-| Duplicate feature/page ID              | Each `id` must be unique across the whole app — search the codebase before picking one         |
-| Page doesn't render                    | Verify `moduleUrl` in `Page.js` points to a real file                                          |
-| Dev state path ≠ prod state path       | Use `Paths.js` helpers, don't hardcode paths                                                   |
-| Integration logic in the renderer      | Move it to a feature or main-process layer                                                     |
-| Provider setup works but requests fail | Check `AI/index.js` for the request adapter                                                    |
-
-## 13. 🗺️ Which Extension Point to Use?
-
-| You want to add...                      | Best extension point                                         |
-| --------------------------------------- | ------------------------------------------------------------ |
-| A new external integration              | `Packages/Capabilities/<Name>`                               |
-| A new background runtime system         | `Packages/Features/<Name>/Core/*Engine.js`                   |
-| A new main-process API for the renderer | `*IPC.js` in an IPC discovery root                           |
-| A reusable main-process helper          | `*Service.js` in a services discovery root                   |
-| A new core app surface                  | `Packages/Pages/<Name>`                                      |
-| A feature-owned page                    | Feature page contribution through `Feature.js`               |
-| A new AI model provider                 | `Config/Models` + setup provider UI + `Packages/Features/AI` |
-
-## 14. 💡 Final Advice
-
-Follow the architecture and Joanium is a pleasant codebase to extend. Fight it and you'll spend your time on wiring instead of building.
-
-The safe pattern:
-
-- 🏠 Keep integration logic inside capability packages
-- ⚙️ Keep long-lived runtime behavior inside engines
-- 🖼️ Keep renderer pages focused on UI and interaction
-- 🔍 Use discovery instead of manual central registration
-
-Unsure where something goes? → [Where-To-Change-What.md](Where-To-Change-What.md) is your guide.
+| Problem                             | Likely fix                                                                          |
+| ----------------------------------- | ----------------------------------------------------------------------------------- |
+| Feature not loading                 | Check workspace coverage and `joanium.discovery.features`                           |
+| Engine not instantiating            | Check `needs`, `provides`, and storage descriptors                                  |
+| IPC dependency undefined            | Check `ipcMeta.needs` and boot context key name                                     |
+| Page missing from sidebar           | Check `Page.js`, `showInSidebar`, and page discovery root                           |
+| Tool not available                  | Check connector enabled state, workspace-scoped filtering, and tool name uniqueness |
+| Prompt context stale                | Call system prompt invalidation after connector/user state changes                  |
+| State path wrong in packaged builds | Use `Paths`, not hardcoded repo paths                                               |
+| Build changed source formatting     | `npm run build` minifies in place; inspect Git diff before committing               |

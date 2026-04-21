@@ -1,304 +1,282 @@
-# 🏗️ Joanium Architecture
+# Joanium Architecture
 
-This doc explains how Joanium is assembled, what runs where, and how a request travels from the UI all the way to providers, tools, connectors, and persisted state.
+This document explains how Joanium is assembled, what runs in each process, and
+how the main surfaces connect to providers, tools, integrations, and local
+state.
 
-## 1. 🧩 The Big Idea
+## Big Idea
 
-Joanium is **not one big app file**. It's composed from discoverable pieces:
+Joanium is a local-first Electron desktop app composed from discoverable
+workspace packages. It is not organized around one large app file or one manual
+registry. The boot layer discovers package contributions, builds the runtime
+context, starts engines, registers IPC, then lets the renderer discover and
+mount pages.
 
-- workspace packages
-- feature manifests
-- engine definitions
-- auto-discovered IPC modules
-- auto-discovered services
-- page manifests
+The architecture is built around five composition points:
 
-This composition model is one of the repo's biggest strengths. New capabilities can be added as packages without touching a central registry. The boot layer finds them automatically.
+- Workspace package discovery from the root `package.json`
+- Feature manifests loaded by `FeatureRegistry`
+- Engine metadata loaded from `*Engine.js`
+- IPC modules loaded from `*IPC.js`
+- Page manifests loaded from `Page.js`
 
-## 2. 🗂️ Runtime Layers
+## Runtime Layers
 
-| Layer                 | Main location                                      | What it does                                                                                |
-| --------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| ⚡ Electron entry     | `App.js`                                           | Creates runtime dirs, seeds libraries, boots the app, creates the window, starts engines    |
-| 🔧 Main-process boot  | `Packages/Main`                                    | Discovery, dependency assembly, services, IPC registration, window creation                 |
-| ⚙️ Features & engines | `Packages/Features`                                | Long-lived systems — agents, automations, connectors, channels, MCP, storage                |
-| 🔌 Capabilities       | `Packages/Capabilities`                            | Integration-specific features — connectors, prompt context, chat tools, automation handlers |
-| 🖼️ Renderer shell     | `Packages/Renderer`                                | Page discovery, routing, sidebar wiring, modal setup                                        |
-| 📄 Renderer pages     | `Packages/Pages`                                   | The actual UI surfaces: chat, setup, automations, agents, skills, personas, etc.            |
-| 🛠️ Shared system      | `Packages/System`                                  | Shared contracts (`defineEngine`, `definePage`), shared state, prompt helpers, utilities    |
-| 💾 Local state        | `Config`, `Data`, `Memories`, `Skills`, `Personas` | User config, runtime state, memory files, libraries, system prompt assets                   |
+| Layer               | Main location                                                      | Responsibility                                                                       |
+| ------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| Electron entry      | `App.js`                                                           | App lifecycle, runtime directories, first window, auto-updates, boot handoff         |
+| Main process        | `Packages/Main`                                                    | Discovery, engine assembly, services, IPC, paths, window creation                    |
+| Platform features   | `Packages/Features`                                                | AI calls, agents, automations, channels, connectors, MCP, skills                     |
+| Capability packages | `Packages/Capabilities`                                            | External integrations, free connectors, chat tools, automation hooks, prompt context |
+| Renderer shell      | `Packages/Renderer`                                                | Page discovery, sidebar, modals, navigation, channel/agent gateways                  |
+| Renderer pages      | `Packages/Pages`                                                   | Chat, setup, automations, agents, skills, personas, marketplace, events, usage       |
+| Shared system       | `Packages/System`                                                  | Contracts, prompt assembly, state, utility helpers                                   |
+| Local state         | `Config`, `Data`, `Memories`, `Skills`, `Personas`, `Instructions` | User-owned and runtime-owned local files                                             |
 
-## 3. 🚀 Boot Sequence
+## Boot Sequence
 
-Everything starts in `App.js`.
+Startup begins in `App.js`.
 
-### What `App.js` does
+1. Electron flags are set, including HTTP/2 disablement and the app user agent.
+2. External navigation is guarded so external URLs open in the system browser.
+3. Runtime directories are created under the current state root.
+4. A first window is created immediately. It loads setup on first run and chat otherwise.
+5. Content libraries are initialized.
+6. Personal memory files are initialized.
+7. `boot()` from `Packages/Main/Boot.js` runs discovery and engine assembly.
+8. Engines are started.
+9. Existing windows receive attached services and a `backend-ready` event.
+10. The system prompt is warmed in the background.
+11. MCP auto-connect runs in the background.
+12. Shutdown stops engines before the app quits.
 
-- Sets Electron process flags
-- Ensures runtime directories exist (creates them if missing)
-- Seeds the skill and persona content libraries on first run
-- Initialises personal memory markdown files
-- Calls `boot()` from `Packages/Main/Boot.js`
-- Starts engines after boot completes
-- Creates the main window
-- Auto-connects MCP servers
+## Main Boot
 
-### What `Packages/Main/Boot.js` does
+`Packages/Main/Boot.js` is the main assembly point.
 
-- Loads all feature manifests via `FeatureRegistry.load(...)`
-- Discovers engines from declared engine roots
-- Builds feature/engine storage handles via `createFeatureStorageMap(...)`
-- Instantiates engines in dependency order (respects `needs` and `provides`)
-- Runs feature lifecycle hooks like `onBoot`
-- Discovers and registers IPC modules, auto-injecting services and engine context
-- Returns the boot payload used by the rest of the app
+It performs these steps:
 
-### Boot flow
+- Loads feature manifests from `FEATURE_DISCOVERY_ROOTS`
+- Discovers engines from `ENGINE_DISCOVERY_ROOTS`
+- Builds feature and engine storage handles with `createFeatureStorageMap`
+- Creates the base boot context containing paths, feature registry, storage, user service, and prompt invalidation
+- Instantiates engines in dependency order using their `needs` and `provides`
+- Sets feature registry base context so features can access connectors, storage, paths, and events
+- Runs feature lifecycle hooks such as `onBoot`
+- Discovers and registers IPC modules, injecting requested services and engines
+- Returns the runtime context used by `App.js`
 
-```mermaid
-flowchart TD
-  A[App.js] --> B[Ensure runtime directories]
-  B --> C[Seed skills/personas]
-  C --> D[Seed personal memory files]
-  D --> E[Boot.js]
-  E --> F[Load FeatureRegistry]
-  E --> G[Discover engines]
-  E --> H[Create storage map]
-  G --> I[Instantiate engines in dependency order]
-  F --> J[Run feature lifecycle hooks]
-  E --> K[Discover + register IPC]
-  K --> L[Create window]
-  I --> L
-  L --> M[Attach browser preview, channels, agents]
-  L --> N[Renderer starts and discovers pages]
-  L --> O[Auto-connect MCP]
+## Discovery Pipeline
+
+Discovery starts in `Packages/Main/Core/WorkspacePackages.js`.
+
+The root `package.json` declares workspace globs:
+
+```json
+["Core/Electron", "Packages/*", "Packages/Capabilities/*", "Packages/Features/*"]
 ```
 
-## 4. 🔍 Discovery Is the Backbone
+Each workspace package can declare a `joanium.discovery` section:
 
-Joanium uses workspace package manifests to declare discovery roots. The root `package.json` defines npm workspaces, and each workspace package can add a `joanium.discovery` section:
-
-```jsonc
-// Example: a capability package's package.json
+```json
 {
-  "name": "@joanium/my-capability",
-  "private": true,
-  "type": "module",
   "joanium": {
     "discovery": {
-      "features": ["./Core"], // Feature.js files
-      "engines": ["./Core"], // *Engine.js files
-      "ipc": ["./IPC"], // *IPC.js files
-      "pages": ["."], // Page.js files
-      "services": ["./Services"], // *Service.js files
-    },
-  },
+      "features": ["./Core"],
+      "engines": ["./Core"],
+      "ipc": ["./IPC"],
+      "pages": ["."],
+      "services": ["./Services"]
+    }
+  }
 }
 ```
 
-`WorkspacePackages.js` expands the workspace list. `DiscoveryManifest.js` collects discovery roots for each kind.
+`DiscoveryManifest.js` collects existing roots for each discovery kind. The rest
+of the app consumes those frozen root lists.
 
-**The result:** Joanium grows by package composition. No hand-written central imports needed.
+## Feature Registry
 
-## 5. 🗃️ Feature Registry Composition
+`Packages/Capabilities/Core/FeatureRegistry.js` loads all discovered
+`Feature.js` files, validates feature IDs, topologically sorts features by
+`dependsOn`, and indexes what each feature contributes.
 
-`Packages/Capabilities/Core/FeatureRegistry.js` is one of the most important files in the repo.
+A feature can contribute:
 
-It loads every discovered `Feature.js`, sorts them topologically by `dependsOn`, and indexes everything each feature contributes.
+- Service connectors for setup and settings
+- Free connectors that are enabled by default or require only optional keys
+- Chat tools exposed to the renderer-side agent loop
+- Automation data sources
+- Automation output types
+- Automation instruction templates
+- Feature-owned pages
+- Prompt context sections
+- Lifecycle hooks
+- Storage descriptors
+- Main-process methods invoked through `feature:invoke`
 
-### A feature can contribute any of these:
+This is why one integration package can show up in many product surfaces at
+once. For example, GitHub contributes connector setup, chat tools, prompt
+context, automation data sources, and automation outputs from one feature
+package.
 
-- 🔑 Service connectors (appear in setup UI)
-- 🔓 Free connectors (no auth needed)
-- 📄 Feature pages (appear in the sidebar)
-- 🛠️ Renderer chat tools (callable during conversations)
-- 📊 Automation data sources
-- 📤 Automation output types
-- 📝 Automation instruction templates
-- 💬 Prompt context sections (injected into every system prompt)
-- 🔄 Lifecycle hooks (`onBoot`, etc.)
-- 💾 Storage descriptors
+## Engines
 
-### Why this matters
+Engines are long-lived runtime systems discovered from files ending in
+`Engine.js`. Engine metadata is normalized through `defineEngine`.
 
-A single capability package can plug into **multiple product surfaces at once**:
+Current engines:
 
-```
-GitHub package contributes →
-  ✅ Connector (setup UI)
-  ✅ Chat tools (use GitHub mid-conversation)
-  ✅ Automation data sources (poll new issues)
-  ✅ Automation outputs (create PRs from automations)
-  ✅ Prompt context (tells the assistant about connected repos)
-```
+| Engine       | Provides           | Storage key                   | Main responsibility                                                  |
+| ------------ | ------------------ | ----------------------------- | -------------------------------------------------------------------- |
+| `connectors` | `connectorEngine`  | `connectors`                  | Connector credential state and enabled/free connector state          |
+| `automation` | `automationEngine` | `automations`                 | Scheduled job execution, data collection, AI calls, outputs, history |
+| `agents`     | `agentsEngine`     | `agenticAgents`               | Scheduled autonomous prompts, renderer dispatch, run history         |
+| `channels`   | `channelEngine`    | `channels`, `channelMessages` | Telegram, WhatsApp, Discord, and Slack polling/replies               |
 
-That's why the feature registry is the center of product composition.
+Engines may depend on context values using `needs`. `EngineAssembly.js`
+instantiates them only when their dependencies are available.
 
-## 6. ⚙️ Engines: Long-Lived Runtime Behavior
+## IPC and Preload
 
-Engines are discovered from `*Engine.js` files and normalised through `DefineEngine.js`.
+Main-process IPC modules are discovered from `*IPC.js` files. Each module exports
+`register(...)`, and optionally `ipcMeta.needs` to request dependencies from the
+boot context.
 
-### Current engines
+`Core/Electron/Bridge/Preload.js` exposes two renderer bridges:
 
-- `Packages/Features/Agents/Core/AgentsEngine.js`
-- `Packages/Features/Automation/Core/AutomationEngine.js`
-- `Packages/Features/Channels/Core/ChannelEngine.js`
-- `Packages/Features/Connectors/Core/ConnectorEngine.js`
+- `window.electronAPI` for generic IPC calls, sends, event listeners, PTY events, browser preview events, and update events
+- `window.featureAPI` for feature boot payloads, feature method invocation, and feature event subscriptions
 
-### What engines do
+The renderer should not import main-process services directly. Use IPC.
 
-- Load and persist their own state
-- Start background timers or polling loops
-- Expose runtime methods via injected context or IPC
-- Coordinate with the renderer when human-facing execution is needed
+## Renderer Shell
 
-### ⚠️ Important pattern: main ↔ renderer split
+The renderer starts in `Packages/Renderer/Application/Main.js`.
 
-Not every agentic behavior runs fully in the main process. For example:
+It:
 
-1. The agents engine schedules and dispatches work
-2. The renderer-side gateway receives the request
-3. The chat/agent loop performs model calls and tool orchestration
-4. Results are sent back to the engine for persistence and history
-
-This split lets Joanium reuse the same orchestration logic for both interactive chat and background agent runs.
-
-## 7. 🌉 IPC and the Preload Bridge
-
-Joanium uses Electron IPC for communication between the renderer and main process.
-
-### Main-process IPC
-
-`DiscoverIPC.js` scans `*IPC.js` files and calls each module's `register(...)` function. If a module declares `ipcMeta.needs`, the boot layer injects matching services or engines automatically.
-
-```js
-// Example IPC module
-export const ipcMeta = { needs: ['agentsEngine'] };
-
-export function register(agentsEngine) {
-  ipcMain.handle('agents:list', () => agentsEngine.getAll());
-  ipcMain.handle('agents:run', (_, id) => agentsEngine.run(id));
-}
-```
-
-### Preload
-
-`Core/Electron/Bridge/Preload.js` exposes two bridges to the renderer:
-
-- `window.electronAPI` — generic IPC calls and events (desktop/runtime APIs)
-- `window.featureAPI` — feature boot payload and feature method invocation
-
-## 8. 🖼️ Renderer Architecture
-
-The renderer shell starts in `Packages/Renderer/Application/Main.js`.
-
-### What it does
-
+- Loads feature boot payloads
+- Registers feature-contributed pages
 - Discovers built-in pages from the main process
-- Merges feature-contributed pages from the feature boot payload
-- Builds the sidebar navigation
-- Mounts and unmounts pages dynamically
-- Initialises shared modals
-- Initialises gateways for channels and scheduled agents
+- Builds the page map and sidebar navigation
+- Initializes settings, about, library, and projects modals
+- Starts channel and scheduled-agent gateways
+- Opens a fresh chat
+- Handles keyboard shortcuts
 
-Pages are loaded by **manifest, not by a fixed router table**. `PagesManifest.js` builds the page map dynamically after discovery — same composability as the feature system.
+`PagesManifest.js` merges built-in pages and feature pages, then sorts them by
+page order.
 
-## 9. 📄 Page Model
+## Built-In Pages
 
-Each top-level page typically has:
+| Page        | Purpose                                                                    |
+| ----------- | -------------------------------------------------------------------------- |
+| Chat        | Main AI workspace, model switching, project context, tools, files, history |
+| Setup       | First-run profile and provider setup                                       |
+| Automations | Scheduled data-driven jobs                                                 |
+| Agents      | Scheduled autonomous prompts                                               |
+| Skills      | Local skill library controls                                               |
+| Marketplace | Remote skills and personas browser/install flow                            |
+| Personas    | Persona activation and library management                                  |
+| Events      | Background execution history                                               |
+| Usage       | Local usage analytics                                                      |
 
-```text
-MyPage/
-  Page.js              ← manifest (id, label, icon, order, moduleUrl)
-  *.html               ← shell entry (when needed)
-  UI/Render/index.js   ← page mounting logic
-  UI/Styles/*.css      ← styles
-  Components/          ← reusable UI components
-  Features/            ← page-specific logic
-  State/               ← local state management
-```
+## Chat Runtime
 
-Current built-in pages: **Chat · Setup · Automations · Agents · Skills · Marketplace · Personas · Events · Usage**
+The chat page is the main orchestration surface and is reused by scheduled
+agents and channel replies.
 
-Feature packages can contribute additional pages through the feature registry boot payload.
+The main loop in `Packages/Pages/Chat/Features/Core/Agent.js`:
 
-## 10. 💬 Chat Request Lifecycle
+- Resolves selected provider/model and fallback candidates
+- Loads enabled skills and matches relevant skills by trigger text
+- Loads workspace/project summary when a project is active
+- Builds a prompt from system instructions, persona, skills, workspace state, connected service context, memory policy, and tool policy
+- Loads available tools from built-ins, feature-contributed tools, and MCP servers
+- Filters tools by connected connector state and active workspace state
+- Streams model responses
+- Handles single and parallel tool calls
+- Supports tool category expansion through `request_tool_categories`
+- Supports model failover and rate-limit backoff
+- Guards potentially irreversible browser actions with confirmation
+- Tracks usage and returns final text to the UI
 
-The chat page is the center of the UX and also the shared orchestration layer for background features.
+## AI Provider Adapter
 
-### Step by step
+`Packages/Features/AI/index.js` handles provider-specific request formatting and
+stream parsing.
 
-1. User writes a message
-2. Renderer loads providers, skills, workspace state, and system prompt context
-3. The request planner optionally selects skills and pre-plans tool calls
-4. The agent loop executes model calls, tool calls, fallbacks, browser steps, sub-agent coordination
-5. Tool execution delegates to local capabilities, terminal/workspace tools, MCP, or feature handlers
-6. The final answer is rendered in chat
-7. Chat history, usage, and memory sync state are persisted locally
+Current provider catalogs live in `Config/Models`:
 
-```mermaid
-sequenceDiagram
-  participant U as User
-  participant C as Chat Page
-  participant P as System Prompt + Skills
-  participant A as Agent Loop
-  participant T as Tools / MCP / Features
-  participant S as Local Storage
+- Anthropic
+- OpenAI
+- Google
+- OpenRouter
+- Mistral
+- NVIDIA
+- DeepSeek
+- MiniMax
+- Groq
+- xAI
+- Cohere
+- Together
+- Perplexity
+- Cerebras
+- Ollama
+- LM Studio
 
-  U->>C: Send message
-  C->>P: Load prompt context, persona, skills, workspace summary
-  C->>A: Start request orchestration
-  A->>T: Execute planned or model-selected tools
-  T-->>A: Tool results
-  A-->>C: Final answer
-  C->>S: Save chat, usage, memory sync markers
-```
+Anthropic, Google, and OpenAI-compatible providers have separate message/tool
+formatters. Ollama and LM Studio use local OpenAI-compatible endpoints and can
+discover local models at runtime.
 
-## 11. 📝 Prompt Assembly
+## Capabilities and Connectors
 
-The runtime system prompt is built from **multiple sources** every time, not one static file.
+Capability packages live under `Packages/Capabilities`.
 
-| Source                                 | What it contributes                                                           |
-| -------------------------------------- | ----------------------------------------------------------------------------- |
-| `SystemInstructions/SystemPrompt.json` | Base assistant instructions                                                   |
-| `Config/User.json`                     | User profile (name, preferences)                                              |
-| Active persona markdown                | Persona behavior and personality                                              |
-| Feature prompt hooks                   | Connected service summaries (e.g. "GitHub is connected, here are your repos") |
-| `Instructions/CustomInstructions.md`   | Your own custom instructions                                                  |
-| Runtime metadata                       | Current date, time, platform, hardware                                        |
+Current service connectors:
 
-**Key takeaway:** Changing a persona, adding a connector, or editing custom instructions all affect the assistant's behavior without touching the core chat loop.
+- Cloudflare
+- Figma
+- GitHub
+- GitLab
+- Google Workspace and its service extensions
+- HubSpot
+- Jira
+- Linear
+- Netlify
+- Notion
+- Sentry
+- Spotify
+- Stripe
+- Supabase
+- Vercel
 
-## 12. 💾 Persistence Model
+Google Workspace is a root feature. Calendar, Contacts, Docs, Drive, Forms,
+Gmail, Photos, Sheets, Slides, Tasks, and YouTube extend it through service
+extensions and `dependsOn: ["google-workspace"]`.
 
-Joanium is intentionally **local-first**.
+Free connectors are defined in `Packages/Capabilities/FreeConnectors/Feature.js`.
+Some require no key, while NASA, FRED, OpenWeatherMap, and Unsplash require API
+keys.
 
-| Mode            | State root          |
-| --------------- | ------------------- |
-| Development     | Repo root           |
-| Packaged builds | Electron `userData` |
+## Local-First State
 
-Everything — chats, projects, usage data, connector state, MCP config, agent state, skills, persona, custom instructions, personal memory — lives in predictable local files.
+`Packages/Main/Core/Paths.js` controls state and bundled resource roots.
 
-> ⚠️ In dev mode, runtime state can show up in `git status`. Be careful before committing.
+- Development state root: repo root
+- Packaged state root: Electron `app.getPath("userData")`
+- Development bundled root: repo root
+- Packaged bundled root: `process.resourcesPath`
 
-See [Data-And-Persistence.md](Data-And-Persistence.md) for the full storage map.
+See [Data-And-Persistence.md](Data-And-Persistence.md) before changing state
+paths, seed libraries, storage descriptors, or prompt-related data.
 
-## 13. 💡 Architectural Strengths
+## Architectural Risks
 
-- **Discovery-based composition** — adding new capabilities is cheap; no central file to edit
-- **Feature registry composition** — one package can plug into connectors, tools, automations, prompts, and pages simultaneously
-- **Engine separation** — background runtimes stay out of the page layer
-- **Renderer page discovery** — the shell is extensible without hardcoding routes
-- **Local-first state** — everything is inspectable, hackable, and yours
-- **Markdown-based skills and personas** — easy to author, share, and version
-
-## 14. ⚠️ Watch Out For
-
-- Dev mode writes state into the repo root — watch your commits
-- Some user flows span main process + preload + renderer shell + a page-specific feature folder simultaneously
-- Chat orchestration is broad — changes there affect chat, scheduled agents, channel replies, and tool behavior all at once
-- Feature storage keys must be unique across both features and engines
-- Discovery relies on consistent file naming conventions (`Feature.js`, `*Engine.js`, `*IPC.js`, `Page.js`, `*Service.js`)
-
-→ For practical maintenance guidance, see [Where-To-Change-What.md](Where-To-Change-What.md).
+- Development mode writes runtime state into the repo root.
+- Chat orchestration changes affect chat, scheduled agents, channels, tools, MCP, memory, and usage tracking.
+- Feature storage keys must be globally unique across features and engines.
+- Discovery relies on naming conventions: `Feature.js`, `*Engine.js`, `*IPC.js`, `Page.js`, `*Service.js`.
+- Connector-specific behavior can span setup UI, connector state, prompt context, chat tools, and automation hooks.
+- Minification is in-place during production builds. Keep source readable in Git and verify build scripts carefully.

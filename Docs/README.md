@@ -1,58 +1,86 @@
-# 📚 Joanium Docs
+# Joanium Docs
 
-Welcome to the Joanium documentation. Here's where to start depending on what you're trying to do.
+These docs are for maintainers and contributors working inside the Joanium
+desktop app repository. They describe the current source layout, runtime model,
+extension points, persistence rules, and daily development workflow.
 
-## 🗺️ Recommended Reading Order
+This folder is intentionally technical. User-facing help belongs in the website
+docs, not here.
 
-If you're new to the codebase, read in this order:
+## Recommended Reading Order
 
-1. **[Architecture.md](Architecture.md)** — understand the mental model and how the app is assembled
-2. **[Features.md](Features.md)** — see the full product surface and what's already built
-3. **[Data-And-Persistence.md](Data-And-Persistence.md)** — understand where state lives and why
-4. **[Extension-Guide.md](Extension-Guide.md)** — learn how to add new features, engines, pages, and services
-5. **[Where-To-Change-What.md](Where-To-Change-What.md)** — day-to-day maintenance map
-6. **[Development-Workflow.md](Development-Workflow.md)** — scripts, packaging, and contributor workflow
+1. [Architecture.md](Architecture.md) - how the app boots and how the runtime is assembled
+2. [Features.md](Features.md) - the current product surface and capability map
+3. [Data-And-Persistence.md](Data-And-Persistence.md) - where local state lives
+4. [Extension-Guide.md](Extension-Guide.md) - how to add features, engines, pages, services, IPC, and integrations
+5. [Where-To-Change-What.md](Where-To-Change-What.md) - practical file map for maintenance
+6. [Development-Workflow.md](Development-Workflow.md) - commands, checks, build notes, and contributor workflow
 
-## ⚡ Quick Lookup
+## Repository Mental Model
 
-| I want to...                        | Read this                                          |
-| ----------------------------------- | -------------------------------------------------- |
-| Understand how the app boots        | [Architecture.md](Architecture.md)                 |
-| See what features already exist     | [Features.md](Features.md)                         |
-| Find where user data is stored      | [Data-And-Persistence.md](Data-And-Persistence.md) |
-| Add a new integration or feature    | [Extension-Guide.md](Extension-Guide.md)           |
-| Change a specific page or subsystem | [Where-To-Change-What.md](Where-To-Change-What.md) |
-| Build, audit, or package the app    | [Development-Workflow.md](Development-Workflow.md) |
+Joanium is an Electron desktop app assembled from npm workspace packages. The
+root `package.json` declares workspaces and import aliases. Workspace packages
+declare what they contribute through `joanium.discovery` in their own
+`package.json` files. Boot-time discovery finds those contributions and wires
+them together.
 
-## 🧠 The Mental Model in 30 Seconds
+The important consequence: avoid adding one-off central registries. Add the
+right package, manifest, page, engine, IPC module, service, or feature
+definition and let discovery assemble it.
 
-Think of Joanium as **5 layers stacked on top of each other:**
+## Main Source Areas
 
-```
-┌─────────────────────────────────────────────┐
-│  5. Local data, markdown libraries, prompts  │  ← Skills, Personas, Memories, Config
-├─────────────────────────────────────────────┤
-│  4. Renderer pages + shared UI               │  ← Chat, Agents, Automations, etc.
-├─────────────────────────────────────────────┤
-│  3. Long-lived engines + services            │  ← Agents engine, Automation engine, etc.
-├─────────────────────────────────────────────┤
-│  2. Discovery + composition                  │  ← Feature Registry, Boot.js
-├─────────────────────────────────────────────┤
-│  1. Electron boot + process plumbing         │  ← App.js, Main process, Preload
-└─────────────────────────────────────────────┘
-```
+| Area                              | Purpose                                                                                      |
+| --------------------------------- | -------------------------------------------------------------------------------------------- |
+| `App.js`                          | Electron entry, runtime directory creation, first window, app startup/shutdown               |
+| `Core/Electron/Bridge/Preload.js` | Safe renderer bridge for IPC, feature calls, PTY events, browser preview, and updates        |
+| `Packages/Main`                   | Boot, discovery, path resolution, services, IPC modules, window helpers                      |
+| `Packages/Features`               | Platform systems: AI adapter, agents, automations, channels, connectors, MCP, skills, themes |
+| `Packages/Capabilities`           | External integrations and free connector capability packages                                 |
+| `Packages/Pages`                  | User-facing renderer pages and shared page UI                                                |
+| `Packages/Renderer`               | App shell, page discovery, navigation, modal startup, gateway startup                        |
+| `Packages/System`                 | Shared contracts, state, prompt assembly, utilities, modal helpers                           |
+| `Config/Models`                   | Bundled model/provider catalog                                                               |
+| `SystemInstructions`              | Base prompt and related prompt configuration                                                 |
+| `Skills` and `Personas`           | Bundled markdown libraries used as seeds for user libraries                                  |
+| `Assets`                          | Icons and app logo assets                                                                    |
+| `Scripts`                         | Build, versioning, minification, workspace audit                                             |
 
-Once that clicks, the rest of the repo becomes much easier to navigate.
+Generated, vendor, and runtime-heavy directories such as `.git`, `node_modules`,
+and `dist` are not documentation sources.
 
-> 💡 **Key insight:** Joanium is not organised around one monolithic app file. It's **assembled** through workspace package discovery. Add a package → it just shows up at boot.
+## Current Discovery Snapshot
 
-## 📁 Where the important folders live
+The app currently discovers:
 
-```text
-Packages/Main/          ← Boot, discovery, services, IPC registration
-Packages/Features/      ← Long-lived background runtimes (engines)
-Packages/Capabilities/  ← Integration packages (GitHub, Google, etc.)
-Packages/Pages/         ← User-facing pages
-Packages/Renderer/      ← SPA shell that mounts pages + sidebar
-Packages/System/        ← Shared contracts and low-level helpers
-```
+- 33 workspace packages
+- 16 capability discovery roots
+- 31 feature manifests loaded through `FeatureRegistry`
+- 4 long-lived engines: connectors, automations, agents, channels
+- 9 IPC discovery roots plus main-process services
+- 9 built-in pages: Chat, Setup, Automations, Agents, Skills, Marketplace, Personas, Events, Usage
+
+Run `npm run packages:audit` whenever package structure or discovery metadata
+changes.
+
+## Key Rules
+
+- Use ESM only. The repo has `"type": "module"`.
+- Use root import aliases where available instead of long cross-package relative paths.
+- Keep renderer UI in `Packages/Pages` or `Packages/Renderer`.
+- Keep long-lived background behavior in engines under `Packages/Features`.
+- Keep external service behavior in capability packages under `Packages/Capabilities`.
+- Keep main-process APIs behind IPC.
+- Keep all user data local-first and inspectable.
+- Be careful in development mode: mutable app state uses the repo root as its state root.
+
+## Quick Lookup
+
+| If you need to...                                               | Read                                               |
+| --------------------------------------------------------------- | -------------------------------------------------- |
+| Understand boot and runtime assembly                            | [Architecture.md](Architecture.md)                 |
+| Understand what the product currently does                      | [Features.md](Features.md)                         |
+| Find chats, projects, keys, memory, MCP, and feature state      | [Data-And-Persistence.md](Data-And-Persistence.md) |
+| Add a connector, page, engine, service, IPC module, or provider | [Extension-Guide.md](Extension-Guide.md)           |
+| Find the exact area to edit for a bug or feature                | [Where-To-Change-What.md](Where-To-Change-What.md) |
+| Run, lint, package, and audit the app                           | [Development-Workflow.md](Development-Workflow.md) |
