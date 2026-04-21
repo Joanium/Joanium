@@ -15,6 +15,7 @@ const DEFAULT_USER = {
     api_keys: {},
     provider_settings: {},
     preferences: { theme: 'light', default_provider: null, default_model: null },
+    app_settings: { run_on_startup: false, system_tray: false, keep_awake: false },
   },
   LOCAL_PROVIDER_RUNTIME = {
     lmstudio: {
@@ -62,6 +63,11 @@ function merge(existing = {}, updates = {}) {
       ...DEFAULT_USER.preferences,
       ...(existing.preferences ?? {}),
       ...(updates.preferences ?? {}),
+    },
+    app_settings: {
+      ...DEFAULT_USER.app_settings,
+      ...(existing.app_settings ?? {}),
+      ...(updates.app_settings ?? {}),
     },
   };
 }

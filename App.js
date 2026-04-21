@@ -9,6 +9,8 @@ import { initializeContentLibraries } from '#main/Services/ContentLibraryService
 import { initializePersonalMemoryLibrary } from '#main/Services/MemoryService.js';
 import * as SystemPromptService from '#main/Services/SystemPromptService.js';
 import * as UserService from '#main/Services/UserService.js';
+import * as AppSettingsService from '#main/Services/AppSettingsService.js';
+import * as TrayService from '#main/Services/TrayService.js';
 import { setupAutoUpdates } from '#main/Services/AutoUpdateService.js';
 (app.commandLine.appendSwitch('disable-http2'),
   app.commandLine.appendSwitch('lang', 'en-US'),
@@ -88,6 +90,9 @@ function shutdownEngines() {
           startEngines(engines));
         for (const windowRef of BrowserWindow.getAllWindows())
           attachWindowServices(windowRef, engines);
+        // Apply persisted app settings (keep_awake, tray, etc.) now that engines + windows are ready.
+        const _mainWin = BrowserWindow.getAllWindows()[0];
+        if (_mainWin) AppSettingsService.applyAll(_mainWin);
         ((async function (activeEngines) {
           if (activeEngines?.connectorEngine && activeEngines?.featureRegistry)
             try {
@@ -122,5 +127,10 @@ function shutdownEngines() {
 }),
   app.on('before-quit', shutdownEngines),
   app.on('window-all-closed', () => {
-    'darwin' !== process.platform && (shutdownEngines(), app.quit());
+    // macOS: conventional to keep app running with no windows open.
+    if ('darwin' === process.platform) return;
+    // Windows / Linux: if tray is active, hide to tray instead of quitting.
+    if (TrayService.isActive()) return;
+    shutdownEngines();
+    app.quit();
   }));
