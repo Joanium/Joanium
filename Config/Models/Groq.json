@@ -1,0 +1,89 @@
+{
+  "provider": "groq",
+  "label": "Groq",
+  "endpoint": "https://api.groq.com/openai/v1/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "moonshotai/kimi-k2-instruct": {
+      "name": "Kimi K2",
+      "description": "Moonshot AI's frontier model — 1T MoE architecture, top-tier coding and agentic tasks, via Groq",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 1.0,
+        "output": 3.0
+      }
+    },
+    "llama-3.3-70b-versatile": {
+      "name": "Llama 3.3 70B",
+      "description": "Meta's latest 70B open-weight model — excellent reasoning and instruction following at blazing speed",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.59,
+        "output": 0.79
+      }
+    },
+    "llama-3.1-8b-instant": {
+      "name": "Llama 3.1 8B Instant",
+      "description": "Ultra-fast 8B model — best-in-class speed for quick tasks, coding assistance, and real-time apps",
+      "context_window": 131072,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.05,
+        "output": 0.08
+      }
+    },
+    "meta-llama/llama-4-maverick-17b-128e-instruct": {
+      "name": "Llama 4 Maverick",
+      "description": "Meta's multimodal Llama 4 — 17B active params, 128 experts MoE, image understanding, strong benchmarks",
+      "context_window": 131072,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.2,
+        "output": 0.6
+      }
+    },
+    "compound-beta": {
+      "name": "Compound Beta",
+      "description": "Groq's agentic compound system — combines LLMs with built-in tool use for search and code execution",
+      "context_window": 131072,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.0,
+        "output": 0.0
+      }
+    }
+  }
+}

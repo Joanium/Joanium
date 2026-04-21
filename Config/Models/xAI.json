@@ -1,0 +1,73 @@
+{
+  "provider": "xai",
+  "label": "xAI",
+  "endpoint": "https://api.x.ai/v1/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "grok-3": {
+      "name": "Grok 3",
+      "description": "xAI's flagship model — advanced reasoning, real-time world knowledge, and strong multi-domain performance",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    },
+    "grok-3-mini": {
+      "name": "Grok 3 Mini",
+      "description": "Lightweight thinking model — transparent chain-of-thought reasoning at a fraction of Grok 3's cost",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.3,
+        "output": 0.5
+      }
+    },
+    "grok-2-vision-1212": {
+      "name": "Grok 2 Vision",
+      "description": "Vision-capable Grok 2 — understands images and documents alongside text, great for multimodal tasks",
+      "context_window": 32768,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.0,
+        "output": 10.0
+      }
+    },
+    "grok-3-vision": {
+      "name": "Grok 3 Vision",
+      "description": "Grok 3 with vision — full multimodal support for analyzing images with xAI's most capable model",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    }
+  }
+}

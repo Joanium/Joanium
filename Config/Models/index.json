@@ -7,6 +7,8 @@
   "Nvidia.json",
   "DeepSeek.json",
   "MiniMax.json",
+  "Groq.json",
+  "xAI.json",
   "Ollama.json",
   "LMStudio.json"
 ]
