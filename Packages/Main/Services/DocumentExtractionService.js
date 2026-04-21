@@ -282,9 +282,16 @@ export async function extractDocumentTextFromBuffer({
 }
 export async function extractDocumentTextFromPath(filePath) {
   const resolved = path.resolve(filePath);
-  if (!fs.statSync(resolved).isFile()) throw new Error(`"${resolved}" is not a file.`);
-  return extractDocumentTextFromBuffer({
-    fileName: path.basename(resolved),
-    buffer: fs.readFileSync(resolved),
-  });
+  // Open once — fstatSync and readFileSync both operate on the same fd,
+  // eliminating the TOCTOU window between the isFile check and the read (CWE-367).
+  const fd = fs.openSync(resolved, 'r');
+  try {
+    if (!fs.fstatSync(fd).isFile()) throw new Error(`"${resolved}" is not a file.`);
+    return extractDocumentTextFromBuffer({
+      fileName: path.basename(resolved),
+      buffer: fs.readFileSync(fd),
+    });
+  } finally {
+    fs.closeSync(fd);
+  }
 }
