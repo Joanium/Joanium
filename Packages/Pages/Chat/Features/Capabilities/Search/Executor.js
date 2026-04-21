@@ -1889,7 +1889,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:conan.io/center')}&format=json&no_redirect=1&no_html=1`,
             ).then((r) => r.json())
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('conan.io'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'conan.io' || h.endsWith('.conan.io');
+          } catch {
+            return false;
+          }
+        });
         return 0 === related.length
           ? (lines.push(`No Conan packages found for "${query}".`),
             lines.push(`🔗 https://conan.io/center/recipes?q=${encodeURIComponent(query)}`),
@@ -2024,7 +2032,15 @@ export const { handles: handles, execute: execute } = createExecutor({
               `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:lib.haxe.org/p')}&format=json&no_redirect=1&no_html=1`,
             ).then((r) => r.json())
           ).RelatedTopics ?? []
-        ).filter((t) => t.Text && t.FirstURL?.includes('lib.haxe.org'));
+        ).filter((t) => {
+          if (!t.Text || !t.FirstURL) return false;
+          try {
+            const h = new URL(t.FirstURL).hostname;
+            return h === 'lib.haxe.org' || h.endsWith('.lib.haxe.org');
+          } catch {
+            return false;
+          }
+        });
         if (0 === related.length)
           return (
             lines.push(`No Haxelib results for "${query}".`),
@@ -2138,7 +2154,15 @@ export const { handles: handles, execute: execute } = createExecutor({
             `https://api.duckduckgo.com/?q=${encodeURIComponent(query + ' site:packages.spack.io')}&format=json&no_redirect=1&no_html=1`,
           ).then((r) => r.json())
         ).RelatedTopics ?? []
-      ).filter((t) => t.Text && t.FirstURL?.includes('spack'));
+      ).filter((t) => {
+        if (!t.Text || !t.FirstURL) return false;
+        try {
+          const h = new URL(t.FirstURL).hostname;
+          return h === 'packages.spack.io' || h.endsWith('.spack.io');
+        } catch {
+          return false;
+        }
+      });
       return 0 === related.length
         ? (lines.push(`No Spack packages found for "${query}".`),
           lines.push(`🔗 https://packages.spack.io/?search=${encodeURIComponent(query)}`),
