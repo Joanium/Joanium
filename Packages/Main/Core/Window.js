@@ -1,7 +1,42 @@
 import { BrowserWindow, shell, app } from 'electron';
 import Paths from './Paths.js';
 import { attachWindowStatePersistence, loadWindowState } from '../Services/WindowStateService.js';
+
 let _win = null;
+
+const PLATFORM = process.platform; // 'darwin' | 'win32' | 'linux'
+
+// Default overlay colours match the light theme (--titlebar-bg + --text-muted)
+// Updated at runtime via setTitleBarOverlay() when the user switches themes
+const DEFAULT_WIN_OVERLAY = { color: '#e8e6e1', symbolColor: '#a09d97', height: 36 };
+
+/**
+ * Returns the platform-appropriate frame / titlebar options:
+ *   macOS  → hiddenInset  (native traffic lights, our drag region)
+ *   Windows → hidden + titleBarOverlay  (native Win11 caption controls)
+ *   Linux   → native OS frame (frame: true)
+ */
+function getTitleBarOptions() {
+  if (PLATFORM === 'darwin') {
+    return {
+      frame: false,
+      titleBarStyle: 'hiddenInset',
+    };
+  }
+  if (PLATFORM === 'win32') {
+    return {
+      frame: false,
+      titleBarStyle: 'hidden',
+      titleBarOverlay: DEFAULT_WIN_OVERLAY,
+    };
+  }
+  // Linux: fall back to a fully native OS frame
+  return {
+    frame: true,
+    titleBarStyle: 'default',
+  };
+}
+
 function applyPageWindowState(win, page, windowState = loadWindowState()) {
   if (win)
     return page === Paths.SETUP_PAGE
@@ -14,62 +49,115 @@ function applyPageWindowState(win, page, windowState = loadWindowState()) {
               : (win.isMaximized() && win.unmaximize(),
                 windowState.bounds && win.setBounds(windowState.bounds))));
 }
+
 export function optimizeApp() {
   app.commandLine.appendSwitch('enable-features', 'BackForwardCache');
 }
+
 export function create(page) {
   const windowState = loadWindowState();
-  return (
-    (_win = new BrowserWindow({
-      width: windowState.bounds.width,
-      height: windowState.bounds.height,
-      x: windowState.bounds.x,
-      y: windowState.bounds.y,
-      minWidth: 1100,
-      minHeight: 720,
-      frame: !1,
-      titleBarStyle: 'hidden',
-      backgroundColor: '#ffffff',
-      show: !0,
-      webPreferences: {
-        preload: Paths.PRELOAD,
-        contextIsolation: !0,
-        nodeIntegration: !1,
-        sandbox: !1,
-        backgroundThrottling: !1,
-      },
-    })),
-    _win.loadURL(`file://${page}`),
-    applyPageWindowState(_win, page, windowState),
-    setImmediate(() => {
-      attachWindowStatePersistence(_win);
-    }),
-    _win.webContents.once('did-finish-load', () => {
-      _win?.webContents.send('preload-pages', ['automations', 'agents', 'events', 'skills']);
-    }),
-    _win.webContents.setWindowOpenHandler(
-      ({ url: url }) => (shell.openExternal(url), { action: 'deny' }),
-    ),
-    _win.webContents.on('before-input-event', (event, input) => {
-      if (app.isPackaged) {
-        const isReload = (input.control || input.meta) && 'r' === input.key.toLowerCase(),
-          isDevTools =
-            (input.control || input.meta) && input.shift && 'i' === input.key.toLowerCase(),
-          isF5 = 'F5' === input.key,
-          isF12 = 'F12' === input.key;
-        (isReload || isDevTools || isF5 || isF12) && event.preventDefault();
-      }
-    }),
-    _win
+  const titleBarOptions = getTitleBarOptions();
+
+  _win = new BrowserWindow({
+    width: windowState.bounds.width,
+    height: windowState.bounds.height,
+    x: windowState.bounds.x,
+    y: windowState.bounds.y,
+    minWidth: 1100,
+    minHeight: 720,
+    ...titleBarOptions,
+    backgroundColor: '#ffffff',
+    show: !0,
+    webPreferences: {
+      preload: Paths.PRELOAD,
+      contextIsolation: !0,
+      nodeIntegration: !1,
+      sandbox: !1,
+      backgroundThrottling: !1,
+    },
+  });
+
+  _win.loadURL(`file://${page}`);
+  applyPageWindowState(_win, page, windowState);
+
+  // On Windows, immediately colour the overlay to match the page being loaded
+  // so there is zero flash of the wrong colours.
+  if (PLATFORM === 'win32') {
+    const isSetup = page === Paths.SETUP_PAGE;
+    const overlay = isSetup
+      ? { color: '#f5f4f1', symbolColor: '#f5f4f1', height: 36 }
+      : DEFAULT_WIN_OVERLAY;
+    try {
+      _win.setTitleBarOverlay(overlay);
+    } catch {}
+  }
+
+  setImmediate(() => {
+    attachWindowStatePersistence(_win);
+  });
+
+  _win.webContents.once('did-finish-load', () => {
+    _win?.webContents.send('preload-pages', ['automations', 'agents', 'events', 'skills']);
+    // On Windows, hide the native caption overlay on the setup page.
+    // The setup page is always light-themed, so the dark default overlay looks
+    // jarring. We make it invisible by matching the page background colour.
+    if (PLATFORM === 'win32' && page === Paths.SETUP_PAGE) {
+      try {
+        _win.setTitleBarOverlay({ color: '#f5f4f1', symbolColor: '#f5f4f1', height: 36 });
+      } catch {}
+    }
+  });
+
+  _win.webContents.setWindowOpenHandler(
+    ({ url: url }) => (shell.openExternal(url), { action: 'deny' }),
   );
+
+  _win.webContents.on('before-input-event', (event, input) => {
+    if (app.isPackaged) {
+      const isReload = (input.control || input.meta) && 'r' === input.key.toLowerCase(),
+        isDevTools =
+          (input.control || input.meta) && input.shift && 'i' === input.key.toLowerCase(),
+        isF5 = 'F5' === input.key,
+        isF12 = 'F12' === input.key;
+      (isReload || isDevTools || isF5 || isF12) && event.preventDefault();
+    }
+  });
+
+  return _win;
 }
+
 export function get() {
   return _win;
 }
+
+/** Called from WindowIPC when the renderer switches themes (Windows only). */
+export function setTitleBarOverlay(options) {
+  if (PLATFORM === 'win32' && _win && !_win.isDestroyed()) {
+    try {
+      _win.setTitleBarOverlay(options);
+    } catch (err) {
+      console.warn('[Window] setTitleBarOverlay failed:', err.message);
+    }
+  }
+}
+
+/** Exposed so the renderer can stamp data-platform on <html> for CSS. */
+export function getPlatform() {
+  return PLATFORM;
+}
+
 export function loadPage(page) {
   if (!_win) return;
   if (page === Paths.SETUP_PAGE || page === Paths.INDEX_PAGE) {
     const windowState = loadWindowState();
+    // When transitioning to the main app from setup on Windows, restore the
+    // dark-theme overlay so it doesn't stay invisible until the first theme
+    // event fires from the renderer.
+    if (PLATFORM === 'win32' && page === Paths.INDEX_PAGE) {
+      try {
+        _win.setTitleBarOverlay(DEFAULT_WIN_OVERLAY);
+      } catch {}
+    }
     return (_win.loadURL(`file://${page}`), void applyPageWindowState(_win, page, windowState));
   }
   const pageKey = (function (filePath) {
@@ -79,6 +167,7 @@ export function loadPage(page) {
   })(page);
   pageKey && _win.webContents.send('navigate', pageKey);
 }
+
 const PAGE_MAP = {
   Automations: 'automations',
   Agents: 'agents',

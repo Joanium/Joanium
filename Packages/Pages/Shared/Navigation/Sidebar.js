@@ -20,6 +20,14 @@ function applyTheme(theme, animate = !0) {
     document.querySelectorAll('.theme-option, .ap-theme-option').forEach((opt) => {
       opt.classList.toggle('active', opt.dataset.theme === theme);
     }));
+  // Keep the Windows native caption-button overlay colour-matched to the active theme.
+  try {
+    const s = getComputedStyle(document.documentElement);
+    const color = s.getPropertyValue('--titlebar-bg').trim();
+    const symbolColor = s.getPropertyValue('--text-muted').trim();
+    if (color && symbolColor)
+      window.electronAPI?.send('window-set-titlebar-overlay', { color, symbolColor, height: 36 });
+  } catch {}
 }
 const SPECIAL_BUTTON_IDS = new Set(['chat', 'library', 'projects']);
 export function initSidebar({

@@ -1,5 +1,14 @@
 import { PROVIDERS, PROVIDERS_BY_ID } from './Providers/SetupProviders.js';
 import { initStepController } from './Steps/SetupSteps.js';
+
+// On Windows the native caption overlay defaults to dark colours.
+// The setup page is always light — make the overlay invisible by matching
+// the page background so no buttons appear.
+window.electronAPI?.send('window-set-titlebar-overlay', {
+  color: '#f5f4f1',
+  symbolColor: '#f5f4f1',
+  height: 36,
+});
 const state = { step: 0, name: '', selectedProviders: new Set(), providerConfigs: {} },
   stepSplash = document.getElementById('step-splash'),
   stepName = document.getElementById('step-name'),

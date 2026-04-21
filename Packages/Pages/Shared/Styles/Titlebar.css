@@ -11,6 +11,7 @@
   z-index: 200;
   animation: fadeScaleIn 0.42s var(--ease-out-ui) both;
 }
+
 #titlebar-drag {
   -webkit-app-region: drag;
   display: flex;
@@ -20,6 +21,7 @@
   height: 100%;
   user-select: none;
 }
+
 .titlebar-logo {
   width: 14px;
   height: 14px;
@@ -27,6 +29,7 @@
   flex-shrink: 0;
   filter: drop-shadow(0 0 6px var(--accent-glow));
 }
+
 .titlebar-name {
   font-size: 12px;
   font-weight: 600;
@@ -34,55 +37,33 @@
   letter-spacing: 0.5px;
   opacity: 0.9;
 }
-#titlebar-controls {
-  -webkit-app-region: no-drag;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding-right: 4px;
+
+/*
+ * macOS — hiddenInset puts the traffic lights at ~x:8 and they span ~70px.
+ * Nudge the drag region right to clear the buttons, and absolutely center
+ * the app name the way native macOS apps do.
+ */
+[data-platform='darwin'] #titlebar {
+  padding-left: 80px;
 }
-#titlebar-controls button {
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: 0 0;
-  border-radius: 50%;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background var(--transition-mid),
-    color var(--transition-mid),
-    transform var(--duration-press) var(--ease-out-ui);
+
+[data-platform='darwin'] .titlebar-name {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
-#titlebar-controls button svg {
-  width: 13px;
-  height: 13px;
-  transition: transform var(--duration-press) var(--ease-out-ui);
+
+/*
+ * Linux — frame: true gives a full native OS titlebar, so our custom
+ * #titlebar div would double up. Hide it entirely.
+ */
+[data-platform='linux'] #titlebar {
+  display: none;
 }
-@media (hover: hover) and (pointer: fine) {
-  #titlebar-controls button:hover {
-    background: color-mix(in srgb, var(--text-primary) 8%, transparent);
-    color: var(--text-primary);
-    transform: scale(1.06);
-  }
-}
-#titlebar-controls button:active {
-  transform: scale(0.97);
-}
-#titlebar-controls button:active svg {
-  transform: scale(0.98);
-}
-#btn-close:hover {
-  background: rgba(235, 87, 87, 0.15) !important;
-  color: #eb5757 !important;
-}
-#btn-maximize:hover {
-  color: var(--accent) !important;
-  background: var(--accent-dim) !important;
-}
-#btn-minimize:hover {
-  color: var(--text-primary) !important;
-}
+
+/*
+ * Windows — the native caption overlay occupies the top-right corner
+ * (width is determined by the OS, typically ~140px). No extra CSS needed;
+ * the overlay renders above our content automatically.
+ */

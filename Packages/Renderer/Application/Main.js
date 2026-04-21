@@ -103,15 +103,12 @@ async function leaveProject() {
   } catch {}
   (await discoverPages(),
     Object.assign(PAGES, buildPagesMap()),
-    document
-      .getElementById('btn-minimize')
-      ?.addEventListener('click', () => window.electronAPI?.send('window-minimize')),
-    document
-      .getElementById('btn-maximize')
-      ?.addEventListener('click', () => window.electronAPI?.send('window-maximize')),
-    document
-      .getElementById('btn-close')
-      ?.addEventListener('click', () => window.electronAPI?.send('window-close')),
+    // Stamp data-platform on <html> so Titlebar.css can branch per-OS
+    // (e.g. extra left-padding on macOS for the traffic-light inset)
+    window.electronAPI
+      ?.invoke?.('get-platform')
+      .then((p) => p && document.documentElement.setAttribute('data-platform', p))
+      .catch(() => {}),
     (_settings = initSettingsModal()),
     (_about = initAboutModal()),
     initChannelGateway(),
