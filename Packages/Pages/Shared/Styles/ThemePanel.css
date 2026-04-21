@@ -114,3 +114,9 @@
 .swatch-pinky {
   background: conic-gradient(#1a0f14 180deg, #ff6eb4 180deg);
 }
+.swatch-sunset {
+  background: conic-gradient(#1a1208 180deg, #f5a030 180deg);
+}
+.swatch-ocean {
+  background: conic-gradient(#0a1520 180deg, #22c5e8 180deg);
+}

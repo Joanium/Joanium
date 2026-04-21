@@ -6,6 +6,8 @@ const ICON_chevronRight =
     { id: 'midnight', label: 'Midnight', swatchClass: 'swatch-midnight' },
     { id: 'forest', label: 'Forest', swatchClass: 'swatch-forest' },
     { id: 'pinky', label: 'Pinky', swatchClass: 'swatch-pinky' },
+    { id: 'sunset', label: 'Sunset', swatchClass: 'swatch-sunset' },
+    { id: 'ocean', label: 'Ocean', swatchClass: 'swatch-ocean' },
   ];
 function applyTheme(theme, animate = !0) {
   if ((THEMES.map((t) => t.id).includes(theme) || (theme = 'dark'), animate)) {
