@@ -965,10 +965,10 @@ export const { handles: handles, execute: execute } = createExecutor({
         .replace(/<ins[^>]*>([\s\S]*?)<\/ins>/g, '[+$1]')
         .replace(/<del[^>]*>([\s\S]*?)<\/del>/g, '[-$1]')
         .replace(/[<>]/g, '')
-        .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
         .trim();
       return [
         `🔍 Diff — "${compare.totitle || resolved}"`,
