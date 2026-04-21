@@ -1,0 +1,73 @@
+{
+  "provider": "cohere",
+  "label": "Cohere",
+  "endpoint": "https://api.cohere.com/compatibility/v1/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "command-a-03-2025": {
+      "name": "Command A",
+      "description": "Cohere's flagship model (Mar 2025) — 256K context, best-in-class RAG and enterprise tool use",
+      "context_window": 256000,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.5,
+        "output": 10.0
+      }
+    },
+    "command-r-plus-08-2024": {
+      "name": "Command R+",
+      "description": "High-accuracy model optimised for complex RAG workflows, multi-step tool calling, and long documents",
+      "context_window": 128000,
+      "max_output": 4096,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.5,
+        "output": 10.0
+      }
+    },
+    "command-r-08-2024": {
+      "name": "Command R",
+      "description": "Balanced model for retrieval-augmented generation — fast, cost-efficient, strong at grounded generation",
+      "context_window": 128000,
+      "max_output": 4096,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      }
+    },
+    "command-r7b-12-2024": {
+      "name": "Command R7B",
+      "description": "Ultra-fast 7B model — lowest latency in the Command family, ideal for high-throughput and edge deployments",
+      "context_window": 128000,
+      "max_output": 4096,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.0375,
+        "output": 0.15
+      }
+    }
+  }
+}

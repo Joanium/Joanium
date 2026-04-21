@@ -1,0 +1,57 @@
+{
+  "provider": "cerebras",
+  "label": "Cerebras",
+  "endpoint": "https://api.cerebras.ai/v1/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "llama-4-scout-17b-16e-instruct": {
+      "name": "Llama 4 Scout",
+      "description": "Meta's Llama 4 Scout on Cerebras silicon — multimodal 17B model at record-breaking inference speed",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.1,
+        "output": 0.1
+      }
+    },
+    "llama-3.3-70b": {
+      "name": "Llama 3.3 70B",
+      "description": "Meta's Llama 3.3 70B on Cerebras wafer-scale chips — up to 2,000 tok/s, the fastest 70B available",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.85,
+        "output": 1.2
+      }
+    },
+    "qwen-3-32b": {
+      "name": "Qwen 3 32B",
+      "description": "Alibaba's Qwen 3 32B on Cerebras — hybrid thinking/non-thinking mode, exceptional coding and math",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.5,
+        "output": 0.5
+      }
+    }
+  }
+}

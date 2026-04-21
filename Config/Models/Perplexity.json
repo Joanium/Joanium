@@ -1,0 +1,73 @@
+{
+  "provider": "perplexity",
+  "label": "Perplexity",
+  "endpoint": "https://api.perplexity.ai/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "sonar-pro": {
+      "name": "Sonar Pro",
+      "description": "Perplexity's advanced search model — deep web retrieval with cited, up-to-date answers for complex queries",
+      "context_window": 200000,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    },
+    "sonar": {
+      "name": "Sonar",
+      "description": "Fast, lightweight search model — real-time web grounding with citations at low cost and latency",
+      "context_window": 200000,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 1.0,
+        "output": 1.0
+      }
+    },
+    "sonar-reasoning-pro": {
+      "name": "Sonar Reasoning Pro",
+      "description": "Search + chain-of-thought reasoning — combines live web data with deep analytical thinking for research tasks",
+      "context_window": 200000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.0,
+        "output": 8.0
+      }
+    },
+    "sonar-deep-research": {
+      "name": "Sonar Deep Research",
+      "description": "Multi-step autonomous research agent — exhaustive web searches with expert-level synthesis and sourcing",
+      "context_window": 200000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.0,
+        "output": 8.0
+      }
+    }
+  }
+}

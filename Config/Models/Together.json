@@ -1,0 +1,89 @@
+{
+  "provider": "together",
+  "label": "Together AI",
+  "endpoint": "https://api.together.xyz/v1/chat/completions",
+  "auth_header": "Authorization",
+  "auth_prefix": "Bearer ",
+  "models": {
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
+      "name": "Llama 4 Maverick",
+      "description": "Meta's multimodal Llama 4 — 17B active params, 128 experts MoE, image understanding via Together",
+      "context_window": 524288,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.27,
+        "output": 0.85
+      }
+    },
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct": {
+      "name": "Llama 4 Scout",
+      "description": "Meta's efficient Llama 4 variant — 17B active params, 16 experts, 10M context, great value",
+      "context_window": 10000000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.18,
+        "output": 0.59
+      }
+    },
+    "deepseek-ai/DeepSeek-R1": {
+      "name": "DeepSeek R1",
+      "description": "Full DeepSeek R1 671B via Together — extended chain-of-thought reasoning for the hardest problems",
+      "context_window": 163840,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 7.0
+      }
+    },
+    "Qwen/Qwen2.5-72B-Instruct-Turbo": {
+      "name": "Qwen 2.5 72B Turbo",
+      "description": "Alibaba's Qwen 2.5 72B — strong at math, coding, and multilingual tasks with a 128K context window",
+      "context_window": 128000,
+      "max_output": 4096,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 1.2,
+        "output": 1.2
+      }
+    },
+    "mistralai/Mixtral-8x22B-Instruct-v0.1": {
+      "name": "Mixtral 8x22B",
+      "description": "Mistral's open MoE flagship — 141B total params, 39B active, strong reasoning and long context",
+      "context_window": 65536,
+      "max_output": 4096,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 1.2,
+        "output": 1.2
+      }
+    }
+  }
+}

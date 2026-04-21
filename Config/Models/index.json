@@ -9,6 +9,10 @@
   "MiniMax.json",
   "Groq.json",
   "xAI.json",
+  "Cohere.json",
+  "Together.json",
+  "Perplexity.json",
+  "Cerebras.json",
   "Ollama.json",
   "LMStudio.json"
 ]
