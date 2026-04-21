@@ -69,7 +69,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       return (
         sections.forEach((s) => {
           const indent = '  '.repeat(Math.max(0, parseInt(s.toclevel, 10) - 1));
-          lines.push(`${indent}${s.number}. ${s.line.replace(/<[^>]+>/g, '')}`);
+          lines.push(`${indent}${s.number}. ${s.line.replace(/[<>]/g, '')}`);
         }),
         lines.push('', `🔗 https://en.wikipedia.org/wiki/${encoded}`, 'Source: Wikipedia'),
         lines.join('\n')
@@ -87,10 +87,10 @@ export const { handles: handles, execute: execute } = createExecutor({
         ),
         sections = parseData?.parse?.sections ?? [],
         match = sections.find(
-          (s) => s.line.replace(/<[^>]+>/g, '').toLowerCase() === section.toLowerCase(),
+          (s) => s.line.replace(/[<>]/g, '').toLowerCase() === section.toLowerCase(),
         );
       if (!match) {
-        const available = sections.map((s) => s.line.replace(/<[^>]+>/g, '')).join(', ');
+        const available = sections.map((s) => s.line.replace(/[<>]/g, '')).join(', ');
         return `Section "${section}" not found in "${resolved}".\n\nAvailable sections: ${available || 'none'}`;
       }
       const contentData = await safeJson(
@@ -103,7 +103,7 @@ export const { handles: handles, execute: execute } = createExecutor({
           .replace(/\{\{[^}]+\}\}/g, '')
           .replace(/'{2,3}/g, '')
           .replace(/==+[^=]+=+/g, '')
-          .replace(/<[^>]+>/g, '')
+          .replace(/[<>]/g, '')
           .replace(/\n{3,}/g, '\n\n')
           .trim()),
         text
@@ -132,7 +132,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       const lines = [`🔍 Wikipedia search results for "${query}"`, ''];
       return (
         results.forEach((r, i) => {
-          const snippet = r.snippet.replace(/<[^>]+>/g, '').trim(),
+          const snippet = r.snippet.replace(/[<>]/g, '').trim(),
             url = `https://en.wikipedia.org/wiki/${encodeURIComponent(r.title.replace(/ /g, '_'))}`;
           (lines.push(`${i + 1}. **${r.title}**`),
             lines.push(`   ${snippet}`),
@@ -258,7 +258,7 @@ export const { handles: handles, execute: execute } = createExecutor({
         infoPages.forEach((p) => {
           const info = p.imageinfo?.[0];
           if (!info?.url) return;
-          const caption = info.extmetadata?.ImageDescription?.value?.replace(/<[^>]+>/g, '').trim(),
+          const caption = info.extmetadata?.ImageDescription?.value?.replace(/[<>]/g, '').trim(),
             name = p.title.replace(/^File:/, '');
           (lines.push(`• ${name}`),
             caption && lines.push(`  Caption: ${caption}`),
@@ -719,7 +719,7 @@ export const { handles: handles, execute: execute } = createExecutor({
               .slice(eqIdx + 1)
               .replace(/\[\[([^\]|]*\|)?([^\]]+)\]\]/g, '$2')
               .replace(/\{\{[^}]+\}\}/g, '')
-              .replace(/<[^>]+>/g, '')
+              .replace(/[<>]/g, '')
               .replace(/'{2,3}/g, '')
               .trim();
           key && val && lines.push(`• ${key}: ${val}`);
@@ -795,10 +795,10 @@ export const { handles: handles, execute: execute } = createExecutor({
       const title = img.title ?? 'Unknown',
         desc =
           img.description?.text ??
-          img.description?.html?.replace(/<[^>]+>/g, '') ??
+          img.description?.html?.replace(/[<>]/g, '') ??
           'No description available.',
         url = img.image?.source ?? img.thumbnail?.source ?? '',
-        credit = img.artist?.text?.replace(/<[^>]+>/g, '') ?? '';
+        credit = img.artist?.text?.replace(/[<>]/g, '') ?? '';
       return [
         `🖼️ Wikipedia Picture of the Day — ${y}-${m}-${d}`,
         '',
@@ -826,7 +826,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       const lines = [`📰 Wikipedia Current Events — ${y}-${m}-${d}`, ''];
       return (
         news.slice(0, 8).forEach((item, i) => {
-          const story = item.story?.replace(/<[^>]+>/g, '').trim() ?? '';
+          const story = item.story?.replace(/[<>]/g, '').trim() ?? '';
           (lines.push(`${i + 1}. ${story}`),
             (item.links ?? []).slice(0, 2).forEach((l) => {
               const url =
@@ -964,7 +964,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       const diffText = (compare.body ?? '')
         .replace(/<ins[^>]*>([\s\S]*?)<\/ins>/g, '[+$1]')
         .replace(/<del[^>]*>([\s\S]*?)<\/del>/g, '[-$1]')
-        .replace(/<[^>]+>/g, '')
+        .replace(/[<>]/g, '')
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
@@ -1195,7 +1195,7 @@ export const { handles: handles, execute: execute } = createExecutor({
                 cell
                   .replace(/\[\[([^\]|]*\|)?([^\]]+)\]\]/g, '$2')
                   .replace(/\{\{[^}]+\}\}/g, '')
-                  .replace(/<[^>]+>/g, '')
+                  .replace(/[<>]/g, '')
                   .replace(/'{2,3}/g, '')
                   .split('||')
                   .map((c) => c.trim())
