@@ -42,8 +42,12 @@ export async function autoConnect() {
     if (cfg.enabled)
       try {
         await registry.connect(cfg);
-      } catch (err) {
-        console.warn(`[MCPIPC] Auto-connect failed for "${cfg.name}":`, err.message);
+      } catch {
+        // Do not log cfg.name, err, or err.message here.
+        // cfg.env contains API keys/tokens; CodeQL taints the entire cfg object
+        // (including cfg.name) through that path. err.message may also surface
+        // sensitive connection details. A static message is sufficient.
+        console.warn('[MCPIPC] Auto-connect failed for a server');
       }
 }
 export const ipcMeta = { needs: [] };
