@@ -304,7 +304,7 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
       queueConversationCompaction().catch(() => {}),
       // Use the post-response window (user is reading) to catch up one
       // pending memory sync. Natural idle time, zero added latency.
-      triggerMicroSync().catch(() => {}),
+      !state.isIncognito && triggerMicroSync().catch(() => {}),
       bumpScrollBadge(),
       setTimeout(updateTimeline, 100));
   } catch (err) {
@@ -329,8 +329,8 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
   }
 }
 export function startNewChat(extraCleanup = () => {}) {
-  (queueCurrentSessionMemorySync('new-chat').catch(() => {}),
-    (state.messages = []),
+  if (!state.isIncognito) queueCurrentSessionMemorySync('new-chat').catch(() => {});
+  ((state.messages = []),
     (state.currentChatId = null),
     (state.isTyping = !1),
     resetConversationSummary(),

@@ -59,6 +59,11 @@ export function getChatHTML() {
       </svg>
     </button>
 
+    <button id="incognito-btn" class="incognito-btn" title="Incognito mode (chats won't be saved)" aria-label="Toggle incognito mode">
+      <span class="incognito-btn-icon" aria-hidden="true"></span>
+      <span class="incognito-btn-label" aria-hidden="true">Private</span>
+    </button>
+
     <section id="welcome">
       <div class="welcome-greeting">
         <img src="../../../Assets/Logo/Logo.png" alt="Joanium" class="welcome-logo" width="64" height="64">

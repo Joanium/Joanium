@@ -83,3 +83,54 @@
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border-subtle));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-glow) 28%, transparent);
 }
+
+/* Incognito info chips — non-interactive, shown in place of starter prompts */
+#welcome .chip.chip--info {
+  cursor: default;
+  pointer-events: none;
+  gap: 6px;
+  padding: 0 14px 0 10px;
+  font-size: 12.5px;
+}
+#welcome .chip.chip--info::before {
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+#welcome .chip.chip--does {
+  border-color: color-mix(in srgb, #10b981 28%, var(--border-subtle));
+  background: color-mix(in srgb, #10b981 10%, var(--bg-tertiary) 82%);
+  color: color-mix(in srgb, #059669 80%, var(--text-secondary));
+}
+#welcome .chip.chip--does::before {
+  content: '✓';
+  color: #10b981;
+}
+#welcome .chip.chip--wont {
+  border-color: var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-secondary) 60%, transparent);
+  color: var(--text-muted);
+  opacity: 0.72;
+}
+#welcome .chip.chip--wont::before {
+  content: '×';
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Welcome section — incognito modifier */
+#welcome.welcome--incognito .welcome-logo {
+  border-radius: 50%;
+  padding: 6px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-tertiary));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 4px 20px var(--accent-glow);
+  animation: none;
+}
+#welcome.welcome--incognito .welcome-title {
+  color: var(--text-primary);
+}
+#welcome.welcome--incognito .welcome-subtitle {
+  color: color-mix(in srgb, var(--accent) 55%, var(--text-muted));
+}

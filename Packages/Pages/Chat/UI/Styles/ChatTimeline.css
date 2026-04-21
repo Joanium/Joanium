@@ -181,3 +181,148 @@
     transform: scale(1);
   }
 }
+
+/* ── Incognito / Private mode button — Material 3 Expressive FAB ── */
+.incognito-btn {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 40;
+
+  /* Shape: M3 rounded-rect FAB */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: none;
+
+  /* Tonal surface (inactive) */
+  background: color-mix(in srgb, var(--bg-secondary) 90%, var(--accent) 10%);
+  color: color-mix(in srgb, var(--text-secondary) 80%, var(--accent) 20%);
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+
+  /* M3 Elevation 3 (tonal shadows) */
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--accent) 12%, var(--border-subtle));
+
+  transition:
+    background var(--transition-mid),
+    color var(--transition-mid),
+    box-shadow var(--transition-mid),
+    border-radius var(--duration-emphasis) var(--ease-spring),
+    transform var(--transition-fast),
+    gap var(--duration-emphasis) var(--ease-out-ui),
+    padding var(--duration-emphasis) var(--ease-out-ui);
+}
+
+/* M3 State layer overlay */
+.incognito-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .incognito-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.14),
+      0 8px 20px rgba(0, 0, 0, 0.12),
+      0 0 0 1px color-mix(in srgb, var(--accent) 20%, var(--border));
+  }
+  .incognito-btn:hover::before {
+    opacity: 0.07;
+  }
+}
+.incognito-btn:active {
+  transform: scale(0.95) translateY(0);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.incognito-btn:active::before {
+  opacity: 0.12;
+}
+
+/* Icon */
+.incognito-btn-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  -webkit-mask-image: url('../../../../../Assets/App/Private.png');
+  mask-image: url('../../../../../Assets/App/Private.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  background-color: currentColor;
+  transition:
+    background-color var(--transition-mid),
+    transform var(--duration-emphasis) var(--ease-spring);
+}
+
+/* Label */
+.incognito-btn-label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width var(--duration-emphasis) var(--ease-out-ui),
+    opacity var(--duration-emphasis) var(--ease-out-ui);
+}
+
+/* ── Active / Extended FAB state ── */
+.incognito-btn.incognito-active {
+  background: var(--accent);
+  color: #fff;
+  gap: 8px;
+  padding: 0 18px 0 14px;
+  border-radius: 16px;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.18),
+    0 8px 28px var(--accent-glow),
+    0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.incognito-btn.incognito-active .incognito-btn-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+.incognito-btn.incognito-active .incognito-btn-label {
+  max-width: 72px;
+  opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .incognito-btn.incognito-active:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.2),
+      0 12px 36px var(--accent-glow),
+      0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .incognito-btn.incognito-active:hover::before {
+    opacity: 0.1;
+  }
+}
+.incognito-btn.incognito-active:active {
+  transform: scale(0.95);
+}

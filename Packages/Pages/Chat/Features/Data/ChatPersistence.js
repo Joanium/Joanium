@@ -48,6 +48,7 @@ export function buildChatPayload({
     : void 0;
 }
 export async function saveCurrentChat() {
+  if (state.isIncognito) return null;
   const payload = buildChatPayload({
     chatId: state.currentChatId,
     messages: state.messages,

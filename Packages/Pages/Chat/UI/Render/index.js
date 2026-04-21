@@ -83,6 +83,25 @@ function renderStarterPrompts() {
   const container = document.querySelector('.welcome-chips');
   if (container) {
     container.innerHTML = '';
+
+    if (state.isIncognito) {
+      const doesItems = ['Off the record', 'No history saved', 'Clears on close'];
+      const wontItems = ["Won't save chats", "Won't build memory", "Won't appear in history"];
+      for (const label of doesItems) {
+        const chip = document.createElement('span');
+        chip.className = 'chip chip--info chip--does';
+        chip.textContent = label;
+        container.appendChild(chip);
+      }
+      for (const label of wontItems) {
+        const chip = document.createElement('span');
+        chip.className = 'chip chip--info chip--wont';
+        chip.textContent = label;
+        container.appendChild(chip);
+      }
+      return;
+    }
+
     for (const { label: label, prompt: prompt } of (function () {
       const projectName = state.activeProject?.name?.trim();
       if (Boolean(state.workspacePath)) {
@@ -287,6 +306,44 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
   gitBar.init(state.activeProject?.rootPath ?? null);
   // Git bar end
 
+  // Incognito mode toggle
+  const incognitoBtn = document.getElementById('incognito-btn');
+  function syncIncognitoUI() {
+    if (!incognitoBtn) return;
+    incognitoBtn.classList.toggle('incognito-active', state.isIncognito);
+    incognitoBtn.title = state.isIncognito
+      ? 'Incognito mode ON — chats not saved'
+      : "Incognito mode (chats won't be saved)";
+
+    // Swap welcome logo between Joanium logo and Private.png
+    const welcomeLogo = document.querySelector('.welcome-logo');
+    if (welcomeLogo) {
+      welcomeLogo.src = state.isIncognito
+        ? '../../../Assets/App/Private.png'
+        : '../../../Assets/Logo/Logo.png';
+    }
+
+    // Update welcome subtitle
+    const subtitleEl = document.getElementById('welcome-subtitle');
+    if (subtitleEl) {
+      subtitleEl.textContent = state.isIncognito
+        ? "This session is private — your chat won't be saved or remembered."
+        : getSubtitles[Math.floor(Math.random() * getSubtitles.length)];
+    }
+
+    // Toggle a class on the welcome section for CSS hooks
+    document.getElementById('welcome')?.classList.toggle('welcome--incognito', state.isIncognito);
+
+    // Re-render the starter chips
+    renderStarterPrompts();
+  }
+  incognitoBtn?.addEventListener('click', () => {
+    state.isIncognito = !state.isIncognito;
+    syncIncognitoUI();
+  });
+  syncIncognitoUI();
+  // Incognito mode end
+
   // File diff tracker — project-only, resets on new chat
   const diffTracker = createFileDiffTracker();
   diffTracker.init();
@@ -362,7 +419,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         clearTimeout(_memoryFlushTimer);
         _memoryFlushTimer = null;
       }
-      (queueCurrentSessionMemorySync('page-leave').catch(() => {}),
+      (!state.isIncognito && queueCurrentSessionMemorySync('page-leave').catch(() => {}),
         cleanupTerminalObserver(),
         document.removeEventListener('click', onDocClick),
         document.removeEventListener('dragover', onDragOver),

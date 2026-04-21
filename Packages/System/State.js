@@ -14,4 +14,5 @@ export const state = {
   systemPrompt: '',
   workspacePath: null,
   activeProject: null,
+  isIncognito: false,
 };
