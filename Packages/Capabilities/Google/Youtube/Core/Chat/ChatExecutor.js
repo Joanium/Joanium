@@ -149,7 +149,7 @@ export async function executeYouTubeChatTool(ctx, toolName, params = {}) {
           replyCount = thread.snippet?.totalReplyCount ?? 0;
         return [
           `${i + 1}. **${top.authorDisplayName ?? 'Anonymous'}**`,
-          `   ${top.textDisplay?.replace(/<[^>]*>/g, '').slice(0, 200) ?? ''}`,
+          `   ${top.textDisplay?.replace(/[<>]/g, '').slice(0, 200) ?? ''}`,
           `   👍 ${YouTubeAPI.formatCount(top.likeCount)}${replyCount ? ` · ${replyCount} repl${1 !== replyCount ? 'ies' : 'y'}` : ''}`,
           `   ${top.publishedAt ? new Date(top.publishedAt).toLocaleDateString() : ''}`,
         ].join('\n');
@@ -321,7 +321,7 @@ export async function executeYouTubeChatTool(ctx, toolName, params = {}) {
         const sn = c.snippet ?? {};
         return [
           `${i + 1}. **${sn.authorDisplayName ?? 'Anonymous'}**`,
-          `   ${sn.textDisplay?.replace(/<[^>]*>/g, '').slice(0, 200) ?? ''}`,
+          `   ${sn.textDisplay?.replace(/[<>]/g, '').slice(0, 200) ?? ''}`,
           `   👍 ${YouTubeAPI.formatCount(sn.likeCount)}`,
         ].join('\n');
       });
@@ -586,7 +586,7 @@ export async function executeYouTubeChatTool(ctx, toolName, params = {}) {
       return [
         `**${sn.authorDisplayName ?? 'Anonymous'}**`,
         `Comment ID: \`${comment.id}\``,
-        `Text: ${sn.textDisplay?.replace(/<[^>]*>/g, '') ?? '(empty)'}`,
+        `Text: ${sn.textDisplay?.replace(/[<>]/g, '') ?? '(empty)'}`,
         `👍 Likes: ${YouTubeAPI.formatCount(sn.likeCount)}`,
         sn.publishedAt
           ? `Posted: ${new Date(sn.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}`
@@ -668,7 +668,7 @@ export async function executeYouTubeChatTool(ctx, toolName, params = {}) {
           videoId = thread.snippet?.videoId ?? '';
         return [
           `${i + 1}. **${top.authorDisplayName ?? 'Anonymous'}**${videoId ? ` on \`${videoId}\`` : ''}`,
-          `   ${top.textDisplay?.replace(/<[^>]*>/g, '').slice(0, 200) ?? ''}`,
+          `   ${top.textDisplay?.replace(/[<>]/g, '').slice(0, 200) ?? ''}`,
           `   👍 ${YouTubeAPI.formatCount(top.likeCount)}${replyCount ? ` · ${replyCount} repl${1 !== replyCount ? 'ies' : 'y'}` : ''}`,
         ].join('\n');
       });
