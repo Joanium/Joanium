@@ -39,7 +39,7 @@
 
 ## 🎬 Demo
 
-<img width="1919" height="1016" alt="3" src="https://github.com/user-attachments/assets/7e930197-4750-4385-9532-c21170b64cbc" />
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/5f0d50f7-3473-41e5-a4e0-4525a25c45ee" />
 
 ---
 
