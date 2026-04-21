@@ -158,12 +158,11 @@ export class MCPRegistry {
     try {
       await session.initialize();
     } catch {
-      // Do not reference the caught error in any log statement.
-      // The error may have been constructed from sensitive data (API keys, tokens)
-      // present in the server's env configuration, and CodeQL tracks that taint
-      // through the entire err object — including err.name and err.message.
-      // A static message is sufficient for operators to identify the failure.
-      console.warn(`[MCP] initialize() failed for "${name}"`);
+      // Do not reference the caught error or any serverConfig-derived variable
+      // in this log statement. CodeQL's taint analysis propagates from env (which
+      // contains API keys/tokens) through the entire serverConfig object — including
+      // other destructured fields like `name`. A fully static message is required.
+      console.warn('[MCP] Server initialization failed');
     }
     const tools = await session.listTools().catch(() => []),
       entry = {
