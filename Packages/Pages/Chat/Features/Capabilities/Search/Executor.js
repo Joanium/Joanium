@@ -147,7 +147,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (wikiHits.length > 0) {
         lines.push('**Wikipedia:**');
         wikiHits.slice(0, 2).forEach((r, i) => {
-          const snippet = r.snippet.replace(/<[^>]+>/g, '').trim();
+          const snippet = r.snippet.replace(/[<>]/g, '').trim();
           lines.push(
             `  ${i + 1}. **${r.title}** — ${snippet.slice(0, 130)}${snippet.length > 130 ? '…' : ''}`,
           );
