@@ -65,11 +65,12 @@ const INTERNAL_TOOL_LEAK_PATTERNS = [
     'read_personal_memory_files',
   ]),
   SEARCH_ENGINE_BLOCK_PATTERNS = [
-    /google\.com\/sorry/i,
-    /\bunusual traffic\b/i,
-    /\brecaptcha\b/i,
-    /\bi am not a robot\b/i,
-    /\bi'm not a robot\b/i,
+    // codeql[js/regex/missing-regexp-anchor] - Intentional: patterns scan full page content text, not URLs. Unanchored substring matching is required here.
+    /google\.com\/sorry/i, // codeql[js/regex/missing-regexp-anchor]
+    /\bunusual traffic\b/i, // codeql[js/regex/missing-regexp-anchor]
+    /\brecaptcha\b/i, // codeql[js/regex/missing-regexp-anchor]
+    /\bi am not a robot\b/i, // codeql[js/regex/missing-regexp-anchor]
+    /\bi'm not a robot\b/i, // codeql[js/regex/missing-regexp-anchor]
   ],
   skillsCache = { value: null, expiresAt: 0, promise: null },
   toolsCache = new Map(),
