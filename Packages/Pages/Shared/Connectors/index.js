@@ -21,8 +21,13 @@ function renderPanel() {
             (card.id = `cx-card-${def.id}`));
           const header = document.createElement('div');
           ((header.className = 'cx-card-header'),
-            (header.innerHTML = `\n    <div class="cx-icon">${def.icon}</div>\n    <div class="cx-info">\n      <h4>${def.name}</h4>\n      <p>${def.description}</p>\n    </div>\n    <span class="cx-badge ${isConnected ? 'cx-badge--on' : 'cx-badge--off'}">\n      ${isConnected ? 'Connected' : 'Not connected'}\n    </span>`),
+            (header.innerHTML = `\n    <div class="cx-icon">${def.icon}</div>\n    <div class="cx-info">\n      <h4>${def.name}</h4>\n      <p>${def.description}</p>\n    </div>\n    <span class="cx-badge ${isConnected ? 'cx-badge--on' : 'cx-badge--off'}">\n      ${isConnected ? 'Connected' : 'Not connected'}\n    </span>\n    <button class="cx-expand-btn" type="button" aria-label="Toggle connector details">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>\n    </button>`),
             card.appendChild(header));
+          const details = document.createElement('div');
+          details.className = 'cx-card-details';
+          header.querySelector('.cx-expand-btn').addEventListener('click', () => {
+            card.classList.toggle('cx-expanded');
+          });
           const caps = document.createElement('div');
           if (
             ((caps.className = 'cx-capabilities'),
@@ -30,14 +35,14 @@ function renderPanel() {
               const tag = document.createElement('span');
               ((tag.className = 'cx-cap-tag'), (tag.textContent = cap), caps.appendChild(tag));
             }),
-            card.appendChild(caps),
+            details.appendChild(caps),
             isConnected && status.accountInfo)
           ) {
             const info = document.createElement('div');
             info.className = 'cx-account-info';
             const display = status.accountInfo.email || status.accountInfo.username || 'Connected';
             ((info.innerHTML = `<div class="cx-account-avatar">${display[0].toUpperCase()}</div><span>${display}</span>`),
-              card.appendChild(info));
+              details.appendChild(info));
           }
           if (isConnected && def.subServices?.length) {
             const badgesEl = (function (def, services = {}) {
@@ -113,7 +118,7 @@ function renderPanel() {
                   }),
                   badgeWrap.appendChild(refreshBtn));
               }
-              card.appendChild(badgeWrap);
+              details.appendChild(badgeWrap);
             }
           }
           if (def.automations?.length) {
@@ -126,12 +131,12 @@ function renderPanel() {
                   (item.innerHTML = `<strong>${a.name}</strong> - <span>${a.description}</span>`),
                   autoSec.appendChild(item));
               }),
-              card.appendChild(autoSec));
+              details.appendChild(autoSec));
           }
           const statusEl = document.createElement('div');
           ((statusEl.className = 'cx-status-msg'),
             (statusEl.id = `cx-status-${def.id}`),
-            card.appendChild(statusEl));
+            details.appendChild(statusEl));
           const fieldsWrap = document.createElement('div');
           if (
             ((fieldsWrap.className = 'cx-fields'),
@@ -252,7 +257,7 @@ function renderPanel() {
             }
             fieldsWrap.appendChild(wrap);
           }),
-            card.appendChild(fieldsWrap));
+            details.appendChild(fieldsWrap));
           const actions = document.createElement('div');
           actions.className = 'cx-actions';
           const helpLink = document.createElement('a');
@@ -292,7 +297,12 @@ function renderPanel() {
               connectBtn.addEventListener('click', () => onConnect(def.id, def)),
               btnGroup.appendChild(connectBtn));
           }
-          return (actions.appendChild(btnGroup), card.appendChild(actions), card);
+          return (
+            actions.appendChild(btnGroup),
+            details.appendChild(actions),
+            card.appendChild(details),
+            card
+          );
         })(def, cxState, handleConnect, handleDisconnect),
       ),
     ));
