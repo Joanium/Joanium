@@ -76,7 +76,7 @@ export function initSettingsModal() {
     },
     modal = createModal({
       backdropId: 'settings-modal-backdrop',
-      html: '\n    <div id="settings-modal-backdrop">\n      <div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">\n        <div class="settings-modal-header">\n          <div class="settings-modal-copy">\n            <h2 id="settings-modal-title">Workspace settings</h2>\n          </div>\n          <button id="settings-modal-close" class="settings-modal-close" type="button" aria-label="Close settings">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n            </svg>\n          </button>\n        </div>\n\n        <div class="settings-modal-body">\n          <div class="settings-shell">\n            <nav class="settings-tabs" aria-label="Settings sections">\n              <button class="settings-tab active" type="button" data-settings-tab="user">User</button>\n              <button class="settings-tab" type="button" data-settings-tab="providers">AI Providers</button>\n              <button class="settings-tab" type="button" data-settings-tab="connectors">Connectors</button>\n              <button class="settings-tab" type="button" data-settings-tab="channels">Channels</button>\n              <button class="settings-tab" type="button" data-settings-tab="mcp">MCP Servers</button>\n              <button class="settings-tab" type="button" data-settings-tab="shortcuts">Shortcuts</button>\n              <button class="settings-tab" type="button" data-settings-tab="app">App</button>\n            </nav>\n\n            <div class="settings-content">\n              <section class="settings-panel active" data-settings-panel="user">\n                <div class="settings-panel-header">\n                  <h3>User</h3>\n                  <p>Update your display name, pinned memory note, and custom instructions. Custom instructions stay in every conversation, while personal memory is stored separately and read only when relevant.</p>\n                </div>\n                <div class="settings-form">\n                  <label class="settings-field">\n                    <span class="settings-field-label">Name</span>\n                    <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name" autocomplete="name"/>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Pinned Memory</span>\n                    <textarea id="settings-memory" placeholder="Durable personal notes the AI can read when your conversation needs them."></textarea>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Custom Instructions</span>\n                    <textarea id="settings-custom-instructions" placeholder="Tone, style, or behaviour instructions for the AI."></textarea>\n                  </label>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="providers" hidden>\n                <div class="settings-panel-header">\n                  <h3>AI Providers</h3>\n                  <p>Connect hosted models with API keys or point Joanium at local Ollama or LM Studio servers. When a local server is reachable, Joanium detects its available models automatically.</p>\n                </div>\n                <div id="settings-providers-list" class="providers-stack">\n                  <div class="ap-empty-hint">Loading...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="connectors" hidden>\n                <div class="settings-panel-header">\n                  <h3>Connectors</h3>\n                  <p>Link your workspace so the AI knows about your emails, repos and files, and automations can take action.</p>\n                </div>\n                <div id="connector-list" class="connector-list">\n                  <div class="cx-loading">Loading connectors...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="mcp" hidden>\n                <div class="settings-panel-header">\n                  <h3>MCP Servers</h3>\n                  <p>Connect Model Context Protocol servers here. Browser-control MCP tools automatically show up in chat once a server is connected.</p>\n                </div>\n                <div id="mcp-settings-panel" class="mcp-settings-panel">\n                  <div class="cx-loading">Loading MCP servers...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="channels" hidden>\n                <div class="settings-panel-header">\n                  <h3>Channels</h3>\n                  <p>Connect WhatsApp and Telegram. When someone messages in, the AI replies automatically on your behalf.</p>\n                </div>\n                <div id="channels-settings-panel" class="channels-settings-panel">\n                  <div class="cx-loading">Loading channels...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="app" hidden>\n                <div class="settings-panel-header">\n                  <h3>App</h3>\n                  <p>System-level behaviour for Joanium.</p>\n                </div>\n                <div class="settings-form" id="app-settings-form">\n                  <div class="settings-toggle-row" id="app-setting-startup" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Run on Startup</span>\n                      <span class="settings-field-hint">Launch Joanium automatically when you log in.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Run on startup">\n                      <input id="app-toggle-startup" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-tray" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">System Tray</span>\n                      <span class="settings-field-hint">Keep Joanium in the system tray when the window is closed.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="System tray">\n                      <input id="app-toggle-tray" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-awake">\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Keep Awake</span>\n                      <span class="settings-field-hint">Prevent the system from sleeping while Joanium is running.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Keep awake">\n                      <input id="app-toggle-awake" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n\n                  <div class="settings-danger-zone">\n                    <div class="settings-danger-zone-header">\n                      <span class="settings-danger-zone-label">Danger Zone</span>\n                    </div>\n                    <div class="settings-danger-row">\n                      <div class="settings-toggle-info">\n                        <span class="settings-field-label">Reset App</span>\n                        <span class="settings-field-hint">Permanently clears all chats, events, API keys, memory, and settings.</span>\n                        <span class="settings-danger-warning">This action is destructive and irreversible.</span>\n                      </div>\n                      <button id="app-reset-btn" class="settings-reset-btn" type="button">Reset App</button>\n                    </div>\n                  </div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="shortcuts" hidden>\n                <div class="settings-panel-header">\n                  <h3>Shortcuts</h3>\n                  <p>Keyboard shortcuts to move faster inside Joanium. All shortcuts are active by default &#8212; no setup needed. On macOS, swap Ctrl for &#8984; Cmd.</p>\n                </div>\n                <div class="shortcuts-panel">\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Navigation</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">New chat</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>N</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Go to Projects</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>P</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Open Settings</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>,</kbd></span></div>\n                                       </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Chat</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">Send message</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">New line in message</span><span class="shortcut-keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Focus message input</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>L</kbd></span></div>\n                                     <div class="shortcut-row"><span class="shortcut-desc">Close chat / dismiss dialog</span><span class="shortcut-keys"><kbd>Esc</kbd></span></div>\n                    </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Workspace</h4>\n                    <div class="shortcuts-list">\n                                        <div class="shortcut-row"><span class="shortcut-desc">Open Agents</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>A</kbd></span></div>\n                              <div class="shortcut-row"><span class="shortcut-desc">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>\n                           <div class="shortcut-row"><span class="shortcut-desc">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Automations</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>\n                                         </div>\n                  </div>\n                  <p class="shortcuts-note">On macOS, Ctrl maps to &#8984;</p>\n                </div>\n              </section>\n            </div>\n          </div>\n        </div>\n\n        <div class="settings-modal-footer">\n          <div id="settings-save-feedback" class="settings-feedback" aria-live="polite"></div>\n          <button id="settings-save" class="settings-save-btn" type="button">Save changes</button>\n        </div>\n      </div>\n    </div>\n  ',
+      html: '\n    <div id="settings-modal-backdrop">\n      <div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">\n        <div class="settings-modal-header">\n          <div class="settings-modal-copy">\n            <h2 id="settings-modal-title">Workspace settings</h2>\n          </div>\n          <button id="settings-modal-close" class="settings-modal-close" type="button" aria-label="Close settings">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n            </svg>\n          </button>\n        </div>\n\n        <div class="settings-modal-body">\n          <div class="settings-shell">\n            <nav class="settings-tabs" aria-label="Settings sections">\n              <button class="settings-tab active" type="button" data-settings-tab="user">User</button>\n              <button class="settings-tab" type="button" data-settings-tab="providers">AI Providers</button>\n              <button class="settings-tab" type="button" data-settings-tab="connectors">Connectors</button>\n              <button class="settings-tab" type="button" data-settings-tab="channels">Channels</button>\n              <button class="settings-tab" type="button" data-settings-tab="mcp">MCP Servers</button>\n              <button class="settings-tab" type="button" data-settings-tab="shortcuts">Shortcuts</button>\n              <button class="settings-tab" type="button" data-settings-tab="app">App</button>\n            </nav>\n\n            <div class="settings-content">\n              <section class="settings-panel active" data-settings-panel="user">\n                <div class="settings-panel-header">\n                  <h3>User</h3>\n                  <p>Update your display name, pinned memory note, and custom instructions. Custom instructions stay in every conversation, while personal memory is stored separately and read only when relevant.</p>\n                </div>\n                <div class="settings-form">\n                  <label class="settings-field">\n                    <span class="settings-field-label">Name</span>\n                    <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name" autocomplete="name"/>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Pinned Memory</span>\n                    <textarea id="settings-memory" placeholder="Durable personal notes the AI can read when your conversation needs them."></textarea>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Custom Instructions</span>\n                    <textarea id="settings-custom-instructions" placeholder="Tone, style, or behaviour instructions for the AI."></textarea>\n                  </label>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="providers" hidden>\n                <div class="settings-panel-header">\n                  <h3>AI Providers</h3>\n                  <p>Connect hosted models with API keys or point Joanium at local Ollama or LM Studio servers. When a local server is reachable, Joanium detects its available models automatically.</p>\n                </div>\n                <div id="settings-providers-list" class="providers-stack">\n                  <div class="ap-empty-hint">Loading...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="connectors" hidden>\n                <div class="settings-panel-header">\n                  <h3>Connectors</h3>\n                  <p>Link your workspace so the AI knows about your emails, repos and files, and automations can take action.</p>\n                </div>\n                <div id="connector-list" class="connector-list">\n                  <div class="cx-loading">Loading connectors...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="mcp" hidden>\n                <div class="settings-panel-header">\n                  <h3>MCP Servers</h3>\n                  <p>Connect Model Context Protocol servers here. Browser-control MCP tools automatically show up in chat once a server is connected.</p>\n                </div>\n                <div id="mcp-settings-panel" class="mcp-settings-panel">\n                  <div class="cx-loading">Loading MCP servers...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="channels" hidden>\n                <div class="settings-panel-header">\n                  <h3>Channels</h3>\n                  <p>Connect WhatsApp and Telegram. When someone messages in, the AI replies automatically on your behalf.</p>\n                </div>\n                <div id="channels-settings-panel" class="channels-settings-panel">\n                  <div class="cx-loading">Loading channels...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="app" hidden>\n                <div class="settings-panel-header">\n                  <h3>App</h3>\n                  <p>System-level behaviour for Joanium.</p>\n                </div>\n                <div class="settings-form" id="app-settings-form">\n                  <div class="settings-toggle-row" id="app-setting-startup" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Run on Startup</span>\n                      <span class="settings-field-hint">Launch Joanium automatically when you log in.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Run on startup">\n                      <input id="app-toggle-startup" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-tray" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">System Tray</span>\n                      <span class="settings-field-hint">Keep Joanium in the system tray when the window is closed.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="System tray">\n                      <input id="app-toggle-tray" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-awake">\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Keep Awake</span>\n                      <span class="settings-field-hint">Prevent the system from sleeping while Joanium is running.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Keep awake">\n                      <input id="app-toggle-awake" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class=\"settings-toggle-row\" id=\"app-setting-lock\">\n                    <div class=\"settings-toggle-info\">\n                      <span class=\"settings-field-label\">App Lock</span>\n                      <span class=\"settings-field-hint\">Require a password every time Joanium opens.</span>\n                    </div>\n                    <label class=\"settings-toggle\" aria-label=\"App lock\">\n                      <input id=\"app-toggle-lock\" type=\"checkbox\" />\n                      <span class=\"settings-toggle-track\"><span class=\"settings-toggle-thumb\"></span></span>\n                    </label>\n                  </div>\n\n                  <div class=\"settings-danger-zone\">\n                    <div class="settings-danger-zone-header">\n                      <span class="settings-danger-zone-label">Danger Zone</span>\n                    </div>\n                    <div class="settings-danger-row">\n                      <div class="settings-toggle-info">\n                        <span class="settings-field-label">Reset App</span>\n                        <span class="settings-field-hint">Permanently clears all chats, events, API keys, memory, and settings.</span>\n                        <span class="settings-danger-warning">This action is destructive and irreversible.</span>\n                      </div>\n                      <button id="app-reset-btn" class="settings-reset-btn" type="button">Reset App</button>\n                    </div>\n                  </div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="shortcuts" hidden>\n                <div class="settings-panel-header">\n                  <h3>Shortcuts</h3>\n                  <p>Keyboard shortcuts to move faster inside Joanium. All shortcuts are active by default &#8212; no setup needed. On macOS, swap Ctrl for &#8984; Cmd.</p>\n                </div>\n                <div class="shortcuts-panel">\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Navigation</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">New chat</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>N</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Go to Projects</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>P</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Open Settings</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>,</kbd></span></div>\n                                       </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Chat</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">Send message</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">New line in message</span><span class="shortcut-keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Focus message input</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>L</kbd></span></div>\n                                     <div class="shortcut-row"><span class="shortcut-desc">Close chat / dismiss dialog</span><span class="shortcut-keys"><kbd>Esc</kbd></span></div>\n                    </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Workspace</h4>\n                    <div class="shortcuts-list">\n                                        <div class="shortcut-row"><span class="shortcut-desc">Open Agents</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>A</kbd></span></div>\n                              <div class="shortcut-row"><span class="shortcut-desc">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>\n                           <div class="shortcut-row"><span class="shortcut-desc">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Automations</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>\n                                         </div>\n                  </div>\n                  <p class="shortcuts-note">On macOS, Ctrl maps to &#8984;</p>\n                </div>\n              </section>\n            </div>\n          </div>\n        </div>\n\n        <div class="settings-modal-footer">\n          <div id="settings-save-feedback" class="settings-feedback" aria-live="polite"></div>\n          <button id="settings-save" class="settings-save-btn" type="button">Save changes</button>\n        </div>\n      </div>\n    </div>\n  ',
       closeBtnSelector: '#settings-modal-close',
       onInit(backdrop) {
         ($$('[data-settings-tab]').forEach((btn) => {
@@ -150,6 +150,22 @@ export function initSettingsModal() {
     wire('app-toggle-tray', 'system_tray');
     wire('app-toggle-awake', 'keep_awake');
 
+    // App Lock — intercept toggle to run setup/disable flows
+    (function () {
+      const lockInput = $('app-toggle-lock');
+      if (!lockInput) return;
+      lockInput.addEventListener('change', async () => {
+        if (lockInput.checked) {
+          lockInput.checked = false; // revert until setup completes
+          const ok = await showAppLockSetup();
+          lockInput.checked = ok;
+        } else {
+          const ok = await showAppLockDisable();
+          if (!ok) lockInput.checked = true; // revert on cancel/fail
+        }
+      });
+    })();
+
     // Reset App button
     const resetBtn = $('app-reset-btn');
     if (resetBtn) {
@@ -185,6 +201,8 @@ export function initSettingsModal() {
       if (startup) startup.checked = Boolean(settings.run_on_startup);
       if (tray) tray.checked = Boolean(settings.system_tray);
       if (awake) awake.checked = Boolean(settings.keep_awake);
+      const lock = $('app-toggle-lock');
+      if (lock) lock.checked = Boolean(settings.app_lock);
     } catch (err) {
       console.warn('[AppSettings] Failed to load app settings:', err);
     }
@@ -514,6 +532,186 @@ export function initSettingsModal() {
       }
     } else setFeedback('No provider changes to save.', 'error');
   }
+
+  function injectAppLockStyles() {
+    if (document.getElementById('al-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'al-styles';
+    s.textContent = `
+    .al-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+    .al-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 28px 24px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-lg)}
+    .al-card h3{margin:0;font-size:16px;font-weight:600;color:var(--text-primary)}
+    .al-card .al-sub{margin:0;font-size:13px;color:var(--text-secondary);line-height:1.5}
+    .al-form{display:flex;flex-direction:column;gap:12px}
+    .al-input,.al-select{width:100%;padding:9px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-primary);font-family:var(--font-ui);font-size:13px;outline:none;box-sizing:border-box;transition:border-color .15s}
+    .al-input:focus,.al-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+    .al-error{margin:0;font-size:12px;color:#e05555;background:rgba(224,85,85,.09);border:1px solid rgba(224,85,85,.22);border-radius:var(--radius-sm);padding:7px 10px}
+    .al-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+    .al-btn-cancel{padding:8px 16px;background:transparent;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-secondary);font-family:var(--font-ui);font-size:13px;cursor:pointer;transition:background .15s}
+    .al-btn-cancel:hover{background:var(--bg-hover)}
+    .al-btn-confirm{padding:8px 16px;background:var(--accent);border:none;border-radius:var(--radius-md);color:#fff;font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+    .al-btn-confirm:hover:not(:disabled){background:var(--accent-hover)}
+    .al-btn-confirm:disabled{opacity:.6;cursor:not-allowed}
+    .al-btn-danger{background:#c0392b}
+    .al-btn-danger:hover:not(:disabled){background:#a93226}
+  `;
+    document.head.appendChild(s);
+  }
+
+  const APP_LOCK_MIN_PASSWORD_LENGTH = 6;
+  const APP_LOCK_MIN_QUESTION_LENGTH = 10;
+
+  function showAppLockSetup() {
+    injectAppLockStyles();
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.className = 'al-overlay';
+      overlay.innerHTML = `
+      <div class="al-card" role="dialog" aria-modal="true">
+        <h3>Set up App Lock</h3>
+        <p class="al-sub">Create a password and your own recovery question for Joanium. You'll use the password every time the app opens.</p>
+        <div class="al-form">
+          <label class="settings-field">
+            <span class="settings-field-label">New password</span>
+            <input id="al-pw" type="password" class="al-input" placeholder="Min. 6 characters" autocomplete="new-password"/>
+          </label>
+          <label class="settings-field">
+            <span class="settings-field-label">Confirm password</span>
+            <input id="al-pw2" type="password" class="al-input" placeholder="Repeat password" autocomplete="new-password"/>
+          </label>
+          <label class="settings-field">
+            <span class="settings-field-label">Recovery question</span>
+            <input id="al-question" type="text" class="al-input" placeholder="Write your own question" autocomplete="off" spellcheck="false"/>
+          </label>
+          <label class="settings-field">
+            <span class="settings-field-label">Answer</span>
+            <input id="al-answer" type="text" class="al-input" placeholder="Case-insensitive" autocomplete="off" spellcheck="false"/>
+          </label>
+          <p id="al-err" class="al-error" hidden></p>
+        </div>
+        <div class="al-actions">
+          <button id="al-cancel" type="button" class="al-btn-cancel">Cancel</button>
+          <button id="al-confirm" type="button" class="al-btn-confirm">Enable App Lock</button>
+        </div>
+      </div>`;
+      document.body.appendChild(overlay);
+
+      const pw = overlay.querySelector('#al-pw');
+      const pw2 = overlay.querySelector('#al-pw2');
+      const qEl = overlay.querySelector('#al-question');
+      const ans = overlay.querySelector('#al-answer');
+      const errEl = overlay.querySelector('#al-err');
+      const confirmBtn = overlay.querySelector('#al-confirm');
+
+      function showErr(msg) {
+        errEl.textContent = msg;
+        errEl.hidden = false;
+      }
+
+      overlay.querySelector('#al-cancel').addEventListener('click', () => {
+        overlay.remove();
+        resolve(false);
+      });
+
+      confirmBtn.addEventListener('click', async () => {
+        if (pw.value.length < APP_LOCK_MIN_PASSWORD_LENGTH)
+          return showErr(`Password must be at least ${APP_LOCK_MIN_PASSWORD_LENGTH} characters.`);
+        if (pw.value !== pw2.value) return showErr('Passwords do not match.');
+        if (qEl.value.trim().length < APP_LOCK_MIN_QUESTION_LENGTH)
+          return showErr(
+            `Recovery question must be at least ${APP_LOCK_MIN_QUESTION_LENGTH} characters.`,
+          );
+        if (!ans.value.trim()) return showErr('Please enter a security answer.');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Setting up...';
+        try {
+          const r = await window.electronAPI?.invoke('setup-app-lock', {
+            password: pw.value,
+            question: qEl.value,
+            answer: ans.value,
+          });
+          if (!r?.ok) {
+            showErr(r?.error ?? 'Setup failed.');
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Enable App Lock';
+            return;
+          }
+          overlay.remove();
+          resolve(true);
+        } catch (e) {
+          showErr(e.message ?? 'Setup failed.');
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Enable App Lock';
+        }
+      });
+
+      pw.focus();
+    });
+  }
+
+  function showAppLockDisable() {
+    injectAppLockStyles();
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.className = 'al-overlay';
+      overlay.innerHTML = `
+      <div class="al-card" role="dialog" aria-modal="true">
+        <h3>Disable App Lock</h3>
+        <p class="al-sub">Enter your current App Lock password to turn it off.</p>
+        <div class="al-form">
+          <label class="settings-field">
+            <span class="settings-field-label">Current password</span>
+            <input id="al-dis-pw" type="password" class="al-input" placeholder="Current password" autocomplete="current-password"/>
+          </label>
+          <p id="al-dis-err" class="al-error" hidden></p>
+        </div>
+        <div class="al-actions">
+          <button id="al-dis-cancel" type="button" class="al-btn-cancel">Cancel</button>
+          <button id="al-dis-confirm" type="button" class="al-btn-confirm al-btn-danger">Disable</button>
+        </div>
+      </div>`;
+      document.body.appendChild(overlay);
+
+      const pw = overlay.querySelector('#al-dis-pw');
+      const errEl = overlay.querySelector('#al-dis-err');
+      const confirmBtn = overlay.querySelector('#al-dis-confirm');
+
+      overlay.querySelector('#al-dis-cancel').addEventListener('click', () => {
+        overlay.remove();
+        resolve(false);
+      });
+
+      confirmBtn.addEventListener('click', async () => {
+        if (!pw.value) {
+          errEl.textContent = 'Enter your password.';
+          errEl.hidden = false;
+          return;
+        }
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Verifying…';
+        try {
+          const r = await window.electronAPI?.invoke('disable-app-lock', pw.value);
+          if (!r?.ok) {
+            errEl.textContent = r?.error ?? 'Incorrect password.';
+            errEl.hidden = false;
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Disable';
+            return;
+          }
+          overlay.remove();
+          resolve(true);
+        } catch (e) {
+          errEl.textContent = e.message ?? 'Failed.';
+          errEl.hidden = false;
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Disable';
+        }
+      });
+
+      pw.focus();
+    });
+  }
+
   return {
     open: async function (tabId = ss.activeTab) {
       (switchTab(tabId), modal.open());

@@ -1,0 +1,377 @@
+/* ─── Lock page — Joanium ─────────────────────────────────────────────────── */
+
+/* 1. Design tokens (themes + root variables) */
+@import '../Shared/Styles/Themes.css';
+@import '../Shared/Styles/Root.css';
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Drag region — sits over the top of the window for frameless mode */
+.lock-titlebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--titlebar-h, 36px);
+  -webkit-app-region: drag;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ─── Animated mesh background (matches Setup page aesthetic) ─────────────── */
+
+.lock-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lock-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  animation: lockParticleDrift var(--dur) var(--delay) ease-in-out infinite;
+}
+
+@keyframes lockParticleDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4);
+  }
+  20% {
+    opacity: 0.12;
+  }
+  80% {
+    opacity: 0.06;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) scale(1.2);
+  }
+}
+
+/* Radial gradient overlay that gives the card a focused glow */
+.lock-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 55%, var(--accent-dim) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Card shell ─────────────────────────────────────────────────────────── */
+
+.lock-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+}
+
+.lock-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+  padding: 44px 40px 40px;
+  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(24px);
+
+  /* Entrance animation */
+  animation: lockCardIn 0.45s var(--ease-out-ui) both;
+}
+
+@keyframes lockCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Logo ───────────────────────────────────────────────────────────────── */
+
+.lock-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.lock-logo img {
+  display: block;
+  border-radius: 12px;
+}
+
+/* ─── Lock icon badge ────────────────────────────────────────────────────── */
+
+.lock-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--accent-dim);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.lock-icon-badge svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ─── Copy ───────────────────────────────────────────────────────────────── */
+
+.lock-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: var(--font-tracking-display);
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+
+.lock-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: -4px 0 0;
+}
+
+/* ─── Password field ─────────────────────────────────────────────────────── */
+
+.lock-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.lock-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lock-input {
+  width: 100%;
+  padding: 11px 44px 11px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color var(--transition-mid),
+    box-shadow var(--transition-mid);
+  box-sizing: border-box;
+}
+
+.lock-input::placeholder {
+  color: var(--text-muted);
+}
+
+.lock-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Shake animation on wrong password */
+.lock-input.lock-input--shake {
+  animation: lockShake 0.38s var(--ease-out-ui);
+  border-color: #e05555;
+  box-shadow: 0 0 0 3px rgba(224, 85, 85, 0.18);
+}
+
+@keyframes lockShake {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-7px);
+  }
+  35% {
+    transform: translateX(6px);
+  }
+  55% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+  90% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Eye toggle button */
+.lock-eye {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  -webkit-app-region: no-drag;
+}
+
+.lock-eye:hover {
+  color: var(--text-secondary);
+}
+.lock-eye svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Error message */
+.lock-error {
+  font-size: 12px;
+  color: #e05555;
+  text-align: center;
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(224, 85, 85, 0.09);
+  border: 1px solid rgba(224, 85, 85, 0.22);
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+  white-space: pre-line; /* lets multi-line install instructions render cleanly */
+}
+
+/* ─── Unlock button ──────────────────────────────────────────────────────── */
+
+.lock-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--duration-press) var(--ease-spring);
+  -webkit-app-region: no-drag;
+}
+
+.lock-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.lock-btn:active:not(:disabled) {
+  transform: scale(0.975);
+}
+
+.lock-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner inside button */
+.lock-spinner {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  animation: lockSpin 0.8s linear infinite;
+}
+
+@keyframes lockSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Hint ───────────────────────────────────────────────────────────────── */
+
+.lock-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.lock-hint strong {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ─── Forgot password link ───────────────────────────────────────────────── */
+.lock-forgot {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.75;
+  transition: opacity var(--transition-fast);
+  -webkit-app-region: no-drag;
+}
+.lock-forgot:hover {
+  opacity: 1;
+}
+
+/* ─── Recovery card ──────────────────────────────────────────────────────── */
+.lock-recovery {
+  gap: 12px;
+}
+.lock-recovery .lock-title {
+  font-size: 18px;
+}

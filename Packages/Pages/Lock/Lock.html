@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- Apply saved theme before paint to avoid a flash -->
+    <script src="../../Features/Themes/index.js"></script>
+    <link rel="stylesheet" href="./Lock.css" />
+  </head>
+
+  <body>
+    <!-- Subtle animated background mesh, same technique as Setup page -->
+    <div class="lock-canvas" id="lock-canvas" aria-hidden="true"></div>
+
+    <!-- Drag region for frameless windows (macOS / Windows) -->
+    <div class="lock-titlebar" id="lock-titlebar" aria-hidden="true"></div>
+
+    <main class="lock-shell" role="main">
+      <div class="lock-card" id="lock-card">
+        <!-- Logo -->
+        <div class="lock-logo">
+          <img src="../../../Assets/Logo/Logo.png" alt="Joanium" width="48" height="48" />
+        </div>
+
+        <!-- Lock icon badge -->
+        <div class="lock-icon-badge" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+
+        <!-- Copy -->
+        <h1 class="lock-title">Joanium is locked</h1>
+        <p class="lock-sub">Enter your Joanium app lock password to continue.</p>
+
+        <!-- Password field -->
+        <div class="lock-field">
+          <div class="lock-input-wrap">
+            <input
+              id="lock-password"
+              type="password"
+              class="lock-input"
+              placeholder="App lock password"
+              autocomplete="current-password"
+              spellcheck="false"
+              aria-label="App lock password"
+              aria-describedby="lock-error"
+            />
+            <button
+              id="lock-eye-btn"
+              type="button"
+              class="lock-eye"
+              aria-label="Show or hide password"
+              tabindex="0"
+            >
+              <!-- Eye open (shown when input is type=password) -->
+              <svg
+                id="lock-eye-open"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <!-- Eye closed (shown when input is type=text) -->
+              <svg
+                id="lock-eye-closed"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                hidden
+              >
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"
+                />
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Error message -->
+          <p id="lock-error" class="lock-error" role="alert" aria-live="assertive" hidden></p>
+        </div>
+
+        <!-- Unlock button -->
+        <button id="lock-unlock-btn" type="button" class="lock-btn">
+          <span id="lock-btn-text">Unlock</span>
+          <!-- Spinner (shown while verifying) -->
+          <svg
+            id="lock-spinner"
+            class="lock-spinner"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+            hidden
+          >
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.2" />
+            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <!-- Hint -->
+        <p class="lock-hint">
+          This is your <strong>Joanium app lock password</strong>, set when you enabled App Lock.
+        </p>
+        <button id="lock-forgot-btn" type="button" class="lock-forgot">Forgot password?</button>
+      </div>
+      <!-- Recovery panel (hidden until "Forgot password?" clicked) -->
+      <div class="lock-card lock-recovery" id="lock-recovery" hidden>
+        <h2 class="lock-title" style="font-size: 18px">Reset password</h2>
+        <p id="lock-q-text" class="lock-sub"></p>
+        <div class="lock-field" id="lock-recovery-answer-wrap">
+          <input
+            id="lock-recovery-answer"
+            type="text"
+            class="lock-input"
+            placeholder="Your answer"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <p id="lock-recovery-error" class="lock-error" role="alert" hidden></p>
+        </div>
+        <button id="lock-verify-answer-btn" type="button" class="lock-btn">Verify Answer</button>
+        <div
+          id="lock-newpw-wrap"
+          hidden
+          style="width: 100%; display: flex; flex-direction: column; gap: 10px"
+        >
+          <input
+            id="lock-new-pw"
+            type="password"
+            class="lock-input"
+            placeholder="New password (min. 6 chars)"
+            autocomplete="new-password"
+          />
+          <input
+            id="lock-new-pw2"
+            type="password"
+            class="lock-input"
+            placeholder="Confirm new password"
+            autocomplete="new-password"
+          />
+          <button id="lock-reset-pw-btn" type="button" class="lock-btn">Set New Password</button>
+        </div>
+        <button id="lock-back-btn" type="button" class="lock-forgot" style="margin-top: 4px">
+          Back to unlock
+        </button>
+      </div>
+    </main>
+
+    <script type="module" src="./Lock.js"></script>
+  </body>
+</html>

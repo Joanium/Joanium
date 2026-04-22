@@ -10,6 +10,7 @@ import { initializePersonalMemoryLibrary } from '#main/Services/MemoryService.js
 import * as SystemPromptService from '#main/Services/SystemPromptService.js';
 import * as UserService from '#main/Services/UserService.js';
 import * as AppSettingsService from '#main/Services/AppSettingsService.js';
+import * as AppLockService from '#main/Services/AppLockService.js';
 import * as TrayService from '#main/Services/TrayService.js';
 import { setupAutoUpdates } from '#main/Services/AutoUpdateService.js';
 (app.commandLine.appendSwitch('disable-http2'),
@@ -39,12 +40,22 @@ function attachWindowServices(windowRef, activeEngines) {
     agentsEngine?.attachWindow?.(windowRef),
     featureRegistry.attachWindow(windowRef));
 }
-function createMainAppWindow(
-  activeEngines,
-  page = (function () {
-    return UserService.isFirstRun() ? Paths.SETUP_PAGE : Paths.INDEX_PAGE;
-  })(),
-) {
+
+/**
+ * Resolves the correct start page for the main window.
+ *
+ * Priority order:
+ *   1. First-run  → Setup page (app_lock doesn't apply yet, no account exists)
+ *   2. App lock   → Lock page  (user must authenticate before entering the app)
+ *   3. Default    → Index page (normal launch)
+ */
+function resolveStartPage() {
+  if (UserService.isFirstRun()) return Paths.SETUP_PAGE;
+  if (AppLockService.isAppLockEnabled()) return Paths.LOCK_PAGE;
+  return Paths.INDEX_PAGE;
+}
+
+function createMainAppWindow(activeEngines, page = resolveStartPage()) {
   const windowRef = createWindow(page);
   return (attachWindowServices(windowRef, activeEngines), windowRef);
 }

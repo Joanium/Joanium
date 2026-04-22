@@ -10,6 +10,7 @@ build/
 Config/User.json
 Config/System.json
 Config/WindowState.json
+Config/AppLock.json
 
 # Data (root-level only — Packages/**/Data/ must stay tracked)
 Data/

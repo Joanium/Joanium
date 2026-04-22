@@ -1,14 +1,30 @@
 import { readUser, writeUser } from './UserService.js';
 import * as PowerService from './PowerService.js';
 
-const DEFAULTS = { run_on_startup: false, system_tray: false, keep_awake: false };
+const DEFAULTS = {
+  run_on_startup: false,
+  system_tray: false,
+  keep_awake: false,
+};
+
+function readStoredAppSettings() {
+  return readUser().app_settings ?? {};
+}
 
 export function readAppSettings() {
-  return { ...DEFAULTS, ...(readUser().app_settings ?? {}) };
+  const stored = readStoredAppSettings();
+  return {
+    run_on_startup: Boolean(stored.run_on_startup ?? DEFAULTS.run_on_startup),
+    system_tray: Boolean(stored.system_tray ?? DEFAULTS.system_tray),
+    keep_awake: Boolean(stored.keep_awake ?? DEFAULTS.keep_awake),
+    app_lock: Boolean(stored.app_lock ?? false),
+  };
 }
 
 export function writeAppSettings(patch = {}) {
-  return writeUser({ app_settings: { ...readAppSettings(), ...patch } });
+  return writeUser({
+    app_settings: { ...DEFAULTS, ...readStoredAppSettings(), ...patch },
+  });
 }
 
 /**
@@ -17,7 +33,7 @@ export function writeAppSettings(patch = {}) {
  * TrayService is intentionally NOT imported here to keep the coupling one-way;
  * App.js passes `win` and the caller (App.js) handles tray via TrayService directly.
  */
-export function applyAll(win) {
+export function applyAll(_win) {
   const settings = readAppSettings();
 
   // keep_awake
@@ -31,5 +47,9 @@ export function applyAll(win) {
   // on boot the OS itself handles launching so nothing to do here.
 
   // system_tray is handled by App.js after this call returns.
+
+  // app_lock is applied at window creation time in App.js;
+  // nothing to do here after boot.
+
   return settings;
 }

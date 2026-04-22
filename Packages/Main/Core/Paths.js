@@ -47,6 +47,12 @@ export const Paths = {
   get WINDOW_STATE_FILE() {
     return path.join(getStateRoot(), 'Config', 'WindowState.json');
   },
+  get APP_LOCK_FILE() {
+    return path.join(getStateRoot(), 'Config', 'AppLock.json');
+  },
+  get APP_LOCK_BACKUP_FILE() {
+    return path.join(getStateRoot(), 'Data', 'Features', 'AppLock.backup.json');
+  },
   get DATA_DIR() {
     return path.join(getStateRoot(), 'Data');
   },
@@ -98,6 +104,7 @@ export const Paths = {
   PRELOAD: path.join(ROOT, 'Core', 'Electron', 'Bridge', 'Preload.js'),
   SETUP_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Setup', 'Setup.html'),
   INDEX_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Chat', 'Chat.html'),
+  LOCK_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Lock', 'Lock.html'),
   AUTOMATIONS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Automations', 'Automations.html'),
   USAGE_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Usage', 'Usage.html'),
   AGENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Agents', 'Agents.html'),

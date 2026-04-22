@@ -1,6 +1,7 @@
 import { app, ipcMain } from 'electron';
 import fs from 'fs';
 import * as AppSettingsService from '../Services/AppSettingsService.js';
+import * as AppLockService from '../Services/AppLockService.js';
 import * as PowerService from '../Services/PowerService.js';
 import { loadPage } from '../Core/Window.js';
 import Paths from '../Core/Paths.js';
@@ -22,6 +23,8 @@ export function register() {
       // Individual files to delete
       const filesToRemove = [
         Paths.USER_FILE,
+        Paths.APP_LOCK_FILE,
+        Paths.APP_LOCK_BACKUP_FILE,
         Paths.CUSTOM_INSTRUCTIONS_FILE,
         Paths.USAGE_FILE,
         Paths.SKILLS_FILE,
@@ -52,16 +55,20 @@ export function register() {
 
   ipcMain.handle(
     'get-app-settings',
-    wrapRead(() => AppSettingsService.readAppSettings()),
+    wrapRead(() => ({
+      ...AppSettingsService.readAppSettings(),
+      app_lock: AppLockService.isAppLockEnabled(),
+    })),
   );
 
   ipcMain.handle(
     'set-app-settings',
     wrapHandler((patch) => {
       if (!patch || typeof patch !== 'object') return;
+      if ('app_lock' in patch) delete patch.app_lock;
 
       // Persist first
-      AppSettingsService.writeAppSettings(patch);
+      if (Object.keys(patch).length > 0) AppSettingsService.writeAppSettings(patch);
 
       // --- run_on_startup ---
       // app.setLoginItemSettings is available on macOS, Windows, and Linux (Electron 13+).
@@ -90,7 +97,12 @@ export function register() {
       // TrayService toggling is handled in App.js via the 'tray-toggle' flow;
       // IPC just persists the value here. The tray feature (item 2) wires this up.
 
-      return { settings: AppSettingsService.readAppSettings() };
+      return {
+        settings: {
+          ...AppSettingsService.readAppSettings(),
+          app_lock: AppLockService.isAppLockEnabled(),
+        },
+      };
     }),
   );
 }

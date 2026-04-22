@@ -148,18 +148,32 @@ export function getPlatform() {
 
 export function loadPage(page) {
   if (!_win) return;
-  if (page === Paths.SETUP_PAGE || page === Paths.INDEX_PAGE) {
+
+  // Pages that are full HTML documents (loaded via URL, not SPA navigation)
+  const isFullPageLoad =
+    page === Paths.SETUP_PAGE || page === Paths.INDEX_PAGE || page === Paths.LOCK_PAGE;
+
+  if (isFullPageLoad) {
     const windowState = loadWindowState();
-    // When transitioning to the main app from setup on Windows, restore the
-    // dark-theme overlay so it doesn't stay invisible until the first theme
-    // event fires from the renderer.
-    if (PLATFORM === 'win32' && page === Paths.INDEX_PAGE) {
+
+    if (PLATFORM === 'win32') {
+      // Setup and Lock pages use a light-ish background; make the overlay
+      // invisible until the page applies its own theme.
+      const useLightOverlay = page === Paths.SETUP_PAGE || page === Paths.LOCK_PAGE;
       try {
-        _win.setTitleBarOverlay(DEFAULT_WIN_OVERLAY);
+        _win.setTitleBarOverlay(
+          useLightOverlay
+            ? { color: '#1a1a1a', symbolColor: '#606060', height: 36 }
+            : DEFAULT_WIN_OVERLAY,
+        );
       } catch {}
     }
-    return (_win.loadURL(`file://${page}`), void applyPageWindowState(_win, page, windowState));
+
+    _win.loadURL(`file://${page}`);
+    applyPageWindowState(_win, page, windowState);
+    return;
   }
+
   const pageKey = (function (filePath) {
     if (!filePath) return null;
     for (const key in PAGE_MAP) if (filePath.includes(key)) return PAGE_MAP[key];
