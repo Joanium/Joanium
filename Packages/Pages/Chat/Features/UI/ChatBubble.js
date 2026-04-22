@@ -2,7 +2,8 @@ import { state } from '../../../../System/State.js';
 import { render as renderMarkdown } from '../../../Shared/Content/Markdown.js';
 import { chatMessages } from '../../../Shared/Core/DOM.js';
 import { openHtmlPreviewModal } from '../../../../Modals/HtmlPreviewModal.js';
-import { copyIcon, checkIcon, editIcon, retryIcon, assistantIcon } from './ChatIcons.js';
+import { copyIcon, checkIcon, editIcon, retryIcon, assistantIcon, speakIcon } from './ChatIcons.js';
+import { toggleSpeak } from '../../Voice/VoicePlayer.js';
 import { buildTokenFooter, updateTimeline, maybeScrollToBottom } from './ChatTimeline.js';
 import {
   cloneSubAgentRunAttachment,
@@ -359,7 +360,7 @@ export function buildLogItem(rawLine) {
 export function createLiveRow(doSendFromStateFn) {
   const row = document.createElement('div');
   ((row.className = 'message-row assistant'),
-    (row.innerHTML = `\n    ${assistantIcon()}\n    <div class="content-wrapper">\n      <div class="content">\n        <div class="agent-thinking-shell agent-thinking-shell--working">\n          <button type="button" class="agent-thinking-toggle" aria-expanded="false">\n            <span class="agent-thinking-summary">\n            <span class="agent-thinking-dot"></span>\n              <span class="agent-thinking-label">Thinking</span>\n            </span>\n            <span class="agent-thinking-caret" aria-hidden="true" hidden>\n              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">\n                <path d="M6 8l4 4 4-4"></path>\n              </svg>\n            </span>\n          </button>\n          <div class="agent-thinking-body" hidden>\n            <div class="agent-thinking-trace" hidden>\n              <div class="agent-thinking-trace-content">Blooming ideas...</div>\n            </div>\n            <div class="agent-log"></div>\n            <div class="agent-tool-output"></div>\n          </div>\n        </div>\n        <div class="agent-reply">\n          <div class="agent-reply-media"></div>\n          <div class="agent-reply-text"></div>\n        </div>\n      </div>\n      <div class="message-actions assistant-actions" style="display:none;">\n        <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n        <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n      </div>\n    </div>`),
+    (row.innerHTML = `\n    ${assistantIcon()}\n    <div class="content-wrapper">\n      <div class="content">\n        <div class="agent-thinking-shell agent-thinking-shell--working">\n          <button type="button" class="agent-thinking-toggle" aria-expanded="false">\n            <span class="agent-thinking-summary">\n            <span class="agent-thinking-dot"></span>\n              <span class="agent-thinking-label">Thinking</span>\n            </span>\n            <span class="agent-thinking-caret" aria-hidden="true" hidden>\n              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">\n                <path d="M6 8l4 4 4-4"></path>\n              </svg>\n            </span>\n          </button>\n          <div class="agent-thinking-body" hidden>\n            <div class="agent-thinking-trace" hidden>\n              <div class="agent-thinking-trace-content">Blooming ideas...</div>\n            </div>\n            <div class="agent-log"></div>\n            <div class="agent-tool-output"></div>\n          </div>\n        </div>\n        <div class="agent-reply">\n          <div class="agent-reply-media"></div>\n          <div class="agent-reply-text"></div>\n        </div>\n      </div>\n      <div class="message-actions assistant-actions" style="display:none;">\n        <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n        <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n        <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n      </div>\n    </div>`),
     chatMessages.appendChild(row),
     smoothScrollToBottom());
   const logEl = row.querySelector('.agent-log'),
@@ -613,10 +614,12 @@ export function createLiveRow(doSendFromStateFn) {
           'error' !== _thinkingState && setThinkingState('complete'),
           (replyTextEl.innerHTML = renderMarkdown(safeMarkdown)),
           (actionsEl.style.display = 'flex'),
-          attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown),
-          _hasContent &&
-            'true' === thinkingToggleEl?.getAttribute('aria-expanded') &&
-            setThinkingOpen(!1));
+          attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown));
+        const speakBtnF = actionsEl.querySelector('.speak-msg-btn');
+        if (speakBtnF) speakBtnF.onclick = () => toggleSpeak(safeMarkdown, speakBtnF);
+        _hasContent &&
+          'true' === thinkingToggleEl?.getAttribute('aria-expanded') &&
+          setThinkingOpen(!1);
         const retryBtn = actionsEl.querySelector('.retry-msg-btn');
         if (
           (retryBtn &&
@@ -647,8 +650,10 @@ export function createLiveRow(doSendFromStateFn) {
           'error' !== _thinkingState && setThinkingState('complete'),
           (replyTextEl.innerHTML = renderMarkdown(safeMarkdown)),
           (actionsEl.style.display = 'flex'),
-          attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown),
-          smoothScrollToBottom());
+          attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown));
+        const speakBtnS = actionsEl.querySelector('.speak-msg-btn');
+        if (speakBtnS) speakBtnS.onclick = () => toggleSpeak(safeMarkdown, speakBtnS);
+        smoothScrollToBottom();
       },
       setAborted() {
         const trailingVisible = _streamFilter.flushVisibleRemainder();
@@ -677,8 +682,12 @@ export function createLiveRow(doSendFromStateFn) {
           replyTextEl.innerHTML =
             '<span style="color:var(--text-muted);font-size:13px;font-style:italic;">Generation stopped.</span>';
         ((actionsEl.style.display = 'flex'),
-          _accumulated && attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), _accumulated),
-          smoothScrollToBottom());
+          _accumulated && attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), _accumulated));
+        if (_accumulated) {
+          const speakBtnA = actionsEl.querySelector('.speak-msg-btn');
+          if (speakBtnA) speakBtnA.onclick = () => toggleSpeak(_accumulated, speakBtnA);
+        }
+        smoothScrollToBottom();
       },
       getAttachments() {
         const subAgentAttachments = _subAgentTracker.getAttachments();
@@ -975,7 +984,7 @@ export function appendMessage(
           await doSendFromStateFn());
       }));
   } else {
-    row.innerHTML = `\n      ${assistantIcon()}\n      <div class="content-wrapper">\n        <div class="content"></div>\n        <div class="message-actions assistant-actions">\n          <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n          <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n        </div>\n      </div>`;
+    row.innerHTML = `\n      ${assistantIcon()}\n      <div class="content-wrapper">\n        <div class="content"></div>\n        <div class="message-actions assistant-actions">\n          <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n          <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n          <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n        </div>\n      </div>`;
     const contentEl = row.querySelector('.content');
     if (msg.attachments.length > 0) {
       const richMediaEl = document.createElement('div');
@@ -993,20 +1002,22 @@ export function appendMessage(
         richMediaEl.childElementCount > 0 && contentEl.appendChild(richMediaEl));
     }
     const textEl = document.createElement('div');
-    ((textEl.className = 'assistant-text-content'),
-      (textEl.innerHTML = renderMarkdown(msg.content)),
-      contentEl.appendChild(textEl),
-      attachCopyEvent(row.querySelector('.copy-msg-btn'), msg.content),
-      row.querySelector('.retry-msg-btn')?.addEventListener('click', async () => {
-        if (state.isTyping) return;
-        const rows = Array.from(chatMessages.querySelectorAll('.message-row')),
-          rowIdx = rows.indexOf(row);
-        -1 !== rowIdx &&
-          (rows.slice(rowIdx).forEach((r) => r.remove()),
-          (state.messages = state.messages.slice(0, rowIdx)),
-          updateTimeline(),
-          await doSendFromStateFn());
-      }));
+    textEl.className = 'assistant-text-content';
+    textEl.innerHTML = renderMarkdown(msg.content);
+    contentEl.appendChild(textEl);
+    attachCopyEvent(row.querySelector('.copy-msg-btn'), msg.content);
+    const speakBtnH = row.querySelector('.speak-msg-btn');
+    if (speakBtnH) speakBtnH.onclick = () => toggleSpeak(msg.content, speakBtnH);
+    row.querySelector('.retry-msg-btn')?.addEventListener('click', async () => {
+      if (state.isTyping) return;
+      const rows = Array.from(chatMessages.querySelectorAll('.message-row')),
+        rowIdx = rows.indexOf(row);
+      -1 !== rowIdx &&
+        (rows.slice(rowIdx).forEach((r) => r.remove()),
+        (state.messages = state.messages.slice(0, rowIdx)),
+        updateTimeline(),
+        await doSendFromStateFn());
+    });
   }
   return (
     chatMessages.appendChild(row),

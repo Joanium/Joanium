@@ -36,6 +36,7 @@ import {
   initChatUI,
   prewarmAgentContext,
 } from '../../Features/index.js';
+import { cancelSpeak } from '../../Voice/VoicePlayer.js';
 import {
   queueCurrentSessionMemorySync,
   initMemoryMicroQueue,
@@ -432,6 +433,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         window.removeEventListener('ow:workspace-changed', onWorkspaceChanged),
         window.removeEventListener('ow:project-changed', onProjectChanged),
         offBackendReady?.(),
+        cancelSpeak(),
         welcomeChips?.removeEventListener('click', onStarterChipClick),
         enhanceFeature.cleanup(),
         browserPreviewFeature.cleanup(),
