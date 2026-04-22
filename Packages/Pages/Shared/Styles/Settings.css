@@ -1992,3 +1992,70 @@ body.modal-open {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ─── Channels Accordion ──────────────────────────────────── */
+.ch-card {
+  gap: 0;
+}
+
+.ch-card-header {
+  cursor: pointer;
+  user-select: none;
+  border-bottom: none;
+}
+
+.ch-card.ch-expanded .ch-card-header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ch-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-left: auto;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform 0.25s var(--ease-spring);
+}
+
+.ch-expand-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.ch-expand-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.ch-card.ch-expanded .ch-expand-btn svg {
+  transform: rotate(180deg);
+}
+
+.ch-card-details {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s ease;
+  pointer-events: none;
+}
+
+.ch-card.ch-expanded .ch-card-details {
+  max-height: 1400px;
+  opacity: 1;
+  pointer-events: auto;
+}
