@@ -70,7 +70,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       const data = await safeJson(
           `https://api.coingecko.com/api/v3/coins/${coinResult.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false`,
         ),
-        d = data.description?.en?.replace(/<[^>]+>/g, '').slice(0, 300) ?? 'N/A',
+        d = data.description?.en?.replace(/[<>]/g, '').slice(0, 300) ?? 'N/A',
         homepage = data.links?.homepage?.[0] ?? 'N/A',
         reddit = data.links?.subreddit_url ?? 'N/A',
         twitter = data.links?.twitter_screen_name
@@ -292,7 +292,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       const data = await safeJson(`https://api.coingecko.com/api/v3/exchanges/${exchange_id}`);
       if (data.error)
         return `Exchange "${exchange_id}" not found. Try slugs like "binance", "coinbase", "kraken".`;
-      const desc = data.description?.replace(/<[^>]+>/g, '').slice(0, 250) ?? 'N/A';
+      const desc = data.description?.replace(/[<>]/g, '').slice(0, 250) ?? 'N/A';
       return [
         `🏛️ ${data.name}`,
         '',
