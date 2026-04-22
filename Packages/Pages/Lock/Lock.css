@@ -131,26 +131,6 @@ body {
   border-radius: 12px;
 }
 
-/* ─── Lock icon badge ────────────────────────────────────────────────────── */
-
-.lock-icon-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: var(--accent-dim);
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-
-.lock-icon-badge svg {
-  width: 22px;
-  height: 22px;
-}
-
 /* ─── Copy ───────────────────────────────────────────────────────────────── */
 
 .lock-title {
