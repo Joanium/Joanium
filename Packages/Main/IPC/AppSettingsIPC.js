@@ -1,11 +1,55 @@
 import { app, ipcMain } from 'electron';
+import fs from 'fs';
 import * as AppSettingsService from '../Services/AppSettingsService.js';
 import * as PowerService from '../Services/PowerService.js';
+import { loadPage } from '../Core/Window.js';
+import Paths from '../Core/Paths.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
 
 export const ipcMeta = { needs: [] };
 
 export function register() {
+  ipcMain.handle(
+    'reset-app',
+    wrapHandler(async () => {
+      // Directories to wipe recursively
+      const dirsToRemove = [
+        Paths.CHATS_DIR,
+        Paths.PROJECTS_DIR,
+        Paths.FEATURES_DATA_DIR,
+        Paths.MEMORIES_DIR,
+      ];
+      // Individual files to delete
+      const filesToRemove = [
+        Paths.USER_FILE,
+        Paths.CUSTOM_INSTRUCTIONS_FILE,
+        Paths.USAGE_FILE,
+        Paths.SKILLS_FILE,
+        Paths.ACTIVE_PERSONA_FILE,
+        Paths.MCP_FILE,
+      ];
+
+      for (const dir of dirsToRemove) {
+        try {
+          fs.rmSync(dir, { recursive: true, force: true });
+        } catch (err) {
+          console.warn('[ResetApp] Could not remove dir', dir, err.message);
+        }
+      }
+      for (const file of filesToRemove) {
+        try {
+          fs.rmSync(file, { force: true });
+        } catch (err) {
+          console.warn('[ResetApp] Could not remove file', file, err.message);
+        }
+      }
+
+      // Navigate to setup — slight delay so renderer can close gracefully
+      setTimeout(() => loadPage(Paths.SETUP_PAGE), 120);
+      return { ok: true };
+    }),
+  );
+
   ipcMain.handle(
     'get-app-settings',
     wrapRead(() => AppSettingsService.readAppSettings()),
