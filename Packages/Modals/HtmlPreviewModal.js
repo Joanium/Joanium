@@ -146,10 +146,7 @@ function buildSafePreviewSrcdoc(markup) {
   sanitizeDoc(doc);
   injectSecurityHeaders(head, doc);
 
-  // codeql[js/xss-through-dom] - Intentional: see security model in JSDoc above.
-  // markup is fully sanitized by sanitizeDoc() before this serialization, and
-  // two further runtime layers (CSP meta + iframe sandbox) bound any residual risk.
-  return `<!doctype html>\n${htmlEl.outerHTML}`;
+  return `<!doctype html>\n${htmlEl.outerHTML}`; // codeql[js/xss-through-dom] - Intentional: markup is fully sanitized by sanitizeDoc() before serialization; CSP meta tag + iframe sandbox provide two further independent runtime layers.
 }
 
 let _modalApi = null;
