@@ -63,7 +63,7 @@
   display: inline-flex;
   gap: 8px;
   padding: 6px;
-  border-radius: 12px;
+  border-radius: 20px;
   background: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
   border: 1px solid var(--border-subtle);
   margin-bottom: 18px;
@@ -80,7 +80,7 @@
   border: none;
   font-size: 12.5px;
   padding: 9px 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   transition:
     background var(--transition-fast),
     color var(--transition-fast),
