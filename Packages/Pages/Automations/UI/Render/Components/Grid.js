@@ -1,5 +1,6 @@
 import { escapeHtml, formatTrigger, getJobLabel, getSourceCount, timeAgo } from '../Utils/Utils.js';
 import { createCardPool } from '../../../../../System/CardPool.js';
+import { t } from '../../../../../System/I18n/index.js';
 export function createAgentGrid({
   gridEl: gridEl,
   emptyEl: emptyEl,
@@ -50,11 +51,17 @@ export function createAgentGrid({
       ((card._currentAgent = agent),
         (card.className = 'agent-card' + (agent.enabled ? '' : ' is-disabled')),
         (card.querySelector('.agent-name').textContent = agent.name),
-        (card.querySelector('.agent-toggle').title = agent.enabled ? 'Enabled' : 'Disabled'),
-        (card.querySelector('.toggle-input').checked = agent.enabled),
+        (card.querySelector('.agent-toggle').title = agent.enabled
+          ? t('automations.enabled ?? agents.enabled', {})
+          : t('automations.disabled ?? agents.disabled', {})));
+      // Use a safe fallback resolution for the toggle title
+      card.querySelector('.agent-toggle').title = agent.enabled
+        ? t('agents.enabled')
+        : t('agents.disabled');
+      ((card.querySelector('.toggle-input').checked = agent.enabled),
         (card.querySelector('.agent-model-text').textContent = agent.primaryModel
           ? resolveModelLabel(agent.primaryModel.provider, agent.primaryModel.modelId)
-          : 'No model'));
+          : t('agents.noModel')));
       const jobs = agent.jobs ?? [];
       card.querySelector('.agent-jobs-badge').textContent =
         `${jobs.length} job${1 !== jobs.length ? 's' : ''}`;

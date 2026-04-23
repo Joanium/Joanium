@@ -16,6 +16,7 @@ import {
   generateAgentId,
   resolveModelLabel,
 } from '../../../Agents/UI/Render/Utils/Utils.js';
+import { t } from '../../../../System/I18n/index.js';
 const BUILTIN_REQUIRED_DATA_SOURCE_FIELDS = {
     rss_feed: ['url'],
     reddit_posts: ['subreddit'],
@@ -220,7 +221,9 @@ export function mount(outlet) {
       (state.primaryModel = automation?.primaryModel ? { ...automation.primaryModel } : null),
       (state.jobs = cloneJobsForEditing(automation)),
       elements.modalTitleEl &&
-        (elements.modalTitleEl.textContent = automation ? 'Edit Automation' : 'New Automation'),
+        (elements.modalTitleEl.textContent = automation
+          ? t('automations.editAutomation')
+          : t('automations.titleNew')),
       elements.nameInput && (elements.nameInput.value = automation?.name ?? ''),
       elements.descInput && (elements.descInput.value = automation?.description ?? ''),
       modelPicker.syncPrimaryModelLabel(),
@@ -321,7 +324,7 @@ export function mount(outlet) {
         primaryModel: state.primaryModel ? { ...state.primaryModel } : null,
         jobs: configuredJobs,
       };
-      ((elements.saveBtn.disabled = !0), (elements.saveBtn.textContent = 'Saving...'));
+      ((elements.saveBtn.disabled = !0), (elements.saveBtn.textContent = t('automations.saving')));
       try {
         const response = await window.electronAPI?.invoke?.('save-automation', payload);
         if (!response?.ok)
@@ -336,7 +339,8 @@ export function mount(outlet) {
       } catch (error) {
         window.alert(error.message ?? 'Unable to save this automation right now.');
       } finally {
-        ((elements.saveBtn.disabled = !1), (elements.saveBtn.textContent = 'Save Automation'));
+        ((elements.saveBtn.disabled = !1),
+          (elements.saveBtn.textContent = t('automations.saveAutomation')));
       }
     },
     onEscapeKey = (event) => {

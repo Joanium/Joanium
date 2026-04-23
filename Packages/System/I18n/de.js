@@ -271,6 +271,13 @@ export default {
     noWorkspaceTitle: 'Kein Arbeitsbereich ausgew\u00e4hlt',
     noWorkspaceDesc:
       'Dieser Agent l\u00e4uft ohne Standard-Arbeitsbereich. Er erbt nicht den aktuell im Chat ge\u00f6ffneten Ordner oder das Projekt.',
+    boundProject: 'Gebundenes Projekt',
+    boundFolder: 'Gebundener Ordner',
+    useCurrentProject: 'Aktuelles Projekt verwenden',
+    useCurrentFolder: 'Aktuellen Ordner verwenden',
+    noCurrentWorkspace: 'Kein aktueller Arbeitsbereich',
+    noCurrentWorkspaceHint:
+      '\u00d6ffne einen Ordner oder ein Projekt im Chat, um ihn hier zu verwenden.',
     chooseFolder: 'Ordner w\u00e4hlen',
     useCurrentWorkspace: 'Aktuellen Arbeitsbereich nutzen',
     clear: 'Leeren',
@@ -336,6 +343,7 @@ export default {
     deleteTitle: 'Automation l\u00f6schen?',
     deletePermanent: 'Dies kann nicht r\u00fcckg\u00e4ngig gemacht werden.',
     delete: 'L\u00f6schen',
+    saving: 'Wird gespeichert\u2026',
   },
   skills: {
     title: 'Skills',
@@ -347,6 +355,10 @@ export default {
     goMarketplace: 'Zum Marktplatz',
     enableAll: 'Alle aktivieren',
     disableAll: 'Alle deaktivieren',
+    enableAllTitle: 'Alle Skills aktivieren?',
+    enableAllOk: 'Alle aktivieren',
+    disableAllTitle: 'Alle Skills deaktivieren?',
+    disableAllOk: 'Alle deaktivieren',
     read: 'Lesen',
     noneActive: 'Keiner aktiv',
     activeCount: '{count} aktiv',
