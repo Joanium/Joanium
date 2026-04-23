@@ -1,4 +1,5 @@
 import { state } from '../../System/State.js';
+import { initI18n, applyI18n, setLanguage } from '../../System/I18n/index.js';
 import { initSidebar } from '../../Pages/Shared/Navigation/Sidebar.js';
 import { initAboutModal } from '../../Modals/AboutModal.js';
 import { initLibraryModal } from '../../Modals/LibraryModal.js';
@@ -97,6 +98,9 @@ async function leaveProject() {
     window.dispatchEvent(new CustomEvent('ow:project-changed', { detail: { project: null } })));
 }
 (async function () {
+  // ── i18n: sync language from main process before any UI renders ──
+  await initI18n();
+
   try {
     const boot = await getFeatureBoot();
     boot.pages?.length && registerFeaturePages(boot.pages);
@@ -123,6 +127,13 @@ async function leaveProject() {
       onAbout: () => _about.open(),
       onNavigate: (pageId) => navigate(pageId),
     })));
+  // Apply initial translations to the whole page
+  applyI18n(document.body);
+  // When language changes (user picks a different lang in Settings), re-apply
+  window.addEventListener('ow:language-changed', ({ detail }) => {
+    setLanguage(detail.lang);
+    applyI18n(document.body);
+  });
   const user = await _settings.loadUser().catch(() => null);
   if (
     (_sidebar.setUser(user?.name ?? ''),

@@ -369,6 +369,7 @@ export async function buildSystemPrompt({
   activePersona: activePersona = null,
   connectedServices: connectedServices = [],
   extraContextSections: extraContextSections = [],
+  appLanguage: appLanguage = 'en',
 } = {}) {
   const [sys, fsInfo] = await Promise.all([collectSystemInfo(), collectFilesystemInfo()]);
 
@@ -402,9 +403,18 @@ export async function buildSystemPrompt({
     push(getConfig('joaniumPersona'));
   }
 
+  const LANGUAGE_LABELS = { en: 'English', de: 'German' };
+  const languageLabel = LANGUAGE_LABELS[appLanguage] ?? 'English';
+
   blank();
   push('# Application');
   push(`- Joanium version: ${_appVersion}`);
+  push(`- App language: ${languageLabel} (${appLanguage})`);
+  if (appLanguage === 'de') {
+    push(
+      '- Language instruction: The user has set the app language to German. Respond in German by default unless the user writes to you in a different language, in which case match their language.',
+    );
+  }
 
   blank();
   push('# User');

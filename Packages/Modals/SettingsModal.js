@@ -1,5 +1,6 @@
 import { state } from '../System/State.js';
 import { createModal } from '../System/ModalFactory.js';
+import { t, setLanguage, applyI18n } from '../System/I18n/index.js';
 import { loadConnectorsPanel } from '../Pages/Shared/Connectors/index.js';
 import { loadMCPPanel } from '../Pages/Shared/MCP/index.js';
 import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
@@ -76,7 +77,215 @@ export function initSettingsModal() {
     },
     modal = createModal({
       backdropId: 'settings-modal-backdrop',
-      html: '\n    <div id="settings-modal-backdrop">\n      <div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">\n        <div class="settings-modal-header">\n          <div class="settings-modal-copy">\n            <h2 id="settings-modal-title">Workspace settings</h2>\n          </div>\n          <button id="settings-modal-close" class="settings-modal-close" type="button" aria-label="Close settings">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n            </svg>\n          </button>\n        </div>\n\n        <div class="settings-modal-body">\n          <div class="settings-shell">\n            <nav class="settings-tabs" aria-label="Settings sections">\n              <button class="settings-tab active" type="button" data-settings-tab="user">User</button>\n              <button class="settings-tab" type="button" data-settings-tab="providers">AI Providers</button>\n              <button class="settings-tab" type="button" data-settings-tab="connectors">Connectors</button>\n              <button class="settings-tab" type="button" data-settings-tab="channels">Channels</button>\n              <button class="settings-tab" type="button" data-settings-tab="mcp">MCP Servers</button>\n              <button class="settings-tab" type="button" data-settings-tab="shortcuts">Shortcuts</button>\n              <button class="settings-tab" type="button" data-settings-tab="app">App</button>\n            </nav>\n\n            <div class="settings-content">\n              <section class="settings-panel active" data-settings-panel="user">\n                <div class="settings-panel-header">\n                  <h3>User</h3>\n                  <p>Update your display name, pinned memory note, and custom instructions. Custom instructions stay in every conversation, while personal memory is stored separately and read only when relevant.</p>\n                </div>\n                <div class="settings-form">\n                  <label class="settings-field">\n                    <span class="settings-field-label">Name</span>\n                    <input id="settings-user-name" type="text" maxlength="80" placeholder="Your name" autocomplete="name"/>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Pinned Memory</span>\n                    <textarea id="settings-memory" placeholder="Durable personal notes the AI can read when your conversation needs them."></textarea>\n                  </label>\n                  <label class="settings-field">\n                    <span class="settings-field-label">Custom Instructions</span>\n                    <textarea id="settings-custom-instructions" placeholder="Tone, style, or behaviour instructions for the AI."></textarea>\n                  </label>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="providers" hidden>\n                <div class="settings-panel-header">\n                  <h3>AI Providers</h3>\n                  <p>Connect hosted models with API keys or point Joanium at local Ollama or LM Studio servers. When a local server is reachable, Joanium detects its available models automatically.</p>\n                </div>\n                <div id="settings-providers-list" class="providers-stack">\n                  <div class="ap-empty-hint">Loading...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="connectors" hidden>\n                <div class="settings-panel-header">\n                  <h3>Connectors</h3>\n                  <p>Link your workspace so the AI knows about your emails, repos and files, and automations can take action.</p>\n                </div>\n                <div id="connector-list" class="connector-list">\n                  <div class="cx-loading">Loading connectors...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="mcp" hidden>\n                <div class="settings-panel-header">\n                  <h3>MCP Servers</h3>\n                  <p>Connect Model Context Protocol servers here. Browser-control MCP tools automatically show up in chat once a server is connected.</p>\n                </div>\n                <div id="mcp-settings-panel" class="mcp-settings-panel">\n                  <div class="cx-loading">Loading MCP servers...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="channels" hidden>\n                <div class="settings-panel-header">\n                  <h3>Channels</h3>\n                  <p>Connect WhatsApp and Telegram. When someone messages in, the AI replies automatically on your behalf.</p>\n                </div>\n                <div id="channels-settings-panel" class="channels-settings-panel">\n                  <div class="cx-loading">Loading channels...</div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="app" hidden>\n                <div class="settings-panel-header">\n                  <h3>App</h3>\n                  <p>System-level behaviour for Joanium.</p>\n                </div>\n                <div class="settings-form" id="app-settings-form">\n                  <div class="settings-toggle-row" id="app-setting-startup" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Run on Startup</span>\n                      <span class="settings-field-hint">Launch Joanium automatically when you log in.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Run on startup">\n                      <input id="app-toggle-startup" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-tray" hidden>\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">System Tray</span>\n                      <span class="settings-field-hint">Keep Joanium in the system tray when the window is closed.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="System tray">\n                      <input id="app-toggle-tray" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class="settings-toggle-row" id="app-setting-awake">\n                    <div class="settings-toggle-info">\n                      <span class="settings-field-label">Keep Awake</span>\n                      <span class="settings-field-hint">Prevent the system from sleeping while Joanium is running.</span>\n                    </div>\n                    <label class="settings-toggle" aria-label="Keep awake">\n                      <input id="app-toggle-awake" type="checkbox" />\n                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>\n                    </label>\n                  </div>\n                  <div class=\"settings-toggle-row\" id=\"app-setting-lock\">\n                    <div class=\"settings-toggle-info\">\n                      <span class=\"settings-field-label\">App Lock</span>\n                      <span class=\"settings-field-hint\">Require a password every time Joanium opens.</span>\n                    </div>\n                    <label class=\"settings-toggle\" aria-label=\"App lock\">\n                      <input id=\"app-toggle-lock\" type=\"checkbox\" />\n                      <span class=\"settings-toggle-track\"><span class=\"settings-toggle-thumb\"></span></span>\n                    </label>\n                  </div>\n\n                  <div class=\"settings-danger-zone\">\n                    <div class="settings-danger-zone-header">\n                      <span class="settings-danger-zone-label">Danger Zone</span>\n                    </div>\n                    <div class="settings-danger-row">\n                      <div class="settings-toggle-info">\n                        <span class="settings-field-label">Reset App</span>\n                        <span class="settings-field-hint">Permanently clears all chats, events, API keys, memory, and settings.</span>\n                        <span class="settings-danger-warning">This action is destructive and irreversible.</span>\n                      </div>\n                      <button id="app-reset-btn" class="settings-reset-btn" type="button">Reset App</button>\n                    </div>\n                  </div>\n                </div>\n              </section>\n\n              <section class="settings-panel" data-settings-panel="shortcuts" hidden>\n                <div class="settings-panel-header">\n                  <h3>Shortcuts</h3>\n                  <p>Keyboard shortcuts to move faster inside Joanium. All shortcuts are active by default &#8212; no setup needed. On macOS, swap Ctrl for &#8984; Cmd.</p>\n                </div>\n                <div class="shortcuts-panel">\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Navigation</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">New chat</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>N</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Go to Projects</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>P</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Open Settings</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>,</kbd></span></div>\n                                       </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Chat</h4>\n                    <div class="shortcuts-list">\n                      <div class="shortcut-row"><span class="shortcut-desc">Send message</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">New line in message</span><span class="shortcut-keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>\n                      <div class="shortcut-row"><span class="shortcut-desc">Focus message input</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>L</kbd></span></div>\n                                     <div class="shortcut-row"><span class="shortcut-desc">Close chat / dismiss dialog</span><span class="shortcut-keys"><kbd>Esc</kbd></span></div>\n                    </div>\n                  </div>\n                  <div class="shortcuts-group">\n                    <h4 class="shortcuts-group-title">Workspace</h4>\n                    <div class="shortcuts-list">\n                                        <div class="shortcut-row"><span class="shortcut-desc">Open Agents</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>A</kbd></span></div>\n                              <div class="shortcut-row"><span class="shortcut-desc">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>\n                           <div class="shortcut-row"><span class="shortcut-desc">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>\n           <div class="shortcut-row"><span class="shortcut-desc">Open Automations</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>\n                                         </div>\n                  </div>\n                  <p class="shortcuts-note">On macOS, Ctrl maps to &#8984;</p>\n                </div>\n              </section>\n            </div>\n          </div>\n        </div>\n\n        <div class="settings-modal-footer">\n          <div id="settings-save-feedback" class="settings-feedback" aria-live="polite"></div>\n          <button id="settings-save" class="settings-save-btn" type="button">Save changes</button>\n        </div>\n      </div>\n    </div>\n  ',
+      html: `
+    <div id="settings-modal-backdrop">
+      <div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="settings-modal-header">
+          <div class="settings-modal-copy">
+            <h2 id="settings-modal-title" data-i18n="settings.title">Workspace settings</h2>
+          </div>
+          <button id="settings-modal-close" class="settings-modal-close" type="button" data-i18n-label="settings.closeLabel" aria-label="Close settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="settings-modal-body">
+          <div class="settings-shell">
+            <nav class="settings-tabs" aria-label="Settings sections">
+              <button class="settings-tab active" type="button" data-settings-tab="user" data-i18n="settings.userTab">User</button>
+              <button class="settings-tab" type="button" data-settings-tab="providers" data-i18n="settings.providersTab">AI Providers</button>
+              <button class="settings-tab" type="button" data-settings-tab="connectors" data-i18n="settings.connectorsTab">Connectors</button>
+              <button class="settings-tab" type="button" data-settings-tab="channels" data-i18n="settings.channelsTab">Channels</button>
+              <button class="settings-tab" type="button" data-settings-tab="mcp" data-i18n="settings.mcpTab">MCP Servers</button>
+              <button class="settings-tab" type="button" data-settings-tab="shortcuts" data-i18n="settings.shortcutsTab">Shortcuts</button>
+              <button class="settings-tab" type="button" data-settings-tab="app" data-i18n="settings.appTab">App</button>
+            </nav>
+
+            <div class="settings-content">
+              <section class="settings-panel active" data-settings-panel="user">
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.userPanelTitle">User</h3>
+                  <p data-i18n="settings.userPanelDesc">Update your display name, pinned memory note, and custom instructions.</p>
+                </div>
+                <div class="settings-form">
+                  <label class="settings-field">
+                    <span class="settings-field-label" data-i18n="settings.nameLabel">Name</span>
+                    <input id="settings-user-name" type="text" maxlength="80" data-i18n-placeholder="settings.namePlaceholder" placeholder="Your name" autocomplete="name"/>
+                  </label>
+                  <label class="settings-field">
+                    <span class="settings-field-label" data-i18n="settings.memoryLabel">Pinned Memory</span>
+                    <textarea id="settings-memory" data-i18n-placeholder="settings.memoryPlaceholder" placeholder="Durable personal notes the AI can read when your conversation needs them."></textarea>
+                  </label>
+                  <label class="settings-field">
+                    <span class="settings-field-label" data-i18n="settings.instructionsLabel">Custom Instructions</span>
+                    <textarea id="settings-custom-instructions" data-i18n-placeholder="settings.instructionsPlaceholder" placeholder="Tone, style, or behaviour instructions for the AI."></textarea>
+                  </label>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="providers" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.providersPanelTitle">AI Providers</h3>
+                  <p data-i18n="settings.providersPanelDesc">Connect hosted models with API keys or point Joanium at local Ollama or LM Studio servers.</p>
+                </div>
+                <div id="settings-providers-list" class="providers-stack">
+                  <div class="ap-empty-hint" data-i18n="chat.loading">Loading...</div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="connectors" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.connectorsPanelTitle">Connectors</h3>
+                  <p data-i18n="settings.connectorsPanelDesc">Link your workspace so the AI knows about your emails, repos and files, and automations can take action.</p>
+                </div>
+                <div id="connector-list" class="connector-list">
+                  <div class="cx-loading" data-i18n="chat.loading">Loading connectors...</div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="mcp" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.mcpPanelTitle">MCP Servers</h3>
+                  <p data-i18n="settings.mcpPanelDesc">Connect Model Context Protocol servers here.</p>
+                </div>
+                <div id="mcp-settings-panel" class="mcp-settings-panel">
+                  <div class="cx-loading" data-i18n="chat.loading">Loading MCP servers...</div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="channels" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.channelsPanelTitle">Channels</h3>
+                  <p data-i18n="settings.channelsPanelDesc">Connect WhatsApp and Telegram. When someone messages in, the AI replies automatically on your behalf.</p>
+                </div>
+                <div id="channels-settings-panel" class="channels-settings-panel">
+                  <div class="cx-loading" data-i18n="chat.loading">Loading channels...</div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="app" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.appPanelTitle">App</h3>
+                  <p data-i18n="settings.appPanelDesc">System-level behaviour for Joanium.</p>
+                </div>
+                <div class="settings-form" id="app-settings-form">
+                  <div class="settings-toggle-row" id="app-setting-startup" hidden>
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.startup">Run on Startup</span>
+                      <span class="settings-field-hint" data-i18n="settings.startupHint">Launch Joanium automatically when you log in.</span>
+                    </div>
+                    <label class="settings-toggle" data-i18n-label="settings.startup" aria-label="Run on startup">
+                      <input id="app-toggle-startup" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+                  <div class="settings-toggle-row" id="app-setting-tray" hidden>
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.tray">System Tray</span>
+                      <span class="settings-field-hint" data-i18n="settings.trayHint">Keep Joanium in the system tray when the window is closed.</span>
+                    </div>
+                    <label class="settings-toggle" data-i18n-label="settings.tray" aria-label="System tray">
+                      <input id="app-toggle-tray" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+                  <div class="settings-toggle-row" id="app-setting-awake">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.keepAwake">Keep Awake</span>
+                      <span class="settings-field-hint" data-i18n="settings.keepAwakeHint">Prevent the system from sleeping while Joanium is running.</span>
+                    </div>
+                    <label class="settings-toggle" data-i18n-label="settings.keepAwake" aria-label="Keep awake">
+                      <input id="app-toggle-awake" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+                  <div class="settings-toggle-row" id="app-setting-lock">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.appLock">App Lock</span>
+                      <span class="settings-field-hint" data-i18n="settings.appLockHint">Require a password every time Joanium opens.</span>
+                    </div>
+                    <label class="settings-toggle" data-i18n-label="settings.appLock" aria-label="App lock">
+                      <input id="app-toggle-lock" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+
+                  <div class="settings-field-row" id="app-setting-language">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.appLanguage">App Language</span>
+                      <span class="settings-field-hint" data-i18n="settings.appLanguageHint">Language used across the app and by the AI when responding to you.</span>
+                    </div>
+                    <select id="app-language-select" class="settings-select" data-i18n-label="settings.appLanguage" aria-label="App language">
+                      <option value="en">English</option>
+                      <option value="de">Deutsch (German)</option>
+                    </select>
+                  </div>
+
+                  <div class="settings-danger-zone">
+                    <div class="settings-danger-zone-header">
+                      <span class="settings-danger-zone-label" data-i18n="settings.dangerZone">Danger Zone</span>
+                    </div>
+                    <div class="settings-danger-row">
+                      <div class="settings-toggle-info">
+                        <span class="settings-field-label" data-i18n="settings.resetApp">Reset App</span>
+                        <span class="settings-field-hint" data-i18n="settings.resetAppHint">Permanently clears all chats, events, API keys, memory, and settings.</span>
+                        <span class="settings-danger-warning" data-i18n="settings.resetAppWarning">This action is destructive and irreversible.</span>
+                      </div>
+                      <button id="app-reset-btn" class="settings-reset-btn" type="button" data-i18n="settings.resetApp">Reset App</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="settings-panel" data-settings-panel="shortcuts" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.shortcutsPanelTitle">Shortcuts</h3>
+                  <p data-i18n="settings.shortcutsPanelDesc">Keyboard shortcuts to move faster inside Joanium. All shortcuts are active by default &#8212; no setup needed. On macOS, swap Ctrl for &#8984; Cmd.</p>
+                </div>
+                <div class="shortcuts-panel">
+                  <div class="shortcuts-group">
+                    <h4 class="shortcuts-group-title" data-i18n="settings.navGroup">Navigation</h4>
+                    <div class="shortcuts-list">
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="sidebar.newChat">New chat</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>N</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.goProjects">Go to Projects</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>P</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openSettings">Open Settings</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>,</kbd></span></div>
+                    </div>
+                  </div>
+                  <div class="shortcuts-group">
+                    <h4 class="shortcuts-group-title" data-i18n="settings.chatGroup">Chat</h4>
+                    <div class="shortcuts-list">
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.sendMessage">Send message</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Enter</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.newLine">New line in message</span><span class="shortcut-keys"><kbd>Shift</kbd><kbd>Enter</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.focusInput">Focus message input</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>L</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.closeChat">Close chat / dismiss dialog</span><span class="shortcut-keys"><kbd>Esc</kbd></span></div>
+                    </div>
+                  </div>
+                  <div class="shortcuts-group">
+                    <h4 class="shortcuts-group-title" data-i18n="settings.workspaceGroup">Workspace</h4>
+                    <div class="shortcuts-list">
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openAgents">Open Agents</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>A</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openMarketplace">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openSkills">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openPersonas">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>
+                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openAutomations">Open Automations</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>
+                    </div>
+                  </div>
+                  <p class="shortcuts-note" data-i18n="settings.shortcutsNote">On macOS, Ctrl maps to &#8984;</p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-modal-footer">
+          <div id="settings-save-feedback" class="settings-feedback" aria-live="polite"></div>
+          <button id="settings-save" class="settings-save-btn" type="button">Save changes</button>
+        </div>
+      </div>
+    </div>
+  `,
       closeBtnSelector: '#settings-modal-close',
       onInit(backdrop) {
         ($$('[data-settings-tab]').forEach((btn) => {
@@ -96,7 +305,12 @@ export function initSettingsModal() {
               'user' === ss.activeTab && saveUserTab(),
               'providers' === ss.activeTab && saveProvidersTab());
           }),
-          initAppSettingsTab());
+          initAppSettingsTab(),
+          // Re-apply translations whenever the user switches language
+          window.addEventListener('ow:language-changed', () => {
+            applyI18n(backdrop);
+            updateSaveButton();
+          }));
       },
     });
   function setFeedback(msg = '', tone = 'info') {
@@ -109,16 +323,16 @@ export function initSettingsModal() {
     const btn = $('settings-save');
     if (btn) {
       if ('user' === ss.activeTab)
-        return ((btn.textContent = 'Save changes'), void (btn.disabled = !1));
+        return ((btn.textContent = t('settings.saveChanges')), void (btn.disabled = !1));
       if ('providers' === ss.activeTab)
         return (
-          (btn.textContent = 'Save provider changes'),
+          (btn.textContent = t('settings.saveProviderChanges')),
           void (btn.disabled = !(
             ss.pendingDeletes.size > 0 ||
             Object.values(ss.pendingProviderConfigs).some(providerHasDraftChanges)
           ))
         );
-      ((btn.textContent = 'No changes to save'), (btn.disabled = !0));
+      ((btn.textContent = t('settings.noChanges')), (btn.disabled = !0));
     }
   }
   /** Reveal only the settings rows the current OS supports and wire toggle changes. */
@@ -150,6 +364,25 @@ export function initSettingsModal() {
     wire('app-toggle-tray', 'system_tray');
     wire('app-toggle-awake', 'keep_awake');
 
+    // Language selector — save immediately on change
+    const langSelect = $('app-language-select');
+    if (langSelect) {
+      langSelect.addEventListener('change', async () => {
+        try {
+          await window.electronAPI?.invoke('set-app-settings', { app_language: langSelect.value });
+          // Update the in-process i18n module and broadcast ow:language-changed
+          setLanguage(langSelect.value);
+        } catch (err) {
+          console.warn('[AppSettings] Failed to save app_language', err);
+          // Revert to the saved value on failure
+          try {
+            const s = await window.electronAPI?.invoke('get-app-settings');
+            if (s?.app_language) langSelect.value = s.app_language;
+          } catch {}
+        }
+      });
+    }
+
     // App Lock — intercept toggle to run setup/disable flows
     (function () {
       const lockInput = $('app-toggle-lock');
@@ -171,21 +404,21 @@ export function initSettingsModal() {
     if (resetBtn) {
       resetBtn.addEventListener('click', async () => {
         const confirmed = await openConfirm({
-          title: 'Reset Joanium?',
-          body: 'This will permanently delete all chats, events, API keys, memory, and settings. This cannot be undone.',
-          confirmText: 'Yes, reset everything',
-          cancelText: 'Cancel',
+          title: t('settings.resetTitle'),
+          body: t('settings.resetBody'),
+          confirmText: t('settings.resetConfirm'),
+          cancelText: t('settings.resetCancel'),
           variant: 'danger',
         });
         if (!confirmed) return;
         resetBtn.disabled = true;
-        resetBtn.textContent = 'Resetting…';
+        resetBtn.textContent = t('settings.resetting');
         try {
           await window.electronAPI?.invoke('reset-app');
         } catch (err) {
           console.error('[ResetApp] Failed:', err);
           resetBtn.disabled = false;
-          resetBtn.textContent = 'Reset App';
+          resetBtn.textContent = t('settings.resetApp');
         }
       });
     }
@@ -203,6 +436,8 @@ export function initSettingsModal() {
       if (awake) awake.checked = Boolean(settings.keep_awake);
       const lock = $('app-toggle-lock');
       if (lock) lock.checked = Boolean(settings.app_lock);
+      const lang = $('app-language-select');
+      if (lang) lang.value = settings.app_language ?? 'en';
     } catch (err) {
       console.warn('[AppSettings] Failed to load app settings:', err);
     }
@@ -453,10 +688,10 @@ export function initSettingsModal() {
       nextInstructions = $('settings-custom-instructions')?.value ?? '';
     if (nextName.length < 2)
       return (
-        setFeedback('Enter a name with at least 2 characters.', 'error'),
+        setFeedback(t('settings.enterNameMin'), 'error'),
         void $('settings-user-name')?.focus()
       );
-    (($('settings-save').disabled = !0), setFeedback('Saving...', 'info'));
+    (($('settings-save').disabled = !0), setFeedback(t('settings.saving'), 'info'));
     try {
       const [profileResult, instructionsResult, memoryResult] = await Promise.all([
         window.electronAPI?.invoke('save-user-profile', { name: nextName }),
@@ -468,7 +703,7 @@ export function initSettingsModal() {
         throw new Error(instructionsResult?.error ?? 'Could not save custom instructions.');
       if (!memoryResult?.ok) throw new Error(memoryResult?.error ?? 'Could not save memory.');
       (applyUserProfile(profileResult.user ?? { name: nextName }),
-        setFeedback('Changes saved.', 'success'),
+        setFeedback(t('settings.saved'), 'success'),
         window.dispatchEvent(new CustomEvent('ow:settings-saved')));
     } catch (err) {
       setFeedback(err.message || 'Could not save.', 'error');
@@ -489,7 +724,7 @@ export function initSettingsModal() {
       const effectiveConfig = getEffectiveProviderConfig(r, pendingConfig);
       if (!providerIsComplete(r, effectiveConfig))
         return (
-          setFeedback(`Finish the required fields for ${r.label ?? pid}.`, 'error'),
+          setFeedback(t('settings.finishRequired', { name: r.label ?? pid }), 'error'),
           void renderProviders()
         );
       const def = getProviderDefinition(pid),
@@ -506,7 +741,7 @@ export function initSettingsModal() {
         Object.keys(payload).length > 0 && (changes[pid] = payload));
     }
     if (Object.keys(changes).length) {
-      (($('settings-save').disabled = !0), setFeedback('Saving provider settings...', 'info'));
+      (($('settings-save').disabled = !0), setFeedback(t('settings.savingProviders'), 'info'));
       try {
         const result = await window.electronAPI?.invoke('save-provider-configs', changes);
         if (!result?.ok) throw new Error(result?.error ?? 'Could not save provider settings.');
@@ -530,7 +765,7 @@ export function initSettingsModal() {
       } finally {
         updateSaveButton();
       }
-    } else setFeedback('No provider changes to save.', 'error');
+    } else setFeedback(t('settings.noProviderChanges'), 'error');
   }
 
   function injectAppLockStyles() {
@@ -735,7 +970,7 @@ export function initSettingsModal() {
             updateSaveButton());
         })();
       } catch (err) {
-        setFeedback('Could not load settings.', 'error');
+        setFeedback(t('settings.couldNotLoad'), 'error');
       }
       requestAnimationFrame(() => focusActiveTab());
     },

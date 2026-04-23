@@ -1,4 +1,5 @@
 import { state } from '../../../../System/State.js';
+import { t, getLanguage, applyI18n } from '../../../../System/I18n/index.js';
 import { createGitBar } from './Features/GitBar.js';
 import { initDOM } from '../../../Shared/Core/DOM.js';
 import {
@@ -69,93 +70,84 @@ function scheduleMemoryFlush(delayMs = 45_000) {
 
 function syncWelcomeTitle() {
   const welcomeTitle = document.querySelector('.welcome-title');
-  welcomeTitle &&
-    (welcomeTitle.textContent = (function () {
-      const name =
-          String(state.userName ?? '')
-            .trim()
-            .split(/\s+/)[0] || '',
-        hour = new Date().getHours(),
-        allGreetings = [...getTimeGreetings(hour, name), ...getRandomGreetings(name)];
-      return allGreetings[Math.floor(Math.random() * allGreetings.length)];
-    })());
+  if (!welcomeTitle) return;
+  const name =
+    String(state.userName ?? '')
+      .trim()
+      .split(/\s+/)[0] || '';
+  if (getLanguage() !== 'en') {
+    welcomeTitle.textContent = name ? `${t('chat.welcome')}, ${name}!` : `${t('chat.welcome')}!`;
+    return;
+  }
+  const hour = new Date().getHours();
+  const allGreetings = [...getTimeGreetings(hour, name), ...getRandomGreetings(name)];
+  welcomeTitle.textContent = allGreetings[Math.floor(Math.random() * allGreetings.length)];
 }
 function renderStarterPrompts() {
   const container = document.querySelector('.welcome-chips');
-  if (container) {
-    container.innerHTML = '';
+  if (!container) return;
+  container.innerHTML = '';
 
-    if (state.isIncognito) {
-      const doesItems = ['Off the record', 'No history saved', 'Clears on close'];
-      const wontItems = ["Won't save chats", "Won't build memory", "Won't appear in history"];
-      for (const label of doesItems) {
-        const chip = document.createElement('span');
-        chip.className = 'chip chip--info chip--does';
-        chip.textContent = label;
-        container.appendChild(chip);
-      }
-      for (const label of wontItems) {
-        const chip = document.createElement('span');
-        chip.className = 'chip chip--info chip--wont';
-        chip.textContent = label;
-        container.appendChild(chip);
-      }
-      return;
+  if (state.isIncognito) {
+    const doesItems = [
+      t('incognito.offRecord'),
+      t('incognito.noHistory'),
+      t('incognito.clearsOnClose'),
+    ];
+    const wontItems = [
+      t('incognito.wontSave'),
+      t('incognito.wontMemory'),
+      t('incognito.wontHistory'),
+    ];
+    for (const label of doesItems) {
+      const chip = document.createElement('span');
+      chip.className = 'chip chip--info chip--does';
+      chip.textContent = label;
+      container.appendChild(chip);
     }
+    for (const label of wontItems) {
+      const chip = document.createElement('span');
+      chip.className = 'chip chip--info chip--wont';
+      chip.textContent = label;
+      container.appendChild(chip);
+    }
+    return;
+  }
 
-    for (const { label: label, prompt: prompt } of (function () {
-      const projectName = state.activeProject?.name?.trim();
-      if (Boolean(state.workspacePath)) {
-        const scopeLabel = projectName ? `the project "${projectName}"` : 'this workspace';
-        return [
-          {
-            label: projectName ? 'Review this project' : 'Review this workspace',
-            prompt: `Summarize ${scopeLabel} and point out the top 3 things I should improve next.`,
-          },
-          {
-            label: projectName ? 'Debug this project' : 'Debug this workspace',
-            prompt: `Help me debug an issue in ${projectName ? `"${projectName}"` : 'this workspace'}. Ask for the files you need and guide me step by step.`,
-          },
-          {
-            label: 'Plan a feature',
-            prompt: `Plan the next feature for ${scopeLabel} with milestones, risks, and a clean implementation order.`,
-          },
-          {
-            label: 'What should I build?',
-            prompt: `Write a focused to-do list for what I should work on next based on ${scopeLabel}.`,
-          },
-        ];
-      }
-      return [
-        {
-          label: 'Review some code',
-          prompt:
-            'Review the code or approach I share and point out the top 3 improvements you would make.',
-        },
-        {
-          label: 'Debug an issue',
-          prompt:
-            'Help me debug an issue. Ask for the code, logs, or error message you need and guide me step by step.',
-        },
-        {
-          label: 'Plan a feature',
-          prompt:
-            'Help me plan a new feature with milestones, risks, and a clean implementation order.',
-        },
-        {
-          label: 'Generate starter code',
-          prompt:
-            'Generate starter code for what I want to build and tell me which files to create.',
-        },
-      ];
-    })()) {
-      const button = document.createElement('button');
-      ((button.className = 'chip'),
-        (button.type = 'button'),
-        (button.dataset.prompt = prompt),
-        (button.textContent = label),
-        container.appendChild(button));
-    }
+  const projectName = state.activeProject?.name?.trim();
+  let prompts;
+  if (state.workspacePath) {
+    const scope = projectName
+      ? t('prompts.theProject', { name: projectName })
+      : t('prompts.thisWorkspace');
+    prompts = [
+      {
+        label: projectName ? t('prompts.reviewProject') : t('prompts.reviewWorkspace'),
+        prompt: t('prompts.reviewScopePrompt', { scope }),
+      },
+      {
+        label: projectName ? t('prompts.debugProject') : t('prompts.debugWorkspace'),
+        prompt: t('prompts.debugScopePrompt', { scope }),
+      },
+      { label: t('prompts.planFeature'), prompt: t('prompts.planScopePrompt', { scope }) },
+      { label: t('prompts.whatBuild'), prompt: t('prompts.whatBuildPrompt', { scope }) },
+    ];
+  } else {
+    prompts = [
+      { label: t('prompts.reviewCode'), prompt: t('prompts.reviewCodePrompt') },
+      { label: t('prompts.debugIssue'), prompt: t('prompts.debugIssuePrompt') },
+      { label: t('prompts.planFeature'), prompt: t('prompts.planFeaturePrompt') },
+      { label: t('prompts.generateStarter'), prompt: t('prompts.generateStarterPrompt') },
+    ];
+  }
+
+  for (const { label, prompt } of prompts) {
+    const button = document.createElement('button');
+    button.className = 'chip';
+    button.type = 'button';
+    button.dataset.prompt = prompt;
+    button.textContent = label;
+    container.appendChild(button);
   }
 }
 function syncProjectUI() {
@@ -166,13 +158,15 @@ function syncProjectUI() {
   const ti = document.getElementById('project-context-title'),
     pa = document.getElementById('project-context-path'),
     ta = document.getElementById('chat-input');
-  (project
-    ? (ti && (ti.textContent = project.name),
-      pa && (pa.textContent = project.rootPath),
-      ta && (ta.placeholder = `Message ${project.name}`))
-    : ta && (ta.placeholder = 'How can I help you today?'),
-    renderStarterPrompts(),
-    syncWorkspacePickerVisibility?.());
+  if (project) {
+    ti && (ti.textContent = project.name);
+    pa && (pa.textContent = project.rootPath);
+    ta && (ta.placeholder = t('chat.messageName', { name: project.name }));
+  } else {
+    ta && (ta.placeholder = t('chat.placeholder'));
+  }
+  renderStarterPrompts();
+  syncWorkspacePickerVisibility?.();
   gitBar?.updateWorkingDir(project?.rootPath ?? null);
 }
 export function mount(outlet, { settings: _settings, navigate: _navigate }) {
@@ -182,7 +176,11 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     syncWelcomeTitle(),
     (function () {
       const el = document.getElementById('welcome-subtitle');
-      el && (el.textContent = getSubtitles[Math.floor(Math.random() * getSubtitles.length)]);
+      el &&
+        (el.textContent =
+          getLanguage() === 'en'
+            ? getSubtitles[Math.floor(Math.random() * getSubtitles.length)]
+            : t('chat.askAnything'));
     })(),
     (document.title = 'Joanium'),
     syncProjectUI(),
@@ -295,6 +293,14 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     window.addEventListener('ow:user-profile-updated', onUserProfileUpdated),
     window.addEventListener('ow:workspace-changed', onWorkspaceChanged),
     window.addEventListener('ow:project-changed', onProjectChanged));
+  const onLanguageChanged = () => {
+    syncWelcomeTitle();
+    renderStarterPrompts();
+    syncIncognitoUI();
+    syncProjectUI();
+    applyI18n(outlet);
+  };
+  window.addEventListener('ow:language-changed', onLanguageChanged);
   const enhanceBtn = document.getElementById('enhance-btn'),
     enhanceFeature = createEnhanceFeature({
       textarea: textarea,
@@ -312,9 +318,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
   function syncIncognitoUI() {
     if (!incognitoBtn) return;
     incognitoBtn.classList.toggle('incognito-active', state.isIncognito);
-    incognitoBtn.title = state.isIncognito
-      ? 'Incognito mode ON — chats not saved'
-      : "Incognito mode (chats won't be saved)";
+    incognitoBtn.title = state.isIncognito ? t('chat.incognitoActive') : t('chat.incognito');
 
     // Swap welcome logo between Joanium logo and Private.png
     const welcomeLogo = document.querySelector('.welcome-logo');
@@ -328,8 +332,10 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     const subtitleEl = document.getElementById('welcome-subtitle');
     if (subtitleEl) {
       subtitleEl.textContent = state.isIncognito
-        ? "This session is private — your chat won't be saved or remembered."
-        : getSubtitles[Math.floor(Math.random() * getSubtitles.length)];
+        ? t('chat.incognitoDesc')
+        : getLanguage() === 'en'
+          ? getSubtitles[Math.floor(Math.random() * getSubtitles.length)]
+          : t('chat.askAnything');
     }
 
     // Toggle a class on the welcome section for CSS hooks
@@ -432,6 +438,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         window.removeEventListener('ow:user-profile-updated', onUserProfileUpdated),
         window.removeEventListener('ow:workspace-changed', onWorkspaceChanged),
         window.removeEventListener('ow:project-changed', onProjectChanged),
+        window.removeEventListener('ow:language-changed', onLanguageChanged),
         offBackendReady?.(),
         cancelSpeak(),
         welcomeChips?.removeEventListener('click', onStarterChipClick),

@@ -3,6 +3,7 @@ import fs from 'fs';
 import * as AppSettingsService from '../Services/AppSettingsService.js';
 import * as AppLockService from '../Services/AppLockService.js';
 import * as PowerService from '../Services/PowerService.js';
+import * as SystemPromptService from '../Services/SystemPromptService.js';
 import { loadPage } from '../Core/Window.js';
 import Paths from '../Core/Paths.js';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
@@ -91,6 +92,13 @@ export function register() {
       // --- keep_awake ---
       if ('keep_awake' in patch) {
         patch.keep_awake ? PowerService.start() : PowerService.stop();
+      }
+
+      // --- app_language ---
+      // When the language changes, the AI system prompt needs to be rebuilt so the
+      // new language preference is visible to the model on the next message.
+      if ('app_language' in patch) {
+        SystemPromptService.invalidate();
       }
 
       // --- system_tray ---

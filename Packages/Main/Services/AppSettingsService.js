@@ -5,7 +5,21 @@ const DEFAULTS = {
   run_on_startup: false,
   system_tray: false,
   keep_awake: false,
+  app_language: 'en',
 };
+
+const SUPPORTED_LANGUAGES = {
+  en: { code: 'en', label: 'English' },
+  de: { code: 'de', label: 'German' },
+};
+
+export function getSupportedLanguages() {
+  return SUPPORTED_LANGUAGES;
+}
+
+export function getLanguageLabel(code) {
+  return SUPPORTED_LANGUAGES[code]?.label ?? 'English';
+}
 
 function readStoredAppSettings() {
   return readUser().app_settings ?? {};
@@ -13,11 +27,14 @@ function readStoredAppSettings() {
 
 export function readAppSettings() {
   const stored = readStoredAppSettings();
+  const rawLang = stored.app_language ?? DEFAULTS.app_language;
+  const app_language = rawLang in SUPPORTED_LANGUAGES ? rawLang : 'en';
   return {
     run_on_startup: Boolean(stored.run_on_startup ?? DEFAULTS.run_on_startup),
     system_tray: Boolean(stored.system_tray ?? DEFAULTS.system_tray),
     keep_awake: Boolean(stored.keep_awake ?? DEFAULTS.keep_awake),
     app_lock: Boolean(stored.app_lock ?? false),
+    app_language,
   };
 }
 

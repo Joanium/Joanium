@@ -1,5 +1,6 @@
 import { buildSystemPrompt } from '../../System/Prompting/SystemPrompt.js';
 import * as ContentLibraryService from './ContentLibraryService.js';
+import * as AppSettingsService from './AppSettingsService.js';
 let _cache = null,
   _cacheTime = 0,
   _inflight = null;
@@ -44,6 +45,7 @@ export async function get({
         activePersona: activePersona,
         connectedServices: featurePromptContext.connectedServices ?? [],
         extraContextSections: featurePromptContext.sections ?? [],
+        appLanguage: AppSettingsService.readAppSettings().app_language ?? 'en',
       })),
       (_cacheTime = Date.now()),
       _cache

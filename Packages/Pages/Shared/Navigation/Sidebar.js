@@ -1,3 +1,4 @@
+import { t } from '../../../System/I18n/index.js';
 const ICON_chevronRight =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n                   <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n                 </svg>',
   THEMES = [
@@ -63,13 +64,13 @@ export function initSidebar({
         .map((item) => btn(item.id, item.icon, item.label))
         .join('\n    '),
       bottomButtons = nav.bottom.map((item) => btn(item.id, item.icon, item.label)).join('\n    ');
-    return `\n    ${btn('chat', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M12 5v14M5 12h14" stroke-linecap="round"/>\n            </svg>', 'New chat')}\n    ${btn('library', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M4 4h4v16H4zM10 4h10v7H10zM10 15h10v5H10z" stroke-linejoin="round"/>\n            </svg>', 'Library')}\n    ${btn('projects', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n               <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"/>\n               <path d="M8 11h8M8 15h5" stroke-linecap="round"/>\n             </svg>', 'Projects')}\n    ${topButtons}\n\n    <div class="sidebar-spacer"></div>\n\n    ${bottomButtons}\n\n    <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"\n            data-tip="Switch theme" title="Switch theme">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n            <circle cx="12" cy="12" r="4"/>\n            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41\n                     M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"\n                  stroke-linecap="round"/>\n          </svg>\n    </button>\n\n    <button class="sidebar-avatar" id="sidebar-avatar-btn"\n            data-tip="Account" title="Account">JO</button>\n  `;
+    return `\n    ${btn('chat', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M12 5v14M5 12h14" stroke-linecap="round"/>\n            </svg>', t('sidebar.newChat'))}\n    ${btn('library', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M4 4h4v16H4zM10 4h10v7H10zM10 15h10v5H10z" stroke-linejoin="round"/>\n            </svg>', t('sidebar.library'))}\n    ${btn('projects', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n               <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"/>\n               <path d="M8 11h8M8 15h5" stroke-linecap="round"/>\n             </svg>', t('sidebar.projects'))}\n    ${topButtons}\n\n    <div class="sidebar-spacer"></div>\n\n    ${bottomButtons}\n\n    <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"\n            data-tip="${t('sidebar.switchTheme')}" title="${t('sidebar.switchTheme')}">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n            <circle cx="12" cy="12" r="4"/>\n            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41\n                     M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"\n                  stroke-linecap="round"/>\n          </svg>\n    </button>\n\n    <button class="sidebar-avatar" id="sidebar-avatar-btn"\n            data-tip="${t('sidebar.account')}" title="${t('sidebar.account')}">JO</button>\n  `;
   })(activePage, navigation)),
     (themePanelEl.innerHTML = THEMES.map(
       (t) =>
         `\n    <button class="theme-option" data-theme="${t.id}">\n      <span class="theme-swatch ${t.swatchClass}"></span>${t.label}\n    </button>\n  `,
     ).join('')),
-    (avatarPanelEl.innerHTML = `\n    <div class="ap-header">\n      <div class="ap-badge" id="avatar-panel-badge">JO</div>\n      <div class="ap-user-info">\n        <span class="ap-name"    id="avatar-panel-name">User</span>\n        <span class="ap-subtitle">Joanium account</span>\n      </div>\n    </div>\n\n    <div class="ap-divider"></div>\n\n    <button id="avatar-settings-btn" class="ap-settings-btn" type="button">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">Settings</span>\n        <span class="ap-settings-subtitle">Manage your profile, providers, and connectors</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n\n    <button id="avatar-about-btn" class="ap-settings-btn" type="button"\n            style="margin-top:8px;">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">About</span>\n        <span class="ap-settings-subtitle">Version info, credits, and support the project</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n  `),
+    (avatarPanelEl.innerHTML = `\n    <div class="ap-header">\n      <div class="ap-badge" id="avatar-panel-badge">JO</div>\n      <div class="ap-user-info">\n        <span class="ap-name"    id="avatar-panel-name">User</span>\n        <span class="ap-subtitle">${t('sidebar.joAccount')}</span>\n      </div>\n    </div>\n\n    <div class="ap-divider"></div>\n\n    <button id="avatar-settings-btn" class="ap-settings-btn" type="button">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.settings')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.settingsSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n\n    <button id="avatar-about-btn" class="ap-settings-btn" type="button"\n            style="margin-top:8px;">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.about')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.aboutSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n  `),
     applyTheme(localStorage.getItem('ow-theme') || 'dark', !1),
     sidebarEl.querySelectorAll('.sidebar-btn[data-view]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -125,6 +126,44 @@ export function initSidebar({
         setUser(String(user?.name ?? '').trim() || 'User');
       } catch {}
     })(),
+    // Update sidebar text when the app language changes
+    window.addEventListener('ow:language-changed', () => {
+      // Special sidebar buttons
+      const viewKeys = {
+        chat: 'sidebar.newChat',
+        library: 'sidebar.library',
+        projects: 'sidebar.projects',
+      };
+      for (const [view, key] of Object.entries(viewKeys)) {
+        const btn = sidebarEl.querySelector(`[data-view="${view}"]`);
+        if (btn) {
+          btn.title = t(key);
+          btn.dataset.tip = t(key);
+        }
+      }
+      // Theme toggle
+      const themeBtn = document.getElementById('theme-toggle-btn');
+      if (themeBtn) {
+        themeBtn.title = t('sidebar.switchTheme');
+        themeBtn.dataset.tip = t('sidebar.switchTheme');
+      }
+      // Avatar button
+      const avatarBtn2 = document.getElementById('sidebar-avatar-btn');
+      if (avatarBtn2) {
+        avatarBtn2.dataset.tip = t('sidebar.account');
+      }
+      // Avatar panel strings
+      const sub = avatarPanelEl.querySelector('.ap-subtitle');
+      if (sub) sub.textContent = t('sidebar.joAccount');
+      const settingsTitle = avatarPanelEl.querySelector('#avatar-settings-btn .ap-settings-title');
+      if (settingsTitle) settingsTitle.textContent = t('sidebar.settings');
+      const settingsSub = avatarPanelEl.querySelector('#avatar-settings-btn .ap-settings-subtitle');
+      if (settingsSub) settingsSub.textContent = t('sidebar.settingsSubtitle');
+      const aboutTitle = avatarPanelEl.querySelector('#avatar-about-btn .ap-settings-title');
+      if (aboutTitle) aboutTitle.textContent = t('sidebar.about');
+      const aboutSub = avatarPanelEl.querySelector('#avatar-about-btn .ap-settings-subtitle');
+      if (aboutSub) aboutSub.textContent = t('sidebar.aboutSubtitle');
+    }),
     {
       setUser: setUser,
       setActivePage: function (page) {

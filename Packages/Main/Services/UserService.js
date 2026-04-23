@@ -15,7 +15,12 @@ const DEFAULT_USER = {
     api_keys: {},
     provider_settings: {},
     preferences: { theme: 'light', default_provider: null, default_model: null },
-    app_settings: { run_on_startup: false, system_tray: false, keep_awake: false },
+    app_settings: {
+      run_on_startup: false,
+      system_tray: false,
+      keep_awake: false,
+      app_language: 'en',
+    },
   },
   LOCAL_PROVIDER_RUNTIME = {
     lmstudio: {
