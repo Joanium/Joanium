@@ -1,7 +1,7 @@
 import definePage from '../../System/Contracts/DefinePage.js';
 export default definePage({
   id: 'automations',
-  label: 'Automations',
+  label: 'automations.title',
   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n           <path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round"/>\n         </svg>',
   css: new URL('./UI/Styles/AutomationsPage.css', import.meta.url).href,
   order: 20,

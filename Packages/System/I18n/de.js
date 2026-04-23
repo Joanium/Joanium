@@ -451,4 +451,8 @@ export default {
     refreshing: 'Wird aktualisiert\u2026',
     noData: 'Keine Daten f\u00fcr diesen Zeitraum.',
   },
+  nav: {
+    events: 'Ereignisse',
+    setup: 'Einrichtung',
+  },
 };

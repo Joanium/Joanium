@@ -448,4 +448,8 @@ export default {
     cancel: 'Cancel',
     dailyUsage: 'Daily token usage',
   },
+  nav: {
+    events: 'Events',
+    setup: 'Setup',
+  },
 };

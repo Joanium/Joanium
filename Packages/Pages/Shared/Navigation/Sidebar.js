@@ -57,13 +57,15 @@ export function initSidebar({
   if (!avatarPanelEl) throw new Error('[Sidebar] Missing #avatar-panel element in the DOM.');
   ((sidebarEl.innerHTML = (function (activePage, navigation = {}) {
     const nav = { top: navigation.top ?? [], bottom: navigation.bottom ?? [] },
-      btn = (id, icon, tip) =>
-        `<button class="sidebar-btn${id === activePage ? ' active' : ''}" data-view="${id}" data-tip="${tip}" title="${tip}">\n              ${icon}\n            </button>`,
+      btn = (id, icon, tip, i18nKey = '') =>
+        `<button class="sidebar-btn${id === activePage ? ' active' : ''}" data-view="${id}" data-tip="${tip}" title="${tip}"${i18nKey ? ` data-i18n-key="${i18nKey}"` : ''}>\n              ${icon}\n            </button>`,
       topButtons = nav.top
         .filter((item) => !SPECIAL_BUTTON_IDS.has(item.id))
-        .map((item) => btn(item.id, item.icon, item.label))
+        .map((item) => btn(item.id, item.icon, t(item.label), item.label))
         .join('\n    '),
-      bottomButtons = nav.bottom.map((item) => btn(item.id, item.icon, item.label)).join('\n    ');
+      bottomButtons = nav.bottom
+        .map((item) => btn(item.id, item.icon, t(item.label), item.label))
+        .join('\n    ');
     return `\n    ${btn('chat', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M12 5v14M5 12h14" stroke-linecap="round"/>\n            </svg>', t('sidebar.newChat'))}\n    ${btn('library', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M4 4h4v16H4zM10 4h10v7H10zM10 15h10v5H10z" stroke-linejoin="round"/>\n            </svg>', t('sidebar.library'))}\n    ${btn('projects', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n               <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"/>\n               <path d="M8 11h8M8 15h5" stroke-linecap="round"/>\n             </svg>', t('sidebar.projects'))}\n    ${topButtons}\n\n    <div class="sidebar-spacer"></div>\n\n    ${bottomButtons}\n\n    <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"\n            data-tip="${t('sidebar.switchTheme')}" title="${t('sidebar.switchTheme')}">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n            <circle cx="12" cy="12" r="4"/>\n            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41\n                     M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"\n                  stroke-linecap="round"/>\n          </svg>\n    </button>\n\n    <button class="sidebar-avatar" id="sidebar-avatar-btn"\n            data-tip="${t('sidebar.account')}" title="${t('sidebar.account')}">JO</button>\n  `;
   })(activePage, navigation)),
     (themePanelEl.innerHTML = THEMES.map(
@@ -128,7 +130,7 @@ export function initSidebar({
     })(),
     // Update sidebar text when the app language changes
     window.addEventListener('ow:language-changed', () => {
-      // Special sidebar buttons
+      // Special sidebar buttons (keys are literal i18n keys)
       const viewKeys = {
         chat: 'sidebar.newChat',
         library: 'sidebar.library',
@@ -141,6 +143,12 @@ export function initSidebar({
           btn.dataset.tip = t(key);
         }
       }
+      // Dynamic page nav buttons — label stored as an i18n key in data-i18n-key
+      sidebarEl.querySelectorAll('.sidebar-btn[data-i18n-key]').forEach((btn) => {
+        const translated = t(btn.dataset.i18nKey);
+        btn.title = translated;
+        btn.dataset.tip = translated;
+      });
       // Theme toggle
       const themeBtn = document.getElementById('theme-toggle-btn');
       if (themeBtn) {
