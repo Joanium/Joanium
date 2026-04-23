@@ -483,7 +483,7 @@ export function initSettingsModal() {
           : (parts[0] ?? 'JO').slice(0, 2).toUpperCase();
       })(displayName)));
     const wt = document.querySelector('.welcome-title');
-    (wt && (wt.textContent = rawName ? `Welcome, ${firstName}` : 'Welcome'),
+    (wt && (wt.textContent = rawName ? `${t('chat.welcome')}, ${firstName}` : t('chat.welcome')),
       window.dispatchEvent(
         new CustomEvent('ow:user-profile-updated', {
           detail: { name: displayName, initials: state.userInitials },
@@ -520,15 +520,15 @@ export function initSettingsModal() {
           hasAnyConfig = isProviderConfigured(r) || hasDraft,
           status = (function (r, config, isDeleting, hasDraft) {
             return isDeleting
-              ? { tone: 'removing', label: 'Removing' }
+              ? { tone: 'removing', label: t('provider.removing') }
               : providerIsComplete(r, config)
                 ? {
                     tone: isProviderConfigured(r) ? 'active' : 'draft',
-                    label: isProviderConfigured(r) ? 'Connected' : 'Ready to save',
+                    label: isProviderConfigured(r) ? t('provider.connected') : t('provider.draft'),
                   }
                 : hasDraft
-                  ? { tone: 'incomplete', label: 'Needs required fields' }
-                  : { tone: 'inactive', label: 'Not connected' };
+                  ? { tone: 'incomplete', label: t('provider.incomplete') }
+                  : { tone: 'inactive', label: t('provider.inactive') };
           })(r, effectiveConfig, isDeleting, hasDraft),
           row = document.createElement('div');
         ((row.className = `spr-row${'active' === status.tone ? ' spr-row--active' : ''}${isDeleting ? ' spr-row--deleting' : ''}`),
@@ -569,7 +569,7 @@ export function initSettingsModal() {
                   (input.type = 'password' === field.type ? 'password' : 'text'),
                   (input.placeholder =
                     'password' === field.type && savedConfig.apiKey
-                      ? '••••••••  (saved)'
+                      ? t('provider.keySaved')
                       : field.placeholder),
                   (input.autocomplete = 'off'),
                   (input.spellcheck = !1),
@@ -635,10 +635,11 @@ export function initSettingsModal() {
         const delBtn = document.createElement('button');
         ((delBtn.type = 'button'),
           (delBtn.className = isDeleting ? 'spr-undo-btn' : 'spr-delete-btn'),
-          (delBtn.title = isDeleting ? 'Undo removal' : 'Remove configuration'),
+          (delBtn.title = isDeleting ? t('provider.undoRemoval') : t('provider.removeConfig')),
           (delBtn.hidden = !isDeleting && !hasAnyConfig),
           (delBtn.innerHTML = isDeleting
-            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 010 8h-1" stroke-linecap="round" stroke-linejoin="round"/></svg> Undo'
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 010 8h-1" stroke-linecap="round" stroke-linejoin="round"/></svg> ' +
+              t('provider.undoRemoval')
             : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>'),
           delBtn.addEventListener('click', () => {
             (isDeleting
@@ -755,9 +756,18 @@ export function initSettingsModal() {
         const savedCount = Object.values(changes).filter((v) => null !== v).length,
           removedCount = Object.values(changes).filter((v) => null === v).length,
           parts = [];
-        (savedCount && parts.push(`${savedCount} provider${1 !== savedCount ? 's' : ''} saved`),
+        (savedCount &&
+          parts.push(
+            t(1 === savedCount ? 'provider.savedSingular' : 'provider.savedPlural', {
+              count: savedCount,
+            }),
+          ),
           removedCount &&
-            parts.push(`${removedCount} provider${1 !== removedCount ? 's' : ''} removed`),
+            parts.push(
+              t(1 === removedCount ? 'provider.removedSingular' : 'provider.removedPlural', {
+                count: removedCount,
+              }),
+            ),
           setFeedback(`${parts.join(', ')}.`, 'success'),
           window.dispatchEvent(new CustomEvent('ow:settings-saved')));
       } catch (err) {

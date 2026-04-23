@@ -1,4 +1,5 @@
 import { state } from '../System/State.js';
+import { t, applyI18n } from '../System/I18n/index.js';
 import { escapeHtml, fullDateTime, timeAgo } from '../System/Utils.js';
 import { createModal } from '../System/ModalFactory.js';
 
@@ -43,8 +44,8 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
     const title = document.getElementById('library-modal-title');
     if (title) {
       title.textContent = state.activeProject
-        ? `${state.activeProject.name} chats`
-        : 'Revisit your chats';
+        ? t('library.projectTitle', { name: state.activeProject.name })
+        : t('library.title');
     }
   }
 
@@ -60,10 +61,10 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
     if (!filtered.length) {
       list.innerHTML = `<div class="lp-empty">${
         query
-          ? 'No matching chats'
+          ? t('library.noMatching')
           : state.activeProject
-            ? 'No chats for this project yet.<br>Start a conversation in this workspace.'
-            : 'No chats yet.<br>Start a conversation!'
+            ? t('library.noChatsProject')
+            : t('library.noChats')
       }</div>`;
       return;
     }
@@ -89,8 +90,8 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
 
       const pinBtn = document.createElement('button');
       pinBtn.className = 'lp-pin-btn' + (isPinned ? ' lp-pin-btn--active' : '');
-      pinBtn.title = isPinned ? 'Unpin chat' : 'Pin chat';
-      pinBtn.setAttribute('aria-label', isPinned ? 'Unpin chat' : 'Pin chat');
+      pinBtn.title = isPinned ? t('library.unpinChat') : t('library.pinChat');
+      pinBtn.setAttribute('aria-label', isPinned ? t('library.unpinChat') : t('library.pinChat'));
       pinBtn.innerHTML = `
         <svg viewBox="0 0 24 24" fill="${isPinned ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="17" x2="12" y2="22"/>
@@ -111,8 +112,8 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'lp-delete-btn';
-      deleteBtn.title = 'Delete chat';
-      deleteBtn.setAttribute('aria-label', 'Delete chat');
+      deleteBtn.title = t('library.deleteChat');
+      deleteBtn.setAttribute('aria-label', t('library.deleteChat'));
       deleteBtn.innerHTML = `
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"
@@ -141,7 +142,7 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
             <path d="M15 5h1a2 2 0 0 1 2 2v1a2 2 0 0 1-.586 1.414L15 11.828V15a1 1 0 0 1-.293.707L13 17H11l-1.707-1.293A1 1 0 0 1 9 15v-3.172L6.586 9.414A2 2 0 0 1 6 8V7a2 2 0 0 1 2-2h1"/>
             <line x1="12" y1="2" x2="12" y2="5"/>
           </svg>
-          Pinned <span class="lp-pin-count">${pinned.length} / ${MAX_PINS}</span>
+          ${t('library.pinned')} <span class="lp-pin-count">${pinned.length} / ${MAX_PINS}</span>
         </div>`;
       pinned.forEach((chat) => pinnedSection.appendChild(buildItem(chat, true)));
       list.appendChild(pinnedSection);
@@ -151,7 +152,7 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
       const allSection = document.createElement('div');
       allSection.className = 'lp-section';
       if (pinned.length) {
-        allSection.innerHTML = `<div class="lp-section-label">All Chats</div>`;
+        allSection.innerHTML = `<div class="lp-section-label">${t('library.allChats')}</div>`;
       }
       unpinned.forEach((chat) => allSection.appendChild(buildItem(chat, false)));
       list.appendChild(allSection);
@@ -166,7 +167,7 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
       renderChatList(chats, searchInput()?.value ?? '');
       return chats;
     } catch {
-      if (list) list.innerHTML = '<div class="lp-empty">Could not load chats</div>';
+      if (list) list.innerHTML = `<div class="lp-empty">${t('library.couldNotLoad')}</div>`;
       return [];
     }
   }
@@ -180,10 +181,10 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
 
         <div class="settings-modal-header">
           <div class="settings-modal-copy">
-            <h2 id="library-modal-title">Revisit your chats</h2>
+            <h2 id="library-modal-title" data-i18n="library.title">Revisit your chats</h2>
           </div>
           <button class="settings-modal-close" id="library-close"
-                  type="button" aria-label="Close library">
+                  type="button" data-i18n-label="library.closeLabel" aria-label="Close library">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
               <path d="M18 6L6 18M6 6l12 12"
                     stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
@@ -200,6 +201,7 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
                 <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
               </svg>
               <input type="text" id="library-search"
+                     data-i18n-placeholder="library.searchPlaceholder"
                      placeholder="Search chats…"
                      autocomplete="off" spellcheck="false"/>
             </div>
@@ -233,6 +235,11 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
       window.addEventListener('ow:project-changed', () => {
         syncHeader();
         if (modal.isOpen()) refreshChatList();
+      });
+
+      window.addEventListener('ow:language-changed', () => {
+        applyI18n(backdrop);
+        syncHeader();
       });
     },
   });
