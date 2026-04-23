@@ -1,6 +1,7 @@
 import { createCardPool } from '../../../../System/CardPool.js';
 import { escapeHtml, renderMarkdownToHtml } from '../../../../System/Utils.js';
 import { getMarketplaceHTML } from './Templates/MarketplaceTemplate.js';
+import { t } from '../../../../System/I18n/index.js';
 let countEl = null,
   sourceEl = null,
   gridEl = null,
@@ -40,7 +41,7 @@ let countEl = null,
   _origins = [],
   _activeOrigin = '';
 function getTypeLabel(type) {
-  return 'personas' === type ? 'Personas' : 'Skills';
+  return 'personas' === type ? t('marketplace.personas') : t('marketplace.skills');
 }
 function getItemIcon(type) {
   return 'personas' === type
@@ -145,15 +146,16 @@ function updateCard(card, item) {
     (card.querySelector('.marketplace-card-icon').innerHTML = getItemIcon(item.type)),
     (card.querySelector('.marketplace-card-name').textContent = item.name),
     (card.querySelector('.marketplace-card-publisher').textContent = item.publisher),
-    (card.querySelector('.marketplace-card-description').textContent =
-      'Open to read the full file.'),
+    (card.querySelector('.marketplace-card-description').textContent = t('marketplace.cardDesc')),
     (card.querySelector('.marketplace-card-tags').innerHTML = buildMetaChips(item)),
     (card.querySelector('.marketplace-card-verified').hidden = !0 !== item.isVerified));
   const statusEl = card.querySelector('.marketplace-card-status');
   ((statusEl.hidden = !0 !== item.isInstalled),
     (statusEl.textContent = item.isInstalled ? 'Installed' : ''));
   const installBtn = card.querySelector('.marketplace-card-install-btn');
-  ((installBtn.textContent = item.isInstalled ? 'Installed' : 'Install'),
+  ((installBtn.textContent = item.isInstalled
+    ? t('marketplace.installed')
+    : t('marketplace.install')),
     (installBtn.disabled = !0 === item.isInstalled));
 }
 function updateModal(item) {
@@ -162,7 +164,9 @@ function updateModal(item) {
     (modalIconEl.innerHTML = getItemIcon(item.type)),
     (modalVerifiedEl.hidden = !0 !== item.isVerified),
     (modalInstallBtn.disabled = !0 === item.isInstalled),
-    (modalInstallBtn.textContent = item.isInstalled ? 'Installed' : 'Install'));
+    (modalInstallBtn.textContent = item.isInstalled
+      ? t('marketplace.installed')
+      : t('marketplace.install')));
 }
 function setModalStatus(message = '', tone = 'info') {
   if (modalStatusEl) {
@@ -182,7 +186,7 @@ async function openModal(item) {
     ((_selectedItem = item),
     updateModal(item),
     (modalContentEl.innerHTML = item.markdown ? renderMarkdownToHtml(item.markdown) : ''),
-    setModalStatus(item.markdown ? '' : 'Loading the full file...', 'info'),
+    setModalStatus(item.markdown ? '' : t('marketplace.loadingItem'), 'info'),
     modalBackdrop.classList.add('open'),
     document.body.classList.add('modal-open'),
     !item.markdown)
@@ -214,8 +218,8 @@ async function installItem(item) {
   const previousLabel = modalInstallBtn?.textContent;
   _selectedItem?.id === item.id &&
     ((modalInstallBtn.disabled = !0),
-    (modalInstallBtn.textContent = 'Installing...'),
-    setModalStatus('Installing into your local library...', 'info'));
+    (modalInstallBtn.textContent = t('marketplace.installing')),
+    setModalStatus(t('marketplace.installingItem'), 'info'));
   try {
     const result = await window.electronAPI?.invoke?.('marketplace-install-item', {
       type: item.type,
@@ -232,10 +236,7 @@ async function installItem(item) {
       _selectedItem?.id === installedItem.id &&
         ((_selectedItem = installedItem),
         updateModal(installedItem),
-        setModalStatus(
-          'Installed successfully. It is now available in your local library.',
-          'success',
-        )));
+        setModalStatus(t('marketplace.installSuccess'), 'success')));
   } catch (error) {
     _selectedItem?.id === item.id &&
       ((modalInstallBtn.disabled = !1),

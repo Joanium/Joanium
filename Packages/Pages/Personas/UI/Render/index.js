@@ -2,6 +2,7 @@ import { getPersonasHTML } from './Templates/PersonasTemplate.js';
 import { createPersonaCardPool, getAvatarInitials } from './Components/PersonasCards.js';
 import { renderMarkdownToHtml } from '../../../../System/Utils.js';
 import { openConfirm } from '../../../../System/ConfirmDialog.js';
+import { t } from '../../../../System/I18n/index.js';
 let activeBanner = null,
   activeNameEl = null,
   personasGrid = null,
@@ -31,7 +32,11 @@ function render(query = '') {
   })();
   const total = _allPersonas.length;
   if (
-    (countEl && (countEl.textContent = `${total} persona${1 !== total ? 's' : ''}`),
+    (countEl &&
+      (countEl.textContent =
+        1 === total
+          ? t('personas.personaCount', { count: total })
+          : t('personas.personasCount', { count: total })),
     !personasGrid || !_personaPool)
   )
     return;
@@ -72,7 +77,7 @@ function render(query = '') {
         (noResults.className = 'personas-no-results'),
         (noResults.hidden = !0),
         personasGrid.appendChild(noResults)),
-      (noResults.textContent = `No personas match "${query}"`),
+      (noResults.textContent = t('personas.noMatch', { query })),
       void (noResults.hidden = !1)
     );
   (noResults && (noResults.hidden = !0),
@@ -134,9 +139,9 @@ export function mount(outlet, { navigate: navigate }) {
       },
       onDeletePersona: async (persona) => {
         const confirmed = await openConfirm({
-          title: `Delete "${persona.name}"?`,
-          body: 'This will permanently remove the persona file. This cannot be undone.',
-          confirmText: 'Delete',
+          title: t('personas.deleteTitle', { name: persona.name }),
+          body: t('personas.deleteBody'),
+          confirmText: t('personas.delete'),
           variant: 'danger',
         });
         if (!confirmed) return;

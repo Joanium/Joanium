@@ -1,3 +1,4 @@
+import { t } from '../../../../../System/I18n/index.js';
 export function getEventsHTML() {
   return `
 <main id="main" class="events-main">
@@ -5,27 +6,27 @@ export function getEventsHTML() {
     <div class="events-page-header">
       <div class="events-page-header-copy">
         <h2>
-          Events
+          ${t('nav.events')}
           <span class="events-live-badge" id="events-live-badge">
             <span class="events-live-dot"></span>
-            Live
+            ${t('events.live')}
           </span>
         </h2>
-        <p>Real-time log of every automation, agent, and channel interaction - successes, failures, and what happened.</p>
+        <p>${t('events.description')}</p>
       </div>
       <div class="events-header-actions">
         <div class="events-filter-group">
-          <button class="events-filter-btn active" data-filter="all">All</button>
-          <button class="events-filter-btn" data-filter="agents">Agents</button>
-          <button class="events-filter-btn" data-filter="automations">Automations</button>
-          <button class="events-filter-btn" data-filter="channels">Channels</button>
-          <button class="events-filter-btn" data-filter="errors">Errors</button>
+          <button class="events-filter-btn active" data-filter="all">${t('events.filterAll')}</button>
+          <button class="events-filter-btn" data-filter="agents">${t('events.filterAgents')}</button>
+          <button class="events-filter-btn" data-filter="automations">${t('events.filterAutomations')}</button>
+          <button class="events-filter-btn" data-filter="channels">${t('events.filterChannels')}</button>
+          <button class="events-filter-btn" data-filter="errors">${t('events.filterErrors')}</button>
         </div>
         <button class="events-clear-btn" id="events-clear-btn" title="Clear event log">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          Clear
+          ${t('events.clear')}
         </button>
       </div>
     </div>
@@ -33,27 +34,27 @@ export function getEventsHTML() {
     <div class="events-stats-bar">
       <div class="events-stat">
         <span class="events-stat-value" id="stat-total">-</span>
-        <span class="events-stat-label">Total events</span>
+        <span class="events-stat-label">${t('events.statTotal')}</span>
       </div>
       <div class="events-stat-divider"></div>
       <div class="events-stat">
         <span class="events-stat-value success" id="stat-success">-</span>
-        <span class="events-stat-label">Successful</span>
+        <span class="events-stat-label">${t('events.statSuccessful')}</span>
       </div>
       <div class="events-stat-divider"></div>
       <div class="events-stat">
         <span class="events-stat-value skipped" id="stat-skipped">-</span>
-        <span class="events-stat-label">Skipped</span>
+        <span class="events-stat-label">${t('events.statSkipped')}</span>
       </div>
       <div class="events-stat-divider"></div>
       <div class="events-stat">
         <span class="events-stat-value error" id="stat-errors">-</span>
-        <span class="events-stat-label">Errors</span>
+        <span class="events-stat-label">${t('events.statErrors')}</span>
       </div>
       <div class="events-stat-divider"></div>
       <div class="events-stat">
         <span class="events-stat-value" id="stat-agents">-</span>
-        <span class="events-stat-label">Active sources</span>
+        <span class="events-stat-label">${t('events.statSources')}</span>
       </div>
     </div>
 
@@ -69,8 +70,8 @@ export function getEventsHTML() {
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
-      <h3>No events yet</h3>
-      <p>Events will appear here as automations run, agents complete, and channel messages are handled.</p>
+      <h3>${t('events.noEventsYet')}</h3>
+      <p>${t('events.noEventsDesc')}</p>
     </div>
 
     <div id="events-feed" class="events-feed" style="display:none"></div>
@@ -81,7 +82,7 @@ export function getEventsHTML() {
   <div id="event-detail-modal" role="dialog" aria-modal="true">
     <div class="event-detail-header">
       <div class="event-detail-title-group">
-        <div class="event-detail-eyebrow" id="detail-eyebrow">Event Details</div>
+        <div class="event-detail-eyebrow" id="detail-eyebrow">${t('events.detailEyebrow')}</div>
         <h2 id="detail-title">-</h2>
         <div class="event-detail-timestamp" id="detail-meta"></div>
       </div>
@@ -103,14 +104,11 @@ export function getEventsHTML() {
         <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
-    <h2 class="events-confirm-title">Clear all events?</h2>
-    <p class="events-confirm-body">
-      This will permanently delete all run history and channel message logs.
-      Events from future runs will still appear here.
-    </p>
+    <h2 class="events-confirm-title">${t('events.clearTitle')}</h2>
+    <p class="events-confirm-body">${t('events.clearBody')}</p>
     <div class="events-confirm-actions">
-      <button class="events-confirm-btn events-confirm-btn--cancel" id="events-confirm-cancel">Cancel</button>
-      <button class="events-confirm-btn events-confirm-btn--ok" id="events-confirm-ok">Clear all</button>
+      <button class="events-confirm-btn events-confirm-btn--cancel" id="events-confirm-cancel">${t('events.cancel')}</button>
+      <button class="events-confirm-btn events-confirm-btn--ok" id="events-confirm-ok">${t('events.clearConfirm')}</button>
     </div>
   </div>
 </div>`;

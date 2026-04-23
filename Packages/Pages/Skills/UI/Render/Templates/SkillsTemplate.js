@@ -24,7 +24,7 @@ export function getHTML() {
         </div>
 
         <div class="skills-header-actions">
-          <span id="skills-count" class="page-count">0 skills</span>
+          <span id="skills-count" class="page-count">${t('skills.skillsCount', { count: 0 })}</span>
           <span id="skills-enabled-count" class="skills-enabled-count">${t('skills.noneActive')}</span>
           <button id="skills-enable-all" class="skills-bulk-btn skills-bulk-btn--enable" disabled>${t('skills.enableAll')}</button>
           <button id="skills-disable-all" class="skills-bulk-btn" disabled>${t('skills.disableAll')}</button>

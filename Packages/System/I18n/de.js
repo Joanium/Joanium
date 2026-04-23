@@ -455,4 +455,29 @@ export default {
     events: 'Ereignisse',
     setup: 'Einrichtung',
   },
+  events: {
+    live: 'Live',
+    description:
+      'Echtzeit-Protokoll jeder Automatisierung, jeden Agenten und jeder Kanal-Interaktion — Erfolge, Fehler und was passiert ist.',
+    filterAll: 'Alle',
+    filterAgents: 'Agenten',
+    filterAutomations: 'Automatisierungen',
+    filterChannels: 'Kanäle',
+    filterErrors: 'Fehler',
+    clear: 'Löschen',
+    statTotal: 'Ereignisse gesamt',
+    statSuccessful: 'Erfolgreich',
+    statSkipped: 'Übersprungen',
+    statErrors: 'Fehler',
+    statSources: 'Aktive Quellen',
+    noEventsYet: 'Noch keine Ereignisse',
+    noEventsDesc:
+      'Ereignisse erscheinen hier, wenn Automatisierungen laufen, Agenten fertig sind und Kanal-Nachrichten verarbeitet werden.',
+    detailEyebrow: 'Ereignisdetails',
+    clearTitle: 'Alle Ereignisse löschen?',
+    clearBody:
+      'Alle Verlaufsdaten und Kanal-Nachrichtenprotokolle werden dauerhaft gelöscht. Zukünftige Ereignisse erscheinen weiterhin hier.',
+    cancel: 'Abbrechen',
+    clearConfirm: 'Alles löschen',
+  },
 };

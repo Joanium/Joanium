@@ -3,6 +3,7 @@ import { openConfirm, closeConfirm } from './Components/SkillsConfirm.js';
 import { openConfirm as openDeleteConfirm } from '../../../../System/ConfirmDialog.js';
 import { createCardPool } from '../../../../System/CardPool.js';
 import { renderMarkdownToHtml } from '../../../../System/Utils.js';
+import { t } from '../../../../System/I18n/index.js';
 let skillsGrid = null,
   skillsEmpty = null,
   searchWrapper = null,
@@ -22,9 +23,14 @@ let skillsGrid = null,
 function updateCounts() {
   const total = _allSkills.length,
     enabled = _allSkills.filter((s) => s.enabled).length;
-  (countEl && (countEl.textContent = `${total} skill${1 !== total ? 's' : ''}`),
+  (countEl &&
+    (countEl.textContent =
+      1 === total
+        ? t('skills.skillCount', { count: total })
+        : t('skills.skillsCount', { count: total })),
     enabledCountEl &&
-      ((enabledCountEl.textContent = 0 === enabled ? 'None active' : `${enabled} active`),
+      ((enabledCountEl.textContent =
+        0 === enabled ? t('skills.noneActive') : t('skills.activeCount', { count: enabled })),
       enabledCountEl.classList.toggle('skills-enabled-count--active', enabled > 0)),
     enableAllBtn && (enableAllBtn.disabled = enabled === total),
     disableAllBtn && (disableAllBtn.disabled = 0 === enabled));
@@ -65,7 +71,8 @@ function createSkillCard() {
       const skill = card._currentSkill;
       if (!skill) return;
       const newEnabled = e.target.checked;
-      (toggleLabel && (toggleLabel.title = newEnabled ? 'Disable this skill' : 'Enable this skill'),
+      (toggleLabel &&
+        (toggleLabel.title = newEnabled ? t('skills.disableToggle') : t('skills.enableToggle')),
         card.classList.toggle('skill-card--enabled', newEnabled),
         await (async function (skillId, newEnabled) {
           const skill = _allSkills.find((s) => s.id === skillId);
@@ -88,9 +95,9 @@ function createSkillCard() {
       const skill = card._currentSkill;
       if (!skill) return;
       const confirmed = await openDeleteConfirm({
-        title: `Delete "${skill.name}"?`,
-        body: 'This will permanently remove the skill file. This cannot be undone.',
-        confirmText: 'Delete',
+        title: t('skills.deleteTitle', { name: skill.name }),
+        body: t('skills.deleteBody'),
+        confirmText: t('skills.delete'),
         variant: 'danger',
       });
       if (!confirmed) return;
@@ -114,8 +121,8 @@ function updateSkillCard(card, skill) {
     (card.querySelector('.skill-publisher').textContent = skill.publisher),
     (card.querySelector('.skill-verified').hidden = !0 !== skill.isVerified),
     (card.querySelector('.skill-toggle').title = skill.enabled
-      ? 'Disable this skill'
-      : 'Enable this skill'),
+      ? t('skills.disableToggle')
+      : t('skills.enableToggle')),
     (card.querySelector('.skill-toggle-input').checked = skill.enabled));
   const triggerEl = card.querySelector('.skill-trigger');
   skill.trigger
@@ -160,7 +167,7 @@ function render(query = '') {
         ((noResults = document.createElement('div')),
         (noResults.className = 'skills-no-results'),
         skillsGrid.appendChild(noResults)),
-      (noResults.textContent = `No skills match "${query}"`),
+      (noResults.textContent = t('skills.noMatch', { query })),
       void (noResults.style.display = '')
     );
   }

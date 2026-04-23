@@ -452,4 +452,29 @@ export default {
     events: 'Events',
     setup: 'Setup',
   },
+  events: {
+    live: 'Live',
+    description:
+      'Real-time log of every automation, agent, and channel interaction — successes, failures, and what happened.',
+    filterAll: 'All',
+    filterAgents: 'Agents',
+    filterAutomations: 'Automations',
+    filterChannels: 'Channels',
+    filterErrors: 'Errors',
+    clear: 'Clear',
+    statTotal: 'Total events',
+    statSuccessful: 'Successful',
+    statSkipped: 'Skipped',
+    statErrors: 'Errors',
+    statSources: 'Active sources',
+    noEventsYet: 'No events yet',
+    noEventsDesc:
+      'Events will appear here as automations run, agents complete, and channel messages are handled.',
+    detailEyebrow: 'Event Details',
+    clearTitle: 'Clear all events?',
+    clearBody:
+      'This will permanently delete all run history and channel message logs. Events from future runs will still appear here.',
+    cancel: 'Cancel',
+    clearConfirm: 'Clear all',
+  },
 };
