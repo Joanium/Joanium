@@ -1,3 +1,5 @@
+import { t } from '../../../../../System/I18n/index.js';
+
 export function getPersonasHTML() {
   return /* html */ `
 <main id="main" class="personas-main">
@@ -5,16 +7,16 @@ export function getPersonasHTML() {
     <div class="personas-page-header">
       <div class="personas-page-header-copy">
         <h2>
-          Personas
+          ${t('personas.title')}
           <span class="agents-tagline-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="12" cy="8" r="3.5" />
               <path d="M5.5 19a6.5 6.5 0 0113 0" stroke-linecap="round" />
             </svg>
-            Voice &amp; Style
+            ${t('personas.tagline')}
           </span>
         </h2>
-        <p>Choose a personality for your AI - the active persona shapes every conversation</p>
+        <p>${t('personas.description')}</p>
       </div>
       <span class="page-count" id="personas-count"></span>
     </div>
@@ -22,7 +24,7 @@ export function getPersonasHTML() {
     <div id="personas-active-banner" class="personas-active-banner" hidden>
       <div class="personas-active-banner-dot"></div>
       <div class="personas-active-banner-text">
-        Active persona: <strong id="personas-active-name">Default Assistant</strong>
+        ${t('personas.activePersona')}: <strong id="personas-active-name">Default Assistant</strong>
       </div>
     </div>
 
@@ -32,7 +34,7 @@ export function getPersonasHTML() {
           <circle cx="11" cy="11" r="7" />
           <path d="M16.5 16.5L21 21" stroke-linecap="round" />
         </svg>
-        <input id="personas-search" type="text" class="page-search-input" placeholder="Search by name, personality, description..." autocomplete="off" spellcheck="false" />
+        <input id="personas-search" type="text" class="page-search-input" placeholder="${t('personas.searchPlaceholder')}" autocomplete="off" spellcheck="false" />
         <button class="page-search-clear" id="personas-search-clear" type="button" aria-label="Clear search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
@@ -48,9 +50,9 @@ export function getPersonasHTML() {
           <path d="M5.5 19a6.5 6.5 0 0113 0" stroke-linecap="round" />
         </svg>
       </div>
-      <h3>No personas yet</h3>
-      <p>Install a persona from the Marketplace.</p>
-      <button id="personas-go-marketplace" class="page-empty-cta" type="button">Go to Marketplace</button>
+      <h3>${t('personas.noPersonasYet')}</h3>
+      <p>${t('personas.noPersonasDesc')}</p>
+      <button id="personas-go-marketplace" class="page-empty-cta" type="button">${t('personas.goMarketplace')}</button>
     </div>
 
     <div id="personas-grid" class="personas-grid" hidden></div>

@@ -363,6 +363,11 @@ export default {
     delete: 'Delete',
     searchPlaceholder: 'Search skills...',
     badge: 'Skill',
+    cancel: 'Cancel',
+    enableAllBody:
+      'This will activate all {count} skills and inject them into every AI conversation.',
+    disableAllBody:
+      'This will deactivate all {count} active skills. The AI will no longer use them.',
   },
   personas: {
     title: 'Personas',
@@ -410,6 +415,8 @@ export default {
     nothingCopy:
       'Try a broader search, switch filters, or come back after the marketplace finishes loading.',
     searchPlaceholder: 'Search marketplace...',
+    sort: 'Sort',
+    installingItem: 'Installing into your local library...',
   },
   usage: {
     title: 'Usage',
@@ -438,5 +445,7 @@ export default {
     clearConfirm: 'Clear data',
     refreshing: 'Refreshing...',
     noData: 'No data yet for this period.',
+    cancel: 'Cancel',
+    dailyUsage: 'Daily token usage',
   },
 };
