@@ -3,27 +3,28 @@ import { createModelPicker } from './Components/ModelPicker.js';
 import { createResponseViewer } from './Components/ResponseViewer.js';
 import { generateAgentId, resolveModelLabel } from './Utils/Utils.js';
 import { getAgentsHTML } from './Templates/Template.js';
+import { t } from '../../../../System/I18n/index.js';
 import { createCardPool } from '../../../../System/CardPool.js';
 import { state as appState } from '../../../../System/State.js';
 const SCHEDULE_OPTIONS = [
-  { minutes: 1, label: 'Every 1 minute' },
-  { minutes: 5, label: 'Every 5 minutes' },
-  { minutes: 15, label: 'Every 15 minutes' },
-  { minutes: 30, label: 'Every 30 minutes' },
-  { minutes: 60, label: 'Every 1 hour' },
-  { minutes: 120, label: 'Every 2 hours' },
-  { minutes: 240, label: 'Every 4 hours' },
-  { minutes: 480, label: 'Every 8 hours' },
-  { minutes: 1440, label: 'Every 24 hours' },
+  { minutes: 1, key: 'schedule1min' },
+  { minutes: 5, key: 'schedule5min' },
+  { minutes: 15, key: 'schedule15min' },
+  { minutes: 30, key: 'schedule30min' },
+  { minutes: 60, key: 'schedule1hour' },
+  { minutes: 120, key: 'schedule2hours' },
+  { minutes: 240, key: 'schedule4hours' },
+  { minutes: 480, key: 'schedule8hours' },
+  { minutes: 1440, key: 'schedule24hours' },
 ];
 function formatSchedule(trigger = {}) {
   const minutes = Math.max(1, parseInt(trigger.minutes, 10) || 30),
     preset = SCHEDULE_OPTIONS.find((option) => option.minutes === minutes);
   return preset
-    ? preset.label
+    ? t(`agents.${preset.key}`)
     : minutes < 60
-      ? `Every ${minutes} minutes`
-      : `Every ${minutes / 60} hours`;
+      ? t('agents.scheduleEveryXMin', { n: minutes })
+      : t('agents.scheduleEveryXHour', { n: minutes / 60 });
 }
 function truncate(text, limit = 180) {
   const normalized = String(text ?? '')
@@ -48,7 +49,7 @@ function timeAgo(iso) {
   if (!iso) return '';
   const diff = Date.now() - new Date(iso);
   return diff < 3e4
-    ? 'just now'
+    ? t('agents.justNow')
     : diff < 12e4
       ? `${Math.floor(diff / 1e3)}s ago`
       : diff < 72e5
@@ -205,28 +206,28 @@ export function mount(outlet) {
       elements.workspaceTitle &&
         (elements.workspaceTitle.textContent = hasBoundWorkspace
           ? state.boundProject
-            ? state.boundProject.name || 'Bound project'
-            : 'Bound folder'
-          : 'No workspace selected'),
+            ? state.boundProject.name || t('agents.boundProject')
+            : t('agents.boundFolder')
+          : t('agents.noWorkspaceTitle')),
       elements.workspacePath &&
         ((elements.workspacePath.textContent = hasBoundWorkspace
           ? state.boundWorkspacePath
-          : 'This agent will run without a default workspace. It will not inherit the folder or project currently open in chat.'),
+          : t('agents.noWorkspaceDesc')),
         (elements.workspacePath.title = hasBoundWorkspace ? state.boundWorkspacePath : '')),
       elements.workspaceCurrentBtn &&
         ((elements.workspaceCurrentBtn.disabled = !hasCurrentWorkspace),
         (elements.workspaceCurrentBtn.textContent = current.project
-          ? 'Use Current Project'
+          ? t('agents.useCurrentProject')
           : hasCurrentWorkspace
-            ? 'Use Current Folder'
-            : 'No Current Workspace'),
+            ? t('agents.useCurrentFolder')
+            : t('agents.noCurrentWorkspace')),
         (elements.workspaceCurrentBtn.title = hasCurrentWorkspace
           ? (workspacePath = current.workspacePath)
             ? workspacePath.length > 64
               ? `...${workspacePath.slice(-61)}`
               : workspacePath
             : ''
-          : 'Open a folder or project in chat to use it here.')),
+          : t('agents.noCurrentWorkspaceHint'))),
       elements.workspaceClearBtn && (elements.workspaceClearBtn.disabled = !hasBoundWorkspace));
   }
   async function fetchAgents() {
@@ -289,13 +290,15 @@ export function mount(outlet) {
             (card.className = 'auto-card' + (agent.enabled ? '' : ' is-disabled')),
             (card.querySelector('.auto-card-name').textContent = agent.name),
             (card.querySelector('.toggle-input').checked = agent.enabled),
-            (card.querySelector('.auto-toggle').title = agent.enabled ? 'Enabled' : 'Disabled'),
+            (card.querySelector('.auto-toggle').title = agent.enabled
+              ? t('agents.enabled')
+              : t('agents.disabled')),
             (card.querySelector('.auto-trigger-text').textContent = formatSchedule(agent.trigger)),
             (card.querySelector('.auto-actions-text').textContent =
               resolveModelName(agent.primaryModel?.provider, agent.primaryModel?.modelId) ||
-              'No model'),
+              t('agents.noModel')),
             (card.querySelector('.agentic-prompt-preview').textContent =
-              truncate(agent.prompt, 200) || 'No prompt set.'));
+              truncate(agent.prompt, 200) || t('agents.noPromptSet')));
           const descEl = card.querySelector('.auto-card-desc');
           agent.description
             ? ((descEl.style.display = ''), (descEl.textContent = agent.description))
@@ -303,7 +306,7 @@ export function mount(outlet) {
           const lastRunEl = card.querySelector('.auto-card-lastrun');
           agent.lastRun
             ? ((lastRunEl.style.display = ''),
-              (lastRunEl.textContent = `Last run ${timeAgo(agent.lastRun)}`))
+              (lastRunEl.textContent = t('agents.lastRun', { time: timeAgo(agent.lastRun) })))
             : (lastRunEl.style.display = 'none');
         },
         getKey: (agent) => agent.id,
@@ -371,7 +374,7 @@ export function mount(outlet) {
         agent?.project,
       ),
       elements.modalTitleEl &&
-        (elements.modalTitleEl.textContent = agent ? 'Edit Agent' : 'New Agent'),
+        (elements.modalTitleEl.textContent = agent ? t('agents.editAgent') : t('agents.newAgent')),
       elements.nameInput && (elements.nameInput.value = agent?.name ?? ''),
       elements.descInput && (elements.descInput.value = agent?.description ?? ''),
       elements.promptInput && (elements.promptInput.value = agent?.prompt ?? ''),
@@ -395,10 +398,7 @@ export function mount(outlet) {
     if (!name) return void elements.nameInput?.focus();
     if (!prompt) return void elements.promptInput?.focus();
     if (!state.primaryModel?.provider || !state.primaryModel?.modelId)
-      return (
-        elements.primaryModelBtn?.focus(),
-        void window.alert('Choose a primary model before saving this agent.')
-      );
+      return (elements.primaryModelBtn?.focus(), void window.alert(t('agents.selectModelAlert')));
     const minutes = Math.max(1, parseInt(elements.scheduleSelect?.value, 10) || 30),
       payload = {
         id: state.editingId ?? generateAgentId(),
@@ -419,7 +419,7 @@ export function mount(outlet) {
               }
             : null,
       };
-    ((elements.saveBtn.disabled = !0), (elements.saveBtn.textContent = 'Saving...'));
+    ((elements.saveBtn.disabled = !0), (elements.saveBtn.textContent = t('agents.saving')));
     try {
       const response = await window.electronAPI?.invoke?.('save-agent', payload);
       if (!response?.ok) throw new Error(response?.error ?? 'Unable to save this agent right now.');
@@ -433,7 +433,7 @@ export function mount(outlet) {
     } catch (error) {
       window.alert(error.message ?? 'Unable to save this agent right now.');
     } finally {
-      ((elements.saveBtn.disabled = !1), (elements.saveBtn.textContent = 'Save Agent'));
+      ((elements.saveBtn.disabled = !1), (elements.saveBtn.textContent = t('agents.saveAgent')));
     }
   }
   const onEscapeKey = (event) => {

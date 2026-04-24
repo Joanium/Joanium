@@ -55,15 +55,15 @@ export function getAgentsHTML() {
     <div class="auto-modal-body">
       <div class="agent-field">
         <label class="agent-field-label" for="agent-name">${t('agents.agentName')} <span class="field-required">*</span></label>
-        <input class="agent-input" id="agent-name" type="text" placeholder="PR reviewer, Daily researcher, Inbox closer..." maxlength="80" autocomplete="off"/>
+        <input class="agent-input" id="agent-name" type="text" placeholder="${t('agents.namePlaceholder')}" maxlength="80" autocomplete="off"/>
       </div>
       <div class="agent-field">
         <label class="agent-field-label" for="agent-desc">${t('agents.descriptionLabel')} <span class="field-optional">${t('agents.optional')}</span></label>
-        <textarea class="agent-textarea" id="agent-desc" placeholder="What is this agent responsible for?"></textarea>
+        <textarea class="agent-textarea" id="agent-desc" placeholder="${t('agents.descriptionPlaceholder')}"></textarea>
       </div>
       <div class="agent-field">
         <label class="agent-field-label" for="agent-prompt">${t('agents.promptLabel')} <span class="field-required">*</span></label>
-        <textarea class="agent-textarea agent-textarea--prompt" id="agent-prompt" placeholder="Tell the agent exactly what to do on every run..."></textarea>
+        <textarea class="agent-textarea agent-textarea--prompt" id="agent-prompt" placeholder="${t('agents.promptPlaceholder')}"></textarea>
         <div class="agent-field-hint">${t('agents.workspaceHint')}</div>
       </div>
 
@@ -72,15 +72,15 @@ export function getAgentsHTML() {
         <div class="agent-field">
           <label class="agent-field-label" for="agent-schedule-select">${t('agents.runInterval')}</label>
           <select class="job-param-select" id="agent-schedule-select">
-            <option value="1">Every 1 minute</option>
-            <option value="5">Every 5 minutes</option>
-            <option value="15">Every 15 minutes</option>
-            <option value="30" selected>Every 30 minutes</option>
-            <option value="60">Every 1 hour</option>
-            <option value="120">Every 2 hours</option>
-            <option value="240">Every 4 hours</option>
-            <option value="480">Every 8 hours</option>
-            <option value="1440">Every 24 hours</option>
+            <option value="1">${t('agents.schedule1min')}</option>
+            <option value="5">${t('agents.schedule5min')}</option>
+            <option value="15">${t('agents.schedule15min')}</option>
+            <option value="30" selected>${t('agents.schedule30min')}</option>
+            <option value="60">${t('agents.schedule1hour')}</option>
+            <option value="120">${t('agents.schedule2hours')}</option>
+            <option value="240">${t('agents.schedule4hours')}</option>
+            <option value="480">${t('agents.schedule8hours')}</option>
+            <option value="1440">${t('agents.schedule24hours')}</option>
           </select>
         </div>
       </div>
