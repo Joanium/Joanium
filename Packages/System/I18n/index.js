@@ -1,11 +1,12 @@
 import en from './en.js';
 import de from './de.js';
 import ja from './ja.js';
+import ml from './ml.js';
 import { LANGUAGES_BY_CODE } from '../Languages.js';
 
 // NOTE: Static ESM imports above must be kept in sync with Languages.js manually.
 // PACKS keys must match the codes defined in SUPPORTED_LANGUAGES.
-const PACKS = { en, de, ja };
+const PACKS = { en, de, ja, ml };
 
 // Sync, fast: start with cached value before async settings load
 let _lang = localStorage.getItem('joanium-lang') || 'en';

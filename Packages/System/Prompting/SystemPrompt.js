@@ -412,7 +412,7 @@ export async function buildSystemPrompt({
   push(`- App language: ${languageLabel} (${appLanguage})`);
   if (appLanguage != 'en') {
     push(
-      `- Language instruction: The user has set the app language to ${languageLabel}. Respond in ${languageLabel} by default unless the user writes to you in a different language, in which case match their language.`,
+      `- Language instruction: The user has set the app language to ${languageLabel}. Respond in ${languageLabel} by default unless the user writes to you in a different language, in which case match their language also give importance for the app language and not to the os language or locale.`,
     );
   }
 

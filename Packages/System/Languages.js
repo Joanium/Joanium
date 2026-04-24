@@ -8,6 +8,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'en', label: 'English', native: 'English' },
   { code: 'de', label: 'German', native: 'Deutsch (German)' },
   { code: 'ja', label: 'Japanese', native: '日本語 (Japanese)' },
+  { code: 'ml', label: 'Malayalam', native: 'മലയാളം (Malayalam)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
