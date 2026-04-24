@@ -118,7 +118,7 @@ export function getChatHTML() {
           </div>
         </div>
       </div>
-      <p class="footer-credit">${t('about.madeWith')} ❤️ ${t('about.by')} <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-name">Joel Jolly</a></p>
+      <p class="footer-credit">${t('chat.madeWithLove')}</p>
     </div>
   </div>
 

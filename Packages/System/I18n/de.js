@@ -32,6 +32,8 @@ export default {
     askAnything: 'Frag mich alles.',
     updatingMemory: 'Speicher wird aktualisiert\u2026',
     catchingUpMemory: 'Speicher wird aufgeholt\u2026',
+    madeWithLove:
+      'Mit ❤️ gemacht von <a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
   },
   project: {
     open: '\u00d6ffnen',
@@ -579,8 +581,8 @@ export default {
     description:
       'Dein smarter, zuverl\u00e4ssiger und freundlicher pers\u00f6nlicher KI-Assistent.',
     sponsorBtn: 'Auf GitHub sponsern',
-    madeWith: 'Gemacht mit',
-    by: 'von',
+    madeWithLove:
+      'Mit ❤️ gemacht von <a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
     downloading: 'Update wird heruntergeladen\u2026',
     updateReady: 'Update bereit \u2014 wird beim Beenden installiert',
   },

@@ -31,6 +31,8 @@ export default {
     askAnything: 'എന്തും ചോദിക്കൂ.',
     updatingMemory: 'മെമ്മറി അപ്‌ഡേറ്റ് ചെയ്യുന്നു…',
     catchingUpMemory: 'മെമ്മറി ക്യാച്ചുചെയ്യുന്നു…',
+    madeWithLove:
+      '❤️ കൊണ്ട് സൃഷ്ടിച്ചത്: <a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
   },
   project: {
     open: 'തുറക്കുക',
@@ -565,8 +567,8 @@ export default {
     closeLabel: 'വിവരങ്ങൾ അടക്കുക',
     description: 'നിങ്ങളുടെ സ്മാർട്ട്, വിശ്വസനീയ, സൗഹൃദ വ്യക്തിഗത AI അസിസ്റ്റന്റ്.',
     sponsorBtn: 'GitHub-ൽ സ്പോൺസർ ചെയ്യുക',
-    madeWith: 'ഉണ്ടാക്കിയത്',
-    by: 'ഇവർ',
+    madeWithLove:
+      '❤️ കൊണ്ട് സൃഷ്ടിച്ചത്: <a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
     downloading: 'അപ്‌ഡേറ്റ് ഡൗൺലോഡ് ചെയ്യുന്നു…',
     updateReady: 'അപ്‌ഡേറ്റ് തയ്യാർ — പുറത്തുകടക്കുമ്പോൾ ഇൻസ്റ്റാൾ ചെയ്യും',
   },

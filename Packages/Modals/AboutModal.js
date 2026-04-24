@@ -47,8 +47,7 @@ export function initAboutModal() {
           </a>
 
           <p class="footer-credit">
-            ${t('about.madeWith')} ❤️ ${t('about.by')}
-            <a id="about-author-link" href="#" class="credit-name">Joel Jolly</a>
+            ${t('about.madeWithLove')}
           </p>
 
         </div>

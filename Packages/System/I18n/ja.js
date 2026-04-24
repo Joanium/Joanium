@@ -31,6 +31,8 @@ export default {
     askAnything: 'なんでも聞いてください。',
     updatingMemory: 'メモリを更新中…',
     catchingUpMemory: 'メモリを同期中…',
+    madeWithLove:
+      '❤️を込めて制作：<a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
   },
   project: {
     open: '開く',
@@ -559,8 +561,8 @@ export default {
     closeLabel: 'このモーダルを閉じる',
     description: 'あなたのスマートで信頼できる、フレンドリーなパーソナルAIアシスタント。',
     sponsorBtn: 'GitHubでスポンサー',
-    madeWith: '作成',
-    by: 'by',
+    madeWithLove:
+      '❤️を込めて制作：<a href="https://joeljolly.vercel.app" target="_blank" rel="Joanium" class="credit-name">Joel Jolly</a>',
     downloading: 'アップデートをダウンロード中\u2026',
     updateReady: 'アップデート準備完了 \u2014 終了時にインストール',
   },
