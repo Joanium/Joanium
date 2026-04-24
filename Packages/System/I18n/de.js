@@ -171,6 +171,7 @@ export default {
   },
   library: {
     title: 'Deine Chats',
+    description: 'Frühere Unterhaltungen durchsuchen und wiederöffnen.',
     projectTitle: '{name} Chats',
     closeLabel: 'Bibliothek schlie\u00dfen',
     searchPlaceholder: 'Chats suchen\u2026',

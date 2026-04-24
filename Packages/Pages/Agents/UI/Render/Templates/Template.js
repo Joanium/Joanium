@@ -17,7 +17,7 @@ export function getAgentsHTML() {
             ${t('agents.tagline')}
           </span>
         </h2>
-        <p>${t('agents.description')}</p>
+        <p class="agents-page-header-subtitle--single-line">${t('agents.description')}</p>
       </div>
       <button class="add-agent-btn" id="add-agent-header-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>

@@ -167,6 +167,7 @@ export default {
   },
   library: {
     title: 'Revisit your chats',
+    description: 'Browse and reopen your past conversations.',
     projectTitle: '{name} chats',
     closeLabel: 'Close library',
     searchPlaceholder: 'Search chats\u2026',

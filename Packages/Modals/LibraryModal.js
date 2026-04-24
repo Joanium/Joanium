@@ -182,6 +182,7 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
         <div class="settings-modal-header">
           <div class="settings-modal-copy">
             <h2 id="library-modal-title" data-i18n="library.title">Revisit your chats</h2>
+            <p data-i18n="library.description">${t('library.description')}</p>
           </div>
           <button class="settings-modal-close" id="library-close"
                   type="button" data-i18n-label="library.closeLabel" aria-label="Close library">
