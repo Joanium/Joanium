@@ -108,7 +108,7 @@ export default {
       'Connect hosted models with API keys or point Joanium at local Ollama or LM Studio servers. When a local server is reachable, Joanium detects its available models automatically.',
     connectorsPanelTitle: 'Connectors',
     connectorsPanelDesc:
-      'Link your workspace so the AI knows about your emails, repos and files, and automations can take action.',
+      'Connect your workspace so the AI knows about your emails, repos and files, and automations can take action.',
     mcpPanelTitle: 'MCP Servers',
     mcpPanelDesc:
       'Connect Model Context Protocol servers here. Browser-control MCP tools automatically show up in chat once a server is connected.',
