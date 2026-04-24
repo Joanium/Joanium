@@ -10,6 +10,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ja', label: 'Japanese', native: '日本語 (Japanese)' },
   { code: 'ml', label: 'Malayalam', native: 'മലയാളം (Malayalam)' },
   { code: 'sv', label: 'Swedish', native: 'Svenska (Swedish)' },
+  { code: 'ru', label: 'Russian', native: 'Русский (Russian)' },
   { code: 'ta', label: 'Tamil', native: 'தமிழ் (Tamil)' },
 ];
 
