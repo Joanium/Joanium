@@ -471,6 +471,15 @@ export default {
     cancel: 'Cancel',
     dailyUsage: 'Daily token usage',
   },
+  about: {
+    closeLabel: 'Close about',
+    description: 'Your smart, reliable, and friendly personal AI assistant.',
+    sponsorBtn: 'Sponsor on GitHub',
+    madeWith: 'Made with',
+    by: 'by',
+    downloading: 'Downloading update\u2026',
+    updateReady: 'Update ready \u2014 installs on quit',
+  },
   nav: {
     events: 'Events',
     setup: 'Setup',

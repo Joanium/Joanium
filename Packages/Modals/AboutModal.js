@@ -1,4 +1,5 @@
 import { createModal } from '../System/ModalFactory.js';
+import { t } from '../System/I18n/index.js';
 const SPONSOR_URL = 'https://github.com/sponsors/withinjoel';
 function openExternal(url) {
   Object.assign(document.createElement('a'), {
@@ -10,7 +11,65 @@ function openExternal(url) {
 export function initAboutModal() {
   const modal = createModal({
     backdropId: 'about-modal-backdrop',
-    html: '\n    <div id="about-modal-backdrop">\n      <div id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">\n\n        <button class="settings-modal-close about-modal-close"\n                id="about-modal-close" type="button" aria-label="Close about">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n            <path d="M18 6L6 18M6 6l12 12"\n                  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n          </svg>\n        </button>\n\n        <div class="about-modal-body">\n\n          <div class="about-logo-wrap">\n            <img src="../../../Assets/Logo/Logo.png" alt="Joanium" width="64" height="64" />\n          </div>\n\n          <div class="about-app-name" id="about-modal-title">Joanium</div>\n          <div class="about-version" id="about-version">v1.0.0</div>\n\n          <p class="about-description">\n            Your smart, reliable, and friendly personal AI assistant.\n          </p>\n\n          <div class="about-divider"></div>\n\n          <a id="about-sponsor-btn" class="about-sponsor-btn" href="#" role="button">\n            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">\n              <path d="M12 21.593c-.534.542-1.076 1.05-1.524 1.483a.75.75 0 01-1.032-.011\n                       L2.29 16.01C.454 14.174 0 12.023 0 10.14 0 6.262 3.004 3 6.75 3\n                       c1.922 0 3.724.841 4.95 2.174A6.75 6.75 0 0117.25 3C21 3 24 6.263\n                       24 10.14c0 1.883-.454 4.034-2.292 5.87l-7.154 7.065a.75.75 0\n                       01-1.032.011c-.448-.433-.99-.94-1.522-1.482z"/>\n            </svg>\n            Sponsor on GitHub\n          </a>\n\n          <p class="footer-credit">\n            Made with ❤️ by\n            <a id="about-author-link" href="#" class="credit-name">Joel Jolly</a>\n          </p>\n\n        </div>\n\n        <div class="about-update-progress" id="about-update-progress" aria-live="polite" aria-label="Update download progress">\n          <div class="about-update-progress-header">\n            <svg class="about-update-icon" id="about-update-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n              <path d="M12 3v13m0 0-4-4m4 4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n              <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" stroke-linecap="round" stroke-width="1.8"/>\n            </svg>\n            <span class="about-update-label" id="about-update-label">Downloading update…</span>\n            <span class="about-update-pct" id="about-update-pct">0%</span>\n          </div>\n          <div class="about-update-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="about-update-track">\n            <div class="about-update-fill" id="about-update-fill"></div>\n          </div>\n        </div>\n\n      </div>\n    </div>\n  ',
+    html: `
+    <div id="about-modal-backdrop">
+      <div id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+
+        <button class="settings-modal-close about-modal-close"
+                id="about-modal-close" type="button" aria-label="${t('about.closeLabel')}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12"
+                  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          </svg>
+        </button>
+
+        <div class="about-modal-body">
+
+          <div class="about-logo-wrap">
+            <img src="../../../Assets/Logo/Logo.png" alt="Joanium" width="64" height="64" />
+          </div>
+
+          <div class="about-app-name" id="about-modal-title">Joanium</div>
+          <div class="about-version" id="about-version">v1.0.0</div>
+
+          <p class="about-description">
+            ${t('about.description')}
+          </p>
+
+          <div class="about-divider"></div>
+
+          <a id="about-sponsor-btn" class="about-sponsor-btn" href="#" role="button">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+              <path d="M12 21.593c-.534.542-1.076 1.05-1.524 1.407a.75.75 0 01-.952 0C9.076 22.643 3 17.107 3 12a9 9 0 0118 0c0 5.107-6.076 10.643-6.524 10.993a.75.75 0 01-.476.6z" fill="none"/>
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+            ${t('about.sponsorBtn')}
+          </a>
+
+          <p class="footer-credit">
+            ${t('about.madeWith')} ❤️ ${t('about.by')}
+            <a id="about-author-link" href="#" class="credit-name">Joel Jolly</a>
+          </p>
+
+        </div>
+
+        <div class="about-update-progress" id="about-update-progress" aria-live="polite" aria-label="Update download progress">
+          <div class="about-update-progress-header">
+            <svg class="about-update-icon" id="about-update-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+              <path d="M12 3v13m0 0-4-4m4 4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+              <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" stroke-linecap="round" stroke-width="1.8"/>
+            </svg>
+            <span class="about-update-label" id="about-update-label">${t('about.downloading')}</span>
+            <span class="about-update-pct" id="about-update-pct">0%</span>
+          </div>
+          <div class="about-update-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="about-update-track">
+            <div class="about-update-fill" id="about-update-fill"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `,
     closeBtnSelector: '#about-modal-close',
     onInit(backdrop) {
       const versionEl = backdrop.querySelector('#about-version'),
@@ -43,7 +102,7 @@ export function initAboutModal() {
               progressWrap.classList.remove('done'),
               fillEl && (fillEl.style.width = `${pct}%`),
               pctEl && (pctEl.textContent = `${pct}%`),
-              labelEl && (labelEl.textContent = 'Downloading update…'),
+              labelEl && (labelEl.textContent = t('about.downloading')),
               trackEl && trackEl.setAttribute('aria-valuenow', pct));
           })(percent ?? 0),
         ),
@@ -51,7 +110,7 @@ export function initAboutModal() {
           progressWrap &&
             (progressWrap.classList.add('active', 'done'),
             fillEl && (fillEl.style.width = '100%'),
-            labelEl && (labelEl.textContent = 'Update ready — installs on quit'),
+            labelEl && (labelEl.textContent = t('about.updateReady')),
             trackEl && trackEl.setAttribute('aria-valuenow', 100));
         }));
     },

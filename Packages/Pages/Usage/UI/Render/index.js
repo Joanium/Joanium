@@ -25,6 +25,7 @@ import {
   showEmpty,
   showSections,
 } from './Renderers/UsageRenderers.js';
+import { t } from '../../../../System/I18n/index.js';
 function render(range) {
   const records = filteredRecords(),
     stats = computeStats(records);
@@ -66,7 +67,7 @@ export function mount(outlet) {
         render(currentRange));
     },
     onRefreshClick = async () => {
-      (refreshBtn && ((refreshBtn.disabled = !0), (refreshBtn.textContent = 'Refreshing...')),
+      (refreshBtn && ((refreshBtn.disabled = !0), (refreshBtn.textContent = t('usage.refreshing'))),
         await load(currentRange),
         refreshBtn && ((refreshBtn.disabled = !1), (refreshBtn.innerHTML = REFRESH_BUTTON_HTML)));
     },
