@@ -288,6 +288,8 @@ export function initSettingsModal() {
   `,
       closeBtnSelector: '#settings-modal-close',
       onInit(backdrop) {
+        applyI18n(backdrop);
+        updateSaveButton();
         ($$('[data-settings-tab]').forEach((btn) => {
           btn.addEventListener('click', () => {
             (switchTab(btn.dataset.settingsTab), focusActiveTab());
