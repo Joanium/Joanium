@@ -124,16 +124,16 @@ function buildOpenAIStyleHeaders(providerId, authHeader, authPrefix, apiKey) {
 function toAnthropicTools(tools) {
   return tools.map((t) => ({
     name: t.name,
-    description: t.description,
+    description: t.description || t.name,
     input_schema: {
       type: 'object',
       properties: Object.fromEntries(
-        Object.entries(t.parameters).map(([key, p]) => [
+        Object.entries(t.parameters ?? {}).map(([key, p]) => [
           key,
           { type: p.type, description: p.description },
         ]),
       ),
-      required: Object.entries(t.parameters)
+      required: Object.entries(t.parameters ?? {})
         .filter(([, p]) => p.required)
         .map(([k]) => k),
     },
@@ -144,16 +144,16 @@ function toOpenAITools(tools) {
     type: 'function',
     function: {
       name: t.name,
-      description: t.description,
+      description: t.description || t.name,
       parameters: {
         type: 'object',
         properties: Object.fromEntries(
-          Object.entries(t.parameters).map(([key, p]) => [
+          Object.entries(t.parameters ?? {}).map(([key, p]) => [
             key,
             { type: p.type, description: p.description },
           ]),
         ),
-        required: Object.entries(t.parameters)
+        required: Object.entries(t.parameters ?? {})
           .filter(([, p]) => p.required)
           .map(([k]) => k),
       },
