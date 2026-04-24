@@ -335,7 +335,7 @@ export default {
     noAutomationsYet: 'No automations yet',
     noAutomationsDesc:
       'Create your first automation to monitor sources, summarize what matters, and ship the output automatically.',
-    createFirst: '+ Create your first Automation',
+    createFirst: 'Create your first Automation',
     eyebrow: 'Configure Automation',
     titleNew: 'New Automation',
     automationName: 'Automation Name',

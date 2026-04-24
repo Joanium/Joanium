@@ -344,7 +344,7 @@ export default {
     noAutomationsYet: 'Noch keine Automationen',
     noAutomationsDesc:
       'Erstelle deine erste Automation, um Quellen zu \u00fcberwachen, das Wesentliche zusammenzufassen und die Ausgabe automatisch zu senden.',
-    createFirst: '+ Erste Automation erstellen',
+    createFirst: 'Erste Automation erstellen',
     eyebrow: 'Automation konfigurieren',
     titleNew: 'Neue Automation',
     automationName: 'Automationsname',
