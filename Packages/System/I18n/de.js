@@ -373,6 +373,11 @@ export default {
     delete: 'L\u00f6schen',
     searchPlaceholder: 'Skills suchen...',
     badge: 'Skill',
+    cancel: 'Abbrechen',
+    enableAllBody:
+      'Damit werden alle {count} Skills aktiviert und in jede KI-Unterhaltung injiziert.',
+    disableAllBody:
+      'Damit werden alle {count} aktiven Skills deaktiviert. Die KI wird sie nicht mehr verwenden.',
   },
   personas: {
     title: 'Personas',
@@ -422,6 +427,8 @@ export default {
     nothingCopy:
       'Breiteren Suchbegriff versuchen, Filter wechseln oder sp\u00e4ter nochmal schauen.',
     searchPlaceholder: 'Marktplatz durchsuchen...',
+    sort: 'Sortieren',
+    installingItem: 'Wird in die lokale Bibliothek installiert…',
   },
   usage: {
     title: 'Nutzung',
