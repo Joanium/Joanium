@@ -5,19 +5,27 @@ import {
   providerLabel,
   buildDayList,
 } from '../Formatters/UsageFormatters.js';
+import { t } from '../../../../../System/I18n/index.js';
+
+// Helper: formatted "N call / N calls" string
+const calls = (n) => `${n} ${1 !== n ? t('usage.callPlural') : t('usage.callSingular')}`;
+
 export function renderInsights(stats, records) {
   const element = document.getElementById('insights-list');
   if (!element) return;
   if (!records.length)
-    return void (element.innerHTML =
-      '<div class="insight-empty">No data yet for this period.</div>');
+    return void (element.innerHTML = `<div class="insight-empty">${t('usage.noData')}</div>`);
   const insights = [],
     topModel = Object.entries(stats.byModel).sort(([, a], [, b]) => b.calls - a.calls)[0];
   topModel &&
     insights.push({
       icon: 'Top',
-      title: 'Most used model',
-      text: `<strong>${topModel[1].name}</strong> with ${topModel[1].calls} call${1 !== topModel[1].calls ? 's' : ''} and ${fmtTokens(topModel[1].input + topModel[1].output)} tokens.`,
+      title: t('usage.insightTopModelTitle'),
+      text: t('usage.insightTopModelText', {
+        model: topModel[1].name,
+        calls: calls(topModel[1].calls),
+        tokens: fmtTokens(topModel[1].input + topModel[1].output),
+      }),
     });
   const peakHourEntry = Object.entries(stats.byHour).sort(([, a], [, b]) => b.calls - a.calls)[0];
   if (peakHourEntry) {
@@ -26,8 +34,11 @@ export function renderInsights(stats, records) {
         0 === hour ? '12 AM' : hour < 12 ? `${hour} AM` : 12 === hour ? '12 PM' : hour - 12 + ' PM';
     insights.push({
       icon: 'Hour',
-      title: 'Peak hour',
-      text: `You chat most at <strong>${label}</strong> - ${peakHourEntry[1].calls} call${1 !== peakHourEntry[1].calls ? 's' : ''} in this period.`,
+      title: t('usage.insightPeakHourTitle'),
+      text: t('usage.insightPeakHourText', {
+        hour: label,
+        calls: calls(peakHourEntry[1].calls),
+      }),
     });
   }
   const busiestDay = Object.entries(stats.byDay).sort(([, a], [, b]) => b.calls - a.calls)[0];
@@ -39,8 +50,12 @@ export function renderInsights(stats, records) {
     });
     insights.push({
       icon: 'Day',
-      title: 'Busiest day',
-      text: `<strong>${dayLabel}</strong> with ${busiestDay[1].calls} call${1 !== busiestDay[1].calls ? 's' : ''} and ${fmtTokens(busiestDay[1].input + busiestDay[1].output)} tokens.`,
+      title: t('usage.insightBusiestDayTitle'),
+      text: t('usage.insightBusiestDayText', {
+        day: dayLabel,
+        calls: calls(busiestDay[1].calls),
+        tokens: fmtTokens(busiestDay[1].input + busiestDay[1].output),
+      }),
     });
   }
   const totalTokens = stats.totalInput + stats.totalOutput;
@@ -48,14 +63,18 @@ export function renderInsights(stats, records) {
     const outputPercent = Math.round((stats.totalOutput / totalTokens) * 100),
       verdict =
         outputPercent > 60
-          ? 'Output-heavy - the AI is doing a lot of writing.'
+          ? t('usage.insightOutputHeavy')
           : outputPercent < 30
-            ? 'Input-heavy - you are sending long prompts or documents.'
-            : 'Balanced mix of input and output tokens.';
+            ? t('usage.insightInputHeavy')
+            : t('usage.insightBalanced');
     insights.push({
       icon: 'Mix',
-      title: 'Token ratio',
-      text: `${outputPercent}% output, ${100 - outputPercent}% input. ${verdict}`,
+      title: t('usage.insightTokenRatioTitle'),
+      text: t('usage.insightTokenRatioText', {
+        outputPct: outputPercent,
+        inputPct: 100 - outputPercent,
+        verdict,
+      }),
     });
   }
   const priciest = Object.entries(stats.byModel).sort(([, a], [, b]) => b.cost - a.cost)[0];
@@ -64,22 +83,28 @@ export function renderInsights(stats, records) {
       priciest[1].cost > 0 &&
       insights.push({
         icon: 'Cost',
-        title: 'Highest cost model',
-        text: `<strong>${priciest[1].name}</strong> has cost ${fmtCost(priciest[1].cost)} this period.`,
+        title: t('usage.insightHighestCostTitle'),
+        text: t('usage.insightHighestCostText', {
+          model: priciest[1].name,
+          cost: fmtCost(priciest[1].cost),
+        }),
       }),
     stats.count > 0)
   ) {
     const avgTokens = Math.round(totalTokens / stats.count),
       verdict =
         avgTokens > 4e3
-          ? 'Long conversations - lots of context per call.'
+          ? t('usage.insightAvgLong')
           : avgTokens < 500
-            ? 'Short, snappy exchanges.'
-            : 'Medium-length conversations.';
+            ? t('usage.insightAvgShort')
+            : t('usage.insightAvgMedium');
     insights.push({
       icon: 'Avg',
-      title: 'Avg tokens per call',
-      text: `<strong>${fmtTokens(avgTokens)}</strong> tokens on average. ${verdict}`,
+      title: t('usage.insightAvgTokensTitle'),
+      text: t('usage.insightAvgTokensText', {
+        tokens: fmtTokens(avgTokens),
+        verdict,
+      }),
     });
   }
   const providerCount = Object.keys(stats.byProvider).length;
@@ -87,8 +112,11 @@ export function renderInsights(stats, records) {
     const providerNames = Object.keys(stats.byProvider).map(providerLabel).join(', ');
     insights.push({
       icon: 'Net',
-      title: 'Multi-provider',
-      text: `You are using <strong>${providerCount} providers</strong> this period: ${providerNames}.`,
+      title: t('usage.insightMultiProviderTitle'),
+      text: t('usage.insightMultiProviderText', {
+        count: providerCount,
+        names: providerNames,
+      }),
     });
   }
   const efficientModels = Object.entries(stats.byModel).filter(
@@ -105,8 +133,11 @@ export function renderInsights(stats, records) {
       ).toFixed(6);
     insights.push({
       icon: 'Eff',
-      title: 'Most efficient model',
-      text: `<strong>${bestEfficient.name}</strong> gives the best value at $${costPer1k} per 1K tokens this period.`,
+      title: t('usage.insightMostEfficientTitle'),
+      text: t('usage.insightMostEfficientText', {
+        model: bestEfficient.name,
+        rate: costPer1k,
+      }),
     });
   }
   let weekendCalls = 0,
@@ -116,18 +147,19 @@ export function renderInsights(stats, records) {
       ? (weekendCalls += data.calls)
       : (weekdayCalls += data.calls);
   if (weekendCalls + weekdayCalls > 0) {
-    const heavier = weekendCalls > weekdayCalls ? 'weekends' : 'weekdays',
+    const heavier =
+        weekendCalls > weekdayCalls ? t('usage.weekendHeavier') : t('usage.weekdayHeavier'),
       ratio =
         weekendCalls > weekdayCalls
           ? (weekendCalls / Math.max(weekdayCalls, 1)).toFixed(1)
           : (weekdayCalls / Math.max(weekendCalls, 1)).toFixed(1),
       verdict =
         0 === weekendCalls
-          ? 'No weekend usage - strictly a weekday user.'
+          ? t('usage.insightWeekendStrictly')
           : 0 === weekdayCalls
-            ? 'Weekend-only usage - you save AI for free time.'
-            : `You use AI <strong>${ratio}x</strong> more on <strong>${heavier}</strong>.`;
-    insights.push({ icon: 'Week', title: 'Weekend vs weekday', text: verdict });
+            ? t('usage.insightWeekendOnly')
+            : t('usage.insightWeekendMoreText', { ratio, heavier });
+    insights.push({ icon: 'Week', title: t('usage.insightWeekendTitle'), text: verdict });
   }
   const costLeader = Object.entries(stats.byProvider)
     .filter(([, value]) => value.cost > 0)
@@ -138,28 +170,37 @@ export function renderInsights(stats, records) {
         stats.totalCost > 0 ? Math.round((providerData.cost / stats.totalCost) * 100) : 100;
     insights.push({
       icon: 'Prov',
-      title: 'Top spending provider',
-      text: `<strong>${providerLabel(providerId)}</strong> accounts for <strong>${shareOfTotal}%</strong> of your total spend (${fmtCost(providerData.cost)}) across ${providerData.calls} call${1 !== providerData.calls ? 's' : ''}.`,
+      title: t('usage.insightTopSpendingTitle'),
+      text: t('usage.insightTopSpendingText', {
+        provider: providerLabel(providerId),
+        share: shareOfTotal,
+        cost: fmtCost(providerData.cost),
+        calls: calls(providerData.calls),
+      }),
     });
   }
   if (stats.count > 0 && stats.totalOutput > 0) {
     const avgOutput = Math.round(stats.totalOutput / stats.count),
-      verbosity =
+      verdict =
         avgOutput > 800
-          ? 'Very verbose - the AI writes long, detailed responses.'
+          ? t('usage.insightVerbosityHeavy')
           : avgOutput > 300
-            ? 'Moderately detailed responses.'
-            : 'Concise replies - short and to the point.',
+            ? t('usage.insightVerbosityModerate')
+            : t('usage.insightVerbosityConcise'),
       topOutputModel = Object.entries(stats.byModel)
         .filter(([, value]) => value.calls > 0)
         .sort(([, a], [, b]) => b.output / b.calls - a.output / a.calls)[0],
       modelNote = topOutputModel
-        ? ` <strong>${topOutputModel[1].name}</strong> is your most verbose model.`
+        ? t('usage.insightVerbosityModelNote', { model: topOutputModel[1].name })
         : '';
     insights.push({
       icon: 'Out',
-      title: 'Response verbosity',
-      text: `Avg <strong>${fmtTokens(avgOutput)}</strong> output tokens per call. ${verbosity}${modelNote}`,
+      title: t('usage.insightVerbosityTitle'),
+      text: t('usage.insightVerbosityText', {
+        tokens: fmtTokens(avgOutput),
+        verdict,
+        modelNote,
+      }),
     });
   }
   element.innerHTML = insights
@@ -182,14 +223,15 @@ export function renderChart(byDay, range) {
   let barsHTML = '',
     labelsHTML = '';
   const totalShown = values.reduce((sum, value) => sum + value, 0);
-  (metaElement && (metaElement.textContent = `${fmtTokens(totalShown)} total`),
+  (metaElement &&
+    (metaElement.textContent = t('usage.chartTokenTotal', { total: fmtTokens(totalShown) })),
     titleElement &&
       (titleElement.textContent =
         'all' === range
-          ? 'Last 30 days (tokens)'
+          ? t('usage.chartLast30')
           : 'today' === range
-            ? 'Today (tokens)'
-            : `Last ${range} days (tokens)`),
+            ? t('usage.chartToday')
+            : t('usage.chartLastN', { n: range })),
     days.forEach((date, index) => {
       const x = 44 + index * (barWidth + barGap),
         input = byDay[date]?.input ?? 0,
@@ -201,7 +243,7 @@ export function renderChart(byDay, range) {
         index % (days.length <= 7 ? 1 : days.length <= 14 ? 2 : 5) == 0 ||
           index === days.length - 1)
       ) {
-        const label = 1 === days.length ? 'Today' : date.slice(5);
+        const label = 1 === days.length ? t('usage.today') : date.slice(5);
         labelsHTML += `<text x="${x + barWidth / 2}" y="132" text-anchor="middle" font-size="9" fill="var(--text-muted)" font-family="var(--font-ui)">${label}</text>`;
       }
     }));
@@ -220,18 +262,26 @@ export function renderHeatmap(byHour) {
     const data = byHour[hour] ?? { calls: 0 },
       opacity = data.calls > 0 ? Math.max(0.08, data.calls / maxCalls) : 0.04,
       label = 0 === hour ? '12a' : hour < 12 ? `${hour}a` : 12 === hour ? '12p' : hour - 12 + 'p';
-    return `\n      <div class="heatmap-cell" title="${label}: ${data.calls} call${1 !== data.calls ? 's' : ''}" style="--cell-opacity:${opacity.toFixed(2)}">\n        ${data.calls > 0 ? `<div class="heatmap-count">${data.calls}</div>` : ''}\n        <div class="heatmap-label">${label}</div>\n      </div>`;
+    return `\n      <div class="heatmap-cell" title="${label}: ${calls(data.calls)}" style="--cell-opacity:${opacity.toFixed(2)}">\n        ${data.calls > 0 ? `<div class="heatmap-count">${data.calls}</div>` : ''}\n        <div class="heatmap-label">${label}</div>\n      </div>`;
   }).join('');
 }
 export function renderDow(byDow) {
   const wrap = document.getElementById('dow-wrap');
   if (!wrap) return;
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  const days = [
+      t('usage.dowSun'),
+      t('usage.dowMon'),
+      t('usage.dowTue'),
+      t('usage.dowWed'),
+      t('usage.dowThu'),
+      t('usage.dowFri'),
+      t('usage.dowSat'),
+    ],
     maxCalls = Math.max(...days.map((_, index) => byDow[index]?.calls ?? 0), 1);
   wrap.innerHTML = days
     .map((day, index) => {
       const data = byDow[index] ?? { calls: 0, cost: 0 };
-      return `\n      <div class="dow-row">\n        <span class="dow-label">${day}</span>\n        <div class="dow-bar-track"><div class="dow-bar-fill" style="width:${Math.round((data.calls / maxCalls) * 100)}%"></div></div>\n        <span class="dow-stat">${data.calls} call${1 !== data.calls ? 's' : ''}</span>\n        <span class="dow-cost">${fmtCost(data.cost)}</span>\n      </div>`;
+      return `\n      <div class="dow-row">\n        <span class="dow-label">${day}</span>\n        <div class="dow-bar-track"><div class="dow-bar-fill" style="width:${Math.round((data.calls / maxCalls) * 100)}%"></div></div>\n        <span class="dow-stat">${calls(data.calls)}</span>\n        <span class="dow-cost">${fmtCost(data.cost)}</span>\n      </div>`;
     })
     .join('');
 }
@@ -242,14 +292,14 @@ export function renderCostTable(byModel) {
     .sort(([, a], [, b]) => b.cost - a.cost)
     .slice(0, 10);
   if (!rows.length)
-    return void (element.innerHTML = '<div class="cost-empty">No cost data for this period.</div>');
+    return void (element.innerHTML = `<div class="cost-empty">${t('usage.noCostData')}</div>`);
   const totalCost = rows.reduce((sum, [, value]) => sum + value.cost, 0),
     maxCost = rows[0][1].cost;
   element.innerHTML = rows
     .map(([modelId, value], index) => {
       const share = totalCost > 0 ? Math.round((value.cost / totalCost) * 100) : 0,
         barPercent = maxCost > 0 ? Math.round((value.cost / maxCost) * 100) : 0;
-      return `\n      <div class="cost-row">\n        <div class="cost-row-rank">#${index + 1}</div>\n        <div class="cost-row-info">\n          <div class="cost-row-name" title="${modelId}">${value.name}</div>\n          <div class="cost-row-meta">${value.calls} call${1 !== value.calls ? 's' : ''} - ${fmtTokens(value.input + value.output)} tokens</div>\n          <div class="cost-row-bar-wrap"><div class="cost-row-bar" style="width:${barPercent}%"></div></div>\n        </div>\n        <div class="cost-row-figures">\n          <div class="cost-row-total">${fmtCost(value.cost)}</div>\n          <div class="cost-row-share">${share}% of total</div>\n        </div>\n      </div>`;
+      return `\n      <div class="cost-row">\n        <div class="cost-row-rank">#${index + 1}</div>\n        <div class="cost-row-info">\n          <div class="cost-row-name" title="${modelId}">${value.name}</div>\n          <div class="cost-row-meta">${calls(value.calls)} - ${fmtTokens(value.input + value.output)} tokens</div>\n          <div class="cost-row-bar-wrap"><div class="cost-row-bar" style="width:${barPercent}%"></div></div>\n        </div>\n        <div class="cost-row-figures">\n          <div class="cost-row-total">${fmtCost(value.cost)}</div>\n          <div class="cost-row-share">${t('usage.costShareOfTotal', { share })}</div>\n        </div>\n      </div>`;
     })
     .join('');
 }
@@ -260,57 +310,80 @@ export function renderSummary(stats, records) {
       stats.count > 0 ? Math.round((stats.totalInput + stats.totalOutput) / stats.count) : 0,
     uniqueModels = new Set(records.map((record) => record.model)).size,
     avgCostPerCall = stats.count > 0 ? stats.totalCost / stats.count : 0,
+    providerCount = Object.keys(stats.byProvider).length,
     cards = [
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',
-        label: 'Total tokens',
+        label: t('usage.cardTotalTokens'),
         value: fmtTokens(stats.totalInput + stats.totalOutput),
-        sub: `${fmtTokens(stats.totalInput)} in - ${fmtTokens(stats.totalOutput)} out`,
+        sub: t('usage.cardTotalSub', {
+          input: fmtTokens(stats.totalInput),
+          output: fmtTokens(stats.totalOutput),
+        }),
         cls: '',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-        label: 'API calls',
+        label: t('usage.cardApiCalls'),
         value: stats.count.toLocaleString(),
-        sub: `avg ${fmtTokens(avgTokensPerCall)} tokens each`,
+        sub: t('usage.cardAvgTokensSub', { n: fmtTokens(avgTokensPerCall) }),
         cls: '',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>',
-        label: 'Est. cost',
+        label: t('usage.cardEstCost'),
         value: fmtCost(stats.totalCost),
-        sub: 'based on published pricing',
+        sub: t('usage.cardEstCostSub'),
         cls: 'cost-card',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v4H4zM4 12h16v4H4z" stroke-linejoin="round"/></svg>',
-        label: 'Input tokens',
+        label: t('usage.cardInputTokens'),
         value: fmtTokens(stats.totalInput),
-        sub: `${stats.totalInput > 0 ? Math.round((stats.totalInput / (stats.totalInput + stats.totalOutput + 0.001)) * 100) : 0}% of total`,
+        sub: t('usage.cardPctOfTotal', {
+          pct:
+            stats.totalInput > 0
+              ? Math.round(
+                  (stats.totalInput / (stats.totalInput + stats.totalOutput + 0.001)) * 100,
+                )
+              : 0,
+        }),
         cls: '',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-        label: 'Output tokens',
+        label: t('usage.cardOutputTokens'),
         value: fmtTokens(stats.totalOutput),
-        sub: `${stats.totalOutput > 0 ? Math.round((stats.totalOutput / (stats.totalInput + stats.totalOutput + 0.001)) * 100) : 0}% of total`,
+        sub: t('usage.cardPctOfTotal', {
+          pct:
+            stats.totalOutput > 0
+              ? Math.round(
+                  (stats.totalOutput / (stats.totalInput + stats.totalOutput + 0.001)) * 100,
+                )
+              : 0,
+        }),
         cls: '',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-        label: 'Models used',
+        label: t('usage.cardModelsUsed'),
         value: uniqueModels.toString(),
-        sub: `across ${Object.keys(stats.byProvider).length} provider${1 !== Object.keys(stats.byProvider).length ? 's' : ''}`,
+        sub: t(
+          1 !== providerCount ? 'usage.cardAcrossProviders' : 'usage.cardAcrossProvidersSingle',
+          { count: providerCount },
+        ),
         cls: '',
       },
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-        label: 'Avg cost / call',
+        label: t('usage.cardAvgCostPerCall'),
         value: fmtCost(avgCostPerCall),
         sub:
           stats.count > 0
-            ? `over ${stats.count} call${1 !== stats.count ? 's' : ''}`
-            : 'no calls yet',
+            ? t(1 !== stats.count ? 'usage.cardOverCalls' : 'usage.cardOverCallsSingle', {
+                count: stats.count,
+              })
+            : t('usage.cardNoCallsYet'),
         cls: '',
       },
     ];
@@ -332,14 +405,13 @@ export function renderModelRows(byModel) {
     (meta && (meta.textContent = `${rows.length} model${1 !== rows.length ? 's' : ''}`),
     !rows.length)
   )
-    return void (element.innerHTML =
-      '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">No model data yet</div>');
+    return void (element.innerHTML = `<div style="color:var(--text-muted);font-size:13px;padding:8px 0">${t('usage.noModelData')}</div>`);
   const maxTokens = Math.max(...rows.map(([, value]) => value.input + value.output), 1);
   element.innerHTML = rows
     .map(([modelId, value]) => {
       const total = value.input + value.output,
         percent = Math.round((total / maxTokens) * 100);
-      return `\n      <div class="model-row">\n        <div class="model-row-header">\n          <span class="model-row-name" title="${modelId}">${value.name}</span>\n          <div class="model-row-stats">\n            <span class="model-row-tokens">${fmtTokens(total)} tokens - ${value.calls} call${1 !== value.calls ? 's' : ''}</span>\n            <span class="model-row-cost">${fmtCost(value.cost)}</span>\n          </div>\n        </div>\n        <div class="model-bar-track"><div class="model-bar-fill" style="width:${percent}%"></div></div>\n      </div>`;
+      return `\n      <div class="model-row">\n        <div class="model-row-header">\n          <span class="model-row-name" title="${modelId}">${value.name}</span>\n          <div class="model-row-stats">\n            <span class="model-row-tokens">${fmtTokens(total)} tokens - ${calls(value.calls)}</span>\n            <span class="model-row-cost">${fmtCost(value.cost)}</span>\n          </div>\n        </div>\n        <div class="model-bar-track"><div class="model-bar-fill" style="width:${percent}%"></div></div>\n      </div>`;
     })
     .join('');
 }
@@ -353,18 +425,17 @@ export function renderProviders(byProvider) {
     ? (element.innerHTML = rows
         .map(
           ([id, value]) =>
-            `\n    <div class="provider-card">\n      <div class="provider-name">${providerLabel(id)}</div>\n      <div class="provider-tokens">${fmtTokens(value.input + value.output)} tokens</div>\n      <div class="provider-cost">${fmtCost(value.cost)}</div>\n      <div class="provider-calls">${value.calls} call${1 === value.calls ? '' : 's'}</div>\n    </div>\n  `,
+            `\n    <div class="provider-card">\n      <div class="provider-name">${providerLabel(id)}</div>\n      <div class="provider-tokens">${fmtTokens(value.input + value.output)} tokens</div>\n      <div class="provider-cost">${fmtCost(value.cost)}</div>\n      <div class="provider-calls">${calls(value.calls)}</div>\n    </div>\n  `,
         )
         .join(''))
-    : (element.innerHTML =
-        '<div style="color:var(--text-muted);font-size:13px;grid-column:1/-1">No provider data yet</div>');
+    : (element.innerHTML = `<div style="color:var(--text-muted);font-size:13px;grid-column:1/-1">${t('usage.noProviderData')}</div>`);
 }
 export function renderActivity(records) {
   const element = document.getElementById('activity-list'),
     meta = document.getElementById('activity-meta');
   if (!element || !meta) return;
   const recent = [...records].reverse().slice(0, 50);
-  ((meta.textContent = `last ${Math.min(records.length, 50)} calls`),
+  ((meta.textContent = t('usage.activityMeta', { n: Math.min(records.length, 50) })),
     recent.length
       ? (element.innerHTML = recent
           .map((record) => {
@@ -380,14 +451,12 @@ export function renderActivity(records) {
             return `\n      <div class="activity-item">\n        <div class="activity-dot"></div>\n        <span class="activity-model">${record.modelName ?? record.model}</span>\n        <span class="activity-tokens">${fmtTokens(total)}</span>\n        <span class="activity-cost">${fmtCost(cost)}</span>\n        <span class="activity-time">${fmtTime(record.timestamp)}</span>\n      </div>`;
           })
           .join(''))
-      : (element.innerHTML =
-          '<div style="color:var(--text-muted);font-size:13px;padding:18px;text-align:center">No activity yet - start chatting!</div>'));
+      : (element.innerHTML = `<div style="color:var(--text-muted);font-size:13px;padding:18px;text-align:center">${t('usage.noActivity')}</div>`));
 }
 export function showEmpty() {
   const summaryGrid = document.getElementById('summary-grid');
   (summaryGrid &&
-    (summaryGrid.innerHTML =
-      '\n      <div class="usage-empty" style="grid-column:1/-1">\n        <div class="usage-empty-icon">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px">\n            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/>\n          </svg>\n        </div>\n        <h3>No usage data yet</h3>\n        <p>Start chatting and your token usage will appear here in real time.</p>\n      </div>'),
+    (summaryGrid.innerHTML = `\n      <div class="usage-empty" style="grid-column:1/-1">\n        <div class="usage-empty-icon">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px">\n            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/>\n          </svg>\n        </div>\n        <h3>${t('usage.noUsageData')}</h3>\n        <p>${t('usage.noUsageDataSub')}</p>\n      </div>`),
     [
       'chart-section',
       'provider-section',
