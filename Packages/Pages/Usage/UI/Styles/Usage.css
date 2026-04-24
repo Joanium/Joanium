@@ -90,7 +90,7 @@
   display: flex;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: 20px;
   padding: 3px;
   gap: 2px;
 }
@@ -113,7 +113,7 @@
 }
 .usage-range-btn {
   padding: 6px 13px;
-  border-radius: 9px;
+  border-radius: 20px;
   border: none;
   transition:
     background var(--transition-fast),
@@ -130,7 +130,7 @@
 }
 .usage-clear-btn {
   padding: 8px 14px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid var(--border);
   transition:
     background var(--transition-fast),

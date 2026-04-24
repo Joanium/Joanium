@@ -20,7 +20,7 @@ export function ensureUsageStyles() {
   style.textContent = `
     .usage-refresh-btn {
       padding: 8px 16px;
-      border-radius: 10px;
+      border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--bg-tertiary);
       color: var(--text-secondary);
