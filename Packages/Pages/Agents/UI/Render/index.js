@@ -66,10 +66,10 @@ function timeAgo(iso) {
 export function mount(outlet) {
   outlet.innerHTML = getAgentsHTML();
   // Move modals to body so position:fixed covers full viewport incl. titlebar
-  document.getElementById('automation-modal-backdrop') &&
-    document.body.appendChild(document.getElementById('automation-modal-backdrop'));
-  document.getElementById('confirm-overlay') &&
-    document.body.appendChild(document.getElementById('confirm-overlay'));
+  document.getElementById('agent-modal-backdrop') &&
+    document.body.appendChild(document.getElementById('agent-modal-backdrop'));
+  document.getElementById('agent-confirm-overlay') &&
+    document.body.appendChild(document.getElementById('agent-confirm-overlay'));
   const state = {
       agents: [],
       allModels: [],
@@ -81,15 +81,15 @@ export function mount(outlet) {
       boundProject: null,
     },
     elements = {
-      gridEl: document.getElementById('auto-grid'),
-      emptyEl: document.getElementById('auto-empty'),
+      gridEl: document.getElementById('agents-grid'),
+      emptyEl: document.getElementById('agents-empty'),
       addHeaderBtn: document.getElementById('add-agent-header-btn'),
       addEmptyBtn: document.getElementById('add-agent-empty-btn'),
-      modalBackdrop: document.getElementById('automation-modal-backdrop'),
+      modalBackdrop: document.getElementById('agent-modal-backdrop'),
       modalTitleEl: document.getElementById('agent-modal-title-text'),
-      modalCloseBtn: document.getElementById('auto-modal-close'),
-      cancelBtn: document.getElementById('auto-cancel-btn'),
-      saveBtn: document.getElementById('auto-save-btn'),
+      modalCloseBtn: document.getElementById('agent-modal-close'),
+      cancelBtn: document.getElementById('agent-cancel-btn'),
+      saveBtn: document.getElementById('agent-save-btn'),
       nameInput: document.getElementById('agent-name'),
       descInput: document.getElementById('agent-desc'),
       promptInput: document.getElementById('agent-prompt'),
@@ -103,10 +103,10 @@ export function mount(outlet) {
       primaryModelBtn: document.getElementById('primary-model-btn'),
       primaryModelLabel: document.getElementById('primary-model-label'),
       primaryModelMenu: document.getElementById('primary-model-menu'),
-      confirmOverlay: document.getElementById('confirm-overlay'),
-      confirmCancelBtn: document.getElementById('confirm-cancel'),
-      confirmDeleteBtn: document.getElementById('confirm-delete'),
-      confirmNameEl: document.getElementById('confirm-automation-name'),
+      confirmOverlay: document.getElementById('agent-confirm-overlay'),
+      confirmCancelBtn: document.getElementById('agent-confirm-cancel'),
+      confirmDeleteBtn: document.getElementById('agent-confirm-delete'),
+      confirmNameEl: document.getElementById('agent-confirm-name'),
     },
     responseViewer = createResponseViewer(),
     historyModal = (function ({ onOpenResponse: onOpenResponse }) {
@@ -263,10 +263,10 @@ export function mount(outlet) {
         createCard: function () {
           const card = document.createElement('div');
           return (
-            (card.className = 'auto-card'),
+            (card.className = 'agent-card'),
             (card._currentAgent = null),
             (card.innerHTML =
-              '\n      <div class="auto-card-head">\n        <div class="auto-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg></div>\n        <div class="auto-card-info">\n          <div class="auto-card-name"></div>\n          <div class="auto-card-desc" style="display:none"></div>\n        </div>\n        <label class="auto-toggle" title="">\n          <input type="checkbox" class="toggle-input"><div class="auto-toggle-track"></div>\n        </label>\n      </div>\n      <div class="auto-card-meta">\n        <span class="auto-card-tag trigger-tag">\n          <span class="auto-trigger-icon" aria-hidden="true">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          </span>\n          <span class="auto-trigger-text"></span>\n        </span>\n        <div class="auto-card-actions-summary">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg>\n          <span class="auto-actions-text"></span>\n        </div>\n        <div class="agentic-prompt-preview"></div>\n        <div class="auto-card-lastrun" style="display:none"></div>\n      </div>\n      <div class="auto-card-footer">\n        <button class="auto-card-btn run-btn" title="Run now">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>\n          Run\n        </button>\n        <button class="auto-card-btn history-btn" title="View history">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          History\n        </button>\n        <button class="auto-card-btn edit-btn" title="Edit agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg>\n          Edit\n        </button>\n        <button class="auto-card-btn danger delete-btn" title="Delete agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>\n          Delete\n        </button>\n      </div>'),
+              '\n      <div class="agent-card-head">\n        <div class="agent-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg></div>\n        <div class="agent-card-info">\n          <div class="agent-name"></div>\n          <div class="agent-desc" style="display:none"></div>\n        </div>\n        <label class="agent-toggle" title="">\n          <input type="checkbox" class="toggle-input"><div class="agent-toggle-track"></div>\n        </label>\n      </div>\n      <div class="agent-meta">\n        <span class="agent-trigger-tag">\n          <span class="agent-trigger-icon" aria-hidden="true">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          </span>\n          <span class="agent-trigger-text"></span>\n        </span>\n        <div class="agent-card-actions-summary">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg>\n          <span class="agent-actions-text"></span>\n        </div>\n        <div class="agent-prompt-preview"></div>\n        <div class="agent-lastrun" style="display:none"></div>\n      </div>\n      <div class="agent-card-footer">\n        <button class="agent-card-btn run-btn" title="Run now">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>\n          Run\n        </button>\n        <button class="agent-card-btn history-btn" title="View history">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          History\n        </button>\n        <button class="agent-card-btn edit-btn" title="Edit agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg>\n          Edit\n        </button>\n        <button class="agent-card-btn danger delete-btn" title="Delete agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>\n          Delete\n        </button>\n      </div>'),
             card.querySelector('.toggle-input')?.addEventListener('change', (event) => {
               card._currentAgent && onToggle(card._currentAgent, event.target.checked, card);
             }),
@@ -287,23 +287,23 @@ export function mount(outlet) {
         },
         updateCard: function (card, agent) {
           ((card._currentAgent = agent),
-            (card.className = 'auto-card' + (agent.enabled ? '' : ' is-disabled')),
-            (card.querySelector('.auto-card-name').textContent = agent.name),
+            (card.className = 'agent-card' + (agent.enabled ? '' : ' is-disabled')),
+            (card.querySelector('.agent-name').textContent = agent.name),
             (card.querySelector('.toggle-input').checked = agent.enabled),
-            (card.querySelector('.auto-toggle').title = agent.enabled
+            (card.querySelector('.agent-toggle').title = agent.enabled
               ? t('agents.enabled')
               : t('agents.disabled')),
-            (card.querySelector('.auto-trigger-text').textContent = formatSchedule(agent.trigger)),
-            (card.querySelector('.auto-actions-text').textContent =
+            (card.querySelector('.agent-trigger-text').textContent = formatSchedule(agent.trigger)),
+            (card.querySelector('.agent-actions-text').textContent =
               resolveModelName(agent.primaryModel?.provider, agent.primaryModel?.modelId) ||
               t('agents.noModel')),
-            (card.querySelector('.agentic-prompt-preview').textContent =
+            (card.querySelector('.agent-prompt-preview').textContent =
               truncate(agent.prompt, 200) || t('agents.noPromptSet')));
-          const descEl = card.querySelector('.auto-card-desc');
+          const descEl = card.querySelector('.agent-desc');
           agent.description
             ? ((descEl.style.display = ''), (descEl.textContent = agent.description))
             : (descEl.style.display = 'none');
-          const lastRunEl = card.querySelector('.auto-card-lastrun');
+          const lastRunEl = card.querySelector('.agent-lastrun');
           agent.lastRun
             ? ((lastRunEl.style.display = ''),
               (lastRunEl.textContent = t('agents.lastRun', { time: timeAgo(agent.lastRun) })))
