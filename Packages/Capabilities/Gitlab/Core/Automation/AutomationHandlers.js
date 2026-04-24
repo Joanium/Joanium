@@ -137,7 +137,10 @@ export const gitlabOutputHandlers = {
       output.owner,
       output.repo,
       Number(output.prNumber),
-      { body: aiResponse, event: output.event ?? 'COMMENT' },
+      {
+        body: aiResponse,
+        event: output.event ?? 'COMMENT',
+      },
     );
   },
 };

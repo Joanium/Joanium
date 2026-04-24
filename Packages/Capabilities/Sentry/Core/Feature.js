@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as SentryAPI from './API/SentryAPI.js';
-import { getSentryCredentials, notConnected } from './Shared/Common.js';
+import { getSentryCredentials, withSentry } from './Shared/Common.js';
 import { SENTRY_TOOLS } from './Chat/Tools.js';
 import { executeSentryChatTool } from './Chat/ChatExecutor.js';
 import {
   sentryDataSourceCollectors,
   sentryOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withSentry(ctx, cb) {
-  const creds = getSentryCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'sentry',

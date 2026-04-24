@@ -1,23 +1,18 @@
+import { createConnectorCredentialHelpers } from '../Core/ConnectorUtils.js';
+
 export const GOOGLE_NOT_CONNECTED_MESSAGE =
   'Google Workspace not connected - connect it in Settings -> Connectors';
-export function getGoogleCredentials(ctx) {
-  const credentials = ctx.connectorEngine?.getCredentials('google');
-  return credentials?.accessToken ? credentials : null;
-}
-export function requireGoogleCredentials(ctx) {
-  const credentials = getGoogleCredentials(ctx);
-  if (!credentials) throw new Error(GOOGLE_NOT_CONNECTED_MESSAGE);
-  return credentials;
-}
-export function googleNotConnected() {
-  return { ok: !1, error: GOOGLE_NOT_CONNECTED_MESSAGE };
-}
-export async function withGoogle(ctx, callback) {
-  const credentials = getGoogleCredentials(ctx);
-  if (!credentials) return googleNotConnected();
-  try {
-    return await callback(credentials);
-  } catch (error) {
-    return { ok: !1, error: error.message };
-  }
-}
+
+const {
+  getCredentials: getGoogleCredentials,
+  requireCredentials: requireGoogleCredentials,
+  notConnected: googleNotConnected,
+  withCredentials: withGoogle,
+} = createConnectorCredentialHelpers({
+  connectorId: 'google',
+  credentialKey: 'accessToken',
+  requiredErrorMessage: GOOGLE_NOT_CONNECTED_MESSAGE,
+  notConnectedErrorMessage: GOOGLE_NOT_CONNECTED_MESSAGE,
+});
+
+export { getGoogleCredentials, requireGoogleCredentials, googleNotConnected, withGoogle };

@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as NotionAPI from './API/NotionAPI.js';
-import { getNotionCredentials, notConnected } from './Shared/Common.js';
+import { getNotionCredentials, withNotion } from './Shared/Common.js';
 import { NOTION_TOOLS } from './Chat/Tools.js';
 import { executeNotionChatTool } from './Chat/ChatExecutor.js';
 import {
   notionDataSourceCollectors,
   notionOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withNotion(ctx, cb) {
-  const creds = getNotionCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'notion',

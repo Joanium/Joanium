@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as CloudflareAPI from './API/CloudflareAPI.js';
-import { getCloudflareCredentials, notConnected } from './Shared/Common.js';
+import { getCloudflareCredentials, withCloudflare } from './Shared/Common.js';
 import { CLOUDFLARE_TOOLS } from './Chat/Tools.js';
 import { executeCloudflareChatTool } from './Chat/ChatExecutor.js';
 import {
   cloudflareDataSourceCollectors,
   cloudflareOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withCloudflare(ctx, cb) {
-  const creds = getCloudflareCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'cloudflare',

@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as VercelAPI from './API/VercelAPI.js';
-import { getVercelCredentials, notConnected } from './Shared/Common.js';
+import { getVercelCredentials, withVercel } from './Shared/Common.js';
 import { VERCEL_TOOLS } from './Chat/Tools.js';
 import { executeVercelChatTool } from './Chat/ChatExecutor.js';
 import {
   vercelDataSourceCollectors,
   vercelOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withVercel(ctx, cb) {
-  const creds = getVercelCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'vercel',

@@ -1,16 +1,9 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as FigmaAPI from './API/FigmaAPI.js';
-import { getFigmaCredentials, notConnected } from './Shared/Common.js';
+import { getFigmaCredentials, withFigma } from './Shared/Common.js';
 import { FIGMA_TOOLS } from './Chat/Tools.js';
 import { executeFigmaChatTool } from './Chat/ChatExecutor.js';
 import { figmaDataSourceCollectors, figmaOutputHandlers } from './Automation/AutomationHandlers.js';
-
-function withFigma(ctx, cb) {
-  const creds = getFigmaCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'figma',

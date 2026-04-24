@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as NetlifyAPI from './API/NetlifyAPI.js';
-import { getNetlifyCredentials, notConnected } from './Shared/Common.js';
+import { getNetlifyCredentials, withNetlify } from './Shared/Common.js';
 import { NETLIFY_TOOLS } from './Chat/Tools.js';
 import { executeNetlifyChatTool } from './Chat/ChatExecutor.js';
 import {
   netlifyDataSourceCollectors,
   netlifyOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withNetlify(ctx, cb) {
-  const creds = getNetlifyCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'netlify',

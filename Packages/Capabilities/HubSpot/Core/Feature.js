@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as HubSpotAPI from './API/HubSpotAPI.js';
-import { getHubSpotCredentials, notConnected } from './Shared/Common.js';
+import { getHubSpotCredentials, withHubSpot } from './Shared/Common.js';
 import { HUBSPOT_TOOLS } from './Chat/Tools.js';
 import { executeHubSpotChatTool } from './Chat/ChatExecutor.js';
 import {
   hubspotDataSourceCollectors,
   hubspotOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withHubSpot(ctx, cb) {
-  const creds = getHubSpotCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'hubspot',

@@ -1,6 +1,6 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as SpotifyAPI from './API/SpotifyAPI.js';
-import { getSpotifyCredentials, notConnected } from './Shared/Common.js';
+import { getSpotifyCredentials, withSpotify } from './Shared/Common.js';
 import { SPOTIFY_TOOLS } from './Chat/Tools.js';
 import { executeSpotifyChatTool } from './Chat/ChatExecutor.js';
 import {
@@ -10,13 +10,6 @@ import {
 
 async function getSpotifyWorkspace() {
   return import('../SpotifyWorkspace.js');
-}
-
-function withSpotify(ctx, cb) {
-  const creds = getSpotifyCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
 }
 
 export default defineFeature({

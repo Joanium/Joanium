@@ -1,17 +1,11 @@
 import defineFeature from '../../Core/DefineFeature.js';
-import { GitlabAPI, getGitlabCredentials, notConnected } from './Shared/Common.js';
+import { GitlabAPI, getGitlabCredentials, withGitlab } from './Shared/Common.js';
 import { GITLAB_TOOLS } from './Chat/Tools.js';
 import { executeGitlabChatTool } from './Chat/ChatExecutor.js';
 import {
   gitlabDataSourceCollectors,
   gitlabOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-function withGitlab(ctx, callback) {
-  const credentials = getGitlabCredentials(ctx);
-  return credentials
-    ? callback(credentials).catch((error) => ({ ok: !1, error: error.message }))
-    : notConnected();
-}
 export default defineFeature({
   id: 'gitlab',
   name: 'GitLab',

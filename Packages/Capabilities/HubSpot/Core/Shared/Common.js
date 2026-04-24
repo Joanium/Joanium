@@ -1,16 +1,16 @@
-export function getHubSpotCredentials(ctx) {
-  const creds = ctx.connectorEngine?.getCredentials('hubspot');
-  return creds?.token ? creds : null;
-}
-export function requireHubSpotCredentials(ctx) {
-  const creds = getHubSpotCredentials(ctx);
-  if (!creds)
-    throw new Error('HubSpot not connected. Add your Private App Token in Settings → Connectors.');
-  return creds;
-}
-export function notConnected() {
-  return {
-    ok: false,
-    error: 'HubSpot is not connected. Please add your Private App Token in Settings → Connectors.',
-  };
-}
+import { createConnectorCredentialHelpers } from '../../../Core/ConnectorUtils.js';
+
+const {
+  getCredentials: getHubSpotCredentials,
+  requireCredentials: requireHubSpotCredentials,
+  notConnected,
+  withCredentials: withHubSpot,
+} = createConnectorCredentialHelpers({
+  connectorId: 'hubspot',
+  requiredErrorMessage:
+    'HubSpot not connected. Add your Private App Token in Settings -> Connectors.',
+  notConnectedErrorMessage:
+    'HubSpot is not connected. Please add your Private App Token in Settings -> Connectors.',
+});
+
+export { getHubSpotCredentials, requireHubSpotCredentials, notConnected, withHubSpot };

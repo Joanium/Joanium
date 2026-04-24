@@ -1,16 +1,9 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as JiraAPI from './API/JiraAPI.js';
-import { getJiraCredentials, notConnected } from './Shared/Common.js';
+import { getJiraCredentials, withJira } from './Shared/Common.js';
 import { JIRA_TOOLS } from './Chat/Tools.js';
 import { executeJiraChatTool } from './Chat/ChatExecutor.js';
 import { jiraDataSourceCollectors, jiraOutputHandlers } from './Automation/AutomationHandlers.js';
-
-function withJira(ctx, cb) {
-  const creds = getJiraCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'jira',

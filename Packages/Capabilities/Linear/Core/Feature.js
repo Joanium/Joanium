@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as LinearAPI from './API/LinearAPI.js';
-import { getLinearCredentials, notConnected } from './Shared/Common.js';
+import { getLinearCredentials, withLinear } from './Shared/Common.js';
 import { LINEAR_TOOLS } from './Chat/Tools.js';
 import { executeLinearChatTool } from './Chat/ChatExecutor.js';
 import {
   linearDataSourceCollectors,
   linearOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withLinear(ctx, cb) {
-  const creds = getLinearCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'linear',

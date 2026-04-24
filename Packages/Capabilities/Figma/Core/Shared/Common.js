@@ -1,15 +1,15 @@
-export function getFigmaCredentials(ctx) {
-  const credentials = ctx.connectorEngine?.getCredentials('figma');
-  return credentials?.token ? credentials : null;
-}
-export function requireFigmaCredentials(ctx) {
-  const credentials = getFigmaCredentials(ctx);
-  if (!credentials) throw new Error('Figma not connected');
-  return credentials;
-}
-export function notConnected() {
-  return {
-    ok: false,
-    error: 'Figma is not connected. Ask the user to connect it in Settings → Connectors.',
-  };
-}
+import { createConnectorCredentialHelpers } from '../../../Core/ConnectorUtils.js';
+
+const {
+  getCredentials: getFigmaCredentials,
+  requireCredentials: requireFigmaCredentials,
+  notConnected,
+  withCredentials: withFigma,
+} = createConnectorCredentialHelpers({
+  connectorId: 'figma',
+  requiredErrorMessage: 'Figma not connected',
+  notConnectedErrorMessage:
+    'Figma is not connected. Ask the user to connect it in Settings -> Connectors.',
+});
+
+export { getFigmaCredentials, requireFigmaCredentials, notConnected, withFigma };

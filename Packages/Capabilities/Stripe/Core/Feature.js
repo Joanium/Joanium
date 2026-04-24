@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as StripeAPI from './API/StripeAPI.js';
-import { getStripeCredentials, notConnected } from './Shared/Common.js';
+import { getStripeCredentials, withStripe } from './Shared/Common.js';
 import { STRIPE_TOOLS } from './Chat/Tools.js';
 import { executeStripeChatTool } from './Chat/ChatExecutor.js';
 import {
   stripeDataSourceCollectors,
   stripeOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withStripe(ctx, cb) {
-  const creds = getStripeCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'stripe',

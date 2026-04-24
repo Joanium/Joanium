@@ -1,17 +1,11 @@
 import defineFeature from '../../Core/DefineFeature.js';
-import { GithubAPI, getGithubCredentials, notConnected } from './Shared/Common.js';
+import { GithubAPI, getGithubCredentials, withGithub } from './Shared/Common.js';
 import { GITHUB_TOOLS } from './Chat/Tools.js';
 import { executeGithubChatTool } from './Chat/ChatExecutor.js';
 import {
   githubDataSourceCollectors,
   githubOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-function withGithub(ctx, callback) {
-  const credentials = getGithubCredentials(ctx);
-  return credentials
-    ? callback(credentials).catch((error) => ({ ok: !1, error: error.message }))
-    : notConnected();
-}
 export default defineFeature({
   id: 'github',
   name: 'GitHub',

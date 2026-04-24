@@ -1,28 +1,27 @@
 import * as GithubAPI from '../API/GithubAPI.js';
-export function getGithubCredentials(ctx) {
-  const credentials = ctx.connectorEngine?.getCredentials('github');
-  return credentials?.token ? credentials : null;
-}
-export function requireGithubCredentials(ctx) {
-  const credentials = getGithubCredentials(ctx);
-  if (!credentials) throw new Error('GitHub not connected');
-  return credentials;
-}
-export function notConnected() {
-  return { ok: !1, error: 'GitHub not connected' };
-}
-export function parseCommaList(value = '') {
-  return String(value)
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-export function safeDate(value) {
-  if (!value) return '';
-  try {
-    return new Date(value).toLocaleString();
-  } catch {
-    return String(value);
-  }
-}
-export { GithubAPI };
+import {
+  createConnectorCredentialHelpers,
+  formatDateTime as safeDate,
+  parseCommaList,
+} from '../../../Core/ConnectorUtils.js';
+
+const {
+  getCredentials: getGithubCredentials,
+  requireCredentials: requireGithubCredentials,
+  notConnected,
+  withCredentials: withGithub,
+} = createConnectorCredentialHelpers({
+  connectorId: 'github',
+  requiredErrorMessage: 'GitHub not connected',
+  notConnectedErrorMessage: 'GitHub not connected',
+});
+
+export {
+  GithubAPI,
+  getGithubCredentials,
+  requireGithubCredentials,
+  notConnected,
+  parseCommaList,
+  safeDate,
+  withGithub,
+};

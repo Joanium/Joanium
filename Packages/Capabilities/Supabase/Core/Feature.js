@@ -1,19 +1,12 @@
 import defineFeature from '../../Core/DefineFeature.js';
 import * as SupabaseAPI from './API/SupabaseAPI.js';
-import { getSupabaseCredentials, notConnected } from './Shared/Common.js';
+import { getSupabaseCredentials, withSupabase } from './Shared/Common.js';
 import { SUPABASE_TOOLS } from './Chat/Tools.js';
 import { executeSupabaseChatTool } from './Chat/ChatExecutor.js';
 import {
   supabaseDataSourceCollectors,
   supabaseOutputHandlers,
 } from './Automation/AutomationHandlers.js';
-
-function withSupabase(ctx, cb) {
-  const creds = getSupabaseCredentials(ctx);
-  return creds
-    ? cb(creds).catch((e) => ({ ok: false, error: e.message }))
-    : Promise.resolve(notConnected());
-}
 
 export default defineFeature({
   id: 'supabase',
