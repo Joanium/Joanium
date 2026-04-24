@@ -1,3 +1,4 @@
+import { t } from '../../../../System/I18n/index.js';
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
 import { getPromptConfigs } from '../../../../System/Prompting/PromptConfig.js';
@@ -211,7 +212,7 @@ function buildMemorySyncPrompt(
     .join('\n');
 }
 
-function showMemoryIndicator(label = 'Updating memory...') {
+function showMemoryIndicator(label) {
   const existing = document.getElementById('memory-learn-indicator');
   if (existing) {
     existing.querySelector('[data-memory-label]')?.replaceChildren(document.createTextNode(label));
@@ -356,7 +357,7 @@ export function queueCurrentSessionMemorySync(reason = 'session-end') {
       ? { ...payload, reason, scope: buildSnapshotScope(payload.projectId) }
       : null;
   })(reason);
-  return enqueueSnapshotMemorySync(snapshot, 'Updating memory...');
+  return enqueueSnapshotMemorySync(snapshot, t('chat.updatingMemory'));
 }
 
 async function processBatchedMemorySync(chats, signal = null) {
@@ -433,7 +434,7 @@ export async function flushPendingPersonalMemorySyncs(limit = 10) {
   const batchAbort = new AbortController();
   _activeBatchMemoryAbort = batchAbort;
 
-  const hideIndicator = showMemoryIndicator('Catching up memory...');
+  const hideIndicator = showMemoryIndicator(t('chat.catchingUpMemory'));
   try {
     await processBatchedMemorySync(meaningful, batchAbort.signal);
 
@@ -558,7 +559,7 @@ export async function triggerMicroSync() {
   const abort = new AbortController();
   _microSyncAbort = abort;
 
-  const hideIndicator = showMemoryIndicator('Catching up memory…');
+  const hideIndicator = showMemoryIndicator(t('chat.catchingUpMemory'));
   try {
     // Re-use the existing batch processor with a single-element array —
     // same logic, same prompt, same quality. Just one chat at a time.

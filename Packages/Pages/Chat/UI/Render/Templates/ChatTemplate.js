@@ -68,9 +68,9 @@ export function getChatHTML() {
     <section id="welcome">
       <div class="welcome-greeting">
         <img src="../../../Assets/Logo/Logo.png" alt="Joanium" class="welcome-logo" width="64" height="64">
-        <h1 class="welcome-title">Welcome</h1>
+        <h1 class="welcome-title">${t('chat.welcome')}</h1>
       </div>
-      <p class="welcome-subtitle" id="welcome-subtitle">Ask me anything.</p>
+      <p class="welcome-subtitle" id="welcome-subtitle">${t('chat.askAnything')}</p>
       <div class="chips welcome-chips" aria-label="Starter prompts"></div>
     </section>
 
@@ -118,7 +118,7 @@ export function getChatHTML() {
           </div>
         </div>
       </div>
-      <p class="footer-credit">Made with \u2764\ufe0f by <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-name">Joel Jolly</a></p>
+      <p class="footer-credit">${t('about.madeWith')} ❤️ ${t('about.by')} <a href="https://joeljolly.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-name">Joel Jolly</a></p>
     </div>
   </div>
 
@@ -168,7 +168,9 @@ export function ensureDropOverlay() {
       (_dropOverlay = document.createElement('div')),
       (_dropOverlay.className = 'drop-overlay'),
       (_dropOverlay.innerHTML =
-        '<div class="drop-overlay-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="48" height="48" style="margin-bottom:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><h2>Drop files to attach</h2></div>'),
+        '<div class="drop-overlay-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="48" height="48" style="margin-bottom:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><h2>' +
+        t('chat.dropFiles') +
+        '</h2></div>'),
       Object.assign(_dropOverlay.style, {
         position: 'fixed',
         top: 0,
