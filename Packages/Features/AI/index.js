@@ -160,25 +160,36 @@ function toOpenAITools(tools) {
     },
   }));
 }
+function toGoogleToolParam(p) {
+  const t = String(p.type ?? 'string').toUpperCase();
+  const out = { type: t, description: p.description || '' };
+  // Gemini requires 'items' on ARRAY types — default to STRING items
+  if ('ARRAY' === t) out.items = { type: 'STRING' };
+  return out;
+}
 function toGoogleTools(tools) {
   return [
     {
-      functionDeclarations: tools.map((t) => ({
-        name: t.name,
-        description: t.description,
-        parameters: {
-          type: 'object',
-          properties: Object.fromEntries(
-            Object.entries(t.parameters).map(([key, p]) => [
-              key,
-              { type: p.type.toUpperCase(), description: p.description },
-            ]),
-          ),
-          required: Object.entries(t.parameters)
-            .filter(([, p]) => p.required)
-            .map(([k]) => k),
-        },
-      })),
+      functionDeclarations: tools.map((t) => {
+        const entries = Object.entries(t.parameters ?? {});
+        // Sanitize name: Gemini rejects names with spaces or special chars
+        const decl = {
+          name: String(t.name ?? '').replace(/[^a-zA-Z0-9_]/g, '_'),
+          description: t.description || t.name,
+        };
+        // Gemini rejects OBJECT with empty properties, so only include
+        // parameters when there are actual params. The model can still
+        // call parameterless functions — it just passes no arguments.
+        if (entries.length > 0) {
+          const required = entries.filter(([, p]) => p.required).map(([k]) => k);
+          decl.parameters = {
+            type: 'OBJECT',
+            properties: Object.fromEntries(entries.map(([key, p]) => [key, toGoogleToolParam(p)])),
+            ...(required.length > 0 ? { required } : {}),
+          };
+        }
+        return decl;
+      }),
     },
   ];
 }
