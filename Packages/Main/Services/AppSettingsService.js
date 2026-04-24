@@ -1,5 +1,6 @@
 import { readUser, writeUser } from './UserService.js';
 import * as PowerService from './PowerService.js';
+import { LANGUAGES_BY_CODE } from '../../System/Languages.js';
 
 const DEFAULTS = {
   run_on_startup: false,
@@ -8,17 +9,12 @@ const DEFAULTS = {
   app_language: 'en',
 };
 
-const SUPPORTED_LANGUAGES = {
-  en: { code: 'en', label: 'English' },
-  de: { code: 'de', label: 'German' },
-};
-
 export function getSupportedLanguages() {
-  return SUPPORTED_LANGUAGES;
+  return LANGUAGES_BY_CODE;
 }
 
 export function getLanguageLabel(code) {
-  return SUPPORTED_LANGUAGES[code]?.label ?? 'English';
+  return LANGUAGES_BY_CODE[code]?.label ?? 'English';
 }
 
 function readStoredAppSettings() {
@@ -28,7 +24,7 @@ function readStoredAppSettings() {
 export function readAppSettings() {
   const stored = readStoredAppSettings();
   const rawLang = stored.app_language ?? DEFAULTS.app_language;
-  const app_language = rawLang in SUPPORTED_LANGUAGES ? rawLang : 'en';
+  const app_language = rawLang in LANGUAGES_BY_CODE ? rawLang : 'en';
   return {
     run_on_startup: Boolean(stored.run_on_startup ?? DEFAULTS.run_on_startup),
     system_tray: Boolean(stored.system_tray ?? DEFAULTS.system_tray),

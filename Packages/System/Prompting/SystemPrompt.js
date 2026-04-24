@@ -4,6 +4,7 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { ensureStaticSystemInfo } from '../../Main/Services/SystemInfoService.js';
+import { LANGUAGES_BY_CODE } from '../Languages.js';
 
 const __filename = fileURLToPath(import.meta.url),
   __dirname = path.dirname(__filename),
@@ -403,16 +404,15 @@ export async function buildSystemPrompt({
     push(getConfig('joaniumPersona'));
   }
 
-  const LANGUAGE_LABELS = { en: 'English', de: 'German' };
-  const languageLabel = LANGUAGE_LABELS[appLanguage] ?? 'English';
+  const languageLabel = LANGUAGES_BY_CODE[appLanguage]?.label ?? 'English';
 
   blank();
   push('# Application');
   push(`- Joanium version: ${_appVersion}`);
   push(`- App language: ${languageLabel} (${appLanguage})`);
-  if (appLanguage === 'de') {
+  if (appLanguage != 'en') {
     push(
-      '- Language instruction: The user has set the app language to German. Respond in German by default unless the user writes to you in a different language, in which case match their language.',
+      `- Language instruction: The user has set the app language to ${languageLabel}. Respond in ${languageLabel} by default unless the user writes to you in a different language, in which case match their language.`,
     );
   }
 

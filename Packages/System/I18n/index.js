@@ -1,11 +1,15 @@
 import en from './en.js';
 import de from './de.js';
+import ja from './ja.js';
+import { LANGUAGES_BY_CODE } from '../Languages.js';
 
-const PACKS = { en, de };
+// NOTE: Static ESM imports above must be kept in sync with Languages.js manually.
+// PACKS keys must match the codes defined in SUPPORTED_LANGUAGES.
+const PACKS = { en, de, ja };
 
 // Sync, fast: start with cached value before async settings load
 let _lang = localStorage.getItem('joanium-lang') || 'en';
-if (!(_lang in PACKS)) _lang = 'en';
+if (!(_lang in LANGUAGES_BY_CODE)) _lang = 'en';
 
 /**
  * Translate a dot-notation key with optional variable substitution.
@@ -31,7 +35,7 @@ export function getLanguage() {
  * @param {string} lang  'en' | 'de'
  */
 export function setLanguage(lang) {
-  const next = lang in PACKS ? lang : 'en';
+  const next = lang in LANGUAGES_BY_CODE ? lang : 'en';
   if (next === _lang) return;
   _lang = next;
   localStorage.setItem('joanium-lang', _lang);
@@ -70,7 +74,7 @@ export function applyI18n(root = document.body) {
 export async function initI18n() {
   try {
     const settings = await window.electronAPI?.invoke('get-app-settings');
-    if (settings?.app_language && settings.app_language in PACKS) {
+    if (settings?.app_language && settings.app_language in LANGUAGES_BY_CODE) {
       const serverLang = settings.app_language;
       if (serverLang !== _lang) {
         _lang = serverLang;

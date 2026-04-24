@@ -1,6 +1,7 @@
 import { state } from '../System/State.js';
 import { createModal } from '../System/ModalFactory.js';
 import { t, setLanguage, applyI18n } from '../System/I18n/index.js';
+import { SUPPORTED_LANGUAGES } from '../System/Languages.js';
 import { loadConnectorsPanel } from '../Pages/Shared/Connectors/index.js';
 import { loadMCPPanel } from '../Pages/Shared/MCP/index.js';
 import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
@@ -218,8 +219,7 @@ export function initSettingsModal() {
                       <span class="settings-field-hint" data-i18n="settings.appLanguageHint">Language used across the app and by the AI when responding to you.</span>
                     </div>
                     <select id="app-language-select" class="settings-select" data-i18n-label="settings.appLanguage" aria-label="App language">
-                      <option value="en">English</option>
-                      <option value="de">Deutsch (German)</option>
+                      ${SUPPORTED_LANGUAGES.map((l) => `<option value="${l.code}">${l.native}</option>`).join('\n                      ')}
                     </select>
                   </div>
 
