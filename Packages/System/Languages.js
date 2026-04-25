@@ -22,6 +22,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'it', label: 'Italian', native: 'Italiano (Italian)' },
   { code: 'mr', label: 'Marathi', native: 'मराठी (Marathi)' },
   { code: 'ko', label: 'Korean', native: '한국어 (Korean)' },
+  { code: 'zh', label: 'Chinese', native: '中文 (Chinese)' },
+  { code: 'fi', label: 'Finnish', native: 'Suomi (Finnish)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
