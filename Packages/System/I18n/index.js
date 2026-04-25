@@ -29,6 +29,7 @@ import el from './el.js';
 import he from './he.js';
 import bg from './bg.js';
 import is from './is.js';
+import cy from './cy.js';
 import { LANGUAGES_BY_CODE } from '../Languages.js';
 
 // NOTE: Static ESM imports above must be kept in sync with Languages.js manually.
@@ -65,6 +66,7 @@ const PACKS = {
   he,
   bg,
   is,
+  cy,
 };
 
 // Sync, fast: start with cached value before async settings load
