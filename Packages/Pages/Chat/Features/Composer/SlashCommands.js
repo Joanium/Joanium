@@ -192,6 +192,11 @@ let _onAction = () => {};
 let _connectorsCached = false;
 let _slashStart = 0; // textarea index where the triggering '/' begins
 
+// Tracks whether the most recent selection change came from the keyboard.
+// While true, mouseenter events on list items will NOT override _selectedIndex
+// so arrow-key navigation is never hijacked by the hover position.
+let _keyboardNavigating = false;
+
 // ── Public API ──────────────────────────────────────────────────────────────
 
 export function initSlashCommands(textarea, inputBox, { onAction } = {}) {
@@ -348,14 +353,16 @@ function _onKeydown(e) {
   switch (e.key) {
     case 'ArrowDown':
       e.preventDefault();
+      _keyboardNavigating = true;
       _selectedIndex = Math.min(_selectedIndex + 1, _filteredCmds.length - 1);
-      _renderItems();
+      _updateActiveItem();
       break;
 
     case 'ArrowUp':
       e.preventDefault();
+      _keyboardNavigating = true;
       _selectedIndex = Math.max(_selectedIndex - 1, 0);
-      _renderItems();
+      _updateActiveItem();
       break;
 
     case 'Enter':
@@ -401,6 +408,7 @@ function _filter(query) {
 function _show() {
   if (!_dropdown) return;
   _visible = true;
+  _keyboardNavigating = false;
   _dropdown.hidden = false;
   _renderItems();
   requestAnimationFrame(() => _dropdown.classList.add('slash-dropdown--visible'));
@@ -409,6 +417,7 @@ function _show() {
 function _hide() {
   if (!_dropdown) return;
   _visible = false;
+  _keyboardNavigating = false;
   _dropdown.classList.remove('slash-dropdown--visible');
   setTimeout(() => {
     if (!_visible && _dropdown) _dropdown.hidden = true;
@@ -449,6 +458,25 @@ function _renderItems() {
   requestAnimationFrame(() => {
     _dropdown.querySelector('.slash-dropdown-item--active')?.scrollIntoView({ block: 'nearest' });
   });
+}
+
+/**
+ * Lightweight active-item update — only toggles CSS classes and aria-selected
+ * on the existing DOM nodes. Called by arrow-key navigation so we never
+ * rebuild the list (which would re-trigger mouseenter and reset the index).
+ */
+function _updateActiveItem() {
+  if (!_dropdown) return;
+
+  _dropdown.querySelectorAll('.slash-dropdown-item').forEach((el) => {
+    const idx = parseInt(el.dataset.idx, 10);
+    const isActive = idx === _selectedIndex;
+    el.classList.toggle('slash-dropdown-item--active', isActive);
+    el.setAttribute('aria-selected', String(isActive));
+  });
+
+  // Scroll the newly-active item into view
+  _dropdown.querySelector('.slash-dropdown-item--active')?.scrollIntoView({ block: 'nearest' });
 }
 
 function _buildSection(container, title, cmds, offset) {
@@ -531,10 +559,21 @@ function _buildSection(container, title, cmds, offset) {
 
     item.append(iconEl, textEl, badge);
 
+    // mouseenter: only update selection when NOT in the middle of keyboard
+    // navigation. Once the user physically moves the mouse we hand control
+    // back to hover so the two input modes feel natural together.
     item.addEventListener('mouseenter', () => {
+      if (_keyboardNavigating) return; // ← ignore hover while arrowing
       _selectedIndex = globalIdx;
-      _renderItems();
+      _updateActiveItem(); // ← patch classes only, no DOM rebuild
     });
+
+    // When the mouse actually moves inside the dropdown, clear the keyboard
+    // lock so hover takes over again naturally.
+    item.addEventListener('mousemove', () => {
+      _keyboardNavigating = false;
+    });
+
     item.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
