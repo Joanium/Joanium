@@ -32,6 +32,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'pl', label: 'Polish', native: 'Polski (Polish)' },
   { code: 'ro', label: 'Romanian', native: 'Română (Romanian)' },
   { code: 'hu', label: 'Hungarian', native: 'Magyar (Hungarian)' },
+  { code: 'el', label: 'Greek', native: 'Ελληνικά (Greek)' },
+  { code: 'he', label: 'Hebrew', native: 'עברית (Hebrew)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
