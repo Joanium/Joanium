@@ -12,6 +12,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'sv', label: 'Swedish', native: 'Svenska (Swedish)' },
   { code: 'ru', label: 'Russian', native: 'Русский (Russian)' },
   { code: 'ta', label: 'Tamil', native: 'தமிழ் (Tamil)' },
+  { code: 'fr', label: 'French', native: 'Français (French)' },
+  { code: 'hi', label: 'Hindi', native: 'हिन्दी (Hindi)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
