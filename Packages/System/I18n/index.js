@@ -24,6 +24,7 @@ import te from './te.js';
 import uk from './uk.js';
 import pl from './pl.js';
 import ro from './ro.js';
+import hu from './hu.js';
 import { LANGUAGES_BY_CODE } from '../Languages.js';
 
 // NOTE: Static ESM imports above must be kept in sync with Languages.js manually.
@@ -55,6 +56,7 @@ const PACKS = {
   uk,
   pl,
   ro,
+  hu,
 };
 
 // Sync, fast: start with cached value before async settings load
