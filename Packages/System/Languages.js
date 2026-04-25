@@ -30,6 +30,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'te', label: 'Telugu', native: 'తెలుగు (Telugu)' },
   { code: 'uk', label: 'Ukrainian', native: 'Українська (Ukrainian)' },
   { code: 'pl', label: 'Polish', native: 'Polski (Polish)' },
+  { code: 'ro', label: 'Romanian', native: 'Română (Romanian)' },
+  { code: 'hu', label: 'Hungarian', native: 'Magyar (Hungarian)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
