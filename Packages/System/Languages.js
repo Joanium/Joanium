@@ -19,6 +19,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'th', label: 'Thai', native: 'ภาษาไทย (Thai)' },
   { code: 'ar', label: 'Arabic', native: 'العربية (Arabic)' },
   { code: 'pt', label: 'Portuguese', native: 'Português (Portuguese)' },
+  { code: 'it', label: 'Italian', native: 'Italiano (Italian)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
