@@ -96,3 +96,6 @@
 
 /* 32. File Diff Panel */
 @import './FileDiffTracker.css';
+
+/* 33. Help Modal */
+@import '../../../Shared/Styles/Help.css';

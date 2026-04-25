@@ -123,8 +123,8 @@ export function initHelpModal() {
         </div>
 
         <div class="help-modal-body">
-
           <div class="help-col">
+
             <div class="help-col-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14"
@@ -135,11 +135,9 @@ export function initHelpModal() {
             </div>
             <p class="help-col-hint">Type <code>/</code> in the chat input to trigger a command.</p>
             ${SLASH_SECTIONS.map(buildSlashSection).join('')}
-          </div>
 
-          <div class="help-divider"></div>
+            <div class="help-divider"></div>
 
-          <div class="help-col">
             <div class="help-col-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14"
@@ -151,8 +149,8 @@ export function initHelpModal() {
             </div>
             <p class="help-col-hint">On macOS, swap <kbd>Ctrl</kbd> for <kbd>&#8984;</kbd>.</p>
             ${SHORTCUT_SECTIONS.map(buildShortcutSection).join('')}
-          </div>
 
+          </div>
         </div>
 
       </div>
