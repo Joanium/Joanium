@@ -19,6 +19,11 @@ import {
   isExtractableBinary,
 } from './ComposerFileTypes.js';
 import { enrichFileContent } from './ComposerParsers.js';
+import {
+  clearToolChips,
+  getActiveToolScopes,
+  isSlashMenuVisible,
+} from './SlashCommands.js';
 let _onSend = () => {},
   _hintTimer = null;
 function getModelName() {
@@ -308,6 +313,7 @@ export function reset() {
     (textarea.style.height = 'auto'),
     (state.composerAttachments = []),
     renderAttachments(),
+    clearToolChips(),
     hideHint(!0),
     autoResize());
 }
@@ -316,6 +322,8 @@ export function init(onSend) {
     textarea.addEventListener('input', autoResize),
     textarea.addEventListener('paste', handlePaste),
     textarea.addEventListener('keydown', (e) => {
+      // Don't send when the slash command menu is open — it handles its own Enter/Tab/Esc
+      if (isSlashMenuVisible()) return;
       'Enter' !== e.key || e.shiftKey || (e.preventDefault(), _onSend());
     }),
     sendBtn.addEventListener('click', _onSend),
@@ -360,3 +368,4 @@ export function init(onSend) {
     autoResize());
 }
 export { syncWorkspacePickerVisibility };
+export { getActiveToolScopes, clearToolChips, isSlashMenuVisible };

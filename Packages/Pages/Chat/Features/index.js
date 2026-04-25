@@ -1,6 +1,7 @@
 import { state } from '../../../System/State.js';
 import { welcome, chatView, chatMessages } from '../../../Pages/Shared/Core/DOM.js';
-import { reset as resetComposer } from './Composer/index.js';
+import { reset as resetComposer, getActiveToolScopes } from './Composer/index.js';
+import { buildToolScopeFilter } from './Capabilities/Registry/Tools.js';
 import { agentLoop, selectSkillsForMessages } from './Core/Agent.js';
 import { createLatencyMonitor } from './UI/LatencyMonitor.js';
 import {
@@ -236,6 +237,8 @@ export function restoreWelcome() {
 }
 export async function sendMessage({ text: text, attachments: attachments, sendBtnEl: sendBtnEl }) {
   if ((!text && 0 === attachments.length) || state.isTyping) return;
+  // Capture slash-command tool scopes BEFORE resetComposer() clears the chips.
+  const _activeToolScopes = getActiveToolScopes();
   if (
     (syncConversationSummaryWithMessages(),
     state.currentChatId || (state.currentChatId = generateChatId()),
@@ -286,18 +289,32 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
     showPlanningTrace(live, plannedSkills, plannedToolCalls));
   try {
     _currentAbortController = new AbortController();
+    const _scopeFilter = buildToolScopeFilter(_activeToolScopes);
+    // Prepend "/github" etc. to the agent's copy of the last user message so it
+    // immediately knows which integration to target. Display stays clean.
+    const _agentMessages =
+      _activeToolScopes.length > 0 && state.messages.length > 0
+        ? [
+            ...state.messages.slice(0, -1),
+            {
+              ...state.messages[state.messages.length - 1],
+              content: `${_activeToolScopes.join(' ')} ${state.messages[state.messages.length - 1].content}`,
+            },
+          ]
+        : state.messages;
     const {
         text: finalReply,
         usage: usage,
         usedProvider: usedProvider,
         usedModel: usedModel,
       } = await agentLoop(
-        state.messages,
+        _agentMessages,
         live,
         plannedSkills,
         plannedToolCalls,
         state.systemPrompt,
         _currentAbortController.signal,
+        _scopeFilter ? { toolFilter: _scopeFilter } : {},
       ).finally(() => {
         _currentAbortController = null;
       }),

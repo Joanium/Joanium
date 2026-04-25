@@ -1,0 +1,273 @@
+/* ── Slash Commands Dropdown ─────────────────────────────────────────────── */
+
+.slash-dropdown {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: min(60%, 960px);
+  max-height: 340px;
+  overflow: hidden;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 -4px 32px rgba(0, 0, 0, 0.18),
+    0 0 0 1px var(--border-subtle);
+  backdrop-filter: blur(20px);
+  z-index: 200;
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px) scale(0.97);
+  pointer-events: none;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+.slash-dropdown--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.slash-dropdown-header {
+  padding: 10px 16px 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  user-select: none;
+}
+
+/* ── Scrollable list ────────────────────────────────────────────────────── */
+
+.slash-dropdown-list {
+  max-height: 290px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  padding: 4px;
+}
+
+/* ── Item ────────────────────────────────────────────────────────────────── */
+
+.slash-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: calc(var(--radius-xl) - 4px);
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    transform 0.1s ease;
+  user-select: none;
+}
+.slash-dropdown-item--active {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-input));
+}
+@media (hover: hover) and (pointer: fine) {
+  .slash-dropdown-item:hover {
+    background: color-mix(in srgb, var(--accent) 10%, var(--bg-input));
+  }
+}
+.slash-dropdown-item:active {
+  transform: scale(0.99);
+}
+
+/* ── Item icon ───────────────────────────────────────────────────────────── */
+
+.slash-item-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+.slash-item-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.slash-item-icon--svg {
+  color: var(--text-muted);
+}
+.slash-item-icon--svg svg {
+  width: 16px;
+  height: 16px;
+}
+.slash-item-icon--emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+.slash-item-icon--fallback {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Item text ───────────────────────────────────────────────────────────── */
+
+.slash-item-text {
+  flex: 1;
+  min-width: 0;
+}
+.slash-item-label {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.slash-item-slash {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+.slash-item-display-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+.slash-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+/* ── Badge ───────────────────────────────────────────────────────────────── */
+
+.slash-item-badge {
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+.slash-item-badge--action {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.slash-item-badge--tool {
+  background: color-mix(in srgb, #22c55e 12%, transparent);
+  color: #22c55e;
+  border: 1px solid color-mix(in srgb, #22c55e 22%, transparent);
+}
+
+/* ── Tool Chips (inside input box) ──────────────────────────────────────── */
+
+.slash-tool-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 6px 4px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.slash-tool-chips[hidden] {
+  display: none !important;
+}
+
+.slash-tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 6px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-tertiary));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border-subtle));
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+  animation: slashChipIn 0.22s var(--ease-out-ui) both;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.1s ease;
+}
+
+@keyframes slashChipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .slash-tool-chip:hover {
+    background: color-mix(in srgb, var(--accent) 16%, var(--bg-tertiary));
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border-subtle));
+  }
+}
+
+.slash-tool-chip-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.slash-tool-chip-emoji {
+  font-size: 13px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.slash-tool-chip-label {
+  white-space: nowrap;
+  font-family: var(--font-ui);
+}
+
+.slash-tool-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    transform 0.1s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .slash-tool-chip-remove:hover {
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
+    color: var(--accent);
+    transform: scale(1.1);
+  }
+}
+.slash-tool-chip-remove:active {
+  transform: scale(0.9);
+}

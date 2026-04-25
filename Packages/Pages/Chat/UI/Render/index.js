@@ -25,6 +25,7 @@ import {
   addAttachments,
   syncWorkspacePickerVisibility,
 } from '../../Features/Composer/index.js';
+import { initSlashCommands, destroySlashCommands } from '../../Features/Composer/SlashCommands.js';
 import {
   sendMessage,
   startNewChat,
@@ -250,6 +251,20 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       }
       sendMessage({ text: text, attachments: attachments, sendBtnEl: sendBtn });
     }),
+    // Slash commands — /new, /private, /tool
+    initSlashCommands(textarea, document.querySelector('.input-box'), {
+      onAction(actionId) {
+        if ('new' === actionId) {
+          startNewChatAndReset();
+          syncWelcomeTitle();
+          renderStarterPrompts();
+        } else if ('private' === actionId) {
+          state.isIncognito = true;
+          syncIncognitoUI();
+          startNewChatAndReset();
+        }
+      },
+    }),
     projectOpenFolderBtn?.addEventListener('click', async () => {
       state.activeProject?.rootPath &&
         (await window.electronAPI?.invoke?.('open-folder-os', {
@@ -445,6 +460,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         enhanceFeature.cleanup(),
         browserPreviewFeature.cleanup(),
         diffTracker.destroy(),
+        destroySlashCommands(),
         stopGeneration());
       const overlay = getDropOverlay();
       overlay && (overlay.style.opacity = '0');

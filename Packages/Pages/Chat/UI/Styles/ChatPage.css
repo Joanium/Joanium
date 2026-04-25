@@ -19,6 +19,9 @@
 /* 7. Composer input area */
 @import './Input.css';
 
+/* 7b. Slash commands (inline /command palette) */
+@import './SlashCommands.css';
+
 /* 8. Model selector dropdown */
 @import './ModelSelector.css';
 

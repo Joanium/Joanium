@@ -281,6 +281,41 @@ export function buildCategoryLoadResult(requested, loadedTools) {
     lines.join('\n')
   );
 }
+/**
+ * Returns a toolFilter predicate that keeps default/unscoped tools (those with
+ * no connectorId / no mapped connector) and only includes connector-specific
+ * tools whose connectorId appears in `activeScopes`.
+ *
+ * Returns null when activeScopes is empty (no restriction needed).
+ */
+export function buildToolScopeFilter(activeScopes = []) {
+  if (!activeScopes || !activeScopes.length) return null;
+  const scopeSet = new Set(activeScopes.map((s) => String(s).toLowerCase()));
+  return function toolScopeFilter(tool) {
+    // 1. Explicit connectorId always takes priority.
+    if (tool.connectorId != null) {
+      return scopeSet.has(String(tool.connectorId).toLowerCase());
+    }
+    // 2. Category is mapped in CATEGORY_TO_CONNECTOR.
+    //    null means "default/unscoped tool" (terminal, search, utility…) — always pass.
+    if (
+      tool.category &&
+      Object.prototype.hasOwnProperty.call(CATEGORY_TO_CONNECTOR, tool.category)
+    ) {
+      const connId = CATEGORY_TO_CONNECTOR[tool.category];
+      if (connId === null) return true;
+      return scopeSet.has(String(connId).toLowerCase());
+    }
+    // 3. Category is NOT in the map at all (e.g. 'sentry', 'github', 'gitlab').
+    //    Treat the category name itself as the connector ID — so a '/github' scope
+    //    only passes github-category tools, and sentry/gitlab/etc. are blocked.
+    if (tool.category) {
+      return scopeSet.has(String(tool.category).toLowerCase());
+    }
+    // 4. No category info whatsoever — can't determine affiliation, let it through.
+    return true;
+  };
+}
 export function buildToolCatalog(availableTools = []) {
   const availableCategories = new Set(availableTools.map((t) => t.category).filter(Boolean)),
     availableNames = new Set(availableTools.map((t) => t.name)),
