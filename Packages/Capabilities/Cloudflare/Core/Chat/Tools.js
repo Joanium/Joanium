@@ -1,5 +1,4 @@
 export const CLOUDFLARE_TOOLS = [
-  // ─── Existing ──────────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_zones',
     description:
@@ -8,8 +7,6 @@ export const CLOUDFLARE_TOOLS = [
     connectorId: 'cloudflare',
     parameters: {},
   },
-
-  // ─── Account & Token ───────────────────────────────────────────────────────
   {
     name: 'cloudflare_verify_token',
     description: 'Verify that the connected Cloudflare API token is valid and show its status.',
@@ -32,8 +29,6 @@ export const CLOUDFLARE_TOOLS = [
     connectorId: 'cloudflare',
     parameters: {},
   },
-
-  // ─── Zone Management ───────────────────────────────────────────────────────
   {
     name: 'cloudflare_get_zone',
     description: 'Get detailed information about a specific Cloudflare zone by its zone ID.',
@@ -83,8 +78,6 @@ export const CLOUDFLARE_TOOLS = [
       until: { type: 'string', description: 'ISO 8601 end time (optional, defaults to now).' },
     },
   },
-
-  // ─── NEW: Zone Pause / Unpause ─────────────────────────────────────────────
   {
     name: 'cloudflare_pause_zone',
     description:
@@ -105,8 +98,6 @@ export const CLOUDFLARE_TOOLS = [
       zoneId: { type: 'string', description: 'The Cloudflare zone ID to unpause.' },
     },
   },
-
-  // ─── DNS Records ───────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_dns_records',
     description:
@@ -189,8 +180,6 @@ export const CLOUDFLARE_TOOLS = [
       zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
     },
   },
-
-  // ─── Cache ─────────────────────────────────────────────────────────────────
   {
     name: 'cloudflare_purge_cache',
     description:
@@ -229,8 +218,6 @@ export const CLOUDFLARE_TOOLS = [
       value: { type: 'string', description: '"aggressive", "basic", or "simplified".' },
     },
   },
-
-  // ─── Firewall Rules ────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_firewall_rules',
     description:
@@ -272,8 +259,6 @@ export const CLOUDFLARE_TOOLS = [
       ruleId: { type: 'string', description: 'The firewall rule ID to delete.' },
     },
   },
-
-  // ─── IP Access Rules ───────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_ip_access_rules',
     description:
@@ -315,8 +300,6 @@ export const CLOUDFLARE_TOOLS = [
       ruleId: { type: 'string', description: 'The IP access rule ID to delete.' },
     },
   },
-
-  // ─── Page Rules ────────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_page_rules',
     description:
@@ -361,8 +344,6 @@ export const CLOUDFLARE_TOOLS = [
       ruleId: { type: 'string', description: 'The page rule ID to delete.' },
     },
   },
-
-  // ─── SSL / TLS ─────────────────────────────────────────────────────────────
   {
     name: 'cloudflare_get_ssl_setting',
     description:
@@ -393,8 +374,6 @@ export const CLOUDFLARE_TOOLS = [
       zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
     },
   },
-
-  // ─── Workers ───────────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_workers',
     description: "List all Cloudflare Workers scripts in the user's account.",
@@ -417,8 +396,6 @@ export const CLOUDFLARE_TOOLS = [
       zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
     },
   },
-
-  // ─── NEW: Worker Routes ────────────────────────────────────────────────────
   {
     name: 'cloudflare_create_worker_route',
     description:
@@ -448,8 +425,6 @@ export const CLOUDFLARE_TOOLS = [
       routeId: { type: 'string', description: 'The Worker route ID to delete.' },
     },
   },
-
-  // ─── NEW: Rate Limiting ────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_rate_limits',
     description:
@@ -502,8 +477,6 @@ export const CLOUDFLARE_TOOLS = [
       rateLimitId: { type: 'string', description: 'The rate limit rule ID to delete.' },
     },
   },
-
-  // ─── NEW: KV Storage ───────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_kv_namespaces',
     description: 'List all Workers KV namespaces in a Cloudflare account.',
@@ -590,8 +563,6 @@ export const CLOUDFLARE_TOOLS = [
       key: { type: 'string', description: 'The key to delete.' },
     },
   },
-
-  // ─── NEW: R2 Storage ───────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_r2_buckets',
     description: 'List all R2 object storage buckets in a Cloudflare account.',
@@ -629,8 +600,6 @@ export const CLOUDFLARE_TOOLS = [
       bucketName: { type: 'string', description: 'The name of the R2 bucket to delete.' },
     },
   },
-
-  // ─── NEW: Load Balancers ───────────────────────────────────────────────────
   {
     name: 'cloudflare_list_load_balancers',
     description: 'List all load balancers configured for a Cloudflare zone.',
@@ -673,8 +642,6 @@ export const CLOUDFLARE_TOOLS = [
       },
     },
   },
-
-  // ─── NEW: Custom Hostnames ─────────────────────────────────────────────────
   {
     name: 'cloudflare_list_custom_hostnames',
     description: 'List all custom hostnames (SSL for SaaS) configured for a Cloudflare zone.',
@@ -716,8 +683,6 @@ export const CLOUDFLARE_TOOLS = [
       customHostnameId: { type: 'string', description: 'The custom hostname ID to delete.' },
     },
   },
-
-  // ─── NEW: Tunnels ──────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_tunnels',
     description:
@@ -739,8 +704,6 @@ export const CLOUDFLARE_TOOLS = [
       tunnelId: { type: 'string', description: 'The tunnel ID to retrieve.' },
     },
   },
-
-  // ─── NEW: Access ───────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_access_applications',
     description:
@@ -762,8 +725,6 @@ export const CLOUDFLARE_TOOLS = [
       appId: { type: 'string', description: 'The Access application ID.' },
     },
   },
-
-  // ─── NEW: Logpush ──────────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_logpush_jobs',
     description:
@@ -774,8 +735,6 @@ export const CLOUDFLARE_TOOLS = [
       zoneId: { type: 'string', description: 'The Cloudflare zone ID.' },
     },
   },
-
-  // ─── NEW: Health Checks ────────────────────────────────────────────────────
   {
     name: 'cloudflare_list_health_checks',
     description:

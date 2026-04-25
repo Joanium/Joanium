@@ -4,7 +4,6 @@ import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeCloudflareChatTool(ctx, toolName, params) {
   return runCredentialedChatTool(ctx, getCloudflareCredentials, notConnected, async (creds) => {
-    // ─── Account & Token ─────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_zones') {
       const zones = await CloudflareAPI.listZones(creds);
       return { ok: true, zones };
@@ -25,7 +24,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, accounts };
     }
 
-    // ─── Zone Management ─────────────────────────────────────────────────────
     if (toolName === 'cloudflare_get_zone') {
       const { zoneId } = params;
       const zone = await CloudflareAPI.getZone(creds, zoneId);
@@ -62,7 +60,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, zone };
     }
 
-    // ─── DNS Records ─────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_dns_records') {
       const { zoneId } = params;
       const records = await CloudflareAPI.listDnsRecords(creds, zoneId);
@@ -99,7 +96,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, zoneFile };
     }
 
-    // ─── Cache ───────────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_purge_cache') {
       const { zoneId, ...options } = params;
       const result = await CloudflareAPI.purgeCache(creds, zoneId, options);
@@ -118,7 +114,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, cachingLevel: result?.value };
     }
 
-    // ─── Firewall Rules ──────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_firewall_rules') {
       const { zoneId } = params;
       const rules = await CloudflareAPI.listFirewallRules(creds, zoneId);
@@ -137,7 +132,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── IP Access Rules ─────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_ip_access_rules') {
       const { zoneId } = params;
       const rules = await CloudflareAPI.listIPAccessRules(creds, zoneId);
@@ -156,7 +150,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── Page Rules ──────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_page_rules') {
       const { zoneId } = params;
       const rules = await CloudflareAPI.listPageRules(creds, zoneId);
@@ -175,7 +168,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── SSL / TLS ───────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_get_ssl_setting') {
       const { zoneId } = params;
       const setting = await CloudflareAPI.getSSLSetting(creds, zoneId);
@@ -194,7 +186,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, certificates };
     }
 
-    // ─── Workers ─────────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_workers') {
       const { accountId } = params;
       const workers = await CloudflareAPI.listWorkers(creds, accountId);
@@ -219,7 +210,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── Rate Limiting ────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_rate_limits') {
       const { zoneId } = params;
       const rules = await CloudflareAPI.listRateLimits(creds, zoneId);
@@ -238,7 +228,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── KV Storage ───────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_kv_namespaces') {
       const { accountId } = params;
       const namespaces = await CloudflareAPI.listKVNamespaces(creds, accountId);
@@ -284,7 +273,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── R2 Storage ───────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_r2_buckets') {
       const { accountId } = params;
       const buckets = await CloudflareAPI.listR2Buckets(creds, accountId);
@@ -303,7 +291,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── Load Balancers ───────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_load_balancers') {
       const { zoneId } = params;
       const loadBalancers = await CloudflareAPI.listLoadBalancers(creds, zoneId);
@@ -322,7 +309,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, pool };
     }
 
-    // ─── Custom Hostnames ─────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_custom_hostnames') {
       const { zoneId } = params;
       const hostnames = await CloudflareAPI.listCustomHostnames(creds, zoneId);
@@ -341,7 +327,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, ...result };
     }
 
-    // ─── Tunnels ──────────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_tunnels') {
       const { accountId } = params;
       const tunnels = await CloudflareAPI.listTunnels(creds, accountId);
@@ -354,7 +339,6 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, tunnel };
     }
 
-    // ─── Access ───────────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_access_applications') {
       const { accountId } = params;
       const apps = await CloudflareAPI.listAccessApplications(creds, accountId);
@@ -367,14 +351,12 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
       return { ok: true, policies };
     }
 
-    // ─── Logpush ──────────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_logpush_jobs') {
       const { zoneId } = params;
       const jobs = await CloudflareAPI.listLogpushJobs(creds, zoneId);
       return { ok: true, jobs };
     }
 
-    // ─── Health Checks ────────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_health_checks') {
       const { zoneId } = params;
       const checks = await CloudflareAPI.listHealthChecks(creds, zoneId);
