@@ -175,6 +175,11 @@
   color: #22c55e;
   border: 1px solid color-mix(in srgb, #22c55e 22%, transparent);
 }
+.slash-item-badge--nav {
+  background: color-mix(in srgb, #a78bfa 12%, transparent);
+  color: #a78bfa;
+  border: 1px solid color-mix(in srgb, #a78bfa 22%, transparent);
+}
 
 /* ── Tool Chips (inside input box) ──────────────────────────────────────── */
 

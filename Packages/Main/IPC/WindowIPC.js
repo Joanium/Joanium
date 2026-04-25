@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, app } from 'electron';
 import { get as getWin, setTitleBarOverlay, getPlatform } from '../Core/Window.js';
 
 export const ipcMeta = { needs: [] };
@@ -21,4 +21,15 @@ export function register() {
 
   // Lets the renderer stamp data-platform on <html> so CSS can branch.
   ipcMain.handle('get-platform', () => getPlatform());
+
+  // Slash command: /close
+  ipcMain.handle('quit-app', () => {
+    app.quit();
+  });
+
+  // Slash command: /restart
+  ipcMain.handle('restart-app', () => {
+    app.relaunch();
+    app.quit();
+  });
 }

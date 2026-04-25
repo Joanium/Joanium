@@ -251,7 +251,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       }
       sendMessage({ text: text, attachments: attachments, sendBtnEl: sendBtn });
     }),
-    // Slash commands — /new, /private, /tool
+    // Slash commands — /new, /private, /settings, /help, /close, /restart + nav commands
     initSlashCommands(textarea, document.querySelector('.input-box'), {
       onAction(actionId) {
         if ('new' === actionId) {
@@ -260,7 +260,17 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
           state.isIncognito = true;
           syncIncognitoUI();
           startNewChatAndReset();
+        } else if ('settings' === actionId) {
+          _settings?.open();
+        } else if ('help' === actionId) {
+          window.appHelp?.open();
+        } else if ('close' === actionId) {
+          window.electronAPI?.invoke?.('quit-app');
+        } else if ('restart' === actionId) {
+          window.electronAPI?.invoke?.('restart-app');
         }
+        // nav-type commands (/skills, /personas, etc.) are handled directly
+        // inside SlashCommands.js via window.appNavigate — no case needed here.
       },
     }),
     projectOpenFolderBtn?.addEventListener('click', async () => {

@@ -60,6 +60,122 @@ const ACTION_COMMANDS = [
            </svg>`,
     type: 'action',
   },
+  {
+    id: 'settings',
+    label: 'Settings',
+    description: 'Open workspace settings',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <circle cx="12" cy="12" r="3"/>
+             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
+               a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
+               A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
+               l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
+               A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+               l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09
+               a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
+               l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09
+               a1.65 1.65 0 0 0-1.51 1z"/>
+           </svg>`,
+    type: 'action',
+  },
+  {
+    id: 'help',
+    label: 'Help',
+    description: 'Show all slash commands and keyboard shortcuts',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <circle cx="12" cy="12" r="10"/>
+             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+             <line x1="12" y1="17" x2="12.01" y2="17"/>
+           </svg>`,
+    type: 'action',
+  },
+  {
+    id: 'close',
+    label: 'Close App',
+    description: 'Quit Joanium',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <circle cx="12" cy="12" r="10"/>
+             <line x1="15" y1="9" x2="9" y2="15"/>
+             <line x1="9" y1="9" x2="15" y2="15"/>
+           </svg>`,
+    type: 'action',
+  },
+  {
+    id: 'restart',
+    label: 'Restart App',
+    description: 'Relaunch Joanium',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <polyline points="23 4 23 10 17 10"/>
+             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+           </svg>`,
+    type: 'action',
+  },
+];
+
+// ── Built-in navigation commands ─────────────────────────────────────────────
+const NAV_COMMANDS = [
+  {
+    id: 'skills',
+    label: 'Skills',
+    description: 'Open the Skills library',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+           </svg>`,
+    type: 'nav',
+  },
+  {
+    id: 'personas',
+    label: 'Personas',
+    description: 'Manage AI personas',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+             <circle cx="12" cy="7" r="4"/>
+           </svg>`,
+    type: 'nav',
+  },
+  {
+    id: 'marketplace',
+    label: 'Marketplace',
+    description: 'Browse the Marketplace',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+             <line x1="3" y1="6" x2="21" y2="6"/>
+             <path d="M16 10a4 4 0 0 1-8 0"/>
+           </svg>`,
+    type: 'nav',
+  },
+  {
+    id: 'usage',
+    label: 'Usage',
+    description: 'View token and cost usage',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <line x1="18" y1="20" x2="18" y2="10"/>
+             <line x1="12" y1="20" x2="12" y2="4"/>
+             <line x1="6" y1="20" x2="6" y2="14"/>
+           </svg>`,
+    type: 'nav',
+  },
+  {
+    id: 'events',
+    label: 'Events',
+    description: 'Browse automation events',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+             <line x1="16" y1="2" x2="16" y2="6"/>
+             <line x1="8" y1="2" x2="8" y2="6"/>
+             <line x1="3" y1="10" x2="21" y2="10"/>
+           </svg>`,
+    type: 'nav',
+  },
 ];
 
 // ── Internal state ──────────────────────────────────────────────────────────
@@ -195,7 +311,7 @@ async function _rebuildCommands() {
     });
   }
 
-  _commands = [...ACTION_COMMANDS, ...toolCommands];
+  _commands = [...ACTION_COMMANDS, ...NAV_COMMANDS, ...toolCommands];
 }
 
 // ── Event handlers ──────────────────────────────────────────────────────────
@@ -306,6 +422,7 @@ function _renderItems() {
   _dropdown.innerHTML = '';
 
   const actions = _filteredCmds.filter((c) => c.type === 'action');
+  const navs = _filteredCmds.filter((c) => c.type === 'nav');
   const tools = _filteredCmds.filter((c) => c.type === 'tool');
 
   // Scrollable list wrapper (matches .slash-dropdown-list in CSS)
@@ -313,8 +430,18 @@ function _renderItems() {
   list.className = 'slash-dropdown-list';
 
   // Build sections into the scrollable wrapper
-  if (actions.length) _buildSection(list, 'Actions', actions, 0);
-  if (tools.length) _buildSection(list, 'Tools', tools, actions.length);
+  let offset = 0;
+  if (actions.length) {
+    _buildSection(list, 'Actions', actions, offset);
+    offset += actions.length;
+  }
+  if (navs.length) {
+    _buildSection(list, 'Navigate', navs, offset);
+    offset += navs.length;
+  }
+  if (tools.length) {
+    _buildSection(list, 'Tools', tools, offset);
+  }
 
   _dropdown.appendChild(list);
 
@@ -400,7 +527,7 @@ function _buildSection(container, title, cmds, offset) {
     // ── Badge ─────────────────────────────────────────────────────────────
     const badge = document.createElement('span');
     badge.className = `slash-item-badge slash-item-badge--${cmd.type}`;
-    badge.textContent = cmd.type === 'action' ? 'Action' : 'Tool';
+    badge.textContent = cmd.type === 'action' ? 'Action' : cmd.type === 'nav' ? 'Nav' : 'Tool';
 
     item.append(iconEl, textEl, badge);
 
@@ -445,6 +572,14 @@ function _select(cmd) {
   if (cmd.type === 'action') {
     restore('');
     _onAction(cmd.id);
+  } else if (cmd.type === 'nav') {
+    restore('');
+    // Use the globally exposed navigate fn so nav commands work from any page
+    if (typeof window.appNavigate === 'function') {
+      window.appNavigate(cmd.id);
+    } else {
+      _onAction(cmd.id);
+    }
   } else if (cmd.type === 'tool') {
     restore('');
     _addToolChip(cmd);

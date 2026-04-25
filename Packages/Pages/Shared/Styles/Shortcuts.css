@@ -87,3 +87,15 @@ kbd {
   border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--border-subtle));
   border-radius: 14px;
 }
+
+/* Slash command token inside shortcut rows */
+kbd.kbd-slash {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+  min-width: auto;
+  padding: 0 10px;
+  font-size: 11.5px;
+  letter-spacing: -0.2px;
+}

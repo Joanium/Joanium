@@ -5,6 +5,7 @@ import { initAboutModal } from '../../Modals/AboutModal.js';
 import { initLibraryModal } from '../../Modals/LibraryModal.js';
 import { initProjectsModal } from '../../Modals/ProjectsModal.js';
 import { initSettingsModal } from '../../Modals/SettingsModal.js';
+import { initHelpModal } from '../../Modals/HelpModal.js';
 import { injectCSS } from '../../System/Utils/InjectCSS.js';
 import { initChannelGateway } from '../../Pages/Channels/Features/Gateway.js';
 import { initScheduledAgentGateway } from '../../Pages/Agents/Features/Gateway.js';
@@ -22,7 +23,8 @@ let PAGES = {},
   _library = null,
   _projects = null,
   _settings = null,
-  _about = null;
+  _about = null,
+  _help = null;
 export async function navigate(page, options = {}) {
   const { startFreshChat: startFreshChat = !1, pendingChatId: pendingChatId = null } = options;
   if (!PAGES[page]) return void console.warn('[App] Unknown page:', page);
@@ -115,6 +117,7 @@ async function leaveProject() {
       .catch(() => {}),
     (_settings = initSettingsModal()),
     (_about = initAboutModal()),
+    (_help = initHelpModal()),
     initChannelGateway(),
     initScheduledAgentGateway(),
     (_sidebar = initSidebar({
@@ -142,6 +145,7 @@ async function leaveProject() {
     }),
     window.electronAPI?.on?.('navigate', (page) => navigate(page)),
     (window.appNavigate = navigate),
+    (window.appHelp = _help),
     !document.getElementById('_app-transition-style'))
   ) {
     const s = document.createElement('style');
@@ -185,6 +189,13 @@ document.addEventListener('keydown', (e) => {
   if (ctrl && key === ',') {
     e.preventDefault();
     _settings?.open();
+    return;
+  }
+
+  // Ctrl+/ → Open Help (works even from an input)
+  if (ctrl && key === '/') {
+    e.preventDefault();
+    _help?.open();
     return;
   }
 
