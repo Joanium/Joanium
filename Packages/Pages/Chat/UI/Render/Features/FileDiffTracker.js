@@ -239,11 +239,11 @@ export function createFileDiffTracker() {
   }
 
   function init() {
-    window.addEventListener('joanium:file-changed', onFileChanged);
+    window.addEventListener('jo:file-changed', onFileChanged);
   }
 
   function destroy() {
-    window.removeEventListener('joanium:file-changed', onFileChanged);
+    window.removeEventListener('jo:file-changed', onFileChanged);
     reset();
     panelEl = null;
   }

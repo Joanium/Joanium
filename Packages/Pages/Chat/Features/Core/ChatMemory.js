@@ -450,7 +450,7 @@ export async function flushPendingPersonalMemorySyncs(limit = 10) {
       console.error('[Chat] Batch memory sync failed:', err);
     }
     // AbortError means the user started a query — stay silent and let the
-    // next idle window (scheduled by joanium:user-activity) retry.
+    // next idle window (scheduled by jo:user-activity) retry.
   } finally {
     hideIndicator();
     // Clear the stored ref only if it's still ours (markMemoryActivity may

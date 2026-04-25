@@ -59,7 +59,7 @@ async function _loadSetting() {
 
 /**
  * Update the in-memory flag immediately — called from the Settings modal toggle
- * via the joanium:completion-sound-changed event.
+ * via the jo:completion-sound-changed event.
  */
 export function setCompletionSoundEnabled(enabled) {
   _settingEnabled = Boolean(enabled);
@@ -78,7 +78,7 @@ export function initCompletionSound() {
   });
 
   // Immediate update when the user flips the Completion Sound toggle.
-  window.addEventListener('joanium:completion-sound-changed', (e) => {
+  window.addEventListener('jo:completion-sound-changed', (e) => {
     _settingEnabled = Boolean(e.detail?.enabled);
   });
 }

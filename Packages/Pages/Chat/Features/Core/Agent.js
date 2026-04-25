@@ -1079,7 +1079,7 @@ export async function agentLoop(
     // the entire agent run.
     const steeringController = new AbortController();
     const onSteeringInterrupt = () => steeringController.abort();
-    window.addEventListener('joanium:steering-interrupt', onSteeringInterrupt, { once: !0 });
+    window.addEventListener('jo:steering-interrupt', onSteeringInterrupt, { once: !0 });
     const turnSignal = (function combineSignals(a, b) {
       if (!a) return b;
       if (!b) return a;
@@ -1122,7 +1122,7 @@ export async function agentLoop(
           if ('AbortError' === err.name) {
             if (signal?.aborted) {
               // Main abort (user clicked Stop) — propagate as fatal.
-              window.removeEventListener('joanium:steering-interrupt', onSteeringInterrupt);
+              window.removeEventListener('jo:steering-interrupt', onSteeringInterrupt);
               throw err;
             }
             // Steering interrupt — user sent a message while the AI was streaming.
@@ -1161,7 +1161,7 @@ export async function agentLoop(
       }
       if (result || steeringInterrupted) break;
     }
-    window.removeEventListener('joanium:steering-interrupt', onSteeringInterrupt);
+    window.removeEventListener('jo:steering-interrupt', onSteeringInterrupt);
     if (steeringInterrupted) {
       // Discard any partial streamed reply and let the next turn handle everything
       // with the user's new steering message injected at its top.

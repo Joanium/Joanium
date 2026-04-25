@@ -47,7 +47,7 @@ export function queueSteeringMessage(text, attachments) {
   }
   // Interrupt the current streaming turn immediately so the message
   // is picked up at the very next agent loop iteration.
-  window.dispatchEvent(new CustomEvent('joanium:steering-interrupt'));
+  window.dispatchEvent(new CustomEvent('jo:steering-interrupt'));
 }
 
 export function stopGeneration() {
@@ -200,7 +200,7 @@ async function doSendFromState() {
     // Mark activity so the idle-flush guard knows the user was just active.
     // Dispatching the event lets the render layer reset its debounce timer too.
     markMemoryActivity();
-    window.dispatchEvent(new CustomEvent('joanium:user-activity'));
+    window.dispatchEvent(new CustomEvent('jo:user-activity'));
   }
 }
 export function showChatView() {
@@ -354,7 +354,7 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
     // Mark activity so the idle-flush guard knows the user was just active.
     // Dispatching the event lets the render layer reset its debounce timer too.
     markMemoryActivity();
-    window.dispatchEvent(new CustomEvent('joanium:user-activity'));
+    window.dispatchEvent(new CustomEvent('jo:user-activity'));
   }
 }
 export function startNewChat(extraCleanup = () => {}) {

@@ -51,11 +51,11 @@ async function ipcReadFile(filePath) {
   if (!result?.ok) throw new Error(result?.error ?? `Could not read file: ${filePath}`);
   return { content: result.content, totalLines: result.totalLines, sizeBytes: result.sizeBytes };
 }
-// ── File-diff helpers (used by write handlers to emit joanium:file-changed) ──
+// ── File-diff helpers (used by write handlers to emit jo:file-changed) ──
 function _emitFileDiff(filePath, before, after) {
   try {
     window.dispatchEvent(
-      new CustomEvent('joanium:file-changed', {
+      new CustomEvent('jo:file-changed', {
         detail: { filePath, before: before ?? '', after: after ?? '' },
       }),
     );

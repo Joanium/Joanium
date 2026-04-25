@@ -315,12 +315,12 @@ export function initSettingsModal() {
               's' === e.key.toLowerCase() &&
               modal.isOpen() &&
               (e.preventDefault(),
-              'user' === ss.activeTab && saveUserTab(),
-              'providers' === ss.activeTab && saveProvidersTab());
+                'user' === ss.activeTab && saveUserTab(),
+                'providers' === ss.activeTab && saveProvidersTab());
           }),
           initAppSettingsTab(),
           // Re-apply translations whenever the user switches language
-          window.addEventListener('ow:language-changed', () => {
+          window.addEventListener('jo:language-changed', () => {
             applyI18n(backdrop);
             updateSaveButton();
           }));
@@ -330,7 +330,7 @@ export function initSettingsModal() {
     const el = $('settings-save-feedback');
     el &&
       ((el.textContent = msg),
-      (el.className = msg ? `settings-feedback ${tone}` : 'settings-feedback'));
+        (el.className = msg ? `settings-feedback ${tone}` : 'settings-feedback'));
   }
   function updateSaveButton() {
     const btn = $('settings-save');
@@ -388,7 +388,7 @@ export function initSettingsModal() {
           // Notify CompletionSound.js in the same renderer process immediately
           // so the setting takes effect without a reload.
           window.dispatchEvent(
-            new CustomEvent('joanium:completion-sound-changed', {
+            new CustomEvent('jo:completion-sound-changed', {
               detail: { enabled: soundInput.checked },
             }),
           );
@@ -405,7 +405,7 @@ export function initSettingsModal() {
       langSelect.addEventListener('change', async () => {
         try {
           await window.electronAPI?.invoke('set-app-settings', { app_language: langSelect.value });
-          // Update the in-process i18n module and broadcast ow:language-changed
+          // Update the in-process i18n module and broadcast jo:language-changed
           setLanguage(langSelect.value);
         } catch (err) {
           console.warn('[AppSettings] Failed to save app_language', err);
@@ -413,7 +413,7 @@ export function initSettingsModal() {
           try {
             const s = await window.electronAPI?.invoke('get-app-settings');
             if (s?.app_language) langSelect.value = s.app_language;
-          } catch {}
+          } catch { }
         }
       });
     }
@@ -500,8 +500,8 @@ export function initSettingsModal() {
     'providers' !== ss.activeTab
       ? 'mcp' !== ss.activeTab
         ? 'shortcuts' !== ss.activeTab &&
-          'user' === ss.activeTab &&
-          $('settings-user-name')?.focus()
+        'user' === ss.activeTab &&
+        $('settings-user-name')?.focus()
         : $('mcp-add-btn')?.focus()
       : $('settings-providers-list')?.querySelector('input')?.focus();
   }
@@ -513,7 +513,7 @@ export function initSettingsModal() {
     const wt = document.querySelector('.welcome-title');
     (wt && (wt.textContent = rawName ? `${t('chat.welcome')}, ${firstName}` : t('chat.welcome')),
       window.dispatchEvent(
-        new CustomEvent('ow:user-profile-updated', {
+        new CustomEvent('jo:user-profile-updated', {
           detail: { name: displayName, initials: state.userInitials },
         }),
       ));
@@ -528,7 +528,7 @@ export function initSettingsModal() {
         return lc !== rc
           ? rc - lc
           : (PROVIDER_ORDER.get(l.provider) ?? Number.MAX_SAFE_INTEGER) -
-              (PROVIDER_ORDER.get(r.provider) ?? Number.MAX_SAFE_INTEGER);
+          (PROVIDER_ORDER.get(r.provider) ?? Number.MAX_SAFE_INTEGER);
       });
     })(ss.providerCatalog, ss);
     if (!catalog.length)
@@ -551,9 +551,9 @@ export function initSettingsModal() {
               ? { tone: 'removing', label: t('provider.removing') }
               : providerIsComplete(r, config)
                 ? {
-                    tone: isProviderConfigured(r) ? 'active' : 'draft',
-                    label: isProviderConfigured(r) ? t('provider.connected') : t('provider.draft'),
-                  }
+                  tone: isProviderConfigured(r) ? 'active' : 'draft',
+                  label: isProviderConfigured(r) ? t('provider.connected') : t('provider.draft'),
+                }
                 : hasDraft
                   ? { tone: 'incomplete', label: t('provider.incomplete') }
                   : { tone: 'inactive', label: t('provider.inactive') };
@@ -582,78 +582,78 @@ export function initSettingsModal() {
         const fields = document.createElement('div');
         if (
           ((fields.className = 'spr-fields' + (def.fields.length > 1 ? ' spr-fields--multi' : '')),
-          def.fields.forEach((f) =>
-            fields.appendChild(
-              (function (r, field, savedConfig, effectiveConfig, disabled) {
-                const wrapper = document.createElement('label');
-                wrapper.className = 'spr-field';
-                const label = document.createElement('span');
-                ((label.className = 'spr-field-label'), (label.textContent = field.label));
-                const inputWrap = document.createElement('div');
-                inputWrap.className = 'key-input-wrap spr-key-wrap';
-                const input = document.createElement('input');
-                if (
-                  ((input.className = 'key-input spr-key-input'),
-                  (input.type = 'password' === field.type ? 'password' : 'text'),
-                  (input.placeholder =
-                    'password' === field.type && savedConfig.apiKey
-                      ? t('provider.keySaved')
-                      : field.placeholder),
-                  (input.autocomplete = 'off'),
-                  (input.spellcheck = !1),
-                  (input.disabled = disabled),
-                  (input.dataset.providerId = r.provider),
-                  (input.dataset.fieldKey = field.key),
-                  (input.value =
-                    'password' === field.type
-                      ? String(ss.pendingProviderConfigs[r.provider]?.[field.key] ?? '')
-                      : String(effectiveConfig[field.key] ?? '')),
-                  input.addEventListener('input', () => {
-                    const focusState = (function () {
-                        const list = $('settings-providers-list'),
-                          active = document.activeElement;
-                        return active instanceof HTMLInputElement && list?.contains(active)
-                          ? {
+            def.fields.forEach((f) =>
+              fields.appendChild(
+                (function (r, field, savedConfig, effectiveConfig, disabled) {
+                  const wrapper = document.createElement('label');
+                  wrapper.className = 'spr-field';
+                  const label = document.createElement('span');
+                  ((label.className = 'spr-field-label'), (label.textContent = field.label));
+                  const inputWrap = document.createElement('div');
+                  inputWrap.className = 'key-input-wrap spr-key-wrap';
+                  const input = document.createElement('input');
+                  if (
+                    ((input.className = 'key-input spr-key-input'),
+                      (input.type = 'password' === field.type ? 'password' : 'text'),
+                      (input.placeholder =
+                        'password' === field.type && savedConfig.apiKey
+                          ? t('provider.keySaved')
+                          : field.placeholder),
+                      (input.autocomplete = 'off'),
+                      (input.spellcheck = !1),
+                      (input.disabled = disabled),
+                      (input.dataset.providerId = r.provider),
+                      (input.dataset.fieldKey = field.key),
+                      (input.value =
+                        'password' === field.type
+                          ? String(ss.pendingProviderConfigs[r.provider]?.[field.key] ?? '')
+                          : String(effectiveConfig[field.key] ?? '')),
+                      input.addEventListener('input', () => {
+                        const focusState = (function () {
+                          const list = $('settings-providers-list'),
+                            active = document.activeElement;
+                          return active instanceof HTMLInputElement && list?.contains(active)
+                            ? {
                               providerId: active.dataset.providerId ?? '',
                               fieldKey: active.dataset.fieldKey ?? '',
                               selectionStart: active.selectionStart,
                               selectionEnd: active.selectionEnd,
                               selectionDirection: active.selectionDirection,
                             }
-                          : null;
-                      })(),
-                      pending = { ...(ss.pendingProviderConfigs[r.provider] ?? {}) },
-                      trimmed = input.value.trim();
-                    ('password' === field.type && !trimmed && savedConfig.apiKey
-                      ? delete pending[field.key]
-                      : (pending[field.key] = input.value),
-                      Object.keys(pending).length > 0
-                        ? (ss.pendingProviderConfigs[r.provider] = pending)
-                        : delete ss.pendingProviderConfigs[r.provider],
-                      trimmed && ss.pendingDeletes.delete(r.provider),
-                      renderProviders(focusState));
-                  }),
-                  inputWrap.appendChild(input),
-                  'password' === field.type)
-                ) {
-                  const eye = document.createElement('button');
-                  ((eye.type = 'button'),
-                    (eye.className = 'key-eye'),
-                    (eye.title = 'Show or hide'),
-                    (eye.innerHTML =
-                      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke-width="1.8"/></svg>'),
-                    (eye.disabled = disabled),
-                    eye.addEventListener('click', () => {
-                      input.type = 'password' === input.type ? 'text' : 'password';
-                    }),
-                    inputWrap.appendChild(eye));
-                }
-                return (wrapper.append(label, inputWrap), wrapper);
-              })(r, f, savedConfig, effectiveConfig, isDeleting),
+                            : null;
+                        })(),
+                          pending = { ...(ss.pendingProviderConfigs[r.provider] ?? {}) },
+                          trimmed = input.value.trim();
+                        ('password' === field.type && !trimmed && savedConfig.apiKey
+                          ? delete pending[field.key]
+                          : (pending[field.key] = input.value),
+                          Object.keys(pending).length > 0
+                            ? (ss.pendingProviderConfigs[r.provider] = pending)
+                            : delete ss.pendingProviderConfigs[r.provider],
+                          trimmed && ss.pendingDeletes.delete(r.provider),
+                          renderProviders(focusState));
+                      }),
+                      inputWrap.appendChild(input),
+                      'password' === field.type)
+                  ) {
+                    const eye = document.createElement('button');
+                    ((eye.type = 'button'),
+                      (eye.className = 'key-eye'),
+                      (eye.title = 'Show or hide'),
+                      (eye.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke-width="1.8"/></svg>'),
+                      (eye.disabled = disabled),
+                      eye.addEventListener('click', () => {
+                        input.type = 'password' === input.type ? 'text' : 'password';
+                      }),
+                      inputWrap.appendChild(eye));
+                  }
+                  return (wrapper.append(label, inputWrap), wrapper);
+                })(r, f, savedConfig, effectiveConfig, isDeleting),
+              ),
             ),
-          ),
-          main.append(summary, fields),
-          def.hint)
+            main.append(summary, fields),
+            def.hint)
         ) {
           const h = document.createElement('p');
           ((h.className = 'spr-hint'), (h.textContent = def.hint), main.appendChild(h));
@@ -667,7 +667,7 @@ export function initSettingsModal() {
           (delBtn.hidden = !isDeleting && !hasAnyConfig),
           (delBtn.innerHTML = isDeleting
             ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14l-4-4 4-4M5 10h11a4 4 0 010 8h-1" stroke-linecap="round" stroke-linejoin="round"/></svg> ' +
-              t('provider.undoRemoval')
+            t('provider.undoRemoval')
             : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg>'),
           delBtn.addEventListener('click', () => {
             (isDeleting
@@ -697,7 +697,7 @@ export function initSettingsModal() {
               nextInput &&
               !nextInput.disabled &&
               (nextInput.focus(),
-              'number' == typeof focusState.selectionStart &&
+                'number' == typeof focusState.selectionStart &&
                 'number' == typeof focusState.selectionEnd &&
                 'function' == typeof nextInput.setSelectionRange)
             )
@@ -707,7 +707,7 @@ export function initSettingsModal() {
                   focusState.selectionEnd,
                   focusState.selectionDirection ?? 'none',
                 );
-              } catch {}
+              } catch { }
           });
       })(focusState));
   }
@@ -763,8 +763,8 @@ export function initSettingsModal() {
         const pv = pendingConfig[f.key];
         null == pv
           ? !savedConfig[f.key] &&
-            effectiveConfig[f.key] &&
-            (payload[f.key] = String(effectiveConfig[f.key]).trim())
+          effectiveConfig[f.key] &&
+          (payload[f.key] = String(effectiveConfig[f.key]).trim())
           : (payload[f.key] = String(pv).trim());
       }),
         Object.keys(payload).length > 0 && (changes[pid] = payload));
@@ -791,11 +791,11 @@ export function initSettingsModal() {
             }),
           ),
           removedCount &&
-            parts.push(
-              t(1 === removedCount ? 'provider.removedSingular' : 'provider.removedPlural', {
-                count: removedCount,
-              }),
-            ),
+          parts.push(
+            t(1 === removedCount ? 'provider.removedSingular' : 'provider.removedPlural', {
+              count: removedCount,
+            }),
+          ),
           setFeedback(`${parts.join(', ')}.`, 'success'),
           window.dispatchEvent(new CustomEvent('jo:settings-saved')));
       } catch (err) {
@@ -1003,7 +1003,7 @@ export function initSettingsModal() {
             $('settings-user-name') && ($('settings-user-name').value = user?.name ?? ''),
             $('settings-memory') && ($('settings-memory').value = memory ?? ''),
             $('settings-custom-instructions') &&
-              ($('settings-custom-instructions').value = customInstructions ?? ''),
+            ($('settings-custom-instructions').value = customInstructions ?? ''),
             renderProviders(),
             updateSaveButton());
         })();
