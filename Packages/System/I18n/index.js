@@ -105,7 +105,7 @@ export function setLanguage(lang) {
   if (next === _lang) return;
   _lang = next;
   localStorage.setItem('joanium-lang', _lang);
-  window.dispatchEvent(new CustomEvent('ow:language-changed', { detail: { lang: _lang } }));
+  window.dispatchEvent(new CustomEvent('jo:language-changed', { detail: { lang: _lang } }));
 }
 
 /**
@@ -145,7 +145,7 @@ export async function initI18n() {
       if (serverLang !== _lang) {
         _lang = serverLang;
         localStorage.setItem('joanium-lang', _lang);
-        // Don't fire ow:language-changed here — DOM isn't fully built yet.
+        // Don't fire jo:language-changed here — DOM isn't fully built yet.
         // Main.js calls applyI18n(document.body) after sidebar init.
       }
     }

@@ -19,11 +19,7 @@ import {
   isExtractableBinary,
 } from './ComposerFileTypes.js';
 import { enrichFileContent } from './ComposerParsers.js';
-import {
-  clearToolChips,
-  getActiveToolScopes,
-  isSlashMenuVisible,
-} from './SlashCommands.js';
+import { clearToolChips, getActiveToolScopes, isSlashMenuVisible } from './SlashCommands.js';
 let _onSend = () => {},
   _hintTimer = null;
 function getModelName() {
@@ -348,7 +344,7 @@ export function init(onSend) {
           result.path &&
           ((state.workspacePath = result.path),
           window.dispatchEvent(
-            new CustomEvent('ow:workspace-changed', { detail: { workspacePath: result.path } }),
+            new CustomEvent('jo:workspace-changed', { detail: { workspacePath: result.path } }),
           ),
           showHint(`📂 Workpace Set: ${result.path}`, 'info', { sticky: !0 }),
           updateSendBtn());
@@ -358,12 +354,12 @@ export function init(onSend) {
           (state.workspacePath &&
             ((state.workspacePath = null),
             window.dispatchEvent(
-              new CustomEvent('ow:workspace-changed', { detail: { workspacePath: null } }),
+              new CustomEvent('jo:workspace-changed', { detail: { workspacePath: null } }),
             ),
             showHint('Workspace cleared.', 'info')));
       })),
-    window.addEventListener('ow:model-selection-changed', syncCapabilities),
-    window.addEventListener('ow:project-changed', syncWorkspacePickerVisibility),
+    window.addEventListener('jo:model-selection-changed', syncCapabilities),
+    window.addEventListener('jo:project-changed', syncWorkspacePickerVisibility),
     syncWorkspacePickerVisibility(),
     autoResize());
 }

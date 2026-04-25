@@ -474,8 +474,8 @@ export function mount(outlet) {
     elements.saveBtn?.addEventListener('click', saveModal),
     elements.modalBackdrop?.addEventListener('click', onBackdropClick),
     document.addEventListener('keydown', onEscapeKey),
-    window.addEventListener('ow:workspace-changed', onWorkspaceChanged),
-    window.addEventListener('ow:project-changed', onWorkspaceChanged),
+    window.addEventListener('jo:workspace-changed', onWorkspaceChanged),
+    window.addEventListener('jo:project-changed', onWorkspaceChanged),
     (async function () {
       (await (async function () {
         try {
@@ -515,8 +515,8 @@ export function mount(outlet) {
         elements.workspaceClearBtn?.removeEventListener('click', onClearWorkspaceClick),
         elements.saveBtn?.removeEventListener('click', saveModal),
         elements.modalBackdrop?.removeEventListener('click', onBackdropClick),
-        window.removeEventListener('ow:workspace-changed', onWorkspaceChanged),
-        window.removeEventListener('ow:project-changed', onWorkspaceChanged),
+        window.removeEventListener('jo:workspace-changed', onWorkspaceChanged),
+        window.removeEventListener('jo:project-changed', onWorkspaceChanged),
         grid.clear(),
         modelPicker.cleanup(),
         confirmDialog.cleanup(),

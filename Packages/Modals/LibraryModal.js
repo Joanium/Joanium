@@ -233,12 +233,12 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
         }
       });
 
-      window.addEventListener('ow:project-changed', () => {
+      window.addEventListener('jo:project-changed', () => {
         syncHeader();
         if (modal.isOpen()) refreshChatList();
       });
 
-      window.addEventListener('ow:language-changed', () => {
+      window.addEventListener('jo:language-changed', () => {
         applyI18n(backdrop);
         syncHeader();
       });

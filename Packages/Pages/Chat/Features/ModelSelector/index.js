@@ -21,7 +21,7 @@ export function modelSupportsInput(kind, provider, modelId) {
 }
 export function notifyModelSelectionChanged() {
   window.dispatchEvent(
-    new CustomEvent('ow:model-selection-changed', {
+    new CustomEvent('jo:model-selection-changed', {
       detail: {
         provider: state.selectedProvider,
         modelId: state.selectedModel,

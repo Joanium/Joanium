@@ -65,7 +65,7 @@ async function openFreshChat() {
     state.workspacePath &&
     ((state.workspacePath = null),
     window.dispatchEvent(
-      new CustomEvent('ow:workspace-changed', { detail: { workspacePath: null } }),
+      new CustomEvent('jo:workspace-changed', { detail: { workspacePath: null } }),
     )),
     await navigate('chat', { startFreshChat: !0 }));
 }
@@ -85,7 +85,7 @@ async function openProject(project) {
     (state.workspacePath = nextProject.rootPath),
     await openFreshChat(),
     window.dispatchEvent(
-      new CustomEvent('ow:project-changed', { detail: { project: state.activeProject } }),
+      new CustomEvent('jo:project-changed', { detail: { project: state.activeProject } }),
     ),
     await _projects?.refreshProjects?.(),
     !0
@@ -95,7 +95,7 @@ async function leaveProject() {
   ((state.activeProject = null),
     (state.workspacePath = null),
     await openFreshChat(),
-    window.dispatchEvent(new CustomEvent('ow:project-changed', { detail: { project: null } })));
+    window.dispatchEvent(new CustomEvent('jo:project-changed', { detail: { project: null } })));
 }
 (async function () {
   // ── i18n: sync language from main process before any UI renders ──
@@ -130,14 +130,14 @@ async function leaveProject() {
   // Apply initial translations to the whole page
   applyI18n(document.body);
   // When language changes (user picks a different lang in Settings), re-apply
-  window.addEventListener('ow:language-changed', ({ detail }) => {
+  window.addEventListener('jo:language-changed', ({ detail }) => {
     setLanguage(detail.lang);
     applyI18n(document.body);
   });
   const user = await _settings.loadUser().catch(() => null);
   if (
     (_sidebar.setUser(user?.name ?? ''),
-    window.addEventListener('ow:user-profile-updated', (e) => {
+    window.addEventListener('jo:user-profile-updated', (e) => {
       _sidebar.setUser(e.detail?.name ?? '');
     }),
     window.electronAPI?.on?.('navigate', (page) => navigate(page)),

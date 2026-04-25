@@ -358,7 +358,7 @@ export function initProjectsModal({
   document.addEventListener('keydown', (event) => {
     'Escape' === event.key && isOpen() && close();
   });
-  window.addEventListener('ow:project-changed', () => {
+  window.addEventListener('jo:project-changed', () => {
     isOpen() && refreshProjects();
   });
   return {

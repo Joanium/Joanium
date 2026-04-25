@@ -130,7 +130,7 @@ export function initSidebar({
       } catch {}
     })(),
     // Update sidebar text when the app language changes
-    window.addEventListener('ow:language-changed', () => {
+    window.addEventListener('jo:language-changed', () => {
       // Special sidebar buttons (keys are literal i18n keys)
       const viewKeys = {
         chat: 'sidebar.newChat',
