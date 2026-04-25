@@ -289,7 +289,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       (syncProjectUI(), prewarmAgentContext().catch(() => {}));
       if (!state.workspacePath) diffTracker.reset();
     };
-  (window.addEventListener('ow:settings-saved', onSettingsSaved),
+  (window.addEventListener('jo:settings-saved', onSettingsSaved),
     window.addEventListener('ow:user-profile-updated', onUserProfileUpdated),
     window.addEventListener('ow:workspace-changed', onWorkspaceChanged),
     window.addEventListener('ow:project-changed', onProjectChanged));
@@ -434,7 +434,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         document.removeEventListener('dragleave', onDragLeave),
         document.removeEventListener('drop', onDrop),
         window.removeEventListener('joanium:user-activity', onUserActivity),
-        window.removeEventListener('ow:settings-saved', onSettingsSaved),
+        window.removeEventListener('jo:settings-saved', onSettingsSaved),
         window.removeEventListener('ow:user-profile-updated', onUserProfileUpdated),
         window.removeEventListener('ow:workspace-changed', onWorkspaceChanged),
         window.removeEventListener('ow:project-changed', onProjectChanged),

@@ -213,6 +213,16 @@ export function initSettingsModal() {
                       <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
                     </label>
                   </div>
+                  <div class="settings-toggle-row" id="app-setting-sound">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label">Completion Sound</span>
+                      <span class="settings-field-hint">Play a chime when the AI finishes responding while you&rsquo;re away from the window.</span>
+                    </div>
+                    <label class="settings-toggle" aria-label="Completion sound">
+                      <input id="app-toggle-sound" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
 
                   <div class="settings-field-row" id="app-setting-language">
                     <div class="settings-toggle-info">
@@ -367,6 +377,28 @@ export function initSettingsModal() {
     wire('app-toggle-tray', 'system_tray');
     wire('app-toggle-awake', 'keep_awake');
 
+    // Completion sound — wire separately so we can notify the renderer in-process.
+    const soundInput = $('app-toggle-sound');
+    if (soundInput) {
+      soundInput.addEventListener('change', async () => {
+        try {
+          await window.electronAPI?.invoke('set-app-settings', {
+            completion_sound: soundInput.checked,
+          });
+          // Notify CompletionSound.js in the same renderer process immediately
+          // so the setting takes effect without a reload.
+          window.dispatchEvent(
+            new CustomEvent('joanium:completion-sound-changed', {
+              detail: { enabled: soundInput.checked },
+            }),
+          );
+        } catch (err) {
+          console.warn('[AppSettings] Failed to save completion_sound', err);
+          soundInput.checked = !soundInput.checked; // revert on error
+        }
+      });
+    }
+
     // Language selector — save immediately on change
     const langSelect = $('app-language-select');
     if (langSelect) {
@@ -439,6 +471,8 @@ export function initSettingsModal() {
       if (awake) awake.checked = Boolean(settings.keep_awake);
       const lock = $('app-toggle-lock');
       if (lock) lock.checked = Boolean(settings.app_lock);
+      const sound = $('app-toggle-sound');
+      if (sound) sound.checked = settings.completion_sound !== false; // default true
       const lang = $('app-language-select');
       if (lang) lang.value = settings.app_language ?? 'en';
     } catch (err) {
@@ -699,7 +733,7 @@ export function initSettingsModal() {
       if (!memoryResult?.ok) throw new Error(memoryResult?.error ?? 'Could not save memory.');
       (applyUserProfile(profileResult.user ?? { name: nextName }),
         setFeedback(t('settings.saved'), 'success'),
-        window.dispatchEvent(new CustomEvent('ow:settings-saved')));
+        window.dispatchEvent(new CustomEvent('jo:settings-saved')));
     } catch (err) {
       setFeedback(err.message || 'Could not save.', 'error');
     } finally {
@@ -763,7 +797,7 @@ export function initSettingsModal() {
               }),
             ),
           setFeedback(`${parts.join(', ')}.`, 'success'),
-          window.dispatchEvent(new CustomEvent('ow:settings-saved')));
+          window.dispatchEvent(new CustomEvent('jo:settings-saved')));
       } catch (err) {
         setFeedback(err.message || 'Could not save.', 'error');
       } finally {

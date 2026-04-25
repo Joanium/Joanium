@@ -28,7 +28,13 @@ import {
   generateChatId,
   currentChatScope,
 } from './Data/ChatPersistence.js';
+import {
+  initCompletionSound,
+  markSoundAborted,
+  playCompletionSound,
+} from './UI/CompletionSound.js';
 document.documentElement.classList.add('show-tokens');
+initCompletionSound();
 let _currentAbortController = null;
 let _currentLiveRow = null;
 
@@ -119,6 +125,7 @@ export function initChatUI() {
 async function doSendFromState() {
   if (!state.selectedProvider || !state.selectedModel || state.isTyping) return;
   (syncConversationSummaryWithMessages(), (state.isTyping = !0), _updateSendBtn());
+  const _sendStartTime = Date.now();
   const live = createLiveRow(doSendFromState);
   // Latency monitor start
   const _latencyMonitor = createLatencyMonitor(live, state.selectedProvider?.endpoint ?? '');
@@ -176,7 +183,7 @@ async function doSendFromState() {
       bumpScrollBadge());
   } catch (err) {
     if (((_currentAbortController = null), 'AbortError' === err.name))
-      return void live.setAborted();
+      return void (live.setAborted(), markSoundAborted());
     const errMsg = `Something went wrong: ${err.message}`;
     (live.set(errMsg),
       state.messages.push({
@@ -188,6 +195,7 @@ async function doSendFromState() {
   } finally {
     ((state.isTyping = !1), (_currentLiveRow = null), _updateSendBtn(), updateTimeline());
     _latencyMonitor.cancel();
+    playCompletionSound(_sendStartTime);
     // Mark activity so the idle-flush guard knows the user was just active.
     // Dispatching the event lets the render layer reset its debounce timer too.
     markMemoryActivity();
@@ -254,6 +262,7 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
       doSendFromState,
     );
   ((state.isTyping = !0), _updateSendBtn());
+  const _sendStartTime = Date.now();
   const live = createLiveRow(doSendFromState);
   // Latency monitor start
   const _latencyMonitor = createLatencyMonitor(live, state.selectedProvider?.endpoint ?? '');
@@ -308,8 +317,10 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
       bumpScrollBadge(),
       setTimeout(updateTimeline, 100));
   } catch (err) {
-    if (((_currentAbortController = null), 'AbortError' === err.name)) live.setAborted();
-    else {
+    if (((_currentAbortController = null), 'AbortError' === err.name)) {
+      live.setAborted();
+      markSoundAborted();
+    } else {
       const msg = `Something went wrong: ${err.message}`;
       (live.set(msg),
         state.messages.push({
@@ -322,6 +333,7 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
   } finally {
     ((state.isTyping = !1), (_currentLiveRow = null), _updateSendBtn());
     _latencyMonitor.cancel();
+    playCompletionSound(_sendStartTime);
     // Mark activity so the idle-flush guard knows the user was just active.
     // Dispatching the event lets the render layer reset its debounce timer too.
     markMemoryActivity();

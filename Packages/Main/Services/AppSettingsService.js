@@ -7,6 +7,7 @@ const DEFAULTS = {
   system_tray: false,
   keep_awake: false,
   app_language: 'en',
+  completion_sound: true,
 };
 
 export function getSupportedLanguages() {
@@ -31,6 +32,7 @@ export function readAppSettings() {
     keep_awake: Boolean(stored.keep_awake ?? DEFAULTS.keep_awake),
     app_lock: Boolean(stored.app_lock ?? false),
     app_language,
+    completion_sound: stored.completion_sound !== false, // default true
   };
 }
 
