@@ -52,11 +52,30 @@ export function createConnectorCredentialHelpers({
   });
 }
 
+export async function runCredentialedChatTool(ctx, getCredentials, notConnected, handler) {
+  const credentials = getCredentials(ctx);
+  if (!credentials) return notConnected();
+  try {
+    return await handler(credentials);
+  } catch (error) {
+    return { ok: false, error: getErrorMessage(error) };
+  }
+}
+
 export function parseCommaList(value = '') {
   return String(value)
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+export function formatDate(value, fallback = 'unknown date') {
+  if (!value) return fallback;
+  try {
+    return new Date(value).toLocaleDateString();
+  } catch {
+    return String(value);
+  }
 }
 
 export function formatDateTime(value, fallback = '') {
@@ -66,4 +85,8 @@ export function formatDateTime(value, fallback = '') {
   } catch {
     return String(value);
   }
+}
+
+export function formatUnknownDateTime(value) {
+  return formatDateTime(value, 'unknown');
 }

@@ -1,11 +1,9 @@
 import * as SupabaseAPI from '../API/SupabaseAPI.js';
 import { getSupabaseCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeSupabaseChatTool(ctx, toolName, params) {
-  const creds = getSupabaseCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getSupabaseCredentials, notConnected, async (creds) => {
     switch (toolName) {
       // ─── Projects & Organisations ─────────────────────────────────────────
 
@@ -194,7 +192,5 @@ export async function executeSupabaseChatTool(ctx, toolName, params) {
       default:
         return null;
     }
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

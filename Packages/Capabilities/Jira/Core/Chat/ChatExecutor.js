@@ -1,11 +1,9 @@
 import * as JiraAPI from '../API/JiraAPI.js';
 import { getJiraCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeJiraChatTool(ctx, toolName, params) {
-  const creds = getJiraCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getJiraCredentials, notConnected, async (creds) => {
     // ── Existing ─────────────────────────────────────────────────────────────
     if (toolName === 'jira_list_my_issues') {
       const issues = await JiraAPI.getMyOpenIssues(creds, 25);
@@ -227,7 +225,5 @@ export async function executeJiraChatTool(ctx, toolName, params) {
 
     // ── Unknown tool ─────────────────────────────────────────────────────────
     return null;
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

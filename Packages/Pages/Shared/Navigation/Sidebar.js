@@ -1,4 +1,5 @@
 import { t } from '../../../System/I18n/index.js';
+import { getInitials } from '../../../System/Utils.js';
 const ICON_chevronRight =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">\n                   <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>\n                 </svg>',
   THEMES = [
@@ -183,15 +184,7 @@ export function initSidebar({
   );
   function setUser(name) {
     const displayName = String(name ?? '').trim() || 'User',
-      initials = (function (name) {
-        const parts = String(name ?? '')
-          .trim()
-          .split(/\s+/)
-          .filter(Boolean);
-        return parts.length >= 2
-          ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-          : (parts[0] ?? 'JO').slice(0, 2).toUpperCase();
-      })(displayName),
+      initials = getInitials(displayName),
       avatarBtnEl = document.getElementById('sidebar-avatar-btn');
     avatarBtnEl && ((avatarBtnEl.textContent = initials), (avatarBtnEl.title = displayName));
     const badge = document.getElementById('avatar-panel-badge'),

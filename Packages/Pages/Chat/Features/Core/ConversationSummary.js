@@ -1,6 +1,7 @@
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
 import { getPromptConfigs } from '../../../../System/Prompting/PromptConfig.js';
+import { fillTemplate } from '../../../../System/Utils.js';
 import { buildChatPayload, currentChatScope } from '../Data/ChatPersistence.js';
 let summaryChain = Promise.resolve();
 const queuedSignatures = new Set();
@@ -25,11 +26,6 @@ function trimLineForSummary(value = '') {
     .replace(/\s+/g, ' ')
     .trim();
   return text ? (text.length > 500 ? `${text.slice(0, 500)}...` : text) : '';
-}
-function fillTemplate(template = '', values = {}) {
-  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
-    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
-  );
 }
 function buildCompactionTranscript(messages = [], cp = {}) {
   const transcriptConfig = cp.transcript ?? {},

@@ -44,14 +44,20 @@ export function formatChatDate(date) {
 export function capitalize(s) {
   return s ? s[0].toUpperCase() + s.slice(1) : s;
 }
-export function getInitials(name) {
+export function getInitials(name, fallback = 'JO') {
   const parts = String(name ?? '')
     .trim()
     .split(/\s+/)
     .filter(Boolean);
+  const fallbackText = String(fallback ?? '').trim() || 'JO';
   return parts.length >= 2
     ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-    : (parts[0] ?? 'JO').slice(0, 2).toUpperCase();
+    : (parts[0] ?? fallbackText).slice(0, 2).toUpperCase();
+}
+export function fillTemplate(template = '', values = {}) {
+  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
+    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
+  );
 }
 export function formatTrigger(trigger) {
   if (!trigger) return '?';

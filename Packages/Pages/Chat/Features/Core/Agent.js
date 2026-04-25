@@ -1,6 +1,7 @@
 import { state } from '../../../../System/State.js';
 import { fetchWithTools, fetchStreamingWithTools } from '../../../../Features/AI/index.js';
 import { getPromptConfigs } from '../../../../System/Prompting/PromptConfig.js';
+import { fillTemplate } from '../../../../System/Utils.js';
 import {
   buildToolsPrompt,
   getAvailableTools,
@@ -374,11 +375,6 @@ export function prewarmAgentContext(options = {}) {
     loadAvailableToolsCached({ workspacePath: workspacePath }),
     loadWorkspaceSummary(workspacePath),
   ]);
-}
-function fillTemplate(template = '', values = {}) {
-  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
-    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
-  );
 }
 function joinPromptLines(lines = []) {
   return Array.isArray(lines)

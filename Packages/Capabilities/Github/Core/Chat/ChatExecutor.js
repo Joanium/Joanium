@@ -1,4 +1,8 @@
 import { GithubAPI, parseCommaList, requireGithubCredentials } from '../Shared/Common.js';
+import {
+  formatDate,
+  formatUnknownDateTime as formatDateTime,
+} from '../../../Core/ConnectorUtils.js';
 const SOURCE_EXTS = new Set([
     'js',
     'ts',
@@ -99,22 +103,6 @@ function requireRepo(owner, repo) {
 function requirePullRequest(owner, repo, prNumber) {
   if ((requireRepo(owner, repo), !prNumber))
     throw new Error('Missing required params: owner, repo, pr_number');
-}
-function formatDate(value) {
-  if (!value) return 'unknown date';
-  try {
-    return new Date(value).toLocaleDateString();
-  } catch {
-    return String(value);
-  }
-}
-function formatDateTime(value) {
-  if (!value) return 'unknown';
-  try {
-    return new Date(value).toLocaleString();
-  } catch {
-    return String(value);
-  }
 }
 function mimeSafeString(value, fallback = 'unknown') {
   return null == value || '' === value ? fallback : String(value);

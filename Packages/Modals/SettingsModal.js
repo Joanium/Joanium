@@ -2,6 +2,7 @@ import { state } from '../System/State.js';
 import { createModal } from '../System/ModalFactory.js';
 import { t, setLanguage, applyI18n } from '../System/I18n/index.js';
 import { SUPPORTED_LANGUAGES } from '../System/Languages.js';
+import { getInitials } from '../System/Utils.js';
 import { loadConnectorsPanel } from '../Pages/Shared/Connectors/index.js';
 import { loadMCPPanel } from '../Pages/Shared/MCP/index.js';
 import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
@@ -474,16 +475,7 @@ export function initSettingsModal() {
     const rawName = String(user?.name ?? '').trim(),
       displayName = rawName || 'User',
       firstName = displayName.split(/\s+/)[0];
-    ((state.userName = rawName),
-      (state.userInitials = (function (name) {
-        const parts = String(name ?? '')
-          .trim()
-          .split(/\s+/)
-          .filter(Boolean);
-        return parts.length >= 2
-          ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-          : (parts[0] ?? 'JO').slice(0, 2).toUpperCase();
-      })(displayName)));
+    ((state.userName = rawName), (state.userInitials = getInitials(displayName)));
     const wt = document.querySelector('.welcome-title');
     (wt && (wt.textContent = rawName ? `${t('chat.welcome')}, ${firstName}` : t('chat.welcome')),
       window.dispatchEvent(

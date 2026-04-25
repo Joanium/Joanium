@@ -1,11 +1,9 @@
 import * as StripeAPI from '../API/StripeAPI.js';
 import { getStripeCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeStripeChatTool(ctx, toolName, params) {
-  const creds = getStripeCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getStripeCredentials, notConnected, async (creds) => {
     // ── Existing ────────────────────────────────────────────────────────────
     if (toolName === 'stripe_get_balance') {
       const balance = await StripeAPI.getBalance(creds);
@@ -389,7 +387,5 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     return null;
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

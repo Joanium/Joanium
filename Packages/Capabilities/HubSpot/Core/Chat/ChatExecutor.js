@@ -1,11 +1,9 @@
 import * as HubSpotAPI from '../API/HubSpotAPI.js';
 import { getHubSpotCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeHubSpotChatTool(ctx, toolName, params) {
-  const creds = getHubSpotCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getHubSpotCredentials, notConnected, async (creds) => {
     // ─── Contacts ───────────────────────────────────────────────────────────
     if (toolName === 'hubspot_list_contacts') {
       const contacts = await HubSpotAPI.listContacts(creds, 20);
@@ -233,7 +231,5 @@ export async function executeHubSpotChatTool(ctx, toolName, params) {
     }
 
     return null; // unknown tool
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

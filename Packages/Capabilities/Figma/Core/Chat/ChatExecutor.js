@@ -1,11 +1,9 @@
 import * as FigmaAPI from '../API/FigmaAPI.js';
 import { getFigmaCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeFigmaChatTool(ctx, toolName, params) {
-  const creds = getFigmaCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getFigmaCredentials, notConnected, async (creds) => {
     // ─── Files ───────────────────────────────────────────────────────────────
 
     if (toolName === 'figma_get_file_info') {
@@ -320,7 +318,5 @@ export async function executeFigmaChatTool(ctx, toolName, params) {
     }
 
     return null; // unknown tool — let the caller handle it
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

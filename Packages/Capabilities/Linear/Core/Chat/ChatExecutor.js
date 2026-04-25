@@ -1,11 +1,9 @@
 import * as LinearAPI from '../API/LinearAPI.js';
 import { getLinearCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeLinearChatTool(ctx, toolName, params) {
-  const creds = getLinearCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getLinearCredentials, notConnected, async (creds) => {
     switch (toolName) {
       // ── Viewer ─────────────────────────────────────────────────────────────
       case 'linear_list_my_issues': {
@@ -371,7 +369,5 @@ export async function executeLinearChatTool(ctx, toolName, params) {
       default:
         return null;
     }
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

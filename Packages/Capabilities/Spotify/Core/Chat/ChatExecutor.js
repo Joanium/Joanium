@@ -1,11 +1,9 @@
 import * as SpotifyAPI from '../API/SpotifyAPI.js';
 import { getSpotifyCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeSpotifyChatTool(ctx, toolName, params) {
-  const creds = getSpotifyCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getSpotifyCredentials, notConnected, async (creds) => {
     const { getFreshCreds } = await import('../../SpotifyWorkspace.js');
     const freshCreds = await getFreshCreds(creds);
 
@@ -330,7 +328,5 @@ export async function executeSpotifyChatTool(ctx, toolName, params) {
     // ─── Unknown tool ─────────────────────────────────────────────────────────
 
     return null;
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

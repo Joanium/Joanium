@@ -1,11 +1,9 @@
 import * as NetlifyAPI from '../API/NetlifyAPI.js';
 import { getNetlifyCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeNetlifyChatTool(ctx, toolName, params) {
-  const creds = getNetlifyCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getNetlifyCredentials, notConnected, async (creds) => {
     // ── User ───────────────────────────────────────────────────────────────
     if (toolName === 'netlify_get_current_user') {
       const user = await NetlifyAPI.getCurrentUser(creds);
@@ -410,7 +408,5 @@ export async function executeNetlifyChatTool(ctx, toolName, params) {
     }
 
     return null;
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

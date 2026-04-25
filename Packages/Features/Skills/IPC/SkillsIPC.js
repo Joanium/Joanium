@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron';
 import { invalidate as invalidateSysPrompt } from '../../../Main/Services/SystemPromptService.js';
+import { wrapHandler } from '../../../Main/IPC/IPCWrapper.js';
 import * as ContentLibraryService from '../../../Main/Services/ContentLibraryService.js';
 export const ipcMeta = { needs: [] };
 export function register() {
@@ -10,40 +11,34 @@ export function register() {
       return { ok: !1, error: err.message, skills: [] };
     }
   }),
-    ipcMain.handle('toggle-skill', (_e, idOrFilename, enabled) => {
-      try {
-        return idOrFilename && 'string' == typeof idOrFilename
-          ? (ContentLibraryService.setSkillEnabled(idOrFilename, enabled),
-            invalidateSysPrompt(),
-            { ok: !0 })
-          : { ok: !1, error: 'Invalid skill id' };
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('enable-all-skills', () => {
-      try {
-        return (ContentLibraryService.setAllSkillsEnabled(!0), invalidateSysPrompt(), { ok: !0 });
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('disable-all-skills', () => {
-      try {
-        return (ContentLibraryService.setAllSkillsEnabled(!1), invalidateSysPrompt(), { ok: !0 });
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('delete-skill', (_e, id) => {
-      try {
-        return (
-          ContentLibraryService.deleteUserContent('skills', id),
-          invalidateSysPrompt(),
-          { ok: !0 }
-        );
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }));
+    ipcMain.handle(
+      'toggle-skill',
+      wrapHandler((idOrFilename, enabled) => {
+        if (!idOrFilename || 'string' != typeof idOrFilename)
+          return { ok: !1, error: 'Invalid skill id' };
+        ContentLibraryService.setSkillEnabled(idOrFilename, enabled);
+        invalidateSysPrompt();
+      }),
+    ),
+    ipcMain.handle(
+      'enable-all-skills',
+      wrapHandler(() => {
+        ContentLibraryService.setAllSkillsEnabled(!0);
+        invalidateSysPrompt();
+      }),
+    ),
+    ipcMain.handle(
+      'disable-all-skills',
+      wrapHandler(() => {
+        ContentLibraryService.setAllSkillsEnabled(!1);
+        invalidateSysPrompt();
+      }),
+    ),
+    ipcMain.handle(
+      'delete-skill',
+      wrapHandler((id) => {
+        ContentLibraryService.deleteUserContent('skills', id);
+        invalidateSysPrompt();
+      }),
+    ));
 }

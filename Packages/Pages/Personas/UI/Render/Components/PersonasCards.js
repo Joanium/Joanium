@@ -1,17 +1,8 @@
-import { escapeHtml } from '../../../../../System/Utils.js';
+import { escapeHtml, getInitials } from '../../../../../System/Utils.js';
 import { t } from '../../../../../System/I18n/index.js';
 export { escapeHtml };
 export function getAvatarInitials(name) {
-  const parts = String(name ?? '')
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  return parts.length >= 2
-    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-    : String(name ?? '')
-        .trim()
-        .slice(0, 2)
-        .toUpperCase() || 'AI';
+  return getInitials(name, 'AI');
 }
 export function createPersonaCardPool({
   container: container,

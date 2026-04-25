@@ -1,11 +1,9 @@
 import * as CloudflareAPI from '../API/CloudflareAPI.js';
 import { getCloudflareCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeCloudflareChatTool(ctx, toolName, params) {
-  const creds = getCloudflareCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getCloudflareCredentials, notConnected, async (creds) => {
     // ─── Account & Token ─────────────────────────────────────────────────────
     if (toolName === 'cloudflare_list_zones') {
       const zones = await CloudflareAPI.listZones(creds);
@@ -396,7 +394,5 @@ export async function executeCloudflareChatTool(ctx, toolName, params) {
     }
 
     return null; // tool not recognised
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

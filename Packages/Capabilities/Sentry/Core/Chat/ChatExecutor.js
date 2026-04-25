@@ -1,13 +1,10 @@
 import * as SentryAPI from '../API/SentryAPI.js';
 import { getSentryCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeSentryChatTool(ctx, toolName, params) {
-  const creds = getSentryCredentials(ctx);
-  if (!creds) return notConnected();
-
-  const orgSlug = creds.orgSlug;
-
-  try {
+  return runCredentialedChatTool(ctx, getSentryCredentials, notConnected, async (creds) => {
+    const orgSlug = creds.orgSlug;
     // ─── Issues ────────────────────────────────────────────────────────────────
     if (toolName === 'sentry_list_issues') {
       if (!orgSlug) return noOrg();
@@ -419,9 +416,7 @@ export async function executeSentryChatTool(ctx, toolName, params) {
     }
 
     return null; // unknown tool
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }
 
 function noOrg() {

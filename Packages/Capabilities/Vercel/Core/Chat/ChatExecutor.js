@@ -1,11 +1,9 @@
 import * as VercelAPI from '../API/VercelAPI.js';
 import { getVercelCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeVercelChatTool(ctx, toolName, params) {
-  const creds = getVercelCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getVercelCredentials, notConnected, async (creds) => {
     // ─── Projects ────────────────────────────────────────────────────────────
     if (toolName === 'vercel_list_projects') {
       const projects = await VercelAPI.listProjects(creds);
@@ -380,7 +378,5 @@ export async function executeVercelChatTool(ctx, toolName, params) {
     }
 
     return null;
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

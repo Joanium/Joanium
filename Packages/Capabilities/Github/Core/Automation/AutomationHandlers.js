@@ -1,4 +1,5 @@
 import { GithubAPI, requireGithubCredentials } from '../Shared/Common.js';
+import { formatDate } from '../../../Core/ConnectorUtils.js';
 function requireRepo(owner, repo) {
   if (!owner || !repo) throw new Error('GitHub owner and repo are required.');
 }
@@ -79,16 +80,7 @@ export const githubDataSourceCollectors = {
       ? `GitHub Releases (${dataSource.owner}/${dataSource.repo}) - ${releases.length}:\n\n${releases
           .map(
             (release, index) =>
-              `${index + 1}. ${release.name || release.tag_name} (${release.tag_name}) - ${(function (
-                value,
-              ) {
-                if (!value) return 'unknown date';
-                try {
-                  return new Date(value).toLocaleDateString();
-                } catch {
-                  return String(value);
-                }
-              })(release.published_at)}`,
+              `${index + 1}. ${release.name || release.tag_name} (${release.tag_name}) - ${formatDate(release.published_at)}`,
           )
           .join('\n')}`
       : `EMPTY: ${dataSource.owner}/${dataSource.repo} has no releases.`;

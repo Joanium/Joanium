@@ -1,11 +1,9 @@
 import * as NotionAPI from '../API/NotionAPI.js';
 import { getNotionCredentials, notConnected } from '../Shared/Common.js';
+import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
 export async function executeNotionChatTool(ctx, toolName, params) {
-  const creds = getNotionCredentials(ctx);
-  if (!creds) return notConnected();
-
-  try {
+  return runCredentialedChatTool(ctx, getNotionCredentials, notConnected, async (creds) => {
     // ─── Pages ───────────────────────────────────────────────────────────────
 
     if (toolName === 'notion_search_pages') {
@@ -621,7 +619,5 @@ export async function executeNotionChatTool(ctx, toolName, params) {
     }
 
     return null; // unknown tool
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+  });
 }

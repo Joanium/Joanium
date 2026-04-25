@@ -4,6 +4,7 @@ import {
   getDefaultPersona,
 } from '../Services/SystemPromptService.js';
 import * as ContentLibraryService from '../Services/ContentLibraryService.js';
+import { wrapHandler } from './IPCWrapper.js';
 export const ipcMeta = { needs: [] };
 export function register() {
   (ipcMain.handle('get-personas', () => {
@@ -23,33 +24,25 @@ export function register() {
         return { ok: !0, persona: getDefaultPersona() };
       }
     }),
-    ipcMain.handle('set-active-persona', (_e, personaData) => {
-      try {
-        return (
-          ContentLibraryService.setActivePersona(personaData),
-          invalidateSysPrompt(),
-          { ok: !0 }
-        );
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('reset-active-persona', () => {
-      try {
-        return (ContentLibraryService.resetActivePersona(), invalidateSysPrompt(), { ok: !0 });
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('delete-persona', (_e, id) => {
-      try {
-        return (
-          ContentLibraryService.deleteUserContent('personas', id),
-          invalidateSysPrompt(),
-          { ok: !0 }
-        );
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }));
+    ipcMain.handle(
+      'set-active-persona',
+      wrapHandler((personaData) => {
+        ContentLibraryService.setActivePersona(personaData);
+        invalidateSysPrompt();
+      }),
+    ),
+    ipcMain.handle(
+      'reset-active-persona',
+      wrapHandler(() => {
+        ContentLibraryService.resetActivePersona();
+        invalidateSysPrompt();
+      }),
+    ),
+    ipcMain.handle(
+      'delete-persona',
+      wrapHandler((id) => {
+        ContentLibraryService.deleteUserContent('personas', id);
+        invalidateSysPrompt();
+      }),
+    ));
 }

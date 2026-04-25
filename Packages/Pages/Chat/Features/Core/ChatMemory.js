@@ -2,6 +2,7 @@ import { t } from '../../../../System/I18n/index.js';
 import { state } from '../../../../System/State.js';
 import { fetchWithTools } from '../../../../Features/AI/index.js';
 import { getPromptConfigs } from '../../../../System/Prompting/PromptConfig.js';
+import { fillTemplate } from '../../../../System/Utils.js';
 import { buildChatPayload } from '../Data/ChatPersistence.js';
 
 let _memorySyncChain = Promise.resolve();
@@ -54,11 +55,6 @@ function normalizeForSignature(value = '') {
     .slice(0, 200);
 }
 
-function fillTemplate(template = '', values = {}) {
-  return String(template ?? '').replace(/\{(\w+)\}/g, (_, key) =>
-    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? '') : '',
-  );
-}
 function buildMemoryCatalogBlock(entries = [], mp = {}) {
   const catalogConfig = mp.catalog ?? {},
     fileList = entries.map((entry) => entry.filename).join(', '),
