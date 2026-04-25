@@ -1,5 +1,6 @@
 import http from 'http';
 import { shell } from 'electron';
+import { createGoogleApiFetch } from './Core/API/GoogleApiFetch.js';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token',
   REDIRECT_URI = 'http://localhost:42813/oauth/callback',
   SCOPES = [
@@ -184,30 +185,14 @@ export async function getFreshCreds(creds) {
     updated
   );
 }
-export async function googleFetch(creds, url, options = {}) {
-  const fresh = await getFreshCreds(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({})),
-      message = body.error?.message ?? JSON.stringify(body);
-    if (403 === res.status)
-      throw new Error(
-        `Google API access denied (403). Make sure the required API is enabled in your Google Cloud project. Detail: ${message}`,
-      );
-    throw new Error(`Google API error (${res.status}): ${message}`);
-  }
-  return 204 === res.status
-    ? null
-    : (res.headers.get('content-type') ?? '').includes('json')
-      ? res.json()
-      : res.text();
+const sharedGoogleFetch = createGoogleApiFetch(getFreshCreds, {
+  serviceName: 'Google',
+  responseType: 'auto',
+  forbiddenErrorMessage:
+    'Google API access denied (403). Make sure the required API is enabled in your Google Cloud project',
+});
+export async function googleFetch(creds, url, options = {}, requestConfig = {}) {
+  return sharedGoogleFetch(creds, url, options, requestConfig);
 }
 export const SERVICE_LABELS = {
   gmail: { icon: '📧', name: 'Gmail' },

@@ -1,25 +1,7 @@
+import { createGoogleJsonFetch } from '../../../Core/API/GoogleApiFetch.js';
+
 const YT_BASE = 'https://www.googleapis.com/youtube/v3';
-async function ytFetch(creds, url, options = {}) {
-  const fresh = await (async function (creds) {
-      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
-      return getFreshCreds(creds);
-    })(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(
-      `YouTube API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
-    );
-  }
-  return 204 === res.status ? null : res.json();
-}
+const ytFetch = createGoogleJsonFetch('YouTube');
 export function parseDuration(iso = '') {
   const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   return match

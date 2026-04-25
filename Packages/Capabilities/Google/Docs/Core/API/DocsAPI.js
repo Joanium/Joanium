@@ -1,25 +1,7 @@
+import { createGoogleJsonFetch } from '../../../Core/API/GoogleApiFetch.js';
+
 const DOCS_BASE = 'https://docs.googleapis.com/v1/documents';
-async function docsFetch(creds, url, options = {}) {
-  const fresh = await (async function (creds) {
-      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
-      return getFreshCreds(creds);
-    })(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(
-      `Docs API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
-    );
-  }
-  return 204 === res.status ? null : res.json();
-}
+const docsFetch = createGoogleJsonFetch('Docs');
 export async function getDocument(creds, documentId) {
   return docsFetch(creds, `${DOCS_BASE}/${documentId}`);
 }

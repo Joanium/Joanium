@@ -1,25 +1,7 @@
+import { createGoogleJsonFetch } from '../../../Core/API/GoogleApiFetch.js';
+
 const SLIDES_BASE = 'https://slides.googleapis.com/v1/presentations';
-async function slidesFetch(creds, url, options = {}) {
-  const fresh = await (async function (creds) {
-      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
-      return getFreshCreds(creds);
-    })(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(
-      `Slides API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
-    );
-  }
-  return 204 === res.status ? null : res.json();
-}
+const slidesFetch = createGoogleJsonFetch('Slides');
 function pt(value) {
   return { magnitude: 12700 * value, unit: 'EMU' };
 }

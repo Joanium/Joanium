@@ -1,25 +1,7 @@
+import { createGoogleJsonFetch } from '../../../Core/API/GoogleApiFetch.js';
+
 const TASKS_BASE = 'https://tasks.googleapis.com/tasks/v1';
-async function tasksFetch(creds, url, options = {}) {
-  const fresh = await (async function (creds) {
-      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
-      return getFreshCreds(creds);
-    })(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(
-      `Tasks API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
-    );
-  }
-  return 204 === res.status ? null : res.json();
-}
+const tasksFetch = createGoogleJsonFetch('Tasks');
 export async function listTaskLists(creds) {
   return (await tasksFetch(creds, `${TASKS_BASE}/users/@me/lists?maxResults=100`)).items ?? [];
 }

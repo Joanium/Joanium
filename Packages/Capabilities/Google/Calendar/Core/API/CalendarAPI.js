@@ -1,25 +1,7 @@
+import { createGoogleJsonFetch } from '../../../Core/API/GoogleApiFetch.js';
+
 const CALENDAR_BASE = 'https://www.googleapis.com/calendar/v3';
-async function calFetch(creds, url, options = {}) {
-  const fresh = await (async function (creds) {
-      const { getFreshCreds: getFreshCreds } = await import('../../../GoogleWorkspace.js');
-      return getFreshCreds(creds);
-    })(creds),
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        Authorization: `Bearer ${fresh.accessToken}`,
-        'Content-Type': 'application/json',
-        ...(options.headers ?? {}),
-      },
-    });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(
-      `Calendar API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
-    );
-  }
-  return 204 === res.status ? null : res.json();
-}
+const calFetch = createGoogleJsonFetch('Calendar');
 function toRFC3339(dateStr) {
   if (!dateStr) return null;
   const date = new Date(dateStr);
