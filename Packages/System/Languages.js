@@ -37,6 +37,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'bg', label: 'Bulgarian', native: 'Български (Bulgarian)' },
   { code: 'is', label: 'Icelandic', native: 'Íslenska (Icelandic)' },
   { code: 'cy', label: 'Welsh', native: 'Cymraeg (Welsh)' },
+  { code: 'ga', label: 'Irish', native: 'Gaeilge (Irish)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
