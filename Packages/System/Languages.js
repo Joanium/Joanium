@@ -29,6 +29,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ (Kannada)' },
   { code: 'te', label: 'Telugu', native: 'తెలుగు (Telugu)' },
   { code: 'uk', label: 'Ukrainian', native: 'Українська (Ukrainian)' },
+  { code: 'pl', label: 'Polish', native: 'Polski (Polish)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
