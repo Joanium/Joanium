@@ -27,6 +27,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'da', label: 'Danish', native: 'Dansk (Danish)' },
   { code: 'cs', label: 'Czech', native: 'Čeština (Czech)' },
   { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ (Kannada)' },
+  { code: 'te', label: 'Telugu', native: 'తెలుగు (Telugu)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */

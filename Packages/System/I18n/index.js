@@ -20,6 +20,7 @@ import fi from './fi.js';
 import da from './da.js';
 import cs from './cs.js';
 import kn from './kn.js';
+import te from './te.js';
 import { LANGUAGES_BY_CODE } from '../Languages.js';
 
 // NOTE: Static ESM imports above must be kept in sync with Languages.js manually.
@@ -47,6 +48,7 @@ const PACKS = {
   da,
   cs,
   kn,
+  te,
 };
 
 // Sync, fast: start with cached value before async settings load
