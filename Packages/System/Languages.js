@@ -20,6 +20,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ar', label: 'Arabic', native: 'العربية (Arabic)' },
   { code: 'pt', label: 'Portuguese', native: 'Português (Portuguese)' },
   { code: 'it', label: 'Italian', native: 'Italiano (Italian)' },
+  { code: 'mr', label: 'Marathi', native: 'मराठी (Marathi)' },
+  { code: 'ko', label: 'Korean', native: '한국어 (Korean)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
