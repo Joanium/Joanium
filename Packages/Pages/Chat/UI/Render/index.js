@@ -62,9 +62,9 @@ function scheduleMemoryFlush(delayMs = 45_000) {
   _memoryFlushTimer = setTimeout(() => {
     _memoryFlushTimer = null;
     if (window.requestIdleCallback) {
-      window.requestIdleCallback(() => triggerMicroSync().catch(() => { }), { timeout: 60_000 });
+      window.requestIdleCallback(() => triggerMicroSync().catch(() => {}), { timeout: 60_000 });
     } else {
-      triggerMicroSync().catch(() => { });
+      triggerMicroSync().catch(() => {});
     }
   }, delayMs);
 }
@@ -233,8 +233,8 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       chip &&
         textarea &&
         ((textarea.value = chip.getAttribute('data-prompt')),
-          textarea.dispatchEvent(new Event('input')),
-          textarea.focus());
+        textarea.dispatchEvent(new Event('input')),
+        textarea.focus());
     };
   (welcomeChips?.addEventListener('click', onStarterChipClick),
     initComposer(() => {
@@ -255,9 +255,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     initSlashCommands(textarea, document.querySelector('.input-box'), {
       onAction(actionId) {
         if ('new' === actionId) {
-          startNewChatAndReset();
-          syncWelcomeTitle();
-          renderStarterPrompts();
+          _navigate('chat', { startFreshChat: true });
         } else if ('private' === actionId) {
           state.isIncognito = true;
           syncIncognitoUI();
@@ -298,10 +296,10 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
   const onSettingsSaved = () => refreshSystemPrompt(),
     onUserProfileUpdated = () => syncWelcomeTitle(),
     onWorkspaceChanged = () => {
-      (renderStarterPrompts(), prewarmAgentContext().catch(() => { }));
+      (renderStarterPrompts(), prewarmAgentContext().catch(() => {}));
     },
     onProjectChanged = () => {
-      (syncProjectUI(), prewarmAgentContext().catch(() => { }));
+      (syncProjectUI(), prewarmAgentContext().catch(() => {}));
       if (!state.workspacePath) diffTracker.reset();
     };
   (window.addEventListener('jo:settings-saved', onSettingsSaved),
@@ -377,8 +375,8 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
   ensureDropOverlay();
   let dragCounter = 0;
   const onDragOver = (e) => {
-    (e.preventDefault(), e.stopPropagation());
-  },
+      (e.preventDefault(), e.stopPropagation());
+    },
     onDragEnter = (e) => {
       (e.preventDefault(), e.stopPropagation());
       const overlay = getDropOverlay();
@@ -406,9 +404,9 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     shouldStartFresh && !pendingId
       ? startNewChatAndReset()
       : !pendingId &&
-      state.messages.length > 0 &&
-      state.messages.length &&
-      (showChatView(),
+        state.messages.length > 0 &&
+        state.messages.length &&
+        (showChatView(),
         state.messages.forEach((message) => {
           appendMessage(message.role, message.content, !1, !1, message.attachments ?? []);
         })));
@@ -417,13 +415,13 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     (await loadProviders(),
       syncCapabilities(),
       await refreshSystemPrompt(),
-      prewarmAgentContext().catch(() => { }),
+      prewarmAgentContext().catch(() => {}),
       // Load the micro-queue once so reprioritization and triggerMicroSync
       // have data to work with from the very first message onward.
-      initMemoryMicroQueue().catch(() => { }),
+      initMemoryMicroQueue().catch(() => {}),
       pendingId &&
-      !pendingChatRestored &&
-      ((pendingChatRestored = !0),
+        !pendingChatRestored &&
+        ((pendingChatRestored = !0),
         await loadChat(pendingId, {
           updateModelLabel: updateModelLabel,
           buildModelDropdown: buildModelDropdown,
@@ -432,16 +430,16 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
       scheduleMemoryFlush(45_000));
   }
   const offBackendReady = window.electronAPI?.on?.('backend-ready', () => {
-    initializeChatBackend().catch(() => { });
+    initializeChatBackend().catch(() => {});
   });
   return (
-    initializeChatBackend().catch(() => { }),
+    initializeChatBackend().catch(() => {}),
     function () {
       if (_memoryFlushTimer) {
         clearTimeout(_memoryFlushTimer);
         _memoryFlushTimer = null;
       }
-      (!state.isIncognito && queueCurrentSessionMemorySync('page-leave').catch(() => { }),
+      (!state.isIncognito && queueCurrentSessionMemorySync('page-leave').catch(() => {}),
         cleanupTerminalObserver(),
         document.removeEventListener('click', onDocClick),
         document.removeEventListener('dragover', onDragOver),
