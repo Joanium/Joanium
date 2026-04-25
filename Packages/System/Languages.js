@@ -25,6 +25,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'zh', label: 'Chinese', native: '中文 (Chinese)' },
   { code: 'fi', label: 'Finnish', native: 'Suomi (Finnish)' },
   { code: 'da', label: 'Danish', native: 'Dansk (Danish)' },
+  { code: 'cs', label: 'Czech', native: 'Čeština (Czech)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
