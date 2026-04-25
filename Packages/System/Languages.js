@@ -16,6 +16,8 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'hi', label: 'Hindi', native: 'हिन्दी (Hindi)' },
   { code: 'nl', label: 'Dutch', native: 'Nederlands (Dutch)' },
   { code: 'es', label: 'Spanish', native: 'Español (Spanish)' },
+  { code: 'th', label: 'Thai', native: 'ภาษาไทย (Thai)' },
+  { code: 'ar', label: 'Arabic', native: 'العربية (Arabic)' },
 ];
 
 /** Map of code → language entry for O(1) lookups */
