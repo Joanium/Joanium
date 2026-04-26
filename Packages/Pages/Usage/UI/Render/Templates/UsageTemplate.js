@@ -48,6 +48,43 @@ export function getHTML(REFRESH_HTML, CLEAR_HTML) {
 
     <div class="usage-summary-grid" id="summary-grid"></div>
 
+    <div class="usage-section-full yearly-heatmap-section" id="yearly-heatmap-section">
+      <div class="usage-section-header">
+        <span class="usage-section-title">AI usage history</span>
+        <span class="usage-section-meta" id="yh-meta">daily activity</span>
+      </div>
+      <div class="yearly-heatmap-outer">
+        <div class="yh-main">
+          <div class="yh-header-row">
+            <div class="yh-day-gutter"></div>
+            <div class="yh-month-labels" id="yh-month-labels"></div>
+          </div>
+          <div class="yh-body-row">
+            <div class="yh-day-labels">
+              <span></span>
+              <span>Mon</span>
+              <span></span>
+              <span>Wed</span>
+              <span></span>
+              <span>Fri</span>
+              <span></span>
+            </div>
+            <div class="yh-grid" id="yh-grid"></div>
+          </div>
+          <div class="yh-legend">
+            <span class="yh-legend-text">Less</span>
+            <div class="yh-legend-cell" data-level="0"></div>
+            <div class="yh-legend-cell" data-level="1"></div>
+            <div class="yh-legend-cell" data-level="2"></div>
+            <div class="yh-legend-cell" data-level="3"></div>
+            <div class="yh-legend-cell" data-level="4"></div>
+            <span class="yh-legend-text">More</span>
+          </div>
+        </div>
+        <div class="yh-year-picker" id="yh-year-picker"></div>
+      </div>
+    </div>
+
     <div class="usage-section-full" id="insights-section">
       <div class="usage-section-header">
         <span class="usage-section-title">${t('usage.insights')}</span>

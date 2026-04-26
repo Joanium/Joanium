@@ -22,6 +22,7 @@ import {
   renderModelRows,
   renderProviders,
   renderActivity,
+  renderYearlyHeatmap,
   showEmpty,
   showSections,
 } from './Renderers/UsageRenderers.js';
@@ -41,6 +42,8 @@ function render(range) {
       renderProviders(stats.byProvider),
       renderActivity(records))
     : showEmpty();
+  // Yearly heatmap always renders (shows empty grid if no data)
+  renderYearlyHeatmap(_records);
 }
 async function load(range) {
   (await loadRecords(), render(range));

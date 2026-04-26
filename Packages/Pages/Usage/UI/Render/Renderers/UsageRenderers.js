@@ -486,3 +486,190 @@ export function showSections() {
     element && (element.style.display = '');
   });
 }
+
+// Module-level state for the yearly heatmap year picker
+let _yhSelectedYear = new Date().getFullYear();
+
+export function renderYearlyHeatmap(allRecords) {
+  const gridEl = document.getElementById('yh-grid');
+  const monthLabelsEl = document.getElementById('yh-month-labels');
+  const yearPickerEl = document.getElementById('yh-year-picker');
+  if (!gridEl || !monthLabelsEl || !yearPickerEl) return;
+
+  // Build per-day call counts from ALL records (not range-filtered)
+  const byDay = {};
+  for (const r of allRecords) {
+    const day = String(r.timestamp).slice(0, 10);
+    byDay[day] = (byDay[day] || 0) + 1;
+  }
+
+  // Collect available years (always include current year)
+  const currentYear = new Date().getFullYear();
+  const yearsSet = new Set([currentYear]);
+  for (const day of Object.keys(byDay)) {
+    const y = parseInt(day.slice(0, 4), 10);
+    if (!isNaN(y) && y >= 2000 && y <= currentYear + 1) yearsSet.add(y);
+  }
+  const years = [...yearsSet].sort((a, b) => b - a); // newest first
+
+  // Keep selected year valid
+  if (!years.includes(_yhSelectedYear)) _yhSelectedYear = currentYear;
+
+  const GAP = 2;
+  const ITEM_H = 32,
+    CONTAINER_H = 160,
+    SPACER_H = (CONTAINER_H - ITEM_H) / 2;
+  const MONTH_NAMES = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  function padDate(dt) {
+    return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+  }
+
+  function renderGrid(year) {
+    // Correctly detect leap years
+    const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    const totalDays = isLeap ? 366 : 365;
+    const jan1Dow = new Date(year, 0, 1).getDay(); // 0 = Sun
+    const weeks = Math.ceil((jan1Dow + totalDays) / 7);
+    const totalCells = weeks * 7;
+
+    // Compute dynamic cell size to fill available width
+    const bodyRow = gridEl.closest('.yh-body-row');
+    const dayLabelsEl = bodyRow?.querySelector('.yh-day-labels');
+    const gutterW = (dayLabelsEl?.offsetWidth ?? 24) + GAP;
+    const availW = Math.max(300, (bodyRow?.offsetWidth ?? 700) - gutterW);
+    const CELL = Math.max(8, Math.floor((availW - GAP * (weeks - 1)) / weeks));
+    const STEP = CELL + GAP;
+
+    // Apply sizes to the grid and matching day-label rows
+    gridEl.style.gridAutoColumns = `${CELL}px`;
+    gridEl.style.gridTemplateRows = `repeat(7, ${CELL}px)`;
+    if (dayLabelsEl) dayLabelsEl.style.gridTemplateRows = `repeat(7, ${CELL}px)`;
+
+    // Find max calls in this year for level normalization
+    let maxCalls = 1;
+    for (const [ds, count] of Object.entries(byDay)) {
+      if (ds.startsWith(String(year) + '-')) maxCalls = Math.max(maxCalls, count);
+    }
+
+    // Build cell HTML (cells are laid out column-major via grid-auto-flow:column)
+    // i iterates: week0-Sun, week0-Mon, ..., week0-Sat, week1-Sun, ...
+    const monthCols = {};
+    let html = '';
+
+    for (let i = 0; i < totalCells; i++) {
+      const dayOffset = i - jan1Dow;
+      if (dayOffset < 0 || dayOffset >= totalDays) {
+        html += '<div class="yh-cell" style="visibility:hidden"></div>';
+        continue;
+      }
+      const dt = new Date(year, 0, 1 + dayOffset);
+      const ds = padDate(dt);
+      const c = byDay[ds] || 0;
+
+      // Record the week column index for each month's first day
+      if (dt.getDate() === 1) {
+        const m = dt.getMonth();
+        if (monthCols[m] === undefined) monthCols[m] = Math.floor(i / 7);
+      }
+
+      // Map count to 0-4 level relative to this year's max
+      let level = 0;
+      if (c > 0 && maxCalls > 0) {
+        const ratio = c / maxCalls;
+        level = ratio < 0.15 ? 1 : ratio < 0.4 ? 2 : ratio < 0.7 ? 3 : 4;
+      }
+
+      const tip = `${ds}: ${c} ${c === 1 ? 'use' : 'uses'}`;
+      html += `<div class="yh-cell" data-level="${level}" title="${tip}"></div>`;
+    }
+
+    gridEl.innerHTML = html;
+
+    // Position month labels using absolute left offsets
+    let labelsHtml = '';
+    for (let m = 0; m < 12; m++) {
+      const col = monthCols[m];
+      if (col !== undefined) {
+        labelsHtml += `<span class="yh-month-label" style="left:${col * STEP}px">${MONTH_NAMES[m]}</span>`;
+      }
+    }
+    monthLabelsEl.style.width = `${weeks * STEP}px`;
+    monthLabelsEl.innerHTML = labelsHtml;
+  }
+
+  // Build year picker HTML (spacers enable first/last item to scroll to center)
+  yearPickerEl.innerHTML =
+    `<div style="height:${SPACER_H}px;flex-shrink:0;pointer-events:none"></div>` +
+    years
+      .map(
+        (y) =>
+          `<div class="yh-year-item${y === _yhSelectedYear ? ' active' : ''}" data-year="${y}">${y}</div>`,
+      )
+      .join('') +
+    `<div style="height:${SPACER_H}px;flex-shrink:0;pointer-events:none"></div>`;
+
+  // Click handler: select year and scroll it to center
+  yearPickerEl.querySelectorAll('.yh-year-item').forEach((el) => {
+    el.addEventListener('click', () => {
+      _yhSelectedYear = parseInt(el.dataset.year, 10);
+      yearPickerEl
+        .querySelectorAll('.yh-year-item')
+        .forEach((e) =>
+          e.classList.toggle('active', parseInt(e.dataset.year, 10) === _yhSelectedYear),
+        );
+      renderGrid(_yhSelectedYear);
+      const itemCenter = el.offsetTop + el.offsetHeight / 2;
+      yearPickerEl.scrollTo({ top: itemCenter - CONTAINER_H / 2, behavior: 'smooth' });
+    });
+  });
+
+  // Scroll handler: update active year in real-time as user scrolls
+  if (!yearPickerEl.dataset.yhInit) {
+    yearPickerEl.dataset.yhInit = '1';
+    yearPickerEl.addEventListener('scroll', () => {
+      const pickerCenter = yearPickerEl.scrollTop + yearPickerEl.clientHeight / 2;
+      let closest = _yhSelectedYear,
+        closestDist = Infinity;
+      yearPickerEl.querySelectorAll('.yh-year-item').forEach((el) => {
+        const center = el.offsetTop + el.offsetHeight / 2;
+        const dist = Math.abs(center - pickerCenter);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = parseInt(el.dataset.year, 10);
+        }
+      });
+      if (closest !== _yhSelectedYear) {
+        _yhSelectedYear = closest;
+        // Update active class without rebuilding (avoids interrupting scroll)
+        yearPickerEl
+          .querySelectorAll('.yh-year-item')
+          .forEach((el) =>
+            el.classList.toggle('active', parseInt(el.dataset.year, 10) === _yhSelectedYear),
+          );
+        renderGrid(_yhSelectedYear);
+      }
+    });
+  }
+
+  // Scroll to active item (instant on first mount, avoids layout jump)
+  const activeEl = yearPickerEl.querySelector('.yh-year-item.active');
+  if (activeEl) {
+    yearPickerEl.scrollTop = activeEl.offsetTop + activeEl.offsetHeight / 2 - CONTAINER_H / 2;
+  }
+
+  renderGrid(_yhSelectedYear);
+}

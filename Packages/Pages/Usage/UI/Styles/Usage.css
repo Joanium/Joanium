@@ -971,3 +971,193 @@
     grid-column: 2;
   }
 }
+
+/* ── Yearly Activity Heatmap ── */
+.yearly-heatmap-outer {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.yh-main {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.yh-main::-webkit-scrollbar {
+  display: none;
+}
+
+.yh-header-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.yh-day-gutter {
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.yh-month-labels {
+  position: relative;
+  height: 16px;
+}
+
+.yh-month-label {
+  position: absolute;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  top: 0;
+  line-height: 1;
+}
+
+.yh-body-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.yh-day-labels {
+  width: 24px;
+  flex-shrink: 0;
+  display: grid;
+  gap: 2px;
+  /* grid-template-rows set dynamically in JS */
+}
+
+.yh-day-labels span {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.yh-grid {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 2px;
+  /* grid-template-rows and grid-auto-columns set dynamically in JS */
+}
+
+.yh-cell {
+  border-radius: 3px;
+  cursor: default;
+  transition: transform 0.1s;
+}
+
+.yh-cell:hover {
+  transform: scale(1.35);
+  position: relative;
+  z-index: 1;
+}
+
+.yh-cell[data-level='0'] {
+  background: var(--bg-tertiary);
+}
+
+.yh-cell[data-level='1'] {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.yh-cell[data-level='2'] {
+  background: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.yh-cell[data-level='3'] {
+  background: color-mix(in srgb, var(--accent) 73%, transparent);
+}
+
+.yh-cell[data-level='4'] {
+  background: var(--accent);
+}
+
+.yh-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding-left: 28px;
+}
+
+.yh-legend-text {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.yh-legend-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.yh-legend-cell[data-level='0'] {
+  background: var(--bg-tertiary);
+}
+.yh-legend-cell[data-level='1'] {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.yh-legend-cell[data-level='2'] {
+  background: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.yh-legend-cell[data-level='3'] {
+  background: color-mix(in srgb, var(--accent) 73%, transparent);
+}
+.yh-legend-cell[data-level='4'] {
+  background: var(--accent);
+}
+
+/* Year Picker */
+.yh-year-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 56px;
+  height: 160px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-snap-type: y mandatory;
+  flex-shrink: 0;
+}
+
+.yh-year-picker::-webkit-scrollbar {
+  display: none;
+}
+
+.yh-year-item {
+  flex-shrink: 0;
+  height: 32px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  scroll-snap-align: center;
+  user-select: none;
+  transition:
+    font-size 0.18s var(--ease-out-expo),
+    color 0.18s,
+    font-weight 0.1s;
+}
+
+.yh-year-item.active {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.yh-year-item:hover:not(.active) {
+  color: var(--text-secondary);
+}
