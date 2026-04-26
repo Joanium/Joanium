@@ -155,3 +155,13 @@
     transform: scale(1.18);
   }
 }
+
+/* ── Animations disabled ──────────────────────────────────────────── */
+[data-animations='off'] *,
+[data-animations='off'] *::before,
+[data-animations='off'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+}

@@ -3,4 +3,7 @@
   document.documentElement.setAttribute('data-theme', theme);
   const font = localStorage.getItem('ow-font') || 'Sora';
   document.documentElement.style.setProperty('--font-ui', `'${font}', sans-serif`);
+  if (localStorage.getItem('ow-animations') === 'off') {
+    document.documentElement.setAttribute('data-animations', 'off');
+  }
 })();

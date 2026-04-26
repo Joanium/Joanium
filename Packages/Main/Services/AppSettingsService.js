@@ -8,6 +8,7 @@ const DEFAULTS = {
   keep_awake: false,
   app_language: 'en',
   completion_sound: true,
+  animations: true,
 };
 
 export function getSupportedLanguages() {
@@ -33,6 +34,7 @@ export function readAppSettings() {
     app_lock: Boolean(stored.app_lock ?? false),
     app_language,
     completion_sound: stored.completion_sound !== false, // default true
+    animations: stored.animations !== false, // default true
   };
 }
 

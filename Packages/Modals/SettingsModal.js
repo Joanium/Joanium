@@ -242,6 +242,17 @@ export function initSettingsModal() {
                     </label>
                   </div>
 
+                  <div class="settings-toggle-row" id="app-setting-animations">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label">Animations</span>
+                      <span class="settings-field-hint">Enable motion effects and transitions throughout the app.</span>
+                    </div>
+                    <label class="settings-toggle" aria-label="Animations">
+                      <input id="app-toggle-animations" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+
                   <div class="settings-field-row" id="app-setting-default-model">
                     <div class="settings-toggle-info">
                       <span class="settings-field-label">Default Model</span>
@@ -480,6 +491,36 @@ export function initSettingsModal() {
       });
     }
 
+    // Animations toggle — apply immediately via data-animations attribute + localStorage for boot.
+    const animationsInput = $('app-toggle-animations');
+    if (animationsInput) {
+      animationsInput.addEventListener('change', async () => {
+        const enabled = animationsInput.checked;
+        // Apply instantly so the user sees the effect without reloading.
+        if (enabled) {
+          document.documentElement.removeAttribute('data-animations');
+          localStorage.removeItem('ow-animations');
+        } else {
+          document.documentElement.setAttribute('data-animations', 'off');
+          localStorage.setItem('ow-animations', 'off');
+        }
+        try {
+          await window.electronAPI?.invoke('set-app-settings', { animations: enabled });
+        } catch (err) {
+          console.warn('[AppSettings] Failed to save animations', err);
+          // Revert both the DOM and the input on failure.
+          animationsInput.checked = !enabled;
+          if (!enabled) {
+            document.documentElement.removeAttribute('data-animations');
+            localStorage.removeItem('ow-animations');
+          } else {
+            document.documentElement.setAttribute('data-animations', 'off');
+            localStorage.setItem('ow-animations', 'off');
+          }
+        }
+      });
+    }
+
     // Default page picker — saves to localStorage as 'ow-default-page'
     const pageBtn = $('settings-page-btn');
     const pageDropdown = $('settings-page-dropdown');
@@ -696,6 +737,8 @@ export function initSettingsModal() {
       if (lock) lock.checked = Boolean(settings.app_lock);
       const sound = $('app-toggle-sound');
       if (sound) sound.checked = settings.completion_sound !== false; // default true
+      const animations = $('app-toggle-animations');
+      if (animations) animations.checked = settings.animations !== false; // default true
       // Restore default page picker selection
       const pageLabelEl = $('settings-page-label');
       const pageDropdownEl = $('settings-page-dropdown');
