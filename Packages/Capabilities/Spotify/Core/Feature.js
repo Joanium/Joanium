@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as SpotifyAPI from './API/SpotifyAPI.js';
 import { getSpotifyCredentials, withSpotify } from './Shared/Common.js';
@@ -14,28 +16,48 @@ async function getSpotifyWorkspace() {
   return import('../SpotifyWorkspace.js');
 }
 
+const validateSpotifyConnection = createConnectorValidator({
+  connectorId: 'spotify',
+  requiredCredentialKeys: ['accessToken'],
+  missingError: 'Not connected - complete the Spotify OAuth flow first.',
+  validate: async (creds) => {
+    const { getFreshCreds } = await getSpotifyWorkspace();
+    const freshCreds = await getFreshCreds(creds);
+    const me = await SpotifyAPI.getMe(freshCreds);
+    return {
+      updatedCredentials: {
+        displayName: me.display_name ?? null,
+        email: me.email ?? null,
+      },
+      response: {
+        displayName: me.display_name,
+        email: me.email,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'spotify',
   name: 'Spotify',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'spotify',
         name: 'Spotify',
-        icon: '<img src="../../../Assets/Icons/Spotify.png" alt="Spotify" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Spotify.png',
         description:
           "See what's playing, explore top tracks, and browse playlists from your Spotify account.",
         helpUrl: 'https://developer.spotify.com/dashboard',
-        helpText: 'Create a Spotify App →',
+        helpText: 'Create a Spotify App ->',
         oauthType: 'spotify',
         connectMethod: 'oauthStart',
         connectLabel: 'Connect with Spotify',
         connectingLabel: 'Opening Spotify authorisation...',
-        subServices: [],
         setupSteps: [
           'Go to developer.spotify.com/dashboard and log in',
-          'Click "Create App" — fill in name and description',
+          'Click "Create App" - fill in name and description',
           'Under Redirect URIs, add: http://127.0.0.1:42815/oauth/callback',
           'Copy the Client ID and Client Secret below',
           'Click "Connect with Spotify" to authenticate',
@@ -51,7 +73,7 @@ export default createCapabilityFeature({
             label: 'Client ID',
             placeholder: 'Your Spotify app Client ID',
             type: 'text',
-            hint: 'Found at developer.spotify.com/dashboard → your app.',
+            hint: 'Found at developer.spotify.com/dashboard -> your app.',
           },
           {
             key: 'clientSecret',
@@ -64,28 +86,11 @@ export default createCapabilityFeature({
         automations: [
           {
             name: 'Music Digest',
-            description: 'Weekly — summarize your top tracks and most active listening periods',
+            description: 'Weekly - summarize your top tracks and most active listening periods',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('spotify');
-          if (!creds?.accessToken)
-            return { ok: false, error: 'Not connected — complete the Spotify OAuth flow first.' };
-          try {
-            const { getFreshCreds } = await getSpotifyWorkspace();
-            const freshCreds = await getFreshCreds(creds);
-            const me = await SpotifyAPI.getMe(freshCreds);
-            ctx.connectorEngine?.updateCredentials('spotify', {
-              displayName: me.display_name ?? null,
-              email: me.email ?? null,
-            });
-            return { ok: true, displayName: me.display_name, email: me.email };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateSpotifyConnection,
+      }),
     ],
   },
 

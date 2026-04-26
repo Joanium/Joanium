@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as LinearAPI from './API/LinearAPI.js';
 import { getLinearCredentials, withLinear } from './Shared/Common.js';
@@ -10,24 +12,40 @@ import {
   linearOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateLinearConnection = createConnectorValidator({
+  connectorId: 'linear',
+  validate: async (creds) => {
+    const viewer = await LinearAPI.getViewer(creds);
+    return {
+      updatedCredentials: {
+        name: viewer.name ?? null,
+        email: viewer.email ?? null,
+        displayName: viewer.displayName ?? null,
+      },
+      response: {
+        name: viewer.name,
+        email: viewer.email,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'linear',
   name: 'Linear',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'linear',
         name: 'Linear',
-        icon: '<img src="../../../Assets/Icons/Linear.png" alt="Linear" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Linear.png',
         description:
           'Track your Linear issues, view team progress, and stay on top of assigned work from chat.',
         helpUrl: 'https://linear.app/settings/api',
-        helpText: 'Create a Personal API Key →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Create a Personal API Key ->',
         setupSteps: [
-          'Go to linear.app → Settings → API',
+          'Go to linear.app -> Settings -> API',
           'Under "Personal API keys", click "Create key"',
           'Give it a label (e.g. "Joanium") and copy the generated key below',
         ],
@@ -42,32 +60,17 @@ export default createCapabilityFeature({
             label: 'Personal API Key',
             placeholder: 'lin_api_...',
             type: 'password',
-            hint: 'Create at linear.app → Settings → API → Personal API keys.',
+            hint: 'Create at linear.app -> Settings -> API -> Personal API keys.',
           },
         ],
         automations: [
           {
             name: 'Issue Digest',
-            description: 'Daily — summarize your assigned Linear issues by priority and status',
+            description: 'Daily - summarize your assigned Linear issues by priority and status',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('linear');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const viewer = await LinearAPI.getViewer(creds);
-            ctx.connectorEngine?.updateCredentials('linear', {
-              name: viewer.name ?? null,
-              email: viewer.email ?? null,
-              displayName: viewer.displayName ?? null,
-            });
-            return { ok: true, name: viewer.name, email: viewer.email };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateLinearConnection,
+      }),
     ],
   },
 

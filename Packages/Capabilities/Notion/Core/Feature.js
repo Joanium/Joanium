@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as NotionAPI from './API/NotionAPI.js';
 import { getNotionCredentials, withNotion } from './Shared/Common.js';
@@ -10,28 +12,42 @@ import {
   notionOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateNotionConnection = createConnectorValidator({
+  connectorId: 'notion',
+  validate: async (creds) => {
+    const bot = await NotionAPI.getBot(creds);
+    const name = bot.name ?? bot.bot?.owner?.user?.name ?? 'Notion bot';
+    return {
+      updatedCredentials: {
+        botName: name,
+      },
+      response: {
+        name,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'notion',
   name: 'Notion',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'notion',
         name: 'Notion',
-        icon: '<img src="../../../Assets/Icons/Notion.png" alt="Notion" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Notion.png',
         description:
           'Search pages, browse databases, and query content across your Notion workspace.',
         helpUrl: 'https://www.notion.so/my-integrations',
-        helpText: 'Create an Internal Integration →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Create an Internal Integration ->',
         setupSteps: [
           'Go to notion.so/my-integrations and click "New integration"',
           'Give it a name (e.g. "Joanium") and select your workspace',
           'Under Capabilities, enable "Read content"',
           'Copy the "Internal Integration Token" below',
-          'In each Notion page/database you want to access, click ••• → Connections → add your integration',
+          'In each Notion page/database you want to access, click ... -> Connections -> add your integration',
         ],
         capabilities: [
           'Search any Notion page by name or content',
@@ -50,23 +66,11 @@ export default createCapabilityFeature({
         automations: [
           {
             name: 'Workspace Digest',
-            description: 'Daily — summarize recently edited Notion pages',
+            description: 'Daily - summarize recently edited Notion pages',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('notion');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const bot = await NotionAPI.getBot(creds);
-            const name = bot.name ?? bot.bot?.owner?.user?.name ?? 'Notion bot';
-            ctx.connectorEngine?.updateCredentials('notion', { botName: name });
-            return { ok: true, name };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateNotionConnection,
+      }),
     ],
   },
 

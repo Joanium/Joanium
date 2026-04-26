@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as SentryAPI from './API/SentryAPI.js';
 import { getSentryCredentials, withSentry } from './Shared/Common.js';
@@ -10,24 +12,40 @@ import {
   sentryOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateSentryConnection = createConnectorValidator({
+  connectorId: 'sentry',
+  validate: async (creds) => {
+    const orgs = await SentryAPI.listOrganizations(creds);
+    if (!orgs.length) throw new Error('No organizations found on this token');
+    const [org] = orgs;
+    return {
+      updatedCredentials: {
+        orgSlug: org.slug,
+        orgName: org.name,
+      },
+      response: {
+        orgName: org.name,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'sentry',
   name: 'Sentry',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'sentry',
         name: 'Sentry',
-        icon: '<img src="../../../Assets/Icons/Sentry.png" alt="Sentry" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Sentry.png',
         description:
           'Monitor errors, track issues, and get alerted on crashes across your Sentry projects.',
         helpUrl: 'https://sentry.io/settings/account/api/auth-tokens/',
-        helpText: 'Create an Auth Token →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Create an Auth Token ->',
         setupSteps: [
-          'Go to sentry.io → Settings → Account → API → Auth Tokens',
+          'Go to sentry.io -> Settings -> Account -> API -> Auth Tokens',
           'Click "Create New Token" and name it (e.g. "Joanium")',
           'Grant scopes: org:read, project:read, event:read, issue:read',
           'Copy the generated token below',
@@ -43,30 +61,17 @@ export default createCapabilityFeature({
             label: 'Auth Token',
             placeholder: 'sntrys_...',
             type: 'password',
-            hint: 'Create at sentry.io → Settings → Account → API → Auth Tokens.',
+            hint: 'Create at sentry.io -> Settings -> Account -> API -> Auth Tokens.',
           },
         ],
         automations: [
           {
             name: 'Error Digest',
-            description: 'Daily — summarize unresolved errors and flag critical/fatal issues',
+            description: 'Daily - summarize unresolved errors and flag critical/fatal issues',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('sentry');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const orgs = await SentryAPI.listOrganizations(creds);
-            if (!orgs.length) return { ok: false, error: 'No organizations found on this token' };
-            const orgSlug = orgs[0].slug;
-            ctx.connectorEngine?.updateCredentials('sentry', { orgSlug, orgName: orgs[0].name });
-            return { ok: true, orgName: orgs[0].name };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateSentryConnection,
+      }),
     ],
   },
 

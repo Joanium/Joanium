@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as CloudflareAPI from './API/CloudflareAPI.js';
 import { getCloudflareCredentials, withCloudflare } from './Shared/Common.js';
@@ -10,24 +12,31 @@ import {
   cloudflareOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateCloudflareConnection = createConnectorValidator({
+  connectorId: 'cloudflare',
+  validate: async (creds) => ({
+    response: {
+      status: (await CloudflareAPI.verifyToken(creds))?.status ?? 'active',
+    },
+  }),
+});
+
 export default createCapabilityFeature({
   id: 'cloudflare',
   name: 'Cloudflare',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'cloudflare',
         name: 'Cloudflare',
-        icon: '<img src="../../../Assets/Icons/Cloudflare.png" alt="Cloudflare" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Cloudflare.png',
         description:
           'Manage your domains, DNS records, and zone health across all Cloudflare properties.',
         helpUrl: 'https://dash.cloudflare.com/profile/api-tokens',
-        helpText: 'Create an API Token →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Create an API Token ->',
         setupSteps: [
-          'Go to dash.cloudflare.com → My Profile → API Tokens',
+          'Go to dash.cloudflare.com -> My Profile -> API Tokens',
           'Click "Create Token" and choose "Read all resources" or a custom scope',
           'Ensure Zone:Read permission is included at minimum',
           'Copy the generated token below',
@@ -49,21 +58,11 @@ export default createCapabilityFeature({
         automations: [
           {
             name: 'Zone Health Check',
-            description: 'Daily — report zone statuses and flag any inactive domains',
+            description: 'Daily - report zone statuses and flag any inactive domains',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('cloudflare');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const result = await CloudflareAPI.verifyToken(creds);
-            return { ok: true, status: result?.status ?? 'active' };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateCloudflareConnection,
+      }),
     ],
   },
 

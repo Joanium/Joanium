@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as StripeAPI from './API/StripeAPI.js';
 import { getStripeCredentials, withStripe } from './Shared/Common.js';
@@ -10,27 +12,39 @@ import {
   stripeOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateStripeConnection = createConnectorValidator({
+  connectorId: 'stripe',
+  validate: async (creds) => {
+    const balance = await StripeAPI.getBalance(creds);
+    const isTestMode = creds.token.startsWith('sk_test_');
+    return {
+      response: {
+        mode: isTestMode ? 'test' : 'live',
+        currencies: balance.available.map((amount) => amount.currency),
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'stripe',
   name: 'Stripe',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'stripe',
         name: 'Stripe',
-        icon: '<img src="../../../Assets/Icons/Stripe.png" alt="Stripe" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Stripe.png',
         description:
           'Monitor your Stripe balance, charges, customers, and subscriptions from chat.',
         helpUrl: 'https://dashboard.stripe.com/apikeys',
-        helpText: 'View API Keys →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'View API Keys ->',
         setupSteps: [
-          'Go to dashboard.stripe.com → Developers → API Keys',
+          'Go to dashboard.stripe.com -> Developers -> API Keys',
           'Use the "Secret key" (starts with sk_live_ or sk_test_)',
           'For testing, use the test mode secret key (sk_test_...)',
-          'Copy the key below — keep it private',
+          'Copy the key below - keep it private',
         ],
         capabilities: [
           'Check account balance (available and pending)',
@@ -43,32 +57,17 @@ export default createCapabilityFeature({
             label: 'Secret Key',
             placeholder: 'sk_live_... or sk_test_...',
             type: 'password',
-            hint: 'Found at dashboard.stripe.com → Developers → API Keys. Never share this key.',
+            hint: 'Found at dashboard.stripe.com -> Developers -> API Keys. Never share this key.',
           },
         ],
         automations: [
           {
             name: 'Revenue Digest',
-            description: 'Daily — summarize recent charges, balance, and flag anomalies',
+            description: 'Daily - summarize recent charges, balance, and flag anomalies',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('stripe');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const balance = await StripeAPI.getBalance(creds);
-            const isTestMode = creds.token.startsWith('sk_test_');
-            return {
-              ok: true,
-              mode: isTestMode ? 'test' : 'live',
-              currencies: balance.available.map((a) => a.currency),
-            };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateStripeConnection,
+      }),
     ],
   },
 

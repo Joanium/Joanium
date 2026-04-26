@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as NetlifyAPI from './API/NetlifyAPI.js';
 import { getNetlifyCredentials, withNetlify } from './Shared/Common.js';
@@ -10,24 +12,38 @@ import {
   netlifyOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
+const validateNetlifyConnection = createConnectorValidator({
+  connectorId: 'netlify',
+  validate: async (creds) => {
+    const user = await NetlifyAPI.getUser(creds);
+    return {
+      updatedCredentials: {
+        email: user.email ?? null,
+        name: user.full_name ?? null,
+      },
+      response: {
+        email: user.email,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'netlify',
   name: 'Netlify',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'netlify',
         name: 'Netlify',
-        icon: '<img src="../../../Assets/Icons/Netlify.png" alt="Netlify" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Netlify.png',
         description:
           'Monitor your Netlify sites, track deployments, and get alerted on failures from chat.',
         helpUrl: 'https://app.netlify.com/user/applications#personal-access-tokens',
-        helpText: 'Create a Personal Access Token →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Create a Personal Access Token ->',
         setupSteps: [
-          'Go to app.netlify.com → User Settings → Applications',
+          'Go to app.netlify.com -> User Settings -> Applications',
           'Scroll to "Personal access tokens" and click "New access token"',
           'Give it a descriptive name and copy the token below',
         ],
@@ -42,31 +58,17 @@ export default createCapabilityFeature({
             label: 'Personal Access Token',
             placeholder: 'Your Netlify access token',
             type: 'password',
-            hint: 'Create at app.netlify.com → User Settings → Applications → Personal access tokens.',
+            hint: 'Create at app.netlify.com -> User Settings -> Applications -> Personal access tokens.',
           },
         ],
         automations: [
           {
             name: 'Deployment Monitor',
-            description: 'Daily — report recent deployments and flag any build failures',
+            description: 'Daily - report recent deployments and flag any build failures',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('netlify');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const user = await NetlifyAPI.getUser(creds);
-            ctx.connectorEngine?.updateCredentials('netlify', {
-              email: user.email ?? null,
-              name: user.full_name ?? null,
-            });
-            return { ok: true, email: user.email };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateNetlifyConnection,
+      }),
     ],
   },
 

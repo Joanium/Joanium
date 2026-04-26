@@ -1,5 +1,7 @@
 import createCapabilityFeature, {
   createConnectedServicePrompt,
+  createConnectorService,
+  createConnectorValidator,
 } from '../../Core/CapabilityFeatureFactory.js';
 import * as FigmaAPI from './API/FigmaAPI.js';
 import { getFigmaCredentials, withFigma } from './Shared/Common.js';
@@ -7,26 +9,40 @@ import { FIGMA_TOOLS } from './Chat/Tools.js';
 import { executeFigmaChatTool } from './Chat/ChatExecutor.js';
 import { figmaDataSourceCollectors, figmaOutputHandlers } from './Automation/AutomationHandlers.js';
 
+const validateFigmaConnection = createConnectorValidator({
+  connectorId: 'figma',
+  validate: async (creds) => {
+    const me = await FigmaAPI.getMe(creds);
+    return {
+      updatedCredentials: {
+        handle: me.handle ?? null,
+        email: me.email ?? null,
+      },
+      response: {
+        handle: me.handle,
+      },
+    };
+  },
+});
+
 export default createCapabilityFeature({
   id: 'figma',
   name: 'Figma',
 
   connectors: {
     services: [
-      {
+      createConnectorService({
         id: 'figma',
         name: 'Figma',
-        icon: '<img src="../../../Assets/Icons/Figma.png" alt="Figma" style="width: 26px; height: 26px; object-fit: contain;" />',
+        iconFile: 'Figma.png',
         description:
           'Access your Figma files, inspect pages and components, and review design comments from chat.',
         helpUrl: 'https://www.figma.com/developers/api#access-tokens',
-        helpText: 'Generate a Personal Access Token →',
-        oauthType: null,
-        subServices: [],
+        helpText: 'Generate a Personal Access Token ->',
         setupSteps: [
           'Log in to figma.com in your browser',
-          'Go to Settings (your avatar) → Security tab',
-          'Scroll to "Personal access tokens" → Generate new token',
+          'Go to Settings (your avatar) -> Security tab',
+          'Scroll to "Personal access tokens" -> Generate new token',
           'Grant "File content: Read" scope at minimum',
           'Copy and paste the token below',
         ],
@@ -41,31 +57,17 @@ export default createCapabilityFeature({
             label: 'Personal Access Token',
             placeholder: 'Your Figma personal access token',
             type: 'password',
-            hint: 'Create at figma.com → Settings → Security → Personal access tokens.',
+            hint: 'Create at figma.com -> Settings -> Security -> Personal access tokens.',
           },
         ],
         automations: [
           {
             name: 'Design Review',
-            description: 'Daily — summarize open comments on a Figma file',
+            description: 'Daily - summarize open comments on a Figma file',
           },
         ],
-        defaultState: { enabled: false, credentials: {} },
-        async validate(ctx) {
-          const creds = ctx.connectorEngine?.getCredentials('figma');
-          if (!creds?.token) return { ok: false, error: 'No credentials stored' };
-          try {
-            const me = await FigmaAPI.getMe(creds);
-            ctx.connectorEngine?.updateCredentials('figma', {
-              handle: me.handle ?? null,
-              email: me.email ?? null,
-            });
-            return { ok: true, handle: me.handle };
-          } catch (err) {
-            return { ok: false, error: err.message };
-          }
-        },
-      },
+        validate: validateFigmaConnection,
+      }),
     ],
   },
 
