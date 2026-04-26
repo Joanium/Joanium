@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as CloudflareAPI from './API/CloudflareAPI.js';
 import { getCloudflareCredentials, withCloudflare } from './Shared/Common.js';
 import { CLOUDFLARE_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   cloudflareOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'cloudflare',
   name: 'Cloudflare',
 
@@ -65,24 +67,20 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      listZones: async (ctx) =>
-        withCloudflare(ctx, async (creds) => ({
-          ok: true,
-          zones: await CloudflareAPI.listZones(creds),
-        })),
-      listDnsRecords: async (ctx, { zoneId }) =>
-        withCloudflare(ctx, async (creds) => ({
-          ok: true,
-          records: await CloudflareAPI.listDnsRecords(creds, zoneId),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeCloudflareChatTool(ctx, toolName, params),
-    },
+  methods: {
+    listZones: async (ctx) =>
+      withCloudflare(ctx, async (creds) => ({
+        ok: true,
+        zones: await CloudflareAPI.listZones(creds),
+      })),
+    listDnsRecords: async (ctx, { zoneId }) =>
+      withCloudflare(ctx, async (creds) => ({
+        ok: true,
+        records: await CloudflareAPI.listDnsRecords(creds, zoneId),
+      })),
   },
-
-  renderer: { chatTools: CLOUDFLARE_TOOLS },
+  chatTools: CLOUDFLARE_TOOLS,
+  executeChatTool: executeCloudflareChatTool,
 
   automation: {
     dataSources: [{ value: 'cloudflare_zones', label: 'Cloudflare - Zones', group: 'Cloudflare' }],
@@ -95,16 +93,10 @@ export default defineFeature({
     outputHandlers: cloudflareOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getCloudflareCredentials(ctx);
-      if (!creds) return null;
-      return {
-        connectedServices: ['Cloudflare'],
-        sections: [
-          'Cloudflare is connected. You can list zones and DNS records using the cloudflare_list_zones tool.',
-        ],
-      };
-    },
-  },
+  prompt: createConnectedServicePrompt({
+    getCredentials: getCloudflareCredentials,
+    getServiceLabel: 'Cloudflare',
+    sections:
+      'Cloudflare is connected. You can list zones and DNS records using the cloudflare_list_zones tool.',
+  }),
 });

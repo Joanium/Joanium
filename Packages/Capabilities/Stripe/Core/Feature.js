@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as StripeAPI from './API/StripeAPI.js';
 import { getStripeCredentials, withStripe } from './Shared/Common.js';
 import { STRIPE_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   stripeOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'stripe',
   name: 'Stripe',
 
@@ -70,29 +72,25 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      getBalance: async (ctx) =>
-        withStripe(ctx, async (creds) => ({
-          ok: true,
-          balance: await StripeAPI.getBalance(creds),
-        })),
-      listCharges: async (ctx, { limit } = {}) =>
-        withStripe(ctx, async (creds) => ({
-          ok: true,
-          charges: await StripeAPI.listCharges(creds, limit ?? 10),
-        })),
-      listSubscriptions: async (ctx, { limit } = {}) =>
-        withStripe(ctx, async (creds) => ({
-          ok: true,
-          subscriptions: await StripeAPI.listSubscriptions(creds, limit ?? 10),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeStripeChatTool(ctx, toolName, params),
-    },
+  methods: {
+    getBalance: async (ctx) =>
+      withStripe(ctx, async (creds) => ({
+        ok: true,
+        balance: await StripeAPI.getBalance(creds),
+      })),
+    listCharges: async (ctx, { limit } = {}) =>
+      withStripe(ctx, async (creds) => ({
+        ok: true,
+        charges: await StripeAPI.listCharges(creds, limit ?? 10),
+      })),
+    listSubscriptions: async (ctx, { limit } = {}) =>
+      withStripe(ctx, async (creds) => ({
+        ok: true,
+        subscriptions: await StripeAPI.listSubscriptions(creds, limit ?? 10),
+      })),
   },
-
-  renderer: { chatTools: STRIPE_TOOLS },
+  chatTools: STRIPE_TOOLS,
+  executeChatTool: executeStripeChatTool,
 
   automation: {
     dataSources: [
@@ -107,17 +105,15 @@ export default defineFeature({
     outputHandlers: stripeOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getStripeCredentials(ctx);
-      if (!creds) return null;
+  prompt: createConnectedServicePrompt({
+    getCredentials: getStripeCredentials,
+    getServiceLabel: (creds) => {
       const mode = creds.token?.startsWith('sk_test_') ? 'test mode' : 'live mode';
-      return {
-        connectedServices: [`Stripe (${mode})`],
-        sections: [
-          `Stripe is connected in ${mode}. You can check balance with stripe_get_balance and list charges with stripe_list_charges.`,
-        ],
-      };
+      return `Stripe (${mode})`;
     },
-  },
+    sections: (creds) => {
+      const mode = creds.token?.startsWith('sk_test_') ? 'test mode' : 'live mode';
+      return `Stripe is connected in ${mode}. You can check balance with stripe_get_balance and list charges with stripe_list_charges.`;
+    },
+  }),
 });

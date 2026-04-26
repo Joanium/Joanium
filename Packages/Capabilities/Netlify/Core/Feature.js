@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as NetlifyAPI from './API/NetlifyAPI.js';
 import { getNetlifyCredentials, withNetlify } from './Shared/Common.js';
 import { NETLIFY_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   netlifyOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'netlify',
   name: 'Netlify',
 
@@ -68,21 +70,17 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      listSites: async (ctx) =>
-        withNetlify(ctx, async (creds) => ({ ok: true, sites: await NetlifyAPI.listSites(creds) })),
-      listDeploys: async (ctx, { siteId, limit } = {}) =>
-        withNetlify(ctx, async (creds) => ({
-          ok: true,
-          deploys: await NetlifyAPI.listDeploys(creds, siteId, limit),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeNetlifyChatTool(ctx, toolName, params),
-    },
+  methods: {
+    listSites: async (ctx) =>
+      withNetlify(ctx, async (creds) => ({ ok: true, sites: await NetlifyAPI.listSites(creds) })),
+    listDeploys: async (ctx, { siteId, limit } = {}) =>
+      withNetlify(ctx, async (creds) => ({
+        ok: true,
+        deploys: await NetlifyAPI.listDeploys(creds, siteId, limit),
+      })),
   },
-
-  renderer: { chatTools: NETLIFY_TOOLS },
+  chatTools: NETLIFY_TOOLS,
+  executeChatTool: executeNetlifyChatTool,
 
   automation: {
     dataSources: [
@@ -97,17 +95,13 @@ export default defineFeature({
     outputHandlers: netlifyOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getNetlifyCredentials(ctx);
-      if (!creds) return null;
+  prompt: createConnectedServicePrompt({
+    getCredentials: getNetlifyCredentials,
+    getServiceLabel: (creds) => {
       const email = creds.email ?? null;
-      return {
-        connectedServices: [email ? `Netlify (${email})` : 'Netlify'],
-        sections: [
-          'Netlify is connected. You can list sites and deployments using the netlify_list_sites tool.',
-        ],
-      };
+      return email ? `Netlify (${email})` : 'Netlify';
     },
-  },
+    sections:
+      'Netlify is connected. You can list sites and deployments using the netlify_list_sites tool.',
+  }),
 });

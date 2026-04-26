@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as NotionAPI from './API/NotionAPI.js';
 import { getNotionCredentials, withNotion } from './Shared/Common.js';
 import { NOTION_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   notionOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'notion',
   name: 'Notion',
 
@@ -68,24 +70,20 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      searchPages: async (ctx, { query, limit } = {}) =>
-        withNotion(ctx, async (creds) => ({
-          ok: true,
-          pages: await NotionAPI.searchPages(creds, query ?? '', limit ?? 20),
-        })),
-      searchDatabases: async (ctx, { limit } = {}) =>
-        withNotion(ctx, async (creds) => ({
-          ok: true,
-          databases: await NotionAPI.searchDatabases(creds, limit ?? 20),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeNotionChatTool(ctx, toolName, params),
-    },
+  methods: {
+    searchPages: async (ctx, { query, limit } = {}) =>
+      withNotion(ctx, async (creds) => ({
+        ok: true,
+        pages: await NotionAPI.searchPages(creds, query ?? '', limit ?? 20),
+      })),
+    searchDatabases: async (ctx, { limit } = {}) =>
+      withNotion(ctx, async (creds) => ({
+        ok: true,
+        databases: await NotionAPI.searchDatabases(creds, limit ?? 20),
+      })),
   },
-
-  renderer: { chatTools: NOTION_TOOLS },
+  chatTools: NOTION_TOOLS,
+  executeChatTool: executeNotionChatTool,
 
   automation: {
     dataSources: [
@@ -100,14 +98,9 @@ export default defineFeature({
     outputHandlers: notionOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getNotionCredentials(ctx);
-      if (!creds) return null;
-      return {
-        connectedServices: ['Notion'],
-        sections: ['Notion is connected. You can search pages using the notion_search_pages tool.'],
-      };
-    },
-  },
+  prompt: createConnectedServicePrompt({
+    getCredentials: getNotionCredentials,
+    getServiceLabel: 'Notion',
+    sections: 'Notion is connected. You can search pages using the notion_search_pages tool.',
+  }),
 });

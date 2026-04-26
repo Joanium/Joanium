@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as LinearAPI from './API/LinearAPI.js';
 import { getLinearCredentials, withLinear } from './Shared/Common.js';
 import { LINEAR_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   linearOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'linear',
   name: 'Linear',
 
@@ -69,26 +71,22 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      listMyIssues: async (ctx, { limit } = {}) =>
-        withLinear(ctx, async (creds) => ({
-          ok: true,
-          issues: await LinearAPI.listMyIssues(creds, limit ?? 25),
-        })),
-      listTeams: async (ctx) =>
-        withLinear(ctx, async (creds) => ({ ok: true, teams: await LinearAPI.listTeams(creds) })),
-      listIssues: async (ctx, { teamId, limit } = {}) =>
-        withLinear(ctx, async (creds) => ({
-          ok: true,
-          issues: await LinearAPI.listIssues(creds, teamId, limit ?? 25),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeLinearChatTool(ctx, toolName, params),
-    },
+  methods: {
+    listMyIssues: async (ctx, { limit } = {}) =>
+      withLinear(ctx, async (creds) => ({
+        ok: true,
+        issues: await LinearAPI.listMyIssues(creds, limit ?? 25),
+      })),
+    listTeams: async (ctx) =>
+      withLinear(ctx, async (creds) => ({ ok: true, teams: await LinearAPI.listTeams(creds) })),
+    listIssues: async (ctx, { teamId, limit } = {}) =>
+      withLinear(ctx, async (creds) => ({
+        ok: true,
+        issues: await LinearAPI.listIssues(creds, teamId, limit ?? 25),
+      })),
   },
-
-  renderer: { chatTools: LINEAR_TOOLS },
+  chatTools: LINEAR_TOOLS,
+  executeChatTool: executeLinearChatTool,
 
   automation: {
     dataSources: [{ value: 'linear_my_issues', label: 'Linear - My Issues', group: 'Linear' }],
@@ -101,17 +99,13 @@ export default defineFeature({
     outputHandlers: linearOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getLinearCredentials(ctx);
-      if (!creds) return null;
+  prompt: createConnectedServicePrompt({
+    getCredentials: getLinearCredentials,
+    getServiceLabel: (creds) => {
       const name = creds.name ?? creds.displayName ?? null;
-      return {
-        connectedServices: [name ? `Linear (${name})` : 'Linear'],
-        sections: [
-          'Linear is connected. You can list assigned issues using the linear_list_my_issues tool.',
-        ],
-      };
+      return name ? `Linear (${name})` : 'Linear';
     },
-  },
+    sections:
+      'Linear is connected. You can list assigned issues using the linear_list_my_issues tool.',
+  }),
 });

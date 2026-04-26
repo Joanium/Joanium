@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as SentryAPI from './API/SentryAPI.js';
 import { getSentryCredentials, withSentry } from './Shared/Common.js';
 import { SENTRY_TOOLS } from './Chat/Tools.js';
@@ -8,7 +10,7 @@ import {
   sentryOutputHandlers,
 } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'sentry',
   name: 'Sentry',
 
@@ -68,19 +70,15 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      listIssues: async (ctx) =>
-        withSentry(ctx, async (creds) => ({
-          ok: true,
-          issues: await SentryAPI.listIssues(creds, creds.orgSlug, 25),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeSentryChatTool(ctx, toolName, params),
-    },
+  methods: {
+    listIssues: async (ctx) =>
+      withSentry(ctx, async (creds) => ({
+        ok: true,
+        issues: await SentryAPI.listIssues(creds, creds.orgSlug, 25),
+      })),
   },
-
-  renderer: { chatTools: SENTRY_TOOLS },
+  chatTools: SENTRY_TOOLS,
+  executeChatTool: executeSentryChatTool,
 
   automation: {
     dataSources: [
@@ -95,17 +93,10 @@ export default defineFeature({
     outputHandlers: sentryOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getSentryCredentials(ctx);
-      if (!creds) return null;
-      const orgName = creds.orgName ?? 'Sentry';
-      return {
-        connectedServices: [`Sentry (${orgName})`],
-        sections: [
-          'Sentry is connected. You can list unresolved issues using the sentry_list_issues tool.',
-        ],
-      };
-    },
-  },
+  prompt: createConnectedServicePrompt({
+    getCredentials: getSentryCredentials,
+    getServiceLabel: (creds) => `Sentry (${creds.orgName ?? 'Sentry'})`,
+    sections:
+      'Sentry is connected. You can list unresolved issues using the sentry_list_issues tool.',
+  }),
 });

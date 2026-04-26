@@ -1,11 +1,13 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as FigmaAPI from './API/FigmaAPI.js';
 import { getFigmaCredentials, withFigma } from './Shared/Common.js';
 import { FIGMA_TOOLS } from './Chat/Tools.js';
 import { executeFigmaChatTool } from './Chat/ChatExecutor.js';
 import { figmaDataSourceCollectors, figmaOutputHandlers } from './Automation/AutomationHandlers.js';
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'figma',
   name: 'Figma',
 
@@ -67,24 +69,20 @@ export default defineFeature({
     ],
   },
 
-  main: {
-    methods: {
-      getFile: async (ctx, { fileKey }) =>
-        withFigma(ctx, async (creds) => ({
-          ok: true,
-          file: await FigmaAPI.getFile(creds, fileKey),
-        })),
-      getFileComments: async (ctx, { fileKey }) =>
-        withFigma(ctx, async (creds) => ({
-          ok: true,
-          comments: await FigmaAPI.getFileComments(creds, fileKey),
-        })),
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeFigmaChatTool(ctx, toolName, params),
-    },
+  methods: {
+    getFile: async (ctx, { fileKey }) =>
+      withFigma(ctx, async (creds) => ({
+        ok: true,
+        file: await FigmaAPI.getFile(creds, fileKey),
+      })),
+    getFileComments: async (ctx, { fileKey }) =>
+      withFigma(ctx, async (creds) => ({
+        ok: true,
+        comments: await FigmaAPI.getFileComments(creds, fileKey),
+      })),
   },
-
-  renderer: { chatTools: FIGMA_TOOLS },
+  chatTools: FIGMA_TOOLS,
+  executeChatTool: executeFigmaChatTool,
 
   automation: {
     dataSources: [
@@ -112,17 +110,13 @@ export default defineFeature({
     outputHandlers: figmaOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getFigmaCredentials(ctx);
-      if (!creds) return null;
+  prompt: createConnectedServicePrompt({
+    getCredentials: getFigmaCredentials,
+    getServiceLabel: (creds) => {
       const handle = creds.handle ?? null;
-      return {
-        connectedServices: [handle ? `Figma (@${handle})` : 'Figma'],
-        sections: [
-          'Figma is connected. You can get file info and comments using the figma_get_file_info tool.',
-        ],
-      };
+      return handle ? `Figma (@${handle})` : 'Figma';
     },
-  },
+    sections:
+      'Figma is connected. You can get file info and comments using the figma_get_file_info tool.',
+  }),
 });

@@ -1,4 +1,6 @@
-import defineFeature from '../../Core/DefineFeature.js';
+import createCapabilityFeature, {
+  createConnectedServicePrompt,
+} from '../../Core/CapabilityFeatureFactory.js';
 import * as SpotifyAPI from './API/SpotifyAPI.js';
 import { getSpotifyCredentials, withSpotify } from './Shared/Common.js';
 import { SPOTIFY_TOOLS } from './Chat/Tools.js';
@@ -12,7 +14,7 @@ async function getSpotifyWorkspace() {
   return import('../SpotifyWorkspace.js');
 }
 
-export default defineFeature({
+export default createCapabilityFeature({
   id: 'spotify',
   name: 'Spotify',
 
@@ -94,40 +96,35 @@ export default defineFeature({
     },
   },
 
-  main: {
-    methods: {
-      async oauthStart(ctx, { clientId, clientSecret }) {
-        if (!clientId?.trim() || !clientSecret?.trim()) {
-          return { ok: false, error: 'Client ID and Client Secret are required' };
-        }
-        const { startOAuthFlow } = await getSpotifyWorkspace();
-        const tokens = await startOAuthFlow(clientId.trim(), clientSecret.trim());
-        ctx.connectorEngine?.saveConnector('spotify', tokens);
-        ctx.invalidateSystemPrompt?.();
-        return { ok: true, displayName: tokens.displayName, email: tokens.email };
-      },
-
-      nowPlaying: async (ctx) =>
-        withSpotify(ctx, async (creds) => {
-          const { getFreshCreds } = await getSpotifyWorkspace();
-          const freshCreds = await getFreshCreds(creds);
-          const nowPlaying = await SpotifyAPI.getCurrentlyPlaying(freshCreds);
-          return { ok: true, nowPlaying };
-        }),
-
-      topTracks: async (ctx, { limit } = {}) =>
-        withSpotify(ctx, async (creds) => {
-          const { getFreshCreds } = await getSpotifyWorkspace();
-          const freshCreds = await getFreshCreds(creds);
-          return { ok: true, tracks: await SpotifyAPI.getTopTracks(freshCreds, limit ?? 10) };
-        }),
-
-      executeChatTool: async (ctx, { toolName, params }) =>
-        executeSpotifyChatTool(ctx, toolName, params),
+  methods: {
+    async oauthStart(ctx, { clientId, clientSecret }) {
+      if (!clientId?.trim() || !clientSecret?.trim()) {
+        return { ok: false, error: 'Client ID and Client Secret are required' };
+      }
+      const { startOAuthFlow } = await getSpotifyWorkspace();
+      const tokens = await startOAuthFlow(clientId.trim(), clientSecret.trim());
+      ctx.connectorEngine?.saveConnector('spotify', tokens);
+      ctx.invalidateSystemPrompt?.();
+      return { ok: true, displayName: tokens.displayName, email: tokens.email };
     },
-  },
 
-  renderer: { chatTools: SPOTIFY_TOOLS },
+    nowPlaying: async (ctx) =>
+      withSpotify(ctx, async (creds) => {
+        const { getFreshCreds } = await getSpotifyWorkspace();
+        const freshCreds = await getFreshCreds(creds);
+        const nowPlaying = await SpotifyAPI.getCurrentlyPlaying(freshCreds);
+        return { ok: true, nowPlaying };
+      }),
+
+    topTracks: async (ctx, { limit } = {}) =>
+      withSpotify(ctx, async (creds) => {
+        const { getFreshCreds } = await getSpotifyWorkspace();
+        const freshCreds = await getFreshCreds(creds);
+        return { ok: true, tracks: await SpotifyAPI.getTopTracks(freshCreds, limit ?? 10) };
+      }),
+  },
+  chatTools: SPOTIFY_TOOLS,
+  executeChatTool: executeSpotifyChatTool,
 
   automation: {
     dataSources: [{ value: 'spotify_top_tracks', label: 'Spotify - Top Tracks', group: 'Spotify' }],
@@ -140,17 +137,13 @@ export default defineFeature({
     outputHandlers: spotifyOutputHandlers,
   },
 
-  prompt: {
-    async getContext(ctx) {
-      const creds = getSpotifyCredentials(ctx);
-      if (!creds) return null;
+  prompt: createConnectedServicePrompt({
+    getCredentials: getSpotifyCredentials,
+    getServiceLabel: (creds) => {
       const name = creds.displayName ?? creds.email ?? null;
-      return {
-        connectedServices: [name ? `Spotify (${name})` : 'Spotify'],
-        sections: [
-          "Spotify is connected. You can check what's playing with spotify_now_playing, and list top tracks with spotify_top_tracks.",
-        ],
-      };
+      return name ? `Spotify (${name})` : 'Spotify';
     },
-  },
+    sections:
+      "Spotify is connected. You can check what's playing with spotify_now_playing, and list top tracks with spotify_top_tracks.",
+  }),
 });
