@@ -34,9 +34,9 @@
   color: var(--text-muted);
   cursor: pointer;
   transition:
-    border-color 0.2s,
-    background 0.2s,
-    color 0.2s;
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 .agent-thinking-toggle:hover {
   border-color: var(--border);
@@ -68,7 +68,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 .agent-thinking-body {
   flex-direction: column;
@@ -140,8 +140,8 @@
   opacity: 0;
   transform: translateY(4px);
   transition:
-    opacity 0.2s,
-    transform 0.2s;
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 .agent-log-status {
   display: flex;
@@ -287,9 +287,9 @@
   text-decoration: none;
   cursor: pointer;
   transition:
-    transform 0.18s,
-    box-shadow 0.18s,
-    border-color 0.18s;
+    transform var(--transition-fast),
+    box-shadow var(--transition-mid),
+    border-color var(--transition-fast);
   animation: 0.25s both photoCardIn;
 }
 .agent-photo-card:hover {
@@ -319,7 +319,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s;
+  transition: transform var(--transition-mid);
 }
 .agent-photo-card:hover .agent-photo-img-wrap img {
   transform: scale(1.06);
@@ -334,7 +334,7 @@
   padding: 7px 7px 6px;
   gap: 3px;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-fast);
   pointer-events: none;
 }
 .agent-photo-card:hover .agent-photo-overlay {
@@ -374,7 +374,7 @@
   overflow: hidden;
   flex: 1;
   min-width: 0;
-  transition: color 0.15s;
+  transition: color var(--transition-fast);
 }
 .agent-photo-card:hover .agent-photo-photographer {
   color: var(--accent);
@@ -421,7 +421,7 @@
   cursor: pointer;
   text-align: left;
   padding: 14px;
-  transition: background 0.18s;
+  transition: background var(--transition-fast);
 }
 .agent-subagent-run-toggle:focus-visible,
 .agent-subagent-toggle:focus-visible {
@@ -487,7 +487,7 @@
   width: 15px;
   height: 15px;
   color: var(--text-muted);
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 .agent-subagent-run-caret svg {
   width: 15px;
@@ -570,7 +570,7 @@
   color: inherit;
   cursor: pointer;
   text-align: left;
-  transition: background 0.18s;
+  transition: background var(--transition-fast);
 }
 .agent-subagent-caret,
 .agent-subagent-caret svg {
@@ -629,7 +629,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 .agent-subagent-body:not([hidden]),
 .agent-subagent-section:not([hidden]) {

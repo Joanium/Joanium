@@ -3,8 +3,8 @@
   top: 50%;
   transform: translateY(-50%) translateX(6px);
   transition:
-    opacity 0.18s ease,
-    transform 0.2s var(--ease-spring);
+    opacity var(--transition-fast),
+    transform var(--transition-spring);
 }
 .chat-timeline {
   position: absolute;
@@ -15,7 +15,7 @@
   z-index: 15;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--transition-mid);
 }
 .chat-timeline.visible {
   opacity: 1;
@@ -48,10 +48,10 @@
   cursor: pointer;
   pointer-events: all;
   transition:
-    width 0.2s var(--ease-spring),
-    height 0.15s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease;
+    width var(--transition-fast),
+    height var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
   animation: tickIn 0.25s var(--ease-spring) both;
 }
 @keyframes tickIn {
@@ -126,12 +126,12 @@
   justify-content: center;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
   transition:
-    opacity 0.25s ease,
-    transform 0.3s var(--ease-spring),
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.2s ease;
+    opacity var(--transition-fast),
+    transform var(--transition-spring),
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-mid);
   z-index: 20;
 }
 .scroll-to-bottom-btn.visible {

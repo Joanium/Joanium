@@ -122,8 +122,8 @@
 .sidebar-btn.theme-toggle .theme-icon {
   position: absolute;
   transition:
-    transform 0.3s var(--ease-spring),
-    opacity 0.2s ease;
+    transform var(--transition-spring),
+    opacity var(--transition-fast);
 }
 .sidebar-avatar {
   width: 28px;

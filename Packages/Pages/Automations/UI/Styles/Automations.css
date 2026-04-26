@@ -360,7 +360,7 @@
   z-index: 400;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s;
+  transition: opacity var(--transition-fast);
 }
 #automation-modal,
 .action-type-select option,
