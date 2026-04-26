@@ -154,7 +154,16 @@ async function leaveProject() {
         '\n      .page-transition-loading {\n        height: 100%;\n        background: var(--bg-primary, #111);\n      }\n    '),
       document.head.appendChild(s));
   }
-  await openFreshChat();
+  let defaultPage = 'chat';
+  try {
+    const startupUser = await window.electronAPI?.invoke('get-user');
+    defaultPage = startupUser?.preferences?.default_page ?? 'chat';
+  } catch {}
+  if (defaultPage === 'chat') {
+    await openFreshChat();
+  } else {
+    await navigate(defaultPage);
+  }
   const initDeferredModals = () => {
     ((_library = initLibraryModal({
       onChatSelect: async (chatId) => {

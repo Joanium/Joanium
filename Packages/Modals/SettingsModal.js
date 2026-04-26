@@ -9,6 +9,14 @@ import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
 import { openConfirm } from '../System/ConfirmDialog.js';
 import { PROVIDERS, PROVIDERS_BY_ID } from '../Pages/Setup/UI/Render/Providers/SetupProviders.js';
 const PROVIDER_ORDER = new Map(PROVIDERS.map((provider, index) => [provider.id, index]));
+const DEFAULT_PAGES = [
+  { id: 'chat', label: 'Chat' },
+  { id: 'events', label: 'Events' },
+  { id: 'marketplace', label: 'Marketplace' },
+  { id: 'usage', label: 'Usage' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'personas', label: 'Personas' },
+];
 const FONTS = [
   { id: 'Sora', label: 'Sora', hint: 'Default — geometric & clean' },
   { id: 'Inter', label: 'Inter', hint: 'Standard — highly legible' },
@@ -248,6 +256,20 @@ export function initSettingsModal() {
                     </div>
                   </div>
 
+                  <div class="settings-field-row" id="app-setting-default-page">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label">Default Page</span>
+                      <span class="settings-field-hint">The page Joanium opens to when you launch the app.</span>
+                    </div>
+                    <div class="model-selector-wrap settings-dm-wrap">
+                      <button id="settings-page-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="settings-page-label">Chat</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <div id="settings-page-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="Default page"></div>
+                    </div>
+                  </div>
+
                   <div class="settings-field-row" id="app-setting-font">
                     <div class="settings-toggle-info">
                       <span class="settings-field-label">App Font</span>
@@ -458,6 +480,49 @@ export function initSettingsModal() {
       });
     }
 
+    // Default page picker — saves to localStorage as 'ow-default-page'
+    const pageBtn = $('settings-page-btn');
+    const pageDropdown = $('settings-page-dropdown');
+    const pageLabel = $('settings-page-label');
+    if (pageBtn && pageDropdown && pageLabel) {
+      DEFAULT_PAGES.forEach((p) => {
+        const item = document.createElement('button');
+        item.className = 'model-item';
+        item.type = 'button';
+        item.dataset.pageId = p.id;
+        item.setAttribute('role', 'option');
+        item.setAttribute('aria-selected', 'false');
+        item.innerHTML = `<span class="model-item-name">${p.label}</span>`;
+        item.addEventListener('click', () => {
+          pageLabel.textContent = p.label;
+          pageDropdown.classList.remove('open');
+          pageBtn.setAttribute('aria-expanded', 'false');
+          pageDropdown.querySelectorAll('.model-item').forEach((el) => {
+            el.classList.remove('active');
+            el.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('active');
+          item.setAttribute('aria-selected', 'true');
+          window.electronAPI?.invoke('save-default-page', p.id).catch((err) => {
+            console.warn('[AppSettings] Failed to save default_page', err);
+          });
+        });
+        pageDropdown.appendChild(item);
+      });
+
+      pageBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = pageDropdown.classList.toggle('open');
+        pageBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!pageBtn.contains(e.target) && !pageDropdown.contains(e.target)) {
+          pageDropdown.classList.remove('open');
+          pageBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
     // Font picker — build items once, open/close toggle, apply instantly via CSS variable
     const fontBtn = $('settings-font-btn');
     const fontDropdown = $('settings-font-dropdown');
@@ -631,6 +696,20 @@ export function initSettingsModal() {
       if (lock) lock.checked = Boolean(settings.app_lock);
       const sound = $('app-toggle-sound');
       if (sound) sound.checked = settings.completion_sound !== false; // default true
+      // Restore default page picker selection
+      const pageLabelEl = $('settings-page-label');
+      const pageDropdownEl = $('settings-page-dropdown');
+      if (pageLabelEl && pageDropdownEl) {
+        const currentPageId = user?.preferences?.default_page ?? 'chat';
+        const currentPage = DEFAULT_PAGES.find((p) => p.id === currentPageId) ?? DEFAULT_PAGES[0];
+        pageLabelEl.textContent = currentPage.label;
+        pageDropdownEl.querySelectorAll('.model-item').forEach((el) => {
+          const isActive = el.dataset.pageId === currentPageId;
+          el.classList.toggle('active', isActive);
+          el.setAttribute('aria-selected', String(isActive));
+        });
+      }
+
       // Restore font picker selection
       const fontLabelEl = $('settings-font-label');
       const fontDropdownEl = $('settings-font-dropdown');

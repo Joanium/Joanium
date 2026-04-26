@@ -85,5 +85,14 @@ export function register() {
         });
         return { user };
       }),
+    ),
+    ipcMain.handle(
+      'save-default-page',
+      wrapHandler((pageId) => {
+        const user = UserService.writeUser({
+          preferences: { default_page: pageId ?? 'chat' },
+        });
+        return { user };
+      }),
     ));
 }

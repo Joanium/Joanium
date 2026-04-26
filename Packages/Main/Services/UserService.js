@@ -14,7 +14,12 @@ const DEFAULT_USER = {
     created_at: null,
     api_keys: {},
     provider_settings: {},
-    preferences: { theme: 'light', default_provider: null, default_model: null },
+    preferences: {
+      theme: 'light',
+      default_provider: null,
+      default_model: null,
+      default_page: 'chat',
+    },
     app_settings: {
       run_on_startup: false,
       system_tray: false,
