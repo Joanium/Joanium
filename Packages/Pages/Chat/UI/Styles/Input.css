@@ -207,8 +207,8 @@
   opacity: 0;
   transform: translateY(-4px);
   transition:
-    opacity 0.18s ease,
-    transform 0.18s ease,
+    opacity var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-press) var(--ease-out-ui),
     color var(--transition-fast);
 }
 .composer-hint.visible {

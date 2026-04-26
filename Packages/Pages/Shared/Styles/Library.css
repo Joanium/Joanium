@@ -225,8 +225,8 @@
   transform: scale(0.85);
   margin-left: 4px;
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease,
+    opacity var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-press) var(--ease-spring-gentle),
     background var(--transition-fast),
     color var(--transition-fast);
 }
@@ -275,8 +275,8 @@
   transform: scale(0.85);
   margin-left: 4px;
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease,
+    opacity var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-press) var(--ease-spring-gentle),
     background var(--transition-fast),
     color var(--transition-fast);
 }

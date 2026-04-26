@@ -35,9 +35,9 @@
   z-index: 2;
   transform: translateX(18px);
   transition:
-    opacity 0.22s ease,
-    visibility 0.22s ease,
-    transform 0.28s var(--ease-out-expo);
+    opacity var(--duration-surface) var(--ease-out-ui),
+    visibility var(--duration-surface) var(--ease-out-ui),
+    transform var(--duration-emphasis) var(--ease-out-ui);
 }
 .browser-preview-panel[hidden] {
   display: none !important;
@@ -139,8 +139,8 @@
   opacity: 0;
   transform: translateY(2px);
   transition:
-    opacity 0.18s,
-    transform 0.18s;
+    opacity var(--duration-surface) var(--ease-out-ui),
+    transform var(--duration-surface) var(--ease-out-ui);
 }
 .browser-preview-activity-lights span {
   width: 6px;
@@ -323,7 +323,7 @@
   margin: 0 auto;
   padding: 10px 20px;
   will-change: transform, opacity;
-  animation: messageIn 0.35s var(--ease-out-expo) both;
+  animation: messageIn 0.32s var(--ease-out-ui) both;
 }
 .message-row.user {
   display: flex;
@@ -413,7 +413,7 @@
 }
 .message-row.assistant .content:hover {
   transform: translateY(-1px);
-  transition: transform 0.2s var(--motion-smooth);
+  transition: transform var(--transition-fast);
 }
 .agent-reply {
   display: flex;

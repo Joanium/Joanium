@@ -21,8 +21,9 @@
   transform: translateX(-50%) translateY(8px) scale(0.97);
   pointer-events: none;
   transition:
-    opacity 0.16s ease,
-    transform 0.16s ease;
+    opacity var(--duration-tooltip) var(--ease-out-ui),
+    transform var(--duration-tooltip) var(--ease-out-ui);
+  will-change: transform, opacity;
 }
 .slash-dropdown--visible {
   opacity: 1;
@@ -63,8 +64,8 @@
   border-radius: calc(var(--radius-xl) - 4px);
   cursor: pointer;
   transition:
-    background 0.12s ease,
-    transform 0.1s ease;
+    background var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-quick) var(--ease-out-ui);
   user-select: none;
 }
 .slash-dropdown-item--active {
@@ -208,9 +209,9 @@
   line-height: 1;
   animation: slashChipIn 0.22s var(--ease-out-ui) both;
   transition:
-    background 0.12s ease,
-    border-color 0.12s ease,
-    transform 0.1s ease;
+    background var(--duration-press) var(--ease-out-ui),
+    border-color var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-quick) var(--ease-out-ui);
 }
 
 @keyframes slashChipIn {
@@ -262,9 +263,9 @@
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    background 0.12s ease,
-    color 0.12s ease,
-    transform 0.1s ease;
+    background var(--duration-press) var(--ease-out-ui),
+    color var(--duration-press) var(--ease-out-ui),
+    transform var(--duration-quick) var(--ease-spring-gentle);
 }
 @media (hover: hover) and (pointer: fine) {
   .slash-tool-chip-remove:hover {

@@ -1,12 +1,14 @@
 :root {
   --motion-smooth: cubic-bezier(0.23, 1, 0.32, 1);
   --motion-emphasized: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-emphasized-gentle: cubic-bezier(0.34, 1.28, 0.64, 1);
   --motion-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --motion-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 @keyframes fadeScaleIn {
   from {
     opacity: 0;
-    transform: scale(0.96) translateY(6px);
+    transform: scale(0.97) translateY(4px);
   }
   to {
     opacity: 1;
@@ -20,7 +22,7 @@
   }
   to {
     opacity: 0;
-    transform: scale(0.96) translateY(6px);
+    transform: scale(0.97) translateY(4px);
   }
 }
 @keyframes fadeIn {
@@ -34,7 +36,7 @@
 @keyframes chipIn {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.96);
+    transform: translateY(8px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -43,7 +45,7 @@
 }
 @keyframes slideInLeft {
   from {
-    transform: translateX(-100%);
+    transform: translateX(-16px);
     opacity: 0;
   }
   to {
@@ -53,7 +55,7 @@
 }
 @keyframes riseUp {
   from {
-    transform: translateY(24px);
+    transform: translateY(16px);
     opacity: 0;
   }
   to {
@@ -64,7 +66,7 @@
 @keyframes greetingReveal {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.96);
+    transform: translateY(14px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -106,7 +108,7 @@
 @keyframes messageIn {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.98);
+    transform: translateY(10px) scale(0.99);
   }
   to {
     opacity: 1;
@@ -115,8 +117,12 @@
 }
 @keyframes iconPop {
   from {
-    transform: scale(0.95);
+    transform: scale(0.8);
     opacity: 0;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
   }
   to {
     transform: scale(1);
@@ -125,13 +131,13 @@
 }
 @keyframes typingBounce {
   0%,
-  100%,
-  60% {
+  80%,
+  100% {
     transform: translateY(0) scale(0.85);
-    opacity: 0.5;
+    opacity: 0.45;
   }
-  30% {
-    transform: translateY(-6px) scale(1.1);
+  40% {
+    transform: translateY(-5px) scale(1.1);
     opacity: 1;
   }
 }

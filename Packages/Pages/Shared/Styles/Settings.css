@@ -2032,7 +2032,7 @@ body.modal-open {
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
-    transform 0.25s var(--ease-spring);
+    transform var(--duration-surface) var(--ease-spring-gentle);
 }
 
 .ch-expand-btn:hover {
@@ -2044,7 +2044,7 @@ body.modal-open {
 .ch-expand-btn svg {
   width: 14px;
   height: 14px;
-  transition: transform 0.25s var(--ease-spring);
+  transition: transform var(--duration-surface) var(--ease-spring-gentle);
 }
 
 .ch-card.ch-expanded .ch-expand-btn svg {
@@ -2056,8 +2056,8 @@ body.modal-open {
   max-height: 0;
   opacity: 0;
   transition:
-    max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.22s ease;
+    max-height var(--duration-emphasis) var(--ease-out-ui),
+    opacity var(--duration-surface) var(--ease-out-ui);
   pointer-events: none;
 }
 
