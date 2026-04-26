@@ -9,6 +9,16 @@ import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
 import { openConfirm } from '../System/ConfirmDialog.js';
 import { PROVIDERS, PROVIDERS_BY_ID } from '../Pages/Setup/UI/Render/Providers/SetupProviders.js';
 const PROVIDER_ORDER = new Map(PROVIDERS.map((provider, index) => [provider.id, index]));
+const FONTS = [
+  { id: 'Sora', label: 'Sora', hint: 'Default — geometric & clean' },
+  { id: 'Inter', label: 'Inter', hint: 'Standard — highly legible' },
+  { id: 'DM Sans', label: 'DM Sans', hint: 'Rounded & friendly' },
+  { id: 'Nunito', label: 'Nunito', hint: 'Soft & approachable' },
+  { id: 'Plus Jakarta Sans', label: 'Plus Jakarta Sans', hint: 'Modern & premium' },
+  { id: 'Outfit', label: 'Outfit', hint: 'Clean geometric' },
+  { id: 'Manrope', label: 'Manrope', hint: 'Technical & precise' },
+  { id: 'Poppins', label: 'Poppins', hint: 'Playful & rounded' },
+];
 function buildProviderCatalog(providers) {
   const knownProviders = new Set(PROVIDERS.map((p) => p.id)),
     catalog = Array.isArray(providers) ? [...providers] : [];
@@ -238,6 +248,20 @@ export function initSettingsModal() {
                     </div>
                   </div>
 
+                  <div class="settings-field-row" id="app-setting-font">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label">App Font</span>
+                      <span class="settings-field-hint">The typeface used across the entire interface.</span>
+                    </div>
+                    <div class="model-selector-wrap settings-dm-wrap">
+                      <button id="settings-font-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="settings-font-label">Sora</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <div id="settings-font-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="App font"></div>
+                    </div>
+                  </div>
+
                   <div class="settings-field-row" id="app-setting-language">
                     <div class="settings-toggle-info">
                       <span class="settings-field-label" data-i18n="settings.appLanguage">App Language</span>
@@ -434,6 +458,50 @@ export function initSettingsModal() {
       });
     }
 
+    // Font picker — build items once, open/close toggle, apply instantly via CSS variable
+    const fontBtn = $('settings-font-btn');
+    const fontDropdown = $('settings-font-dropdown');
+    const fontLabel = $('settings-font-label');
+    if (fontBtn && fontDropdown && fontLabel) {
+      FONTS.forEach((f) => {
+        const item = document.createElement('button');
+        item.className = 'model-item';
+        item.type = 'button';
+        item.dataset.fontId = f.id;
+        item.setAttribute('role', 'option');
+        item.setAttribute('aria-selected', 'false');
+        item.style.fontFamily = `'${f.id}', sans-serif`;
+        item.innerHTML = `<span class="model-item-name">${f.label}</span><span class="model-item-desc">${f.hint}</span>`;
+        item.addEventListener('click', () => {
+          fontLabel.textContent = f.label;
+          fontLabel.style.fontFamily = `'${f.id}', sans-serif`;
+          fontDropdown.classList.remove('open');
+          fontBtn.setAttribute('aria-expanded', 'false');
+          fontDropdown.querySelectorAll('.model-item').forEach((el) => {
+            el.classList.remove('active');
+            el.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('active');
+          item.setAttribute('aria-selected', 'true');
+          localStorage.setItem('ow-font', f.id);
+          document.documentElement.style.setProperty('--font-ui', `'${f.id}', sans-serif`);
+        });
+        fontDropdown.appendChild(item);
+      });
+
+      fontBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = fontDropdown.classList.toggle('open');
+        fontBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!fontBtn.contains(e.target) && !fontDropdown.contains(e.target)) {
+          fontDropdown.classList.remove('open');
+          fontBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
     // Language picker — build items once, open/close toggle, save + apply i18n on pick
     const langBtn = $('settings-lang-btn');
     const langDropdown = $('settings-lang-dropdown');
@@ -563,6 +631,21 @@ export function initSettingsModal() {
       if (lock) lock.checked = Boolean(settings.app_lock);
       const sound = $('app-toggle-sound');
       if (sound) sound.checked = settings.completion_sound !== false; // default true
+      // Restore font picker selection
+      const fontLabelEl = $('settings-font-label');
+      const fontDropdownEl = $('settings-font-dropdown');
+      if (fontLabelEl && fontDropdownEl) {
+        const currentFontId = localStorage.getItem('ow-font') ?? 'Sora';
+        const currentFont = FONTS.find((f) => f.id === currentFontId) ?? FONTS[0];
+        fontLabelEl.textContent = currentFont.label;
+        fontLabelEl.style.fontFamily = `'${currentFont.id}', sans-serif`;
+        fontDropdownEl.querySelectorAll('.model-item').forEach((el) => {
+          const isActive = el.dataset.fontId === currentFontId;
+          el.classList.toggle('active', isActive);
+          el.setAttribute('aria-selected', String(isActive));
+        });
+      }
+
       // Restore language picker selection
       const langLabelEl = $('settings-lang-label');
       const langDropdownEl = $('settings-lang-dropdown');
