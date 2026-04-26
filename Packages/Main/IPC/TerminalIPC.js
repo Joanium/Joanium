@@ -142,6 +142,15 @@ const activePtys = new Map(),
       reason: 'Publishes a package.',
     },
   ];
+
+// ─── Param guard helper ────────────────────────────────────────────────────────
+// Returns { ok: false, error } when value is missing/blank, null when valid.
+// Eliminates the repeated `if (!x?.trim()) return { ok: !1, error: msg }` guard
+// pattern used throughout file operation and git IPC handlers.
+function requireParam(value, errorMessage) {
+  return value?.trim() ? null : { ok: !1, error: errorMessage };
+}
+
 function truncate(str, maxBytes = 64e3) {
   const buf = Buffer.from(str, 'utf-8');
   return buf.length <= maxBytes
@@ -420,7 +429,8 @@ export function register() {
   (ipcMain.handle(
     'find-file-by-name',
     async (_e, { rootPath: rootPath, name: name, maxResults: maxResults = 40 }) => {
-      if (!rootPath?.trim()) return { ok: !1, error: 'No workspace path provided.' };
+      const rootErr = requireParam(rootPath, 'No workspace path provided.');
+      if (rootErr) return rootErr;
       if (!name?.trim()) return { ok: !1, error: 'No filename provided.' };
       try {
         const { root: root, files: files } = walkWorkspaceFiles(rootPath),
@@ -566,7 +576,8 @@ export function register() {
       },
     ),
     ipcMain.handle('read-local-file', async (_e, { filePath: filePath, maxLines: maxLines }) => {
-      if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+      const fileErr = requireParam(filePath, 'No file path provided.');
+      if (fileErr) return fileErr;
       try {
         return { ok: !0, ...readTextFilePreview(filePath, maxLines) };
       } catch (err) {
@@ -592,7 +603,8 @@ export function register() {
     ipcMain.handle(
       'read-file-chunk',
       async (_e, { filePath: filePath, startLine: startLine = 1, lineCount: lineCount = 120 }) => {
-        if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+        const fileErr = requireParam(filePath, 'No file path provided.');
+        if (fileErr) return fileErr;
         const resolved = path.resolve(filePath);
         try {
           const lines = fs.readFileSync(resolved, 'utf-8').split('\n'),
@@ -639,7 +651,8 @@ export function register() {
       },
     ),
     ipcMain.handle('list-directory', async (_e, { dirPath: dirPath }) => {
-      if (!dirPath?.trim()) return { ok: !1, error: 'No directory path provided.' };
+      const dirErr = requireParam(dirPath, 'No directory path provided.');
+      if (dirErr) return dirErr;
       const resolved = path.resolve(dirPath);
       try {
         if (!fs.statSync(resolved).isDirectory())
@@ -670,7 +683,8 @@ export function register() {
     ipcMain.handle(
       'list-directory-tree',
       async (_e, { dirPath: dirPath, maxDepth: maxDepth, maxEntries: maxEntries }) => {
-        if (!dirPath?.trim()) return { ok: !1, error: 'No directory path provided.' };
+        const dirErr = requireParam(dirPath, 'No directory path provided.');
+        if (dirErr) return dirErr;
         try {
           return { ok: !0, ...buildDirectoryTree(dirPath, maxDepth, maxEntries) };
         } catch (err) {
@@ -681,7 +695,8 @@ export function register() {
     ipcMain.handle(
       'search-workspace',
       async (_e, { rootPath: rootPath, query: query, maxResults: maxResults = 40 }) => {
-        if (!rootPath?.trim()) return { ok: !1, error: 'No workspace path provided.' };
+        const rootErr = requireParam(rootPath, 'No workspace path provided.');
+        if (rootErr) return rootErr;
         if (!query?.trim()) return { ok: !1, error: 'No search query provided.' };
         try {
           const { root: root, files: files } = walkWorkspaceFiles(rootPath),
@@ -735,7 +750,8 @@ export function register() {
     ipcMain.handle(
       'write-ai-file',
       async (_e, { filePath: filePath, content: content, append: append = !1 }) => {
-        if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+        const fileErr = requireParam(filePath, 'No file path provided.');
+        if (fileErr) return fileErr;
         const resolved = path.resolve(filePath);
         try {
           const dir = path.dirname(resolved);
@@ -757,7 +773,8 @@ export function register() {
         _e,
         { filePath: filePath, search: search, replace: replace, replaceAll: replaceAll = !1 },
       ) => {
-        if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+        const fileErr = requireParam(filePath, 'No file path provided.');
+        if (fileErr) return fileErr;
         if ('string' != typeof search || 0 === search.length)
           return { ok: !1, error: 'No search text provided.' };
         if ('string' != typeof replace) return { ok: !1, error: 'No replacement text provided.' };
@@ -785,7 +802,8 @@ export function register() {
         _e,
         { filePath: filePath, startLine: startLine, endLine: endLine, replacement: replacement },
       ) => {
-        if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+        const fileErr = requireParam(filePath, 'No file path provided.');
+        if (fileErr) return fileErr;
         if (!Number.isFinite(Number(startLine)))
           return { ok: !1, error: 'No valid start line provided.' };
         if (!Number.isFinite(Number(endLine)))
@@ -833,7 +851,8 @@ export function register() {
           anchor: anchor,
         },
       ) => {
-        if (!filePath?.trim()) return { ok: !1, error: 'No file path provided.' };
+        const fileErr = requireParam(filePath, 'No file path provided.');
+        if (fileErr) return fileErr;
         if ('string' != typeof content) return { ok: !1, error: 'No content provided.' };
         const resolved = path.resolve(filePath);
         try {
@@ -881,7 +900,8 @@ export function register() {
       },
     ),
     ipcMain.handle('create-directory', async (_e, { dirPath: dirPath }) => {
-      if (!dirPath?.trim()) return { ok: !1, error: 'No directory path provided.' };
+      const dirErr = requireParam(dirPath, 'No directory path provided.');
+      if (dirErr) return dirErr;
       const resolved = path.resolve(dirPath);
       try {
         return (
@@ -965,26 +985,28 @@ export function register() {
       },
     ),
     ipcMain.handle('inspect-workspace', async (_e, { rootPath: rootPath }) => {
-      if (!rootPath?.trim()) return { ok: !1, error: 'No workspace path provided.' };
+      const rootErr = requireParam(rootPath, 'No workspace path provided.');
+      if (rootErr) return rootErr;
       try {
         return { ok: !0, summary: inspectWorkspace(rootPath) };
       } catch (err) {
         return { ok: !1, error: err.message };
       }
     }),
-    ipcMain.handle('git-status', async (_e, { workingDir: workingDir }) =>
-      workingDir?.trim()
-        ? {
-            ok: !0,
-            ...(await runCommandDetailed('git status --short --branch', {
-              cwd: workingDir,
-              timeout: 2e4,
-            })),
-          }
-        : { ok: !1, error: 'No working directory provided.' },
-    ),
+    ipcMain.handle('git-status', async (_e, { workingDir: workingDir }) => {
+      const wdErr = requireParam(workingDir, 'No working directory provided.');
+      if (wdErr) return wdErr;
+      return {
+        ok: !0,
+        ...(await runCommandDetailed('git status --short --branch', {
+          cwd: workingDir,
+          timeout: 2e4,
+        })),
+      };
+    }),
     ipcMain.handle('git-diff', async (_e, { workingDir: workingDir, staged: staged = !1 }) => {
-      if (!workingDir?.trim()) return { ok: !1, error: 'No working directory provided.' };
+      const wdErr = requireParam(workingDir, 'No working directory provided.');
+      if (wdErr) return wdErr;
       const flag = normalizeBool(staged) ? '--cached ' : '';
       return {
         ok: !0,
@@ -997,7 +1019,8 @@ export function register() {
     ipcMain.handle(
       'git-create-branch',
       async (_e, { workingDir: workingDir, branchName: branchName, checkout: checkout = !0 }) => {
-        if (!workingDir?.trim()) return { ok: !1, error: 'No working directory provided.' };
+        const wdErr = requireParam(workingDir, 'No working directory provided.');
+        if (wdErr) return wdErr;
         if (!branchName?.trim()) return { ok: !1, error: 'No branch name provided.' };
         const command = normalizeBool(checkout)
           ? `git checkout -b "${branchName}"`
@@ -1096,7 +1119,8 @@ export function register() {
       }
     }),
     ipcMain.handle('open-folder-os', async (_e, { dirPath: dirPath }) => {
-      if (!dirPath?.trim()) return { ok: !1, error: 'No directory path provided.' };
+      const dirErr = requireParam(dirPath, 'No directory path provided.');
+      if (dirErr) return dirErr;
       const resolved = path.resolve(dirPath);
       try {
         const err = await shell.openPath(resolved);
@@ -1106,7 +1130,8 @@ export function register() {
       }
     }),
     ipcMain.handle('open-terminal-os', async (_e, { dirPath: dirPath }) => {
-      if (!dirPath?.trim()) return { ok: !1, error: 'No directory path provided.' };
+      const dirErr = requireParam(dirPath, 'No directory path provided.');
+      if (dirErr) return dirErr;
       const resolved = path.resolve(dirPath.trim());
       try {
         return fs.existsSync(resolved)

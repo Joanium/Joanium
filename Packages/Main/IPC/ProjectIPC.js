@@ -18,6 +18,15 @@ const GitErrorCategory = {
   UNKNOWN: 'unknown',
 };
 
+// ─── Git guard helpers ─────────────────────────────────────────────────────────
+// requireWorkingDir: returns an error response if workingDir is missing/blank,
+// or null when the value is valid. Used in every git IPC handler.
+function requireWorkingDir(workingDir) {
+  return workingDir?.trim()
+    ? null
+    : { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No working directory provided.' };
+}
+
 function classifyGitError(stderr = '', stdout = '') {
   const s = (stderr + stdout).toLowerCase();
   if (/nothing to commit|nothing added to commit|no changes added/.test(s))
@@ -168,36 +177,24 @@ export function register() {
     ));
 
   ipcMain.handle('git-pull', async (_e, { workingDir }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
     const res = await runGitNet('git pull --rebase=false', workingDir);
     if (!res.ok && res.category === GitErrorCategory.NOTHING) return { ...res, ok: true };
     return res;
   });
 
   ipcMain.handle('git-delete-branch', async (_e, { workingDir, branch }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
     if (!branch?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No branch name provided.' };
     return runGitArgs(['git', 'branch', '-D', branch], workingDir);
   });
 
   ipcMain.handle('git-branches', async (_e, { workingDir }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
     const [currentRes, allRes] = await Promise.all([
       runGit('git rev-parse --abbrev-ref HEAD', workingDir),
       runGit('git branch --format=%(refname:short)', workingDir),
@@ -213,24 +210,16 @@ export function register() {
   });
 
   ipcMain.handle('git-checkout-branch', async (_e, { workingDir, branch }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
     if (!branch?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No branch name provided.' };
     return runGitArgs(['git', 'checkout', branch], workingDir);
   });
 
   ipcMain.handle('git-commit', async (_e, { workingDir, message }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
     if (!message?.trim())
       return { ok: false, category: GitErrorCategory.UNKNOWN, hint: 'No commit message provided.' };
 
@@ -261,12 +250,8 @@ export function register() {
   });
 
   ipcMain.handle('git-push', async (_e, { workingDir }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
 
     let res = await runGitNet('git push', workingDir);
     if (res.ok) return res;
@@ -297,12 +282,8 @@ export function register() {
   });
 
   ipcMain.handle('git-push-sync', async (_e, { workingDir }) => {
-    if (!workingDir?.trim())
-      return {
-        ok: false,
-        category: GitErrorCategory.UNKNOWN,
-        hint: 'No working directory provided.',
-      };
+    const wdErr = requireWorkingDir(workingDir);
+    if (wdErr) return wdErr;
 
     // Abort any stale rebase state before pulling
     await runGit('git rebase --abort', workingDir).catch(() => {});
