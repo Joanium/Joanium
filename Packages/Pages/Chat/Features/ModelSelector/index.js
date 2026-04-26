@@ -131,4 +131,16 @@ export function init() {
   modelSelectorBtn?.addEventListener('click', (e) => {
     (e.stopPropagation(), 0 !== state.providers.length && modelDropdown?.classList.toggle('open'));
   });
+
+  // When the user changes the default model in Settings, apply it immediately
+  // unless the user has already manually picked a different model this session.
+  window.addEventListener('jo:default-model-changed', ({ detail }) => {
+    const provider = state.providers.find((p) => p.provider === detail?.provider);
+    if (!provider || !provider.models?.[detail?.model]) return;
+    state.selectedProvider = provider;
+    state.selectedModel = detail.model;
+    updateModelLabel();
+    buildModelDropdown();
+    notifyModelSelectionChanged();
+  });
 }

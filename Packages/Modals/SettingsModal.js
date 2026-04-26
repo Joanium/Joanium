@@ -231,7 +231,7 @@ export function initSettingsModal() {
                     </div>
                     <div class="model-selector-wrap settings-dm-wrap">
                       <button id="settings-dm-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                        <span id="settings-dm-label">— No default —</span>
+                        <span id="settings-dm-label">Loading...</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       </button>
                       <div id="settings-dm-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="Default model"></div>
@@ -243,9 +243,13 @@ export function initSettingsModal() {
                       <span class="settings-field-label" data-i18n="settings.appLanguage">App Language</span>
                       <span class="settings-field-hint" data-i18n="settings.appLanguageHint">Language used across the app and by the AI when responding to you.</span>
                     </div>
-                    <select id="app-language-select" class="settings-select" data-i18n-label="settings.appLanguage" aria-label="App language">
-                      ${SUPPORTED_LANGUAGES.map((l) => `<option value="${l.code}">${l.native}</option>`).join('\n                      ')}
-                    </select>
+                    <div class="model-selector-wrap settings-dm-wrap">
+                      <button id="settings-lang-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="settings-lang-label">English</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <div id="settings-lang-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="App language"></div>
+                    </div>
                   </div>
 
                   <div class="settings-danger-zone">
@@ -430,21 +434,56 @@ export function initSettingsModal() {
       });
     }
 
-    // Language selector — save immediately on change
-    const langSelect = $('app-language-select');
-    if (langSelect) {
-      langSelect.addEventListener('change', async () => {
-        try {
-          await window.electronAPI?.invoke('set-app-settings', { app_language: langSelect.value });
-          // Update the in-process i18n module and broadcast jo:language-changed
-          setLanguage(langSelect.value);
-        } catch (err) {
-          console.warn('[AppSettings] Failed to save app_language', err);
-          // Revert to the saved value on failure
+    // Language picker — build items once, open/close toggle, save + apply i18n on pick
+    const langBtn = $('settings-lang-btn');
+    const langDropdown = $('settings-lang-dropdown');
+    const langLabel = $('settings-lang-label');
+    if (langBtn && langDropdown && langLabel) {
+      // Build static item list (languages never change at runtime)
+      SUPPORTED_LANGUAGES.forEach((l) => {
+        const item = document.createElement('button');
+        item.className = 'model-item';
+        item.type = 'button';
+        item.dataset.langCode = l.code;
+        item.setAttribute('role', 'option');
+        item.innerHTML = `<span class="model-item-name">${l.native}</span>`;
+        item.addEventListener('click', async () => {
+          langLabel.textContent = l.native;
+          langDropdown.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
+          langDropdown.querySelectorAll('.model-item').forEach((el) => {
+            el.classList.remove('active');
+            el.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('active');
+          item.setAttribute('aria-selected', 'true');
           try {
-            const s = await window.electronAPI?.invoke('get-app-settings');
-            if (s?.app_language) langSelect.value = s.app_language;
-          } catch {}
+            await window.electronAPI?.invoke('set-app-settings', { app_language: l.code });
+            setLanguage(l.code);
+          } catch (err) {
+            console.warn('[AppSettings] Failed to save app_language', err);
+            // Revert label to saved value on failure
+            try {
+              const s = await window.electronAPI?.invoke('get-app-settings');
+              if (s?.app_language) {
+                const saved = SUPPORTED_LANGUAGES.find((x) => x.code === s.app_language);
+                if (saved) langLabel.textContent = saved.native;
+              }
+            } catch {}
+          }
+        });
+        langDropdown.appendChild(item);
+      });
+
+      langBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = langDropdown.classList.toggle('open');
+        langBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+          langDropdown.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
         }
       });
     }
@@ -524,8 +563,19 @@ export function initSettingsModal() {
       if (lock) lock.checked = Boolean(settings.app_lock);
       const sound = $('app-toggle-sound');
       if (sound) sound.checked = settings.completion_sound !== false; // default true
-      const lang = $('app-language-select');
-      if (lang) lang.value = settings.app_language ?? 'en';
+      // Restore language picker selection
+      const langLabelEl = $('settings-lang-label');
+      const langDropdownEl = $('settings-lang-dropdown');
+      if (langLabelEl && langDropdownEl) {
+        const currentCode = settings.app_language ?? 'en';
+        const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === currentCode);
+        if (currentLang) langLabelEl.textContent = currentLang.native;
+        langDropdownEl.querySelectorAll('.model-item').forEach((el) => {
+          const isActive = el.dataset.langCode === currentCode;
+          el.classList.toggle('active', isActive);
+          el.setAttribute('aria-selected', String(isActive));
+        });
+      }
 
       // Populate default model picker and restore saved selection
       const dmBtn2 = $('settings-dm-btn');
@@ -534,11 +584,34 @@ export function initSettingsModal() {
       if (dmDropdown2 && dmLabel) {
         const providers = (await window.electronAPI?.invoke('get-models')) ?? [];
         const configured = providers.filter((p) => p.configured);
-        const savedProvider = user?.preferences?.default_provider ?? null;
-        const savedModel = user?.preferences?.default_model ?? null;
+        let savedProvider = user?.preferences?.default_provider ?? null;
+        let savedModel = user?.preferences?.default_model ?? null;
 
-        // Resolve the current label
-        let currentLabel = '— No default —';
+        // If no default is saved yet, auto-pick the first available model and persist it
+        if ((!savedProvider || !savedModel) && configured.length > 0) {
+          const firstProvider = configured[0];
+          const firstModelId = Object.keys(firstProvider.models ?? {})[0] ?? null;
+          if (firstModelId) {
+            savedProvider = firstProvider.provider;
+            savedModel = firstModelId;
+            try {
+              await window.electronAPI?.invoke('save-default-model', {
+                provider: savedProvider,
+                model: savedModel,
+              });
+              window.dispatchEvent(
+                new CustomEvent('jo:default-model-changed', {
+                  detail: { provider: savedProvider, model: savedModel },
+                }),
+              );
+            } catch (err) {
+              console.warn('[AppSettings] Failed to auto-save default model:', err);
+            }
+          }
+        }
+
+        // Resolve the button label
+        let currentLabel = 'No model available';
         if (savedProvider && savedModel) {
           const sp = configured.find((p) => p.provider === savedProvider);
           if (sp?.models?.[savedModel]) currentLabel = sp.models[savedModel].name ?? savedModel;
@@ -547,28 +620,6 @@ export function initSettingsModal() {
 
         // Build dropdown items
         dmDropdown2.innerHTML = '';
-
-        // "No default" clear option
-        const clearItem = document.createElement('button');
-        clearItem.className = 'model-item' + (!savedProvider ? ' active' : '');
-        clearItem.type = 'button';
-        clearItem.setAttribute('role', 'option');
-        clearItem.innerHTML = '<span class="model-item-name">— No default —</span>';
-        clearItem.addEventListener('click', async () => {
-          dmLabel.textContent = '— No default —';
-          dmDropdown2.classList.remove('open');
-          dmBtn2?.setAttribute('aria-expanded', 'false');
-          dmDropdown2
-            .querySelectorAll('.model-item')
-            .forEach((el) => el.classList.remove('active'));
-          clearItem.classList.add('active');
-          try {
-            await window.electronAPI?.invoke('save-default-model', { provider: null, model: null });
-          } catch (err) {
-            console.warn('[AppSettings] Failed to clear default model:', err);
-          }
-        });
-        dmDropdown2.appendChild(clearItem);
 
         configured.forEach((p) => {
           if (!Object.keys(p.models ?? {}).length) return;
@@ -601,6 +652,12 @@ export function initSettingsModal() {
                   provider: p.provider,
                   model: modelId,
                 });
+                // Tell the chat model selector to switch live
+                window.dispatchEvent(
+                  new CustomEvent('jo:default-model-changed', {
+                    detail: { provider: p.provider, model: modelId },
+                  }),
+                );
               } catch (err) {
                 console.warn('[AppSettings] Failed to save default model:', err);
               }
