@@ -70,9 +70,14 @@ export function buildModelDropdown() {
 }
 export async function loadProviders() {
   try {
-    const all = (await window.electronAPI?.invoke?.('get-models')) ?? [],
-      prevProviderId = state.selectedProvider?.provider ?? null,
-      prevModelId = state.selectedModel ?? null;
+    const [all, user] = await Promise.all([
+      window.electronAPI?.invoke?.('get-models') ?? [],
+      window.electronAPI?.invoke?.('get-user') ?? null,
+    ]);
+    const prevProviderId = state.selectedProvider?.provider ?? null;
+    const prevModelId = state.selectedModel ?? null;
+    const savedDefaultProvider = user?.preferences?.default_provider ?? null;
+    const savedDefaultModel = user?.preferences?.default_model ?? null;
     if (
       ((state.allProviders = all),
       (state.providers = all.filter((provider) => provider.configured)),
@@ -85,20 +90,30 @@ export async function loadProviders() {
         modelDropdown && (modelDropdown.innerHTML = ''),
         void notifyModelSelectionChanged()
       );
+    // 1. Keep the in-session selection if still valid (user already picked something this session)
     const prevProvider = state.providers.find((p) => p.provider === prevProviderId);
-    if (prevProvider && prevModelId && prevProvider.models?.[prevModelId])
+    if (prevProvider && prevModelId && prevProvider.models?.[prevModelId]) {
       ((state.selectedProvider = prevProvider), (state.selectedModel = prevModelId));
-    else {
-      const { bestProvider: bestProvider, bestModelId: bestModelId } = (function (providers) {
-        const bestProvider = providers[0] ?? null;
-        const bestModelId = bestProvider
-          ? (Object.keys(bestProvider.models ?? {})[0] ?? null)
-          : null;
-        return { bestProvider: bestProvider, bestModelId: bestModelId };
-      })(state.providers);
-      ((state.selectedProvider = bestProvider ?? state.providers[0]),
-        (state.selectedModel =
-          bestModelId ?? sortedModelEntries(state.selectedProvider.models)[0]?.[0]));
+    } else {
+      // 2. Try to apply the user's saved default model preference
+      const defaultProvider = savedDefaultProvider
+        ? state.providers.find((p) => p.provider === savedDefaultProvider)
+        : null;
+      if (defaultProvider && savedDefaultModel && defaultProvider.models?.[savedDefaultModel]) {
+        ((state.selectedProvider = defaultProvider), (state.selectedModel = savedDefaultModel));
+      } else {
+        // 3. Fall back to the first available model
+        const { bestProvider: bestProvider, bestModelId: bestModelId } = (function (providers) {
+          const bestProvider = providers[0] ?? null;
+          const bestModelId = bestProvider
+            ? (Object.keys(bestProvider.models ?? {})[0] ?? null)
+            : null;
+          return { bestProvider: bestProvider, bestModelId: bestModelId };
+        })(state.providers);
+        ((state.selectedProvider = bestProvider ?? state.providers[0]),
+          (state.selectedModel =
+            bestModelId ?? sortedModelEntries(state.selectedProvider.models)[0]?.[0]));
+      }
     }
     (updateModelLabel(), buildModelDropdown(), notifyModelSelectionChanged());
   } catch (err) {

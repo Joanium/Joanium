@@ -2140,3 +2140,72 @@ body.modal-open {
     min-width: unset;
   }
 }
+
+/* ── Default Model picker (App settings tab) ───────────────────────────── */
+.settings-dm-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.settings-dm-btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  min-width: 200px;
+  max-width: 280px;
+  justify-content: space-between;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.settings-dm-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
+.settings-dm-btn[aria-expanded='true'] {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.settings-dm-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 240px;
+  max-width: 320px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 600;
+  padding: 6px;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transform-origin: top right;
+  transition:
+    opacity var(--duration-tooltip) var(--ease-out-ui),
+    transform var(--duration-tooltip) var(--ease-drawer);
+}
+
+.settings-dm-dropdown.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.settings-dm-dropdown .model-item {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}

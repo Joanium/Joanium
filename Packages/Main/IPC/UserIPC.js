@@ -73,5 +73,17 @@ export function register() {
     ipcMain.handle(
       'apply-personal-memory-updates',
       wrapHandler((payload) => ({ files: MemoryService.applyPersonalMemoryUpdates(payload) })),
+    ),
+    ipcMain.handle(
+      'save-default-model',
+      wrapHandler(({ provider = null, model = null } = {}) => {
+        const user = UserService.writeUser({
+          preferences: {
+            default_provider: provider ?? null,
+            default_model: model ?? null,
+          },
+        });
+        return { user };
+      }),
     ));
 }

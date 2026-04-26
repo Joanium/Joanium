@@ -224,6 +224,20 @@ export function initSettingsModal() {
                     </label>
                   </div>
 
+                  <div class="settings-field-row" id="app-setting-default-model">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label">Default Model</span>
+                      <span class="settings-field-hint">The AI model used at the start of every new chat session. You can still change it per session.</span>
+                    </div>
+                    <div class="model-selector-wrap settings-dm-wrap">
+                      <button id="settings-dm-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="settings-dm-label">— No default —</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <div id="settings-dm-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="Default model"></div>
+                    </div>
+                  </div>
+
                   <div class="settings-field-row" id="app-setting-language">
                     <div class="settings-toggle-info">
                       <span class="settings-field-label" data-i18n="settings.appLanguage">App Language</span>
@@ -435,6 +449,23 @@ export function initSettingsModal() {
       });
     }
 
+    // Default model picker — open/close toggle and outside-click dismissal
+    const dmBtn = $('settings-dm-btn');
+    const dmDropdown = $('settings-dm-dropdown');
+    if (dmBtn && dmDropdown) {
+      dmBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dmDropdown.classList.toggle('open');
+        dmBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!dmBtn.contains(e.target) && !dmDropdown.contains(e.target)) {
+          dmDropdown.classList.remove('open');
+          dmBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
     // App Lock — intercept toggle to run setup/disable flows
     (function () {
       const lockInput = $('app-toggle-lock');
@@ -478,7 +509,10 @@ export function initSettingsModal() {
   /** Load and apply saved app settings into the toggle inputs. */
   async function loadAppSettings() {
     try {
-      const settings = await window.electronAPI?.invoke('get-app-settings');
+      const [settings, user] = await Promise.all([
+        window.electronAPI?.invoke('get-app-settings'),
+        window.electronAPI?.invoke('get-user'),
+      ]);
       if (!settings) return;
       const startup = $('app-toggle-startup'),
         tray = $('app-toggle-tray'),
@@ -492,6 +526,90 @@ export function initSettingsModal() {
       if (sound) sound.checked = settings.completion_sound !== false; // default true
       const lang = $('app-language-select');
       if (lang) lang.value = settings.app_language ?? 'en';
+
+      // Populate default model picker and restore saved selection
+      const dmBtn2 = $('settings-dm-btn');
+      const dmLabel = $('settings-dm-label');
+      const dmDropdown2 = $('settings-dm-dropdown');
+      if (dmDropdown2 && dmLabel) {
+        const providers = (await window.electronAPI?.invoke('get-models')) ?? [];
+        const configured = providers.filter((p) => p.configured);
+        const savedProvider = user?.preferences?.default_provider ?? null;
+        const savedModel = user?.preferences?.default_model ?? null;
+
+        // Resolve the current label
+        let currentLabel = '— No default —';
+        if (savedProvider && savedModel) {
+          const sp = configured.find((p) => p.provider === savedProvider);
+          if (sp?.models?.[savedModel]) currentLabel = sp.models[savedModel].name ?? savedModel;
+        }
+        dmLabel.textContent = currentLabel;
+
+        // Build dropdown items
+        dmDropdown2.innerHTML = '';
+
+        // "No default" clear option
+        const clearItem = document.createElement('button');
+        clearItem.className = 'model-item' + (!savedProvider ? ' active' : '');
+        clearItem.type = 'button';
+        clearItem.setAttribute('role', 'option');
+        clearItem.innerHTML = '<span class="model-item-name">— No default —</span>';
+        clearItem.addEventListener('click', async () => {
+          dmLabel.textContent = '— No default —';
+          dmDropdown2.classList.remove('open');
+          dmBtn2?.setAttribute('aria-expanded', 'false');
+          dmDropdown2
+            .querySelectorAll('.model-item')
+            .forEach((el) => el.classList.remove('active'));
+          clearItem.classList.add('active');
+          try {
+            await window.electronAPI?.invoke('save-default-model', { provider: null, model: null });
+          } catch (err) {
+            console.warn('[AppSettings] Failed to clear default model:', err);
+          }
+        });
+        dmDropdown2.appendChild(clearItem);
+
+        configured.forEach((p) => {
+          if (!Object.keys(p.models ?? {}).length) return;
+          const section = document.createElement('div');
+          section.className = 'model-group';
+          const header = document.createElement('div');
+          header.className = 'model-group-header';
+          header.textContent = p.label ?? p.provider;
+          section.appendChild(header);
+          Object.entries(p.models).forEach(([modelId, info]) => {
+            const isActive = p.provider === savedProvider && modelId === savedModel;
+            const item = document.createElement('button');
+            item.className = 'model-item' + (isActive ? ' active' : '');
+            item.type = 'button';
+            item.setAttribute('role', 'option');
+            item.setAttribute('aria-selected', String(isActive));
+            item.innerHTML = `<span class="model-item-name">${info.name ?? modelId}</span><span class="model-item-desc">${info.description ?? ''}</span>`;
+            item.addEventListener('click', async () => {
+              dmLabel.textContent = info.name ?? modelId;
+              dmDropdown2.classList.remove('open');
+              dmBtn2?.setAttribute('aria-expanded', 'false');
+              dmDropdown2.querySelectorAll('.model-item').forEach((el) => {
+                el.classList.remove('active');
+                el.setAttribute('aria-selected', 'false');
+              });
+              item.classList.add('active');
+              item.setAttribute('aria-selected', 'true');
+              try {
+                await window.electronAPI?.invoke('save-default-model', {
+                  provider: p.provider,
+                  model: modelId,
+                });
+              } catch (err) {
+                console.warn('[AppSettings] Failed to save default model:', err);
+              }
+            });
+            section.appendChild(item);
+          });
+          dmDropdown2.appendChild(section);
+        });
+      }
     } catch (err) {
       console.warn('[AppSettings] Failed to load app settings:', err);
     }
