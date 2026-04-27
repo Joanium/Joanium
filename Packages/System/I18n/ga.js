@@ -98,6 +98,7 @@ export default {
     channelsTab: 'Cainéil',
     mcpTab: 'Freastalaithe MCP',
     shortcutsTab: 'Aicearraí',
+    securityTab: 'Slándáil',
     appTab: 'Aip',
     userPanelTitle: 'Úsáideoir',
     userPanelDesc:
@@ -121,6 +122,9 @@ export default {
     channelsPanelTitle: 'Cainéil',
     channelsPanelDesc:
       'Ceangail WhatsApp agus Telegram. Nuair a sheolann duine teachtaireacht, freagraíonn an AI go huathoibríoch ar do shon.',
+    securityPanelTitle: 'Slándáil',
+    securityPanelDesc:
+      'Cosain rochtain ar Joanium agus rialaigh cathain a ghlasálann an aip í féin.',
     appPanelTitle: 'Aip',
     appPanelDesc: 'Iompar leibhéal córais do Joanium.',
     shortcutsPanelTitle: 'Aicearraí',
@@ -134,6 +138,9 @@ export default {
     keepAwakeHint: 'Coisc an córas ó dul a chodladh agus Joanium ag rith.',
     appLock: 'Glas Aip',
     appLockHint: 'Iarr pasfhocal gach uair a osclaíonn Joanium.',
+    autoLockAfterInactivity: 'Uathghlasáil tar éis neamhghníomhaíochta',
+    autoLockAfterInactivityHint:
+      'Fill go huathoibríoch ar an scáileán glasála tar éis gan aon ghníomhaíocht san aip ar feadh na tréimhse roghnaithe.',
     appLanguage: 'Teanga na hAipe',
     appLanguageHint:
       'An teanga a úsáidtear ar fud na haipe agus ag an AI nuair a fhreagraíonn sé duit.',

@@ -91,6 +91,7 @@ export default {
     channelsTab: 'القنوات',
     mcpTab: 'خوادم MCP',
     shortcutsTab: 'الاختصارات',
+    securityTab: 'الأمان',
     appTab: 'التطبيق',
     userPanelTitle: 'المستخدم',
     userPanelDesc:
@@ -113,6 +114,8 @@ export default {
     channelsPanelTitle: 'القنوات',
     channelsPanelDesc:
       'قم بتوصيل WhatsApp وTelegram. عندما يرسل شخص رسالة، يرد الذكاء الاصطناعي تلقائياً نيابةً عنك.',
+    securityPanelTitle: 'الأمان',
+    securityPanelDesc: 'احمِ الوصول إلى Joanium وتحكم في الوقت الذي يغلق فيه التطبيق نفسه.',
     appPanelTitle: 'التطبيق',
     appPanelDesc: 'السلوك على مستوى النظام لـ Joanium.',
     shortcutsPanelTitle: 'الاختصارات',
@@ -126,6 +129,9 @@ export default {
     keepAwakeHint: 'منع النظام من الدخول في وضع السكون أثناء تشغيل Joanium.',
     appLock: 'قفل التطبيق',
     appLockHint: 'طلب كلمة مرور في كل مرة يُفتح فيها Joanium.',
+    autoLockAfterInactivity: 'القفل التلقائي بعد عدم النشاط',
+    autoLockAfterInactivityHint:
+      'العودة تلقائيًا إلى شاشة القفل بعد عدم وجود أي نشاط في التطبيق للمدة المحددة.',
     appLanguage: 'لغة التطبيق',
     appLanguageHint: 'اللغة المستخدمة في التطبيق وبواسطة الذكاء الاصطناعي عند الرد عليك.',
     dangerZone: 'منطقة الخطر',

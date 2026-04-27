@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Sianeli',
     mcpTab: 'Gweinyddwyr MCP',
     shortcutsTab: 'Llwybrau Byr',
+    securityTab: 'Diogelwch',
     appTab: 'Ap',
     userPanelTitle: 'Defnyddiwr',
     userPanelDesc:
@@ -120,6 +121,8 @@ export default {
     channelsPanelTitle: 'Sianeli',
     channelsPanelDesc:
       "Cysylltwch WhatsApp a Telegram. Pan fo rhywun yn anfon neges, mae'r AI yn ateb yn awtomatig ar eich rhan.",
+    securityPanelTitle: 'Diogelwch',
+    securityPanelDesc: "Diogelwch fynediad at Joanium a rheoli pryd mae'r ap yn cloi ei hun.",
     appPanelTitle: 'Ap',
     appPanelDesc: 'Ymddygiad lefel system ar gyfer Joanium.',
     shortcutsPanelTitle: 'Llwybrau Byr',
@@ -133,6 +136,9 @@ export default {
     keepAwakeHint: 'Atal y system rhag mynd i gysgu tra bod Joanium yn rhedeg.',
     appLock: 'Clo Ap',
     appLockHint: 'Gofyn am gyfrinair bob tro y bydd Joanium yn agor.',
+    autoLockAfterInactivity: "Cloi'n Awtomatig ar ôl Anweithgarwch",
+    autoLockAfterInactivityHint:
+      "Dychwelyd yn awtomatig i'r sgrin glo ar ôl dim gweithgarwch yn yr ap am yr amser a ddewiswyd.",
     appLanguage: 'Iaith yr Ap',
     appLanguageHint: 'Yr iaith a ddefnyddir ar draws yr ap a chan yr AI wrth ymateb i chi.',
     dangerZone: 'Parth Peryglus',

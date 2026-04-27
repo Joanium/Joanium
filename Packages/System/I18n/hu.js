@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Csatornák',
     mcpTab: 'MCP szerverek',
     shortcutsTab: 'Billentyűparancsok',
+    securityTab: 'Biztonság',
     appTab: 'Alkalmazás',
     userPanelTitle: 'Felhasználó',
     userPanelDesc:
@@ -120,6 +121,9 @@ export default {
     channelsPanelTitle: 'Csatornák',
     channelsPanelDesc:
       'Csatlakoztasd a WhatsAppot és a Telegramot. Amikor valaki üzenetet küld, az AI automatikusan válaszol a nevédben.',
+    securityPanelTitle: 'Biztonság',
+    securityPanelDesc:
+      'Védje a Joaniumhoz való hozzáférést, és szabályozza, mikor zárja le magát az alkalmazás.',
     appPanelTitle: 'Alkalmazás',
     appPanelDesc: 'A Joanium rendszerszintű viselkedése.',
     shortcutsPanelTitle: 'Billentyűparancsok',
@@ -133,6 +137,9 @@ export default {
     keepAwakeHint: 'Megakadályozza, hogy a rendszer alvó állapotba kerüljön, amíg a Joanium fut.',
     appLock: 'Alkalmazászár',
     appLockHint: 'Jelszó kérése minden alkalommal, amikor a Joanium megnyílik.',
+    autoLockAfterInactivity: 'Automatikus zárolás inaktivitás után',
+    autoLockAfterInactivityHint:
+      'Az alkalmazás a kiválasztott idejű inaktivitás után automatikusan visszatér a zárolási képernyőre.',
     appLanguage: 'Alkalmazás nyelve',
     appLanguageHint: 'Az alkalmazásban és az AI által válaszadáskor használt nyelv.',
     dangerZone: 'Veszélyes zóna',

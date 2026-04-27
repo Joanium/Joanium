@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Kanaler',
     mcpTab: 'MCP-servrar',
     shortcutsTab: 'Genvägar',
+    securityTab: 'Säkerhet',
     appTab: 'App',
     userPanelTitle: 'Användare',
     userPanelDesc:
@@ -120,6 +121,8 @@ export default {
     channelsPanelTitle: 'Kanaler',
     channelsPanelDesc:
       'Anslut WhatsApp och Telegram. När någon skickar ett meddelande svarar AI:n automatiskt åt dig.',
+    securityPanelTitle: 'Säkerhet',
+    securityPanelDesc: 'Skydda åtkomsten till Joanium och styr när appen ska låsa sig själv.',
     appPanelTitle: 'App',
     appPanelDesc: 'Systemnivåbeteende för Joanium.',
     shortcutsPanelTitle: 'Genvägar',
@@ -133,6 +136,9 @@ export default {
     keepAwakeHint: 'Förhindra att systemet går i viloläge medan Joanium körs.',
     appLock: 'Applås',
     appLockHint: 'Kräv ett lösenord varje gång Joanium öppnas.',
+    autoLockAfterInactivity: 'Autolås efter inaktivitet',
+    autoLockAfterInactivityHint:
+      'Återgå automatiskt till låsskärmen efter vald tid utan aktivitet i appen.',
     appLanguage: 'Appspråk',
     appLanguageHint: 'Språk som används i appen och av AI:n när den svarar dig.',
     dangerZone: 'Farlig zon',

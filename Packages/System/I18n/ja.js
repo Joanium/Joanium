@@ -96,6 +96,7 @@ export default {
     channelsTab: 'チャンネル',
     mcpTab: 'MCPサーバー',
     shortcutsTab: 'ショートカット',
+    securityTab: 'セキュリティ',
     appTab: 'アプリ',
     userPanelTitle: 'ユーザー',
     userPanelDesc:
@@ -118,6 +119,9 @@ export default {
     channelsPanelTitle: 'チャンネル',
     channelsPanelDesc:
       'WhatsAppとTelegramを接続します。誰かがメッセージを送ると、AIがあなたの代わりに自動的に返信します。',
+    securityPanelTitle: 'セキュリティ',
+    securityPanelDesc:
+      'Joanium へのアクセスを保護し、アプリが自動でロックされるタイミングを管理します。',
     appPanelTitle: 'アプリ',
     appPanelDesc: 'Joaniumのシステムレベルの動作。',
     shortcutsPanelTitle: 'ショートカット',
@@ -131,6 +135,9 @@ export default {
     keepAwakeHint: 'Joaniumの実行中はシステムがスリープしないようにします。',
     appLock: 'アプリロック',
     appLockHint: 'Joaniumを開くたびにパスワードを要求します。',
+    autoLockAfterInactivity: '無操作後に自動ロック',
+    autoLockAfterInactivityHint:
+      'アプリで選択した時間だけ操作がない場合、自動的にロック画面に戻ります。',
     appLanguage: 'アプリの言語',
     appLanguageHint: 'アプリ全体およびAIがあなたに返答する際に使用する言語。',
     dangerZone: '危険ゾーン',

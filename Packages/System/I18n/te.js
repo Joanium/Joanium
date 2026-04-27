@@ -96,6 +96,7 @@ export default {
     channelsTab: 'ఛానెల్‌లు',
     mcpTab: 'MCP సర్వర్లు',
     shortcutsTab: 'షార్ట్‌కట్‌లు',
+    securityTab: 'భద్రత',
     appTab: 'యాప్',
     userPanelTitle: 'వినియోగదారు',
     userPanelDesc:
@@ -118,6 +119,9 @@ export default {
     channelsPanelTitle: 'ఛానెల్‌లు',
     channelsPanelDesc:
       'WhatsApp మరియు Telegram కనెక్ట్ చేయండి. ఎవరైనా సందేశం పంపినప్పుడు, AI మీ తరఫున స్వయంచాలకంగా సమాధానం ఇస్తుంది.',
+    securityPanelTitle: 'భద్రత',
+    securityPanelDesc:
+      'Joanium కు యాక్సెస్‌ను రక్షించి, యాప్ ఎప్పుడు తానే లాక్ అవ్వాలో నియంత్రించండి.',
     appPanelTitle: 'యాప్',
     appPanelDesc: 'Joanium కోసం సిస్టమ్-స్థాయి ప్రవర్తన.',
     shortcutsPanelTitle: 'షార్ట్‌కట్‌లు',
@@ -131,6 +135,9 @@ export default {
     keepAwakeHint: 'Joanium రన్ అవుతున్నప్పుడు సిస్టమ్ నిద్రపోకుండా నిరోధించు.',
     appLock: 'యాప్ లాక్',
     appLockHint: 'Joanium తెరిచే ప్రతిసారి పాస్‌వర్డ్ అవసరం.',
+    autoLockAfterInactivity: 'నిష్క్రియత తర్వాత ఆటో-లాక్',
+    autoLockAfterInactivityHint:
+      'ఎంచుకున్న సమయం పాటు యాప్‌లో ఎలాంటి కార్యాచరణ లేకపోతే స్వయంచాలకంగా లాక్ స్క్రీన్‌కు తిరిగి వెళ్తుంది.',
     appLanguage: 'యాప్ భాష',
     appLanguageHint: 'యాప్ అంతటా మరియు AI మీకు సమాధానం ఇచ్చేటప్పుడు ఉపయోగించే భాష.',
     dangerZone: 'ప్రమాద జోన్',

@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Kanaler',
     mcpTab: 'MCP-servere',
     shortcutsTab: 'Genveje',
+    securityTab: 'Sikkerhed',
     appTab: 'App',
     userPanelTitle: 'Bruger',
     userPanelDesc:
@@ -119,6 +120,8 @@ export default {
     channelsPanelTitle: 'Kanaler',
     channelsPanelDesc:
       'Tilslut WhatsApp og Telegram. Når nogen sender en besked, svarer AI automatisk på dine vegne.',
+    securityPanelTitle: 'Sikkerhed',
+    securityPanelDesc: 'Beskyt adgangen til Joanium, og styr hvornår appen låser sig selv.',
     appPanelTitle: 'App',
     appPanelDesc: 'Systemniveauadfærd for Joanium.',
     shortcutsPanelTitle: 'Genveje',
@@ -132,6 +135,9 @@ export default {
     keepAwakeHint: 'Forhindre systemet i at gå i dvale, mens Joanium kører.',
     appLock: 'App-lås',
     appLockHint: 'Kræv adgangskode, hver gang Joanium åbnes.',
+    autoLockAfterInactivity: 'Autolås efter inaktivitet',
+    autoLockAfterInactivityHint:
+      'Vend automatisk tilbage til låseskærmen efter ingen aktivitet i appen i det valgte tidsrum.',
     appLanguage: 'App-sprog',
     appLanguageHint: 'Sprog, der bruges i hele appen og af AI, når den svarer dig.',
     dangerZone: 'Farezonen',

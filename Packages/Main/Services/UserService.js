@@ -24,6 +24,7 @@ const DEFAULT_USER = {
       run_on_startup: false,
       system_tray: false,
       keep_awake: false,
+      app_lock_idle_minutes: 15,
       app_language: 'en',
     },
   },

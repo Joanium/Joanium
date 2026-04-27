@@ -94,6 +94,7 @@ export default {
     channelsTab: 'ช่องทาง',
     mcpTab: 'เซิร์ฟเวอร์ MCP',
     shortcutsTab: 'ทางลัด',
+    securityTab: 'ความปลอดภัย',
     appTab: 'แอป',
     userPanelTitle: 'ผู้ใช้',
     userPanelDesc:
@@ -116,6 +117,8 @@ export default {
     channelsPanelTitle: 'ช่องทาง',
     channelsPanelDesc:
       'เชื่อมต่อ WhatsApp และ Telegram เมื่อมีคนส่งข้อความเข้ามา AI จะตอบแทนคุณโดยอัตโนมัติ',
+    securityPanelTitle: 'ความปลอดภัย',
+    securityPanelDesc: 'ปกป้องการเข้าถึง Joanium และควบคุมว่าแอปจะล็อกตัวเองเมื่อใด',
     appPanelTitle: 'แอป',
     appPanelDesc: 'พฤติกรรมระดับระบบสำหรับ Joanium',
     shortcutsPanelTitle: 'ทางลัด',
@@ -129,6 +132,9 @@ export default {
     keepAwakeHint: 'ป้องกันไม่ให้ระบบหลับในขณะที่ Joanium ทำงานอยู่',
     appLock: 'ล็อกแอป',
     appLockHint: 'ต้องใช้รหัสผ่านทุกครั้งที่เปิด Joanium',
+    autoLockAfterInactivity: 'ล็อกอัตโนมัติเมื่อไม่มีการใช้งาน',
+    autoLockAfterInactivityHint:
+      'กลับไปยังหน้าจอล็อกโดยอัตโนมัติเมื่อไม่มีการใช้งานในแอปตามเวลาที่เลือก',
     appLanguage: 'ภาษาของแอป',
     appLanguageHint: 'ภาษาที่ใช้ทั่วทั้งแอปและโดย AI เมื่อตอบกลับคุณ',
     dangerZone: 'โซนอันตราย',

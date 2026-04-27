@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Canale',
     mcpTab: 'Servere MCP',
     shortcutsTab: 'Scurtături',
+    securityTab: 'Securitate',
     appTab: 'Aplicație',
     userPanelTitle: 'Utilizator',
     userPanelDesc:
@@ -120,6 +121,9 @@ export default {
     channelsPanelTitle: 'Canale',
     channelsPanelDesc:
       'Conectează WhatsApp și Telegram. Când cineva trimite un mesaj, AI răspunde automat în numele tău.',
+    securityPanelTitle: 'Securitate',
+    securityPanelDesc:
+      'Protejează accesul la Joanium și controlează când aplicația să se blocheze singură.',
     appPanelTitle: 'Aplicație',
     appPanelDesc: 'Comportament la nivel de sistem pentru Joanium.',
     shortcutsPanelTitle: 'Scurtături',
@@ -133,6 +137,9 @@ export default {
     keepAwakeHint: 'Previne intrarea sistemului în repaus cât timp Joanium rulează.',
     appLock: 'Blocare aplicație',
     appLockHint: 'Solicită o parolă de fiecare dată când Joanium se deschide.',
+    autoLockAfterInactivity: 'Blocare automată după inactivitate',
+    autoLockAfterInactivityHint:
+      'Aplicația revine automat la ecranul de blocare după timpul selectat fără activitate.',
     appLanguage: 'Limba aplicației',
     appLanguageHint: 'Limba utilizată în aplicație și de AI când îți răspunde.',
     dangerZone: 'Zonă periculoasă',

@@ -94,6 +94,11 @@ export function register() {
         patch.keep_awake ? PowerService.start() : PowerService.stop();
       }
 
+      // --- app_lock_idle_minutes ---
+      if ('app_lock_idle_minutes' in patch) {
+        AppLockService.refreshIdleLockTimer({ bumpActivity: true });
+      }
+
       // --- app_language ---
       // When the language changes, the AI system prompt needs to be rebuilt so the
       // new language preference is visible to the model on the next message.

@@ -97,6 +97,7 @@ export default {
     channelsTab: 'ചാനലുകൾ',
     mcpTab: 'MCP സെർവറുകൾ',
     shortcutsTab: 'കുറുക്കുവഴികൾ',
+    securityTab: 'സുരക്ഷ',
     appTab: 'ആപ്പ്',
     userPanelTitle: 'ഉപയോക്താവ്',
     userPanelDesc:
@@ -120,6 +121,9 @@ export default {
     channelsPanelTitle: 'ചാനലുകൾ',
     channelsPanelDesc:
       'WhatsApp, Telegram കണക്ട് ചെയ്യുക. ആരെങ്കിലും സന്ദേശം അയച്ചാൽ AI നിങ്ങൾക്ക് വേണ്ടി സ്വയം മറുപടി നൽകും.',
+    securityPanelTitle: 'സുരക്ഷ',
+    securityPanelDesc:
+      'Joanium ലേക്കുള്ള പ്രവേശനം സംരക്ഷിക്കുകയും ആപ്പ് എപ്പോൾ സ്വയം ലോക്ക് ചെയ്യണമെന്ന് നിയന്ത്രിക്കുകയും ചെയ്യുക.',
     appPanelTitle: 'ആപ്പ്',
     appPanelDesc: 'Joanium-ന്റെ സിസ്റ്റം-തല സ്വഭാവം.',
     shortcutsPanelTitle: 'കുറുക്കുവഴികൾ',
@@ -133,6 +137,9 @@ export default {
     keepAwakeHint: 'Joanium പ്രവർത്തിക്കുന്നതിനിടെ സിസ്റ്റം ഉറക്കത്തിലേക്ക് പോകുന്നത് തടയുക.',
     appLock: 'ആപ്പ് ലോക്ക്',
     appLockHint: 'Joanium തുറക്കുമ്പോഴെല്ലാം പാസ്‌വേഡ് ആവശ്യമാണ്.',
+    autoLockAfterInactivity: 'നിഷ്ക്രിയതയ്ക്ക് ശേഷം ഓട്ടോ-ലോക്ക്',
+    autoLockAfterInactivityHint:
+      'തിരഞ്ഞെടുത്ത സമയത്തോളം ആപ്പിൽ പ്രവർത്തനമൊന്നുമില്ലെങ്കിൽ സ്വമേധയാ ലോക്ക് സ്ക്രീനിലേക്ക് മടങ്ങും.',
     appLanguage: 'ആപ്പ് ഭാഷ',
     appLanguageHint: 'ആപ്പ് മുഴുവനും AI നിങ്ങളോട് പ്രതികരിക്കുന്നതിലും ഉപയോഗിക്കുന്ന ഭാഷ.',
     dangerZone: 'അപകടകരമായ മേഖല',

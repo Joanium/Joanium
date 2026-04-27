@@ -94,6 +94,7 @@ export default {
     channelsTab: 'Каналы',
     mcpTab: 'MCP-серверы',
     shortcutsTab: 'Горячие клавиши',
+    securityTab: 'Безопасность',
     appTab: 'Приложение',
     userPanelTitle: 'Пользователь',
     userPanelDesc:
@@ -116,6 +117,9 @@ export default {
     channelsPanelTitle: 'Каналы',
     channelsPanelDesc:
       'Подключите WhatsApp и Telegram. При входящем сообщении ИИ автоматически ответит от вашего имени.',
+    securityPanelTitle: 'Безопасность',
+    securityPanelDesc:
+      'Защитите доступ к Joanium и управляйте тем, когда приложение должно блокироваться само.',
     appPanelTitle: 'Приложение',
     appPanelDesc: 'Системные настройки Joanium.',
     shortcutsPanelTitle: 'Горячие клавиши',
@@ -129,6 +133,9 @@ export default {
     keepAwakeHint: 'Предотвращать переход системы в режим сна во время работы Joanium.',
     appLock: 'Блокировка приложения',
     appLockHint: 'Требовать пароль при каждом запуске Joanium.',
+    autoLockAfterInactivity: 'Автоблокировка после бездействия',
+    autoLockAfterInactivityHint:
+      'Приложение автоматически вернётся на экран блокировки после выбранного времени без активности.',
     appLanguage: 'Язык приложения',
     appLanguageHint: 'Язык интерфейса и ответов ИИ.',
     dangerZone: 'Опасная зона',

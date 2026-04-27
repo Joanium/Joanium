@@ -96,6 +96,7 @@ export default {
     channelsTab: 'चॅनेल',
     mcpTab: 'MCP सर्व्हर',
     shortcutsTab: 'शॉर्टकट',
+    securityTab: 'सुरक्षा',
     appTab: 'अ\u200dॅप',
     userPanelTitle: 'वापरकर्ता',
     userPanelDesc:
@@ -118,6 +119,9 @@ export default {
     channelsPanelTitle: 'चॅनेल',
     channelsPanelDesc:
       'WhatsApp आणि Telegram कनेक्ट करा. कोणी संदेश पाठवल्यावर AI तुमच्यावतीने आपोआप उत्तर देतो.',
+    securityPanelTitle: 'सुरक्षा',
+    securityPanelDesc:
+      'Joanium वरील प्रवेश सुरक्षित ठेवा आणि अॅप स्वतःला केव्हा लॉक करेल ते नियंत्रित करा.',
     appPanelTitle: 'अ\u200dॅप',
     appPanelDesc: 'Joanium साठी सिस्टम-स्तरीय वर्तन.',
     shortcutsPanelTitle: 'शॉर्टकट',
@@ -131,6 +135,9 @@ export default {
     keepAwakeHint: 'Joanium चालू असताना सिस्टमला झोपण्यापासून प्रतिबंध करा.',
     appLock: 'अ\u200dॅप लॉक',
     appLockHint: 'Joanium उघडल्यावर प्रत्येक वेळी पासवर्ड आवश्यक करा.',
+    autoLockAfterInactivity: 'निष्क्रियतेनंतर ऑटो-लॉक',
+    autoLockAfterInactivityHint:
+      'निवडलेल्या वेळेपर्यंत अॅपमध्ये कोणतीही हालचाल नसल्यास ते स्वयंचलितपणे लॉक स्क्रीनवर परत जाते.',
     appLanguage: 'अ\u200dॅप भाषा',
     appLanguageHint: 'संपूर्ण अ\u200dॅपमध्ये आणि तुम्हाला उत्तर देताना AI वापरत असलेली भाषा.',
     dangerZone: 'धोकादायक झोन',

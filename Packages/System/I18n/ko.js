@@ -93,6 +93,7 @@ export default {
     channelsTab: '채널',
     mcpTab: 'MCP 서버',
     shortcutsTab: '단축키',
+    securityTab: '보안',
     appTab: '앱',
     userPanelTitle: '사용자',
     userPanelDesc:
@@ -115,6 +116,8 @@ export default {
     channelsPanelTitle: '채널',
     channelsPanelDesc:
       'WhatsApp 및 Telegram을 연결하세요. 누군가 메시지를 보내면 AI가 자동으로 대신 응답합니다.',
+    securityPanelTitle: '보안',
+    securityPanelDesc: 'Joanium 접근을 보호하고 앱이 언제 스스로 잠길지 제어합니다.',
     appPanelTitle: '앱',
     appPanelDesc: 'Joanium의 시스템 수준 동작.',
     shortcutsPanelTitle: '단축키',
@@ -128,6 +131,9 @@ export default {
     keepAwakeHint: 'Joanium이 실행되는 동안 시스템이 절전 모드로 전환되지 않도록 합니다.',
     appLock: '앱 잠금',
     appLockHint: 'Joanium을 열 때마다 비밀번호를 요구합니다.',
+    autoLockAfterInactivity: '비활성 후 자동 잠금',
+    autoLockAfterInactivityHint:
+      '앱에서 선택한 시간 동안 활동이 없으면 자동으로 잠금 화면으로 돌아갑니다.',
     appLanguage: '앱 언어',
     appLanguageHint: '앱 전체 및 AI가 응답할 때 사용하는 언어.',
     dangerZone: '위험 구역',

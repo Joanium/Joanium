@@ -2087,6 +2087,15 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+.settings-field-row.is-disabled {
+  opacity: 0.58;
+}
+
+.settings-field-row.is-disabled:hover {
+  border-color: var(--border-subtle);
+  box-shadow: none;
+}
+
 .settings-select {
   appearance: none;
   -webkit-appearance: none;
@@ -2119,6 +2128,13 @@ body.modal-open {
 .settings-select:focus {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
   box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.settings-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: var(--text-muted);
+  background-color: var(--bg-tertiary);
 }
 
 .settings-select option {

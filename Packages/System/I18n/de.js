@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Kan\u00e4le',
     mcpTab: 'MCP-Server',
     shortcutsTab: 'Tastenkürzel',
+    securityTab: 'Sicherheit',
     appTab: 'App',
     userPanelTitle: 'Benutzer',
     userPanelDesc:
@@ -119,6 +120,8 @@ export default {
     channelsPanelTitle: 'Kan\u00e4le',
     channelsPanelDesc:
       'WhatsApp und Telegram verbinden. Eingehende Nachrichten werden automatisch von der KI beantwortet.',
+    securityPanelTitle: 'Sicherheit',
+    securityPanelDesc: 'Zugriff auf Joanium schützen und steuern, wann sich die App selbst sperrt.',
     appPanelTitle: 'App',
     appPanelDesc: 'Systemverhalten von Joanium.',
     shortcutsPanelTitle: 'Tastenkürzel',
@@ -132,6 +135,9 @@ export default {
     keepAwakeHint: 'Verhindern, dass das System schl\u00e4ft, w\u00e4hrend Joanium l\u00e4uft.',
     appLock: 'App-Sperre',
     appLockHint: 'Bei jedem \u00d6ffnen von Joanium ein Passwort verlangen.',
+    autoLockAfterInactivity: 'Automatische Sperre bei Inaktivität',
+    autoLockAfterInactivityHint:
+      'Nach der gewählten Zeit ohne Aktivität in der App automatisch zum Sperrbildschirm zurückkehren.',
     appLanguage: 'App-Sprache',
     appLanguageHint: 'Sprache der App und der KI-Antworten.',
     dangerZone: 'Gefahrenbereich',

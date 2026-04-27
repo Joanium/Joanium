@@ -96,6 +96,7 @@ export default {
     channelsTab: 'Rásir',
     mcpTab: 'MCP þjónar',
     shortcutsTab: 'Flýtilyklar',
+    securityTab: 'Öryggi',
     appTab: 'Forrit',
     userPanelTitle: 'Notandi',
     userPanelDesc:
@@ -119,6 +120,8 @@ export default {
     channelsPanelTitle: 'Rásir',
     channelsPanelDesc:
       'Tengdu WhatsApp og Telegram. Þegar einhver sendir skilaboð svarar gervigreind sjálfkrafa í þínu nafni.',
+    securityPanelTitle: 'Öryggi',
+    securityPanelDesc: 'Verndaðu aðgang að Joanium og stjórnaðu hvenær appið læsir sig sjálft.',
     appPanelTitle: 'Forrit',
     appPanelDesc: 'Kerfisstig hegðun Joanium.',
     shortcutsPanelTitle: 'Flýtilyklar',
@@ -132,6 +135,9 @@ export default {
     keepAwakeHint: 'Kemur í veg fyrir að kerfið sofni meðan Joanium keyrir.',
     appLock: 'Forritslás',
     appLockHint: 'Krefst lykilorðs í hvert sinn sem Joanium opnast.',
+    autoLockAfterInactivity: 'Sjálfvirk læsing eftir aðgerðaleysi',
+    autoLockAfterInactivityHint:
+      'Eftir valinn tíma án virkni í appinu fer það sjálfkrafa aftur á læsiskjáinn.',
     appLanguage: 'Tungumál forrits',
     appLanguageHint: 'Tungumál notað í gegnum forritið og af gervigreind þegar hún svarar þér.',
     dangerZone: 'Hættusvæði',

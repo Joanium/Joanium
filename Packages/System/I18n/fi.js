@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Kanavat',
     mcpTab: 'MCP-palvelimet',
     shortcutsTab: 'Pikanäppäimet',
+    securityTab: 'Turvallisuus',
     appTab: 'Sovellus',
     userPanelTitle: 'Käyttäjä',
     userPanelDesc:
@@ -120,6 +121,8 @@ export default {
     channelsPanelTitle: 'Kanavat',
     channelsPanelDesc:
       'Yhdistä WhatsApp ja Telegram. Kun joku lähettää viestin, tekoäly vastaa automaattisesti puolestasi.',
+    securityPanelTitle: 'Turvallisuus',
+    securityPanelDesc: 'Suojaa Joaniumin käyttöä ja määritä, milloin sovellus lukitsee itsensä.',
     appPanelTitle: 'Sovellus',
     appPanelDesc: 'Joaniumin järjestelmätason toiminta.',
     shortcutsPanelTitle: 'Pikanäppäimet',
@@ -133,6 +136,9 @@ export default {
     keepAwakeHint: 'Estä järjestelmää nukkumasta Joaniumin ollessa käynnissä.',
     appLock: 'Sovelluksen lukitus',
     appLockHint: 'Vaadi salasana joka kerta, kun Joanium avataan.',
+    autoLockAfterInactivity: 'Automaattinen lukitus toimettomuuden jälkeen',
+    autoLockAfterInactivityHint:
+      'Palaa automaattisesti lukitusnäyttöön, kun sovelluksessa ei ole toimintaa valittuna aikana.',
     appLanguage: 'Sovelluksen kieli',
     appLanguageHint: 'Koko sovelluksessa ja tekoälyn vastauksissa käytetty kieli.',
     dangerZone: 'Vaaravyöhyke',

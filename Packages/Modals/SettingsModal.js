@@ -120,6 +120,7 @@ export function initSettingsModal() {
               <button class="settings-tab" type="button" data-settings-tab="channels" data-i18n="settings.channelsTab">Channels</button>
               <button class="settings-tab" type="button" data-settings-tab="mcp" data-i18n="settings.mcpTab">MCP Servers</button>
               <button class="settings-tab" type="button" data-settings-tab="shortcuts" data-i18n="settings.shortcutsTab">Shortcuts</button>
+              <button class="settings-tab" type="button" data-settings-tab="security" data-i18n="settings.securityTab">Security</button>
               <button class="settings-tab" type="button" data-settings-tab="app" data-i18n="settings.appTab">App</button>
             </nav>
 
@@ -185,6 +186,38 @@ export function initSettingsModal() {
                 </div>
               </section>
 
+              <section class="settings-panel" data-settings-panel="security" hidden>
+                <div class="settings-panel-header">
+                  <h3 data-i18n="settings.securityPanelTitle">Security</h3>
+                  <p data-i18n="settings.securityPanelDesc">Protect access to Joanium and control when the app locks itself.</p>
+                </div>
+                <div class="settings-form" id="security-settings-form">
+                  <div class="settings-toggle-row" id="security-setting-lock">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.appLock">App Lock</span>
+                      <span class="settings-field-hint" data-i18n="settings.appLockHint">Require a password every time Joanium opens.</span>
+                    </div>
+                    <label class="settings-toggle" data-i18n-label="settings.appLock" aria-label="App lock">
+                      <input id="security-toggle-lock" type="checkbox" />
+                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </label>
+                  </div>
+                  <div class="settings-field-row" id="security-setting-idle-timeout">
+                    <div class="settings-toggle-info">
+                      <span class="settings-field-label" data-i18n="settings.autoLockAfterInactivity">Auto-Lock After Inactivity</span>
+                      <span class="settings-field-hint" data-i18n="settings.autoLockAfterInactivityHint">Automatically return to the lock screen after no activity in the app for the selected time.</span>
+                    </div>
+                    <div class="model-selector-wrap settings-dm-wrap">
+                      <button id="security-select-idle-timeout-btn" class="model-selector settings-dm-btn" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-label="settings.autoLockAfterInactivity" aria-label="Auto-lock after inactivity">
+                        <span id="security-select-idle-timeout-label">15m</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <div id="security-select-idle-timeout-dropdown" class="settings-dm-dropdown" role="listbox" aria-label="Auto-lock after inactivity"></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               <section class="settings-panel" data-settings-panel="app" hidden>
                 <div class="settings-panel-header">
                   <h3 data-i18n="settings.appPanelTitle">App</h3>
@@ -218,16 +251,6 @@ export function initSettingsModal() {
                     </div>
                     <label class="settings-toggle" data-i18n-label="settings.keepAwake" aria-label="Keep awake">
                       <input id="app-toggle-awake" type="checkbox" />
-                      <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-                    </label>
-                  </div>
-                  <div class="settings-toggle-row" id="app-setting-lock">
-                    <div class="settings-toggle-info">
-                      <span class="settings-field-label" data-i18n="settings.appLock">App Lock</span>
-                      <span class="settings-field-hint" data-i18n="settings.appLockHint">Require a password every time Joanium opens.</span>
-                    </div>
-                    <label class="settings-toggle" data-i18n-label="settings.appLock" aria-label="App lock">
-                      <input id="app-toggle-lock" type="checkbox" />
                       <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
                     </label>
                   </div>
@@ -440,6 +463,13 @@ export function initSettingsModal() {
       ((btn.textContent = t('settings.noChanges')), (btn.disabled = !0));
     }
   }
+  function updateSecurityControls(appLockEnabled) {
+    const timeoutRow = $('security-setting-idle-timeout');
+    const timeoutBtn = $('security-select-idle-timeout-btn');
+    if (!timeoutRow || !timeoutBtn) return;
+    timeoutBtn.disabled = !appLockEnabled;
+    timeoutRow.classList.toggle('is-disabled', !appLockEnabled);
+  }
   /** Reveal only the settings rows the current OS supports and wire toggle changes. */
   function initAppSettingsTab() {
     const platform = window.electronAPI?.platform ?? 'linux';
@@ -468,6 +498,63 @@ export function initSettingsModal() {
     wire('app-toggle-startup', 'run_on_startup');
     wire('app-toggle-tray', 'system_tray');
     wire('app-toggle-awake', 'keep_awake');
+
+    const idleTimeoutBtn = $('security-select-idle-timeout-btn');
+    const idleTimeoutDropdown = $('security-select-idle-timeout-dropdown');
+    const idleTimeoutLabel = $('security-select-idle-timeout-label');
+    if (idleTimeoutBtn && idleTimeoutDropdown && idleTimeoutLabel) {
+      const timeouts = [
+        { value: 1, label: '1m' },
+        { value: 5, label: '5m' },
+        { value: 15, label: '15m' },
+        { value: 30, label: '30m' },
+        { value: 60, label: '1hr' },
+        { value: 120, label: '2hr' },
+        { value: 240, label: '4hr' },
+      ];
+      timeouts.forEach((t) => {
+        const item = document.createElement('button');
+        item.className = 'model-item';
+        item.type = 'button';
+        item.dataset.timeoutValue = t.value;
+        item.setAttribute('role', 'option');
+        item.innerHTML = `<span class="model-item-name">${t.label}</span>`;
+        item.addEventListener('click', async () => {
+          if (idleTimeoutBtn.disabled) return;
+          idleTimeoutLabel.textContent = t.label;
+          idleTimeoutDropdown.classList.remove('open');
+          idleTimeoutBtn.setAttribute('aria-expanded', 'false');
+          idleTimeoutDropdown.querySelectorAll('.model-item').forEach((el) => {
+            el.classList.remove('active');
+            el.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('active');
+          item.setAttribute('aria-selected', 'true');
+          try {
+            await window.electronAPI?.invoke('set-app-settings', {
+              app_lock_idle_minutes: t.value,
+            });
+          } catch (err) {
+            console.warn('[AppSettings] Failed to save app_lock_idle_minutes', err);
+            await loadAppSettings();
+          }
+        });
+        idleTimeoutDropdown.appendChild(item);
+      });
+
+      idleTimeoutBtn.addEventListener('click', (e) => {
+        if (idleTimeoutBtn.disabled) return;
+        e.stopPropagation();
+        const isOpen = idleTimeoutDropdown.classList.toggle('open');
+        idleTimeoutBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!idleTimeoutBtn.contains(e.target) && !idleTimeoutDropdown.contains(e.target)) {
+          idleTimeoutDropdown.classList.remove('open');
+          idleTimeoutBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
 
     // Completion sound — wire separately so we can notify the renderer in-process.
     const soundInput = $('app-toggle-sound');
@@ -681,16 +768,18 @@ export function initSettingsModal() {
 
     // App Lock — intercept toggle to run setup/disable flows
     (function () {
-      const lockInput = $('app-toggle-lock');
+      const lockInput = $('security-toggle-lock');
       if (!lockInput) return;
       lockInput.addEventListener('change', async () => {
         if (lockInput.checked) {
           lockInput.checked = false; // revert until setup completes
           const ok = await showAppLockSetup();
           lockInput.checked = ok;
+          updateSecurityControls(ok);
         } else {
           const ok = await showAppLockDisable();
           if (!ok) lockInput.checked = true; // revert on cancel/fail
+          updateSecurityControls(lockInput.checked);
         }
       });
     })();
@@ -733,8 +822,32 @@ export function initSettingsModal() {
       if (startup) startup.checked = Boolean(settings.run_on_startup);
       if (tray) tray.checked = Boolean(settings.system_tray);
       if (awake) awake.checked = Boolean(settings.keep_awake);
-      const lock = $('app-toggle-lock');
+      const lock = $('security-toggle-lock');
       if (lock) lock.checked = Boolean(settings.app_lock);
+
+      const idleTimeoutBtn = $('security-select-idle-timeout-btn');
+      const idleTimeoutLabel = $('security-select-idle-timeout-label');
+      const idleTimeoutDropdown = $('security-select-idle-timeout-dropdown');
+      if (idleTimeoutBtn && idleTimeoutLabel && idleTimeoutDropdown) {
+        const currentTimeout = String(settings.app_lock_idle_minutes ?? 15);
+        const timeouts = {
+          1: '1m',
+          5: '5m',
+          15: '15m',
+          30: '30m',
+          60: '1hr',
+          120: '2hr',
+          240: '4hr',
+        };
+        idleTimeoutLabel.textContent = timeouts[currentTimeout] || currentTimeout + 'm';
+        idleTimeoutDropdown.querySelectorAll('.model-item').forEach((el) => {
+          const isActive = el.dataset.timeoutValue === currentTimeout;
+          el.classList.toggle('active', isActive);
+          el.setAttribute('aria-selected', String(isActive));
+        });
+      }
+
+      updateSecurityControls(Boolean(settings.app_lock));
       const sound = $('app-toggle-sound');
       if (sound) sound.checked = settings.completion_sound !== false; // default true
       const animations = $('app-toggle-animations');
@@ -891,7 +1004,7 @@ export function initSettingsModal() {
       'connectors' === tabId && loadConnectorsPanel(),
       'mcp' === tabId && loadMCPPanel(),
       'channels' === tabId && loadChannelsPanel(),
-      'app' === tabId && loadAppSettings());
+      ('security' === tabId || 'app' === tabId) && loadAppSettings());
   }
   function focusActiveTab() {
     'providers' !== ss.activeTab
@@ -1385,7 +1498,7 @@ export function initSettingsModal() {
   return {
     open: async function (tabId = ss.activeTab) {
       (switchTab(tabId), modal.open());
-      if (tabId === 'app') loadAppSettings();
+      if (tabId === 'security' || tabId === 'app') loadAppSettings();
       try {
         await (async function () {
           (setFeedback(), ss.pendingDeletes.clear(), (ss.pendingProviderConfigs = {}));
@@ -1404,7 +1517,7 @@ export function initSettingsModal() {
             renderProviders(),
             updateSaveButton());
         })();
-      } catch (err) {
+      } catch {
         setFeedback(t('settings.couldNotLoad'), 'error');
       }
       requestAnimationFrame(() => focusActiveTab());

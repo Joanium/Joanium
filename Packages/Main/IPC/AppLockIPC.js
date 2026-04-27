@@ -1,7 +1,5 @@
 import { ipcMain } from 'electron';
 import crypto from 'crypto';
-import { loadPage } from '../Core/Window.js';
-import Paths from '../Core/Paths.js';
 import * as AppLockService from '../Services/AppLockService.js';
 import { wrapHandler } from './IPCWrapper.js';
 
@@ -10,6 +8,10 @@ export const ipcMeta = { needs: [] };
 const resetTokens = new Set();
 
 export function register() {
+  ipcMain.on('app-lock-activity', () => {
+    AppLockService.markActivity();
+  });
+
   ipcMain.handle(
     'setup-app-lock',
     wrapHandler((payload = {}) => AppLockService.setupAppLock(payload)),
@@ -64,9 +66,6 @@ export function register() {
 
   ipcMain.handle(
     'unlock-app',
-    wrapHandler(async () => {
-      setTimeout(() => loadPage(Paths.INDEX_PAGE), 120);
-      return { ok: true };
-    }),
+    wrapHandler(() => AppLockService.unlockApp()),
   );
 }

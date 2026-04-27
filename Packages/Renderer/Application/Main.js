@@ -25,6 +25,36 @@ let PAGES = {},
   _settings = null,
   _about = null,
   _help = null;
+
+const APP_LOCK_ACTIVITY_EVENTS = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'];
+
+function initAppLockActivityBridge() {
+  if (!window.electronAPI?.send) return;
+
+  let lastPingAt = 0;
+  const minPingGapMs = 1000;
+  const sendActivity = (force = false) => {
+    const now = Date.now();
+    if (!force && now - lastPingAt < minPingGapMs) return;
+    lastPingAt = now;
+    window.electronAPI.send('app-lock-activity');
+  };
+
+  const activityHandler = () => sendActivity();
+  const visibilityHandler = () => {
+    if (document.visibilityState === 'visible') sendActivity(true);
+  };
+  const focusHandler = () => sendActivity(true);
+
+  APP_LOCK_ACTIVITY_EVENTS.forEach((eventName) => {
+    window.addEventListener(eventName, activityHandler, { passive: true });
+  });
+  document.addEventListener('visibilitychange', visibilityHandler);
+  window.addEventListener('focus', focusHandler);
+
+  sendActivity(true);
+}
+
 export async function navigate(page, options = {}) {
   const { startFreshChat: startFreshChat = !1, pendingChatId: pendingChatId = null } = options;
   if (!PAGES[page]) return void console.warn('[App] Unknown page:', page);
@@ -118,6 +148,7 @@ async function leaveProject() {
     (_settings = initSettingsModal()),
     (_about = initAboutModal()),
     (_help = initHelpModal()),
+    initAppLockActivityBridge(),
     initChannelGateway(),
     initScheduledAgentGateway(),
     (_sidebar = initSidebar({

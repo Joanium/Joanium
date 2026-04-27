@@ -2,8 +2,10 @@ import { app, safeStorage } from 'electron';
 import crypto from 'crypto';
 import fs from 'fs';
 import os from 'os';
+import { loadPage } from '../Core/Window.js';
 import Paths from '../Core/Paths.js';
 import { loadJson, persistJson } from '../Core/FileSystem.js';
+import * as AppSettingsService from './AppSettingsService.js';
 import { readUser } from './UserService.js';
 
 export const MIN_PASSWORD_LENGTH = 6;
@@ -24,8 +26,33 @@ const ENVELOPE_MODE_LOCAL = 'local-aes-256-gcm';
 const INLINE_STATE_KEY = 'app_lock_state';
 const SOURCE_PRIORITY = { primary: 0, backup: 1, inline: 2 };
 
+let sessionLocked = true;
+let runtimeLockEnabled = null;
+let runtimeIdleTimeoutMinutes = null;
+let lastActivityAt = 0;
+let idleLockTimer = null;
+
 function nowIso() {
   return new Date().toISOString();
+}
+
+function clearIdleLockTimer() {
+  if (!idleLockTimer) return;
+  clearTimeout(idleLockTimer);
+  idleLockTimer = null;
+}
+
+function readRuntimeIdleTimeoutMinutes() {
+  runtimeIdleTimeoutMinutes = AppSettingsService.readAppSettings().app_lock_idle_minutes;
+  return runtimeIdleTimeoutMinutes;
+}
+
+function getRuntimeIdleTimeoutMs() {
+  const minutes =
+    Number.isFinite(runtimeIdleTimeoutMinutes) && runtimeIdleTimeoutMinutes > 0
+      ? runtimeIdleTimeoutMinutes
+      : readRuntimeIdleTimeoutMinutes();
+  return minutes * 60 * 1000;
 }
 
 function randomSalt() {
@@ -340,7 +367,80 @@ function invalidConfigurationMessage() {
 
 export function isAppLockEnabled() {
   const state = resolveLockState();
-  return state.enabled || state.hasArtifacts;
+  runtimeLockEnabled = state.enabled || state.hasArtifacts;
+  return runtimeLockEnabled;
+}
+
+function isRuntimeLockEnabled() {
+  return typeof runtimeLockEnabled === 'boolean' ? runtimeLockEnabled : isAppLockEnabled();
+}
+
+function scheduleIdleLock() {
+  clearIdleLockTimer();
+
+  if (sessionLocked || !isRuntimeLockEnabled()) return;
+
+  const timeoutMs = getRuntimeIdleTimeoutMs();
+  if (!timeoutMs || !lastActivityAt) return;
+
+  const dueIn = Math.max(timeoutMs - (Date.now() - lastActivityAt), 0);
+  idleLockTimer = setTimeout(() => {
+    idleLockTimer = null;
+
+    if (
+      !sessionLocked &&
+      isRuntimeLockEnabled() &&
+      Date.now() - lastActivityAt >= getRuntimeIdleTimeoutMs()
+    ) {
+      lockApp();
+      return;
+    }
+
+    scheduleIdleLock();
+  }, dueIn);
+  idleLockTimer.unref?.();
+}
+
+export function refreshIdleLockTimer({ bumpActivity = false } = {}) {
+  runtimeIdleTimeoutMinutes = AppSettingsService.readAppSettings().app_lock_idle_minutes;
+
+  if (!isRuntimeLockEnabled()) {
+    clearIdleLockTimer();
+    sessionLocked = false;
+    return;
+  }
+
+  if (sessionLocked) {
+    clearIdleLockTimer();
+    return;
+  }
+
+  if (bumpActivity || !lastActivityAt) lastActivityAt = Date.now();
+  scheduleIdleLock();
+}
+
+export function markActivity() {
+  if (sessionLocked || !isRuntimeLockEnabled()) return;
+  lastActivityAt = Date.now();
+  scheduleIdleLock();
+}
+
+export function lockApp() {
+  if (!isRuntimeLockEnabled()) return { ok: false, error: 'App lock is not enabled.' };
+  if (sessionLocked) return { ok: true };
+
+  sessionLocked = true;
+  clearIdleLockTimer();
+  loadPage(Paths.LOCK_PAGE);
+  return { ok: true };
+}
+
+export function unlockApp() {
+  sessionLocked = false;
+  lastActivityAt = Date.now();
+  scheduleIdleLock();
+  setTimeout(() => loadPage(Paths.INDEX_PAGE), 120);
+  return { ok: true };
 }
 
 export function setupAppLock({ password, question, answer } = {}) {
@@ -384,6 +484,10 @@ export function setupAppLock({ password, question, answer } = {}) {
     answerSalt,
   });
 
+  runtimeLockEnabled = true;
+  sessionLocked = false;
+  lastActivityAt = Date.now();
+  refreshIdleLockTimer();
   return { ok: true };
 }
 
@@ -460,5 +564,9 @@ export function disableAppLock(password) {
   deleteFile(Paths.APP_LOCK_FILE);
   deleteFile(Paths.APP_LOCK_BACKUP_FILE);
   clearInlineEnvelope();
+  runtimeLockEnabled = false;
+  sessionLocked = false;
+  lastActivityAt = 0;
+  clearIdleLockTimer();
   return { ok: true };
 }

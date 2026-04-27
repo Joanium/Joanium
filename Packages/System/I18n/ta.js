@@ -98,6 +98,7 @@ export default {
     channelsTab: 'சேனல்கள்',
     mcpTab: 'MCP சேவையகங்கள்',
     shortcutsTab: 'குறுக்குவழிகள்',
+    securityTab: 'பாதுகாப்பு',
     appTab: 'பயன்பாடு',
     userPanelTitle: 'பயனர்',
     userPanelDesc:
@@ -121,6 +122,9 @@ export default {
     channelsPanelTitle: 'சேனல்கள்',
     channelsPanelDesc:
       'WhatsApp மற்றும் Telegram-ஐ இணைக்கவும். யாராவது செய்தி அனுப்பும்போது AI உங்கள் சார்பாக தானாகவே பதில் அனுப்பும்.',
+    securityPanelTitle: 'பாதுகாப்பு',
+    securityPanelDesc:
+      'Joanium அணுகலை பாதுகாத்து, பயன்பாடு எப்போது தானாக பூட்டப்பட வேண்டும் என்பதை கட்டுப்படுத்துங்கள்.',
     appPanelTitle: 'பயன்பாடு',
     appPanelDesc: 'Joanium-க்கான கணினி-நிலை நடத்தை.',
     shortcutsPanelTitle: 'குறுக்குவழிகள்',
@@ -134,6 +138,9 @@ export default {
     keepAwakeHint: 'Joanium இயங்கும்போது கணினி தூங்காமல் தடு.',
     appLock: 'பயன்பாடு பூட்டு',
     appLockHint: 'Joanium திறக்கும் ஒவ்வொரு முறையும் கடவுச்சொல் தேவை.',
+    autoLockAfterInactivity: 'செயலற்ற நிலையில் தானியங்கி பூட்டு',
+    autoLockAfterInactivityHint:
+      'தேர்ந்தெடுக்கப்பட்ட நேரம் வரை பயன்பாட்டில் செயல்பாடு இல்லையெனில் தானாக பூட்டு திரைக்குத் திரும்பும்.',
     appLanguage: 'பயன்பாட்டு மொழி',
     appLanguageHint:
       'பயன்பாடு முழுவதும் மற்றும் AI உங்களுக்கு பதில் அளிக்கும்போது பயன்படுத்தும் மொழி.',

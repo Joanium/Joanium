@@ -90,6 +90,7 @@ export default {
     channelsTab: 'ערוצים',
     mcpTab: 'שרתי MCP',
     shortcutsTab: 'קיצורי דרך',
+    securityTab: 'אבטחה',
     appTab: 'אפליקציה',
     userPanelTitle: 'משתמש',
     userPanelDesc:
@@ -111,6 +112,8 @@ export default {
       'חבר שרתי Model Context Protocol כאן. כלי MCP לשליטה בדפדפן מופיעים אוטומטית בשיחה ברגע שמחובר שרת.',
     channelsPanelTitle: 'ערוצים',
     channelsPanelDesc: 'חבר WhatsApp וטלגרם. כאשר מישהו שולח הודעה, ה-AI משיב אוטומטית בשמך.',
+    securityPanelTitle: 'אבטחה',
+    securityPanelDesc: 'הגן על הגישה ל-Joanium וקבע מתי האפליקציה תנעל את עצמה.',
     appPanelTitle: 'אפליקציה',
     appPanelDesc: 'הגדרות ברמת המערכת עבור Joanium.',
     shortcutsPanelTitle: 'קיצורי דרך',
@@ -124,6 +127,9 @@ export default {
     keepAwakeHint: 'מנע מהמערכת להיכנס למצב שינה בזמן שJoanium פועל.',
     appLock: 'נעילת אפליקציה',
     appLockHint: 'דרוש סיסמה בכל פעם שJoanium נפתח.',
+    autoLockAfterInactivity: 'נעילה אוטומטית אחרי חוסר פעילות',
+    autoLockAfterInactivityHint:
+      'חזרה אוטומטית למסך הנעילה אחרי שלא הייתה פעילות באפליקציה במשך הזמן שנבחר.',
     appLanguage: 'שפת האפליקציה',
     appLanguageHint: 'השפה המשמשת בכל האפליקציה וע"י ה-AI בתשובותיו.',
     dangerZone: 'אזור סכנה',

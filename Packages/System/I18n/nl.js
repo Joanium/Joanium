@@ -97,6 +97,7 @@ export default {
     channelsTab: 'Kanalen',
     mcpTab: 'MCP-servers',
     shortcutsTab: 'Snelkoppelingen',
+    securityTab: 'Beveiliging',
     appTab: 'App',
     userPanelTitle: 'Gebruiker',
     userPanelDesc:
@@ -120,6 +121,9 @@ export default {
     channelsPanelTitle: 'Kanalen',
     channelsPanelDesc:
       'Verbind WhatsApp en Telegram. Wanneer iemand een bericht stuurt, antwoordt de AI automatisch namens jou.',
+    securityPanelTitle: 'Beveiliging',
+    securityPanelDesc:
+      'Bescherm de toegang tot Joanium en bepaal wanneer de app zichzelf vergrendelt.',
     appPanelTitle: 'App',
     appPanelDesc: 'Systeemgedrag voor Joanium.',
     shortcutsPanelTitle: 'Snelkoppelingen',
@@ -133,6 +137,9 @@ export default {
     keepAwakeHint: 'Voorkom dat het systeem in slaapstand gaat terwijl Joanium actief is.',
     appLock: 'App-vergrendeling',
     appLockHint: 'Vereist een wachtwoord elke keer dat Joanium wordt geopend.',
+    autoLockAfterInactivity: 'Automatisch vergrendelen na inactiviteit',
+    autoLockAfterInactivityHint:
+      'Ga automatisch terug naar het vergrendelscherm na de gekozen tijd zonder activiteit in de app.',
     appLanguage: 'App-taal',
     appLanguageHint: 'Taal die in de hele app wordt gebruikt en door de AI bij het antwoorden.',
     dangerZone: 'Gevarenzone',

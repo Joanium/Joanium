@@ -99,6 +99,7 @@ export default {
     channelsTab: 'Κανάλια',
     mcpTab: 'Διακομιστές MCP',
     shortcutsTab: 'Συντομεύσεις',
+    securityTab: 'Ασφάλεια',
     appTab: 'Εφαρμογή',
     userPanelTitle: 'Χρήστης',
     userPanelDesc:
@@ -122,6 +123,9 @@ export default {
     channelsPanelTitle: 'Κανάλια',
     channelsPanelDesc:
       'Σύνδεσε WhatsApp και Telegram. Όταν κάποιος στέλνει μήνυμα, το AI απαντά αυτόματα εκ μέρους σου.',
+    securityPanelTitle: 'Ασφάλεια',
+    securityPanelDesc:
+      'Προστατεύστε την πρόσβαση στο Joanium και ορίστε πότε η εφαρμογή θα κλειδώνει μόνη της.',
     appPanelTitle: 'Εφαρμογή',
     appPanelDesc: 'Ρυθμίσεις συστήματος για το Joanium.',
     shortcutsPanelTitle: 'Συντομεύσεις',
@@ -135,6 +139,9 @@ export default {
     keepAwakeHint: 'Αποτροπή της αναστολής λειτουργίας του συστήματος ενώ το Joanium εκτελείται.',
     appLock: 'Κλείδωμα εφαρμογής',
     appLockHint: 'Απαίτηση κωδικού κάθε φορά που ανοίγει το Joanium.',
+    autoLockAfterInactivity: 'Αυτόματο κλείδωμα μετά από αδράνεια',
+    autoLockAfterInactivityHint:
+      'Επιστροφή αυτόματα στην οθόνη κλειδώματος μετά από την επιλεγμένη διάρκεια χωρίς δραστηριότητα στην εφαρμογή.',
     appLanguage: 'Γλώσσα εφαρμογής',
     appLanguageHint:
       'Γλώσσα που χρησιμοποιείται σε όλη την εφαρμογή και από το AI κατά την απάντηση.',

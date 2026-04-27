@@ -99,6 +99,7 @@ export default {
     channelsTab: 'Canaux',
     mcpTab: 'Serveurs MCP',
     shortcutsTab: 'Raccourcis',
+    securityTab: 'Sécurité',
     appTab: 'Application',
     userPanelTitle: 'Utilisateur',
     userPanelDesc:
@@ -122,6 +123,9 @@ export default {
     channelsPanelTitle: 'Canaux',
     channelsPanelDesc:
       "Connectez WhatsApp et Telegram. Lorsque quelqu'un envoie un message, l'IA répond automatiquement en votre nom.",
+    securityPanelTitle: 'Sécurité',
+    securityPanelDesc:
+      "Protégez l'accès à Joanium et choisissez quand l'application se verrouille d'elle-même.",
     appPanelTitle: 'Application',
     appPanelDesc: 'Comportement système de Joanium.',
     shortcutsPanelTitle: 'Raccourcis',
@@ -136,6 +140,9 @@ export default {
       "Empêcher le système de se mettre en veille pendant que Joanium est en cours d'exécution.",
     appLock: "Verrouillage de l'application",
     appLockHint: 'Exiger un mot de passe à chaque ouverture de Joanium.',
+    autoLockAfterInactivity: 'Verrouillage automatique après inactivité',
+    autoLockAfterInactivityHint:
+      "Revenir automatiquement à l'écran de verrouillage après la durée d'inactivité choisie dans l'application.",
     appLanguage: "Langue de l'application",
     appLanguageHint: "Langue utilisée dans toute l'application et par l'IA lors de ses réponses.",
     dangerZone: 'Zone dangereuse',

@@ -2,14 +2,22 @@ import { readUser, writeUser } from './UserService.js';
 import * as PowerService from './PowerService.js';
 import { LANGUAGES_BY_CODE } from '../../System/Languages.js';
 
+export const APP_LOCK_IDLE_TIMEOUT_OPTIONS = Object.freeze([1, 5, 15, 30, 60, 120, 240]);
+
 const DEFAULTS = {
   run_on_startup: false,
   system_tray: false,
   keep_awake: false,
+  app_lock_idle_minutes: 15,
   app_language: 'en',
   completion_sound: true,
   animations: true,
 };
+
+function normalizeAppLockIdleMinutes(value) {
+  const minutes = Number(value);
+  return APP_LOCK_IDLE_TIMEOUT_OPTIONS.includes(minutes) ? minutes : DEFAULTS.app_lock_idle_minutes;
+}
 
 export function getSupportedLanguages() {
   return LANGUAGES_BY_CODE;
@@ -32,6 +40,7 @@ export function readAppSettings() {
     system_tray: Boolean(stored.system_tray ?? DEFAULTS.system_tray),
     keep_awake: Boolean(stored.keep_awake ?? DEFAULTS.keep_awake),
     app_lock: Boolean(stored.app_lock ?? false),
+    app_lock_idle_minutes: normalizeAppLockIdleMinutes(stored.app_lock_idle_minutes),
     app_language,
     completion_sound: stored.completion_sound !== false, // default true
     animations: stored.animations !== false, // default true
@@ -39,8 +48,15 @@ export function readAppSettings() {
 }
 
 export function writeAppSettings(patch = {}) {
+  const normalizedPatch = { ...patch };
+  if ('app_lock_idle_minutes' in normalizedPatch) {
+    normalizedPatch.app_lock_idle_minutes = normalizeAppLockIdleMinutes(
+      normalizedPatch.app_lock_idle_minutes,
+    );
+  }
+
   return writeUser({
-    app_settings: { ...DEFAULTS, ...readStoredAppSettings(), ...patch },
+    app_settings: { ...DEFAULTS, ...readStoredAppSettings(), ...normalizedPatch },
   });
 }
 

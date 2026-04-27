@@ -96,6 +96,7 @@ export default {
     channelsTab: 'Kanallar',
     mcpTab: 'MCP Sunucuları',
     shortcutsTab: 'Kısayollar',
+    securityTab: 'Güvenlik',
     appTab: 'Uygulama',
     userPanelTitle: 'Kullanıcı',
     userPanelDesc:
@@ -118,6 +119,9 @@ export default {
     channelsPanelTitle: 'Kanallar',
     channelsPanelDesc:
       "WhatsApp ve Telegram'ı bağlayın. Biri mesaj gönderdiğinde, AI adınıza otomatik olarak yanıt verir.",
+    securityPanelTitle: 'Güvenlik',
+    securityPanelDesc:
+      'Joanium erişimini koruyun ve uygulamanın kendini ne zaman kilitleyeceğini belirleyin.',
     appPanelTitle: 'Uygulama',
     appPanelDesc: 'Joanium için sistem düzeyinde davranış.',
     shortcutsPanelTitle: 'Kısayollar',
@@ -131,6 +135,9 @@ export default {
     keepAwakeHint: 'Joanium çalışırken sistemin uyku moduna geçmesini önleyin.',
     appLock: 'Uygulama Kilidi',
     appLockHint: 'Joanium her açıldığında şifre isteyin.',
+    autoLockAfterInactivity: 'Hareketsizlikten sonra otomatik kilitleme',
+    autoLockAfterInactivityHint:
+      'Uygulamada seçilen süre boyunca etkinlik olmazsa otomatik olarak kilit ekranına döner.',
     appLanguage: 'Uygulama Dili',
     appLanguageHint: "Uygulama genelinde ve AI'nın size yanıt verirken kullandığı dil.",
     dangerZone: 'Tehlike Bölgesi',
