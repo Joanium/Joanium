@@ -53,7 +53,7 @@
 @import '../../../Shared/Styles/PageTaglineBadge.css';
 
 /* 19. Search bar (shared) */
-@import '../../../Shared/Styles/SharedSearchBarSkills&Agents.css';
+@import '../../../Shared/Styles/SharedSearchBarSkillsAndAgents.css';
 
 /* 20. Core Marketplace UI */
 @import './Marketplace.css';

@@ -56,7 +56,7 @@
 @import '../../../Shared/Styles/SharedEmptyState.css';
 
 /* 20. Shared search bar */
-@import '../../../Shared/Styles/SharedSearchBarSkills&Agents.css';
+@import '../../../Shared/Styles/SharedSearchBarSkillsAndAgents.css';
 
 /* 21. Free connectors */
 @import '../../../Shared/Styles/FreeConnectors.css';

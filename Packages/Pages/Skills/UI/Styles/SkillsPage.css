@@ -59,7 +59,7 @@
 @import './Skills.css';
 
 /* 21. Search bar (shared) */
-@import '../../../Shared/Styles/SharedSearchBarSkills&Agents.css';
+@import '../../../Shared/Styles/SharedSearchBarSkillsAndAgents.css';
 
 /* 22. Free connectors (reuse from Chat but scoped) */
 @import '../../../Shared/Styles/FreeConnectors.css';
