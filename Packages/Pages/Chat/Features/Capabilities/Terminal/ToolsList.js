@@ -23,6 +23,7 @@ export const toolsList = [
   'run_project_checks',
   'open_folder',
   'start_local_server',
+  'read_terminal_output',
   'delete_item',
   'get_file_metadata',
   'search_in_file',

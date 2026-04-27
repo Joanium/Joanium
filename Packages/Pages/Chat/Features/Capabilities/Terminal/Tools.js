@@ -422,6 +422,19 @@ export const TERMINAL_TOOLS = [
     },
   },
   {
+    name: 'read_terminal_output',
+    description:
+      'Read the buffered stdout/stderr output of a running background process (started with start_local_server). Use this after start_local_server to verify the server started correctly, check for errors, or confirm a URL. Poll with increasing delays (5 s → 10 s → 15 s → 30 s) until you see the expected output or the process exits. Returns up to 64 KB of the most recent output.',
+    category: 'terminal',
+    parameters: {
+      pid: {
+        type: 'string',
+        required: !0,
+        description: 'The PID string returned by start_local_server.',
+      },
+    },
+  },
+  {
     name: 'delete_item',
     description: 'Permanently delete a file or directory. Use carefully.',
     category: 'terminal',

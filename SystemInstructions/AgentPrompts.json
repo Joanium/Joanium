@@ -202,7 +202,7 @@
   },
   "toolResultPostProcess": {
     "photoSummaryTemplate": "Found {count} photos on Unsplash for \"{query}\" ({total} total available). Top results: {names}. A visual gallery has already been displayed to the user in the chat.",
-    "serverListeningInstruction": "The server process has been spawned and its output is streaming in the embedded terminal. Do NOT call start_local_server again. Tell the user the server is starting and share the likely local URL based on the project config (e.g. http://localhost:3000). If the tool had failed due to a port conflict or crash, it would have returned an error instead of this success result.",
+    "serverListeningInstruction": "The server has been spawned successfully (pid is in the tool result). Use read_terminal_output with the pid to check the output. Poll with increasing waits: call it after ~5 s, then ~10 s, then ~15 s, then ~30 s until you see the server URL or a clear error. If you see the server is listening (e.g. 'localhost:3000'), report the URL to the user. If the output shows an error (e.g. EADDRINUSE), report the error. Never call start_local_server again for the same server.",
     "subAgent": {
       "completionTemplate": "Delegation complete: {total} sub-agent{plural} total, {completed} completed{errored}{aborted}.",
       "teamObjectiveTemplate": "Team objective: {goal}",

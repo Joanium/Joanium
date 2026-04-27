@@ -644,6 +644,18 @@ export const { handles: handles, execute: execute } = createExecutor({
       }
       return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above.`;
     },
+    read_terminal_output: async (params, onStage) => {
+      const { pid } = params;
+      if (!pid?.trim()) throw new Error('Missing required param: pid');
+      onStage(`🔍 Reading terminal output for process ${pid}`);
+      const result = await window.electronAPI?.invoke?.('pty-read-output', pid);
+      if (!result?.ok) throw new Error(result?.error ?? 'Could not read terminal output.');
+      const { buffer, running } = result,
+        status = running ? '▶️  Process is still running.' : '⏹️  Process has exited.';
+      return buffer?.trim()
+        ? `${status}\n\n\`\`\`\n${buffer}\n\`\`\``
+        : `${status}\n\n(No output captured yet.)`;
+    },
     get_file_metadata: async (params, onStage) => {
       const { path: filePath } = params;
       if (!filePath?.trim()) throw new Error('Missing required param: path');

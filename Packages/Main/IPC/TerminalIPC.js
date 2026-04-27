@@ -9,6 +9,8 @@ import {
 } from '../Services/DocumentExtractionService.js';
 import { openTerminalAtPath } from '../../Features/Automation/Actions/Terminal.js';
 const activePtys = new Map(),
+  // Rolling 64 KB output buffer per PTY — readable by the AI via pty-read-output
+  ptyBuffers = new Map(),
   WORKSPACE_SKIP_DIRS = new Set([
     '.git',
     'node_modules',
@@ -466,12 +468,21 @@ export function register() {
         env: { ...process.env, FORCE_COLOR: '1' },
       });
     activePtys.set(pid, child);
+    ptyBuffers.set(pid, ''); // initialise buffer for this PTY
     const safeSend = (channel, ...args) => {
       e.sender.isDestroyed() || e.sender.send(channel, ...args);
     };
     let snippet = '';
     const onStreamData = (data) => {
       const str = data.toString();
+      // Append to the rolling 64 KB per-PTY buffer so the AI can read it
+      const prev = ptyBuffers.get(pid) ?? '';
+      const combined = prev + str;
+      ptyBuffers.set(
+        pid,
+        combined.length > 65536 ? combined.slice(combined.length - 65536) : combined,
+      );
+      // Also update local snippet (used only for early-exit diagnosis)
       (snippet.length < 8e3 &&
         ((snippet += str),
         snippet.length > 8e3 && (snippet = `${snippet.slice(0, 8e3)}\n…(truncated)`)),
@@ -480,7 +491,7 @@ export function register() {
     (child.stdout.on('data', onStreamData),
       child.stderr.on('data', onStreamData),
       child.on('exit', (code) => {
-        (activePtys.delete(pid), safeSend('pty-exit', pid, code));
+        (activePtys.delete(pid), ptyBuffers.delete(pid), safeSend('pty-exit', pid, code));
       }));
     const settleRaw = null == settleMs || '' === settleMs ? 15e3 : Number(settleMs),
       settle = Math.min(Math.max(0, Number.isFinite(settleRaw) ? settleRaw : 15e3), 6e4),
@@ -543,8 +554,16 @@ export function register() {
     ipcMain.handle('pty-kill', async (_e, pid) => {
       const child = activePtys.get(pid);
       return child
-        ? (child.kill(), activePtys.delete(pid), { ok: !0 })
+        ? (child.kill(), activePtys.delete(pid), ptyBuffers.delete(pid), { ok: !0 })
         : { ok: !1, error: 'PTY not found' };
+    }),
+    ipcMain.handle('pty-read-output', async (_e, pid) => {
+      if (!pid) return { ok: !1, error: 'No PID provided.' };
+      const running = activePtys.has(pid),
+        buffer = ptyBuffers.get(pid);
+      return void 0 === buffer
+        ? { ok: !1, error: 'PTY not found — it may have exited and its buffer was cleared.' }
+        : { ok: !0, pid: pid, buffer: buffer, running: running };
     }),
     ipcMain.handle('assess-command-risk', async (_e, { command: command }) =>
       command?.trim()
