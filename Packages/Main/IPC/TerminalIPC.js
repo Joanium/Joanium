@@ -403,7 +403,7 @@ function protectedDeleteReason(resolved) {
 }
 function runCommandDetailed(command, { cwd: cwd, timeout: timeout = 3e4 } = {}) {
   const effectiveCwd = resolveDir(cwd),
-    effectiveTimeout = Math.min(Number(timeout) || 3e4, 12e4);
+    effectiveTimeout = Math.min(Number(timeout) || 3e4, 3e5);
   return new Promise((resolve) => {
     exec(
       command,

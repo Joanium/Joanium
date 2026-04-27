@@ -59,8 +59,11 @@ export async function mountTerminal(containerId, pid) {
   }
   const term = new window.Terminal({
       theme: { background: '#12141c', foreground: '#e2e8f0', cursor: '#f3e8ff' },
-      fontFamily: 'monospace',
+      fontFamily: '"Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace',
       fontSize: 13,
+      scrollback: 2000,
+      allowTransparency: !1,
+      cursorBlink: !0,
       convertEol: !0,
     }),
     fitAddon = new window.FitAddon.FitAddon();
@@ -75,7 +78,7 @@ export async function mountTerminal(containerId, pid) {
     _fitTimer = setTimeout(() => {
       _fitTimer = null;
       fitAddon.fit();
-    }, 50);
+    }, 16);
   });
   ro.observe(el);
   requestAnimationFrame(() => {

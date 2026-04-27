@@ -2,6 +2,10 @@ import { createExecutor } from '../Shared/createExecutor.js';
 import { state } from '../../../../../System/State.js';
 import { buildPatternRegex } from './PatternUtils.js';
 import { toolsList } from './ToolsList.js';
+// ── Server dedup: prevent the AI from spawning duplicate long-running processes ──
+const _activeServers = new Map(); // key = `${normalizedCmd}\0${normalizedCwd}` → pid
+const LONG_RUNNING_CMD_RE =
+  /(?:^|\s|&&|\|\||;)(?:npm\s+(?:start|run\s+(?:dev|serve|start|watch|preview))|npx\s+(?:next|vite|remix|astro)|yarn\s+(?:dev|start|serve)|pnpm\s+(?:dev|start|serve)|bun\s+(?:dev|run\s+dev)|node\s+\S+\.(?:js|mjs|ts)|python\s+(?:-m\s+(?:http\.server|flask|uvicorn|gunicorn|django)|manage\.py\s+runserver)|flask\s+run|uvicorn\s+|gunicorn\s+|cargo\s+run|go\s+run|ruby\s+\S+\.rb|rails\s+s(?:erver)?|php\s+(?:-S|artisan\s+serve))(?:\s|$)/i;
 function resolveWorkingDirectory(explicitPath) {
   return explicitPath?.trim() || state.workspacePath || '';
 }
@@ -216,10 +220,21 @@ export const { handles: handles, execute: execute } = createExecutor({
     run_shell_command: async (params, onStage) => {
       const {
         command: command,
-        timeout_seconds: timeout_seconds = 30,
+        timeout_seconds: timeout_seconds = 60,
         allow_risky: allow_risky = !1,
       } = params;
       if (!command?.trim()) throw new Error('Missing required param: command');
+      // ── Long-running command guard ──────────────────────────────────────
+      // If the command looks like a dev server / watcher / long-running
+      // process, refuse and tell the AI to use start_local_server instead.
+      // run_shell_command uses exec() with a timeout, which would KILL the
+      // process. start_local_server uses spawn() with no timeout.
+      if (LONG_RUNNING_CMD_RE.test(command))
+        throw new Error(
+          'This looks like a long-running process (dev server, watcher, or app). ' +
+            'Use start_local_server instead of run_shell_command so it keeps running. ' +
+            'run_shell_command has a timeout and will kill long-running processes.',
+        );
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
       onStage(`💻 Running: \`${command.slice(0, 80)}${command.length > 80 ? '…' : ''}\``);
       const result = await window.electronAPI?.invoke?.('run-shell-command', {
@@ -627,6 +642,23 @@ export const { handles: handles, execute: execute } = createExecutor({
       const { command: command } = params;
       if (!command?.trim()) throw new Error('Missing required param: command');
       const workingDirectory = resolveWorkingDirectory(params.working_directory);
+      // ── Server dedup: check if this command+cwd is already running ──────
+      const dedupKey = `${command.trim().toLowerCase()}\0${(workingDirectory || '').toLowerCase()}`;
+      const existingPid = _activeServers.get(dedupKey);
+      if (existingPid) {
+        try {
+          const check = await window.electronAPI?.invoke?.('pty-read-output', existingPid);
+          if (check?.ok && check.running) {
+            onStage('Server is already running — returning existing PID');
+            return (
+              `[TERMINAL:${existingPid}]\n\n` +
+              'This server is already running (same command and directory). ' +
+              'Do NOT start it again. Use read_terminal_output with this pid to check its output.'
+            );
+          }
+        } catch {}
+        _activeServers.delete(dedupKey);
+      }
       onStage(`🚀 Starting server: ${command}`);
       const invokePayload = { command: command, cwd: workingDirectory };
       null != params.settle_ms &&
@@ -642,7 +674,8 @@ export const { handles: handles, execute: execute } = createExecutor({
           new Error(parts.join('\n'))
         );
       }
-      return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above.`;
+      _activeServers.set(dedupKey, result.pid);
+      return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above. Use read_terminal_output to check on it. Do NOT call start_local_server again for this server.`;
     },
     read_terminal_output: async (params, onStage) => {
       const { pid } = params;
@@ -652,9 +685,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (!result?.ok) throw new Error(result?.error ?? 'Could not read terminal output.');
       const { buffer, running } = result,
         status = running ? '▶️  Process is still running.' : '⏹️  Process has exited.';
-      return buffer?.trim()
-        ? `${status}\n\n\`\`\`\n${buffer}\n\`\`\``
-        : `${status}\n\n(No output captured yet.)`;
+      if (buffer?.trim()) return `${status}\n\n\`\`\`\n${buffer}\n\`\`\``;
+      // No output yet — nudge the AI to keep polling instead of re-spawning
+      return running
+        ? `${status}\n\n(No output captured yet. The process is still starting up — this is completely normal for compilations, dependency installs, and dev server warm-up. Keep polling with read_terminal_output; do NOT start a new server.)`
+        : `${status}\n\n(No output was captured.)`;
     },
     get_file_metadata: async (params, onStage) => {
       const { path: filePath } = params;

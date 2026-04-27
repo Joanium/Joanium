@@ -74,7 +74,8 @@ export const TERMINAL_TOOLS = [
       timeout_seconds: {
         type: 'number',
         required: !1,
-        description: 'Max execution time in seconds (default: 30, max: 120).',
+        description:
+          'Max execution time in seconds (default: 60, max: 300). Use a higher value for slow operations like npm install, cargo build, or pip install.',
       },
       allow_risky: {
         type: 'boolean',
@@ -424,7 +425,7 @@ export const TERMINAL_TOOLS = [
   {
     name: 'read_terminal_output',
     description:
-      'Read the buffered stdout/stderr output of a running background process (started with start_local_server). Use this after start_local_server to verify the server started correctly, check for errors, or confirm a URL. Poll with increasing delays (5 s → 10 s → 15 s → 30 s) until you see the expected output or the process exits. Returns up to 64 KB of the most recent output.',
+      'Read the buffered stdout/stderr output of a running background process (started with start_local_server). Use this after start_local_server to verify the server started correctly, check for errors, or confirm a URL. Poll with increasing delays (5 s → 10 s → 15 s → 30 s → 60 s → 90 s) — up to ~3 minutes total — until you see the expected output or the process exits. Compilation steps can take several minutes; be patient. Returns up to 64 KB of the most recent output.',
     category: 'terminal',
     parameters: {
       pid: {

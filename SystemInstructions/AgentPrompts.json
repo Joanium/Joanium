@@ -202,7 +202,7 @@
   },
   "toolResultPostProcess": {
     "photoSummaryTemplate": "Found {count} photos on Unsplash for \"{query}\" ({total} total available). Top results: {names}. A visual gallery has already been displayed to the user in the chat.",
-    "serverListeningInstruction": "The server has been spawned successfully (pid is in the tool result). Use read_terminal_output with the pid to check the output. Poll with increasing waits: call it after ~5 s, then ~10 s, then ~15 s, then ~30 s until you see the server URL or a clear error. If you see the server is listening (e.g. 'localhost:3000'), report the URL to the user. If the output shows an error (e.g. EADDRINUSE), report the error. Never call start_local_server again for the same server.",
+    "serverListeningInstruction": "The server has been spawned successfully (pid is in the tool result). Use read_terminal_output with the pid to check the output. Poll with increasing waits: ~5 s, ~10 s, ~15 s, ~30 s, ~60 s, ~90 s — up to ~3 minutes total before concluding failure. Compilation steps (npm install, pip install, cargo build, JVM warm-up) can take several minutes: this is completely normal. Be patient and keep polling. If after 3 minutes there is still no URL or clear error, report the current captured output to the user without spawning a second server. If you see the server is listening (e.g. 'localhost:3000', 'ready on', 'listening at'), report the URL. If the output clearly shows a fatal error (e.g. EADDRINUSE, SyntaxError, module not found), report that error. NEVER call start_local_server again for the same server, even if polling times out.",
     "subAgent": {
       "completionTemplate": "Delegation complete: {total} sub-agent{plural} total, {completed} completed{errored}{aborted}.",
       "teamObjectiveTemplate": "Team objective: {goal}",
@@ -215,6 +215,7 @@
       "additionalFindingsTemplate": "- {count} additional delegated handoff(s) are available in the sub-agent panel.",
       "detailsVisible": "The detailed child outputs are already visible in the sub-agent panel.",
       "continueLocal": "Continue locally now. Do not wait for more delegated output, and do not call spawn_sub_agents again unless a distinct unresolved gap remains.",
+      "terminalPatienceNote": "If a background terminal process is still running and has not yet produced the expected output, use read_terminal_output to keep checking. Do not start another terminal or re-run the command — slow startup is normal for compiled languages, large installs, and dev servers.",
       "parseFailure": "Delegated sub-agent run completed, but the handoff payload could not be parsed cleanly."
     }
   }
