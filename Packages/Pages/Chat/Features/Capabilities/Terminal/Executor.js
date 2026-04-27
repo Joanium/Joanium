@@ -650,11 +650,7 @@ export const { handles: handles, execute: execute } = createExecutor({
           const check = await window.electronAPI?.invoke?.('pty-read-output', existingPid);
           if (check?.ok && check.running) {
             onStage('Server is already running — returning existing PID');
-            return (
-              `[TERMINAL:${existingPid}]\n\n` +
-              'This server is already running (same command and directory). ' +
-              'Do NOT start it again. Use read_terminal_output with this pid to check its output.'
-            );
+            return `[TERMINAL:${existingPid}]\n\n` + 'This server is already running.';
           }
         } catch {}
         _activeServers.delete(dedupKey);
@@ -675,7 +671,7 @@ export const { handles: handles, execute: execute } = createExecutor({
         );
       }
       _activeServers.set(dedupKey, result.pid);
-      return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above. Use read_terminal_output to check on it. Do NOT call start_local_server again for this server.`;
+      return `[TERMINAL:${result.pid}]\n\nBackground command is running. Output appears in the terminal above.`;
     },
     read_terminal_output: async (params, onStage) => {
       const { pid } = params;
@@ -688,7 +684,7 @@ export const { handles: handles, execute: execute } = createExecutor({
       if (buffer?.trim()) return `${status}\n\n\`\`\`\n${buffer}\n\`\`\``;
       // No output yet — nudge the AI to keep polling instead of re-spawning
       return running
-        ? `${status}\n\n(No output captured yet. The process is still starting up — this is completely normal for compilations, dependency installs, and dev server warm-up. Keep polling with read_terminal_output; do NOT start a new server.)`
+        ? `${status}\n\n(No output captured yet. The process is still starting up — this is completely normal for compilations, dependency installs, and dev server warm-up. Keep polling; do not start a new process.)`
         : `${status}\n\n(No output was captured.)`;
     },
     get_file_metadata: async (params, onStage) => {
