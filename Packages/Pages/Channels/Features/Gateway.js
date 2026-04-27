@@ -42,6 +42,58 @@ function toIso(value, fallback = Date.now()) {
   return Number.isNaN(date.getTime()) ? new Date(fallback).toISOString() : date.toISOString();
 }
 
+// Resolves the provider/model channels should use.
+// Priority:
+//   1. Workspace default (preferences.default_provider / default_model)
+//   2. Current UI selection (state.selectedProvider / state.selectedModel)
+//   3. First available configured provider+model
+// Returns { provider, model } or null if nothing is configured.
+async function resolveChannelProviderModel() {
+  // Ensure providers are populated in state — if the chat page hasn't been
+  // visited yet they may be empty.
+  if (!state.providers?.length) {
+    try {
+      const all = (await api?.invoke?.('get-models')) ?? [];
+      state.allProviders = all;
+      state.providers = all.filter((p) => p.configured);
+    } catch {
+      /* non-fatal — fall through */
+    }
+  }
+
+  // 1. Workspace default from user preferences
+  try {
+    const user = (await api?.invoke?.('get-user')) ?? null;
+    const defaultProviderId = user?.preferences?.default_provider ?? null;
+    const defaultModelId = user?.preferences?.default_model ?? null;
+
+    if (defaultProviderId && defaultModelId) {
+      const provider = (state.providers ?? []).find((p) => p.provider === defaultProviderId);
+      if (provider && provider.models?.[defaultModelId]) {
+        return { provider, model: defaultModelId };
+      }
+    }
+  } catch {
+    /* non-fatal — fall through */
+  }
+
+  // 2. Current UI selection
+  if (state.selectedProvider && state.selectedModel) {
+    return { provider: state.selectedProvider, model: state.selectedModel };
+  }
+
+  // 3. First available
+  const fallbackProvider = (state.providers ?? [])[0] ?? null;
+  const fallbackModel = fallbackProvider
+    ? (Object.keys(fallbackProvider.models ?? {})[0] ?? null)
+    : null;
+  if (fallbackProvider && fallbackModel) {
+    return { provider: fallbackProvider, model: fallbackModel };
+  }
+
+  return null;
+}
+
 async function persistChannelMessage({
   channelName,
   from,
@@ -99,7 +151,9 @@ async function _processChannelMessage(id, channelName, from, text, metadata = {}
       state.systemPrompt = (await api?.invoke?.('get-system-prompt')) ?? '';
     }
 
-    if (!state.selectedProvider || !state.selectedModel) {
+    // Resolve provider/model using workspace default, not just the current UI selection.
+    const resolved = await resolveChannelProviderModel();
+    if (!resolved) {
       const reply = 'No AI provider is configured yet. Open Settings → AI Providers to add one.';
       await persistChannelMessage({
         channelName,
@@ -114,6 +168,8 @@ async function _processChannelMessage(id, channelName, from, text, metadata = {}
       return;
     }
 
+    const { provider: channelProvider, model: channelModel } = resolved;
+
     const messages = [{ role: 'user', content: text, attachments: [] }];
 
     // No default workspace — but absolute paths in messages still work with tools
@@ -122,6 +178,10 @@ async function _processChannelMessage(id, channelName, from, text, metadata = {}
       activeProject: null,
       conversationSummary: '',
       conversationSummaryMessageCount: 0,
+      // Pin provider/model so channels always use the workspace default,
+      // regardless of what the user has selected in the chat UI.
+      selectedProvider: channelProvider,
+      selectedModel: channelModel,
     };
 
     // Step 1: Match skills (same as chat resolveExecutionPlan)
