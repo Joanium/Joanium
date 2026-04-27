@@ -33,21 +33,21 @@ export async function mountTerminal(containerId, pid) {
         dependencyPromise ||
           (dependencyPromise = (async () => {
             var href;
-            (await ((href = assetUrl('../../../node_modules/@xterm/xterm/css/xterm.css')),
-            new Promise((resolve, reject) => {
-              if (document.querySelector(`link[data-ow-href="${href}"]`)) return void resolve();
-              const link = document.createElement('link');
-              ((link.rel = 'stylesheet'),
-                (link.href = href),
-                (link.dataset.owHref = href),
-                (link.onload = resolve),
-                (link.onerror = () => reject(new Error(`Failed to load stylesheet: ${href}`))),
-                document.head.appendChild(link));
-            })),
-              await loadScript(assetUrl('../../../node_modules/@xterm/xterm/lib/xterm.js')),
-              await loadScript(
-                assetUrl('../../../node_modules/@xterm/addon-fit/lib/addon-fit.js'),
-              ));
+            href = assetUrl('../../../node_modules/@xterm/xterm/css/xterm.css');
+            await Promise.all([
+              new Promise((resolve, reject) => {
+                if (document.querySelector(`link[data-ow-href="${href}"]`)) return void resolve();
+                const link = document.createElement('link');
+                ((link.rel = 'stylesheet'),
+                  (link.href = href),
+                  (link.dataset.owHref = href),
+                  (link.onload = resolve),
+                  (link.onerror = () => reject(new Error(`Failed to load stylesheet: ${href}`))),
+                  document.head.appendChild(link));
+              }),
+              loadScript(assetUrl('../../../node_modules/@xterm/xterm/lib/xterm.js')),
+            ]);
+            await loadScript(assetUrl('../../../node_modules/@xterm/addon-fit/lib/addon-fit.js'));
           })().catch((err) => {
             throw ((dependencyPromise = null), err);
           })),
@@ -69,7 +69,14 @@ export async function mountTerminal(containerId, pid) {
   // Defer initial fit — calling it synchronously here means the DOM hasn't
   // rendered yet, so FitAddon.proposeDimensions() sees 0×0 cells and bails
   // out silently, leaving the terminal with no usable dimensions.
-  const ro = new ResizeObserver(() => fitAddon.fit());
+  let _fitTimer = null;
+  const ro = new ResizeObserver(() => {
+    if (_fitTimer !== null) clearTimeout(_fitTimer);
+    _fitTimer = setTimeout(() => {
+      _fitTimer = null;
+      fitAddon.fit();
+    }, 50);
+  });
   ro.observe(el);
   requestAnimationFrame(() => {
     fitAddon.fit();

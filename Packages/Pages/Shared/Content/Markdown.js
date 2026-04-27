@@ -31,11 +31,6 @@ function renderInline(raw) {
     (s = s.replace(/(?<![_\w])_(?![_\s])(.+?)(?<![_\s])_(?![_\w])/gs, '<em>$1</em>')),
     (s = s.replace(/~~(.+?)~~/gs, '<del>$1</del>')),
     (s = s.replace(/  \n/g, '<br>')),
-    (s = s.replace(
-      /\[TERMINAL:([a-zA-Z0-9.-]+)\]/g,
-      (_, pid) =>
-        `<div class="embedded-terminal-mount" data-pid="${pid}" style="height: 300px; width: 100%; border-radius: 8px; margin: 10px 0; overflow: hidden; padding: 4px; border: 1px solid var(--border-subtle); background: #12141c;"></div>`,
-    )),
     (s = s.replace(/\x01S(\d+)\x01/g, (_, i) => spans[+i])),
     s
   );
@@ -220,6 +215,13 @@ function parseBlocks(lines) {
           ((html += result.html), (i += result.consumed));
           continue;
         }
+      }
+      const termM = trimmed.match(/^\[TERMINAL:([a-zA-Z0-9.-]+)\]$/);
+      if (termM) {
+        flushPara();
+        html += `<div class="embedded-terminal-mount" data-pid="${termM[1]}" style="height: 300px; width: 100%; border-radius: 8px; margin: 10px 0; overflow: hidden; padding: 4px; border: 1px solid var(--border-subtle); background: #12141c;"></div>`;
+        i++;
+        continue;
       }
       (paraLines.push(line), i++);
     }
