@@ -79,6 +79,27 @@ export function initAboutModal() {
         pctEl = backdrop.querySelector('#about-update-pct'),
         labelEl = backdrop.querySelector('#about-update-label'),
         trackEl = backdrop.querySelector('#about-update-track');
+
+      function applyProgress(percent) {
+        if (!progressWrap) return;
+        const pct = Math.min(100, Math.max(0, Math.round(percent)));
+        (progressWrap.classList.add('active'),
+          progressWrap.classList.remove('done'),
+          fillEl && (fillEl.style.width = `${pct}%`),
+          pctEl && (pctEl.textContent = `${pct}%`),
+          labelEl && (labelEl.textContent = t('about.downloading')),
+          trackEl && trackEl.setAttribute('aria-valuenow', pct));
+      }
+
+      function applyDone() {
+        if (!progressWrap) return;
+        (progressWrap.classList.add('active', 'done'),
+          fillEl && (fillEl.style.width = '100%'),
+          pctEl && (pctEl.textContent = '100%'),
+          labelEl && (labelEl.textContent = t('about.updateReady')),
+          trackEl && trackEl.setAttribute('aria-valuenow', 100));
+      }
+
       ((async () => {
         try {
           const v = await window.electronAPI?.invoke('get-app-version');
@@ -93,25 +114,19 @@ export function initAboutModal() {
         authorLink?.addEventListener('click', (e) => {
           (e.preventDefault(), openExternal('https://joeljolly.vercel.app'));
         }),
-        window.electronAPI?.onUpdateDownloadProgress(({ percent: percent }) =>
-          (function (percent) {
-            if (!progressWrap) return;
-            const pct = Math.min(100, Math.max(0, Math.round(percent)));
-            (progressWrap.classList.add('active'),
-              progressWrap.classList.remove('done'),
-              fillEl && (fillEl.style.width = `${pct}%`),
-              pctEl && (pctEl.textContent = `${pct}%`),
-              labelEl && (labelEl.textContent = t('about.downloading')),
-              trackEl && trackEl.setAttribute('aria-valuenow', pct));
-          })(percent ?? 0),
-        ),
-        window.electronAPI?.onUpdateDownloaded(() => {
-          progressWrap &&
-            (progressWrap.classList.add('active', 'done'),
-            fillEl && (fillEl.style.width = '100%'),
-            labelEl && (labelEl.textContent = t('about.updateReady')),
-            trackEl && trackEl.setAttribute('aria-valuenow', 100));
-        }));
+        window.electronAPI?.onUpdateDownloadProgress(({ percent }) => applyProgress(percent ?? 0)),
+        window.electronAPI?.onUpdateDownloaded(() => applyDone()),
+        // Hydrate immediately if a download was already in progress or done
+        // before this modal was first opened (e.g. user opens About mid-download)
+        (() => {
+          const state = window.electronAPI?.getUpdateState?.();
+          if (!state) return;
+          if (state.downloaded) {
+            applyDone();
+          } else if (state.progress != null) {
+            applyProgress(state.progress.percent ?? 0);
+          }
+        })());
     },
   });
   return { open: modal.open, close: modal.close };

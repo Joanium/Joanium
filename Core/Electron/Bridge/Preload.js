@@ -5,6 +5,8 @@ const ptyDataListeners = new Set(),
   featureEventListeners = new Map(),
   updateProgressListeners = new Set(),
   updateDownloadedListeners = new Set();
+let _lastUpdateProgress = null,
+  _updateDownloaded = false;
 (ipcRenderer.on('pty-data', (_e, pid, data) => {
   for (const callback of ptyDataListeners)
     try {
@@ -41,6 +43,7 @@ const ptyDataListeners = new Set(),
         }
   }),
   ipcRenderer.on('update:download-progress', (_e, payload) => {
+    _lastUpdateProgress = payload;
     for (const callback of updateProgressListeners)
       try {
         callback(payload);
@@ -49,6 +52,7 @@ const ptyDataListeners = new Set(),
       }
   }),
   ipcRenderer.on('update:downloaded', (_e, payload) => {
+    _updateDownloaded = true;
     for (const callback of updateDownloadedListeners)
       try {
         callback(payload);
@@ -106,4 +110,5 @@ const ptyDataListeners = new Set(),
       'function' == typeof cb && updateDownloadedListeners.add(cb);
     },
     offUpdateDownloaded: (cb) => updateDownloadedListeners.delete(cb),
+    getUpdateState: () => ({ progress: _lastUpdateProgress, downloaded: _updateDownloaded }),
   }));
