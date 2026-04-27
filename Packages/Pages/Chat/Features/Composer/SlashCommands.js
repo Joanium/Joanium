@@ -185,6 +185,7 @@ let _dropdown = null;
 let _chipContainer = null;
 let _activeToolChips = []; // { id, name, iconSrc }
 let _commands = [];
+let _templateCommands = []; // user-defined prompt templates
 let _filteredCmds = [];
 let _selectedIndex = 0;
 let _visible = false;
@@ -210,6 +211,7 @@ export function initSlashCommands(textarea, inputBox, { onAction } = {}) {
   _textarea.addEventListener('input', _onInput);
   _textarea.addEventListener('keydown', _onKeydown);
   document.addEventListener('click', _onDocClick);
+  window.addEventListener('jo:templates-changed', _rebuildCommands);
 
   _rebuildCommands();
 }
@@ -218,9 +220,11 @@ export function destroySlashCommands() {
   _textarea?.removeEventListener('input', _onInput);
   _textarea?.removeEventListener('keydown', _onKeydown);
   document.removeEventListener('click', _onDocClick);
+  window.removeEventListener('jo:templates-changed', _rebuildCommands);
   _dropdown?.remove();
   _chipContainer?.remove();
   _activeToolChips = [];
+  _templateCommands = [];
   _dropdown = null;
   _chipContainer = null;
   _connectorsCached = false;
@@ -316,7 +320,32 @@ async function _rebuildCommands() {
     });
   }
 
-  _commands = [...ACTION_COMMANDS, ...NAV_COMMANDS, ...toolCommands];
+  // Load user-defined prompt templates
+  try {
+    const templates = await window.electronAPI?.invoke?.('get-templates-full');
+    if (Array.isArray(templates)) {
+      _templateCommands = templates
+        .filter((t) => t.id && t.prompt)
+        .map((t) => ({
+          id: t.id,
+          label: t.label || t.id,
+          description: t.description || 'User template',
+          prompt: t.prompt,
+          type: 'template',
+          icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                   <rect x="3" y="3" width="18" height="18" rx="2"/>
+                   <path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
+                 </svg>`,
+        }));
+    } else {
+      _templateCommands = [];
+    }
+  } catch {
+    _templateCommands = [];
+  }
+
+  _commands = [...ACTION_COMMANDS, ...NAV_COMMANDS, ...toolCommands, ..._templateCommands];
 }
 
 // ── Event handlers ──────────────────────────────────────────────────────────
@@ -433,6 +462,7 @@ function _renderItems() {
   const actions = _filteredCmds.filter((c) => c.type === 'action');
   const navs = _filteredCmds.filter((c) => c.type === 'nav');
   const tools = _filteredCmds.filter((c) => c.type === 'tool');
+  const templates = _filteredCmds.filter((c) => c.type === 'template');
 
   // Scrollable list wrapper (matches .slash-dropdown-list in CSS)
   const list = document.createElement('div');
@@ -450,6 +480,10 @@ function _renderItems() {
   }
   if (tools.length) {
     _buildSection(list, 'Tools', tools, offset);
+    offset += tools.length;
+  }
+  if (templates.length) {
+    _buildSection(list, 'Templates', templates, offset);
   }
 
   _dropdown.appendChild(list);
@@ -555,7 +589,14 @@ function _buildSection(container, title, cmds, offset) {
     // ── Badge ─────────────────────────────────────────────────────────────
     const badge = document.createElement('span');
     badge.className = `slash-item-badge slash-item-badge--${cmd.type}`;
-    badge.textContent = cmd.type === 'action' ? 'Action' : cmd.type === 'nav' ? 'Nav' : 'Tool';
+    badge.textContent =
+      cmd.type === 'action'
+        ? 'Action'
+        : cmd.type === 'nav'
+          ? 'Nav'
+          : cmd.type === 'template'
+            ? 'Template'
+            : 'Tool';
 
     item.append(iconEl, textEl, badge);
 
