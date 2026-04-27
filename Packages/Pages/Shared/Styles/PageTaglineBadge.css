@@ -16,3 +16,53 @@
   width: 12px;
   height: 12px;
 }
+
+/* ── Generic page-tagline-* header (used by Templates and newer pages) ────── */
+
+.page-tagline-header {
+  margin-bottom: 28px;
+}
+
+.page-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-secondary));
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  margin-bottom: 10px;
+}
+
+.page-tagline-badge svg {
+  width: 12px;
+  height: 12px;
+}
+
+.page-tagline-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  margin: 0 0 5px;
+}
+
+.page-tagline-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 0 8px;
+}
+
+.page-tagline-count {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}

@@ -6,12 +6,23 @@ export function getTemplatesHTML() {
 
     <!-- Page header -->
     <div class="page-tagline-header">
-      <span class="page-tagline-badge">Templates</span>
-      <h1 class="page-tagline-title" data-i18n="templates.title">Templates</h1>
-      <p class="page-tagline-desc" data-i18n="templates.description">
-        Save reusable prompts as /slash triggers. Type the trigger in chat and the prompt expands instantly.
-      </p>
-      <span class="page-tagline-count" id="templates-count">0 templates</span>
+      <div class="page-tagline-left">
+        <span class="page-tagline-badge">Templates</span>
+        <h1 class="page-tagline-title" data-i18n="templates.title">Templates</h1>
+        <p class="page-tagline-desc" data-i18n="templates.description">
+          Save reusable prompts as /slash triggers. Type the trigger in chat and the prompt expands instantly.
+        </p>
+      </div>
+      <div class="page-tagline-right">
+        <span class="page-tagline-count" id="templates-count">0 templates</span>
+        <button class="templates-add-btn" id="templates-add-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          New Template
+        </button>
+      </div>
     </div>
 
     <!-- Search bar -->
@@ -24,15 +35,6 @@ export function getTemplatesHTML() {
              class="templates-search-input" autocomplete="off" spellcheck="false" />
       <button id="templates-search-clear" class="templates-search-clear" aria-label="Clear search">×</button>
     </div>
-
-    <!-- Add button -->
-    <button class="templates-add-btn" id="templates-add-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
-      New Template
-    </button>
 
     <!-- Cards grid -->
     <div class="templates-grid" id="templates-grid" hidden></div>
