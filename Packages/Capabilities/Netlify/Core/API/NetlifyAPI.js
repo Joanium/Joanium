@@ -1,16 +1,7 @@
-const BASE = 'https://api.netlify.com/api/v1';
+import { netlifyRequest } from './Request.js';
 
-function headers(creds) {
-  return { Authorization: `Bearer ${creds.token}`, 'Content-Type': 'application/json' };
-}
-
-async function nFetch(path, creds) {
-  const res = await fetch(`${BASE}${path}`, { headers: headers(creds) });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? data.error ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+function nFetch(path, creds, options = {}) {
+  return netlifyRequest(path, creds, options);
 }
 
 // ── User ───────────────────────────────────────────────────────────────────
@@ -44,28 +35,14 @@ export async function getSite(creds, siteId) {
 }
 
 export async function updateSite(creds, siteId, body) {
-  const res = await fetch(`${BASE}/sites/${siteId}`, {
-    method: 'PATCH',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/sites/${siteId}`, creds, { method: 'PATCH', body: body });
 }
 
 export async function deleteSite(creds, siteId) {
-  const res = await fetch(`${BASE}/sites/${siteId}`, {
+  return nFetch(`/sites/${siteId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 export async function listSiteFiles(creds, siteId) {
@@ -74,43 +51,20 @@ export async function listSiteFiles(creds, siteId) {
 
 // NEW (2) — create a new site
 export async function createSite(creds, body) {
-  const res = await fetch(`${BASE}/sites`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch('/sites', creds, { method: 'POST', body: body });
 }
 
 // NEW (3) — create a site inside a specific team/account
 export async function createSiteInTeam(creds, accountId, body) {
-  const res = await fetch(`${BASE}/accounts/${accountId}/sites`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/accounts/${accountId}/sites`, creds, { method: 'POST', body: body });
 }
 
 // NEW (4) — purge the CDN cache for a site
 export async function purgeSiteCache(creds, siteId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/purge`, {
+  return nFetch(`/sites/${siteId}/purge`, creds, {
     method: 'POST',
-    headers: headers(creds),
+    successValue: { purged: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { purged: true };
 }
 
 // NEW (5) — list Netlify Functions deployed on a site
@@ -168,79 +122,33 @@ export async function listSiteDeploys(creds, siteId, limit = 10) {
 }
 
 export async function cancelDeploy(creds, deployId) {
-  const res = await fetch(`${BASE}/deploys/${deployId}/cancel`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/deploys/${deployId}/cancel`, creds, { method: 'POST' });
 }
 
 export async function restoreDeploy(creds, deployId) {
-  const res = await fetch(`${BASE}/deploys/${deployId}/restore`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/deploys/${deployId}/restore`, creds, { method: 'POST' });
 }
 
 export async function triggerSiteBuild(creds, siteId, { clearCache = false } = {}) {
-  const res = await fetch(`${BASE}/sites/${siteId}/deploys`, {
+  return nFetch(`/sites/${siteId}/deploys`, creds, {
     method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({ clear_cache: clearCache }),
+    body: { clear_cache: clearCache },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (7) — lock a deploy (keeps it as the live deploy permanently)
 export async function lockDeploy(creds, deployId) {
-  const res = await fetch(`${BASE}/deploys/${deployId}/lock`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/deploys/${deployId}/lock`, creds, { method: 'POST' });
 }
 
 // NEW (8) — unlock a previously locked deploy
 export async function unlockDeploy(creds, deployId) {
-  const res = await fetch(`${BASE}/deploys/${deployId}/unlock`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/deploys/${deployId}/unlock`, creds, { method: 'POST' });
 }
 
 // NEW (9) — retry a failed deploy
 export async function retryDeploy(creds, deployId) {
-  const res = await fetch(`${BASE}/deploys/${deployId}/retry`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/deploys/${deployId}/retry`, creds, { method: 'POST' });
 }
 
 // ── Forms & Submissions ────────────────────────────────────────────────────
@@ -254,28 +162,18 @@ export async function listFormSubmissions(creds, formId, limit = 20) {
 }
 
 export async function deleteSubmission(creds, submissionId) {
-  const res = await fetch(`${BASE}/submissions/${submissionId}`, {
+  return nFetch(`/submissions/${submissionId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // NEW (10) — delete an entire form
 export async function deleteForm(creds, siteId, formId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/forms/${formId}`, {
+  return nFetch(`/sites/${siteId}/forms/${formId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // ── Hooks (Notifications) ──────────────────────────────────────────────────
@@ -285,28 +183,14 @@ export async function listHooks(creds, siteId) {
 }
 
 export async function createHook(creds, body) {
-  const res = await fetch(`${BASE}/hooks`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch('/hooks', creds, { method: 'POST', body: body });
 }
 
 export async function deleteHook(creds, hookId) {
-  const res = await fetch(`${BASE}/hooks/${hookId}`, {
+  return nFetch(`/hooks/${hookId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // ── Build Hooks ────────────────────────────────────────────────────────────
@@ -316,28 +200,17 @@ export async function listBuildHooks(creds, siteId) {
 }
 
 export async function createBuildHook(creds, siteId, { title, branch }) {
-  const res = await fetch(`${BASE}/sites/${siteId}/build_hooks`, {
+  return nFetch(`/sites/${siteId}/build_hooks`, creds, {
     method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({ title, branch }),
+    body: { title, branch },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 export async function deleteBuildHook(creds, siteId, buildHookId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/build_hooks/${buildHookId}`, {
+  return nFetch(`/sites/${siteId}/build_hooks/${buildHookId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 export async function triggerBuildHook(_creds, buildHookId) {
@@ -356,28 +229,14 @@ export async function listEnvVars(creds, siteId) {
 }
 
 export async function updateEnvVars(creds, siteId, vars) {
-  const res = await fetch(`${BASE}/sites/${siteId}/env`, {
-    method: 'PATCH',
-    headers: headers(creds),
-    body: JSON.stringify(vars),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/sites/${siteId}/env`, creds, { method: 'PATCH', body: vars });
 }
 
 export async function deleteEnvVar(creds, siteId, key) {
-  const res = await fetch(`${BASE}/sites/${siteId}/env/${encodeURIComponent(key)}`, {
+  return nFetch(`/sites/${siteId}/env/${encodeURIComponent(key)}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // ── DNS ────────────────────────────────────────────────────────────────────
@@ -391,28 +250,14 @@ export async function listDnsRecords(creds, zoneId) {
 }
 
 export async function createDnsRecord(creds, zoneId, record) {
-  const res = await fetch(`${BASE}/dns_zones/${zoneId}/dns_records`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify(record),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/dns_zones/${zoneId}/dns_records`, creds, { method: 'POST', body: record });
 }
 
 export async function deleteDnsRecord(creds, zoneId, recordId) {
-  const res = await fetch(`${BASE}/dns_zones/${zoneId}/dns_records/${recordId}`, {
+  return nFetch(`/dns_zones/${zoneId}/dns_records/${recordId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // NEW (11) — get a single DNS zone by ID
@@ -422,46 +267,29 @@ export async function getDnsZone(creds, zoneId) {
 
 // NEW (12) — create a new DNS zone
 export async function createDnsZone(creds, { name, accountId }) {
-  const res = await fetch(`${BASE}/dns_zones`, {
+  return nFetch('/dns_zones', creds, {
     method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({ name, account_id: accountId }),
+    body: { name, account_id: accountId },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (13) — delete a DNS zone
 export async function deleteDnsZone(creds, zoneId) {
-  const res = await fetch(`${BASE}/dns_zones/${zoneId}`, {
+  return nFetch(`/dns_zones/${zoneId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // NEW (14) — transfer a DNS zone to another account
 export async function transferDnsZone(creds, zoneId, { transferAccountId, transferUserId }) {
-  const res = await fetch(`${BASE}/dns_zones/${zoneId}/transfer`, {
+  return nFetch(`/dns_zones/${zoneId}/transfer`, creds, {
     method: 'PUT',
-    headers: headers(creds),
-    body: JSON.stringify({
+    body: {
       transfer_account_id: transferAccountId,
       transfer_user_id: transferUserId,
-    }),
+    },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // ── Accounts & Members ─────────────────────────────────────────────────────
@@ -481,43 +309,23 @@ export async function getAccount(creds, accountId) {
 
 // NEW (16) — update account settings
 export async function updateAccount(creds, accountId, body) {
-  const res = await fetch(`${BASE}/accounts/${accountId}`, {
-    method: 'PUT',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/accounts/${accountId}`, creds, { method: 'PUT', body: body });
 }
 
 // NEW (17) — invite a new member to a team
 export async function inviteMember(creds, accountId, { email, role }) {
-  const res = await fetch(`${BASE}/accounts/${accountId}/members`, {
+  return nFetch(`/accounts/${accountId}/members`, creds, {
     method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({ email, role }),
+    body: { email, role },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (18) — remove a member from a team
 export async function removeMember(creds, accountId, memberId) {
-  const res = await fetch(`${BASE}/accounts/${accountId}/members/${memberId}`, {
+  return nFetch(`/accounts/${accountId}/members/${memberId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // NEW (19) — fetch the audit log for an account
@@ -532,15 +340,7 @@ export async function getSsl(creds, siteId) {
 }
 
 export async function provisionSsl(creds, siteId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/ssl`, {
-    method: 'POST',
-    headers: headers(creds),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/sites/${siteId}/ssl`, creds, { method: 'POST' });
 }
 
 // ── Snippets ───────────────────────────────────────────────────────────────
@@ -555,21 +355,15 @@ export async function createSnippet(
   siteId,
   { title, generalContent, goalContent, position },
 ) {
-  const res = await fetch(`${BASE}/sites/${siteId}/snippets`, {
+  return nFetch(`/sites/${siteId}/snippets`, creds, {
     method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({
+    body: {
       title,
       general: generalContent,
       goal: goalContent ?? null,
       position: position ?? 'head',
-    }),
+    },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (21) — get a specific snippet
@@ -579,29 +373,15 @@ export async function getSnippet(creds, siteId, snippetId) {
 
 // NEW (22) — update an existing snippet
 export async function updateSnippet(creds, siteId, snippetId, body) {
-  const res = await fetch(`${BASE}/sites/${siteId}/snippets/${snippetId}`, {
-    method: 'PUT',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/sites/${siteId}/snippets/${snippetId}`, creds, { method: 'PUT', body: body });
 }
 
 // NEW (23) — delete a snippet
 export async function deleteSnippet(creds, siteId, snippetId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/snippets/${snippetId}`, {
+  return nFetch(`/sites/${siteId}/snippets/${snippetId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // ── Deploy Keys ────────────────────────────────────────────────────────────
@@ -613,16 +393,7 @@ export async function listDeployKeys(creds) {
 
 // NEW (25) — create a new deploy key (SSH key pair for repo access)
 export async function createDeployKey(creds) {
-  const res = await fetch(`${BASE}/deploy_keys`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify({}),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch('/deploy_keys', creds, { method: 'POST', body: {} });
 }
 
 // NEW (26) — get a single deploy key by ID
@@ -632,15 +403,10 @@ export async function getDeployKey(creds, keyId) {
 
 // NEW (27) — delete a deploy key
 export async function deleteDeployKey(creds, keyId) {
-  const res = await fetch(`${BASE}/deploy_keys/${keyId}`, {
+  return nFetch(`/deploy_keys/${keyId}`, creds, {
     method: 'DELETE',
-    headers: headers(creds),
+    successValue: { deleted: true },
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return { deleted: true };
 }
 
 // ── Split Tests (A/B Testing) ──────────────────────────────────────────────
@@ -652,54 +418,27 @@ export async function listSplitTests(creds, siteId) {
 
 // NEW (29) — create a split test
 export async function createSplitTest(creds, siteId, body) {
-  const res = await fetch(`${BASE}/sites/${siteId}/split_tests`, {
-    method: 'POST',
-    headers: headers(creds),
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
+  return nFetch(`/sites/${siteId}/split_tests`, creds, { method: 'POST', body: body });
 }
 
 // NEW (30) — update (reconfigure) a split test
 export async function updateSplitTest(creds, siteId, splitTestId, body) {
-  const res = await fetch(`${BASE}/sites/${siteId}/split_tests/${splitTestId}`, {
+  return nFetch(`/sites/${siteId}/split_tests/${splitTestId}`, creds, {
     method: 'PUT',
-    headers: headers(creds),
-    body: JSON.stringify(body),
+    body: body,
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (31, bonus) — enable (publish) a split test
 export async function enableSplitTest(creds, siteId, splitTestId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/split_tests/${splitTestId}/publish`, {
+  return nFetch(`/sites/${siteId}/split_tests/${splitTestId}/publish`, creds, {
     method: 'POST',
-    headers: headers(creds),
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }
 
 // NEW (32, bonus) — disable (unpublish) a split test
 export async function disableSplitTest(creds, siteId, splitTestId) {
-  const res = await fetch(`${BASE}/sites/${siteId}/split_tests/${splitTestId}/unpublish`, {
+  return nFetch(`/sites/${siteId}/split_tests/${splitTestId}/unpublish`, creds, {
     method: 'POST',
-    headers: headers(creds),
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.message ?? `Netlify API error: ${res.status}`);
-  }
-  return res.json();
 }

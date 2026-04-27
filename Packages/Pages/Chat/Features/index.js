@@ -403,7 +403,7 @@ export async function loadChat(
       syncConversationSummaryWithMessages(restored),
       queueConversationCompaction().catch(() => {}),
       restored.forEach((m) =>
-        appendMessage(m.role, m.content, !1, !1, m.attachments, doSendFromState),
+        appendMessage(m.role, m.content, !1, !1, m.attachments, doSendFromState, m.starred),
       ),
       chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' }),
       chat.provider && chat.model)

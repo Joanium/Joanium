@@ -1,5 +1,6 @@
 import { createExecutor } from '../Shared/createExecutor.js';
 import { state } from '../../../../../System/State.js';
+import { buildPatternRegex } from './PatternUtils.js';
 import { toolsList } from './ToolsList.js';
 function resolveWorkingDirectory(explicitPath) {
   return explicitPath?.trim() || state.workspacePath || '';
@@ -682,14 +683,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔎 Searching in ${filePath} for "${pattern}"`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         fileLines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? 'g' : 'gi')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? 'g' : 'gi');
-      } catch (e) {
-        throw new Error(`Invalid regex pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? 'g' : 'gi',
+        errorPrefix: 'Invalid regex pattern',
+      });
       const matchedIndices = [];
       for (
         let i = 0;
@@ -759,14 +757,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔢 Counting occurrences of "${pattern}" in ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         fileLines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? 'g' : 'gi')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? 'g' : 'gi');
-      } catch (e) {
-        throw new Error(`Invalid regex: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? 'g' : 'gi',
+        errorPrefix: 'Invalid regex',
+      });
       let totalCount = 0;
       const hitLines = [];
       for (let i = 0; i < fileLines.length; i++) {
@@ -1459,16 +1454,13 @@ export const { handles: handles, execute: execute } = createExecutor({
       const useRegex = !0 === params.regex,
         includeText = !1 !== params.include_text;
       onStage(`🔢 Getting line numbers matching "${pattern}" in ${filePath}`);
-      const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
+      const { content: content } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-      } catch (e) {
-        throw new Error(`Invalid regex: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: 'i',
+        errorPrefix: 'Invalid regex',
+      });
       const hits = [];
       for (let i = 0; i < lines.length; i++)
         regex.test(lines[i]) && hits.push({ num: i + 1, text: lines[i] });
@@ -2722,14 +2714,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔍 Keeping only lines matching "${pattern}" in ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       const kept = lines.filter((line) => regex.test(line)),
         removed = totalLines - kept.length;
       return kept.length
@@ -2746,14 +2735,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🗑️ Removing lines matching "${pattern}" from ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       const kept = lines.filter((line) => !regex.test(line)),
         removed = totalLines - kept.length;
       return removed
@@ -2774,14 +2760,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       const { content: content } = await ipcReadFile(filePath),
         fileLines = splitLines(content),
         insertLines = splitLines(insertContent);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       const result = [];
       let insertCount = 0;
       for (const line of fileLines) {
@@ -3131,16 +3114,13 @@ export const { handles: handles, execute: execute } = createExecutor({
         matchGoesTo = (params.match_goes_to ?? 'a').toLowerCase(),
         occurrence = Math.max(1, params.occurrence ?? 1);
       onStage(`✂️ Splitting ${filePath} at "${pattern}"`);
-      const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
+      const { content: content } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       let partA,
         partB,
         found = 0,
@@ -3633,14 +3613,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔢 Finding occurrence #${n} of "${pattern}" in ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       let found = 0,
         targetLine = -1;
       const allOccurrences = [];
@@ -4073,14 +4050,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔍 Finding first "${pattern}" in ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       let matchLine = -1,
         totalMatches = 0;
       for (let i = 0; i < lines.length; i++)
@@ -4216,14 +4190,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`🔁 Replacing occurrence #${n} of "${pattern}" in ${filePath}`);
       const { content: content } = await ipcReadFile(filePath),
         flags = caseSensitive ? 'g' : 'gi';
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, flags)
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
-      } catch (e) {
-        throw new Error(`Invalid regex: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: flags,
+        errorPrefix: 'Invalid regex',
+      });
       let found = 0,
         replaced = !1;
       const updated = content.replace(
@@ -4473,14 +4444,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       const { content: content } = await ipcReadFile(filePath),
         lines = splitLines(content),
         flags = caseSensitive ? 'g' : 'gi';
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, flags)
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags);
-      } catch (e) {
-        throw new Error(`Invalid regex: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: flags,
+        errorPrefix: 'Invalid regex',
+      });
       if (deleteWholeLine) {
         let found = 0,
           targetLine = -1;
@@ -4823,14 +4791,11 @@ export const { handles: handles, execute: execute } = createExecutor({
       onStage(`✏️ Overwriting lines matching "${pattern}" in ${filePath}`);
       const { content: content, totalLines: totalLines } = await ipcReadFile(filePath),
         lines = splitLines(content);
-      let regex;
-      try {
-        regex = useRegex
-          ? new RegExp(pattern, caseSensitive ? '' : 'i')
-          : new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? '' : 'i');
-      } catch (e) {
-        throw new Error(`Invalid pattern: ${e.message}`);
-      }
+      const regex = buildPatternRegex(pattern, {
+        useRegex: useRegex,
+        flags: caseSensitive ? '' : 'i',
+        errorPrefix: 'Invalid pattern',
+      });
       const e = params.end_line ? Math.min(params.end_line, lines.length) : lines.length;
       let changed = 0;
       for (let i = s; i < e; i++) regex.test(lines[i]) && ((lines[i] = replacement), changed++);
