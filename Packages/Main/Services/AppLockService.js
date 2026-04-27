@@ -76,7 +76,16 @@ function safeCompare(a, b) {
   return left.length === right.length && crypto.timingSafeEqual(left, right);
 }
 
-function digestBuffer(buffer) {
+/**
+ * Computes a SHA-256 integrity digest of an already-encrypted ciphertext buffer.
+ * This is NOT a password-hashing function — it is used exclusively to detect
+ * accidental corruption of the stored envelope payload before decryption.
+ * All password and answer secrets are hashed with scrypt via hashSecret().
+ */
+function ciphertextIntegrityDigest(buffer) {
+  // codeql[js/insufficient-password-hash] - Not a password hash. Input is AES-256-GCM
+  // ciphertext / safeStorage output. Passwords and answers are hashed with scrypt
+  // (hashSecret). SHA-256 is appropriate here as a lightweight integrity check only.
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
 
@@ -173,7 +182,7 @@ function encryptRecord(record) {
       version: ENVELOPE_VERSION,
       mode: ENVELOPE_MODE_SAFE_STORAGE,
       payload: encrypted.toString('base64'),
-      digest: digestBuffer(encrypted),
+      digest: ciphertextIntegrityDigest(encrypted),
       lockId: record.lockId,
       updatedAt: record.updatedAt,
     };
@@ -200,7 +209,7 @@ function decryptEnvelope(envelope) {
   try {
     if (envelope.mode === ENVELOPE_MODE_SAFE_STORAGE) {
       const payload = Buffer.from(envelope.payload, 'base64');
-      if (digestBuffer(payload) !== envelope.digest) return null;
+      if (ciphertextIntegrityDigest(payload) !== envelope.digest) return null;
       return normalizeRecord(JSON.parse(safeStorage.decryptString(payload)));
     }
 
