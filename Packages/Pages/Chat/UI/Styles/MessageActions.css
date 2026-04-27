@@ -41,3 +41,12 @@
 .action-btn:active {
   transform: scale(0.97);
 }
+.star-msg-btn--active {
+  color: var(--accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .star-msg-btn--active:hover {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+}

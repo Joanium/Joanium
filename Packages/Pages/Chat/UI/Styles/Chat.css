@@ -324,6 +324,20 @@
   padding: 10px 20px;
   will-change: transform, opacity;
   animation: messageIn 0.32s var(--ease-out-ui) both;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    margin 0.3s ease,
+    border-radius 0.3s ease;
+}
+.message-row.is-starred {
+  background: var(--accent-dim);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 16px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 .message-row.user {
   display: flex;
@@ -343,6 +357,10 @@
   transition:
     background var(--transition-theme),
     border-color var(--transition-theme);
+}
+.message-row.user.is-starred .bubble {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: var(--bg-tertiary);
 }
 .agent-reply,
 .message-row.assistant .content {

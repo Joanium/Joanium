@@ -39,6 +39,7 @@ function sanitizeMessages(messages = []) {
       role: message?.role ?? 'user',
       content: String(message?.content ?? ''),
       attachments: Array.isArray(message?.attachments) ? message.attachments : [],
+      ...(message?.starred ? { starred: true } : {}),
     }))
     .filter(
       (message) =>

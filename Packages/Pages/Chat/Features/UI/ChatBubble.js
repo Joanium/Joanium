@@ -2,7 +2,15 @@ import { state } from '../../../../System/State.js';
 import { render as renderMarkdown } from '../../../Shared/Content/Markdown.js';
 import { chatMessages } from '../../../Shared/Core/DOM.js';
 import { openHtmlPreviewModal } from '../../../../Modals/HtmlPreviewModal.js';
-import { copyIcon, checkIcon, editIcon, retryIcon, assistantIcon, speakIcon } from './ChatIcons.js';
+import {
+  copyIcon,
+  checkIcon,
+  editIcon,
+  retryIcon,
+  assistantIcon,
+  speakIcon,
+  starIcon,
+} from './ChatIcons.js';
 import { toggleSpeak } from '../../Voice/VoicePlayer.js';
 import { buildTokenFooter, updateTimeline, maybeScrollToBottom } from './ChatTimeline.js';
 import {
@@ -360,7 +368,7 @@ export function buildLogItem(rawLine) {
 export function createLiveRow(doSendFromStateFn) {
   const row = document.createElement('div');
   ((row.className = 'message-row assistant'),
-    (row.innerHTML = `\n    ${assistantIcon()}\n    <div class="content-wrapper">\n      <div class="content">\n        <div class="agent-thinking-shell agent-thinking-shell--working">\n          <button type="button" class="agent-thinking-toggle" aria-expanded="false">\n            <span class="agent-thinking-summary">\n            <span class="agent-thinking-dot"></span>\n              <span class="agent-thinking-label">Thinking</span>\n            </span>\n            <span class="agent-thinking-caret" aria-hidden="true" hidden>\n              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">\n                <path d="M6 8l4 4 4-4"></path>\n              </svg>\n            </span>\n          </button>\n          <div class="agent-thinking-body" hidden>\n            <div class="agent-thinking-trace" hidden>\n              <div class="agent-thinking-trace-content">Blooming ideas...</div>\n            </div>\n            <div class="agent-log"></div>\n            <div class="agent-tool-output"></div>\n          </div>\n        </div>\n        <div class="agent-reply">\n          <div class="agent-reply-media"></div>\n          <div class="agent-reply-text"></div>\n        </div>\n      </div>\n      <div class="message-actions assistant-actions" style="display:none;">\n        <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n        <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n        <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n      </div>\n    </div>`),
+    (row.innerHTML = `\n    ${assistantIcon()}\n    <div class="content-wrapper">\n      <div class="content">\n        <div class="agent-thinking-shell agent-thinking-shell--working">\n          <button type="button" class="agent-thinking-toggle" aria-expanded="false">\n            <span class="agent-thinking-summary">\n            <span class="agent-thinking-dot"></span>\n              <span class="agent-thinking-label">Thinking</span>\n            </span>\n            <span class="agent-thinking-caret" aria-hidden="true" hidden>\n              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">\n                <path d="M6 8l4 4 4-4"></path>\n              </svg>\n            </span>\n          </button>\n          <div class="agent-thinking-body" hidden>\n            <div class="agent-thinking-trace" hidden>\n              <div class="agent-thinking-trace-content">Blooming ideas...</div>\n            </div>\n            <div class="agent-log"></div>\n            <div class="agent-tool-output"></div>\n          </div>\n        </div>\n        <div class="agent-reply">\n          <div class="agent-reply-media"></div>\n          <div class="agent-reply-text"></div>\n        </div>\n      </div>\n      <div class="message-actions assistant-actions" style="display:none;">\n        <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n        <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n        <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n        <button class="action-btn star-msg-btn" title="Star this exchange">${starIcon(false)}</button>\n      </div>\n    </div>`),
     chatMessages.appendChild(row),
     smoothScrollToBottom());
   const logEl = row.querySelector('.agent-log'),
@@ -615,6 +623,7 @@ export function createLiveRow(doSendFromStateFn) {
           (replyTextEl.innerHTML = renderMarkdown(safeMarkdown)),
           (actionsEl.style.display = 'flex'),
           attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown));
+        attachStarEvent(actionsEl.querySelector('.star-msg-btn'), row, null);
         const speakBtnF = actionsEl.querySelector('.speak-msg-btn');
         if (speakBtnF) speakBtnF.onclick = () => toggleSpeak(safeMarkdown, speakBtnF);
         _hasContent &&
@@ -651,6 +660,7 @@ export function createLiveRow(doSendFromStateFn) {
           (replyTextEl.innerHTML = renderMarkdown(safeMarkdown)),
           (actionsEl.style.display = 'flex'),
           attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), safeMarkdown));
+        attachStarEvent(actionsEl.querySelector('.star-msg-btn'), row, null);
         const speakBtnS = actionsEl.querySelector('.speak-msg-btn');
         if (speakBtnS) speakBtnS.onclick = () => toggleSpeak(safeMarkdown, speakBtnS);
         smoothScrollToBottom();
@@ -683,6 +693,7 @@ export function createLiveRow(doSendFromStateFn) {
             '<span style="color:var(--text-muted);font-size:13px;font-style:italic;">Generation stopped.</span>';
         ((actionsEl.style.display = 'flex'),
           _accumulated && attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), _accumulated));
+        attachStarEvent(actionsEl.querySelector('.star-msg-btn'), row, null);
         if (_accumulated) {
           const speakBtnA = actionsEl.querySelector('.speak-msg-btn');
           if (speakBtnA) speakBtnA.onclick = () => toggleSpeak(_accumulated, speakBtnA);
@@ -821,6 +832,48 @@ export function normalizeMessage(msg) {
     attachments: Array.isArray(msg?.attachments)
       ? msg.attachments.filter(isSupportedAttachment)
       : [],
+    ...(msg?.starred ? { starred: true } : {}),
+  };
+}
+
+// ── Star / highlight helper ────────────────────────────────────────────────
+import { saveCurrentChat } from '../Data/ChatPersistence.js';
+
+function applyStarToRows(assistantRow, isStarred) {
+  assistantRow.classList.toggle('is-starred', isStarred);
+}
+
+export function attachStarEvent(starBtn, assistantRow, msgRef) {
+  if (!starBtn) return;
+  // Resolve message ref from state at click time if not directly provided
+  starBtn.onclick = () => {
+    const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
+    const rowIdx = rows.indexOf(assistantRow);
+    // Find the corresponding state message (assistant messages only)
+    const assistantRows = rows.filter((r) => r.classList.contains('assistant'));
+    const assistantIdx = assistantRows.indexOf(assistantRow);
+    // Map to state index — count assistant messages in state
+    let stateMsg = null;
+    if (assistantIdx >= 0) {
+      let found = 0;
+      for (const m of state.messages) {
+        if (m.role === 'assistant') {
+          if (found === assistantIdx) {
+            stateMsg = m;
+            break;
+          }
+          found++;
+        }
+      }
+    }
+    const nowStarred = !assistantRow.classList.contains('is-starred');
+    if (stateMsg) stateMsg.starred = nowStarred ? true : undefined;
+
+    applyStarToRows(assistantRow, nowStarred);
+    starBtn.innerHTML = starIcon(nowStarred);
+    starBtn.classList.toggle('star-msg-btn--active', nowStarred);
+    starBtn.title = nowStarred ? 'Unstar this exchange' : 'Star this exchange';
+    saveCurrentChat().catch(() => {});
   };
 }
 function isInternalAssistantToolLeak(text) {
@@ -862,8 +915,14 @@ export function appendMessage(
   scroll = !0,
   attachments = [],
   doSendFromStateFn = () => {},
+  starred = false,
 ) {
-  const msg = normalizeMessage({ role: role, content: content, attachments: attachments });
+  const msg = normalizeMessage({
+    role: role,
+    content: content,
+    attachments: attachments,
+    ...(starred ? { starred: true } : {}),
+  });
   if (isInternalHiddenMessage(msg)) return null;
   addToState && state.messages.push(msg);
   const row = document.createElement('div');
@@ -984,7 +1043,11 @@ export function appendMessage(
           await doSendFromStateFn());
       }));
   } else {
-    row.innerHTML = `\n      ${assistantIcon()}\n      <div class="content-wrapper">\n        <div class="content"></div>\n        <div class="message-actions assistant-actions">\n          <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n          <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n          <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n        </div>\n      </div>`;
+    row.innerHTML = `\n      ${assistantIcon()}\n      <div class="content-wrapper">\n        <div class="content"></div>\n        <div class="message-actions assistant-actions">\n          <button class="action-btn copy-msg-btn" title="Copy Message">${copyIcon()}</button>\n          <button class="action-btn speak-msg-btn" title="Speak">${speakIcon()}</button>\n          <button class="action-btn retry-msg-btn" title="Retry">${retryIcon()}</button>\n          <button class="action-btn star-msg-btn${msg.starred ? ' star-msg-btn--active' : ''}" title="${msg.starred ? 'Unstar this exchange' : 'Star this exchange'}">${starIcon(!!msg.starred)}</button>\n        </div>\n      </div>`;
+    if (msg.starred) {
+      row.classList.add('is-starred');
+      // We'll highlight the preceding user row after the row is appended
+    }
     const contentEl = row.querySelector('.content');
     if (msg.attachments.length > 0) {
       const richMediaEl = document.createElement('div');
@@ -1008,6 +1071,7 @@ export function appendMessage(
     attachCopyEvent(row.querySelector('.copy-msg-btn'), msg.content);
     const speakBtnH = row.querySelector('.speak-msg-btn');
     if (speakBtnH) speakBtnH.onclick = () => toggleSpeak(msg.content, speakBtnH);
+    attachStarEvent(row.querySelector('.star-msg-btn'), row, msg);
     row.querySelector('.retry-msg-btn')?.addEventListener('click', async () => {
       if (state.isTyping) return;
       const rows = Array.from(chatMessages.querySelectorAll('.message-row')),
@@ -1019,10 +1083,8 @@ export function appendMessage(
         await doSendFromStateFn());
     });
   }
-  return (
-    chatMessages.appendChild(row),
-    scroll && smoothScrollToBottom(),
-    'user' === msg.role && setTimeout(updateTimeline, 60),
-    row
-  );
+  chatMessages.appendChild(row);
+  scroll && smoothScrollToBottom();
+  'user' === msg.role && setTimeout(updateTimeline, 60);
+  return row;
 }
