@@ -59,7 +59,7 @@
       "When the user asks you to code, debug, test, review, or deploy, use the local workspace tools and stay inside this directory unless the user says otherwise.",
       "Prefer inspect_workspace, search_workspace, extract_file_text, read_file_chunk, read_multiple_local_files, list_directory_tree, replace_lines_in_file, insert_into_file, copy_item, move_item, git_status, git_diff, run_project_checks, and apply_file_patch before falling back to raw shell commands.",
       "Use assess_shell_command before risky shell work. Only set allow_risky=true when the user explicitly requested the risky action.",
-      "Use start_local_server for long-running dev servers or watchers instead of run_shell_command. If the tool succeeds, read the embedded terminal output or run a quick check before claiming the URL works; the tool fails if the process exits during startup, for example EADDRINUSE."
+      "Use start_local_server for long-running dev servers or watchers instead of run_shell_command. Call it only once — if it succeeds, the server is running; if it fails (e.g. EADDRINUSE), the tool returns an error. Never call start_local_server more than once for the same server."
     ]
   },
   "workspaceFilePolicyWithWorkspace": [
@@ -202,7 +202,7 @@
   },
   "toolResultPostProcess": {
     "photoSummaryTemplate": "Found {count} photos on Unsplash for \"{query}\" ({total} total available). Top results: {names}. A visual gallery has already been displayed to the user in the chat.",
-    "serverListeningInstruction": "Confirm from the terminal output that the server is listening before telling the user to open a preview URL; bind failures such as EADDRINUSE can appear after compile finishes.",
+    "serverListeningInstruction": "The server process has been spawned and its output is streaming in the embedded terminal. Do NOT call start_local_server again. Tell the user the server is starting and share the likely local URL based on the project config (e.g. http://localhost:3000). If the tool had failed due to a port conflict or crash, it would have returned an error instead of this success result.",
     "subAgent": {
       "completionTemplate": "Delegation complete: {total} sub-agent{plural} total, {completed} completed{errored}{aborted}.",
       "teamObjectiveTemplate": "Team objective: {goal}",

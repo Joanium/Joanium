@@ -64,9 +64,19 @@ export async function mountTerminal(containerId, pid) {
       convertEol: !0,
     }),
     fitAddon = new window.FitAddon.FitAddon();
-  (term.loadAddon(fitAddon), term.open(el), fitAddon.fit());
+  term.loadAddon(fitAddon);
+  term.open(el);
+  // Defer initial fit — calling it synchronously here means the DOM hasn't
+  // rendered yet, so FitAddon.proposeDimensions() sees 0×0 cells and bails
+  // out silently, leaving the terminal with no usable dimensions.
   const ro = new ResizeObserver(() => fitAddon.fit());
   ro.observe(el);
+  requestAnimationFrame(() => {
+    fitAddon.fit();
+    // One extra pass in case the first frame still resolves to 0 dimensions
+    // (can happen when the container is inside a flex/grid that hasn't settled).
+    setTimeout(() => fitAddon.fit(), 150);
+  });
   const handleData = (incomingPid, data) => {
     incomingPid === pid && term.write(data);
   };
