@@ -133,7 +133,7 @@ function injectSecurityHeaders(head, doc) {
  * risk.  The taint from markup → outerHTML → srcdoc is the intended data flow.
  */
 function buildSafePreviewSrcdoc(markup) {
-  const doc = new DOMParser().parseFromString(wrapMarkup(markup), 'text/html');
+  const doc = new DOMParser().parseFromString(wrapMarkup(markup), 'text/html'); // codeql[js/xss-through-dom] - Intentional: markup is fully sanitized by sanitizeDoc() before serialization; CSP meta tag + iframe sandbox provide two further independent runtime layers.
   const htmlEl = doc.documentElement ?? doc.appendChild(doc.createElement('html'));
 
   let head = doc.head;
@@ -146,7 +146,7 @@ function buildSafePreviewSrcdoc(markup) {
   sanitizeDoc(doc);
   injectSecurityHeaders(head, doc);
 
-  return `<!doctype html>\n${htmlEl.outerHTML}`; // codeql[js/xss-through-dom] - Intentional: markup is fully sanitized by sanitizeDoc() before serialization; CSP meta tag + iframe sandbox provide two further independent runtime layers.
+  return `<!doctype html>\n${htmlEl.outerHTML}`; // codeql[js/xss-through-dom] - Intentional: outerHTML is read from a document that has been fully sanitized by sanitizeDoc(); CSP meta tag + iframe sandbox provide two further independent runtime layers.
 }
 
 let _modalApi = null;
