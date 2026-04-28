@@ -8,6 +8,9 @@ import { loadMCPPanel } from '../Pages/Shared/MCP/index.js';
 import { loadChannelsPanel } from '../Pages/Channels/Features/index.js';
 import { openConfirm } from '../System/ConfirmDialog.js';
 import { PROVIDERS, PROVIDERS_BY_ID } from '../Pages/Setup/UI/Render/Providers/SetupProviders.js';
+import { fetchWithTools } from '../Features/AI/index.js';
+import { getPromptConfigs } from '../System/Prompting/PromptConfig.js';
+
 const PROVIDER_ORDER = new Map(PROVIDERS.map((provider, index) => [provider.id, index]));
 const DEFAULT_PAGES = [
   { id: 'chat', label: 'Chat' },
@@ -27,6 +30,524 @@ const FONTS = [
   { id: 'Manrope', label: 'Manrope', hint: 'Technical & precise' },
   { id: 'Poppins', label: 'Poppins', hint: 'Playful & rounded' },
 ];
+
+// ─── Import Memory ────────────────────────────────────────────────────────────
+// Tracks whether an import-memory AI call is in flight.
+// Prevents double-firing if the user clicks Save twice.
+let _importMemoryRunning = false;
+
+// ─── Import Progress Pill ─────────────────────────────────────────────────────
+// Persistent top-right indicator (survives modal close) that shows how far
+// along the import is. Progress is simulated through staged targets because
+// there is no real per-step signal from the AI call.
+
+let _impPill = null; // the DOM element
+let _impTimer = null; // setInterval handle for the creep animation
+let _impCurrent = 0; // current displayed %
+let _impTarget = 0; // target % we are creeping toward
+
+function _impTick() {
+  if (_impCurrent < _impTarget) {
+    _impCurrent = Math.min(_impCurrent + 0.35, _impTarget);
+    const pct = Math.round(_impCurrent);
+    const bar = _impPill?.querySelector('.imp-bar');
+    const pctEl = _impPill?.querySelector('.imp-percent');
+    if (bar) bar.style.width = `${_impCurrent.toFixed(1)}%`;
+    if (pctEl) pctEl.textContent = `${pct}%`;
+  }
+}
+
+function _impSetTarget(pct, label) {
+  _impTarget = pct;
+  if (label && _impPill) {
+    const el = _impPill.querySelector('.imp-label');
+    if (el) el.textContent = label;
+  }
+}
+
+function _showImportProgress() {
+  // Tear down any leftover pill from a previous import
+  _hideImportProgress(true);
+
+  const pill = document.createElement('div');
+  pill.id = 'import-memory-progress';
+  pill.setAttribute('aria-live', 'polite');
+  pill.setAttribute('aria-label', 'Memory import progress');
+  pill.innerHTML = `
+    <svg class="imp-icon imp-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
+    </svg>
+    <div class="imp-body">
+      <span class="imp-label">Importing memory…</span>
+      <div class="imp-track"><div class="imp-bar"></div></div>
+    </div>
+    <span class="imp-percent">0%</span>
+  `;
+  document.body.appendChild(pill);
+  _impPill = pill;
+  _impCurrent = 0;
+  _impTarget = 0;
+
+  // Animate in on the next frame so the transition fires
+  requestAnimationFrame(() => pill.classList.add('is-visible'));
+
+  // Tick the bar every 40 ms (~25 fps). At 0.35%/tick that's ~8.75%/s — slow
+  // enough to feel deliberate but fast enough to reach each staged target.
+  _impTimer = setInterval(_impTick, 40);
+
+  // Staged fake progress that roughly mirrors the real work:
+  //   0 →  20 %  quickly  — "Importing memory…"   (initial handshake)
+  //  20 →  58 %  steady   — "Analysing profile…"   (AI processing)
+  //  58 →  84 %  slow     — "Updating memory files…" (applying patches)
+  //  Stays at 84 % until completeImportProgress() is called.
+  _impSetTarget(20);
+  setTimeout(() => _impSetTarget(58, 'Analysing profile…'), 1800);
+  setTimeout(() => _impSetTarget(84, 'Updating memory files…'), 5500);
+}
+
+function _completeImportProgress() {
+  if (!_impPill) return;
+  clearInterval(_impTimer);
+  _impTimer = null;
+
+  // Snap bar to 100 % — the CSS transition makes it a smooth final sprint
+  _impCurrent = 100;
+  _impTarget = 100;
+  const bar = _impPill.querySelector('.imp-bar');
+  const pctEl = _impPill.querySelector('.imp-percent');
+  if (bar) bar.style.width = '100%';
+  if (pctEl) pctEl.textContent = '100%';
+
+  // Swap spinner for a static checkmark
+  const icon = _impPill.querySelector('.imp-icon');
+  if (icon) {
+    icon.classList.remove('imp-spinner');
+    icon.classList.add('imp-check');
+    icon.innerHTML = '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+
+  const label = _impPill.querySelector('.imp-label');
+  if (label) label.textContent = 'Memory synced!';
+
+  // Linger for 2.4 s so the user can read it, then fade away
+  setTimeout(() => _hideImportProgress(), 2400);
+}
+
+function _failImportProgress() {
+  // On error just quietly remove — the modal still shows the error message
+  _hideImportProgress();
+}
+
+function _hideImportProgress(immediate = false) {
+  clearInterval(_impTimer);
+  _impTimer = null;
+  const pill = _impPill;
+  if (!pill) return;
+  _impPill = null;
+
+  if (immediate) {
+    pill.remove();
+    return;
+  }
+  pill.classList.remove('is-visible');
+  pill.classList.add('is-exiting');
+  setTimeout(() => pill.remove(), 280);
+}
+
+const IMPORT_MEMORY_PROMPT = `Give me a thorough and detailed summary of everything you know about me based on all our conversations. Be as comprehensive as possible — include every meaningful detail. Cover:
+
+- My full name, location, age, and personal background
+- My occupation, career history, and professional skills
+- My goals, aspirations, and current projects or side ventures
+- My values, beliefs, and how I approach problems or decisions
+- My family situation and relationships
+- My communication style and personal preferences
+- Any challenges, frustrations, or recurring themes I've mentioned
+- Technical knowledge, tools, or workflows I've demonstrated
+- Anything else significant you've observed about me
+
+Format this as a rich, detailed personal profile. This will be used to transfer my profile to a new AI assistant so it can understand me from day one.`;
+
+function buildMemoryCatalogBlockForImport(entries = []) {
+  if (!entries.length) return '(no existing memory files)';
+  const nonEmpty = entries.filter((e) => String(e.content ?? '').trim());
+  if (!nonEmpty.length) return '(memory files exist but are all empty)';
+  return nonEmpty
+    .map((e) => `--- ${e.filename} ---\n${String(e.content ?? '').trim()}`)
+    .join('\n\n');
+}
+
+function buildImportProcessingPrompt(importedText = '', catalogBlock = '', mp = {}) {
+  const rules = (mp.rules ?? []).map((r) => `- ${r}`).join('\n');
+  const outputFormat =
+    mp.outputFormat ??
+    'Respond ONLY with a JSON object: { "updates": [{filename, content}], "newFiles": [{filename, content}] }';
+
+  return [
+    'You are a personal memory assistant. A user has imported a profile summary from another AI assistant.',
+    'Your job is to extract all relevant personal information and update the memory files accordingly.',
+    'Merge new information with what already exists — never erase existing facts, only add or refine.',
+    '',
+    rules ? `Rules:\n${rules}` : '',
+    '',
+    outputFormat,
+    '',
+    '=== CURRENT MEMORY CATALOG ===',
+    catalogBlock,
+    '',
+    '=== IMPORTED PROFILE FROM ANOTHER AI ===',
+    importedText.trim(),
+  ]
+    .filter((line) => line !== null && line !== undefined)
+    .join('\n');
+}
+
+function extractJson(text = '') {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  return start === -1 || end === -1 || end <= start ? null : text.slice(start, end + 1);
+}
+
+function normalizeMemoryEntry(entry) {
+  if (!entry || typeof entry !== 'object') return null;
+  const filename = String(entry.filename ?? '').trim();
+  const content = String(entry.content ?? '').trim();
+  return filename && content ? { filename, content } : null;
+}
+
+function normalizeImportPayload(payload = {}) {
+  return {
+    updates: (Array.isArray(payload.updates) ? payload.updates : [])
+      .map(normalizeMemoryEntry)
+      .filter(Boolean),
+    newFiles: (Array.isArray(payload.newFiles) ? payload.newFiles : [])
+      .map(normalizeMemoryEntry)
+      .filter(Boolean),
+  };
+}
+
+async function resolveDefaultProvider() {
+  const user = await window.electronAPI?.invoke('get-user');
+  const defaultProviderId = user?.preferences?.default_provider ?? null;
+  const defaultModelId = user?.preferences?.default_model ?? null;
+
+  const allProviders = (await window.electronAPI?.invoke('get-models')) ?? [];
+  const configured = allProviders.filter((p) => p.configured);
+
+  if (defaultProviderId && defaultModelId) {
+    const found = configured.find(
+      (p) => p.provider === defaultProviderId && p.models?.[defaultModelId],
+    );
+    if (found) return { provider: found, modelId: defaultModelId };
+  }
+
+  // Fall back to state if available
+  if (state.selectedProvider && state.selectedModel) {
+    return { provider: state.selectedProvider, modelId: state.selectedModel };
+  }
+
+  // Fall back to first configured
+  if (configured.length > 0) {
+    const first = configured[0];
+    const firstModelId = Object.keys(first.models ?? {})[0] ?? null;
+    if (firstModelId) return { provider: first, modelId: firstModelId };
+  }
+
+  return { provider: null, modelId: null };
+}
+
+function showImportMemoryModal() {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'im-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'im-title');
+
+    overlay.innerHTML = `
+      <div class="im-card">
+        <div class="im-header">
+          <div class="im-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" stroke-linecap="round"/>
+              <path d="M8 12h8M12 8v8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="im-header-copy">
+            <h3 id="im-title">Import Memory</h3>
+            <p>Bring your conversation history from Claude, ChatGPT, Gemini, or any other AI — Joanium will absorb the insights into your personal memory.</p>
+          </div>
+        </div>
+
+        <div class="im-steps">
+          <div class="im-step">
+            <div class="im-step-num">1</div>
+            <div class="im-step-body">
+              <span class="im-step-label">Copy this prompt</span>
+              <span class="im-step-hint">Paste it into your other AI chatbot and let it respond.</span>
+            </div>
+          </div>
+          <div class="im-prompt-block">
+            <pre class="im-prompt-text" id="im-prompt-text">${IMPORT_MEMORY_PROMPT.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+            <button class="im-copy-btn" id="im-copy-btn" type="button" title="Copy prompt">
+              <svg class="im-copy-icon" id="im-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg class="im-check-icon" id="im-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="display:none">
+                <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span id="im-copy-label">Copy</span>
+            </button>
+          </div>
+
+          <div class="im-step">
+            <div class="im-step-num">2</div>
+            <div class="im-step-body">
+              <span class="im-step-label">Paste the AI's response below</span>
+              <span class="im-step-hint">Joanium will read it and update your personal memory automatically.</span>
+            </div>
+          </div>
+          <textarea
+            id="im-response-input"
+            class="im-textarea"
+            placeholder="Paste the AI's full response here…"
+            spellcheck="false"
+            aria-label="Paste imported AI response"
+          ></textarea>
+
+          <p id="im-error" class="im-error" hidden></p>
+        </div>
+
+        <div class="im-actions">
+          <button id="im-cancel-btn" class="im-btn-cancel" type="button">Cancel</button>
+          <button id="im-save-btn" class="im-btn-save" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="17 8 12 3 7 8" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="3" x2="12" y2="15" stroke-linecap="round"/>
+            </svg>
+            Save to Memory
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Animate in
+    requestAnimationFrame(() => overlay.classList.add('im-overlay--open'));
+
+    const copyBtn = overlay.querySelector('#im-copy-btn');
+    const copyIcon = overlay.querySelector('#im-copy-icon');
+    const checkIcon = overlay.querySelector('#im-check-icon');
+    const copyLabel = overlay.querySelector('#im-copy-label');
+    const responseInput = overlay.querySelector('#im-response-input');
+    const saveBtn = overlay.querySelector('#im-save-btn');
+    const cancelBtn = overlay.querySelector('#im-cancel-btn');
+    const errEl = overlay.querySelector('#im-error');
+
+    function showError(msg) {
+      errEl.textContent = msg;
+      errEl.hidden = false;
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearError() {
+      errEl.textContent = '';
+      errEl.hidden = true;
+    }
+
+    function closeModal() {
+      overlay.classList.remove('im-overlay--open');
+      setTimeout(() => overlay.remove(), 280);
+    }
+
+    // Copy prompt button
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(IMPORT_MEMORY_PROMPT);
+        copyIcon.style.display = 'none';
+        checkIcon.style.display = '';
+        copyLabel.textContent = 'Copied!';
+        copyBtn.classList.add('im-copy-btn--success');
+        setTimeout(() => {
+          copyIcon.style.display = '';
+          checkIcon.style.display = 'none';
+          copyLabel.textContent = 'Copy';
+          copyBtn.classList.remove('im-copy-btn--success');
+        }, 2000);
+      } catch {
+        // Fallback: select the text
+        const pre = overlay.querySelector('#im-prompt-text');
+        const range = document.createRange();
+        range.selectNodeContents(pre);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copyLabel.textContent = 'Selected!';
+        setTimeout(() => (copyLabel.textContent = 'Copy'), 1500);
+      }
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      closeModal();
+      resolve(false);
+    });
+
+    // Close on backdrop click
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeModal();
+        resolve(false);
+      }
+    });
+
+    // Close on Escape
+    function onKeydown(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', onKeydown);
+        closeModal();
+        resolve(false);
+      }
+    }
+    document.addEventListener('keydown', onKeydown);
+
+    saveBtn.addEventListener('click', async () => {
+      clearError();
+
+      const importedText = responseInput.value.trim();
+      if (!importedText) {
+        showError("Please paste the AI's response before saving.");
+        responseInput.focus();
+        return;
+      }
+
+      // Guard: block if another import is already in flight
+      if (_importMemoryRunning) {
+        showError('A memory import is already in progress. Please wait for it to finish.');
+        return;
+      }
+
+      // Guard: warn if a chat memory sync is actively running
+      const syncIndicator = document.getElementById('memory-learn-indicator');
+      if (syncIndicator) {
+        showError(
+          'Joanium is currently updating memory from a chat. Please wait a moment, then try again.',
+        );
+        return;
+      }
+
+      _importMemoryRunning = true;
+      saveBtn.disabled = true;
+      cancelBtn.disabled = true;
+      saveBtn.innerHTML = `
+        <svg class="im-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>
+        </svg>
+        Processing…
+      `;
+
+      // Show the persistent top-right progress pill so the user has visual
+      // feedback even if they close all modals before the import finishes.
+      _showImportProgress();
+
+      try {
+        // Resolve provider/model from user's default config
+        const { provider, modelId } = await resolveDefaultProvider();
+        if (!provider || !modelId) {
+          throw new Error(
+            'No AI provider is configured. Please add an AI provider in Settings → AI Providers first.',
+          );
+        }
+
+        // Fetch current memory catalog
+        const catalog = (await window.electronAPI?.invoke?.('get-personal-memory-catalog')) ?? [];
+
+        // Get memory prompt rules/format from config (reuse existing system)
+        const mp = (await getPromptConfigs()).memory ?? {};
+
+        const catalogBlock = buildMemoryCatalogBlockForImport(catalog);
+        const processingPrompt = buildImportProcessingPrompt(importedText, catalogBlock, mp);
+
+        // Call AI with the user's default model
+        const result = await fetchWithTools(
+          provider,
+          modelId,
+          [{ role: 'user', content: processingPrompt, attachments: [] }],
+          mp.systemPrompt ?? '',
+          [],
+          null,
+        );
+
+        if (result.type !== 'text') {
+          throw new Error('The AI returned an unexpected response type. Please try again.');
+        }
+
+        const jsonText = extractJson(result.text ?? '');
+        if (!jsonText) {
+          throw new Error(
+            'Could not parse memory updates from the AI response. The model may not have followed the expected format.',
+          );
+        }
+
+        const updatePayload = normalizeImportPayload(JSON.parse(jsonText));
+
+        if (!updatePayload.updates.length && !updatePayload.newFiles.length) {
+          throw new Error(
+            'No memory updates were found in the imported text. Make sure you pasted the full AI response.',
+          );
+        }
+
+        const applyResult = await window.electronAPI?.invoke?.(
+          'apply-personal-memory-updates',
+          updatePayload,
+        );
+
+        if (applyResult?.ok === false) {
+          throw new Error(applyResult.error ?? 'Could not apply memory updates.');
+        }
+
+        // Success — animate button, complete the progress pill, then close
+        saveBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Memory Updated!
+        `;
+        saveBtn.classList.add('im-btn-save--success');
+
+        _completeImportProgress();
+
+        setTimeout(() => {
+          document.removeEventListener('keydown', onKeydown);
+          closeModal();
+          resolve(true);
+        }, 1200);
+      } catch (err) {
+        console.error('[ImportMemory] Failed:', err);
+        showError(err.message || 'Something went wrong. Please try again.');
+        saveBtn.disabled = false;
+        cancelBtn.disabled = false;
+        saveBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="17 8 12 3 7 8" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="3" x2="12" y2="15" stroke-linecap="round"/>
+          </svg>
+          Save to Memory
+        `;
+      } finally {
+        _importMemoryRunning = false;
+      }
+    });
+
+    // Focus textarea on open
+    setTimeout(() => responseInput.focus(), 100);
+  });
+}
+
+// ─── Provider helpers ─────────────────────────────────────────────────────────
 function buildProviderCatalog(providers) {
   const knownProviders = new Set(PROVIDERS.map((p) => p.id)),
     catalog = Array.isArray(providers) ? [...providers] : [];
@@ -86,6 +607,7 @@ function providerIsComplete(r, config) {
     )
   );
 }
+
 export function initSettingsModal() {
   const $ = (id) => document.getElementById(id),
     $$ = (selector) => Array.from(document.querySelectorAll(selector)),
@@ -143,6 +665,22 @@ export function initSettingsModal() {
                     <span class="settings-field-label" data-i18n="settings.instructionsLabel">Custom Instructions</span>
                     <textarea id="settings-custom-instructions" data-i18n-placeholder="settings.instructionsPlaceholder" placeholder="Tone, style, or behaviour instructions for the AI."></textarea>
                   </label>
+                </div>
+
+                <!-- Import Memory action row -->
+                <div class="settings-import-memory-row">
+                  <div class="settings-toggle-info">
+                    <span class="settings-field-label">Import Memory</span>
+                    <span class="settings-field-hint">Transfer what another AI knows about you — Claude, ChatGPT, Gemini, and more — directly into Joanium's memory.</span>
+                  </div>
+                  <button id="settings-import-memory-btn" class="settings-import-memory-btn" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <polyline points="17 8 12 3 7 8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <line x1="12" y1="3" x2="12" y2="15" stroke-linecap="round"/>
+                    </svg>
+                    Import Memory
+                  </button>
                 </div>
               </section>
 
@@ -434,6 +972,10 @@ export function initSettingsModal() {
               'providers' === ss.activeTab && saveProvidersTab());
           }),
           initAppSettingsTab(),
+          // Wire Import Memory button
+          $('settings-import-memory-btn')?.addEventListener('click', () => {
+            showImportMemoryModal();
+          }),
           // Re-apply translations whenever the user switches language
           window.addEventListener('jo:language-changed', () => {
             applyI18n(backdrop);

@@ -55,6 +55,102 @@
   opacity: 0;
 }
 
+/* ─── Import Memory Progress Pill ───────────────────────────────────────── */
+#import-memory-progress {
+  position: fixed;
+  top: 40px;
+  right: 5px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.18),
+    0 1px 4px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-ui);
+  min-width: 218px;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.96);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  pointer-events: none;
+}
+
+#import-memory-progress.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#import-memory-progress.is-exiting {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}
+
+.imp-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.imp-spinner {
+  animation: memorySpin 1.1s linear infinite;
+}
+
+.imp-check {
+  color: var(--accent);
+}
+
+.imp-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.imp-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.imp-track {
+  height: 3px;
+  background: var(--bg-hover);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.imp-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.35s ease;
+}
+
+.imp-percent {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 28px;
+  text-align: right;
+  line-height: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
 .memory-learn-spinner {
   width: 12px;
   height: 12px;
