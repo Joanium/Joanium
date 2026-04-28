@@ -612,6 +612,7 @@ export default {
     description:
       'Save reusable prompts as /slash triggers. Type the trigger in chat and the prompt expands instantly.',
     newTemplate: 'New Template',
+    eyebrow: 'Template',
     noTemplatesYet: 'No templates yet',
     noTemplatesDesc: 'Create your first template to save a reusable /slash prompt trigger.',
     createFirst: 'Create your first template',
@@ -632,8 +633,6 @@ export default {
     deleteBody: 'This will permanently remove the template. This cannot be undone.',
     delete: 'Delete',
     saving: 'Saving...',
-    templateCount: '{count} template',
-    templatesCount: '{count} templates',
     noMatch: 'No templates match "{query}"',
     conflictBuiltIn: 'This trigger conflicts with a built-in command.',
     conflictExists: 'A template with this trigger already exists.',
