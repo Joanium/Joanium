@@ -263,7 +263,6 @@
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  flex: 1;
 }
 
 .templates-card-edit-btn:hover {
@@ -493,7 +492,7 @@
   font-size: 12px;
   min-height: 18px;
   line-height: 1.4;
-  margin-top: -6px;
+  margin-top: 4px;
   transition: color var(--transition-fast);
 }
 

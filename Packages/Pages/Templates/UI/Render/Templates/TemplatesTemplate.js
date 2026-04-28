@@ -61,6 +61,7 @@ export function getTemplatesHTML() {
       <h2>${t('templates.noTemplatesYet')}</h2>
       <p>${t('templates.noTemplatesDesc')}</p>
       <button class="shared-empty-cta" id="templates-create-first">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px;height:14px"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
         ${t('templates.createFirst')}
       </button>
     </div>

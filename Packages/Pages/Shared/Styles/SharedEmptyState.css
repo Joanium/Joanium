@@ -83,6 +83,9 @@
   height: 26px;
 }
 .shared-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   margin-top: 8px;
   padding: 10px 24px;
   background: var(--accent);
