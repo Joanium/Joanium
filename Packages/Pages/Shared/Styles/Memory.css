@@ -28,3 +28,42 @@
   margin-top: -4px;
   line-height: 1.5;
 }
+
+#memory-learn-indicator {
+  position: fixed;
+  top: 48px;
+  left: calc(var(--sidebar-w, 52px) + 14px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  pointer-events: none;
+  transform: none;
+  opacity: 1;
+  animation: fadeIn 0.2s ease both;
+  transition: opacity 0.3s ease;
+}
+
+#memory-learn-indicator.is-exiting {
+  opacity: 0;
+}
+
+.memory-learn-spinner {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  animation: memorySpin 1.2s linear infinite;
+}
+
+@keyframes memorySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

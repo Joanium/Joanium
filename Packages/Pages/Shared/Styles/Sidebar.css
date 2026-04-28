@@ -152,3 +152,22 @@
 .sidebar-avatar:active {
   transform: scale(0.97);
 }
+
+.theme-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--accent-glow);
+  pointer-events: none;
+  animation: themeFlash 0.35s ease forwards;
+}
+
+@keyframes themeFlash {
+  0% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

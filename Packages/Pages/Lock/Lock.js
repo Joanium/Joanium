@@ -301,17 +301,3 @@ document.addEventListener('DOMContentLoaded', () => {
   spawnParticles();
   input?.focus();
 });
-
-// Add exit animation class to stylesheet dynamically
-// (keeps the CSS file clean — no need for a class that only fires once)
-const exitStyle = document.createElement('style');
-exitStyle.textContent = `
-  .lock-card--exit {
-    animation: lockCardOut 0.3s var(--ease-in-out-ui, ease-in-out) both;
-  }
-  @keyframes lockCardOut {
-    from { opacity: 1; transform: scale(1);    }
-    to   { opacity: 0; transform: scale(0.96); }
-  }
-`;
-document.head.appendChild(exitStyle);

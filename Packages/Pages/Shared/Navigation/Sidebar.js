@@ -14,8 +14,7 @@ const ICON_chevronRight =
 function applyTheme(theme, animate = !0) {
   if ((THEMES.map((t) => t.id).includes(theme) || (theme = 'dark'), animate)) {
     const flash = document.createElement('div');
-    ((flash.style.cssText =
-      'position:fixed;inset:0;z-index:9999;background:var(--accent-glow);pointer-events:none;animation:themeFlash .35s ease forwards;'),
+    ((flash.className = 'theme-flash'),
       document.body.appendChild(flash),
       flash.addEventListener('animationend', () => flash.remove()));
   }
@@ -44,12 +43,6 @@ export function initSidebar({
   onAbout: onAbout = () => {},
   onNavigate: onNavigate = () => {},
 } = {}) {
-  if (!document.getElementById('ow-sidebar-style')) {
-    const style = document.createElement('style');
-    ((style.id = 'ow-sidebar-style'),
-      (style.textContent = '@keyframes themeFlash{0%{opacity:.3}100%{opacity:0}}'),
-      document.head.appendChild(style));
-  }
   const sidebarEl = document.getElementById('sidebar'),
     themePanelEl = document.getElementById('theme-panel'),
     avatarPanelEl = document.getElementById('avatar-panel');
@@ -73,7 +66,7 @@ export function initSidebar({
       (t) =>
         `\n    <button class="theme-option" data-theme="${t.id}">\n      <span class="theme-swatch ${t.swatchClass}"></span>${t.label}\n    </button>\n  `,
     ).join('')),
-    (avatarPanelEl.innerHTML = `\n    <div class="ap-header">\n      <div class="ap-badge" id="avatar-panel-badge">JO</div>\n      <div class="ap-user-info">\n        <span class="ap-name"    id="avatar-panel-name">User</span>\n        <span class="ap-subtitle">${t('sidebar.joAccount')}</span>\n      </div>\n    </div>\n\n    <div class="ap-divider"></div>\n\n    <button id="avatar-settings-btn" class="ap-settings-btn" type="button">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.settings')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.settingsSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n\n    <button id="avatar-about-btn" class="ap-settings-btn" type="button"\n            style="margin-top:8px;">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.about')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.aboutSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n  `),
+    (avatarPanelEl.innerHTML = `\n    <div class="ap-header">\n      <div class="ap-badge" id="avatar-panel-badge">JO</div>\n      <div class="ap-user-info">\n        <span class="ap-name"    id="avatar-panel-name">User</span>\n        <span class="ap-subtitle">${t('sidebar.joAccount')}</span>\n      </div>\n    </div>\n\n    <div class="ap-divider"></div>\n\n    <button id="avatar-settings-btn" class="ap-settings-btn" type="button">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.settings')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.settingsSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n\n    <button id="avatar-about-btn" class="ap-settings-btn ap-settings-btn--about" type="button">\n      <span class="ap-settings-copy">\n        <span class="ap-settings-title">${t('sidebar.about')}</span>\n        <span class="ap-settings-subtitle">${t('sidebar.aboutSubtitle')}</span>\n      </span>\n      ${ICON_chevronRight}\n    </button>\n  `),
     applyTheme(localStorage.getItem('ow-theme') || 'dark', !1),
     sidebarEl.querySelectorAll('.sidebar-btn[data-view]').forEach((btn) => {
       btn.addEventListener('click', () => {

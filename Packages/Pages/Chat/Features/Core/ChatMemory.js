@@ -216,21 +216,11 @@ function showMemoryIndicator(label) {
   }
   const el = document.createElement('div');
   el.id = 'memory-learn-indicator';
-  el.innerHTML = `\n    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"\n         style="width:12px;height:12px;animation:spin 1.2s linear infinite;flex-shrink:0">\n      <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n    </svg>\n    <span data-memory-label>${label}</span>\n  `;
-  el.style.cssText =
-    '\n    position:fixed; top:48px; left:calc(var(--sidebar-w, 52px) + 14px); transform:none;\n    display:flex; align-items:center; gap:6px;\n    background:var(--bg-tertiary); border:1px solid var(--border-subtle);\n    border-radius:999px; padding:4px 12px;\n    font-size:11px; font-family:var(--font-ui); color:var(--text-muted);\n    z-index:50; animation:fadeIn 0.2s ease both;\n    pointer-events:none;\n  ';
-
-  if (!document.getElementById('mem-spin-style')) {
-    const style = document.createElement('style');
-    style.id = 'mem-spin-style';
-    style.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
-    document.head.appendChild(style);
-  }
+  el.innerHTML = `\n    <svg class="memory-learn-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">\n      <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n    </svg>\n    <span data-memory-label>${label}</span>\n  `;
 
   document.body.appendChild(el);
   return () => {
-    el.style.transition = 'opacity 0.3s ease';
-    el.style.opacity = '0';
+    el.classList.add('is-exiting');
     setTimeout(() => el.remove(), 300);
   };
 }

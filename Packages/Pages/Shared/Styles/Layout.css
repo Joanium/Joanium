@@ -44,3 +44,14 @@
   background: 0 0;
   animation: fadeIn 0.4s var(--ease-out-ui) 80ms both;
 }
+
+.page-transition-loading {
+  height: 100%;
+  background: var(--bg-primary, #111);
+}
+
+.page-load-error {
+  padding: 40px;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+}

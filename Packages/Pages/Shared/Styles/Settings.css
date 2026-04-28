@@ -1,3 +1,5 @@
+@import './ConfirmDialog.css';
+
 #settings-modal,
 body.modal-open {
   overflow: hidden;
@@ -2224,4 +2226,133 @@ body.modal-open {
   opacity: 1;
   transform: none;
   animation: none;
+}
+
+.al-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.al-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 28px 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.al-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.al-card .al-sub {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.al-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.al-input,
+.al-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.al-input:focus,
+.al-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.al-error {
+  margin: 0;
+  padding: 7px 10px;
+  background: rgba(224, 85, 85, 0.09);
+  border: 1px solid rgba(224, 85, 85, 0.22);
+  border-radius: var(--radius-sm);
+  color: #e05555;
+  font-size: 12px;
+}
+
+.al-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.al-btn-cancel {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.al-btn-cancel:hover {
+  background: var(--bg-hover);
+}
+
+.al-btn-confirm {
+  padding: 8px 16px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.al-btn-confirm:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.al-btn-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.al-btn-danger {
+  background: #c0392b;
+}
+
+.al-btn-danger:hover:not(:disabled) {
+  background: #a93226;
 }

@@ -97,6 +97,11 @@
   border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
 }
+
+.ap-settings-btn--about {
+  margin-top: 8px;
+}
+
 .ap-settings-copy {
   display: flex;
   flex-direction: column;

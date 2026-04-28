@@ -87,8 +87,11 @@ export async function navigate(page, options = {}) {
       });
       ((_currentCleanup = cleanup || null), (_currentPage = page), _sidebar?.setActivePage(page));
     } catch (err) {
-      (console.error('[App] Failed to load page:', page, err),
-        (outlet.innerHTML = `<div style="padding:40px;color:var(--text-muted);font-family:var(--font-ui)">\n      Failed to load page — ${err.message}\n    </div>`));
+      console.error('[App] Failed to load page:', page, err);
+      const errorEl = document.createElement('div');
+      errorEl.className = 'page-load-error';
+      errorEl.textContent = `Failed to load page - ${err.message}`;
+      outlet.replaceChildren(errorEl);
     }
   }
 }
@@ -169,22 +172,13 @@ async function leaveProject() {
     applyI18n(document.body);
   });
   const user = await _settings.loadUser().catch(() => null);
-  if (
-    (_sidebar.setUser(user?.name ?? ''),
-    window.addEventListener('jo:user-profile-updated', (e) => {
-      _sidebar.setUser(e.detail?.name ?? '');
-    }),
-    window.electronAPI?.on?.('navigate', (page) => navigate(page)),
-    (window.appNavigate = navigate),
-    (window.appHelp = _help),
-    !document.getElementById('_app-transition-style'))
-  ) {
-    const s = document.createElement('style');
-    ((s.id = '_app-transition-style'),
-      (s.textContent =
-        '\n      .page-transition-loading {\n        height: 100%;\n        background: var(--bg-primary, #111);\n      }\n    '),
-      document.head.appendChild(s));
-  }
+  _sidebar.setUser(user?.name ?? '');
+  window.addEventListener('jo:user-profile-updated', (e) => {
+    _sidebar.setUser(e.detail?.name ?? '');
+  });
+  window.electronAPI?.on?.('navigate', (page) => navigate(page));
+  window.appNavigate = navigate;
+  window.appHelp = _help;
   let defaultPage = 'chat';
   try {
     const startupUser = await window.electronAPI?.invoke('get-user');

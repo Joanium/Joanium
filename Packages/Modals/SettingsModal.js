@@ -1316,36 +1316,10 @@ export function initSettingsModal() {
     } else setFeedback(t('settings.noProviderChanges'), 'error');
   }
 
-  function injectAppLockStyles() {
-    if (document.getElementById('al-styles')) return;
-    const s = document.createElement('style');
-    s.id = 'al-styles';
-    s.textContent = `
-    .al-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
-    .al-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 28px 24px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-lg)}
-    .al-card h3{margin:0;font-size:16px;font-weight:600;color:var(--text-primary)}
-    .al-card .al-sub{margin:0;font-size:13px;color:var(--text-secondary);line-height:1.5}
-    .al-form{display:flex;flex-direction:column;gap:12px}
-    .al-input,.al-select{width:100%;padding:9px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-primary);font-family:var(--font-ui);font-size:13px;outline:none;box-sizing:border-box;transition:border-color .15s}
-    .al-input:focus,.al-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-    .al-error{margin:0;font-size:12px;color:#e05555;background:rgba(224,85,85,.09);border:1px solid rgba(224,85,85,.22);border-radius:var(--radius-sm);padding:7px 10px}
-    .al-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
-    .al-btn-cancel{padding:8px 16px;background:transparent;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-secondary);font-family:var(--font-ui);font-size:13px;cursor:pointer;transition:background .15s}
-    .al-btn-cancel:hover{background:var(--bg-hover)}
-    .al-btn-confirm{padding:8px 16px;background:var(--accent);border:none;border-radius:var(--radius-md);color:#fff;font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
-    .al-btn-confirm:hover:not(:disabled){background:var(--accent-hover)}
-    .al-btn-confirm:disabled{opacity:.6;cursor:not-allowed}
-    .al-btn-danger{background:#c0392b}
-    .al-btn-danger:hover:not(:disabled){background:#a93226}
-  `;
-    document.head.appendChild(s);
-  }
-
   const APP_LOCK_MIN_PASSWORD_LENGTH = 6;
   const APP_LOCK_MIN_QUESTION_LENGTH = 10;
 
   function showAppLockSetup() {
-    injectAppLockStyles();
     return new Promise((resolve) => {
       const overlay = document.createElement('div');
       overlay.className = 'al-overlay';
@@ -1433,7 +1407,6 @@ export function initSettingsModal() {
   }
 
   function showAppLockDisable() {
-    injectAppLockStyles();
     return new Promise((resolve) => {
       const overlay = document.createElement('div');
       overlay.className = 'al-overlay';
