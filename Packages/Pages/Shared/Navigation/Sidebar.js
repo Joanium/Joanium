@@ -59,7 +59,7 @@ export function initSidebar({
   ((sidebarEl.innerHTML = (function (activePage, navigation = {}) {
     const nav = { top: navigation.top ?? [], bottom: navigation.bottom ?? [] },
       btn = (id, icon, tip, i18nKey = '') =>
-        `<button class="sidebar-btn${id === activePage ? ' active' : ''}" data-view="${id}" data-tip="${tip}" title="${tip}"${i18nKey ? ` data-i18n-key="${i18nKey}"` : ''}>\n              ${icon}\n            </button>`,
+        `<button class="sidebar-btn${id === activePage ? ' active' : ''}" data-view="${id}" data-tip="${tip}"${i18nKey ? ` data-i18n-key="${i18nKey}"` : ''}>\n              ${icon}\n            </button>`,
       topButtons = nav.top
         .filter((item) => !SPECIAL_BUTTON_IDS.has(item.id))
         .map((item) => btn(item.id, item.icon, t(item.label), item.label))
@@ -67,7 +67,7 @@ export function initSidebar({
       bottomButtons = nav.bottom
         .map((item) => btn(item.id, item.icon, t(item.label), item.label))
         .join('\n    ');
-    return `\n    ${btn('chat', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.newChat'))}\n    ${btn('library', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke-linecap="round" stroke-linejoin="round"/>\n              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.library'))}\n    ${btn('projects', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.projects'))}\n    ${topButtons}\n\n    <div class="sidebar-spacer"></div>\n\n    ${bottomButtons}\n\n    <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"\n            data-tip="${t('sidebar.switchTheme')}" title="${t('sidebar.switchTheme')}">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/>\n          </svg>\n    </button>\n\n    <button class="sidebar-avatar" id="sidebar-avatar-btn"\n            data-tip="${t('sidebar.account')}" title="${t('sidebar.account')}">JO</button>\n  `;
+    return `\n    ${btn('chat', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.newChat'))}\n    ${btn('library', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke-linecap="round" stroke-linejoin="round"/>\n              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.library'))}\n    ${btn('projects', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/>\n            </svg>', t('sidebar.projects'))}\n    ${topButtons}\n\n    <div class="sidebar-spacer"></div>\n\n    ${bottomButtons}\n\n    <button class="sidebar-btn theme-toggle" id="theme-toggle-btn"\n            data-tip="${t('sidebar.switchTheme')}">\n      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">\n            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/>\n          </svg>\n    </button>\n\n    <button class="sidebar-avatar" id="sidebar-avatar-btn"\n            data-tip="${t('sidebar.account')}">JO</button>\n  `;
   })(activePage, navigation)),
     (themePanelEl.innerHTML = THEMES.map(
       (t) =>
@@ -140,20 +140,17 @@ export function initSidebar({
       for (const [view, key] of Object.entries(viewKeys)) {
         const btn = sidebarEl.querySelector(`[data-view="${view}"]`);
         if (btn) {
-          btn.title = t(key);
           btn.dataset.tip = t(key);
         }
       }
       // Dynamic page nav buttons — label stored as an i18n key in data-i18n-key
       sidebarEl.querySelectorAll('.sidebar-btn[data-i18n-key]').forEach((btn) => {
         const translated = t(btn.dataset.i18nKey);
-        btn.title = translated;
         btn.dataset.tip = translated;
       });
       // Theme toggle
       const themeBtn = document.getElementById('theme-toggle-btn');
       if (themeBtn) {
-        themeBtn.title = t('sidebar.switchTheme');
         themeBtn.dataset.tip = t('sidebar.switchTheme');
       }
       // Avatar button
@@ -186,7 +183,7 @@ export function initSidebar({
     const displayName = String(name ?? '').trim() || 'User',
       initials = getInitials(displayName),
       avatarBtnEl = document.getElementById('sidebar-avatar-btn');
-    avatarBtnEl && ((avatarBtnEl.textContent = initials), (avatarBtnEl.title = displayName));
+    avatarBtnEl && (avatarBtnEl.textContent = initials);
     const badge = document.getElementById('avatar-panel-badge'),
       nameEl = document.getElementById('avatar-panel-name');
     (badge && (badge.textContent = initials), nameEl && (nameEl.textContent = displayName));
