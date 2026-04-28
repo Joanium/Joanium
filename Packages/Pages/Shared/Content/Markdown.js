@@ -53,6 +53,9 @@ function splitCells(row) {
 function columnAlign(sep) {
   return sep.startsWith(':') && sep.endsWith(':') ? 'center' : sep.endsWith(':') ? 'right' : 'left';
 }
+function alignClass(align) {
+  return `md-align-${['center', 'right'].includes(align) ? align : 'left'}`;
+}
 function parseTable(lines, start) {
   if (start + 1 >= lines.length) return null;
   if (!isTableRow(lines[start]) || !isSepRow(lines[start + 1])) return null;
@@ -66,7 +69,7 @@ function parseTable(lines, start) {
   return (
     headers.forEach((h, j) => {
       const align = aligns[j] ?? 'left';
-      html += `<th style="text-align:${align}">${renderInline(h)}</th>`;
+      html += `<th class="${alignClass(align)}">${renderInline(h)}</th>`;
     }),
     (html += '</tr></thead>'),
     bodyRows.length &&
@@ -75,7 +78,7 @@ function parseTable(lines, start) {
         ((html += '<tr>'),
           headers.forEach((_, j) => {
             const align = aligns[j] ?? 'left';
-            html += `<td style="text-align:${align}">${renderInline(row[j] ?? '')}</td>`;
+            html += `<td class="${alignClass(align)}">${renderInline(row[j] ?? '')}</td>`;
           }),
           (html += '</tr>'));
       }),
@@ -219,7 +222,7 @@ function parseBlocks(lines) {
       const termM = trimmed.match(/^\[TERMINAL:([a-zA-Z0-9.-]+)\]$/);
       if (termM) {
         flushPara();
-        html += `<div class="embedded-terminal-mount" data-pid="${termM[1]}" style="height: 300px; width: 100%; border-radius: 8px; margin: 10px 0; overflow: hidden; padding: 4px; border: 1px solid var(--border-subtle); background: #12141c;"></div>`;
+        html += `<div class="embedded-terminal-mount" data-pid="${termM[1]}"></div>`;
         i++;
         continue;
       }

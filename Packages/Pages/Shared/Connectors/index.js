@@ -48,24 +48,20 @@ function renderPanel() {
             const badgesEl = (function (def, services = {}) {
               if (!def.subServices?.length) return null;
               const wrap = document.createElement('div');
-              ((wrap.className = 'cx-service-badges'),
-                (wrap.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px;'));
+              wrap.className = 'cx-service-badges';
               for (const svc of def.subServices) {
                 const enabled = !0 === services[svc.key],
                   badge = document.createElement('div');
-                ((badge.className =
+                badge.className =
                   'cx-service-badge ' +
-                  (enabled ? 'cx-service-badge--on' : 'cx-service-badge--off')),
-                  (badge.style.cssText = `\n      display:inline-flex;align-items:center;gap:5px;\n      padding:4px 10px;border-radius:20px;font-size:12px;font-family:var(--font-ui);\n      border:1px solid ${enabled ? 'var(--color-border-success)' : 'var(--color-border-tertiary)'};\n      background:${enabled ? 'var(--color-background-success)' : 'var(--color-background-secondary)'};\n      color:${enabled ? 'var(--color-text-success)' : 'var(--color-text-secondary)'};\n      cursor:${enabled ? 'default' : 'pointer'};\n    `));
+                  (enabled ? 'cx-service-badge--on' : 'cx-service-badge--off');
                 const dot = document.createElement('span');
-                ((dot.textContent = enabled ? '●' : '○'), (dot.style.fontSize = '8px'));
+                ((dot.className = 'cx-service-dot'), (dot.textContent = enabled ? '●' : '○'));
                 const label = document.createElement('span'),
                   iconHtml = svc.icon
-                    ? `<span style="display:inline-flex;align-items:center;width:16px;height:16px;">${svc.icon.replace(/width: 26px; height: 26px;/, 'width: 100%; height: 100%;')}</span>`
+                    ? `<span class="cx-service-icon-wrap">${svc.icon}</span>`
                     : '';
-                ((label.style.display = 'inline-flex'),
-                  (label.style.alignItems = 'center'),
-                  (label.style.gap = '4px'),
+                ((label.className = 'cx-service-label'),
                   (label.innerHTML = iconHtml ? `${iconHtml} <span>${svc.name}</span>` : svc.name),
                   badge.append(dot, label),
                   enabled ||
@@ -83,19 +79,17 @@ function renderPanel() {
             })(def, services);
             if (badgesEl) {
               const badgeWrap = document.createElement('div');
-              badgeWrap.style.cssText = 'padding:0 16px 4px;';
+              badgeWrap.className = 'cx-service-section';
               const badgeLabel = document.createElement('div');
               if (
-                ((badgeLabel.style.cssText =
-                  'font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;'),
+                ((badgeLabel.className = 'cx-mini-label'),
                 (badgeLabel.textContent = 'Detected services'),
                 badgeWrap.appendChild(badgeLabel),
                 badgeWrap.appendChild(badgesEl),
                 def.featureId && def.serviceRefreshMethod)
               ) {
                 const refreshBtn = document.createElement('button');
-                ((refreshBtn.style.cssText =
-                  'font-size:11px;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:4px 0;text-decoration:underline;'),
+                ((refreshBtn.className = 'cx-refresh-btn'),
                   (refreshBtn.textContent = 'Re-check services'),
                   refreshBtn.addEventListener('click', async () => {
                     ((refreshBtn.textContent = 'Checking...'), (refreshBtn.disabled = !0));
@@ -141,31 +135,28 @@ function renderPanel() {
           if (
             ((fieldsWrap.className = 'cx-fields'),
             (fieldsWrap.id = `cx-fields-${def.id}`),
-            isConnected && (fieldsWrap.style.display = 'none'),
+            isConnected && (fieldsWrap.hidden = true),
             !isConnected && def.setupSteps?.length)
           ) {
             const stepsEl = (function (def) {
               if (!def.setupSteps?.length) return null;
               const wrap = document.createElement('div');
-              wrap.style.cssText = 'margin:10px 0;';
+              wrap.className = 'cx-setup-steps';
               const title = document.createElement('div');
               return (
-                (title.style.cssText =
-                  'font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;'),
+                (title.className = 'cx-mini-label'),
                 (title.textContent = 'Setup steps'),
                 wrap.appendChild(title),
                 def.setupSteps.forEach((step, i) => {
                   const row = document.createElement('div');
-                  row.style.cssText =
-                    'display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:12px;color:var(--text-secondary);';
+                  row.className = 'cx-setup-row';
 
                   const num = document.createElement('span');
-                  num.style.cssText =
-                    'min-width:16px;font-weight:500;color:var(--text-muted);flex-shrink:0;';
+                  num.className = 'cx-setup-number';
                   num.textContent = `${i + 1}.`;
 
                   const content = document.createElement('span');
-                  content.style.cssText = 'flex:1;line-height:1.5;';
+                  content.className = 'cx-setup-content';
 
                   // Detect URLs in the step text and render them with a copy button
                   const urlPattern = /(https?:\/\/[^\s]+)/g;
@@ -173,14 +164,12 @@ function renderPanel() {
                   parts.forEach((part, _pi) => {
                     if (urlPattern.test(part)) {
                       const urlSpan = document.createElement('span');
-                      urlSpan.style.cssText =
-                        'display:inline-flex;align-items:center;gap:4px;background:var(--bg-subtle,rgba(0,0,0,0.08));border-radius:4px;padding:1px 6px;font-family:monospace;font-size:11px;color:var(--text-primary);';
+                      urlSpan.className = 'cx-setup-url';
                       urlSpan.textContent = part;
 
                       const copyBtn = document.createElement('button');
                       copyBtn.title = 'Copy';
-                      copyBtn.style.cssText =
-                        'background:none;border:none;cursor:pointer;padding:0;margin-left:2px;color:var(--text-muted);display:inline-flex;align-items:center;flex-shrink:0;opacity:0.7;';
+                      copyBtn.className = 'cx-setup-copy-btn';
                       copyBtn.innerHTML =
                         '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
                       copyBtn.addEventListener('click', (e) => {
@@ -188,11 +177,11 @@ function renderPanel() {
                         navigator.clipboard.writeText(part).then(() => {
                           copyBtn.innerHTML =
                             '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-                          copyBtn.style.color = 'var(--accent-green,#22c55e)';
+                          copyBtn.classList.add('is-copied');
                           setTimeout(() => {
                             copyBtn.innerHTML =
                               '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-                            copyBtn.style.color = '';
+                            copyBtn.classList.remove('is-copied');
                           }, 1500);
                         });
                       });
@@ -279,7 +268,7 @@ function renderPanel() {
             ((updateBtn.className = 'cx-secondary-btn'),
               (updateBtn.textContent = 'Update credentials'),
               updateBtn.addEventListener('click', () => {
-                ((fieldsWrap.style.display = ''), (updateBtn.style.display = 'none'));
+                ((fieldsWrap.hidden = false), (updateBtn.hidden = true));
               }),
               btnGroup.appendChild(updateBtn));
             const disconnectBtn = document.createElement('button');

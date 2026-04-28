@@ -40,6 +40,71 @@
   font-size: 22px;
   flex-shrink: 0;
 }
+
+.connector-icon-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.cx-service-section {
+  padding: 0 16px 4px;
+}
+
+.cx-service-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.cx-service-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+}
+
+.cx-service-badge--on {
+  background: var(--color-background-success);
+  border: 1px solid var(--color-border-success);
+  color: var(--color-text-success);
+  cursor: default;
+}
+
+.cx-service-badge--off {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.cx-service-dot {
+  font-size: 8px;
+}
+
+.cx-service-label,
+.cx-service-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cx-service-label {
+  gap: 4px;
+}
+
+.cx-service-icon-wrap {
+  width: 16px;
+  height: 16px;
+}
+
+.cx-service-icon-wrap .connector-icon-img {
+  width: 100%;
+  height: 100%;
+}
 .cx-info {
   flex: 1;
   min-width: 0;
@@ -144,6 +209,80 @@
   color: var(--text-primary);
   font-weight: 600;
 }
+
+.cx-mini-label {
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cx-refresh-btn {
+  padding: 4px 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cx-setup-steps {
+  margin: 10px 0;
+}
+
+.cx-setup-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.cx-setup-number {
+  min-width: 16px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cx-setup-content {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.cx-setup-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  background: var(--bg-subtle, rgba(0, 0, 0, 0.08));
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.cx-setup-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 2px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.cx-setup-copy-btn.is-copied {
+  color: var(--accent-green, #22c55e);
+}
+
 .cx-status-msg {
   font-size: 12.5px;
   min-height: 0;

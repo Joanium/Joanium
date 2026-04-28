@@ -38,7 +38,7 @@ export function getAgentsHTML() {
       <h3>${t('agents.noAgentsYet')}</h3>
       <p>${t('agents.noAgentsDesc')}</p>
       <button class="agents-empty-btn" id="add-agent-empty-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px;height:14px"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+        <svg class="button-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
         ${t('agents.createFirst')}
       </button>
     </div>

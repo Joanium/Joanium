@@ -136,7 +136,7 @@ export function mount(outlet) {
               return (
                 (hintEl.className = 'agent-history-empty'),
                 (hintEl.innerHTML =
-                  '\n        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"\n          style="width:28px;height:28px;opacity:0.35">\n          <path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/>\n        </svg>\n        <p>No runs recorded yet.<br>Use Run Now to execute this agent immediately.</p>'),
+                  '\n        <svg class="agent-history-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">\n          <path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/>\n        </svg>\n        <p>No runs recorded yet.<br>Use Run Now to execute this agent immediately.</p>'),
                 bodyEl.appendChild(hintEl),
                 void backdropEl.classList.add('open')
               );
@@ -266,7 +266,7 @@ export function mount(outlet) {
             (card.className = 'agent-card'),
             (card._currentAgent = null),
             (card.innerHTML =
-              '\n      <div class="agent-card-head">\n        <div class="agent-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg></div>\n        <div class="agent-card-info">\n          <div class="agent-name"></div>\n          <div class="agent-desc" style="display:none"></div>\n        </div>\n        <label class="agent-toggle" title="">\n          <input type="checkbox" class="toggle-input"><div class="agent-toggle-track"></div>\n        </label>\n      </div>\n      <div class="agent-meta">\n        <span class="agent-trigger-tag">\n          <span class="agent-trigger-icon" aria-hidden="true">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          </span>\n          <span class="agent-trigger-text"></span>\n        </span>\n        <div class="agent-card-actions-summary">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg>\n          <span class="agent-actions-text"></span>\n        </div>\n        <div class="agent-prompt-preview"></div>\n        <div class="agent-lastrun" style="display:none"></div>\n      </div>\n      <div class="agent-card-footer">\n        <button class="agent-card-btn run-btn" title="Run now">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>\n        <button class="agent-card-btn history-btn" title="View history">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></button>\n        <button class="agent-card-btn edit-btn" title="Edit agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg></button>\n        <button class="agent-card-btn danger delete-btn" title="Delete agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n      </div>'),
+              '\n      <div class="agent-card-head">\n        <div class="agent-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg></div>\n        <div class="agent-card-info">\n          <div class="agent-name"></div>\n          <div class="agent-desc" hidden></div>\n        </div>\n        <label class="agent-toggle" title="">\n          <input type="checkbox" class="toggle-input"><div class="agent-toggle-track"></div>\n        </label>\n      </div>\n      <div class="agent-meta">\n        <span class="agent-trigger-tag">\n          <span class="agent-trigger-icon" aria-hidden="true">\n            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>\n          </span>\n          <span class="agent-trigger-text"></span>\n        </span>\n        <div class="agent-card-actions-summary">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4" stroke-linecap="round"/></svg>\n          <span class="agent-actions-text"></span>\n        </div>\n        <div class="agent-prompt-preview"></div>\n        <div class="agent-lastrun" hidden></div>\n      </div>\n      <div class="agent-card-footer">\n        <button class="agent-card-btn run-btn" title="Run now">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>\n        <button class="agent-card-btn history-btn" title="View history">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></button>\n        <button class="agent-card-btn edit-btn" title="Edit agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round"/></svg></button>\n        <button class="agent-card-btn danger delete-btn" title="Delete agent">\n          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>\n      </div>'),
             card.querySelector('.toggle-input')?.addEventListener('change', (event) => {
               card._currentAgent && onToggle(card._currentAgent, event.target.checked, card);
             }),
@@ -301,13 +301,13 @@ export function mount(outlet) {
               truncate(agent.prompt, 200) || t('agents.noPromptSet')));
           const descEl = card.querySelector('.agent-desc');
           agent.description
-            ? ((descEl.style.display = ''), (descEl.textContent = agent.description))
-            : (descEl.style.display = 'none');
+            ? ((descEl.hidden = false), (descEl.textContent = agent.description))
+            : (descEl.hidden = true);
           const lastRunEl = card.querySelector('.agent-lastrun');
           agent.lastRun
-            ? ((lastRunEl.style.display = ''),
+            ? ((lastRunEl.hidden = false),
               (lastRunEl.textContent = t('agents.lastRun', { time: timeAgo(agent.lastRun) })))
-            : (lastRunEl.style.display = 'none');
+            : (lastRunEl.hidden = true);
         },
         getKey: (agent) => agent.id,
       });
@@ -344,7 +344,7 @@ export function mount(outlet) {
         ((button.disabled = !0),
           button.classList.add('is-running'),
           (button.innerHTML =
-            '\n        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">\n          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n        </svg>\n        Running'));
+            '\n        <svg class="agent-run-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">\n          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n        </svg>\n        Running'));
         try {
           const response = await window.electronAPI?.invoke?.('run-agent-now', agent.id);
           if (!response?.ok)

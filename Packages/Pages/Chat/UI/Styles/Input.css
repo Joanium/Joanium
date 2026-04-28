@@ -356,3 +356,29 @@
   transform: scale(0.97);
   background: #c94949;
 }
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.02);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.drop-overlay.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.drop-overlay-icon {
+  margin-bottom: 12px;
+}

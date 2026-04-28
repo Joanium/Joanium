@@ -14,7 +14,7 @@ export default defineFeature({
       {
         id: 'jira',
         name: 'Jira',
-        icon: '<img src="../../../Assets/Icons/Jira.png" alt="Jira" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Jira.png" alt="Jira" class="connector-icon-img" />',
         description:
           'Track tickets, browse projects, and monitor assigned issues across your Jira Cloud workspace.',
         helpUrl: 'https://id.atlassian.com/manage-profile/security/api-tokens',

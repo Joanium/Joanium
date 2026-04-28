@@ -45,6 +45,152 @@ body {
   opacity: 0;
   animation: particleDrift var(--dur) var(--delay) ease-in-out infinite;
 }
+
+.particle--1 {
+  width: 3px;
+  height: 3px;
+  left: 7%;
+  bottom: 8%;
+  --dur: 5s;
+  --delay: -1s;
+}
+.particle--2 {
+  width: 5px;
+  height: 5px;
+  left: 16%;
+  bottom: 22%;
+  --dur: 8s;
+  --delay: -3s;
+}
+.particle--3 {
+  width: 4px;
+  height: 4px;
+  left: 25%;
+  bottom: 35%;
+  --dur: 7s;
+  --delay: -2s;
+}
+.particle--4 {
+  width: 6px;
+  height: 6px;
+  left: 34%;
+  bottom: 14%;
+  --dur: 9s;
+  --delay: -4s;
+}
+.particle--5 {
+  width: 3px;
+  height: 3px;
+  left: 43%;
+  bottom: 28%;
+  --dur: 6s;
+  --delay: -5s;
+}
+.particle--6 {
+  width: 5px;
+  height: 5px;
+  left: 52%;
+  bottom: 10%;
+  --dur: 10s;
+  --delay: -1.5s;
+}
+.particle--7 {
+  width: 4px;
+  height: 4px;
+  left: 61%;
+  bottom: 38%;
+  --dur: 8s;
+  --delay: -2.5s;
+}
+.particle--8 {
+  width: 6px;
+  height: 6px;
+  left: 70%;
+  bottom: 20%;
+  --dur: 7s;
+  --delay: -4.5s;
+}
+.particle--9 {
+  width: 3px;
+  height: 3px;
+  left: 79%;
+  bottom: 32%;
+  --dur: 9s;
+  --delay: -3.5s;
+}
+.particle--10 {
+  width: 5px;
+  height: 5px;
+  left: 88%;
+  bottom: 12%;
+  --dur: 6s;
+  --delay: -2s;
+}
+.particle--11 {
+  width: 4px;
+  height: 4px;
+  left: 12%;
+  bottom: 30%;
+  --dur: 10s;
+  --delay: -5s;
+}
+.particle--12 {
+  width: 6px;
+  height: 6px;
+  left: 22%;
+  bottom: 6%;
+  --dur: 8s;
+  --delay: -3s;
+}
+.particle--13 {
+  width: 3px;
+  height: 3px;
+  left: 39%;
+  bottom: 40%;
+  --dur: 7s;
+  --delay: -1s;
+}
+.particle--14 {
+  width: 5px;
+  height: 5px;
+  left: 49%;
+  bottom: 18%;
+  --dur: 9s;
+  --delay: -4s;
+}
+.particle--15 {
+  width: 4px;
+  height: 4px;
+  left: 59%;
+  bottom: 34%;
+  --dur: 6s;
+  --delay: -2.5s;
+}
+.particle--16 {
+  width: 6px;
+  height: 6px;
+  left: 69%;
+  bottom: 8%;
+  --dur: 10s;
+  --delay: -5s;
+}
+.particle--17 {
+  width: 3px;
+  height: 3px;
+  left: 82%;
+  bottom: 26%;
+  --dur: 7s;
+  --delay: -3s;
+}
+.particle--18 {
+  width: 5px;
+  height: 5px;
+  left: 93%;
+  bottom: 36%;
+  --dur: 8s;
+  --delay: -4.5s;
+}
+
 @keyframes particleDrift {
   0% {
     opacity: 0;

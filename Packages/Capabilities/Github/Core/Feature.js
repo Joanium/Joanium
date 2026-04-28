@@ -14,7 +14,7 @@ export default defineFeature({
       {
         id: 'github',
         name: 'GitHub',
-        icon: '<img src="../../../Assets/Icons/Github.png" alt="Github" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Github.png" alt="Github" class="connector-icon-img" />',
         description:
           'Browse repos, load code into chat, track issues and PRs, and monitor notifications.',
         helpUrl: 'https://github.com/settings/tokens/new?scopes=repo,read:user,notifications',

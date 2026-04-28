@@ -17,7 +17,7 @@ export default defineFeature({
       {
         id: 'supabase',
         name: 'Supabase',
-        icon: '<img src="../../../Assets/Icons/Supabase.png" alt="Supabase" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Supabase.png" alt="Supabase" class="connector-icon-img" />',
         description: 'Monitor your Supabase projects, databases, and edge functions from chat.',
         helpUrl: 'https://supabase.com/dashboard/account/tokens',
         helpText: 'Create an Access Token →',

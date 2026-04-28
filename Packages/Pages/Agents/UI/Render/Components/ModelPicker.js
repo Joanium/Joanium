@@ -27,7 +27,7 @@ export function createModelPicker({
           (function () {
             if (((primaryModelMenu.innerHTML = ''), !state.allModels.length))
               return void (primaryModelMenu.innerHTML =
-                '<div style="padding:12px;font-size:12px;color:var(--text-muted)">No models. Connect a provider in Settings.</div>');
+                '<div class="agent-model-empty">No models. Connect a provider in Settings.</div>');
             const groups = state.allModels.reduce(
               (result, model) => (
                 result[model.provider] || (result[model.provider] = []),

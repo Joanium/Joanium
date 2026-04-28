@@ -75,7 +75,7 @@ export function createHistoryModal({
           const hintEl = document.createElement('div');
           ((hintEl.className = 'agent-history-empty'),
             (hintEl.innerHTML =
-              '\n        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"\n          style="width:28px;height:28px;opacity:0.35">\n          <path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/>\n        </svg>\n        <p>No runs recorded yet.<br>Click the run button on the card to execute all jobs.</p>'),
+              '\n        <svg class="agent-history-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">\n          <path d="M12 8v4l3 3" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/>\n        </svg>\n        <p>No runs recorded yet.<br>Click the run button on the card to execute all jobs.</p>'),
             bodyEl.insertBefore(hintEl, bodyEl.firstChild));
         }
         backdropEl.classList.add('open');

@@ -108,31 +108,16 @@ export function buildFileFrame(attachment, className) {
     ext = extMatch ? extMatch[1].toUpperCase() : 'FILE',
     linesText = attachment.summary || (attachment.lines ? `${attachment.lines} lines` : 'File'),
     frame = document.createElement('div');
-  ((frame.className = className), (frame.title = attachment.name || 'File'));
+  ((frame.className = `${className} chat-file-frame`), (frame.title = attachment.name || 'File'));
   const nameEl = document.createElement('div');
-  ((nameEl.style.cssText =
-    'font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;'),
-    (nameEl.textContent = attachment.name || 'File'));
+  ((nameEl.className = 'chat-file-frame-name'), (nameEl.textContent = attachment.name || 'File'));
   const summaryEl = document.createElement('div');
-  ((summaryEl.style.cssText = 'font-size:11px;color:var(--text-muted);margin-top:4px;'),
-    (summaryEl.textContent = linesText));
+  ((summaryEl.className = 'chat-file-frame-summary'), (summaryEl.textContent = linesText));
   const extEl = document.createElement('div');
   return (
-    (extEl.style.cssText =
-      'margin-top:auto;font-size:10px;font-weight:bold;color:var(--text-secondary);border:1px solid var(--border-subtle);border-radius:4px;padding:2px 6px;align-self:flex-start;'),
+    (extEl.className = 'chat-file-frame-ext'),
     (extEl.textContent = ext),
     frame.append(nameEl, summaryEl, extEl),
-    (frame.style.display = 'flex'),
-    (frame.style.flexDirection = 'column'),
-    (frame.style.alignItems = 'flex-start'),
-    (frame.style.justifyContent = 'flex-start'),
-    (frame.style.width = '135px'),
-    (frame.style.height = '135px'),
-    (frame.style.padding = '12px'),
-    (frame.style.backgroundColor = 'var(--bg-tertiary)'),
-    (frame.style.borderRadius = '12px'),
-    (frame.style.boxSizing = 'border-box'),
-    (frame.style.border = '1px solid var(--border-color)'),
     frame
   );
 }
@@ -315,11 +300,11 @@ export function buildLogItem(rawLine) {
     rawLine.startsWith('[GMAIL]')
       ? ((displayText = rawLine.slice(7).trim()),
         (iconHtml =
-          '<img src="../../../Assets/Icons/Gmail.png" alt="Gmail"\n      style="width:14px;height:14px;object-fit:contain;vertical-align:middle;border-radius:2px;flex-shrink:0;"/>'))
+          '<img src="../../../Assets/Icons/Gmail.png" alt="Gmail" class="agent-log-source-icon"/>'))
       : rawLine.startsWith('[GITHUB]')
         ? ((displayText = rawLine.slice(8).trim()),
           (iconHtml =
-            '<img src="../../../Assets/Icons/Github.png" alt="GitHub"\n      style="width:14px;height:14px;object-fit:contain;vertical-align:middle;border-radius:2px;flex-shrink:0;"/>'))
+            '<img src="../../../Assets/Icons/Github.png" alt="GitHub" class="agent-log-source-icon"/>'))
         : rawLine.startsWith('[SKILL]')
           ? ((displayText = rawLine.slice(7).trim()),
             (iconHtml =
@@ -344,7 +329,7 @@ export function buildLogItem(rawLine) {
                 : BROWSER_TOOL_LABELS[toolName];
             })(rawLine.slice(6).trim())),
             (iconHtml =
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"\n      style="width:14px;height:14px;vertical-align:middle;flex-shrink:0;color:var(--text-muted)">\n      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"\n            stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>')),
+              '<svg class="agent-log-source-icon agent-log-source-icon--tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">\n      <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"\n            stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>')),
     iconHtml)
   ) {
     const wrap = document.createElement('span');
@@ -684,13 +669,12 @@ export function createLiveRow(doSendFromStateFn) {
         ) {
           replyTextEl.innerHTML = renderMarkdown(_accumulated);
           const badge = document.createElement('span');
-          ((badge.style.cssText =
-            '\n          display:inline-flex;align-items:center;gap:4px;\n          font-size:10.5px;font-weight:600;letter-spacing:0.3px;\n          color:var(--text-muted);background:var(--bg-tertiary);\n          border:1px solid var(--border-subtle);border-radius:6px;\n          padding:2px 8px;margin-left:8px;vertical-align:middle;\n        '),
+          ((badge.className = 'generation-stopped-badge'),
             (badge.textContent = '⏹ stopped'),
             replyTextEl.appendChild(badge));
         } else
           replyTextEl.innerHTML =
-            '<span style="color:var(--text-muted);font-size:13px;font-style:italic;">Generation stopped.</span>';
+            '<span class="generation-stopped-inline">Generation stopped.</span>';
         ((actionsEl.style.display = 'flex'),
           _accumulated && attachCopyEvent(actionsEl.querySelector('.copy-msg-btn'), _accumulated));
         attachStarEvent(actionsEl.querySelector('.star-msg-btn'), row, null);

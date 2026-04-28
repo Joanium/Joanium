@@ -190,7 +190,7 @@ export function mount(outlet) {
         (button.classList.add('is-running'),
           (button.disabled = !0),
           (button.innerHTML =
-            '\n        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite">\n          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n        </svg>'));
+            '\n        <svg class="auto-run-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">\n          <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n        </svg>'));
         try {
           const response = await window.electronAPI?.invoke?.('run-automation-now', agent.id);
           if (!response?.ok)

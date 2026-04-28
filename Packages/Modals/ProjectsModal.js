@@ -77,25 +77,25 @@ export function initProjectsModal({
             </svg>
           </button>
         </div>
-        <div class="settings-modal-body edit-project-modal-body" style="padding:24px">
+        <div class="settings-modal-body edit-project-modal-body">
           <label class="project-field">
             <span class="project-field-label">${t('projects.nameLabel')}</span>
             <input id="project-edit-name-input" type="text" placeholder="${t('projects.namePlaceholder')}" autocomplete="off" spellcheck="false"/>
           </label>
-          <div class="project-field" style="margin-top:16px">
+          <div class="project-field project-field--spaced">
             <span class="project-field-label">${t('projects.dirLabel')}</span>
             <div class="project-path-row">
               <input id="project-edit-path-input" type="text" placeholder="${t('projects.dirPlaceholder')}" readonly/>
               <button id="project-edit-path-btn" class="project-secondary-btn" type="button">${t('projects.chooseFolder')}</button>
             </div>
           </div>
-          <label class="project-field" style="margin-top:16px">
+          <label class="project-field project-field--spaced">
             <span class="project-field-label">${t('projects.contextLabel')}</span>
             <textarea id="project-edit-context-input" rows="5" placeholder="${t('projects.editContextPlaceholder')}"></textarea>
           </label>
-          <div class="project-create-footer" style="margin-top:24px">
+          <div class="project-create-footer project-create-footer--edit">
             <div id="project-edit-status" class="project-status" aria-live="polite"></div>
-            <div style="display:flex;gap:8px">
+            <div class="project-edit-actions">
               <button id="project-edit-cancel-btn" class="project-secondary-btn" type="button">${t('projects.cancel')}</button>
               <button id="project-edit-save-btn" class="project-primary-btn" type="button">${t('projects.saveChanges')}</button>
             </div>

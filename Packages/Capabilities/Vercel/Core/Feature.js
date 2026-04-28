@@ -17,7 +17,7 @@ export default defineFeature({
       {
         id: 'vercel',
         name: 'Vercel',
-        icon: '<img src="../../../Assets/Icons/Vercel.png" alt="Vercel" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Vercel.png" alt="Vercel" class="connector-icon-img" />',
         description: 'Monitor your Vercel projects, deployments, and domains from chat.',
         helpUrl: 'https://vercel.com/account/tokens',
         helpText: 'Create a Personal Access Token →',

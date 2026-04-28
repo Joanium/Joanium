@@ -33,7 +33,7 @@ export function getAutomationsHTML() {
       <h3>${t('automations.noAutomationsYet')}</h3>
       <p>${t('automations.noAutomationsDesc')}</p>
       <button class="auto-empty-btn" id="add-agent-empty-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px;height:14px"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+        <svg class="button-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
         ${t('automations.createFirst')}
       </button>
     </div>
@@ -92,9 +92,9 @@ export function getAutomationsHTML() {
             <path d="M13 2L4.5 13H11l-1 9L20.5 11H14L13 2z" stroke-linejoin="round"/>
           </svg>
           ${t('automations.jobs')}
-          <span id="jobs-count-badge" style="font-size:10px;font-weight:500;color:var(--text-muted);letter-spacing:0;text-transform:none;">(0/5)</span>
+          <span id="jobs-count-badge" class="jobs-count-badge">(0/5)</span>
         </div>
-        <div class="agent-field-hint" style="margin-top:-8px;margin-bottom:2px">${t('automations.jobsHint')}</div>
+        <div class="agent-field-hint jobs-hint">${t('automations.jobsHint')}</div>
         <div id="jobs-list" class="jobs-list"></div>
         <button type="button" class="add-job-btn" id="add-job-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>

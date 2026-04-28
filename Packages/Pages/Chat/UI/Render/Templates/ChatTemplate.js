@@ -10,7 +10,7 @@ export function getChatHTML() {
           <span id="project-context-path" class="pcb-path"></span>
           <span class="pcb-chevron">&rsaquo;</span>
           <span id="project-context-title" class="pcb-title"></span>
-          <span id="project-context-info" style="display:none"></span>
+          <span id="project-context-info" hidden></span>
         </div>
         <div class="pcb-actions">
           <button id="project-open-folder-btn" class="project-secondary-btn" type="button">${t('project.open')}</button>
@@ -168,26 +168,9 @@ export function ensureDropOverlay() {
       (_dropOverlay = document.createElement('div')),
       (_dropOverlay.className = 'drop-overlay'),
       (_dropOverlay.innerHTML =
-        '<div class="drop-overlay-content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="48" height="48" style="margin-bottom:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><h2>' +
+        '<div class="drop-overlay-content"><svg class="drop-overlay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" width="48" height="48"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><h2>' +
         t('chat.dropFiles') +
         '</h2></div>'),
-      Object.assign(_dropOverlay.style, {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        backdropFilter: 'blur(4px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 9999,
-        opacity: 0,
-        pointerEvents: 'none',
-        transition: 'opacity 0.2s ease, transform 0.2s ease',
-        transform: 'scale(1.02)',
-      }),
       document.body.appendChild(_dropOverlay),
       _dropOverlay
     );

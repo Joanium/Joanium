@@ -60,11 +60,11 @@ export function getEventsHTML() {
 
     <div id="events-loading" class="events-loading">
       <div class="events-shimmer"></div>
-      <div class="events-shimmer" style="width:85%"></div>
-      <div class="events-shimmer" style="width:70%"></div>
+      <div class="events-shimmer events-shimmer--wide"></div>
+      <div class="events-shimmer events-shimmer--medium"></div>
     </div>
 
-    <div id="events-empty" class="events-empty" style="display:none">
+    <div id="events-empty" class="events-empty" hidden>
       <div class="events-empty-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round" />
@@ -74,7 +74,7 @@ export function getEventsHTML() {
       <p>${t('events.noEventsDesc')}</p>
     </div>
 
-    <div id="events-feed" class="events-feed" style="display:none"></div>
+    <div id="events-feed" class="events-feed" hidden></div>
   </div>
 </main>
 

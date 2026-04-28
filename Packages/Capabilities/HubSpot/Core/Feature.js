@@ -17,7 +17,7 @@ export default defineFeature({
       {
         id: 'hubspot',
         name: 'HubSpot',
-        icon: '<img src="../../../Assets/Icons/Hubspot.png" alt="HubSpot" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Hubspot.png" alt="HubSpot" class="connector-icon-img" />',
         description:
           'Access your HubSpot CRM — contacts, deals, companies, tickets, tasks, notes, and pipeline from chat.',
         helpUrl: 'https://app.hubspot.com/private-apps',

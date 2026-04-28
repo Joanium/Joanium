@@ -49,6 +49,151 @@ body {
   animation: lockParticleDrift var(--dur) var(--delay) ease-in-out infinite;
 }
 
+.lock-particle--1 {
+  width: 5px;
+  height: 5px;
+  left: 8%;
+  top: 50%;
+  --dur: 8s;
+  --delay: -1s;
+}
+.lock-particle--2 {
+  width: 9px;
+  height: 9px;
+  left: 18%;
+  top: 72%;
+  --dur: 12s;
+  --delay: -5s;
+}
+.lock-particle--3 {
+  width: 13px;
+  height: 13px;
+  left: 28%;
+  top: 46%;
+  --dur: 10s;
+  --delay: -9s;
+}
+.lock-particle--4 {
+  width: 7px;
+  height: 7px;
+  left: 38%;
+  top: 84%;
+  --dur: 15s;
+  --delay: -2s;
+}
+.lock-particle--5 {
+  width: 11px;
+  height: 11px;
+  left: 48%;
+  top: 62%;
+  --dur: 9s;
+  --delay: -11s;
+}
+.lock-particle--6 {
+  width: 6px;
+  height: 6px;
+  left: 58%;
+  top: 76%;
+  --dur: 14s;
+  --delay: -4s;
+}
+.lock-particle--7 {
+  width: 12px;
+  height: 12px;
+  left: 68%;
+  top: 52%;
+  --dur: 11s;
+  --delay: -8s;
+}
+.lock-particle--8 {
+  width: 8px;
+  height: 8px;
+  left: 78%;
+  top: 88%;
+  --dur: 16s;
+  --delay: -3s;
+}
+.lock-particle--9 {
+  width: 14px;
+  height: 14px;
+  left: 88%;
+  top: 66%;
+  --dur: 13s;
+  --delay: -12s;
+}
+.lock-particle--10 {
+  width: 6px;
+  height: 6px;
+  left: 12%;
+  top: 90%;
+  --dur: 10s;
+  --delay: -6s;
+}
+.lock-particle--11 {
+  width: 10px;
+  height: 10px;
+  left: 23%;
+  top: 60%;
+  --dur: 15s;
+  --delay: -10s;
+}
+.lock-particle--12 {
+  width: 5px;
+  height: 5px;
+  left: 34%;
+  top: 78%;
+  --dur: 8s;
+  --delay: -7s;
+}
+.lock-particle--13 {
+  width: 13px;
+  height: 13px;
+  left: 45%;
+  top: 49%;
+  --dur: 12s;
+  --delay: -13s;
+}
+.lock-particle--14 {
+  width: 7px;
+  height: 7px;
+  left: 56%;
+  top: 92%;
+  --dur: 9s;
+  --delay: -2s;
+}
+.lock-particle--15 {
+  width: 11px;
+  height: 11px;
+  left: 67%;
+  top: 70%;
+  --dur: 16s;
+  --delay: -6s;
+}
+.lock-particle--16 {
+  width: 8px;
+  height: 8px;
+  left: 74%;
+  top: 44%;
+  --dur: 11s;
+  --delay: -9s;
+}
+.lock-particle--17 {
+  width: 12px;
+  height: 12px;
+  left: 83%;
+  top: 82%;
+  --dur: 14s;
+  --delay: -4s;
+}
+.lock-particle--18 {
+  width: 6px;
+  height: 6px;
+  left: 94%;
+  top: 58%;
+  --dur: 10s;
+  --delay: -11s;
+}
+
 @keyframes lockParticleDrift {
   0% {
     opacity: 0;

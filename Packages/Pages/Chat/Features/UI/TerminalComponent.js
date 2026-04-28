@@ -55,7 +55,7 @@ export async function mountTerminal(containerId, pid) {
       );
     })();
   } catch (err) {
-    return void (el.innerHTML = `<div style="padding:12px;color:#fca5a5;font:13px monospace;">Embedded terminal failed to load: ${err.message}</div>`);
+    return void (el.innerHTML = `<div class="embedded-terminal-error">Embedded terminal failed to load: ${err.message}</div>`);
   }
   const term = new window.Terminal({
       theme: { background: '#12141c', foreground: '#e2e8f0', cursor: '#f3e8ff' },

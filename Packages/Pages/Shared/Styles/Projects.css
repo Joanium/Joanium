@@ -105,6 +105,15 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.edit-project-modal-body {
+  padding: 24px;
+}
+
+.project-field--spaced {
+  margin-top: 16px;
+}
+
 .project-field-label {
   font-size: 12px;
   font-weight: 600;
@@ -205,6 +214,16 @@
   justify-content: space-between;
   gap: 12px;
 }
+
+.project-create-footer--edit {
+  margin-top: 24px;
+}
+
+.project-edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .project-status {
   min-height: 18px;
   font-size: 12px;

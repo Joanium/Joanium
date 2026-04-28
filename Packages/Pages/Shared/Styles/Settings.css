@@ -1504,6 +1504,20 @@ body.modal-open {
   box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
+.ch-icon--discord {
+  background: #5865f2;
+  box-shadow: 0 2px 8px rgba(88, 101, 242, 0.35);
+}
+
+.ch-icon--slack {
+  background: linear-gradient(135deg, #e01e5a, #36c5f0);
+  box-shadow: 0 2px 8px rgba(224, 30, 90, 0.3);
+}
+
+.ch-icon-img {
+  object-fit: contain;
+}
+
 .ch-info {
   flex: 1;
   min-width: 0;

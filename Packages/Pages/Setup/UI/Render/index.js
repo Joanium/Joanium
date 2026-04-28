@@ -241,10 +241,7 @@ function updateKeysContinue() {
   if (canvas)
     for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
-      p.className = 'particle';
-      const size = 2 + 4 * Math.random();
-      ((p.style.cssText = `\n      width:${size}px; height:${size}px;\n      left:${100 * Math.random()}%;\n      bottom:${40 * Math.random()}%;\n      --dur:${4 + 6 * Math.random()}s;\n      --delay:-${5 * Math.random()}s;\n    `),
-        canvas.appendChild(p));
+      ((p.className = `particle particle--${i + 1}`), canvas.appendChild(p));
     }
 })(),
   tcCheck.addEventListener('change', () => {

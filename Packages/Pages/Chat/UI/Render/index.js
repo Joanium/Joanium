@@ -390,21 +390,17 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
     onDragEnter = (e) => {
       (e.preventDefault(), e.stopPropagation());
       const overlay = getDropOverlay();
-      1 === ++dragCounter &&
-        overlay &&
-        ((overlay.style.opacity = '1'), (overlay.style.transform = 'scale(1)'));
+      1 === ++dragCounter && overlay && overlay.classList.add('is-active');
     },
     onDragLeave = (e) => {
       (e.preventDefault(), e.stopPropagation());
       const overlay = getDropOverlay();
-      0 === --dragCounter &&
-        overlay &&
-        ((overlay.style.opacity = '0'), (overlay.style.transform = 'scale(1.02)'));
+      0 === --dragCounter && overlay && overlay.classList.remove('is-active');
     },
     onDrop = async (e) => {
       (e.preventDefault(), e.stopPropagation(), (dragCounter = 0));
       const overlay = getDropOverlay();
-      (overlay && ((overlay.style.opacity = '0'), (overlay.style.transform = 'scale(1.02)')),
+      (overlay && overlay.classList.remove('is-active'),
         e.dataTransfer.files?.length && (await addAttachments(Array.from(e.dataTransfer.files))));
     };
   (document.addEventListener('dragover', onDragOver),
@@ -471,7 +467,7 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
         destroySlashCommands(),
         stopGeneration());
       const overlay = getDropOverlay();
-      overlay && (overlay.style.opacity = '0');
+      overlay && overlay.classList.remove('is-active');
     }
   );
 }

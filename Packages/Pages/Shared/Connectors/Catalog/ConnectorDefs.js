@@ -2,7 +2,7 @@ export const STATIC_CONNECTORS = [
   {
     id: 'google',
     name: 'Google Workspace',
-    icon: '<img src="../../../Assets/Icons/Google.png" alt="Google" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Google.png" alt="Google" class="connector-icon-img" />',
     description: 'Connect once with one Client ID and get access to all enabled Google services.',
     helpUrl: 'https://console.cloud.google.com/apis/credentials',
     helpText: 'Create OAuth credentials + enable APIs →',
@@ -15,19 +15,19 @@ export const STATIC_CONNECTORS = [
     subServices: [
       {
         key: 'gmail',
-        icon: '<img src="../../../Assets/Icons/Gmail.png" alt="Gmail" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Gmail.png" alt="Gmail" class="connector-icon-img" />',
         name: 'Gmail',
         apiUrl: 'https://console.cloud.google.com/apis/library/gmail.googleapis.com',
       },
       {
         key: 'drive',
-        icon: '<img src="../../../Assets/Icons/Drive.png" alt="Drive" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Drive.png" alt="Drive" class="connector-icon-img" />',
         name: 'Google Drive',
         apiUrl: 'https://console.cloud.google.com/apis/library/drive.googleapis.com',
       },
       {
         key: 'calendar',
-        icon: '<img src="../../../Assets/Icons/Calendar.png" alt="Calendar" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Calendar.png" alt="Calendar" class="connector-icon-img" />',
         name: 'Google Calendar',
         apiUrl: 'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com',
       },
@@ -74,7 +74,7 @@ export const STATIC_CONNECTORS = [
   {
     id: 'github',
     name: 'GitHub',
-    icon: '<img src="../../../Assets/Icons/Github.png" alt="Github" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Github.png" alt="Github" class="connector-icon-img" />',
     description:
       'Browse repos, load code into chat, track issues & PRs, and monitor notifications.',
     helpUrl: 'https://github.com/settings/tokens/new?scopes=repo,read:user,notifications',
@@ -110,7 +110,7 @@ export const STATIC_CONNECTORS = [
   {
     id: 'gitlab',
     name: 'GitLab',
-    icon: '<img src="../../../Assets/Icons/Gitlab.png" alt="GitLab" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Gitlab.png" alt="GitLab" class="connector-icon-img" />',
     description:
       'Browse projects, load code into chat, track issues & merge requests, and monitor notifications.',
     helpUrl: 'https://gitlab.com/-/user_settings/personal_access_tokens',
@@ -148,7 +148,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'open_meteo',
     name: 'Open-Meteo',
-    icon: '<img src="../../../Assets/Icons/OpenMeteo.png" alt="OpenMeteo" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/OpenMeteo.png" alt="OpenMeteo" class="connector-icon-img" />',
     description:
       'Real-time weather for any city — temperature, humidity, wind, and 3-day forecast.',
     noKey: !0,
@@ -158,7 +158,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'coingecko',
     name: 'CoinGecko',
-    icon: '<img src="../../../Assets/Icons/CoinGecko.png" alt="CoinGecko" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/CoinGecko.png" alt="CoinGecko" class="connector-icon-img" />',
     description:
       'Live crypto prices, market caps, 24h changes, and trending coins. 10,000+ tokens.',
     noKey: !0,
@@ -199,7 +199,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'openweathermap',
     name: 'OpenWeatherMap',
-    icon: '<img src="../../../Assets/Icons/OpenWeatherMap.png" alt="OpenWeatherMap" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/OpenWeatherMap.png" alt="OpenWeatherMap" class="connector-icon-img" />',
     description: 'Detailed weather with hourly forecasts, air quality, and historical data.',
     noKey: !1,
     optionalKey: !1,
@@ -212,7 +212,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'unsplash',
     name: 'Unsplash',
-    icon: '<img src="../../../Assets/Icons/Unsplash.png" alt="Unsplash" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Unsplash.png" alt="Unsplash" class="connector-icon-img" />',
     description: 'Search millions of high-quality free photos by topic.',
     noKey: !1,
     optionalKey: !1,
@@ -225,7 +225,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'wikipedia',
     name: 'Wikipedia',
-    icon: '<img src="../../../Assets/Icons/Wikipedia.png" alt="Wikipedia" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Wikipedia.png" alt="Wikipedia" class="connector-icon-img" />',
     description: 'Search any topic — get summaries, descriptions, and direct links.',
     noKey: !0,
     docsUrl: 'https://en.wikipedia.org',
@@ -279,7 +279,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'nasa',
     name: 'NASA / Astronomy',
-    icon: '<img src="../../../Assets/Icons/Nasa.png" alt="Nasa" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/Nasa.png" alt="Nasa" class="connector-icon-img" />',
     description: 'NASA Astronomy Picture of the Day and real-time ISS tracking.',
     noKey: !1,
     optionalKey: !0,
@@ -292,7 +292,7 @@ export const STATIC_FREE_CONNECTORS = [
   {
     id: 'hackernews',
     name: 'Hacker News',
-    icon: '<img src="../../../Assets/Icons/HackerNews.png" alt="HackerNews" style="width: 26px; height: 26px; object-fit: contain;" />',
+    icon: '<img src="../../../Assets/Icons/HackerNews.png" alt="HackerNews" class="connector-icon-img" />',
     description: 'Top stories from Hacker News — the leading tech and startup news aggregator.',
     noKey: !0,
     docsUrl: 'https://news.ycombinator.com',

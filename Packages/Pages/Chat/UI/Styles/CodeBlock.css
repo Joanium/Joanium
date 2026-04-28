@@ -71,6 +71,12 @@
   color: var(--text-primary);
   background: var(--bg-hover);
 }
+
+.copy-code-btn.is-copied,
+.download-code-btn.is-copied {
+  color: var(--accent);
+}
+
 .download-code-btn,
 .preview-code-btn {
   position: relative;

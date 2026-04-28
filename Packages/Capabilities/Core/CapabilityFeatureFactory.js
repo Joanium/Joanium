@@ -1,7 +1,5 @@
 import defineFeature from './DefineFeature.js';
 
-const CONNECTOR_ICON_STYLE = 'width: 26px; height: 26px; object-fit: contain;';
-
 function resolveMaybeFactory(value, credentials) {
   return 'function' === typeof value ? value(credentials) : value;
 }
@@ -22,7 +20,7 @@ function hasCredentialValue(credentials, key) {
 }
 
 export function createConnectorIcon({ iconFile, alt }) {
-  return `<img src="../../../Assets/Icons/${iconFile}" alt="${alt}" style="${CONNECTOR_ICON_STYLE}" />`;
+  return `<img src="../../../Assets/Icons/${iconFile}" alt="${alt}" class="connector-icon-img" />`;
 }
 
 export function createConnectorService({

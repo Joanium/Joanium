@@ -1,9 +1,7 @@
 import defineFeature from '../../Core/DefineFeature.js';
 
-const GOOGLE_ICON_STYLE = 'width: 26px; height: 26px; object-fit: contain;';
-
 function createGoogleIconMarkup(iconFile, alt) {
-  return `<img src="../../../Assets/Icons/${iconFile}" alt="${alt}" style="${GOOGLE_ICON_STYLE}" />`;
+  return `<img src="../../../Assets/Icons/${iconFile}" alt="${alt}" class="connector-icon-img" />`;
 }
 
 function createGoogleServiceExtension({

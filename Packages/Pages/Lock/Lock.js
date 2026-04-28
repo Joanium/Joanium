@@ -18,20 +18,7 @@ function spawnParticles() {
   const COUNT = 18;
   for (let i = 0; i < COUNT; i++) {
     const el = document.createElement('div');
-    el.className = 'lock-particle';
-
-    const size = 4 + Math.random() * 10;
-    const dur = 6 + Math.random() * 10;
-    const delay = Math.random() * -14;
-
-    el.style.cssText = [
-      `width:${size}px`,
-      `height:${size}px`,
-      `left:${Math.random() * 100}%`,
-      `top:${40 + Math.random() * 50}%`,
-      `--dur:${dur}s`,
-      `--delay:${delay}s`,
-    ].join(';');
+    el.className = `lock-particle lock-particle--${i + 1}`;
 
     canvas.appendChild(el);
   }

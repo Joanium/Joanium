@@ -101,6 +101,22 @@
   width: 15px;
   height: 15px;
 }
+
+.button-icon-sm {
+  width: 14px;
+  height: 14px;
+}
+
+.agent-model-empty {
+  padding: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.agent-run-spinner {
+  animation: spin 1s linear infinite;
+}
+
 .add-agent-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px var(--accent-glow);
@@ -2074,6 +2090,13 @@
   line-height: 1.6;
   margin: 0;
 }
+
+.agent-history-empty-icon {
+  width: 28px;
+  height: 28px;
+  opacity: 0.35;
+}
+
 #agent-response-viewer {
   inset: 0;
   z-index: 450;

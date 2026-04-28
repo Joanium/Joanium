@@ -10,7 +10,7 @@ export default defineFeature({
       {
         id: 'google',
         name: 'Google Workspace',
-        icon: '<img src="../../../Assets/Icons/Google.png" alt="Google" style="width: 26px; height: 26px; object-fit: contain;" />',
+        icon: '<img src="../../../Assets/Icons/Google.png" alt="Google" class="connector-icon-img" />',
         description:
           'Connect once with one Client ID and get access to your enabled Google services.',
         helpUrl: 'https://console.cloud.google.com/apis/credentials',

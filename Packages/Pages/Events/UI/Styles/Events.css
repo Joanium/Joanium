@@ -240,6 +240,15 @@
   animation: 1.4s ease-in-out infinite shimmerSlide;
   width: 100%;
 }
+
+.events-shimmer--wide {
+  width: 85%;
+}
+
+.events-shimmer--medium {
+  width: 70%;
+}
+
 @keyframes shimmerSlide {
   0% {
     background-position: 200% 0;
@@ -708,6 +717,11 @@
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
 }
+
+.detail-skipped-icon {
+  flex-shrink: 0;
+}
+
 .detail-meta-pill {
   display: inline-flex;
   padding: 6px 14px;

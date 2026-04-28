@@ -86,11 +86,11 @@ export function mount(outlet) {
     clearing = !1;
 
   function show(element) {
-    element && (element.style.display = '');
+    element && (element.hidden = false);
   }
 
   function hide(element) {
-    element && (element.style.display = 'none');
+    element && (element.hidden = true);
   }
 
   function applyFilter(events) {
@@ -257,7 +257,7 @@ export function mount(outlet) {
       (html += `<div class="detail-section">
         <div class="detail-section-label">Why was this skipped?</div>
         <div class="detail-skipped-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16" style="flex-shrink:0">
+          <svg class="detail-skipped-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
             <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/>
           </svg>
           ${esc(event.skipReason || 'Data source returned nothing to act on.')}
