@@ -106,7 +106,7 @@
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 14px;
+  border-radius: 20px;
   font-family: var(--font-ui);
   font-size: 13px;
   font-weight: 600;
@@ -554,7 +554,7 @@
 
 .templates-modal-cancel-btn {
   padding: 9px 18px;
-  border-radius: 12px;
+  border-radius: 20px;
   border: 1px solid var(--border-subtle);
   background: transparent;
   color: var(--text-secondary);
@@ -574,7 +574,7 @@
 
 .templates-modal-save-btn {
   padding: 9px 22px;
-  border-radius: 12px;
+  border-radius: 20px;
   border: none;
   background: var(--accent);
   color: #fff;
