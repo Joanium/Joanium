@@ -15,8 +15,17 @@ export function openConfirm({
   !(function () {
     if (document.getElementById('generic-confirm-backdrop')) return;
     const el = document.createElement('div');
-    ((el.innerHTML =
-      '\n    <div id="generic-confirm-backdrop">\n      <div class="generic-confirm-box">\n        <div class="generic-confirm-icon generic-confirm-icon--default" id="generic-confirm-icon"></div>\n        <h3 id="generic-confirm-title"></h3>\n        <p id="generic-confirm-body"></p>\n        <div class="generic-confirm-actions">\n          <button class="generic-confirm-btn generic-confirm-btn--cancel" id="generic-confirm-cancel">Cancel</button>\n          <button class="generic-confirm-btn generic-confirm-btn--confirm" id="generic-confirm-ok"></button>\n        </div>\n      </div>\n    </div>'),
+    ((el.innerHTML = `<div id="generic-confirm-backdrop">
+        <div class="generic-confirm-box">
+          <div class="generic-confirm-icon generic-confirm-icon--default" id="generic-confirm-icon"></div>
+          <h3 id="generic-confirm-title"></h3>
+          <p id="generic-confirm-body"></p>
+          <div class="generic-confirm-actions">
+            <button class="generic-confirm-btn generic-confirm-btn--cancel" id="generic-confirm-cancel">Cancel</button>
+            <button class="generic-confirm-btn generic-confirm-btn--confirm" id="generic-confirm-ok"></button>
+          </div>
+        </div>
+      </div>`),
       document.body.appendChild(el.firstElementChild),
       document.getElementById('generic-confirm-cancel')?.addEventListener('click', closeConfirm),
       document.getElementById('generic-confirm-backdrop')?.addEventListener('click', (event) => {
