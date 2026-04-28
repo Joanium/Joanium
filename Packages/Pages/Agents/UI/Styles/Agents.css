@@ -115,8 +115,6 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: var(--bg-secondary);
-  border: 1.5px dashed var(--border);
   border-radius: var(--radius-lg);
   animation: fadeIn 0.4s var(--ease-out-expo) both;
 }

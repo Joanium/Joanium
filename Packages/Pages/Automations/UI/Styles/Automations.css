@@ -83,8 +83,6 @@
   padding: 80px 32px;
   gap: 16px;
   text-align: center;
-  background: var(--bg-secondary);
-  border: 1.5px dashed var(--border);
   border-radius: 28px;
   animation: fadeIn 0.4s var(--ease-out-expo) both;
 }
