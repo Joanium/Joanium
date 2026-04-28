@@ -2214,17 +2214,3 @@
   height: 13px;
   flex-shrink: 0;
 }
-
-.agent-prompt-preview {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  padding: 12px 14px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 14px;
-}
