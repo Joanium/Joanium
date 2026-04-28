@@ -1020,8 +1020,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px;
+  padding: 80px 32px;
   color: var(--text-muted);
+  text-align: center;
 }
 .agents-empty > svg {
   opacity: 0.25;
@@ -1035,7 +1036,7 @@
 }
 .agents-empty p {
   font-size: 13.5px;
-  margin: 0 0 24px;
+  margin: 0;
   max-width: 360px;
   line-height: 1.6;
 }

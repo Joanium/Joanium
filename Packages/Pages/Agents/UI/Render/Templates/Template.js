@@ -27,7 +27,13 @@ export function getAgentsHTML() {
 
     <div id="agents-empty" class="agents-empty" hidden>
       <div class="agents-empty-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-3.14Z" stroke-linecap="round"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-3.14Z" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="10" rx="2"/>
+          <path d="M9 11V8a3 3 0 0 1 6 0v3"/>
+          <circle cx="9" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="15" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+          <path d="M12 3v2"/>
+        </svg>
       </div>
       <h3>${t('agents.noAgentsYet')}</h3>
       <p>${t('agents.noAgentsDesc')}</p>
