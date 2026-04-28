@@ -63,6 +63,51 @@
 .page-empty-cta:active {
   transform: translateY(0);
 }
+
+/* ── shared-empty-* aliases (used by Templates and newer pages) ───────────── */
+
+.shared-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--accent-dim);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 0 28px var(--accent-glow);
+}
+.shared-empty-icon svg {
+  width: 26px;
+  height: 26px;
+}
+.shared-empty-cta {
+  margin-top: 8px;
+  padding: 10px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    filter var(--transition-fast);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+.shared-empty-cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 12px 32px var(--accent-glow);
+}
+.shared-empty-cta:active {
+  transform: translateY(0);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

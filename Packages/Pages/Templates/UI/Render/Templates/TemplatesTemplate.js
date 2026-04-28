@@ -1,3 +1,5 @@
+import { t } from '../../../../../System/I18n/index.js';
+
 export function getTemplatesHTML() {
   return /* html */ `
 <div class="templates-page">
@@ -7,20 +9,27 @@ export function getTemplatesHTML() {
     <!-- Page header -->
     <div class="page-tagline-header">
       <div class="page-tagline-left">
-        <span class="page-tagline-badge">Templates</span>
-        <h1 class="page-tagline-title" data-i18n="templates.title">Templates</h1>
-        <p class="page-tagline-desc" data-i18n="templates.description">
-          Save reusable prompts as /slash triggers. Type the trigger in chat and the prompt expands instantly.
-        </p>
+        <h1 class="page-tagline-title">
+          ${t('templates.title')}
+          <span class="page-tagline-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 width="12" height="12">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+              <path d="M9 12h6M9 16h4" stroke-linecap="round"/>
+            </svg>
+            ${t('templates.tagline')}
+          </span>
+        </h1>
+        <p class="page-tagline-desc">${t('templates.description')}</p>
       </div>
       <div class="page-tagline-right">
-        <span class="page-tagline-count" id="templates-count">0 templates</span>
         <button class="templates-add-btn" id="templates-add-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          New Template
+          ${t('templates.newTemplate')}
         </button>
       </div>
     </div>
@@ -31,7 +40,8 @@ export function getTemplatesHTML() {
            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="text" id="templates-search" placeholder="Search slash triggers..."
+      <input type="text" id="templates-search"
+             placeholder="${t('templates.searchPlaceholder')}"
              class="templates-search-input" autocomplete="off" spellcheck="false" />
       <button id="templates-search-clear" class="templates-search-clear" aria-label="Clear search">×</button>
     </div>
@@ -48,12 +58,10 @@ export function getTemplatesHTML() {
           <path d="M9 3v18"/><path d="M3 9h6"/><path d="M3 15h6"/>
         </svg>
       </div>
-      <h2 data-i18n="templates.noTemplatesYet">No templates yet</h2>
-      <p data-i18n="templates.noTemplatesDesc">
-        Create your first template to save a reusable /slash prompt trigger.
-      </p>
+      <h2>${t('templates.noTemplatesYet')}</h2>
+      <p>${t('templates.noTemplatesDesc')}</p>
       <button class="shared-empty-cta" id="templates-create-first">
-        Create your first template
+        ${t('templates.createFirst')}
       </button>
     </div>
 
@@ -63,7 +71,7 @@ export function getTemplatesHTML() {
   <div class="templates-modal-backdrop" id="templates-modal-backdrop">
     <div class="templates-modal" role="dialog" aria-modal="true" aria-labelledby="templates-modal-eyebrow">
       <div class="templates-modal-header">
-        <span class="templates-modal-eyebrow" id="templates-modal-eyebrow">Template</span>
+        <span class="templates-modal-eyebrow" id="templates-modal-eyebrow">${t('templates.eyebrow')}</span>
         <button id="templates-modal-close" class="templates-modal-close" aria-label="Close modal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
@@ -76,42 +84,52 @@ export function getTemplatesHTML() {
 
         <div>
           <label class="templates-label" for="templates-trigger-input">
-            Slash Trigger
+            ${t('templates.triggerLabel')}
           </label>
           <div class="templates-trigger-input-wrapper">
             <span class="templates-trigger-prefix">/</span>
             <input type="text" id="templates-trigger-input"
-                   placeholder="test" autocomplete="off" spellcheck="false" />
+                   placeholder="${t('templates.triggerPlaceholder')}"
+                   autocomplete="off" spellcheck="false" />
           </div>
           <span class="templates-trigger-hint" id="templates-trigger-hint"></span>
         </div>
 
         <div>
-          <label class="templates-label" for="templates-label-input">Label</label>
+          <label class="templates-label" for="templates-label-input">
+            ${t('templates.labelLabel')}
+          </label>
           <input class="templates-field" type="text" id="templates-label-input"
-                 placeholder="Test Prompt" autocomplete="off" />
+                 placeholder="${t('templates.labelPlaceholder')}" autocomplete="off" />
         </div>
 
         <div>
           <label class="templates-label" for="templates-desc-input">
-            Description <span class="templates-optional">(optional)</span>
+            ${t('templates.descriptionLabel')}
+            <span class="templates-optional">(${t('templates.optional')})</span>
           </label>
           <input class="templates-field" type="text" id="templates-desc-input"
-                 placeholder="What this template does" autocomplete="off" />
+                 placeholder="${t('templates.descriptionPlaceholder')}" autocomplete="off" />
         </div>
 
         <div>
-          <label class="templates-label" for="templates-prompt-input">Prompt</label>
+          <label class="templates-label" for="templates-prompt-input">
+            ${t('templates.promptLabel')}
+          </label>
           <textarea class="templates-field templates-prompt-textarea"
                     id="templates-prompt-input" rows="7"
-                    placeholder="The full prompt text that will replace /trigger in the chat composer..."></textarea>
+                    placeholder="${t('templates.promptPlaceholder')}"></textarea>
         </div>
 
       </div>
 
       <div class="templates-modal-footer">
-        <button id="templates-modal-cancel" class="templates-modal-cancel-btn">Cancel</button>
-        <button id="templates-modal-save" class="templates-modal-save-btn">Save Template</button>
+        <button id="templates-modal-cancel" class="templates-modal-cancel-btn">
+          ${t('templates.cancel')}
+        </button>
+        <button id="templates-modal-save" class="templates-modal-save-btn">
+          ${t('templates.saveTemplate')}
+        </button>
       </div>
     </div>
   </div>

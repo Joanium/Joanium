@@ -20,9 +20,28 @@
 /* ── Generic page-tagline-* header (used by Templates and newer pages) ────── */
 
 .page-tagline-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
   margin-bottom: 28px;
 }
 
+.page-tagline-left {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.page-tagline-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Badge sits inline inside the h1/h2 — matches .agents-tagline-badge pattern */
 .page-tagline-badge {
   display: inline-flex;
   align-items: center;
@@ -36,7 +55,8 @@
   background: color-mix(in srgb, var(--accent) 10%, var(--bg-secondary));
   color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  margin-bottom: 10px;
+  vertical-align: middle;
+  margin-left: 6px;
 }
 
 .page-tagline-badge svg {
@@ -50,18 +70,23 @@
   color: var(--text-primary);
   letter-spacing: -0.4px;
   margin: 0 0 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .page-tagline-desc {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.6;
-  max-width: 520px;
-  margin: 0 0 8px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .page-tagline-count {
-  display: block;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);

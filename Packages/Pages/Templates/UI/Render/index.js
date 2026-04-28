@@ -32,7 +32,6 @@ let _editingId = null; // null = create mode, string = edit mode
 let searchWrapper = null;
 let searchInput = null;
 let searchClearBtn = null;
-let countEl = null;
 let grid = null;
 let emptyEl = null;
 let addBtn = null;
@@ -86,13 +85,6 @@ function validateTrigger(raw, editingId = null) {
 
 function render(query = '') {
   const total = _allTemplates.length;
-
-  if (countEl) {
-    countEl.textContent =
-      total === 1
-        ? t('templates.templateCount', { count: total })
-        : t('templates.templatesCount', { count: total });
-  }
 
   if (!grid) return;
 
@@ -351,7 +343,6 @@ export function mount(outlet, { navigate: _navigate }) {
   searchWrapper = document.getElementById('templates-search-wrapper');
   searchInput = document.getElementById('templates-search');
   searchClearBtn = document.getElementById('templates-search-clear');
-  countEl = document.getElementById('templates-count');
   grid = document.getElementById('templates-grid');
   emptyEl = document.getElementById('templates-empty');
   addBtn = document.getElementById('templates-add-btn');
@@ -437,7 +428,6 @@ export function mount(outlet, { navigate: _navigate }) {
     searchWrapper = null;
     searchInput = null;
     searchClearBtn = null;
-    countEl = null;
     grid = null;
     emptyEl = null;
     addBtn = null;
