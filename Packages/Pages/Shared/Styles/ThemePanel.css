@@ -99,6 +99,11 @@
     inset 0 0 0 1.5px rgba(255, 255, 255, 0.3),
     0 0 0 2.5px rgba(255, 255, 255, 0.12);
 }
+/* System theme swatch — dark on the left half, light on the right half,
+   works on macOS, Windows, and Linux without any native dependencies. */
+.swatch-system {
+  background: conic-gradient(#1a1a1a 180deg, #f5f4f1 180deg);
+}
 .swatch-dark {
   background: conic-gradient(#1a1a1a 180deg, #cc785c 180deg);
 }

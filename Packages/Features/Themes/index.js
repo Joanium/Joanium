@@ -1,6 +1,10 @@
 !(function () {
-  const theme = localStorage.getItem('ow-theme') || 'light';
-  document.documentElement.setAttribute('data-theme', theme);
+  const savedTheme = localStorage.getItem('ow-theme') || 'dark';
+  let resolvedTheme = savedTheme;
+  if (savedTheme === 'system') {
+    resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', resolvedTheme);
   const font = localStorage.getItem('ow-font') || 'Sora';
   document.documentElement.style.setProperty('--font-ui', `'${font}', sans-serif`);
   if (localStorage.getItem('ow-animations') === 'off') {
