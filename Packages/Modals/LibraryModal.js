@@ -2,6 +2,7 @@ import { state } from '../System/State.js';
 import { t, applyI18n } from '../System/I18n/index.js';
 import { escapeHtml, fullDateTime, timeAgo } from '../System/Utils.js';
 import { createModal } from '../System/ModalFactory.js';
+import { openConfirm } from '../System/ConfirmDialog.js';
 
 const PINNED_KEY = 'joanium-pinned-chats';
 const MAX_PINS = 3;
@@ -39,6 +40,7 @@ function currentChatScope() {
 export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {}) {
   const searchInput = () => document.getElementById('library-search');
   const chatListEl = () => document.getElementById('chat-list');
+  const deleteAllBtn = () => document.getElementById('library-delete-all');
 
   function syncHeader() {
     const title = document.getElementById('library-modal-title');
@@ -57,6 +59,10 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
     const filtered = query
       ? chats.filter((c) => (c.title || '').toLowerCase().includes(query))
       : chats;
+
+    // Show/hide delete-all button based on whether there are any chats
+    const btn = deleteAllBtn();
+    if (btn) btn.style.display = chats.length > 0 ? '' : 'none';
 
     if (!filtered.length) {
       list.innerHTML = `<div class="lp-empty">${
@@ -195,16 +201,30 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
 
         <div class="settings-modal-body library-modal-body">
           <div class="library-search-shell">
-            <div class="lp-search-wrap">
-              <svg class="lp-search-icon" viewBox="0 0 24 24"
-                   fill="none" stroke="currentColor" aria-hidden="true">
-                <circle cx="11" cy="11" r="7"/>
-                <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
-              </svg>
-              <input type="text" id="library-search"
-                     data-i18n-placeholder="library.searchPlaceholder"
-                     placeholder="Search chats…"
-                     autocomplete="off" spellcheck="false"/>
+            <div class="lp-search-row">
+              <div class="lp-search-wrap">
+                <svg class="lp-search-icon" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7"/>
+                  <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
+                </svg>
+                <input type="text" id="library-search"
+                       data-i18n-placeholder="library.searchPlaceholder"
+                       placeholder="Search chats…"
+                       autocomplete="off" spellcheck="false"/>
+              </div>
+              <button
+                class="lp-delete-all-btn"
+                id="library-delete-all"
+                type="button"
+                title="Delete all chats"
+                style="display:none"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+                </svg>
+                Delete All
+              </button>
             </div>
           </div>
           <div class="library-list-shell">
@@ -222,6 +242,33 @@ export function initLibraryModal({ onChatSelect: onChatSelect = () => {} } = {})
           (await window.electronAPI?.invoke('get-chats', currentChatScope())) ?? [],
           searchInput()?.value ?? '',
         );
+      });
+
+      document.getElementById('library-delete-all')?.addEventListener('click', async () => {
+        const isWorkspace = !!state.activeProject;
+        const confirmed = await openConfirm({
+          title: isWorkspace
+            ? `Delete all chats in "${state.activeProject.name}"?`
+            : 'Delete all your chats?',
+          body: isWorkspace
+            ? `This will permanently delete every chat in the "${state.activeProject.name}" workspace. This cannot be undone.`
+            : 'This will permanently delete all your chats. This cannot be undone.',
+          confirmText: 'Delete All',
+          cancelText: 'Cancel',
+          variant: 'danger',
+        });
+        if (!confirmed) return;
+
+        const scope = currentChatScope();
+        const chats = (await window.electronAPI?.invoke('get-chats', scope)) ?? [];
+
+        // Unpin all and delete each chat
+        for (const chat of chats) {
+          unpinChat(chat.id);
+          await window.electronAPI?.invoke('delete-chat', chat.id, scope);
+        }
+
+        await refreshChatList();
       });
 
       const chatList = chatListEl();
