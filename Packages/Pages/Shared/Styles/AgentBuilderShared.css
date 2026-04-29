@@ -1,0 +1,21 @@
+/* Shared agent-builder utilities reused by Agents and Automations. */
+.button-icon-sm {
+  width: 14px;
+  height: 14px;
+}
+
+.field-required {
+  color: var(--accent);
+}
+
+.field-optional {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.agent-textarea--prompt {
+  min-height: 160px;
+  max-height: 320px;
+}

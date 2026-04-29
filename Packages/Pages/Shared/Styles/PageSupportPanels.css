@@ -1,0 +1,5 @@
+/* Shared utility panels reused across app pages. */
+@import './AvatarPanel.css';
+@import './Settings.css';
+@import './Shortcuts.css';
+@import './Providers.css';

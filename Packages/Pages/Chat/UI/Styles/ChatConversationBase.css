@@ -1,0 +1,5 @@
+/* Shared chat conversation styles reused by chat-derived pages. */
+@import './ModelSelector.css';
+@import './Chat.css';
+@import './CodeBlock.css';
+@import './MessageActions.css';

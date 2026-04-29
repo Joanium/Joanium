@@ -35,7 +35,7 @@
 .page-empty p {
   font-size: 13px;
   color: var(--text-muted);
-  max-width: 340px;
+  max-width: var(--page-empty-copy-max-width, 340px);
   line-height: 1.6;
 }
 .page-empty-cta {

@@ -1,0 +1,3 @@
+/* Shared chat composer shell reused by chat-derived pages. */
+@import './Welcome.css';
+@import './Input.css';

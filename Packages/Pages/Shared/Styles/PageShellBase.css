@@ -1,0 +1,6 @@
+/* Shared page shell frame used by app pages. */
+@import './Animations.css';
+@import './Layout.css';
+@import './Titlebar.css';
+@import './Sidebar.css';
+@import './Scrollbar.css';

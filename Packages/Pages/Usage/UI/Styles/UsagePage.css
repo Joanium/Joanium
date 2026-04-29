@@ -1,59 +1,14 @@
-/* 1. Motion tokens + all @keyframes */
-@import '../../../Shared/Styles/Animations.css';
-
-/* 2. Shell & page layout */
-@import '../../../Shared/Styles/Layout.css';
-
-/* 3. Top bar */
-@import '../../../Shared/Styles/Titlebar.css';
-
-/* 4. Left nav */
-@import '../../../Shared/Styles/Sidebar.css';
-
-/* 5. Scrollbar (global, load early) */
-@import '../../../Shared/Styles/Scrollbar.css';
-
-/* 6. Theme picker */
+/* Shared page shell */
+@import '../../../Shared/Styles/PageShellBase.css';
 @import '../../../Shared/Styles/ThemePanel.css';
-
-/* 7. Avatar panel */
-@import '../../../Shared/Styles/AvatarPanel.css';
-
-/* 8. Settings */
-@import '../../../Shared/Styles/Settings.css';
-
-/* 9. Shortcuts */
-@import '../../../Shared/Styles/Shortcuts.css';
-
-/* 10. API Providers */
-@import '../../../Shared/Styles/Providers.css';
-
-/* 11. Library */
+@import '../../../Shared/Styles/PageSupportPanels.css';
 @import '../../../Shared/Styles/Library.css';
-
-/* 12. About */
 @import '../../../Shared/Styles/About.css';
-
-/* 13. Connectors */
-@import '../../../Shared/Styles/Connectors.css';
-
-/* 14. Memory */
-@import '../../../Shared/Styles/Memory.css';
-
-/* 15. Footer credits + chips */
+@import '../../../Shared/Styles/ConnectorsAndMemory.css';
 @import '../../../Shared/Styles/Footer.css';
+@import '../../../Shared/Styles/ThemeTokens.css';
 
-/* 16. Global themes */
-@import '../../../Shared/Styles/Themes.css';
-
-/* 17. Root-level CSS variables */
-@import '../../../Shared/Styles/Root.css';
-
-/* 18. Shared tagline badge for pages */
+/* Page-specific styles */
 @import '../../../Shared/Styles/PageTaglineBadge.css';
-
-/* 19. Core Usage UI */
 @import './Usage.css';
-
-/* 20. Free connectors (reuse from Chat but scoped) */
 @import '../../../Shared/Styles/FreeConnectors.css';

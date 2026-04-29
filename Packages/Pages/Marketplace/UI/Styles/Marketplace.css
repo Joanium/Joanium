@@ -173,45 +173,9 @@
   font-size: 12.5px;
   line-height: 1.6;
 }
-.page-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 32px;
-  gap: 16px;
-  text-align: center;
-  background: var(--bg-secondary);
-  border: 1.5px dashed var(--border);
-  border-radius: var(--radius-lg);
-  animation: fadeIn 0.4s var(--ease-out-expo) both;
-}
-.page-empty-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  background: var(--accent-dim);
-  border: 1.5px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  box-shadow: 0 0 28px var(--accent-glow);
-}
-.page-empty-icon svg {
-  width: 26px;
-  height: 26px;
-}
-.page-empty h3 {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.page-empty p {
-  font-size: 13px;
-  color: var(--text-muted);
-  max-width: 420px;
-  line-height: 1.6;
+
+#marketplace-empty {
+  --page-empty-copy-max-width: 420px;
 }
 .marketplace-grid {
   display: grid;
