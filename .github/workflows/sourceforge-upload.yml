@@ -1,26 +1,30 @@
 name: Upload Releases to SourceForge
 
 on:
-  # Manual run button
   workflow_dispatch:
 
-  # Automatically runs when a GitHub Release is published
   release:
     types: [published]
+
+permissions:
+  contents: read
 
 jobs:
   upload:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download release assets
+      - name: Download Release Assets
         uses: robinraju/release-downloader@v1
         with:
           latest: true
+          fileName: '*'
           out-file-path: release-files
 
-      - name: Show downloaded files
-        run: ls -R release-files
+      - name: Verify Downloaded Files
+        run: |
+          echo "FILES:"
+          find release-files
 
       - name: Upload to SourceForge
         uses: burnett01/rsync-deployments@7.0.1
