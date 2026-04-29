@@ -171,10 +171,17 @@ async function leaveProject() {
     setLanguage(detail.lang);
     applyI18n(document.body);
   });
-  const user = await _settings.loadUser().catch(() => null);
-  _sidebar.setUser(user?.name ?? '');
+  const [user, avatarUrl] = await Promise.all([
+    _settings.loadUser().catch(() => null),
+    window.electronAPI?.invoke?.('get-avatar').catch(() => null),
+  ]);
+  _sidebar.setUser(user?.name ?? '', avatarUrl || null);
   window.addEventListener('jo:user-profile-updated', (e) => {
-    _sidebar.setUser(e.detail?.name ?? '');
+    // Preserve the current avatar — only the name changed
+    const currentAvatar = window.electronAPI?.invoke?.('get-avatar').catch(() => null);
+    Promise.resolve(currentAvatar).then((url) => {
+      _sidebar.setUser(e.detail?.name ?? '', url || null);
+    });
   });
   window.electronAPI?.on?.('navigate', (page) => navigate(page));
   window.appNavigate = navigate;

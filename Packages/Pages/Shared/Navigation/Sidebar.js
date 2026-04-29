@@ -183,13 +183,17 @@ export function initSidebar({
       },
     }
   );
-  function setUser(name, avatarUrl = null) {
+  function setUser(name, avatarUrl = undefined) {
+    // undefined  → keep whatever avatar is currently shown
+    // null       → explicitly clear avatar (show initials)
+    // string     → use the new URL
+    if (avatarUrl !== undefined) _currentAvatarUrl = avatarUrl;
     const displayName = String(name ?? '').trim() || 'User',
       initials = getInitials(displayName),
       avatarBtnEl = document.getElementById('sidebar-avatar-btn');
     if (avatarBtnEl) {
-      if (avatarUrl) {
-        avatarBtnEl.innerHTML = `<img src="${avatarUrl}" alt="${initials}" class="sidebar-avatar-img" />`;
+      if (_currentAvatarUrl) {
+        avatarBtnEl.innerHTML = `<img src="${_currentAvatarUrl}" alt="${initials}" class="sidebar-avatar-img" />`;
       } else {
         avatarBtnEl.textContent = initials;
       }
@@ -197,8 +201,8 @@ export function initSidebar({
     const badge = document.getElementById('avatar-panel-badge'),
       nameEl = document.getElementById('avatar-panel-name');
     if (badge) {
-      if (avatarUrl) {
-        badge.innerHTML = `<img src="${avatarUrl}" alt="${initials}" class="ap-badge-img" />`;
+      if (_currentAvatarUrl) {
+        badge.innerHTML = `<img src="${_currentAvatarUrl}" alt="${initials}" class="ap-badge-img" />`;
       } else {
         badge.textContent = initials;
       }
