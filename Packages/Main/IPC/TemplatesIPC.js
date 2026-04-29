@@ -31,8 +31,14 @@ const BUILT_IN_IDS = new Set([
 ]);
 
 function ensureDir() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(INDEX_FILE)) fs.writeFileSync(INDEX_FILE, '[]', 'utf-8');
+  // mkdirSync with recursive:true is already idempotent — no existsSync check needed.
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  // 'wx' flag: create only if the file does not exist (atomic, no TOCTOU).
+  try {
+    fs.writeFileSync(INDEX_FILE, '[]', { encoding: 'utf-8', flag: 'wx' });
+  } catch (err) {
+    if (err.code !== 'EEXIST') throw err;
+  }
 }
 
 function readIndex() {
@@ -59,10 +65,10 @@ function sanitizeId(trigger) {
 
 function readTemplate(id) {
   const filePath = path.join(DATA_DIR, `${id}.json`);
-  if (!fs.existsSync(filePath)) return null;
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  } catch {
+  } catch (err) {
+    // ENOENT = file doesn't exist; SyntaxError = bad JSON — both are non-fatal.
     return null;
   }
 }
@@ -74,7 +80,11 @@ function writeTemplate(data) {
 
 function deleteTemplateFile(id) {
   const filePath = path.join(DATA_DIR, `${id}.json`);
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  try {
+    fs.unlinkSync(filePath);
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+  }
 }
 
 export function register() {
