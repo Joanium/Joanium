@@ -1639,7 +1639,11 @@ export function initSettingsModal() {
       // show initials placeholder
       const name = document.getElementById('settings-user-name')?.value?.trim() || 'User';
       const initials = getInitials(name);
-      preview.innerHTML = `<span class="settings-avatar-initials">${initials}</span>`;
+      preview.innerHTML = '';
+      const initialsSpan = document.createElement('span');
+      initialsSpan.className = 'settings-avatar-initials';
+      initialsSpan.textContent = initials;
+      preview.appendChild(initialsSpan);
       if (removeBtn) removeBtn.style.display = 'none';
     }
   }
