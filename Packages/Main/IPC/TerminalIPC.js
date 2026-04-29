@@ -731,18 +731,27 @@ export function register() {
           for (const file of files) {
             if (matches.length >= limit) break;
             if (!isProbablyTextFile(file)) continue;
-            let stat;
+            // Open once → fstatSync + readFileSync on the same fd, eliminating the
+            // TOCTOU window between the size check and the read (CodeQL js/file-system-race).
+            let raw = '';
+            let fd;
             try {
-              stat = fs.statSync(file);
+              fd = fs.openSync(file, 'r');
             } catch {
               continue;
             }
-            if (stat.size > 512e3) continue;
-            let raw = '';
             try {
-              raw = fs.readFileSync(file, 'utf-8');
+              const stat = fs.fstatSync(fd);
+              if (stat.size > 512e3) continue;
+              raw = fs.readFileSync(fd, 'utf-8');
             } catch {
               continue;
+            } finally {
+              try {
+                fs.closeSync(fd);
+              } catch {
+                /* ignore */
+              }
             }
             const lines = raw.split('\n');
             for (let index = 0; index < lines.length; index++) {
