@@ -1,0 +1,26 @@
+name: Upload Releases to SourceForge
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download release assets
+        uses: robinraju/release-downloader@v1
+        with:
+          latest: true
+          out-file-path: release-files
+
+      - name: Upload to SourceForge
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz
+          path: release-files/
+          remote_path: /home/frs/project/joanium/
+          remote_host: frs.sourceforge.net
+          remote_user: withinjoel
+          remote_key: ${{ secrets.SF_SSH_KEY }}
