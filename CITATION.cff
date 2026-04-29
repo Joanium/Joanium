@@ -1,7 +1,7 @@
 cff-version: 1.2.0
-message: "If you use Joanium in your work or research, please cite it using this metadata."
+message: 'If you use Joanium in your work or research, please cite it using this metadata.'
 type: software
-title: "Joanium"
+title: 'Joanium'
 abstract: >
   Joanium is a local-first AI desktop assistant that combines multi-model chat,
   scheduled automations, background agents, MCP server support, and native
@@ -11,9 +11,9 @@ authors:
   - given-names: Joel
     family-names: Jolly
     alias: withinJoel
-    website: "https://joeljolly.vercel.app"
-repository-code: "https://github.com/joanium/joanium"
-url: "https://joanium.com"
+    website: 'https://joeljolly.vercel.app'
+repository-code: 'https://github.com/joanium/joanium'
+url: 'https://joanium.com'
 license: Apache License 2.0
 keywords:
   - ai-assistant

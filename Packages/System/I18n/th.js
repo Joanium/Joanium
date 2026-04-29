@@ -345,6 +345,23 @@
     createFirst: 'สร้างการทำงานอัตโนมัติแรก',
     eyebrow: 'กำหนดค่าการทำงานอัตโนมัติ',
     titleNew: 'การทำงานอัตโนมัติใหม่',
+    draftEyebrow: 'ผู้สร้างคำสั่ง',
+    draftTitle: 'อธิบายครั้งเดียว ร่างได้ทันที',
+    draftDescription:
+      'เขียนสิ่งที่คุณต้องการด้วยภาษาธรรมดา Joanium จะร่างกำหนดการ แหล่งข้อมูล คำแนะนำ และผลลัพธ์เพื่อให้คุณตรวจสอบก่อนบันทึก',
+    draftPlaceholder:
+      'ตัวอย่าง: ทุกวันธรรมดาเวลา 8.00 น. สรุป Gmail ที่ยังไม่ได้อ่านและแจ้งเตือนฉันเกี่ยวกับข้อความด่วน',
+    generateDraft: 'สร้างแบบร่าง',
+    generatingDraft: 'กำลังสร้าง...',
+    generatingDraftTitle: 'กำลังสร้างแบบร่างระบบอัตโนมัติของคุณ',
+    generatingDraftBody:
+      'Joanium กำลังเปลี่ยนคำขอด้วยภาษาธรรมดาของคุณให้เป็นงานอัตโนมัติที่แก้ไขได้',
+    draftReadyTitle: 'แบบร่างพร้อมแล้ว',
+    draftFailedTitle: 'สร้างแบบร่างไม่สำเร็จ',
+    draftFailedBody: 'Joanium ไม่สามารถสร้างแบบร่างได้ในขณะนี้',
+    exampleGmail: 'สรุป Gmail ที่ยังไม่ได้อ่าน',
+    exampleGithub: 'ตรวจสอบ GitHub PR',
+    exampleWeather: 'สรุปสภาพอากาศรายวัน',
     automationName: 'ชื่อการทำงานอัตโนมัติ',
     identityLabel: 'ตัวตน',
     descriptionLabel: 'คำอธิบาย',

@@ -349,6 +349,23 @@
     createFirst: 'तुमचे पहिले ऑटोमेशन तयार करा',
     eyebrow: 'ऑटोमेशन कॉन्फिगर करा',
     titleNew: 'नवीन ऑटोमेशन',
+    draftEyebrow: 'प्रॉम्प्ट बिल्डर',
+    draftTitle: 'एकदा वर्णन करा. त्वरित ड्राफ्ट करा.',
+    draftDescription:
+      'तुम्हाला जे हवे आहे ते सोप्या भाषेत लिहा. Joanium शेड्यूल, डेटा स्रोत, सूचना आणि आउटपुटचा मसुदा तयार करेल जेणेकरून तुम्ही सेव्ह करण्यापूर्वी पुनरावलोकन करू शकाल.',
+    draftPlaceholder:
+      'उदाहरण: प्रत्येक आठवड्याच्या दिवशी सकाळी 8 वाजता, न वाचलेले Gmail सारांशित करा आणि मला तातडीच्या संदेशांबद्दल सूचित करा.',
+    generateDraft: 'ड्राफ्ट तयार करा',
+    generatingDraft: 'तयार करत आहे...',
+    generatingDraftTitle: 'तुमचा ऑटोमेशन ड्राफ्ट तयार करत आहे',
+    generatingDraftBody:
+      'Joanium तुमची सोप्या भाषेतील विनंती संपादन करण्यायोग्य ऑटोमेशन जॉब्समध्ये बदलत आहे.',
+    draftReadyTitle: 'ड्राफ्ट तयार आहे',
+    draftFailedTitle: 'ड्राफ्ट तयार करणे अयशस्वी',
+    draftFailedBody: 'Joanium सध्या ड्राफ्ट तयार करू शकले नाही.',
+    exampleGmail: 'न वाचलेले Gmail संक्षिप्त',
+    exampleGithub: 'GitHub PR तपासणी',
+    exampleWeather: 'दैनिक हवामान संक्षिप्त',
     automationName: 'ऑटोमेशनचे नाव',
     identityLabel: 'ओळख',
     descriptionLabel: 'वर्णन',

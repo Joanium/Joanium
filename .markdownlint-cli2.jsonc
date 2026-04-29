@@ -2,12 +2,8 @@
   "config": {
     "default": true,
     "MD013": false,
-    "MD033": false
+    "MD033": false,
   },
-  "ignores": [
-    "node_modules",
-    "dist",
-    "CHANGELOG.md"
-  ],
-  "globs": ["**/*.md", "**/*.mdx"]
+  "ignores": ["node_modules", "dist", "CHANGELOG.md"],
+  "globs": ["**/*.md", "**/*.mdx"],
 }

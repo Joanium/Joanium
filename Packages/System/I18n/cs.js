@@ -350,6 +350,23 @@
     createFirst: 'Vytvořte svou první automatizaci',
     eyebrow: 'Konfigurace automatizace',
     titleNew: 'Nová automatizace',
+    draftEyebrow: 'Tvůrce promptů',
+    draftTitle: 'Popište to jednou. Vytvořte to okamžitě.',
+    draftDescription:
+      'Napište, co chcete, v běžném jazyce. Joanium připraví plán, zdroje dat, instrukce a výstup, abyste si je mohli před uložením zkontrolovat.',
+    draftPlaceholder:
+      'Příklad: Každý všední den v 8:00 ráno shrnout nepřečtené e-maily na Gmailu a upozornit mě na naléhavé zprávy.',
+    generateDraft: 'Generovat návrh',
+    generatingDraft: 'Generování...',
+    generatingDraftTitle: 'Vytváření návrhu automatizace',
+    generatingDraftBody:
+      'Joanium mění váš požadavek v běžném jazyce na upravitelné automatizační úlohy.',
+    draftReadyTitle: 'Návrh je připraven',
+    draftFailedTitle: 'Generování návrhu selhalo',
+    draftFailedBody: 'Joanium právě teď nemůže vygenerovat návrh.',
+    exampleGmail: 'Shrnutí nepřečtených Gmail',
+    exampleGithub: 'Kontrola GitHub PR',
+    exampleWeather: 'Denní zpráva o počasí',
     automationName: 'Název automatizace',
     identityLabel: 'Identita',
     descriptionLabel: 'Popis',

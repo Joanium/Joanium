@@ -350,6 +350,23 @@
     createFirst: 'Utwórz pierwszą automatyzację',
     eyebrow: 'Konfiguracja automatyzacji',
     titleNew: 'Nowa automatyzacja',
+    draftEyebrow: 'Kreator zapytań',
+    draftTitle: 'Opisz to raz. Utwórz projekt natychmiast.',
+    draftDescription:
+      'Napisz, czego chcesz, w prostym języku. Joanium przygotuje harmonogram, źródła danych, instrukcje i dane wyjściowe, abyś mógł je przejrzeć przed zapisaniem.',
+    draftPlaceholder:
+      'Przykład: W każdy dzień roboczy o 8:00 rano podsumuj nieprzeczytane e-maile w Gmailu i powiadom mnie o pilnych wiadomościach.',
+    generateDraft: 'Generuj projekt',
+    generatingDraft: 'Generowanie...',
+    generatingDraftTitle: 'Budowanie projektu automatyzacji',
+    generatingDraftBody:
+      'Joanium zamienia Twoje proste żądanie w edytowalne zadania automatyzacji.',
+    draftReadyTitle: 'Projekt gotowy',
+    draftFailedTitle: 'Generowanie projektu nie powiodło się',
+    draftFailedBody: 'Joanium nie może w tej chwili wygenerować projektu.',
+    exampleGmail: 'Skrót nieprzeczytanych Gmail',
+    exampleGithub: 'Sprawdzenie PR w GitHub',
+    exampleWeather: 'Codzienny skrót pogody',
     automationName: 'Nazwa automatyzacji',
     identityLabel: 'Tożsamość',
     descriptionLabel: 'Opis',

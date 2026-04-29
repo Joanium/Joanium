@@ -358,6 +358,23 @@
     createFirst: 'Cruthaigh do chéad Uathoibriú',
     eyebrow: 'Cumraigh Uathoibriú',
     titleNew: 'Uathoibriú Nua',
+    draftEyebrow: 'Tógálaí Pras',
+    draftTitle: 'Déan cur síos air uair amháin. Dréachtaigh láithreach é.',
+    draftDescription:
+      'Scríobh an méid atá uait i ngnáthchaint. Dréachtóidh Joanium an sceideal, na foinsí sonraí, an treoir agus an t-aschur chun go bhféadfaidh tú athbhreithniú a dhéanamh sula sábhálann tú.',
+    draftPlaceholder:
+      'Sampla: Gach lá oibre ag 8 AM, déan achoimre ar Gmail neamhléite agus cuir in iúl dom faoi theachtaireachtaí práinneacha.',
+    generateDraft: 'Gin Dréacht',
+    generatingDraft: 'Ag giniúint...',
+    generatingDraftTitle: 'Ag tógáil do dhréacht uathoibrithe',
+    generatingDraftBody:
+      'Tá Joanium ag iompú d’iarratais i ngnáthchaint go poist uathoibrithe in-eagarthóireachta.',
+    draftReadyTitle: 'Dréacht réidh',
+    draftFailedTitle: 'Theip ar ghiniúint dréachta',
+    draftFailedBody: 'Ní fhéadfadh Joanium dréacht a ghiniúint anois.',
+    exampleGmail: 'Achoimre Gmail neamhléite',
+    exampleGithub: 'Seiceáil GitHub PR',
+    exampleWeather: 'Achoimre aimsire laethúil',
     automationName: 'Ainm Uathoibrithe',
     identityLabel: 'Féiniúlacht',
     descriptionLabel: 'Cur síos',

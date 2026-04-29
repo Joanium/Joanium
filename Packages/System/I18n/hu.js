@@ -357,6 +357,23 @@
     createFirst: 'Hozd létre az első automatizálásodat',
     eyebrow: 'Automatizálás konfigurálása',
     titleNew: 'Új automatizálás',
+    draftEyebrow: 'Prompt Építő',
+    draftTitle: 'Írd le egyszer. Készítsen vázlatot azonnal.',
+    draftDescription:
+      'Írja le, mit szeretne egyszerű nyelven. A Joanium elkészíti az ütemtervet, az adatforrásokat, az utasításokat és a kimenetet, hogy mentés előtt áttekinthesse őket.',
+    draftPlaceholder:
+      'Példa: Minden hétköznap reggel 8-kor foglalja össze az olvasatlan Gmail-üzeneteket, és értesítsen a sürgős üzenetekről.',
+    generateDraft: 'Vázlat generálása',
+    generatingDraft: 'Generálás...',
+    generatingDraftTitle: 'Az automatizálási vázlat készítése',
+    generatingDraftBody:
+      'A Joanium egyszerű nyelvű kérését szerkeszthető automatizálási feladatokká alakítja.',
+    draftReadyTitle: 'A vázlat kész',
+    draftFailedTitle: 'A vázlat generálása sikertelen',
+    draftFailedBody: 'A Joanium jelenleg nem tud vázlatot generálni.',
+    exampleGmail: 'Olvasatlan Gmail összefoglaló',
+    exampleGithub: 'GitHub PR ellenőrzés',
+    exampleWeather: 'Napi időjárás-jelentés',
     automationName: 'Automatizálás neve',
     identityLabel: 'Azonosság',
     descriptionLabel: 'Leírás',

@@ -352,6 +352,23 @@
     createFirst: 'Crie sua primeira Automação',
     eyebrow: 'Configurar Automação',
     titleNew: 'Nova Automação',
+    draftEyebrow: 'Construtor de Prompts',
+    draftTitle: 'Descreva uma vez. Elabore instantaneamente.',
+    draftDescription:
+      'Escreva o que deseja em linguagem simples. O Joanium irá elaborar o cronograma, fontes de dados, instruções e saída para que você possa revisar antes de salvar.',
+    draftPlaceholder:
+      'Exemplo: Todos os dias da semana às 8h, resuma o Gmail não lido e me avise sobre mensagens urgentes.',
+    generateDraft: 'Gerar Rascunho',
+    generatingDraft: 'Gerando...',
+    generatingDraftTitle: 'Construindo seu rascunho de automação',
+    generatingDraftBody:
+      'O Joanium está transformando sua solicitação em linguagem simples em tarefas de automação editáveis.',
+    draftReadyTitle: 'Rascunho pronto',
+    draftFailedTitle: 'Falha ao gerar o rascunho',
+    draftFailedBody: 'O Joanium não pôde gerar um rascunho no momento.',
+    exampleGmail: 'Resumo do Gmail não lido',
+    exampleGithub: 'Verificação de PR no GitHub',
+    exampleWeather: 'Resumo meteorológico diário',
     automationName: 'Nome da Automação',
     identityLabel: 'Identidade',
     descriptionLabel: 'Descrição',

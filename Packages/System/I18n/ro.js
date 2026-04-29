@@ -357,6 +357,23 @@
     createFirst: 'Creează prima ta automatizare',
     eyebrow: 'Configurează automatizarea',
     titleNew: 'Automatizare nouă',
+    draftEyebrow: 'Constructor de Prompts',
+    draftTitle: 'Descrie o dată. Redactează instantaneu.',
+    draftDescription:
+      'Scrieți ceea ce doriți într-un limbaj simplu. Joanium va redacta programul, sursele de date, instrucțiunile și rezultatul, astfel încât să le puteți examina înainte de a salva.',
+    draftPlaceholder:
+      'Exemplu: În fiecare zi a săptămânii la ora 8 AM, rezumați Gmail-urile necitite și notificați-mă despre mesajele urgente.',
+    generateDraft: 'Generează schiță',
+    generatingDraft: 'Se generează...',
+    generatingDraftTitle: 'Se construiește schița dvs. de automatizare',
+    generatingDraftBody:
+      'Joanium vă transformă solicitarea în limbaj simplu în joburi de automatizare editabile.',
+    draftReadyTitle: 'Schiță pregătită',
+    draftFailedTitle: 'Generarea schiței a eșuat',
+    draftFailedBody: 'Joanium nu a putut genera o schiță în acest moment.',
+    exampleGmail: 'Rezumat Gmail necitit',
+    exampleGithub: 'Verificare PR GitHub',
+    exampleWeather: 'Rezumat meteo zilnic',
     automationName: 'Numele automatizării',
     identityLabel: 'Identitate',
     descriptionLabel: 'Descriere',

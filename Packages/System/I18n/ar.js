@@ -341,6 +341,23 @@
     createFirst: 'أنشئ أتمتتك الأولى',
     eyebrow: 'تكوين الأتمتة',
     titleNew: 'أتمتة جديدة',
+    draftEyebrow: 'منشئ المطالبات',
+    draftTitle: 'صفها مرة واحدة. صغها على الفور.',
+    draftDescription:
+      'اكتب ما تريده بلغة إنجليزية بسيطة. ستقوم Joanium بصياغة الجدول الزمني ومصادر البيانات والتعليمات والمخرجات حتى تتمكن من مراجعتها قبل الحفظ.',
+    draftPlaceholder:
+      'مثال: كل يوم من أيام الأسبوع في الساعة 8 صباحًا، قم بتلخيص رسائل Gmail غير المقروءة وإخطاري بالرسائل العاجلة.',
+    generateDraft: 'توليد مسودة',
+    generatingDraft: 'جاري التوليد...',
+    generatingDraftTitle: 'بناء مسودة الأتمتة الخاصة بك',
+    generatingDraftBody:
+      'تحول Joanium طلبك باللغة الإنجليزية البسيطة إلى وظائف أتمتة قابلة للتحرير.',
+    draftReadyTitle: 'المسودة جاهزة',
+    draftFailedTitle: 'فشل إنشاء المسودة',
+    draftFailedBody: 'لا تستطيع Joanium إنشاء مسودة في الوقت الحالي.',
+    exampleGmail: 'موجز Gmail غير المقروء',
+    exampleGithub: 'فحص طلبات السحب (PR) في GitHub',
+    exampleWeather: 'موجز الطقس اليومي',
     automationName: 'اسم الأتمتة',
     identityLabel: 'الهوية',
     descriptionLabel: 'الوصف',

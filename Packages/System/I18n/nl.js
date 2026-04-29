@@ -353,6 +353,23 @@
     createFirst: 'Maak je eerste automatisering aan',
     eyebrow: 'Automatisering configureren',
     titleNew: 'Nieuwe automatisering',
+    draftEyebrow: 'Prompt Builder',
+    draftTitle: 'Beschrijf het één keer. Stel het direct op.',
+    draftDescription:
+      'Schrijf wat je wilt in gewone taal. Joanium stelt het schema, de gegevensbronnen, de instructies en de uitvoer op, zodat je deze kunt bekijken voordat je ze opslaat.',
+    draftPlaceholder:
+      'Voorbeeld: Elke doordeweekse dag om 8.00 uur, vat ongelezen Gmail samen en breng me op de hoogte van dringende berichten.',
+    generateDraft: 'Concept genereren',
+    generatingDraft: 'Genereren...',
+    generatingDraftTitle: 'Uw automatiseringsconcept samenstellen',
+    generatingDraftBody:
+      'Joanium zet uw verzoek in gewone taal om in bewerkbare automatiseringstaken.',
+    draftReadyTitle: 'Concept klaar',
+    draftFailedTitle: 'Concept genereren mislukt',
+    draftFailedBody: 'Joanium kan momenteel geen concept genereren.',
+    exampleGmail: 'Overzicht ongelezen Gmail',
+    exampleGithub: 'GitHub PR-controle',
+    exampleWeather: 'Dagelijks weeroverzicht',
     automationName: 'Automatiseringsnaam',
     identityLabel: 'Identiteit',
     descriptionLabel: 'Beschrijving',

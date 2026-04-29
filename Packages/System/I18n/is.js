@@ -350,6 +350,23 @@
     createFirst: 'Búðu til fyrstu sjálfvirknina þína',
     eyebrow: 'Stilla sjálfvirkni',
     titleNew: 'Ný sjálfvirkni',
+    draftEyebrow: 'Spyrjabirgðir',
+    draftTitle: 'Lýstu því einu sinni. Gerðu drög samstundis.',
+    draftDescription:
+      'Skrifaðu það sem þú vilt á einföldu máli. Joanium mun semja áætlunina, gagnalindir, leiðbeiningar og úttak svo þú getir farið yfir áður en þú vistar.',
+    draftPlaceholder:
+      'Dæmi: Á hverjum virkum degi kl. 8, draga saman ólesinn Gmail og láta mig vita af brýnum skilaboðum.',
+    generateDraft: 'Mynda Drög',
+    generatingDraft: 'Myndar...',
+    generatingDraftTitle: 'Smíðar sjálfvirknidrögin þín',
+    generatingDraftBody:
+      'Joanium er að breyta einfaldri beiðni þinni í breytanleg sjálfvirkniverkefni.',
+    draftReadyTitle: 'Drög tilbúin',
+    draftFailedTitle: 'Tókst ekki að mynda drög',
+    draftFailedBody: 'Joanium gat ekki myndað drög í augnablikinu.',
+    exampleGmail: 'Stutt yfirlit yfir ólesinn Gmail',
+    exampleGithub: 'GitHub PR athugun',
+    exampleWeather: 'Dagleg veðurfregn',
     automationName: 'Heiti sjálfvirkni',
     identityLabel: 'Auðkenni',
     descriptionLabel: 'Lýsing',

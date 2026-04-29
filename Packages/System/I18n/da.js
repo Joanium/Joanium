@@ -351,6 +351,23 @@
     createFirst: 'Opret din første automatisering',
     eyebrow: 'Konfigurer automatisering',
     titleNew: 'Ny automatisering',
+    draftEyebrow: 'Prompt-bygger',
+    draftTitle: 'Beskriv det én gang. Udkast det øjeblikkeligt.',
+    draftDescription:
+      'Skriv hvad du vil have på almindeligt sprog. Joanium vil udarbejde tidsplanen, datakilder, instruktioner og output, så du kan gennemgå før du gemmer.',
+    draftPlaceholder:
+      'Eksempel: Hver hverdag kl. 8.00, opsummer ulæst Gmail og giv mig besked om vigtige beskeder.',
+    generateDraft: 'Generer udkast',
+    generatingDraft: 'Genererer...',
+    generatingDraftTitle: 'Opbygger dit automatiseringsudkast',
+    generatingDraftBody:
+      'Joanium forvandler din almindelige anmodning til redigerbare automatiseringsjob.',
+    draftReadyTitle: 'Udkast klar',
+    draftFailedTitle: 'Generering af udkast mislykkedes',
+    draftFailedBody: 'Joanium kunne ikke generere et udkast lige nu.',
+    exampleGmail: 'Ulæst Gmail-oversigt',
+    exampleGithub: 'GitHub PR-tjek',
+    exampleWeather: 'Daglig vejroversigt',
     automationName: 'Automatiseringsnavn',
     identityLabel: 'Identitet',
     descriptionLabel: 'Beskrivelse',

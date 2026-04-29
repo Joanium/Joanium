@@ -352,6 +352,23 @@
     createFirst: 'İlk Otomasyonunuzu Oluşturun',
     eyebrow: 'Otomasyonu Yapılandır',
     titleNew: 'Yeni Otomasyon',
+    draftEyebrow: 'İstem Oluşturucu',
+    draftTitle: 'Bir kez açıklayın. Anında taslak oluşturun.',
+    draftDescription:
+      'Ne istediğinizi sade bir dille yazın. Joanium, kaydetmeden önce inceleyebilmeniz için zamanlamayı, veri kaynaklarını, talimatı ve çıktıyı tasarlayacaktır.',
+    draftPlaceholder:
+      "Örnek: Hafta içi her gün sabah 8'de, okunmamış Gmail'i özetle ve acil mesajlar hakkında beni uyar.",
+    generateDraft: 'Taslak Oluştur',
+    generatingDraft: 'Oluşturuluyor...',
+    generatingDraftTitle: 'Otomasyon taslağınız oluşturuluyor',
+    generatingDraftBody:
+      'Joanium, sade dilli isteğinizi düzenlenebilir otomasyon işlerine dönüştürüyor.',
+    draftReadyTitle: 'Taslak hazır',
+    draftFailedTitle: 'Taslak oluşturma başarısız oldu',
+    draftFailedBody: 'Joanium şu anda bir taslak oluşturamadı.',
+    exampleGmail: 'Okunmamış Gmail özeti',
+    exampleGithub: 'GitHub PR kontrolü',
+    exampleWeather: 'Günlük hava durumu özeti',
     automationName: 'Otomasyon Adı',
     identityLabel: 'Kimlik',
     descriptionLabel: 'Açıklama',

@@ -360,6 +360,23 @@
     createFirst: 'Créez votre première automatisation',
     eyebrow: "Configurer l'automatisation",
     titleNew: 'Nouvelle automatisation',
+    draftEyebrow: 'Générateur de Prompts',
+    draftTitle: 'Décrivez-le une fois. Rédigez-le instantanément.',
+    draftDescription:
+      'Écrivez ce que vous voulez en langage clair. Joanium rédigera le calendrier, les sources de données, les instructions et la sortie pour que vous puissiez les vérifier avant de les enregistrer.',
+    draftPlaceholder:
+      'Exemple : Chaque jour de la semaine à 8 h, résumez les e-mails non lus sur Gmail et informez-moi des messages urgents.',
+    generateDraft: 'Générer le Brouillon',
+    generatingDraft: 'Génération...',
+    generatingDraftTitle: "Construction de votre brouillon d'automatisation",
+    generatingDraftBody:
+      "Joanium transforme votre demande en langage clair en tâches d'automatisation modifiables.",
+    draftReadyTitle: 'Brouillon prêt',
+    draftFailedTitle: 'Échec de la génération du brouillon',
+    draftFailedBody: "Joanium n'a pas pu générer de brouillon pour le moment.",
+    exampleGmail: 'Résumé Gmail non lu',
+    exampleGithub: 'Vérification PR GitHub',
+    exampleWeather: 'Bulletin météo quotidien',
     automationName: "Nom de l'automatisation",
     identityLabel: 'Identité',
     descriptionLabel: 'Description',

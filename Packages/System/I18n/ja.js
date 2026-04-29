@@ -353,6 +353,23 @@
     createFirst: '最初のオートメーションを作成',
     eyebrow: 'オートメーションを設定',
     titleNew: '新しいオートメーション',
+    draftEyebrow: 'プロンプトビルダー',
+    draftTitle: '一度説明すれば、すぐにドラフトを作成。',
+    draftDescription:
+      '簡単な言葉でやりたいことを書いてください。Joaniumがスケジュール、データソース、指示、出力をドラフトとして作成するので、保存する前に確認できます。',
+    draftPlaceholder:
+      '例: 毎週平日の午前8時に未読のGmailを要約し、緊急のメッセージについて通知する。',
+    generateDraft: 'ドラフトを生成',
+    generatingDraft: '生成中...',
+    generatingDraftTitle: '自動化ドラフトを構築中',
+    generatingDraftBody:
+      'Joaniumは、あなたの簡単な言葉によるリクエストを編集可能な自動化ジョブに変換しています。',
+    draftReadyTitle: 'ドラフトの準備が完了しました',
+    draftFailedTitle: 'ドラフトの生成に失敗しました',
+    draftFailedBody: '現在Joaniumはドラフトを生成できません。',
+    exampleGmail: '未読Gmailの概要',
+    exampleGithub: 'GitHub PRのチェック',
+    exampleWeather: '毎日の天気予報',
     automationName: 'オートメーション名',
     identityLabel: 'アイデンティティ',
     descriptionLabel: '説明',

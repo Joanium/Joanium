@@ -351,6 +351,23 @@
     createFirst: 'Crëwch eich Awtomatiaeth Gyntaf',
     eyebrow: 'Ffurfweddu Awtomatiaeth',
     titleNew: 'Awtomatiaeth Newydd',
+    draftEyebrow: 'Adeiladwr Anogwyr',
+    draftTitle: 'Disgrifiwch unwaith. Drafftiwch yn syth.',
+    draftDescription:
+      "Ysgrifennwch yr hyn rydych chi ei eisiau mewn iaith syml. Bydd Joanium yn drafftio'r amserlen, ffynonellau data, cyfarwyddiadau ac allbwn fel y gallwch adolygu cyn cadw.",
+    draftPlaceholder:
+      'Enghraifft: Bob diwrnod gwaith am 8 AM, crynhowch Gmail sydd heb ei ddarllen a rhowch wybod i mi am negeseuon brys.',
+    generateDraft: 'Cynhyrchu Drafft',
+    generatingDraft: 'Yn Cynhyrchu...',
+    generatingDraftTitle: 'Adeiladu eich drafft awtomeiddio',
+    generatingDraftBody:
+      'Mae Joanium yn troi eich cais syml i dasgau awtomeiddio y gellir eu golygu.',
+    draftReadyTitle: 'Drafft yn barod',
+    draftFailedTitle: 'Methu cynhyrchu drafft',
+    draftFailedBody: 'Ni allai Joanium gynhyrchu drafft ar hyn o bryd.',
+    exampleGmail: 'Crynodeb Gmail heb ei ddarllen',
+    exampleGithub: 'Gwiriad PR GitHub',
+    exampleWeather: 'Crynodeb tywydd dyddiol',
     automationName: "Enw'r Awtomatiaeth",
     identityLabel: 'Hunaniaeth',
     descriptionLabel: 'Disgrifiad',
