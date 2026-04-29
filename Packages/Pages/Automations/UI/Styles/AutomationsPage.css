@@ -2,16 +2,13 @@
 @import '../../../Shared/Styles/PageShellBase.css';
 @import '../../../Chat/UI/Styles/ChatComposerBase.css';
 @import '../../../Chat/UI/Styles/ChatConversationBase.css';
-@import '../../../Shared/Styles/ThemePanel.css';
-@import '../../../Shared/Styles/Library.css';
-@import '../../../Shared/Styles/PageSupportPanels.css';
-@import '../../../Shared/Styles/Footer.css';
-@import '../../../Shared/Styles/About.css';
-@import '../../../Shared/Styles/ThemeTokens.css';
-@import '../../../Shared/Styles/ConnectorsAndMemory.css';
+@import '../../../Shared/Styles/PageChromeBase.css';
 
 /* Page-specific styles */
 @import '../../../Chat/UI/Styles/AgentLog.css';
+@import '../../../Shared/Styles/PageContentBase.css';
+@import '../../../Shared/Styles/PageToggleBase.css';
+@import '../../../Shared/Styles/PageConfirmActions.css';
 @import './Automations.css';
 @import '../../../Shared/Styles/PageTaglineBadge.css';
 @import '../../../Agents/UI/Styles/Agents.css';

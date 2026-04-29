@@ -1,8 +1,7 @@
 /* ─── Lock page — Joanium ─────────────────────────────────────────────────── */
 
 /* 1. Design tokens (themes + root variables) */
-@import '../Shared/Styles/Themes.css';
-@import '../Shared/Styles/Root.css';
+@import '../Shared/Styles/ThemeTokens.css';
 
 /* ─── Layout ─────────────────────────────────────────────────────────────── */
 

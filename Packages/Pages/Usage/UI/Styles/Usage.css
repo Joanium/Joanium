@@ -4,10 +4,13 @@
   text-transform: uppercase;
 }
 
-.activity-list,
-.usage-scroll {
+.activity-list {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+}
+
+.activity-list,
+.usage-scroll {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
@@ -16,20 +19,6 @@
 .model-row-name {
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.usage-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: fadeIn 0.45s var(--ease-out-expo) 50ms both;
-}
-
-.usage-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 32px 40px 60px;
 }
 
 .usage-page-header {
@@ -99,25 +88,6 @@
   flex-wrap: wrap;
 }
 
-.usage-range-btns {
-  display: flex;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 3px;
-  gap: 2px;
-}
-
-.usage-clear-btn,
-.usage-range-btn {
-  background: 0 0;
-  color: var(--text-muted);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 .activity-cost,
 .activity-tokens,
 .provider-cost,
@@ -125,39 +95,6 @@
 .usage-card-value,
 .usage-section-meta {
   font-family: var(--font-mono);
-}
-
-.usage-range-btn {
-  padding: 6px 13px;
-  border-radius: 20px;
-  border: none;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast);
-  white-space: nowrap;
-}
-
-.usage-range-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-secondary);
-}
-
-.usage-range-btn.active {
-  background: var(--accent);
-  color: #fff;
-}
-
-.usage-clear-btn {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .usage-card-icon,
@@ -169,17 +106,6 @@
 .usage-section {
   border: 1px solid var(--border-subtle);
   flex-direction: column;
-}
-
-.usage-clear-btn:hover {
-  background: rgba(220, 60, 60, 0.09);
-  color: #f87171;
-  border-color: rgba(220, 60, 60, 0.25);
-}
-
-.usage-clear-btn svg {
-  width: 13px;
-  height: 13px;
 }
 
 .usage-summary-grid {
@@ -444,9 +370,9 @@
   gap: 0;
   max-height: 320px;
   overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
-  overflow: hidden;
 }
 
 .activity-item {
@@ -596,41 +522,6 @@
   gap: 10px;
   width: 100%;
   margin-top: 4px;
-}
-
-.usage-confirm-cancel,
-.usage-confirm-delete {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition:
-    background var(--transition-fast),
-    transform var(--transition-fast);
-}
-
-.usage-confirm-cancel {
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-}
-
-.usage-confirm-cancel:hover {
-  background: var(--bg-hover);
-}
-
-.usage-confirm-delete {
-  background: rgba(220, 60, 60, 0.15);
-  border-color: rgba(220, 60, 60, 0.3);
-  color: #f87171;
-}
-
-.usage-confirm-delete:hover {
-  background: rgba(220, 60, 60, 0.25);
-  transform: translateY(-1px);
 }
 
 @keyframes fadeIn {

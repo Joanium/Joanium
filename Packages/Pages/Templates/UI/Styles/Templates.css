@@ -3,24 +3,14 @@
 /* ── Page shell ──────────────────────────────────────────────────────────── */
 
 .templates-page {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
   width: 100%;
   height: 100%;
   min-width: 0;
   min-height: 0;
-  animation: fadeIn 0.45s var(--ease-out-expo) 50ms both;
 }
 
 .templates-scroll {
-  flex: 1;
-  overflow-y: auto;
   overflow-x: hidden;
-  padding: 32px 40px 60px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
 
 /* ── Search wrapper ─────────────────────────────────────────────────────── */

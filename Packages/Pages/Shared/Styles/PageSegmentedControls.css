@@ -1,0 +1,73 @@
+/* Shared segmented controls used by analytics and event pages. */
+
+.events-filter-group,
+.usage-range-btns {
+  display: flex;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.events-clear-btn,
+.events-filter-btn,
+.usage-clear-btn,
+.usage-range-btn {
+  background: 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.events-filter-btn,
+.usage-range-btn {
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: none;
+  white-space: nowrap;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.events-filter-btn:hover,
+.usage-range-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.events-filter-btn.active,
+.usage-range-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.events-clear-btn,
+.usage-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.events-clear-btn:hover,
+.usage-clear-btn:hover {
+  background: rgba(220, 60, 60, 0.09);
+  color: #f87171;
+  border-color: rgba(220, 60, 60, 0.25);
+}
+
+.events-clear-btn svg,
+.usage-clear-btn svg {
+  width: 13px;
+  height: 13px;
+}
