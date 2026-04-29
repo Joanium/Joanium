@@ -650,9 +650,34 @@ export function initSettingsModal() {
               <section class="settings-panel active" data-settings-panel="user">
                 <div class="settings-panel-header">
                   <h3 data-i18n="settings.userPanelTitle">User</h3>
-                  <p data-i18n="settings.userPanelDesc">Update your display name, pinned memory note, and custom instructions.</p>
+                  <p data-i18n="settings.userPanelDesc">Update your display name, profile picture, pinned memory note, and custom instructions.</p>
                 </div>
                 <div class="settings-form">
+                  <!-- Profile picture -->
+                  <div class="settings-avatar-row">
+                    <div class="settings-avatar-preview" id="settings-avatar-preview"></div>
+                    <div class="settings-avatar-actions">
+                      <div class="settings-avatar-btn-row">
+                        <label class="settings-avatar-upload-btn" id="settings-avatar-upload-label" title="Upload a profile picture">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="17 8 12 3 7 8" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="12" y1="3" x2="12" y2="15" stroke-linecap="round"/>
+                          </svg>
+                          Upload Photo
+                          <input type="file" id="settings-avatar-input" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" />
+                        </label>
+                        <button id="settings-avatar-remove-btn" class="settings-avatar-remove-btn" type="button" title="Remove profile picture">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 6l-1 14H6L5 6" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          Remove
+                        </button>
+                      </div>
+                      <span class="settings-avatar-hint">PNG, JPG, WEBP or GIF &mdash; max 5 MB</span>
+                    </div>
+                  </div>
                   <label class="settings-field">
                     <span class="settings-field-label" data-i18n="settings.nameLabel">Name</span>
                     <input id="settings-user-name" type="text" maxlength="80" data-i18n-placeholder="settings.namePlaceholder" placeholder="Your name" autocomplete="name"/>
@@ -976,6 +1001,52 @@ export function initSettingsModal() {
           $('settings-import-memory-btn')?.addEventListener('click', () => {
             showImportMemoryModal();
           }),
+          // ── Avatar upload / remove wiring ─────────────────────────────
+          (function () {
+            const avatarInput = $('settings-avatar-input');
+            const removeBtn = $('settings-avatar-remove-btn');
+            if (avatarInput) {
+              avatarInput.addEventListener('change', async () => {
+                const file = avatarInput.files?.[0];
+                if (!file) return;
+                try {
+                  const base64 = await new Promise((res, rej) => {
+                    const reader = new FileReader();
+                    reader.onload = () => res(reader.result.split(',')[1]);
+                    reader.onerror = () => rej(new Error('Could not read file'));
+                    reader.readAsDataURL(file);
+                  });
+                  const result = await window.electronAPI?.invoke('upload-avatar', base64);
+                  if (result?.avatarUrl) {
+                    _renderAvatarPreview(result.avatarUrl);
+                    window.dispatchEvent(
+                      new CustomEvent('jo:avatar-changed', {
+                        detail: { avatarUrl: result.avatarUrl },
+                      }),
+                    );
+                  }
+                } catch (err) {
+                  console.warn('[Settings] Failed to upload avatar:', err);
+                  setFeedback('Could not upload photo.', 'error');
+                }
+                avatarInput.value = '';
+              });
+            }
+            if (removeBtn) {
+              removeBtn.addEventListener('click', async () => {
+                try {
+                  await window.electronAPI?.invoke('remove-avatar');
+                  _renderAvatarPreview(null);
+                  window.dispatchEvent(
+                    new CustomEvent('jo:avatar-changed', { detail: { avatarUrl: null } }),
+                  );
+                } catch (err) {
+                  console.warn('[Settings] Failed to remove avatar:', err);
+                  setFeedback('Could not remove photo.', 'error');
+                }
+              });
+            }
+          })(),
           // Re-apply translations whenever the user switches language
           window.addEventListener('jo:language-changed', () => {
             applyI18n(backdrop);
@@ -1557,6 +1628,21 @@ export function initSettingsModal() {
         : $('mcp-add-btn')?.focus()
       : $('settings-providers-list')?.querySelector('input')?.focus();
   }
+  function _renderAvatarPreview(avatarUrl) {
+    const preview = document.getElementById('settings-avatar-preview');
+    const removeBtn = document.getElementById('settings-avatar-remove-btn');
+    if (!preview) return;
+    if (avatarUrl) {
+      preview.innerHTML = `<img src="${avatarUrl}" alt="Profile picture" class="settings-avatar-img" />`;
+      if (removeBtn) removeBtn.style.display = '';
+    } else {
+      // show initials placeholder
+      const name = document.getElementById('settings-user-name')?.value?.trim() || 'User';
+      const initials = getInitials(name);
+      preview.innerHTML = `<span class="settings-avatar-initials">${initials}</span>`;
+      if (removeBtn) removeBtn.style.display = 'none';
+    }
+  }
   function applyUserProfile(user = {}) {
     const rawName = String(user?.name ?? '').trim(),
       displayName = rawName || 'User',
@@ -2031,6 +2117,11 @@ export function initSettingsModal() {
               ($('settings-custom-instructions').value = customInstructions ?? ''),
             renderProviders(),
             updateSaveButton());
+          // Load avatar preview
+          try {
+            const avatarUrl = await window.electronAPI?.invoke('get-avatar');
+            _renderAvatarPreview(avatarUrl || null);
+          } catch {}
         })();
       } catch {
         setFeedback(t('settings.couldNotLoad'), 'error');

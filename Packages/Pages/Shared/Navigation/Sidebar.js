@@ -49,6 +49,7 @@ export function initSidebar({
   if (!sidebarEl) throw new Error('[Sidebar] Missing #sidebar element in the DOM.');
   if (!themePanelEl) throw new Error('[Sidebar] Missing #theme-panel element in the DOM.');
   if (!avatarPanelEl) throw new Error('[Sidebar] Missing #avatar-panel element in the DOM.');
+  let _currentAvatarUrl = null;
   ((sidebarEl.innerHTML = (function (activePage, navigation = {}) {
     const nav = { top: navigation.top ?? [], bottom: navigation.bottom ?? [] },
       btn = (id, icon, tip, i18nKey = '') =>
@@ -104,6 +105,12 @@ export function initSidebar({
     document.getElementById('avatar-about-btn')?.addEventListener('click', (e) => {
       (e.stopPropagation(), avatarPanelEl.classList.remove('open'), onAbout());
     }),
+    // ── Listen for avatar changes from Settings ──────────────────────
+    window.addEventListener('jo:avatar-changed', (e) => {
+      _currentAvatarUrl = e.detail?.avatarUrl || null;
+      const displayName = document.getElementById('avatar-panel-name')?.textContent || 'User';
+      setUser(displayName, _currentAvatarUrl);
+    }),
     document.addEventListener('click', (e) => {
       (avatarPanelEl.contains(e.target) ||
         e.target === avatarBtn ||
@@ -118,8 +125,12 @@ export function initSidebar({
     }),
     (async () => {
       try {
-        const user = await window.electronAPI?.invoke?.('get-user');
-        setUser(String(user?.name ?? '').trim() || 'User');
+        const [user, avatarUrl] = await Promise.all([
+          window.electronAPI?.invoke?.('get-user'),
+          window.electronAPI?.invoke?.('get-avatar'),
+        ]);
+        _currentAvatarUrl = avatarUrl || null;
+        setUser(String(user?.name ?? '').trim() || 'User', _currentAvatarUrl);
       } catch {}
     })(),
     // Update sidebar text when the app language changes
@@ -172,13 +183,26 @@ export function initSidebar({
       },
     }
   );
-  function setUser(name) {
+  function setUser(name, avatarUrl = null) {
     const displayName = String(name ?? '').trim() || 'User',
       initials = getInitials(displayName),
       avatarBtnEl = document.getElementById('sidebar-avatar-btn');
-    avatarBtnEl && (avatarBtnEl.textContent = initials);
+    if (avatarBtnEl) {
+      if (avatarUrl) {
+        avatarBtnEl.innerHTML = `<img src="${avatarUrl}" alt="${initials}" class="sidebar-avatar-img" />`;
+      } else {
+        avatarBtnEl.textContent = initials;
+      }
+    }
     const badge = document.getElementById('avatar-panel-badge'),
       nameEl = document.getElementById('avatar-panel-name');
-    (badge && (badge.textContent = initials), nameEl && (nameEl.textContent = displayName));
+    if (badge) {
+      if (avatarUrl) {
+        badge.innerHTML = `<img src="${avatarUrl}" alt="${initials}" class="ap-badge-img" />`;
+      } else {
+        badge.textContent = initials;
+      }
+    }
+    if (nameEl) nameEl.textContent = displayName;
   }
 }

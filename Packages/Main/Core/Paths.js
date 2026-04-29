@@ -56,6 +56,12 @@ export const Paths = {
   get DATA_DIR() {
     return path.join(getStateRoot(), 'Data');
   },
+  get PROFILE_DIR() {
+    return path.join(getStateRoot(), 'Data', 'Profile');
+  },
+  get AVATAR_FILE() {
+    return path.join(getStateRoot(), 'Data', 'Profile', 'Avatar.png');
+  },
   get CHATS_DIR() {
     return path.join(getStateRoot(), 'Data', 'Chats');
   },

@@ -1,7 +1,9 @@
+import fs from 'fs';
 import path from 'path';
 import {
   ensureDir,
   ensureParentDir,
+  fileExists,
   loadJson,
   loadText,
   persistJson,
@@ -341,4 +343,31 @@ export function readText(filePath) {
 }
 export function writeText(filePath, content) {
   persistText(filePath, content);
+}
+export function saveAvatar(base64Data) {
+  ensureDir(Paths.PROFILE_DIR);
+  const buffer = Buffer.from(base64Data, 'base64');
+  fs.writeFileSync(Paths.AVATAR_FILE, buffer);
+  writeUser({ profile_picture: 'Data/Profile/Avatar.png' });
+  return Paths.AVATAR_FILE;
+}
+export function getAvatarAsBase64() {
+  try {
+    if (!fileExists(Paths.AVATAR_FILE)) return null;
+    const buf = fs.readFileSync(Paths.AVATAR_FILE);
+    return `data:image/png;base64,${buf.toString('base64')}`;
+  } catch {
+    return null;
+  }
+}
+export function removeAvatar() {
+  try {
+    if (fileExists(Paths.AVATAR_FILE)) fs.unlinkSync(Paths.AVATAR_FILE);
+  } catch {}
+  const user = readUser();
+  const next = { ...user };
+  delete next.profile_picture;
+  ensureParentDir(Paths.USER_FILE);
+  persistJson(Paths.USER_FILE, next);
+  return next;
 }

@@ -137,9 +137,17 @@
   cursor: pointer;
   border: none;
   margin-top: 4px;
+  overflow: hidden;
   transition:
     box-shadow var(--transition-mid),
     transform var(--transition-fast);
+}
+.sidebar-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 @media (hover: hover) and (pointer: fine) {
   .sidebar-avatar:hover {

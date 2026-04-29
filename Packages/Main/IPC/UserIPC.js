@@ -94,5 +94,24 @@ export function register() {
         });
         return { user };
       }),
+    ),
+    ipcMain.handle(
+      'upload-avatar',
+      wrapHandler((base64Data) => {
+        if (!base64Data || typeof base64Data !== 'string') throw new Error('Invalid image data.');
+        UserService.saveAvatar(base64Data);
+        const avatarUrl = UserService.getAvatarAsBase64();
+        return { avatarUrl };
+      }),
+    ),
+    ipcMain.handle(
+      'get-avatar',
+      wrapRead(() => UserService.getAvatarAsBase64()),
+    ),
+    ipcMain.handle(
+      'remove-avatar',
+      wrapHandler(() => {
+        UserService.removeAvatar();
+      }),
     ));
 }
