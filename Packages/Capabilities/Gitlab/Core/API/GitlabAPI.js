@@ -257,10 +257,14 @@ export async function getCommits(credentials, owner, repo, perPage = 20) {
   ).map(normalizeCommit);
 }
 export async function getNotifications(credentials, unreadOnly = !0) {
-  const state = unreadOnly ? '?state=pending' : '';
-  return ((await gitlabFetch(`/todos${state}&per_page=50`, credentials.token)) ?? []).map(
-    normalizeTodo,
-  );
+  const fetchTodos = async (state) => {
+    const qs = new URLSearchParams({ per_page: '50', state: state });
+    return (await gitlabFetch(`/todos?${qs.toString()}`, credentials.token)) ?? [];
+  };
+  const todos = unreadOnly
+    ? await fetchTodos('pending')
+    : [...(await fetchTodos('pending')), ...(await fetchTodos('done'))];
+  return todos.map(normalizeTodo);
 }
 export async function getBranches(credentials, owner, repo) {
   return (
@@ -1286,10 +1290,23 @@ export async function getRepoSubscription(credentials, owner, repo) {
   return { subscribed: null, ignored: !1, reason: null };
 }
 export async function getUserFollowers(credentials, username, perPage = 30) {
-  return [];
+  const user = await getUserInfo(credentials, username);
+  return (
+    (await gitlabFetch(`/users/${user.id}/followers?per_page=${perPage}`, credentials.token).catch(
+      () => [],
+    )) ?? []
+  ).map((follower) => ({ ...normalizeUser(follower), html_url: follower.web_url }));
 }
 export async function getUserFollowing(credentials, username, perPage = 30) {
-  return [];
+  const user = await getUserInfo(credentials, username);
+  return (
+    (await gitlabFetch(`/users/${user.id}/following?per_page=${perPage}`, credentials.token).catch(
+      () => [],
+    )) ?? []
+  ).map((followedUser) => ({
+    ...normalizeUser(followedUser),
+    html_url: followedUser.web_url,
+  }));
 }
 export async function getUserGists(credentials, username, perPage = 20) {
   const user = await getUserInfo(credentials, username);

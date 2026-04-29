@@ -10,12 +10,19 @@ export const sentryDataSourceCollectors = {
     if (!issues.length) return 'EMPTY: No unresolved Sentry issues found.';
     const fatal = issues.filter((i) => i.level === 'fatal');
     const errors = issues.filter((i) => i.level === 'error');
+    const summary = [
+      `${issues.length} total`,
+      fatal.length ? `${fatal.length} fatal` : null,
+      errors.length ? `${errors.length} error` : null,
+    ]
+      .filter(Boolean)
+      .join(', ');
     return [
-      `Sentry Unresolved Issues — ${issues.length} total${fatal.length ? ` (${fatal.length} fatal)` : ''}:`,
+      `Sentry Unresolved Issues - ${summary}:`,
       '',
       ...issues.map(
         (iss, i) =>
-          `${i + 1}. [${(iss.level ?? 'unknown').toUpperCase()}] ${iss.title} — ${iss.count} events, last seen ${iss.lastSeen ? new Date(iss.lastSeen).toLocaleDateString() : 'unknown'} (${iss.project})`,
+          `${i + 1}. [${(iss.level ?? 'unknown').toUpperCase()}] ${iss.title} - ${iss.count} events, last seen ${iss.lastSeen ? new Date(iss.lastSeen).toLocaleDateString() : 'unknown'} (${iss.project})`,
       ),
     ].join('\n');
   },
