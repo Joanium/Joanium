@@ -2,13 +2,7 @@
 @import '../../../Shared/Styles/PageShellBase.css';
 @import '../../../Chat/UI/Styles/ChatComposerBase.css';
 @import '../../../Chat/UI/Styles/ChatConversationBase.css';
-@import '../../../Shared/Styles/ThemePanel.css';
-@import '../../../Shared/Styles/Library.css';
-@import '../../../Shared/Styles/PageSupportPanels.css';
-@import '../../../Shared/Styles/Footer.css';
-@import '../../../Shared/Styles/About.css';
-@import '../../../Shared/Styles/ThemeTokens.css';
-@import '../../../Shared/Styles/ConnectorsAndMemory.css';
+@import '../../../Shared/Styles/PageChromeBase.css';
 
 /* Page-specific styles */
 @import '../../../Chat/UI/Styles/AgentLog.css';

@@ -370,9 +370,9 @@
   gap: 0;
   max-height: 320px;
   overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
-  overflow: hidden;
 }
 
 .activity-item {
