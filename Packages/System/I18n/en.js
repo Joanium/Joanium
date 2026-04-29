@@ -346,6 +346,23 @@ export default {
     createFirst: 'Create your first Automation',
     eyebrow: 'Configure Automation',
     titleNew: 'New Automation',
+    draftEyebrow: 'Prompt Builder',
+    draftTitle: 'Describe it once. Draft it instantly.',
+    draftDescription:
+      'Write what you want in plain English. Joanium will draft the schedule, data sources, instruction, and output so you can review before saving.',
+    draftPlaceholder:
+      'Example: Every weekday at 8 AM, summarize unread Gmail and notify me about urgent messages.',
+    generateDraft: 'Generate Draft',
+    generatingDraft: 'Generating...',
+    generatingDraftTitle: 'Building your automation draft',
+    generatingDraftBody:
+      'Joanium is turning your plain-English request into editable automation jobs.',
+    draftReadyTitle: 'Draft ready',
+    draftFailedTitle: 'Draft generation failed',
+    draftFailedBody: 'Joanium could not generate a draft right now.',
+    exampleGmail: 'Unread Gmail brief',
+    exampleGithub: 'GitHub PR check',
+    exampleWeather: 'Daily weather brief',
     automationName: 'Automation Name',
     identityLabel: 'Identity',
     descriptionLabel: 'Description',

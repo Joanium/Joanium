@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import defineEngine from '../../../System/Contracts/DefineEngine.js';
 import { shouldRunNow } from '../Scheduling/Scheduling.js';
 import { loadDataSources } from './loadDataSources.js';
+import { callModel } from './ModelInvoker.js';
 const __filename = fileURLToPath(import.meta.url),
   __dirname = path.dirname(__filename),
   DATA_SOURCES_DIR = path.resolve(__dirname, '..', 'DataSources'),
@@ -68,85 +69,6 @@ async function trackUsage({
   } catch (err) {
     console.warn('[AutomationEngine] trackUsage failed:', err.message);
   }
-}
-async function callModel(providerData, modelId, systemPrompt, userMessage) {
-  if (!providerData?.configured)
-    throw new Error(`Provider "${providerData?.provider}" is not configured`);
-  const {
-      provider: pid,
-      endpoint: endpoint,
-      api: api,
-      auth_header: auth_header,
-      auth_prefix: auth_prefix = '',
-    } = providerData,
-    apiKey = String(api ?? '').trim();
-  if (!1 !== providerData.requires_api_key && !apiKey)
-    throw new Error(`No API key for "${providerData?.provider}"`);
-  if ('anthropic' === pid) {
-    const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model: modelId,
-          max_tokens: providerData.models?.[modelId]?.max_output ?? 2048,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userMessage }],
-        }),
-      }),
-      data = await res.json();
-    if (!res.ok) throw new Error(data?.error?.message ?? `Anthropic ${res.status}`);
-    return {
-      text: data.content?.find((block) => 'text' === block.type)?.text ?? '(empty)',
-      inputTokens: data.usage?.input_tokens ?? 0,
-      outputTokens: data.usage?.output_tokens ?? 0,
-    };
-  }
-  if ('google' === pid) {
-    const res = await fetch(endpoint.replace('{model}', modelId) + `?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-        }),
-      }),
-      data = await res.json();
-    if (!res.ok) throw new Error(data?.error?.message ?? `Google ${res.status}`);
-    return {
-      text: data.candidates?.[0]?.content?.parts?.[0]?.text ?? '(empty)',
-      inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
-      outputTokens: data.usageMetadata?.candidatesTokenCount ?? 0,
-    };
-  }
-  const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        ...(auth_header && apiKey ? { [auth_header]: `${auth_prefix}${apiKey}` } : {}),
-        ...('openrouter' === pid
-          ? { 'HTTP-Referer': 'https://www.joanium.com', 'X-Title': 'Joanium' }
-          : {}),
-      },
-      body: JSON.stringify({
-        model: modelId,
-        max_tokens: providerData.models?.[modelId]?.max_output ?? 2048,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessage },
-        ],
-      }),
-    }),
-    data = await res.json();
-  if (!res.ok) throw new Error(data?.error?.message ?? `API ${res.status}`);
-  return {
-    text: data.choices?.[0]?.message?.content ?? '(empty)',
-    inputTokens: data.usage?.prompt_tokens ?? 0,
-    outputTokens: data.usage?.completion_tokens ?? 0,
-  };
 }
 function normalizeTrigger(trigger = {}) {
   const type = trigger?.type ?? DEFAULT_TRIGGER.type;

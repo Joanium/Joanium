@@ -1,6 +1,9 @@
 import { ipcMain } from 'electron';
-export const ipcMeta = { needs: ['automationEngine'] };
-export function register(automationEngine) {
+import { generateAutomationDraft } from '../Core/AutomationDraftGenerator.js';
+export const ipcMeta = {
+  needs: ['automationEngine', 'featureRegistry', 'userService', 'connectorEngine'],
+};
+export function register(automationEngine, featureRegistry, userService, connectorEngine) {
   (ipcMain.handle(
     'launch-automations',
     (event) => (event.sender.send('navigate', 'automations'), { ok: !0 }),
@@ -41,6 +44,22 @@ export function register(automationEngine) {
     ipcMain.handle('run-automation-now', async (_e, automationId) => {
       try {
         return (await automationEngine.runNow(automationId), { ok: !0 });
+      } catch (err) {
+        return { ok: !1, error: err.message };
+      }
+    }),
+    ipcMain.handle('generate-automation-draft', async (_e, payload = {}) => {
+      try {
+        return {
+          ok: !0,
+          ...(await generateAutomationDraft({
+            prompt: payload?.prompt,
+            preferredModel: payload?.preferredModel ?? null,
+            featureRegistry: featureRegistry,
+            connectorEngine: connectorEngine,
+            userService: userService,
+          })),
+        };
       } catch (err) {
         return { ok: !1, error: err.message };
       }

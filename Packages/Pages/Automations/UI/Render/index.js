@@ -14,6 +14,7 @@ import { getAutomationsHTML } from './Templates/Template.js';
 import {
   cloneJobsForEditing,
   generateAgentId,
+  generateJobId,
   resolveModelLabel,
 } from '../../../Agents/UI/Render/Utils/Utils.js';
 import { t } from '../../../../System/I18n/index.js';
@@ -87,6 +88,46 @@ function sanitizeJobForSave(job = {}) {
     trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
   };
 }
+function escapeHtmlText(value = '') {
+  return String(value).replace(/[&<>"]/g, (char) => {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char] ?? char;
+  });
+}
+function hasMeaningfulJob(job = {}) {
+  return !(
+    !String(job.name ?? '').trim() &&
+    !String(job.instruction ?? '').trim() &&
+    !getJobSources(job).some(isMeaningfulSource) &&
+    !(function (output = {}) {
+      return (
+        !!output.type ||
+        Object.entries(output).some(([key, value]) => 'type' !== key && hasConfiguredValue(value))
+      );
+    })(job.output ?? {})
+  );
+}
+function createDraftStatusHTML({ title, notes = [] }) {
+  const safeNotes = Array.isArray(notes)
+    ? notes.map((note) => String(note ?? '').trim()).filter(Boolean)
+    : [];
+  const notesHTML = safeNotes.map((note) => `<li>${escapeHtmlText(note)}</li>`).join('');
+  return `${title}${notesHTML ? `<ul>${notesHTML}</ul>` : ''}`;
+}
+function normalizeDraftJob(job = {}) {
+  return {
+    id: job.id ?? generateJobId(),
+    name: String(job.name ?? '').trim(),
+    enabled: !1 !== job.enabled,
+    trigger: { ...(job.trigger ?? { type: 'daily', time: '08:00' }) },
+    dataSources: getJobSources(job).length
+      ? getJobSources(job).map((source) => ({ ...source }))
+      : [{ type: '' }],
+    instruction: String(job.instruction ?? ''),
+    output: { ...(job.output ?? { type: '' }) },
+    history: [],
+    lastRun: null,
+  };
+}
 export function mount(outlet) {
   outlet.innerHTML = getAutomationsHTML();
   // Move modals to body so position:fixed covers full viewport incl. titlebar
@@ -104,6 +145,10 @@ export function mount(outlet) {
       modalTitleEl: document.getElementById('agent-modal-title-text'),
       modalCloseBtn: document.getElementById('agent-modal-close'),
       modalBodyEl: document.getElementById('agent-modal-body'),
+      draftPromptInput: document.getElementById('automation-draft-prompt'),
+      draftGenerateBtn: document.getElementById('automation-draft-generate-btn'),
+      draftStatusEl: document.getElementById('automation-draft-status'),
+      draftChipsEl: document.getElementById('automation-draft-chips'),
       cancelBtn: document.getElementById('agent-cancel-btn'),
       saveBtn: document.getElementById('agent-save-btn'),
       nameInput: document.getElementById('agent-name'),
@@ -215,6 +260,33 @@ export function mount(outlet) {
     const response = await window.electronAPI?.invoke?.('get-automations').catch(() => null);
     return Array.isArray(response?.automations) ? response.automations : [];
   }
+  function clearDraftStatus() {
+    elements.draftStatusEl &&
+      ((elements.draftStatusEl.hidden = !0),
+      (elements.draftStatusEl.className = 'auto-draft-status'),
+      (elements.draftStatusEl.innerHTML = ''));
+  }
+  function showDraftStatus({ title, notes = [], tone = 'success' }) {
+    elements.draftStatusEl &&
+      ((elements.draftStatusEl.hidden = !1),
+      (elements.draftStatusEl.className = `auto-draft-status ${'error' === tone ? 'is-error' : 'is-success'}`),
+      (elements.draftStatusEl.innerHTML = createDraftStatusHTML({ title: title, notes: notes })));
+  }
+  function applyGeneratedDraft(draft = {}) {
+    ((state.primaryModel = draft?.primaryModel ? { ...draft.primaryModel } : state.primaryModel),
+      (state.jobs = Array.isArray(draft.jobs) ? draft.jobs.map(normalizeDraftJob) : []),
+      elements.nameInput && (elements.nameInput.value = draft?.name ?? ''),
+      elements.descInput && (elements.descInput.value = draft?.description ?? ''),
+      modelPicker.syncPrimaryModelLabel(),
+      jobsController.renderJobsList());
+  }
+  function modalHasDraftContent() {
+    return Boolean(
+      elements.nameInput?.value.trim() ||
+      elements.descInput?.value.trim() ||
+      state.jobs.some(hasMeaningfulJob),
+    );
+  }
   async function openModal(automation = null) {
     ((state.editingId = automation?.id ?? null),
       (state.editingEnabled = automation?.enabled ?? !0),
@@ -224,6 +296,8 @@ export function mount(outlet) {
         (elements.modalTitleEl.textContent = automation
           ? t('automations.editAutomation')
           : t('automations.titleNew')),
+      elements.draftPromptInput && (elements.draftPromptInput.value = ''),
+      clearDraftStatus(),
       elements.nameInput && (elements.nameInput.value = automation?.name ?? ''),
       elements.descInput && (elements.descInput.value = automation?.description ?? ''),
       modelPicker.syncPrimaryModelLabel(),
@@ -241,6 +315,43 @@ export function mount(outlet) {
   const onModalBackdropClick = (event) => {
       event.target === elements.modalBackdrop && closeModal();
     },
+    onDraftGenerateClick = async () => {
+      const prompt = elements.draftPromptInput?.value.trim();
+      if (!prompt) return void elements.draftPromptInput?.focus();
+      if (
+        modalHasDraftContent() &&
+        !window.confirm('Replace the current draft with a new one generated from this prompt?')
+      )
+        return;
+      ((elements.draftGenerateBtn.disabled = !0),
+        (elements.draftGenerateBtn.textContent = t('automations.generatingDraft')));
+      showDraftStatus({
+        title: `<strong>${t('automations.generatingDraftTitle')}</strong>`,
+        notes: [t('automations.generatingDraftBody')],
+      });
+      try {
+        const response = await window.electronAPI?.invoke?.('generate-automation-draft', {
+          prompt: prompt,
+          preferredModel: state.primaryModel ? { ...state.primaryModel } : null,
+        });
+        if (!response?.ok || !response?.draft)
+          throw new Error(response?.error ?? 'Unable to generate a draft right now.');
+        (applyGeneratedDraft(response.draft),
+          showDraftStatus({
+            title: `<strong>${t('automations.draftReadyTitle')}</strong>`,
+            notes: response.draft.notes ?? [],
+          }));
+      } catch (error) {
+        showDraftStatus({
+          title: `<strong>${t('automations.draftFailedTitle')}</strong>`,
+          notes: [error.message ?? t('automations.draftFailedBody')],
+          tone: 'error',
+        });
+      } finally {
+        ((elements.draftGenerateBtn.disabled = !1),
+          (elements.draftGenerateBtn.textContent = t('automations.generateDraft')));
+      }
+    },
     onSaveClick = async () => {
       const name = elements.nameInput?.value.trim();
       if (!name)
@@ -251,26 +362,7 @@ export function mount(outlet) {
           ),
           void elements.nameInput?.focus()
         );
-      const configuredJobs = state.jobs
-        .filter(
-          (job) =>
-            !(function (job = {}) {
-              return !(
-                String(job.name ?? '').trim() ||
-                String(job.instruction ?? '').trim() ||
-                getJobSources(job).some(isMeaningfulSource) ||
-                (function (output = {}) {
-                  return (
-                    !!output.type ||
-                    Object.entries(output).some(
-                      ([key, value]) => 'type' !== key && hasConfiguredValue(value),
-                    )
-                  );
-                })(job.output ?? {})
-              );
-            })(job),
-        )
-        .map(sanitizeJobForSave);
+      const configuredJobs = state.jobs.filter(hasMeaningfulJob).map(sanitizeJobForSave);
       if (
         configuredJobs.length > 0 &&
         (!state.primaryModel?.provider || !state.primaryModel?.modelId)
@@ -347,11 +439,21 @@ export function mount(outlet) {
       'Escape' === event.key &&
         (closeModal(), confirmDialog.close(), historyModal.close(), responseViewer.close());
     },
+    onDraftChipClick = (event) => {
+      const button = event.target.closest?.('.auto-draft-chip');
+      button?.dataset?.prompt &&
+        elements.draftPromptInput &&
+        ((elements.draftPromptInput.value = button.dataset.prompt),
+        elements.draftPromptInput.focus(),
+        clearDraftStatus());
+    },
     onCreateClick = () => openModal();
   return (
     elements.addAgentHeaderBtn?.addEventListener('click', onCreateClick),
     elements.addAgentEmptyBtn?.addEventListener('click', onCreateClick),
     elements.modalCloseBtn?.addEventListener('click', closeModal),
+    elements.draftGenerateBtn?.addEventListener('click', onDraftGenerateClick),
+    elements.draftChipsEl?.addEventListener('click', onDraftChipClick),
     elements.cancelBtn?.addEventListener('click', closeModal),
     elements.modalBackdrop?.addEventListener('click', onModalBackdropClick),
     elements.saveBtn?.addEventListener('click', onSaveClick),
@@ -390,6 +492,8 @@ export function mount(outlet) {
         elements.addAgentHeaderBtn?.removeEventListener('click', onCreateClick),
         elements.addAgentEmptyBtn?.removeEventListener('click', onCreateClick),
         elements.modalCloseBtn?.removeEventListener('click', closeModal),
+        elements.draftGenerateBtn?.removeEventListener('click', onDraftGenerateClick),
+        elements.draftChipsEl?.removeEventListener('click', onDraftChipClick),
         elements.cancelBtn?.removeEventListener('click', closeModal),
         elements.modalBackdrop?.removeEventListener('click', onModalBackdropClick),
         elements.saveBtn?.removeEventListener('click', onSaveClick),

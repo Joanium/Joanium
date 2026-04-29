@@ -55,6 +55,35 @@ export function getAutomationsHTML() {
     </div>
 
     <div class="auto-modal-body" id="agent-modal-body">
+      <div class="auto-draft-builder">
+        <div class="auto-draft-builder-head">
+          <div>
+            <div class="auto-modal-eyebrow">${t('automations.draftEyebrow')}</div>
+            <h3>${t('automations.draftTitle')}</h3>
+          </div>
+          <button type="button" class="auto-draft-generate-btn" id="automation-draft-generate-btn">
+            ${t('automations.generateDraft')}
+          </button>
+        </div>
+        <p class="auto-draft-builder-copy">${t('automations.draftDescription')}</p>
+        <textarea
+          class="agent-textarea auto-draft-textarea"
+          id="automation-draft-prompt"
+          placeholder="${t('automations.draftPlaceholder')}"
+        ></textarea>
+        <div class="auto-draft-chip-row" id="automation-draft-chips">
+          <button type="button" class="auto-draft-chip" data-prompt="Every weekday at 8 AM, summarize unread Gmail and notify me about urgent messages.">
+            ${t('automations.exampleGmail')}
+          </button>
+          <button type="button" class="auto-draft-chip" data-prompt="Every morning at 9 AM, review GitHub pull requests for joanium/joanium and email me blockers.">
+            ${t('automations.exampleGithub')}
+          </button>
+          <button type="button" class="auto-draft-chip" data-prompt="Every day at 7 AM, check the weather for Mumbai and tell me what I should know before leaving.">
+            ${t('automations.exampleWeather')}
+          </button>
+        </div>
+        <div class="auto-draft-status" id="automation-draft-status" hidden></div>
+      </div>
 
       <div class="agent-field">
         <label class="agent-field-label" for="agent-name">${t('automations.automationName')} <span class="field-required">*</span></label>
