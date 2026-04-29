@@ -1,6 +1,10 @@
 name: Upload Releases to SourceForge
 
 on:
+  # Manual run button
+  workflow_dispatch:
+
+  # Automatically runs when a GitHub Release is published
   release:
     types: [published]
 
@@ -15,12 +19,15 @@ jobs:
           latest: true
           out-file-path: release-files
 
+      - name: Show downloaded files
+        run: ls -R release-files
+
       - name: Upload to SourceForge
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avz
+          switches: -avzr
           path: release-files/
           remote_path: /home/frs/project/joanium/
           remote_host: frs.sourceforge.net
-          remote_user: withinjoel
+          remote_user: withinjoel,joanium
           remote_key: ${{ secrets.SF_SSH_KEY }}
