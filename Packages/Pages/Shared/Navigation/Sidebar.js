@@ -193,7 +193,12 @@ export function initSidebar({
       avatarBtnEl = document.getElementById('sidebar-avatar-btn');
     if (avatarBtnEl) {
       if (_currentAvatarUrl) {
-        avatarBtnEl.innerHTML = `<img src="${_currentAvatarUrl}" alt="${initials}" class="sidebar-avatar-img" />`;
+        const avatarImg = document.createElement('img');
+        avatarImg.src = _currentAvatarUrl;
+        avatarImg.alt = initials;
+        avatarImg.className = 'sidebar-avatar-img';
+        avatarBtnEl.textContent = '';
+        avatarBtnEl.appendChild(avatarImg);
       } else {
         avatarBtnEl.textContent = initials;
       }
@@ -202,7 +207,12 @@ export function initSidebar({
       nameEl = document.getElementById('avatar-panel-name');
     if (badge) {
       if (_currentAvatarUrl) {
-        badge.innerHTML = `<img src="${_currentAvatarUrl}" alt="${initials}" class="ap-badge-img" />`;
+        const badgeImg = document.createElement('img');
+        badgeImg.src = _currentAvatarUrl;
+        badgeImg.alt = initials;
+        badgeImg.className = 'ap-badge-img';
+        badge.textContent = '';
+        badge.appendChild(badgeImg);
       } else {
         badge.textContent = initials;
       }
