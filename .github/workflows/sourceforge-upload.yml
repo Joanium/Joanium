@@ -29,9 +29,9 @@ jobs:
       - name: Upload to SourceForge
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr
+          switches: -avzr --delete
           path: release-files/
-          remote_path: /home/frs/project/joanium/
+          remote_path: /home/frs/project/joanium/releases/
           remote_host: frs.sourceforge.net
           remote_user: withinjoel,joanium
           remote_key: ${{ secrets.SF_SSH_KEY }}
