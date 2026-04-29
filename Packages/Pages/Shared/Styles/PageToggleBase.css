@@ -1,0 +1,64 @@
+/* Shared toggle switches used by management pages. */
+
+.agent-toggle,
+.auto-toggle,
+.skill-toggle {
+  flex-shrink: 0;
+  position: relative;
+  width: 40px;
+  height: 22px;
+}
+
+.agent-toggle input,
+.auto-toggle input,
+.skill-toggle-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.agent-toggle-track,
+.auto-toggle-track,
+.skill-toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition:
+    background 0.22s,
+    border-color 0.22s;
+}
+
+.agent-toggle-track::after,
+.auto-toggle-track::after,
+.skill-toggle-track::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transform: translateY(-50%);
+  transition:
+    transform 0.22s var(--ease-spring),
+    background 0.22s;
+}
+
+.agent-toggle input:checked + .agent-toggle-track,
+.auto-toggle input:checked + .auto-toggle-track,
+.skill-toggle-input:checked + .skill-toggle-track {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.agent-toggle input:checked + .agent-toggle-track::after,
+.auto-toggle input:checked + .auto-toggle-track::after,
+.skill-toggle-input:checked + .skill-toggle-track::after {
+  transform: translateY(-50%) translateX(18px);
+  background: #fff;
+}

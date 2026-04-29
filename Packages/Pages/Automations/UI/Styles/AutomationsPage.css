@@ -12,6 +12,9 @@
 
 /* Page-specific styles */
 @import '../../../Chat/UI/Styles/AgentLog.css';
+@import '../../../Shared/Styles/PageContentBase.css';
+@import '../../../Shared/Styles/PageToggleBase.css';
+@import '../../../Shared/Styles/PageConfirmActions.css';
 @import './Automations.css';
 @import '../../../Shared/Styles/PageTaglineBadge.css';
 @import '../../../Agents/UI/Styles/Agents.css';

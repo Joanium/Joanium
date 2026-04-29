@@ -25,24 +25,16 @@
   resize: vertical;
   resize: vertical;
 }
-.agents-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: fadeIn 0.45s var(--ease-out-expo) 50ms both;
-}
 .agent-modal-body,
-.agents-scroll {
-  overflow-y: auto;
+#agent-modal-body {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
 .agents-scroll {
-  flex: 1;
-  padding: 32px 40px 60px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .agents-page-header {
   display: flex;
@@ -240,29 +232,6 @@
   line-height: 1.5;
   display: -webkit-box;
 }
-.agent-toggle {
-  flex-shrink: 0;
-  position: relative;
-  width: 40px;
-  height: 22px;
-}
-.agent-toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  position: absolute;
-}
-.agent-toggle-track {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition:
-    background 0.22s,
-    border-color 0.22s;
-}
 #agent-modal,
 .agent-model-select-wrap {
   position: relative;
@@ -272,28 +241,6 @@
 .agent-confirm-overlay {
   position: fixed;
   transition: opacity 0.18s;
-}
-.agent-toggle-track::after {
-  content: '';
-  position: absolute;
-  left: 3px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition:
-    transform 0.22s var(--ease-spring),
-    background 0.22s;
-}
-.agent-toggle input:checked + .agent-toggle-track {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-.agent-toggle input:checked + .agent-toggle-track::after {
-  transform: translateY(-50%) translateX(18px);
-  background: #fff;
 }
 .agent-model-badge {
   display: inline-flex;
@@ -835,8 +782,7 @@
 .agent-confirm-box h3 {
   color: var(--text-primary);
 }
-.agent-btn-cancel:hover,
-.agent-confirm-cancel:hover {
+.agent-btn-cancel:hover {
   background: var(--bg-hover);
 }
 .add-job-btn:disabled {
@@ -954,36 +900,9 @@
   margin-top: 8px;
   width: 100%;
 }
-.agent-confirm-cancel,
-.agent-confirm-delete {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition:
-    background var(--transition-fast),
-    transform var(--transition-fast);
-}
-.agent-confirm-cancel {
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-}
-.agent-confirm-delete {
-  background: rgba(220, 60, 60, 0.15);
-  border-color: rgba(220, 60, 60, 0.3);
-  color: #f87171;
-}
 .agent-card,
 .agent-model-badge {
   border: 1px solid var(--border);
-}
-.agent-confirm-delete:hover {
-  background: rgba(220, 60, 60, 0.25);
-  transform: translateY(-1px);
 }
 @keyframes fadeIn {
   from {

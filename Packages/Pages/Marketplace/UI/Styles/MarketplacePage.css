@@ -1,14 +1,10 @@
 /* Shared page shell */
 @import '../../../Shared/Styles/PageShellBase.css';
-@import '../../../Shared/Styles/ThemePanel.css';
-@import '../../../Shared/Styles/PageSupportPanels.css';
-@import '../../../Shared/Styles/Library.css';
-@import '../../../Shared/Styles/About.css';
-@import '../../../Shared/Styles/ConnectorsAndMemory.css';
-@import '../../../Shared/Styles/Footer.css';
-@import '../../../Shared/Styles/ThemeTokens.css';
+@import '../../../Shared/Styles/PageChromeBase.css';
 
 /* Page-specific styles */
+@import '../../../Shared/Styles/PageContentBase.css';
+@import '../../../Shared/Styles/DetailModalBase.css';
 @import '../../../Shared/Styles/PageTaglineBadge.css';
 @import '../../../Shared/Styles/SharedEmptyState.css';
 @import '../../../Shared/Styles/SharedSearchBarSkillsAndAgents.css';

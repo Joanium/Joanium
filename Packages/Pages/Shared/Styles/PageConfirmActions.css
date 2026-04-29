@@ -1,0 +1,48 @@
+/* Shared confirm actions used by destructive management flows. */
+
+.agent-confirm-cancel,
+.agent-confirm-delete,
+.confirm-cancel-btn,
+.confirm-delete-btn,
+.usage-confirm-cancel,
+.usage-confirm-delete {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.agent-confirm-cancel,
+.confirm-cancel-btn,
+.usage-confirm-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.agent-confirm-cancel:hover,
+.confirm-cancel-btn:hover,
+.usage-confirm-cancel:hover {
+  background: var(--bg-hover);
+}
+
+.agent-confirm-delete,
+.confirm-delete-btn,
+.usage-confirm-delete {
+  background: rgba(220, 60, 60, 0.15);
+  border-color: rgba(220, 60, 60, 0.3);
+  color: #f87171;
+}
+
+.agent-confirm-delete:hover,
+.confirm-delete-btn:hover,
+.usage-confirm-delete:hover {
+  background: rgba(220, 60, 60, 0.25);
+  transform: translateY(-1px);
+}
