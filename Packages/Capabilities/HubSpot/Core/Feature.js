@@ -3,10 +3,6 @@ import * as HubSpotAPI from './API/HubSpotAPI.js';
 import { getHubSpotCredentials, withHubSpot } from './Shared/Common.js';
 import { HUBSPOT_TOOLS } from './Chat/Tools.js';
 import { executeHubSpotChatTool } from './Chat/ChatExecutor.js';
-import {
-  hubspotDataSourceCollectors,
-  hubspotOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 export default defineFeature({
   id: 'hubspot',
@@ -234,17 +230,6 @@ export default defineFeature({
   },
 
   renderer: { chatTools: HUBSPOT_TOOLS },
-
-  automation: {
-    dataSources: [{ value: 'hubspot_deals', label: 'HubSpot - Deals Pipeline', group: 'HubSpot' }],
-    outputTypes: [],
-    instructionTemplates: {
-      hubspot_deals:
-        'Review these HubSpot deals. Summarize the pipeline, identify high-value or at-risk deals, and suggest any follow-up actions.',
-    },
-    dataSourceCollectors: hubspotDataSourceCollectors,
-    outputHandlers: hubspotOutputHandlers,
-  },
 
   prompt: {
     async getContext(ctx) {

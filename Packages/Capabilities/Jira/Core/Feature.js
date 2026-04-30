@@ -3,7 +3,6 @@ import * as JiraAPI from './API/JiraAPI.js';
 import { getJiraCredentials, withJira } from './Shared/Common.js';
 import { JIRA_TOOLS } from './Chat/Tools.js';
 import { executeJiraChatTool } from './Chat/ChatExecutor.js';
-import { jiraDataSourceCollectors, jiraOutputHandlers } from './Automation/AutomationHandlers.js';
 
 export default defineFeature({
   id: 'jira',
@@ -321,17 +320,6 @@ export default defineFeature({
   },
 
   renderer: { chatTools: JIRA_TOOLS },
-
-  automation: {
-    dataSources: [{ value: 'jira_my_issues', label: 'Jira - My Issues', group: 'Jira' }],
-    outputTypes: [],
-    instructionTemplates: {
-      jira_my_issues:
-        'Review these Jira issues assigned to me. Prioritize by urgency and status, flag anything blocked or overdue, and suggest a list of focus items for today.',
-    },
-    dataSourceCollectors: jiraDataSourceCollectors,
-    outputHandlers: jiraOutputHandlers,
-  },
 
   prompt: {
     async getContext(ctx) {

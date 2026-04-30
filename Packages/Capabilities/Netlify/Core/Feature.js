@@ -7,10 +7,6 @@ import * as NetlifyAPI from './API/NetlifyAPI.js';
 import { getNetlifyCredentials, withNetlify } from './Shared/Common.js';
 import { NETLIFY_TOOLS } from './Chat/Tools.js';
 import { executeNetlifyChatTool } from './Chat/ChatExecutor.js';
-import {
-  netlifyDataSourceCollectors,
-  netlifyOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateNetlifyConnection = createConnectorValidator({
   connectorId: 'netlify',
@@ -77,19 +73,6 @@ export default createCapabilityFeature({
   },
   chatTools: NETLIFY_TOOLS,
   executeChatTool: executeNetlifyChatTool,
-
-  automation: {
-    dataSources: [
-      { value: 'netlify_deployments', label: 'Netlify - Deployments', group: 'Netlify' },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      netlify_deployments:
-        'Review these Netlify deployments. Summarize which succeeded, which failed, and highlight any recurring errors or patterns that need attention.',
-    },
-    dataSourceCollectors: netlifyDataSourceCollectors,
-    outputHandlers: netlifyOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getNetlifyCredentials,

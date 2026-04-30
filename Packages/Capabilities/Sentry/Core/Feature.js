@@ -7,10 +7,6 @@ import * as SentryAPI from './API/SentryAPI.js';
 import { getSentryCredentials, withSentry } from './Shared/Common.js';
 import { SENTRY_TOOLS } from './Chat/Tools.js';
 import { executeSentryChatTool } from './Chat/ChatExecutor.js';
-import {
-  sentryDataSourceCollectors,
-  sentryOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateSentryConnection = createConnectorValidator({
   connectorId: 'sentry',
@@ -78,19 +74,6 @@ export default createCapabilityFeature({
   },
   chatTools: SENTRY_TOOLS,
   executeChatTool: executeSentryChatTool,
-
-  automation: {
-    dataSources: [
-      { value: 'sentry_unresolved_issues', label: 'Sentry - Unresolved Issues', group: 'Sentry' },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      sentry_unresolved_issues:
-        'Review these Sentry issues. Prioritize fatal and error-level items, identify any patterns or regressions, and recommend which to fix first.',
-    },
-    dataSourceCollectors: sentryDataSourceCollectors,
-    outputHandlers: sentryOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getSentryCredentials,

@@ -7,10 +7,6 @@ import * as StripeAPI from './API/StripeAPI.js';
 import { getStripeCredentials, withStripe } from './Shared/Common.js';
 import { STRIPE_TOOLS } from './Chat/Tools.js';
 import { executeStripeChatTool } from './Chat/ChatExecutor.js';
-import {
-  stripeDataSourceCollectors,
-  stripeOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateStripeConnection = createConnectorValidator({
   connectorId: 'stripe',
@@ -84,19 +80,6 @@ export default createCapabilityFeature({
   },
   chatTools: STRIPE_TOOLS,
   executeChatTool: executeStripeChatTool,
-
-  automation: {
-    dataSources: [
-      { value: 'stripe_balance_and_charges', label: 'Stripe - Balance & Charges', group: 'Stripe' },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      stripe_balance_and_charges:
-        'Review this Stripe financial summary. Analyze the balance, highlight any unusual charges, and provide a brief revenue health summary.',
-    },
-    dataSourceCollectors: stripeDataSourceCollectors,
-    outputHandlers: stripeOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getStripeCredentials,

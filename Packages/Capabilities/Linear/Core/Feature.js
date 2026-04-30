@@ -7,10 +7,6 @@ import * as LinearAPI from './API/LinearAPI.js';
 import { getLinearCredentials, withLinear } from './Shared/Common.js';
 import { LINEAR_TOOLS } from './Chat/Tools.js';
 import { executeLinearChatTool } from './Chat/ChatExecutor.js';
-import {
-  linearDataSourceCollectors,
-  linearOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateLinearConnection = createConnectorValidator({
   connectorId: 'linear',
@@ -80,17 +76,6 @@ export default createCapabilityFeature({
   },
   chatTools: LINEAR_TOOLS,
   executeChatTool: executeLinearChatTool,
-
-  automation: {
-    dataSources: [{ value: 'linear_my_issues', label: 'Linear - My Issues', group: 'Linear' }],
-    outputTypes: [],
-    instructionTemplates: {
-      linear_my_issues:
-        'Review these Linear issues assigned to me. Prioritize by urgency, flag anything blocked or overdue, and suggest a focus order for today.',
-    },
-    dataSourceCollectors: linearDataSourceCollectors,
-    outputHandlers: linearOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getLinearCredentials,

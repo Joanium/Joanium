@@ -2,7 +2,6 @@ import createGoogleFeature from '../../Core/GoogleFeatureFactory.js';
 import * as GmailAPI from './API/GmailAPI.js';
 import { GMAIL_TOOLS } from './Chat/Tools.js';
 import { executeGmailChatTool } from './Chat/ChatExecutor.js';
-import { gmailDataSourceCollectors } from './Automation/AutomationHandlers.js';
 import { withGoogle } from '../../Common.js';
 export default createGoogleFeature({
   id: 'gmail',
@@ -136,57 +135,4 @@ export default createGoogleFeature({
   },
   chatTools: GMAIL_TOOLS,
   executeChatTool: executeGmailChatTool,
-  automation: {
-    dataSources: [
-      {
-        value: 'gmail_inbox',
-        label: 'Gmail - Unread inbox',
-        group: 'Google Workspace',
-        params: [
-          {
-            key: 'maxResults',
-            label: 'Max emails',
-            type: 'number',
-            min: 1,
-            max: 50,
-            defaultValue: 20,
-            placeholder: '20',
-          },
-        ],
-      },
-      {
-        value: 'gmail_search',
-        label: 'Gmail - Search emails',
-        group: 'Google Workspace',
-        params: [
-          {
-            key: 'query',
-            label: 'Search query',
-            type: 'text',
-            required: !0,
-            placeholder: 'from:boss OR subject:urgent',
-          },
-          {
-            key: 'maxResults',
-            label: 'Max results',
-            type: 'number',
-            min: 1,
-            max: 30,
-            defaultValue: 10,
-            placeholder: '10',
-          },
-        ],
-      },
-      { value: 'gmail_inbox_stats', label: 'Gmail - Inbox stats', group: 'Google Workspace' },
-    ],
-    instructionTemplates: {
-      gmail_inbox:
-        'Read these emails. Identify the most important ones needing action today. For each: subject, sender, what action is needed, and urgency. Then briefly list FYI emails.',
-      gmail_search:
-        'Analyze these matching emails. Summarize findings, highlight patterns and urgent items.',
-      gmail_inbox_stats:
-        'Analyze these inbox statistics. Flag anything concerning and give a brief health assessment.',
-    },
-    dataSourceCollectors: gmailDataSourceCollectors,
-  },
 });

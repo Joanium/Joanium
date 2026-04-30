@@ -3,10 +3,6 @@ import * as SupabaseAPI from './API/SupabaseAPI.js';
 import { getSupabaseCredentials, withSupabase } from './Shared/Common.js';
 import { SUPABASE_TOOLS } from './Chat/Tools.js';
 import { executeSupabaseChatTool } from './Chat/ChatExecutor.js';
-import {
-  supabaseDataSourceCollectors,
-  supabaseOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 export default defineFeature({
   id: 'supabase',
@@ -229,17 +225,6 @@ export default defineFeature({
   },
 
   renderer: { chatTools: SUPABASE_TOOLS },
-
-  automation: {
-    dataSources: [{ value: 'supabase_projects', label: 'Supabase - Projects', group: 'Supabase' }],
-    outputTypes: [],
-    instructionTemplates: {
-      supabase_projects:
-        'Review these Supabase projects. Summarize their status, flag any that are inactive or paused, and note any concerns.',
-    },
-    dataSourceCollectors: supabaseDataSourceCollectors,
-    outputHandlers: supabaseOutputHandlers,
-  },
 
   prompt: {
     async getContext(ctx) {

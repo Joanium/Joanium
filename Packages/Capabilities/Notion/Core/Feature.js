@@ -7,10 +7,6 @@ import * as NotionAPI from './API/NotionAPI.js';
 import { getNotionCredentials, withNotion } from './Shared/Common.js';
 import { NOTION_TOOLS } from './Chat/Tools.js';
 import { executeNotionChatTool } from './Chat/ChatExecutor.js';
-import {
-  notionDataSourceCollectors,
-  notionOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateNotionConnection = createConnectorValidator({
   connectorId: 'notion',
@@ -82,19 +78,6 @@ export default createCapabilityFeature({
   },
   chatTools: NOTION_TOOLS,
   executeChatTool: executeNotionChatTool,
-
-  automation: {
-    dataSources: [
-      { value: 'notion_recent_pages', label: 'Notion - Recent Pages', group: 'Notion' },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      notion_recent_pages:
-        'Review these recently edited Notion pages. Summarize what was changed, flag anything that looks incomplete or needs follow-up.',
-    },
-    dataSourceCollectors: notionDataSourceCollectors,
-    outputHandlers: notionOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getNotionCredentials,

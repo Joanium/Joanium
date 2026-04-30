@@ -3,10 +3,6 @@ import * as VercelAPI from './API/VercelAPI.js';
 import { getVercelCredentials, withVercel } from './Shared/Common.js';
 import { VERCEL_TOOLS } from './Chat/Tools.js';
 import { executeVercelChatTool } from './Chat/ChatExecutor.js';
-import {
-  vercelDataSourceCollectors,
-  vercelOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 export default defineFeature({
   id: 'vercel',
@@ -462,19 +458,6 @@ export default defineFeature({
   },
 
   renderer: { chatTools: VERCEL_TOOLS },
-
-  automation: {
-    dataSources: [
-      { value: 'vercel_deployments', label: 'Vercel - Recent Deployments', group: 'Vercel' },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      vercel_deployments:
-        'Review these Vercel deployments. Summarize which succeeded, which failed, and highlight any patterns or recurring errors.',
-    },
-    dataSourceCollectors: vercelDataSourceCollectors,
-    outputHandlers: vercelOutputHandlers,
-  },
 
   prompt: {
     async getContext(ctx) {
