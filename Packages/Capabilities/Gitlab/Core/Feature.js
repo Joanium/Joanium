@@ -24,7 +24,7 @@ export default defineFeature({
         setupSteps: [],
         capabilities: [
           'Ask about repos, issues, MRs, and code in chat',
-          'Track GitLab work via automations and agents',
+          'Track GitLab work via agents',
           'Review MRs and pipeline runs from one connector',
         ],
         fields: [
@@ -34,17 +34,6 @@ export default defineFeature({
             placeholder: 'glpat-...',
             type: 'password',
             hint: 'Create at gitlab.com/-/user_settings/personal_access_tokens. read_api, read_repository, read_user scopes are recommended.',
-          },
-        ],
-        automations: [
-          {
-            name: 'Daily MR Summary',
-            description: 'Every morning, notify about open merge requests',
-          },
-          { name: 'Issue Tracker', description: 'Daily, notify about open issues in a repo' },
-          {
-            name: 'GitLab Notifications',
-            description: 'Hourly, notify if there are unread notifications',
           },
         ],
         defaultState: { enabled: !1, credentials: {} },

@@ -10,10 +10,7 @@ export default createGoogleFeature({
   iconFile: 'Gmail.png',
   iconAlt: 'Google Gmail',
   apiUrl: 'https://console.cloud.google.com/apis/library/gmail.googleapis.com',
-  capabilities: ['Read and send Gmail in chat', 'Use Gmail in automations and agents'],
-  automations: [
-    { name: 'Morning Briefing', description: 'Summarize unread email and important threads' },
-  ],
+  capabilities: ['Read and send Gmail in chat', 'Use Gmail in agents'],
   methods: {
     getBrief: async (ctx, { maxResults: maxResults = 15 } = {}) =>
       withGoogle(ctx, async (credentials) => ({

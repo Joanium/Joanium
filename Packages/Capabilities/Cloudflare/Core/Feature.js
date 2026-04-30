@@ -40,7 +40,6 @@ export default createCapabilityFeature({
         capabilities: [
           'List all domains and zone status in chat',
           'Check DNS records for any zone',
-          'Monitor zone health via automations',
         ],
         fields: [
           {

@@ -61,12 +61,6 @@ export default createCapabilityFeature({
             hint: 'Create at app.netlify.com -> User Settings -> Applications -> Personal access tokens.',
           },
         ],
-        automations: [
-          {
-            name: 'Deployment Monitor',
-            description: 'Daily - report recent deployments and flag any build failures',
-          },
-        ],
         validate: validateNetlifyConnection,
       }),
     ],

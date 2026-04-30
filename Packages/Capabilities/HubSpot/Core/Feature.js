@@ -49,12 +49,6 @@ export default defineFeature({
             hint: 'Create at app.hubspot.com → Settings → Integrations → Private Apps.',
           },
         ],
-        automations: [
-          {
-            name: 'Deals Digest',
-            description: 'Daily — summarize open deals and pipeline activity',
-          },
-        ],
         defaultState: { enabled: false, credentials: {} },
         async validate(ctx) {
           const creds = ctx.connectorEngine?.getCredentials('hubspot');

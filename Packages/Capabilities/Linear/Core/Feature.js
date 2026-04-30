@@ -49,11 +49,7 @@ export default createCapabilityFeature({
           'Under "Personal API keys", click "Create key"',
           'Give it a label (e.g. "Joanium") and copy the generated key below',
         ],
-        capabilities: [
-          'List all issues assigned to you in chat',
-          'Browse teams and their issues',
-          'Monitor issue workload via automations',
-        ],
+        capabilities: ['List all issues assigned to you in chat', 'Browse teams and their issues'],
         fields: [
           {
             key: 'token',
@@ -61,12 +57,6 @@ export default createCapabilityFeature({
             placeholder: 'lin_api_...',
             type: 'password',
             hint: 'Create at linear.app -> Settings -> API -> Personal API keys.',
-          },
-        ],
-        automations: [
-          {
-            name: 'Issue Digest',
-            description: 'Daily - summarize your assigned Linear issues by priority and status',
           },
         ],
         validate: validateLinearConnection,

@@ -44,7 +44,6 @@ export default defineFeature({
             hint: 'Keep it private.',
           },
         ],
-        automations: [],
         defaultState: { enabled: !1, credentials: {} },
         async validate(ctx) {
           const creds = ctx.connectorEngine?.getCredentials('google');

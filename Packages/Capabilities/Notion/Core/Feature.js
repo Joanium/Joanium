@@ -63,12 +63,6 @@ export default createCapabilityFeature({
             hint: 'Create at notion.so/my-integrations. Remember to share pages with the integration.',
           },
         ],
-        automations: [
-          {
-            name: 'Workspace Digest',
-            description: 'Daily - summarize recently edited Notion pages',
-          },
-        ],
         validate: validateNotionConnection,
       }),
     ],

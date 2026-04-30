@@ -32,35 +32,6 @@ export async function fetchHistory() {
         });
   } catch {}
   try {
-    const res = await window.electronAPI?.invoke?.('get-automations'),
-      automations = Array.isArray(res?.automations) ? res.automations : [];
-    for (const automation of automations)
-      for (const job of automation.jobs ?? [])
-        for (const entry of job.history ?? []) {
-          const status = entry.error
-            ? 'error'
-            : entry.nothingToReport || entry.skipped
-              ? 'skipped'
-              : 'success';
-          events.push({
-            id: `auto__${automation.id}__${job.id}__${entry.timestamp}`,
-            type: 'automation',
-            source: automation.name,
-            autoId: automation.id,
-            jobId: job.id,
-            jobName: job.name || 'Job',
-            status: status,
-            timestamp: entry.timestamp,
-            summary: entry.summary || '',
-            fullResponse: entry.fullResponse || '',
-            error: entry.error || null,
-            skipReason: entry.skipReason || null,
-            trigger: job.trigger || null,
-            autoEnabled: automation.enabled,
-          });
-        }
-  } catch {}
-  try {
     const res = await window.electronAPI?.invoke?.('get-channel-messages'),
       messages = Array.isArray(res?.messages) ? res.messages : [];
     for (const [index, entry] of messages.entries()) {

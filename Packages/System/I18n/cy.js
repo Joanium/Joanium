@@ -176,7 +176,6 @@
     openMarketplace: 'Agor Marchnadfa',
     openSkills: 'Agor Sgiliau',
     openPersonas: 'Agor Personâu',
-    openAutomations: 'Agor Awtomatiaeth',
   },
   library: {
     title: 'Adolygu eich sgyrsiau',

@@ -48,7 +48,6 @@ export default createCapabilityFeature({
         capabilities: [
           'Get pages, components, and style counts for any Figma file',
           'Review and summarize comments on design files',
-          'Monitor design activity via automations',
         ],
         fields: [
           {

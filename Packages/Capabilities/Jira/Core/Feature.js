@@ -59,12 +59,6 @@ export default defineFeature({
             hint: 'Your Jira Cloud site URL, e.g. https://yourcompany.atlassian.net',
           },
         ],
-        automations: [
-          {
-            name: 'Issue Digest',
-            description: 'Daily — summarize open Jira issues assigned to you by priority',
-          },
-        ],
         defaultState: { enabled: false, credentials: {} },
         async validate(ctx) {
           const creds = ctx.connectorEngine?.getCredentials('jira');
