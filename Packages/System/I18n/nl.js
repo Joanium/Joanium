@@ -612,7 +612,6 @@
       'Realtime logboek van elke automatisering, agent en kanaalinteractie — successen, mislukkingen en wat er is gebeurd.',
     filterAll: 'Alles',
     filterAgents: 'Agents',
-    filterAutomations: 'Automatiseringen',
     filterChannels: 'Kanalen',
     filterErrors: 'Fouten',
     clear: 'Wissen',

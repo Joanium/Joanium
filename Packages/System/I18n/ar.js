@@ -169,7 +169,6 @@
     openMarketplace: 'فتح السوق',
     openSkills: 'فتح المهارات',
     openPersonas: 'فتح الشخصيات',
-    openAutomations: 'فتح الأتمتة',
   },
   library: {
     title: 'راجع محادثاتك',

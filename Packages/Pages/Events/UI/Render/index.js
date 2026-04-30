@@ -11,8 +11,6 @@ function eventSourceKey(event) {
   switch (event.type) {
     case 'agent':
       return `agent:${event.agentId ?? event.source ?? event.id}`;
-    case 'automation':
-      return `automation:${event.autoId ?? event.source ?? event.id}`;
     case 'channel':
       return `channel:${event.channel ?? event.source ?? event.id}`;
     default:
@@ -21,9 +19,7 @@ function eventSourceKey(event) {
 }
 
 function runningSourceKey(job) {
-  return 'automation' === job.type
-    ? `automation:${job.automationId ?? job.automationName ?? job.jobId ?? 'running'}`
-    : `agent:${job.agentId ?? job.agentName ?? job.jobId ?? 'running'}`;
+  return 'agent' === job.type`agent:${job.agentId ?? job.agentName ?? job.jobId ?? 'running'}`;
 }
 
 function hasDetailValue(value) {
@@ -97,8 +93,6 @@ export function mount(outlet) {
     switch (filter) {
       case 'agents':
         return events.filter((event) => 'agent' === event.type);
-      case 'automations':
-        return events.filter((event) => 'automation' === event.type);
       case 'channels':
         return events.filter((event) => 'channel' === event.type);
       case 'errors':
@@ -241,7 +235,7 @@ export function mount(outlet) {
       return;
     }
 
-    detailEyebrow.textContent = 'agent' === event.type ? 'Agent Output' : 'Automation Run';
+    detailEyebrow.textContent = event.type === 'agent' ? 'Agent Output' : '';
     detailTitle.textContent = event.jobName ? `${event.source} > ${event.jobName}` : event.source;
     detailMeta.textContent = fullDateTime(event.timestamp);
 

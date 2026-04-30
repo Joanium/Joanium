@@ -600,7 +600,6 @@
       'Dziennik w czasie rzeczywistym każdej automatyzacji, agenta i interakcji kanału — sukcesy, błędy i co się stało.',
     filterAll: 'Wszystkie',
     filterAgents: 'Agenci',
-    filterAutomations: 'Automatyzacje',
     filterChannels: 'Kanały',
     filterErrors: 'Błędy',
     clear: 'Wyczyść',

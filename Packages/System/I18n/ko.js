@@ -586,7 +586,6 @@
     description: '모든 자동화, 에이전트, 채널 상호 작용의 실시간 로그 — 성공, 실패, 발생한 내용.',
     filterAll: '전체',
     filterAgents: '에이전트',
-    filterAutomations: '자동화',
     filterChannels: '채널',
     filterErrors: '오류',
     clear: '지우기',

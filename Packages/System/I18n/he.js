@@ -581,7 +581,6 @@
       'יומן בזמן אמת של כל אינטראקציה של אוטומציה, סוכן וערוץ — הצלחות, כישלונות ומה שקרה.',
     filterAll: 'הכל',
     filterAgents: 'סוכנים',
-    filterAutomations: 'אוטומציות',
     filterChannels: 'ערוצים',
     filterErrors: 'שגיאות',
     clear: 'נקה',

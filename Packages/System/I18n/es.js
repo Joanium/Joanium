@@ -619,7 +619,6 @@
       'Registro en tiempo real de cada automatización, agente e interacción de canal — éxitos, fallos y lo que ocurrió.',
     filterAll: 'Todo',
     filterAgents: 'Agentes',
-    filterAutomations: 'Automatizaciones',
     filterChannels: 'Canales',
     filterErrors: 'Errores',
     clear: 'Limpiar',

@@ -52,7 +52,6 @@ const SHORTCUT_SECTIONS = [
       { keys: ['Ctrl', 'Shift', 'M'], desc: 'Open Marketplace' },
       { keys: ['Ctrl', 'Shift', 'S'], desc: 'Open Skills' },
       { keys: ['Ctrl', 'Shift', 'P'], desc: 'Open Personas' },
-      { keys: ['Ctrl', 'Shift', 'U'], desc: 'Open Automations' },
     ],
   },
 ];

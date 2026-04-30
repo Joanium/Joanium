@@ -616,7 +616,6 @@
       'Jurnal în timp real al fiecărei automatizări, agent și interacțiuni de canal — succese, eșecuri și ce s-a întâmplat.',
     filterAll: 'Toate',
     filterAgents: 'Agenți',
-    filterAutomations: 'Automatizări',
     filterChannels: 'Canale',
     filterErrors: 'Erori',
     clear: 'Șterge',

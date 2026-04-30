@@ -25,7 +25,6 @@ const BUILT_IN_IDS = new Set([
   'library',
   'projects',
   'templates',
-  'automations',
   'agents',
   'setup',
 ]);

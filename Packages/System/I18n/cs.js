@@ -595,7 +595,6 @@
       'Protokol v reálném čase každé automatizace, agenta a interakce kanálu — úspěchy, selhání a co se stalo.',
     filterAll: 'Vše',
     filterAgents: 'Agenti',
-    filterAutomations: 'Automatizace',
     filterChannels: 'Kanály',
     filterErrors: 'Chyby',
     clear: 'Vymazat',

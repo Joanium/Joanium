@@ -612,7 +612,6 @@
       'Log em tempo real de cada automação, agente e interação de canal — sucessos, falhas e o que aconteceu.',
     filterAll: 'Todos',
     filterAgents: 'Agentes',
-    filterAutomations: 'Automações',
     filterChannels: 'Canais',
     filterErrors: 'Erros',
     clear: 'Limpar',

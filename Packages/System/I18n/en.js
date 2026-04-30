@@ -604,7 +604,6 @@ export default {
       'Real-time log of every automation, agent, and channel interaction — successes, failures, and what happened.',
     filterAll: 'All',
     filterAgents: 'Agents',
-    filterAutomations: 'Automations',
     filterChannels: 'Channels',
     filterErrors: 'Errors',
     clear: 'Clear',

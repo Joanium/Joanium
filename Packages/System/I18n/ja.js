@@ -600,7 +600,6 @@
       'すべてのオートメーション、エージェント、チャンネルインタラクションのリアルタイムログ — 成功、失敗、何が起きたかを記録。',
     filterAll: 'すべて',
     filterAgents: 'エージェント',
-    filterAutomations: 'オートメーション',
     filterChannels: 'チャンネル',
     filterErrors: 'エラー',
     clear: 'クリア',

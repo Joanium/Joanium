@@ -598,7 +598,6 @@
       'Rauntímaannáll yfir hverja sjálfvirkni, umboðsmann og rásarsamskipti — vel heppnað, misheppnað og hvað gerðist.',
     filterAll: 'Allt',
     filterAgents: 'Umboðsmenn',
-    filterAutomations: 'Sjálfvirkni',
     filterChannels: 'Rásir',
     filterErrors: 'Villur',
     clear: 'Hreinsa',

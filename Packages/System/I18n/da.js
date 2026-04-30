@@ -599,7 +599,6 @@
       'Realtidslog over alle automatiserings-, agent- og kanalinteraktioner — succeser, fejl og hvad der skete.',
     filterAll: 'Alle',
     filterAgents: 'Agenter',
-    filterAutomations: 'Automatiseringer',
     filterChannels: 'Kanaler',
     filterErrors: 'Fejl',
     clear: 'Ryd',

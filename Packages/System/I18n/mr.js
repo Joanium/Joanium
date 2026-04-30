@@ -597,7 +597,6 @@
       'प्रत्येक ऑटोमेशन, एजंट आणि चॅनेल परस्परसंवादाचा रिअल-टाइम लॉग — यश, अपयश आणि काय झाले.',
     filterAll: 'सर्व',
     filterAgents: 'एजंट',
-    filterAutomations: 'ऑटोमेशन',
     filterChannels: 'चॅनेल',
     filterErrors: 'त्रुटी',
     clear: 'साफ करा',

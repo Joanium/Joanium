@@ -600,7 +600,6 @@
       'Realtidslogg över varje automatisering, agent och kanalinteraktion — framgångar, fel och vad som hände.',
     filterAll: 'Alla',
     filterAgents: 'Agenter',
-    filterAutomations: 'Automatiseringar',
     filterChannels: 'Kanaler',
     filterErrors: 'Fel',
     clear: 'Rensa',

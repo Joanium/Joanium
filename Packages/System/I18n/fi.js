@@ -602,7 +602,6 @@
       'Reaaliaikainen loki jokaisesta automaatiosta, agentista ja kanavavuorovaikutuksesta — onnistumiset, epäonnistumiset ja mitä tapahtui.',
     filterAll: 'Kaikki',
     filterAgents: 'Agentit',
-    filterAutomations: 'Automaatiot',
     filterChannels: 'Kanavat',
     filterErrors: 'Virheet',
     clear: 'Tyhjennä',

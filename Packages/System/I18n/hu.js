@@ -617,7 +617,6 @@
       'Valós idejű napló minden automatizálásról, ügynökről és csatorna-interakcióról — sikerek, hibák és mi történt.',
     filterAll: 'Összes',
     filterAgents: 'Ügynökök',
-    filterAutomations: 'Automatizálások',
     filterChannels: 'Csatornák',
     filterErrors: 'Hibák',
     clear: 'Törlés',

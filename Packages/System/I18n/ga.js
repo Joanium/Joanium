@@ -608,7 +608,6 @@
       'Loga fíor-ama de gach uathoibriú, gníomhaire, agus idirghníomhaíocht cainéil — rathanna, teipeanna, agus an méid a tharla.',
     filterAll: 'Gach rud',
     filterAgents: 'Gníomhairí',
-    filterAutomations: 'Uathoibriú',
     filterChannels: 'Cainéil',
     filterErrors: 'Earráidí',
     clear: 'Glan',

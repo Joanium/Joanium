@@ -603,7 +603,6 @@
       'Her otomasyon, ajan ve kanal etkileşiminin gerçek zamanlı günlüğü — başarılar, başarısızlıklar ve ne olduğu.',
     filterAll: 'Tümü',
     filterAgents: 'Ajanlar',
-    filterAutomations: 'Otomasyonlar',
     filterChannels: 'Kanallar',
     filterErrors: 'Hatalar',
     clear: 'Temizle',

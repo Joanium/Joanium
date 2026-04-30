@@ -602,7 +602,6 @@
       'हर ऑटोमेशन, एजेंट और चैनल इंटरैक्शन का रीयल-टाइम लॉग — सफलताएँ, विफलताएँ और क्या हुआ।',
     filterAll: 'सभी',
     filterAgents: 'एजेंट',
-    filterAutomations: 'ऑटोमेशन',
     filterChannels: 'चैनल',
     filterErrors: 'त्रुटियाँ',
     clear: 'साफ़ करें',

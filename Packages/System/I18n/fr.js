@@ -626,7 +626,6 @@
       "Journal en temps réel de chaque automatisation, agent et interaction de canal — succès, échecs et ce qui s'est passé.",
     filterAll: 'Tous',
     filterAgents: 'Agents',
-    filterAutomations: 'Automatisations',
     filterChannels: 'Canaux',
     filterErrors: 'Erreurs',
     clear: 'Effacer',
