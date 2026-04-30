@@ -11,7 +11,6 @@ export async function getFeatureBoot() {
               pages: [],
               connectors: { services: [], free: [] },
               chat: { tools: [] },
-              automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
             }
           ),
         )),
@@ -21,7 +20,6 @@ export async function getFeatureBoot() {
         pages: [],
         connectors: { services: [], free: [] },
         chat: { tools: [] },
-        automations: { dataSources: [], outputTypes: [], instructionTemplates: {} },
       };
 }
 export function resetFeatureBoot() {

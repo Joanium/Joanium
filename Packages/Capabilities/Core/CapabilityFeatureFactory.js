@@ -37,7 +37,6 @@ export function createConnectorService({
   setupSteps = [],
   capabilities = [],
   fields = [],
-  automations = [],
   defaultState,
   validate,
   ...service
@@ -54,7 +53,6 @@ export function createConnectorService({
     setupSteps,
     capabilities,
     fields,
-    automations,
     defaultState: defaultState ?? { enabled: false, credentials: {} },
     ...(validate ? { validate } : {}),
     ...service,

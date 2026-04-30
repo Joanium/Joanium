@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import defineEngine from '../../../System/Contracts/DefineEngine.js';
-import { shouldRunNow } from '../../Automation/Scheduling/Scheduling.js';
+import { shouldRunNow } from './Scheduling.js';
 const DEFAULT_TRIGGER = { type: 'interval', minutes: 30 };
 // Maximum time a single agent run is allowed to take before it is forcibly
 // cancelled. 24 hours gives long-running agentic tasks (deep research, large

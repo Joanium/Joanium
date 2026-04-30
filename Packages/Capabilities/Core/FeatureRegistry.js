@@ -46,7 +46,6 @@ function serializeServiceConnector(featureId, connector) {
     setupSteps: deepClone(connector.setupSteps ?? []),
     capabilities: deepClone(connector.capabilities ?? []),
     fields: deepClone(connector.fields ?? []),
-    automations: deepClone(connector.automations ?? []),
     order: connector.order ?? 999,
   };
 }
@@ -143,8 +142,6 @@ export class FeatureRegistry {
       (this.baseContext = {}),
       (this.windows = new Set()),
       (this.chatToolMap = new Map()),
-      (this.automationDataSourceMap = new Map()),
-      (this.automationOutputMap = new Map()),
       (this.connectorValidatorMap = new Map()),
       this._indexFeatures());
   }
@@ -152,10 +149,6 @@ export class FeatureRegistry {
     for (const feature of this.features) {
       for (const tool of feature.renderer?.chatTools ?? [])
         tool?.name && this.chatToolMap.set(tool.name, feature.id);
-      for (const dataSource of feature.automation?.dataSources ?? [])
-        dataSource?.value && this.automationDataSourceMap.set(dataSource.value, feature.id);
-      for (const outputType of feature.automation?.outputTypes ?? [])
-        outputType?.value && this.automationOutputMap.set(outputType.value, feature.id);
       for (const connector of feature.connectors?.services ?? [])
         connector?.id &&
           'function' == typeof connector.validate &&
@@ -248,10 +241,6 @@ export class FeatureRegistry {
           (current.capabilities = uniqueBy(
             [...current.capabilities, ...deepClone(extension.capabilities ?? [])],
             (item) => item,
-          )),
-          (current.automations = uniqueBy(
-            [...current.automations, ...deepClone(extension.automations ?? [])],
-            (item) => `${item.name}:${item.description}`,
           )));
       }
     return sortByOrder([...serviceMap.values()]);
@@ -265,23 +254,12 @@ export class FeatureRegistry {
   }
   getBootPayload() {
     const chatTools = [],
-      automationDataSources = [],
-      automationOutputTypes = [],
-      instructionTemplates = {},
       featurePages = [];
     for (const feature of this.features) {
       for (const page of feature.pages ?? [])
         page?.id && featurePages.push({ featureId: feature.id, ...deepClone(page) });
       for (const tool of feature.renderer?.chatTools ?? [])
         chatTools.push({ featureId: feature.id, ...deepClone(tool) });
-      for (const dataSource of feature.automation?.dataSources ?? [])
-        automationDataSources.push({ featureId: feature.id, ...deepClone(dataSource) });
-      for (const outputType of feature.automation?.outputTypes ?? [])
-        automationOutputTypes.push({ featureId: feature.id, ...deepClone(outputType) });
-      Object.assign(
-        instructionTemplates,
-        deepClone(feature.automation?.instructionTemplates ?? {}),
-      );
     }
     return {
       features: this.features.map((feature) => ({
@@ -292,11 +270,6 @@ export class FeatureRegistry {
       pages: featurePages,
       connectors: { services: this._buildServiceConnectors(), free: this._buildFreeConnectors() },
       chat: { tools: chatTools },
-      automations: {
-        dataSources: automationDataSources,
-        outputTypes: automationOutputTypes,
-        instructionTemplates: instructionTemplates,
-      },
     };
   }
   async invoke(featureId, method, payload = {}, extraContext = {}) {
@@ -329,39 +302,6 @@ export class FeatureRegistry {
           ),
         }
       : null;
-  }
-  getAutomationDataSourceDefinition(type) {
-    const featureId = this.automationDataSourceMap.get(type);
-    if (!featureId) return null;
-    const feature = this.getFeature(featureId);
-    return (feature.automation?.dataSources ?? []).find((item) => item.value === type) ?? null;
-  }
-  async collectAutomationDataSource(dataSource, extraContext = {}) {
-    const featureId = this.automationDataSourceMap.get(dataSource?.type);
-    if (!featureId) return null;
-    const feature = this.getFeature(featureId),
-      handler = feature.automation?.dataSourceCollectors?.[dataSource.type];
-    return 'function' != typeof handler
-      ? null
-      : {
-          handled: !0,
-          result: await handler(this._createContext(feature, extraContext), dataSource),
-        };
-  }
-  async executeAutomationOutput(output, payload, extraContext = {}) {
-    const featureId = this.automationOutputMap.get(output?.type);
-    if (!featureId) return null;
-    const feature = this.getFeature(featureId),
-      handler = feature.automation?.outputHandlers?.[output.type];
-    return 'function' != typeof handler
-      ? null
-      : {
-          handled: !0,
-          result: await handler(this._createContext(feature, extraContext), {
-            output: output,
-            ...payload,
-          }),
-        };
   }
   async buildPromptContext(extraContext = {}) {
     const connectedServices = [],

@@ -7,10 +7,6 @@ import * as CloudflareAPI from './API/CloudflareAPI.js';
 import { getCloudflareCredentials, withCloudflare } from './Shared/Common.js';
 import { CLOUDFLARE_TOOLS } from './Chat/Tools.js';
 import { executeCloudflareChatTool } from './Chat/ChatExecutor.js';
-import {
-  cloudflareDataSourceCollectors,
-  cloudflareOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 const validateCloudflareConnection = createConnectorValidator({
   connectorId: 'cloudflare',
@@ -55,12 +51,6 @@ export default createCapabilityFeature({
             hint: 'Create at dash.cloudflare.com/profile/api-tokens. Scoped tokens are recommended.',
           },
         ],
-        automations: [
-          {
-            name: 'Zone Health Check',
-            description: 'Daily - report zone statuses and flag any inactive domains',
-          },
-        ],
         validate: validateCloudflareConnection,
       }),
     ],
@@ -80,17 +70,6 @@ export default createCapabilityFeature({
   },
   chatTools: CLOUDFLARE_TOOLS,
   executeChatTool: executeCloudflareChatTool,
-
-  automation: {
-    dataSources: [{ value: 'cloudflare_zones', label: 'Cloudflare - Zones', group: 'Cloudflare' }],
-    outputTypes: [],
-    instructionTemplates: {
-      cloudflare_zones:
-        'Review these Cloudflare zones. Summarize their status and flag any that are inactive, have issues, or need attention.',
-    },
-    dataSourceCollectors: cloudflareDataSourceCollectors,
-    outputHandlers: cloudflareOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getCloudflareCredentials,

@@ -7,7 +7,6 @@ import {
   extractDocumentTextFromBuffer,
   extractDocumentTextFromPath,
 } from '../Services/DocumentExtractionService.js';
-import { openTerminalAtPath } from '../../Features/Automation/Actions/Terminal.js';
 const activePtys = new Map(),
   // Rolling 64 KB output buffer per PTY — readable by the AI via pty-read-output
   ptyBuffers = new Map(),
@@ -1153,18 +1152,6 @@ export function register() {
       try {
         const err = await shell.openPath(resolved);
         return err ? { ok: !1, error: err } : { ok: !0 };
-      } catch (err) {
-        return { ok: !1, error: err.message };
-      }
-    }),
-    ipcMain.handle('open-terminal-os', async (_e, { dirPath: dirPath }) => {
-      const dirErr = requireParam(dirPath, 'No directory path provided.');
-      if (dirErr) return dirErr;
-      const resolved = path.resolve(dirPath.trim());
-      try {
-        return fs.existsSync(resolved)
-          ? (await openTerminalAtPath(resolved, ''), { ok: !0, path: resolved })
-          : { ok: !1, error: `Directory does not exist: ${resolved}` };
       } catch (err) {
         return { ok: !1, error: err.message };
       }

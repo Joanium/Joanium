@@ -21,7 +21,6 @@ export function defineFeature(feature = {}) {
     lifecycle: feature.lifecycle ?? {},
     main: feature.main ?? {},
     renderer: feature.renderer ?? {},
-    automation: feature.automation ?? {},
     channels: feature.channels ?? {},
     prompt: feature.prompt ?? {},
     storage: feature.storage ?? {},

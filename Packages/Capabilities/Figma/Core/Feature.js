@@ -7,7 +7,6 @@ import * as FigmaAPI from './API/FigmaAPI.js';
 import { getFigmaCredentials, withFigma } from './Shared/Common.js';
 import { FIGMA_TOOLS } from './Chat/Tools.js';
 import { executeFigmaChatTool } from './Chat/ChatExecutor.js';
-import { figmaDataSourceCollectors, figmaOutputHandlers } from './Automation/AutomationHandlers.js';
 
 const validateFigmaConnection = createConnectorValidator({
   connectorId: 'figma',
@@ -60,12 +59,6 @@ export default createCapabilityFeature({
             hint: 'Create at figma.com -> Settings -> Security -> Personal access tokens.',
           },
         ],
-        automations: [
-          {
-            name: 'Design Review',
-            description: 'Daily - summarize open comments on a Figma file',
-          },
-        ],
         validate: validateFigmaConnection,
       }),
     ],
@@ -85,32 +78,6 @@ export default createCapabilityFeature({
   },
   chatTools: FIGMA_TOOLS,
   executeChatTool: executeFigmaChatTool,
-
-  automation: {
-    dataSources: [
-      {
-        value: 'figma_file_comments',
-        label: 'Figma - File Comments',
-        group: 'Figma',
-        params: [
-          {
-            key: 'file_key',
-            label: 'File Key',
-            type: 'text',
-            required: true,
-            placeholder: 'From the Figma URL: figma.com/file/<KEY>/...',
-          },
-        ],
-      },
-    ],
-    outputTypes: [],
-    instructionTemplates: {
-      figma_file_comments:
-        'Review these Figma file comments. Summarize the open feedback, identify any blocking issues, and suggest next steps for the design.',
-    },
-    dataSourceCollectors: figmaDataSourceCollectors,
-    outputHandlers: figmaOutputHandlers,
-  },
 
   prompt: createConnectedServicePrompt({
     getCredentials: getFigmaCredentials,
