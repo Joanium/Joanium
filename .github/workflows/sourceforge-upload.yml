@@ -3,8 +3,9 @@ name: Upload Releases to SourceForge
 on:
   workflow_dispatch:
 
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ['📦 Upload Release Asset']
+    types: [completed]
 
 permissions:
   contents: read
@@ -12,6 +13,7 @@ permissions:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Download Release Assets
