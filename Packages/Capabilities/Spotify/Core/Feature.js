@@ -121,17 +121,6 @@ export default createCapabilityFeature({
   chatTools: SPOTIFY_TOOLS,
   executeChatTool: executeSpotifyChatTool,
 
-  automation: {
-    dataSources: [{ value: 'spotify_top_tracks', label: 'Spotify - Top Tracks', group: 'Spotify' }],
-    outputTypes: [],
-    instructionTemplates: {
-      spotify_top_tracks:
-        "Review the user's top Spotify tracks. Identify listening patterns, favourite genres, and any interesting observations about their music taste.",
-    },
-    dataSourceCollectors: spotifyDataSourceCollectors,
-    outputHandlers: spotifyOutputHandlers,
-  },
-
   prompt: createConnectedServicePrompt({
     getCredentials: getSpotifyCredentials,
     getServiceLabel: (creds) => {

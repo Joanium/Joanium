@@ -942,7 +942,6 @@ export function initSettingsModal() {
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openMarketplace">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openSkills">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openPersonas">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>
-                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openAutomations">Open Automations</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>U</kbd></span></div>
                     </div>
                   </div>
                   <div class="shortcuts-group">

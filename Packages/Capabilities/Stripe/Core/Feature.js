@@ -49,7 +49,7 @@ export default createCapabilityFeature({
         capabilities: [
           'Check account balance (available and pending)',
           'List recent charges and customer transactions',
-          'Monitor revenue and subscriptions via automations',
+          'Monitor revenue and subscriptions via agents',
         ],
         fields: [
           {

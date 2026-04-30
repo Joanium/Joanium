@@ -2069,8 +2069,6 @@
   word-break: break-word;
 }
 
-/* ── Rules migrated from Automations.css (agents-specific usage) ── */
-
 .agent-card-meta {
   display: flex;
   flex-direction: column;

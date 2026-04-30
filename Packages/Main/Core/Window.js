@@ -97,7 +97,7 @@ export function create(page) {
   });
 
   _win.webContents.once('did-finish-load', () => {
-    _win?.webContents.send('preload-pages', ['automations', 'agents', 'events', 'skills']);
+    _win?.webContents.send('preload-pages', ['agents', 'events', 'skills']);
     // On Windows, hide the native caption overlay on the setup page.
     // The setup page is always light-themed, so the dark default overlay looks
     // jarring. We make it invisible by matching the page background colour.

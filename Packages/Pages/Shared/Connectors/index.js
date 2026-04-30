@@ -115,18 +115,6 @@ function renderPanel() {
               details.appendChild(badgeWrap);
             }
           }
-          if (def.automations?.length) {
-            const autoSec = document.createElement('div');
-            ((autoSec.className = 'cx-auto-section'),
-              (autoSec.innerHTML = '<div class="cx-auto-label">Suggested Automations</div>'),
-              def.automations.forEach((a) => {
-                const item = document.createElement('div');
-                ((item.className = 'cx-auto-item'),
-                  (item.innerHTML = `<strong>${a.name}</strong> - <span>${a.description}</span>`),
-                  autoSec.appendChild(item));
-              }),
-              details.appendChild(autoSec));
-          }
           const statusEl = document.createElement('div');
           ((statusEl.className = 'cx-status-msg'),
             (statusEl.id = `cx-status-${def.id}`),

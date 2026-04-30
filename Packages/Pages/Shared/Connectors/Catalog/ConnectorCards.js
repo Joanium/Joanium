@@ -37,18 +37,6 @@ export function buildCard(def, cxState, onConnect, onDisconnect) {
     ((info.innerHTML = `<div class="cx-account-avatar">${display[0].toUpperCase()}</div><span>${display}</span>`),
       card.appendChild(info));
   }
-  if (def.automations?.length) {
-    const autoSec = document.createElement('div');
-    ((autoSec.className = 'cx-auto-section'),
-      (autoSec.innerHTML = '<div class="cx-auto-label">Suggested Automations</div>'),
-      def.automations.forEach((a) => {
-        const item = document.createElement('div');
-        ((item.className = 'cx-auto-item'),
-          (item.innerHTML = `<strong>${a.name}</strong> — <span>${a.description}</span>`),
-          autoSec.appendChild(item));
-      }),
-      card.appendChild(autoSec));
-  }
   const statusEl = document.createElement('div');
   ((statusEl.className = 'cx-status-msg'),
     (statusEl.id = `cx-status-${def.id}`),

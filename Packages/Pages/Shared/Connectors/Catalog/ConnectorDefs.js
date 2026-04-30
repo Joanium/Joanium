@@ -77,7 +77,7 @@ export const STATIC_CONNECTORS = [
       'Ask "load file X from owner/repo" in chat',
       'List repos, issues, and pull requests',
       'AI knows your repos via system prompt',
-      'Track PRs & issues via automations',
+      'Track PRs & issues via agents',
     ],
     fields: [
       {
@@ -105,7 +105,7 @@ export const STATIC_CONNECTORS = [
       'Ask "load file X from owner/project" in chat',
       'List projects, issues, and merge requests',
       'AI knows your projects via system prompt',
-      'Track MRs & issues via automations',
+      'Track MRs & issues via agents',
     ],
     fields: [
       {
