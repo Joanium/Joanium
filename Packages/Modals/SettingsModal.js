@@ -938,7 +938,6 @@ export function initSettingsModal() {
                   <div class="shortcuts-group">
                     <h4 class="shortcuts-group-title" data-i18n="settings.workspaceGroup">Workspace</h4>
                     <div class="shortcuts-list">
-                      <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openAgents">Open Agents</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>A</kbd></span></div>
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openMarketplace">Open Marketplace</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd></span></div>
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openSkills">Open Skills</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>S</kbd></span></div>
                       <div class="shortcut-row"><span class="shortcut-desc" data-i18n="settings.openPersonas">Open Personas</span><span class="shortcut-keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd></span></div>

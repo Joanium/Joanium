@@ -33,11 +33,9 @@ function attachWindowServices(windowRef, activeEngines) {
     featureRegistry: featureRegistry,
     channelEngine: channelEngine,
     browserPreviewService: browserPreviewService,
-    agentsEngine: agentsEngine,
   } = activeEngines;
   (browserPreviewService.attachToWindow(windowRef),
     channelEngine.setWindow(windowRef),
-    agentsEngine?.attachWindow?.(windowRef),
     featureRegistry.attachWindow(windowRef));
 }
 

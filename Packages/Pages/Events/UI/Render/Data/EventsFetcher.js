@@ -12,26 +12,6 @@ function channelLabel(name) {
 export async function fetchHistory() {
   const events = [];
   try {
-    const res = await window.electronAPI?.invoke?.('get-agents'),
-      agents = Array.isArray(res?.agents) ? res.agents : [];
-    for (const agent of agents)
-      for (const entry of agent.history ?? [])
-        events.push({
-          id: `agent__${agent.id}__${entry.timestamp}`,
-          type: 'agent',
-          source: agent.name,
-          agentId: agent.id,
-          status: entry.error ? 'error' : 'success',
-          timestamp: entry.timestamp,
-          summary: entry.summary || '',
-          fullResponse: entry.fullResponse || '',
-          error: entry.error || null,
-          skipReason: null,
-          trigger: agent.trigger || null,
-          agentEnabled: agent.enabled,
-        });
-  } catch {}
-  try {
     const res = await window.electronAPI?.invoke?.('get-channel-messages'),
       messages = Array.isArray(res?.messages) ? res.messages : [];
     for (const [index, entry] of messages.entries()) {

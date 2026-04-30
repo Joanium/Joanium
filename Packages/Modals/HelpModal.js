@@ -48,7 +48,6 @@ const SHORTCUT_SECTIONS = [
   {
     title: 'Workspace',
     shortcuts: [
-      { keys: ['Ctrl', 'Shift', 'A'], desc: 'Open Agents' },
       { keys: ['Ctrl', 'Shift', 'M'], desc: 'Open Marketplace' },
       { keys: ['Ctrl', 'Shift', 'S'], desc: 'Open Skills' },
       { keys: ['Ctrl', 'Shift', 'P'], desc: 'Open Personas' },

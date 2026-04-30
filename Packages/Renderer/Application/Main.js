@@ -8,7 +8,7 @@ import { initSettingsModal } from '../../Modals/SettingsModal.js';
 import { initHelpModal } from '../../Modals/HelpModal.js';
 import { injectCSS } from '../../System/Utils/InjectCSS.js';
 import { initChannelGateway } from '../../Pages/Channels/Features/Gateway.js';
-import { initScheduledAgentGateway } from '../../Pages/Agents/Features/Gateway.js';
+
 import {
   buildSidebarNav,
   discoverPages,
@@ -153,7 +153,6 @@ async function leaveProject() {
     (_help = initHelpModal()),
     initAppLockActivityBridge(),
     initChannelGateway(),
-    initScheduledAgentGateway(),
     (_sidebar = initSidebar({
       activePage: 'chat',
       navigation: buildSidebarNav(),
@@ -264,10 +263,6 @@ document.addEventListener('keydown', (e) => {
 
   if (ctrl && shift) {
     switch (key) {
-      case 'A':
-        e.preventDefault();
-        navigate('agents');
-        return;
       case 'M':
         e.preventDefault();
         navigate('marketplace');
