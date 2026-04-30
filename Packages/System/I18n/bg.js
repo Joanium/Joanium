@@ -176,7 +176,6 @@
     openMarketplace: 'Отвори пазара',
     openSkills: 'Отвори уменията',
     openPersonas: 'Отвори персоните',
-    openAutomations: 'Отвори автоматизациите',
   },
   library: {
     title: 'Прегледайте чатовете си',

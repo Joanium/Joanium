@@ -88,14 +88,6 @@ export const STATIC_CONNECTORS = [
         hint: 'Create at github.com/settings/tokens — needs: repo, read:user, notifications scopes',
       },
     ],
-    automations: [
-      { name: 'Daily PR Summary', description: 'Every morning — notify about open pull requests' },
-      { name: 'Issue Tracker', description: 'Daily — notify about open issues in a repo' },
-      {
-        name: 'GitHub Notifications',
-        description: 'Hourly — notify if there are unread notifications',
-      },
-    ],
   },
   {
     id: 'gitlab',
@@ -122,14 +114,6 @@ export const STATIC_CONNECTORS = [
         placeholder: 'glpat-…',
         type: 'password',
         hint: 'Create at gitlab.com/profile/personal_access_tokens — needs: read_api, read_repository, read_user, read_all scopes',
-      },
-    ],
-    automations: [
-      { name: 'Daily MR Summary', description: 'Every morning — notify about open merge requests' },
-      { name: 'Issue Tracker', description: 'Daily — notify about open issues in a project' },
-      {
-        name: 'GitLab Notifications',
-        description: 'Hourly — notify if there are unread notifications',
       },
     ],
   },

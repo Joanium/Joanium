@@ -7,10 +7,6 @@ import * as SpotifyAPI from './API/SpotifyAPI.js';
 import { getSpotifyCredentials, withSpotify } from './Shared/Common.js';
 import { SPOTIFY_TOOLS } from './Chat/Tools.js';
 import { executeSpotifyChatTool } from './Chat/ChatExecutor.js';
-import {
-  spotifyDataSourceCollectors,
-  spotifyOutputHandlers,
-} from './Automation/AutomationHandlers.js';
 
 async function getSpotifyWorkspace() {
   return import('../SpotifyWorkspace.js');
@@ -81,12 +77,6 @@ export default createCapabilityFeature({
             placeholder: 'Your Spotify app Client Secret',
             type: 'password',
             hint: 'Keep this private. Click "View client secret" in your Spotify dashboard.',
-          },
-        ],
-        automations: [
-          {
-            name: 'Music Digest',
-            description: 'Weekly - summarize your top tracks and most active listening periods',
           },
         ],
         validate: validateSpotifyConnection,

@@ -60,12 +60,6 @@ export default createCapabilityFeature({
             hint: 'Found at dashboard.stripe.com -> Developers -> API Keys. Never share this key.',
           },
         ],
-        automations: [
-          {
-            name: 'Revenue Digest',
-            description: 'Daily - summarize recent charges, balance, and flag anomalies',
-          },
-        ],
         validate: validateStripeConnection,
       }),
     ],

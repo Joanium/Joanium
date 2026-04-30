@@ -64,12 +64,6 @@ export default createCapabilityFeature({
             hint: 'Create at sentry.io -> Settings -> Account -> API -> Auth Tokens.',
           },
         ],
-        automations: [
-          {
-            name: 'Error Digest',
-            description: 'Daily - summarize unresolved errors and flag critical/fatal issues',
-          },
-        ],
         validate: validateSentryConnection,
       }),
     ],
