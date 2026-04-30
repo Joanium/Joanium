@@ -4,22 +4,15 @@ import { fetchHistory, fetchRunning } from './Data/EventsFetcher.js';
 import { buildRunningCard, buildEventRow } from './Components/EventsCards.js';
 
 function runningJobKey(job) {
-  return `${job.type ?? 'run'}__${job.agentId ?? job.automationId ?? ''}__${job.jobId ?? ''}`;
+  return `${job.type ?? 'run'}__${job.jobId ?? ''}`;
 }
 
 function eventSourceKey(event) {
-  switch (event.type) {
-    case 'agent':
-      return `agent:${event.agentId ?? event.source ?? event.id}`;
-    case 'channel':
-      return `channel:${event.channel ?? event.source ?? event.id}`;
-    default:
-      return `${event.type ?? 'event'}:${event.id ?? event.source ?? 'unknown'}`;
-  }
+  return `channel:${event.channel ?? event.source ?? event.id}`;
 }
 
 function runningSourceKey(job) {
-  return 'agent' === job.type`agent:${job.agentId ?? job.agentName ?? job.jobId ?? 'running'}`;
+  return `channel:${job.jobId ?? 'running'}`;
 }
 
 function hasDetailValue(value) {

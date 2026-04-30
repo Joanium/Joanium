@@ -11,10 +11,11 @@ async function githubFetch(endpoint, token, options = {}) {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err?.message ?? `GitHub API ${res.status}`);
+    throw new Error(`GitHub API ${res.status} on ${endpoint}: ${err?.message ?? 'Unknown error'}`);
   }
   return 204 === res.status ? null : res.json();
 }
+
 export async function getUser(credentials) {
   return githubFetch('/user', credentials.token);
 }
@@ -31,7 +32,16 @@ export async function getRepoTree(credentials, owner, repo, branch) {
   try {
     return await tryBranch('main');
   } catch {
-    return tryBranch('master');
+    try {
+      return await tryBranch('master');
+    } catch {
+      // Neither 'main' nor 'master' exists — fetch the repo's actual default branch
+      const repoInfo = await githubFetch(`/repos/${owner}/${repo}`, credentials.token);
+      const defaultBranch = repoInfo?.default_branch;
+      if (!defaultBranch || defaultBranch === 'main' || defaultBranch === 'master')
+        throw new Error(`Repository ${owner}/${repo} tree not found.`);
+      return tryBranch(defaultBranch);
+    }
   }
 }
 export async function getFileContent(credentials, owner, repo, filePath) {
