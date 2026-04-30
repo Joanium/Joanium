@@ -618,7 +618,6 @@
       'Echtzeit-Protokoll jeder Automatisierung, jeden Agenten und jeder Kanal-Interaktion \u2014 Erfolge, Fehler und was passiert ist.',
     filterAll: 'Alle',
     filterAgents: 'Agenten',
-    filterAutomations: 'Automatisierungen',
     filterChannels: 'Kan\u00e4le',
     filterErrors: 'Fehler',
     clear: 'L\u00f6schen',

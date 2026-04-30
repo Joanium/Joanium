@@ -587,7 +587,6 @@
     description: 'سجل في الوقت الفعلي لكل أتمتة ووكيل وتفاعل قناة — النجاحات والإخفاقات وما حدث.',
     filterAll: 'الكل',
     filterAgents: 'الوكلاء',
-    filterAutomations: 'الأتمتة',
     filterChannels: 'القنوات',
     filterErrors: 'الأخطاء',
     clear: 'مسح',

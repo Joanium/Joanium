@@ -601,7 +601,6 @@
       "Cofnod amser real o bob awtomatiaeth, asiant, a rhyngweithiad sianel — llwyddiannau, methiannau, a'r hyn a ddigwyddodd.",
     filterAll: 'Pob un',
     filterAgents: 'Asiantau',
-    filterAutomations: 'Awtomatiaeth',
     filterChannels: 'Sianeli',
     filterErrors: 'Gwallau',
     clear: 'Clirio',
