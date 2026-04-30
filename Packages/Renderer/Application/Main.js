@@ -268,10 +268,6 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         navigate('agents');
         return;
-      case 'U':
-        e.preventDefault();
-        navigate('automations');
-        return;
       case 'M':
         e.preventDefault();
         navigate('marketplace');

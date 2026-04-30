@@ -1,5 +1,4 @@
 import agentsPage from './Agents/Page.js';
-import automationsPage from './Automations/Page.js';
 import chatPage from './Chat/Page.js';
 import eventsPage from './Events/Page.js';
 import marketplacePage from './Marketplace/Page.js';
@@ -9,7 +8,6 @@ import skillsPage from './Skills/Page.js';
 import templatesPage from './Templates/Page.js';
 import usagePage from './Usage/Page.js';
 export { default as agentsPage } from './Agents/Page.js';
-export { default as automationsPage } from './Automations/Page.js';
 export { default as chatPage } from './Chat/Page.js';
 export { default as eventsPage } from './Events/Page.js';
 export { default as marketplacePage } from './Marketplace/Page.js';
@@ -22,7 +20,6 @@ export const pages = Object.freeze([
   chatPage,
   setupPage,
   templatesPage,
-  automationsPage,
   agentsPage,
   skillsPage,
   marketplacePage,
