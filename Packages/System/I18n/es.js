@@ -178,7 +178,6 @@
     openMarketplace: 'Abrir Mercado',
     openSkills: 'Abrir Habilidades',
     openPersonas: 'Abrir Personas',
-    openAutomations: 'Abrir Automatizaciones',
   },
   library: {
     title: 'Revisa tus conversaciones',

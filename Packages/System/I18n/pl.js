@@ -175,7 +175,6 @@
     openMarketplace: 'Otwórz sklep',
     openSkills: 'Otwórz umiejętności',
     openPersonas: 'Otwórz persony',
-    openAutomations: 'Otwórz automatyzacje',
   },
   library: {
     title: 'Wróć do swoich czatów',

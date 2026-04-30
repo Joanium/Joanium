@@ -176,7 +176,6 @@
     openMarketplace: 'Pazaryerini Aç',
     openSkills: 'Becerileri Aç',
     openPersonas: 'Kişilikleri Aç',
-    openAutomations: 'Otomasyonları Aç',
   },
   library: {
     title: 'Sohbetlerinizi tekrar ziyaret edin',

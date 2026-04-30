@@ -178,7 +178,6 @@
     openMarketplace: 'Marktplaats openen',
     openSkills: 'Vaardigheden openen',
     openPersonas: "Persona's openen",
-    openAutomations: 'Automatiseringen openen',
   },
   library: {
     title: 'Je gesprekken opnieuw bekijken',

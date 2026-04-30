@@ -175,7 +175,6 @@
     openMarketplace: 'Otevřít tržiště',
     openSkills: 'Otevřít dovednosti',
     openPersonas: 'Otevřít persony',
-    openAutomations: 'Otevřít automatizace',
   },
   library: {
     title: 'Navštivte své chaty znovu',

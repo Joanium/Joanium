@@ -173,7 +173,6 @@ export default {
     openMarketplace: 'Open Marketplace',
     openSkills: 'Open Skills',
     openPersonas: 'Open Personas',
-    openAutomations: 'Open Automations',
   },
   library: {
     title: 'Revisit your chats',

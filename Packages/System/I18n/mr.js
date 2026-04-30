@@ -175,7 +175,6 @@
     openMarketplace: 'मार्केटप्लेस उघडा',
     openSkills: 'कौशल्ये उघडा',
     openPersonas: 'पर्सोना उघडा',
-    openAutomations: 'ऑटोमेशन उघडा',
   },
   library: {
     title: 'तुमच्या चॅट पुन्हा पाहा',

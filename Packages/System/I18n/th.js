@@ -172,7 +172,6 @@
     openMarketplace: 'เปิดมาร์เก็ตเพลส',
     openSkills: 'เปิดทักษะ',
     openPersonas: 'เปิดเพอร์โซนา',
-    openAutomations: 'เปิดการทำงานอัตโนมัติ',
   },
   library: {
     title: 'ดูแชทของคุณอีกครั้ง',

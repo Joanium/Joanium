@@ -52,7 +52,7 @@ export default createCapabilityFeature({
         ],
         capabilities: [
           'List unresolved errors and issues across projects',
-          'Monitor crash rates and error levels via automations',
+          'Monitor crash rates and error levels via agents',
           'AI is aware of your Sentry error environment',
         ],
         fields: [

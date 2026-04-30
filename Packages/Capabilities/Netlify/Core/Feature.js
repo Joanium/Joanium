@@ -49,7 +49,7 @@ export default createCapabilityFeature({
         ],
         capabilities: [
           'List all sites with publish status and custom domain',
-          'Monitor deployments and flag failures via automations',
+          'Monitor deployments and flag failures via agents',
           'AI is aware of your Netlify sites',
         ],
         fields: [

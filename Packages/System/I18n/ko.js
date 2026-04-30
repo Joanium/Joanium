@@ -171,7 +171,6 @@
     openMarketplace: '마켓플레이스 열기',
     openSkills: '스킬 열기',
     openPersonas: '페르소나 열기',
-    openAutomations: '자동화 열기',
   },
   library: {
     title: '채팅 다시 보기',

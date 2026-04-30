@@ -176,7 +176,6 @@
     openMarketplace: 'Åbn markedsplads',
     openSkills: 'Åbn færdigheder',
     openPersonas: 'Åbn personas',
-    openAutomations: 'Åbn automatiseringer',
   },
   library: {
     title: 'Genbesøg dine samtaler',

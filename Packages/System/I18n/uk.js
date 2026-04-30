@@ -175,7 +175,6 @@
     openMarketplace: 'Відкрити магазин',
     openSkills: 'Відкрити навички',
     openPersonas: 'Відкрити персонажі',
-    openAutomations: 'Відкрити автоматизації',
   },
   library: {
     title: 'Переглянути свої чати',

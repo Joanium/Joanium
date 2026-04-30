@@ -178,7 +178,6 @@
     openMarketplace: 'Abrir Marketplace',
     openSkills: 'Abrir Habilidades',
     openPersonas: 'Abrir Personas',
-    openAutomations: 'Abrir Automações',
   },
   library: {
     title: 'Revisite seus chats',

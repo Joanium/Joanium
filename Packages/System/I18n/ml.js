@@ -178,7 +178,6 @@
     openMarketplace: 'മാർക്കറ്റ്‌പ്ലേസ് തുറക്കുക',
     openSkills: 'കഴിവുകൾ തുറക്കുക',
     openPersonas: 'പേഴ്‌സോണകൾ തുറക്കുക',
-    openAutomations: 'ഓട്ടോമേഷനുകൾ തുറക്കുക',
   },
   library: {
     title: 'നിങ്ങളുടെ ചാറ്റുകൾ വീണ്ടും കാണുക',

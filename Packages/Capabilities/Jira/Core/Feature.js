@@ -34,7 +34,7 @@ export default defineFeature({
           'Manage comments, worklogs, and watchers',
           'Browse boards, sprints, backlogs, and versions',
           'Search users and link issues together',
-          'Monitor issue workload via automations',
+          'Monitor issue workload via agents',
         ],
         fields: [
           {

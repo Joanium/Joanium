@@ -177,7 +177,6 @@
     openMarketplace: 'Marktplatz \u00f6ffnen',
     openSkills: 'Skills \u00f6ffnen',
     openPersonas: 'Personas \u00f6ffnen',
-    openAutomations: 'Automationen \u00f6ffnen',
   },
   library: {
     title: 'Deine Chats',

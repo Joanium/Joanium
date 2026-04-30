@@ -173,7 +173,6 @@
     openMarketplace: 'Открыть маркетплейс',
     openSkills: 'Открыть навыки',
     openPersonas: 'Открыть персонажей',
-    openAutomations: 'Открыть автоматизации',
   },
   library: {
     title: 'Вернуться к чатам',

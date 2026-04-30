@@ -177,7 +177,6 @@
     openMarketplace: 'ಮಾರ್ಕೆಟ್‌ಪ್ಲೇಸ್ ತೆರೆಯಿರಿ',
     openSkills: 'ಕೌಶಲ್ಯಗಳು ತೆರೆಯಿರಿ',
     openPersonas: 'ಪರ್ಸೋನಾಗಳು ತೆರೆಯಿರಿ',
-    openAutomations: 'ಆಟೊಮೇಷನ್‌ಗಳು ತೆರೆಯಿರಿ',
   },
   library: {
     title: 'ನಿಮ್ಮ ಚಾಟ್‌ಗಳನ್ನು ಮರುಭೇಟಿ ಮಾಡಿ',

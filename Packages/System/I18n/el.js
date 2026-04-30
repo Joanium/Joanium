@@ -181,7 +181,6 @@
     openMarketplace: 'Άνοιγμα Αγοράς',
     openSkills: 'Άνοιγμα Δεξιοτήτων',
     openPersonas: 'Άνοιγμα Προσωποτήτων',
-    openAutomations: 'Άνοιγμα Αυτοματισμών',
   },
   library: {
     title: 'Επισκέψου τις συνομιλίες σου',

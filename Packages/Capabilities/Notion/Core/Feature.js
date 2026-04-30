@@ -52,7 +52,7 @@ export default createCapabilityFeature({
         capabilities: [
           'Search any Notion page by name or content',
           'Browse recently edited pages and databases',
-          'Monitor workspace activity via automations',
+          'Monitor workspace activity via agents',
         ],
         fields: [
           {

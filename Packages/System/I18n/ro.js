@@ -178,7 +178,6 @@
     openMarketplace: 'Deschide Marketplace',
     openSkills: 'Deschide Abilități',
     openPersonas: 'Deschide Persoane',
-    openAutomations: 'Deschide Automatizări',
   },
   library: {
     title: 'Revizitează conversațiile',
