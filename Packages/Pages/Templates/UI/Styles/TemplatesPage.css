@@ -5,5 +5,6 @@
 /* Page-specific styles */
 @import '../../../Shared/Styles/PageContentBase.css';
 @import '../../../Shared/Styles/PageTaglineBadge.css';
+@import '../../../Shared/Styles/SharedEmptyState.css';
 @import '../../../Shared/Styles/FreeConnectors.css';
 @import './Templates.css';
