@@ -37,7 +37,7 @@ export default defineFeature({
           'Inspect auth users and OAuth provider settings',
           'Check API settings, PostgREST config, secrets, and network restrictions',
           'Tail recent logs across api, auth, storage, postgres, realtime, and functions services',
-          'Monitor project health via automations',
+          'Monitor project health via agents',
           'AI is aware of your full Supabase environment',
         ],
         fields: [
@@ -47,12 +47,6 @@ export default defineFeature({
             placeholder: 'sbp_...',
             type: 'password',
             hint: 'Create at supabase.com/dashboard/account/tokens.',
-          },
-        ],
-        automations: [
-          {
-            name: 'Project Status',
-            description: 'Daily — report Supabase project statuses and flag any issues',
           },
         ],
         defaultState: { enabled: false, credentials: {} },

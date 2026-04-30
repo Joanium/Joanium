@@ -183,7 +183,6 @@ export function loadPage(page) {
 }
 
 const PAGE_MAP = {
-  Automations: 'automations',
   Agents: 'agents',
   Events: 'events',
   Skills: 'skills',

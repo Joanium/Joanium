@@ -49,12 +49,6 @@ export default defineFeature({
             hint: 'Create at vercel.com/account/tokens. Only shown once when created.',
           },
         ],
-        automations: [
-          {
-            name: 'Deployment Monitor',
-            description: 'Daily — summarize recent deployments and flag any failures',
-          },
-        ],
         defaultState: { enabled: false, credentials: {} },
         async validate(ctx) {
           const creds = ctx.connectorEngine?.getCredentials('vercel');

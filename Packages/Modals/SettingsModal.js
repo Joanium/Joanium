@@ -722,7 +722,7 @@ export function initSettingsModal() {
               <section class="settings-panel" data-settings-panel="connectors" hidden>
                 <div class="settings-panel-header">
                   <h3 data-i18n="settings.connectorsPanelTitle">Connectors</h3>
-                  <p data-i18n="settings.connectorsPanelDesc">Link your workspace so the AI knows about your emails, repos and files, and automations can take action.</p>
+                  <p data-i18n="settings.connectorsPanelDesc">Link your workspace so the AI knows about your emails, repos and files, and agents can take action.</p>
                 </div>
                 <div id="connector-list" class="connector-list">
                   <div class="cx-loading" data-i18n="chat.loading">Loading connectors...</div>

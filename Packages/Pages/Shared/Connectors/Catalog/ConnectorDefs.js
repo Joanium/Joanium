@@ -60,16 +60,6 @@ export const STATIC_CONNECTORS = [
         hint: 'Found next to your Client ID. Keep it private.',
       },
     ],
-    automations: [
-      {
-        name: 'Morning Briefing',
-        description: 'Daily — summarize emails, calendar, and Drive changes',
-      },
-      {
-        name: 'Meeting Prep',
-        description: 'Before meetings — pull agenda from Calendar + related Drive docs',
-      },
-    ],
   },
   {
     id: 'github',

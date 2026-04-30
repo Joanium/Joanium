@@ -179,7 +179,6 @@
     openMarketplace: 'Oscail Margadh',
     openSkills: 'Oscail Scileanna',
     openPersonas: 'Oscail Pearsana',
-    openAutomations: 'Oscail Uathoibriú',
   },
   library: {
     title: 'Athfhéach ar do chomhráite',
