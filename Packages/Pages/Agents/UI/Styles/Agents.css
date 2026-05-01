@@ -744,7 +744,7 @@
 
 .agents-modal-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
   align-items: start;
 }
@@ -1204,10 +1204,6 @@ select.agents-field option {
   .agents-card-schedule-col,
   .agents-card-model-col {
     display: none;
-  }
-
-  .agents-modal-grid {
-    grid-template-columns: 1fr;
   }
 }
 
