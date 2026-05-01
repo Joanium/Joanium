@@ -1,11 +1,11 @@
 export const Properties = {
   name: 'Joanium',
-  version: '0.1.0',
+  version: '2026.430.1',
   description: 'Your smart, reliable, and friendly personal AI assistant.',
   author: 'Joel Jolly',
   authorUrl: 'https://joeljolly.vercel.app',
   sponsorUrl: 'https://github.com/sponsors/withinJoel',
-  license: 'MIT',
+  license: 'Apache-2.0',
   get repository() {
     return `https://github.com/${this.name}/${this.name}`;
   },

@@ -50,10 +50,6 @@ function applyPageWindowState(win, page, windowState = loadWindowState()) {
                 windowState.bounds && win.setBounds(windowState.bounds))));
 }
 
-export function optimizeApp() {
-  app.commandLine.appendSwitch('enable-features', 'BackForwardCache');
-}
-
 export function create(page) {
   const windowState = loadWindowState();
   const titleBarOptions = getTitleBarOptions();
@@ -97,7 +93,7 @@ export function create(page) {
   });
 
   _win.webContents.once('did-finish-load', () => {
-    _win?.webContents.send('preload-pages', ['agents', 'events', 'skills']);
+    _win?.webContents.send('preload-pages', ['events', 'skills']);
     // On Windows, hide the native caption overlay on the setup page.
     // The setup page is always light-themed, so the dark default overlay looks
     // jarring. We make it invisible by matching the page background colour.
@@ -183,7 +179,6 @@ export function loadPage(page) {
 }
 
 const PAGE_MAP = {
-  Agents: 'agents',
   Events: 'events',
   Skills: 'skills',
   Personas: 'personas',
