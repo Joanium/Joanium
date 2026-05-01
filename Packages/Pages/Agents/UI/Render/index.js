@@ -23,6 +23,9 @@ let _editingId = null;
 let _searchQuery = '';
 let _runningAgentIds = new Set();
 let _refreshTimer = null;
+let _allRuns = [];
+let _historyFilterAgentId = '';
+let _activeTab = 'agents';
 
 let grid = null;
 let emptyEl = null;
@@ -66,6 +69,13 @@ let fallbackModel1Input = null;
 let fallbackModel2Input = null;
 let workspaceSelect = null;
 let workspaceHint = null;
+let tabAgentsBtn = null;
+let tabHistoryBtn = null;
+let viewAgentsEl = null;
+let viewHistoryEl = null;
+let historyFilterSelect = null;
+let historyAllBody = null;
+let historyViewLoading = null;
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -86,6 +96,16 @@ function formatRelative(iso) {
   const d = Math.floor(hr / 24);
   if (d < 30) return `${d}d ago`;
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function formatTimestamp(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 function providerLabel(provider = {}) {
@@ -199,17 +219,7 @@ function updateScheduleUi() {
     .forEach((section) => (section.hidden = section.dataset.mode !== scheduleModeInput.value));
   const schedule = currentSchedule();
   schedulePreview.textContent = describeSchedule(schedule);
-  const showCron = 'cron' === schedule.type;
-  cronPreview.hidden = !showCron;
-  if (showCron) {
-    cronPreview.textContent = isValidCronExpression(schedule.expression)
-      ? schedule.expression
-      : 'Cron expression is invalid';
-    cronPreview.classList.toggle(
-      'agents-preview-subline--error',
-      !isValidCronExpression(schedule.expression),
-    );
-  }
+  if (cronPreview) cronPreview.hidden = true;
 }
 
 function setModalStatus(message = '', tone = 'info') {
@@ -293,7 +303,7 @@ function closeModal() {
 async function openCreateModal() {
   _editingId = null;
   modalEyebrow.textContent = 'New Agent';
-  modalTitle.textContent = 'Saved agent';
+  modalTitle.textContent = 'New Agent';
   nameInput.value = '';
   descriptionInput.value = '';
   promptInput.value = '';
@@ -343,23 +353,12 @@ async function openEditModal(agent) {
   showModal();
 }
 
-function cardMeta(agent) {
-  return [
-    { label: 'Slash', value: `/${agent.id}` },
-    { label: 'Run', value: agent.schedule?.label ?? 'On app startup' },
-    {
-      label: 'Workspace',
-      value: agent.workspace?.projectName ?? 'None',
-    },
-  ];
-}
-
 function runState(agent) {
-  if (_runningAgentIds.has(agent.id)) return { label: 'Running now', tone: 'running' };
-  if ('success' === agent.lastRunStatus)
-    return { label: `Completed ${formatRelative(agent.lastRunAt)}`, tone: 'success' };
+  if (_runningAgentIds.has(agent.id)) return { label: 'Running', tone: 'running' };
   if ('error' === agent.lastRunStatus)
     return { label: `Error ${formatRelative(agent.lastRunAt)}`, tone: 'error' };
+  if ('success' === agent.lastRunStatus)
+    return { label: `Last run ${formatRelative(agent.lastRunAt)}`, tone: 'idle' };
   return {
     label: agent.nextRunAt ? `Next ${formatRelative(agent.nextRunAt)}` : 'Not run yet',
     tone: 'idle',
@@ -386,14 +385,15 @@ function buildCard(agent) {
       <div class="agents-card-name-block">
         <div class="agents-card-name-row">
           <h3 class="agents-card-title">${escapeHtml(agent.name)}</h3>
+          <button class="agents-card-enabled ${agent.enabled ? 'is-on' : ''}" type="button" data-action="toggle">
+            ${agent.enabled ? 'Enabled' : 'Paused'}
+          </button>
+        </div>
+        <div class="agents-card-meta-row">
+          <span class="agents-card-command">/${escapeHtml(agent.id)}</span>
           <span class="agents-card-state agents-card-state--${status.tone}">${escapeHtml(status.label)}</span>
         </div>
-        <div class="agents-card-command">/${escapeHtml(agent.id)}</div>
       </div>
-    </div>
-
-    <div class="agents-card-prompt-col">
-      <span class="agents-card-prompt-text">${escapeHtml(agent.prompt.slice(0, 120))}${agent.prompt.length > 120 ? '\u2026' : ''}</span>
     </div>
 
     <div class="agents-card-schedule-col">
@@ -407,10 +407,7 @@ function buildCard(agent) {
     </div>
 
     <div class="agents-card-actions">
-      <button class="agents-card-enabled ${agent.enabled ? 'is-on' : ''}" type="button" data-action="toggle">
-        ${agent.enabled ? 'Enabled' : 'Paused'}
-      </button>
-      <button class="agents-card-btn" type="button" data-action="run">${_runningAgentIds.has(agent.id) ? 'Running…' : 'Run'}</button>
+      <button class="agents-card-btn" type="button" data-action="run">${_runningAgentIds.has(agent.id) ? 'Running\u2026' : 'Run'}</button>
       <button class="agents-card-btn" type="button" data-action="edit">Edit</button>
       <button class="agents-card-btn agents-card-btn--danger" type="button" data-action="delete">Delete</button>
     </div>
@@ -441,7 +438,7 @@ function buildCard(agent) {
   card.querySelector('[data-action="delete"]')?.addEventListener('click', async () => {
     const confirmed = await openConfirm({
       title: `Delete ${agent.name}?`,
-      body: 'This removes the saved agent and its schedule. Existing run history stays in Events.',
+      body: 'This removes the saved agent and its schedule. Existing run history stays in History.',
       confirmText: 'Delete',
       variant: 'danger',
     });
@@ -500,11 +497,127 @@ function render() {
   grid.hidden = false;
   grid.innerHTML = '';
   if (0 === filtered.length) {
-    grid.innerHTML = `<div class="agents-no-results">No agents matched “${escapeHtml(_searchQuery)}”.</div>`;
+    grid.innerHTML = `<div class="agents-no-results">No agents matched "${escapeHtml(_searchQuery)}".</div>`;
     return;
   }
   filtered.forEach((agent) => grid.appendChild(buildCard(agent)));
 }
+
+// ── History view ─────────────────────────────────────────────────────────────
+
+function renderAllHistoryRuns(runs) {
+  if (!historyAllBody) return;
+
+  const filtered = _historyFilterAgentId
+    ? runs.filter((r) => r.agentId === _historyFilterAgentId)
+    : runs;
+
+  if (!filtered.length) {
+    historyAllBody.innerHTML = `
+      <div class="agents-history-view-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="32" height="32">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>No runs recorded yet. Hit <strong>Run</strong> on an agent to execute it manually.</p>
+      </div>`;
+    return;
+  }
+
+  historyAllBody.innerHTML = filtered
+    .map((run) => {
+      const agentName =
+        _allAgents.find((a) => a.id === run.agentId)?.name ?? run.agentId ?? 'Unknown agent';
+      const output = String(run.summary || run.fullResponse || '').trim();
+      const hasOutput = output.length > 0;
+      const hasError = run.status === 'error' && run.error;
+      const durationMs =
+        run.finishedAt && run.startedAt ? new Date(run.finishedAt) - new Date(run.startedAt) : null;
+      const durationStr =
+        durationMs != null
+          ? durationMs < 1000
+            ? `${durationMs}ms`
+            : `${(durationMs / 1000).toFixed(1)}s`
+          : '';
+      const sourceLabel =
+        run.source === 'manual'
+          ? 'Manual'
+          : run.source === 'cron'
+            ? 'Scheduled'
+            : escapeHtml(run.source ?? '');
+      const timestampStr = formatTimestamp(run.startedAt);
+
+      return `
+        <div class="agents-history-run-card agents-history-run-card--${escapeHtml(run.status ?? 'idle')}">
+          <div class="agents-history-run-card-header">
+            <div class="agents-history-run-card-left">
+              <img class="agents-history-run-card-avatar" src="${createAgentAvatarDataUri(run.agentId ?? 'agent', 32)}" alt="${escapeHtml(agentName)}" />
+              <div class="agents-history-run-card-identity">
+                <span class="agents-history-run-card-name">${escapeHtml(agentName)}</span>
+                <span class="agents-history-run-card-time">${escapeHtml(timestampStr)}</span>
+              </div>
+            </div>
+            <div class="agents-history-run-card-badges">
+              <span class="agents-history-run-dot agents-history-run-dot--${escapeHtml(run.status ?? 'idle')}"></span>
+              <span class="agents-history-run-badge">${escapeHtml(sourceLabel)}</span>
+              ${durationStr ? `<span class="agents-history-run-badge">${escapeHtml(durationStr)}</span>` : ''}
+              ${run.model ? `<span class="agents-history-run-badge agents-history-run-badge--model">${escapeHtml(run.model)}</span>` : ''}
+            </div>
+          </div>
+          ${hasError ? `<div class="agents-history-run-error">${escapeHtml(String(run.error))}</div>` : ''}
+          ${
+            hasOutput
+              ? `<div class="agents-history-run-output"><pre class="agents-history-run-text">${escapeHtml(output.slice(0, 4000))}${output.length > 4000 ? '\n\u2026' : ''}</pre></div>`
+              : !hasError
+                ? `<div class="agents-history-run-nooutput">No output was recorded for this run.</div>`
+                : ''
+          }
+        </div>`;
+    })
+    .join('');
+}
+
+function populateHistoryFilter(runs) {
+  if (!historyFilterSelect) return;
+  const agentIds = [...new Set(runs.map((r) => r.agentId).filter(Boolean))];
+  historyFilterSelect.innerHTML =
+    `<option value="">All agents</option>` +
+    agentIds
+      .map((id) => {
+        const name = _allAgents.find((a) => a.id === id)?.name ?? id;
+        return `<option value="${escapeHtml(id)}">${escapeHtml(name)}</option>`;
+      })
+      .join('');
+  historyFilterSelect.value = _historyFilterAgentId;
+}
+
+async function loadHistoryView() {
+  if (!historyAllBody || !historyViewLoading) return;
+  historyViewLoading.hidden = false;
+  historyAllBody.innerHTML = '';
+  try {
+    const result = await window.electronAPI?.invoke?.('get-agent-runs', 500);
+    _allRuns = Array.isArray(result?.runs) ? result.runs : [];
+    historyViewLoading.hidden = true;
+    populateHistoryFilter(_allRuns);
+    renderAllHistoryRuns(_allRuns);
+  } catch (err) {
+    historyViewLoading.hidden = true;
+    historyAllBody.innerHTML = `<div class="agents-history-view-empty"><p>Could not load run history.</p></div>`;
+    console.error('[Agents] History load failed:', err);
+  }
+}
+
+function switchTab(tab) {
+  _activeTab = tab;
+  tabAgentsBtn?.classList.toggle('is-active', tab === 'agents');
+  tabHistoryBtn?.classList.toggle('is-active', tab === 'history');
+  if (viewAgentsEl) viewAgentsEl.hidden = tab !== 'agents';
+  if (viewHistoryEl) viewHistoryEl.hidden = tab !== 'history';
+  if (tab === 'history') loadHistoryView();
+}
+
+// ── Data ─────────────────────────────────────────────────────────────────────
 
 async function refreshRunning() {
   const result = await window.electronAPI?.invoke?.('get-running-jobs');
@@ -535,6 +648,8 @@ async function refreshAll() {
   _providers = Array.isArray(providers) ? providers : [];
   await refreshRunning();
   render();
+  // If on history tab, refresh the history view too
+  if (_activeTab === 'history') loadHistoryView();
 }
 
 async function saveAgent() {
@@ -634,6 +749,13 @@ export function mount(outlet) {
   fallbackModel2Input = document.getElementById('agents-fallback-model-2');
   workspaceSelect = document.getElementById('agents-workspace-select');
   workspaceHint = document.getElementById('agents-workspace-hint');
+  tabAgentsBtn = document.getElementById('agents-tab-agents');
+  tabHistoryBtn = document.getElementById('agents-tab-history');
+  viewAgentsEl = document.getElementById('agents-view-agents');
+  viewHistoryEl = document.getElementById('agents-view-history');
+  historyFilterSelect = document.getElementById('agents-history-filter');
+  historyAllBody = document.getElementById('agents-history-all-body');
+  historyViewLoading = document.getElementById('agents-history-view-loading');
 
   const onSearch = () => {
       _searchQuery = searchInput.value;
@@ -680,13 +802,21 @@ export function mount(outlet) {
     customCronInput,
   ].forEach((input) => input?.addEventListener('input', updateScheduleUi));
   workspaceSelect?.addEventListener('change', () => renderWorkspaceSelect(workspaceSelect.value));
+
+  tabAgentsBtn?.addEventListener('click', () => switchTab('agents'));
+  tabHistoryBtn?.addEventListener('click', () => switchTab('history'));
+
+  historyFilterSelect?.addEventListener('change', () => {
+    _historyFilterAgentId = historyFilterSelect.value;
+    renderAllHistoryRuns(_allRuns);
+  });
+
   window.addEventListener('jo:agents-runtime-updated', onRuntimeUpdate);
   window.addEventListener('jo:agents-changed', onRuntimeUpdate);
 
   refreshAll().catch((error) => {
     console.error('[Agents] Initial load failed:', error);
   });
-  // Auto-refresh removed — page refreshes on events (jo:agents-runtime-updated, jo:agents-changed)
 
   return function cleanup() {
     window.clearInterval(_refreshTimer);

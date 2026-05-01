@@ -1,5 +1,48 @@
 /* agents-main and agents-scroll base layout comes from PageContentBase.css */
 
+/* ── Tab bar ────────────────────────────────────────────────────────────── */
+
+.agents-tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 22px;
+  background: var(--bg-tertiary);
+  border-radius: 14px;
+  padding: 4px;
+  width: fit-content;
+  border: 1px solid var(--border-subtle);
+}
+
+.agents-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.agents-tab.is-active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.14);
+}
+
+.agents-tab:hover:not(.is-active) {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--bg-secondary) 50%, transparent);
+}
+
 /* ── Toolbar ────────────────────────────────────────────────────────────── */
 
 .agents-toolbar {
@@ -142,13 +185,13 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
 }
 
-/* Identity — avatar + name */
+/* Identity — avatar + name block (takes remaining space, no prompt col) */
 .agents-card-identity {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
-  width: 200px;
+  flex: 1;
+  min-width: 0;
 }
 
 .agents-card-avatar {
@@ -169,7 +212,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .agents-card-title {
@@ -183,28 +226,21 @@
   text-overflow: ellipsis;
 }
 
+/* Meta row — command + run state, both below the title */
+.agents-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
 .agents-card-command {
-  margin-top: 2px;
   color: var(--accent);
   font-size: 12px;
   font-family: var(--font-mono, monospace);
   font-weight: 600;
-}
-
-/* Prompt — inline truncated */
-.agents-card-prompt-col {
-  flex: 1;
-  min-width: 0;
-}
-
-.agents-card-prompt-text {
-  display: block;
-  font-size: 12.5px;
-  color: var(--text-secondary);
-  font-family: var(--font-mono, monospace);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 /* Schedule + model mini columns */
@@ -291,6 +327,251 @@
   font-size: 13px;
 }
 
+/* ── History view ────────────────────────────────────────────────────────── */
+
+.agents-history-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.agents-history-view-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.agents-history-filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 34px 8px 12px;
+  background-color: var(--bg-input);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b95a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.agents-history-filter-select:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background-color: var(--bg-hover);
+}
+
+.agents-history-filter-select:focus {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.agents-history-view-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 24px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+@keyframes agents-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.agents-history-spin {
+  animation: agents-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+.agents-history-all-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agents-history-view-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 64px 24px;
+  border-radius: var(--radius-lg);
+  border: 1.5px dashed var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.agents-history-view-empty p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+/* Run cards in history view */
+.agents-history-run-card {
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: messageIn 0.3s var(--ease-out-expo) both;
+  transition: border-color var(--transition-fast);
+}
+
+.agents-history-run-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 20%, var(--border));
+}
+
+.agents-history-run-card--error {
+  border-color: color-mix(in srgb, #f87171 20%, var(--border-subtle));
+}
+
+.agents-history-run-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.agents-history-run-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.agents-history-run-card-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.agents-history-run-card-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.agents-history-run-card-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.agents-history-run-card-time {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.agents-history-run-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.agents-history-run-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.agents-history-run-dot--success {
+  background: #4ade80;
+}
+
+.agents-history-run-dot--error {
+  background: #f87171;
+}
+
+.agents-history-run-dot--running {
+  background: var(--accent);
+}
+
+.agents-history-run-dot--idle {
+  background: var(--border);
+}
+
+.agents-history-run-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.agents-history-run-badge--model {
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+}
+
+.agents-history-run-error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, #f87171 8%, transparent);
+  border: 1px solid color-mix(in srgb, #f87171 20%, transparent);
+  color: #f87171;
+  font-size: 12.5px;
+  font-family: var(--font-mono, monospace);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.agents-history-run-output {
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.agents-history-run-text {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 12.5px;
+  font-family: var(--font-mono, monospace);
+  line-height: 1.65;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.agents-history-run-nooutput {
+  padding: 12px 16px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* ── Modal shared helpers ────────────────────────────────────────────────── */
 
 .agents-inline-fields,
@@ -313,6 +594,12 @@
   object-fit: cover;
 }
 
+.agents-modal-header-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 /* ── Modal ──────────────────────────────────────────────────────────────── */
 
 .agents-modal-backdrop {
@@ -333,8 +620,8 @@
 }
 
 .agents-modal {
-  width: min(760px, calc(100vw - 32px));
-  max-height: min(90vh, 860px);
+  width: min(880px, calc(100vw - 32px));
+  max-height: min(90vh, 880px);
   display: flex;
   flex-direction: column;
   border-radius: 24px;
@@ -456,16 +743,26 @@
 }
 
 .agents-modal-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
 }
 
 .agents-modal-panel {
   padding: 18px;
-  border-radius: 16px;
+  border-radius: 18px;
   border: 1px solid var(--border-subtle);
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
+}
+
+.agents-panel-optional {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  opacity: 0.8;
 }
 
 .agents-panel-title {
@@ -552,8 +849,12 @@ select.agents-field:hover {
   font-family: var(--font-mono, monospace);
 }
 
+.agents-field--narrow {
+  max-width: 120px;
+}
+
 .agents-textarea {
-  min-height: 140px;
+  min-height: 130px;
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.65;
@@ -574,20 +875,32 @@ select.agents-field:hover {
   color: #f87171;
 }
 
-/* Toggle switch — replaces raw checkbox for the Enabled row */
+/* ── Enabled toggle switch ──────────────────────────────────────────────── */
+
 .agents-switch-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
   padding: 0 4px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text-primary);
   cursor: pointer;
 }
 
-.agents-switch-row input[type='checkbox'] {
+.agents-switch-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.agents-toggle-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.agents-toggle-input {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -595,24 +908,33 @@ select.agents-field:hover {
   pointer-events: none;
 }
 
-.agents-switch-row::after {
-  content: '';
-  display: block;
+.agents-toggle-track {
   width: 36px;
   height: 20px;
-  border-radius: 999px;
   background: var(--border);
-  flex-shrink: 0;
-  position: relative;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
   transition: background 0.22s;
 }
 
-.agents-switch-row:has(input:checked)::after {
+.agents-toggle-input:checked + .agents-toggle-track {
   background: var(--accent);
 }
 
-.agents-switch-row::before {
-  display: none;
+.agents-toggle-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
+  transition: transform 0.22s var(--ease-spring);
+  flex-shrink: 0;
+}
+
+.agents-toggle-input:checked + .agents-toggle-track .agents-toggle-thumb {
+  transform: translateX(16px);
 }
 
 .agents-inline-fields {
@@ -660,6 +982,10 @@ select.agents-field:hover {
   .agents-card-model-col {
     display: none;
   }
+
+  .agents-modal-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 720px) {
@@ -671,10 +997,6 @@ select.agents-field:hover {
     width: 100%;
   }
 
-  .agents-card-prompt-col {
-    width: 100%;
-  }
-
   .agents-card-actions {
     width: 100%;
     justify-content: flex-end;
@@ -683,5 +1005,10 @@ select.agents-field:hover {
   .agents-modal-topline {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .agents-history-view-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
