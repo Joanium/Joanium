@@ -112,7 +112,6 @@ export const Paths = {
   INDEX_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Chat', 'Chat.html'),
   LOCK_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Lock', 'Lock.html'),
   USAGE_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Usage', 'Usage.html'),
-  AGENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Agents', 'Agents.html'),
   EVENTS_PAGE: path.join(ROOT, 'Packages', 'Pages', 'Events', 'Events.html'),
 };
 export default Paths;
