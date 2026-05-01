@@ -32,9 +32,9 @@ let searchClearBtn = null;
 let addBtn = null;
 let createFirstBtn = null;
 let warningEl = null;
-let totalCountEl = null;
-let enabledCountEl = null;
-let scheduledCountEl = null;
+let totalCountEl = null; // unused
+let enabledCountEl = null; // unused
+let scheduledCountEl = null; // unused
 let modalBackdrop = null;
 let modalEyebrow = null;
 let modalTitle = null;
@@ -369,12 +369,6 @@ function runState(agent) {
 function buildCard(agent) {
   const card = document.createElement('article');
   const status = runState(agent);
-  const meta = cardMeta(agent)
-    .map(
-      (item) =>
-        `<div class="agents-card-meta-item"><span class="agents-card-meta-label">${escapeHtml(item.label)}</span><span class="agents-card-meta-value">${escapeHtml(item.value)}</span></div>`,
-    )
-    .join('');
   const primaryProvider = configuredProviders().find(
     (provider) => provider.provider === agent.primaryModel?.provider,
   );
@@ -382,34 +376,43 @@ function buildCard(agent) {
     primaryProvider?.models?.[agent.primaryModel?.modelId]?.name ??
     agent.primaryModel?.modelId ??
     'Unknown model';
+  const scheduleLabel = agent.schedule?.label ?? 'On app startup';
+
   card.className = 'agents-card';
   card.dataset.id = agent.id;
   card.innerHTML = `
-    <div class="agents-card-top">
-      <div class="agents-card-identity">
-        <img class="agents-card-avatar" src="${createAgentAvatarDataUri(agent.id, 72)}" alt="${escapeHtml(agent.name)}" />
-        <div>
-          <div class="agents-card-title-row">
-            <h3 class="agents-card-title">${escapeHtml(agent.name)}</h3>
-            <span class="agents-card-state agents-card-state--${status.tone}">${escapeHtml(status.label)}</span>
-          </div>
-          <div class="agents-card-command">/${escapeHtml(agent.id)}</div>
+    <div class="agents-card-identity">
+      <img class="agents-card-avatar" src="${createAgentAvatarDataUri(agent.id, 72)}" alt="${escapeHtml(agent.name)}" />
+      <div class="agents-card-name-block">
+        <div class="agents-card-name-row">
+          <h3 class="agents-card-title">${escapeHtml(agent.name)}</h3>
+          <span class="agents-card-state agents-card-state--${status.tone}">${escapeHtml(status.label)}</span>
         </div>
+        <div class="agents-card-command">/${escapeHtml(agent.id)}</div>
       </div>
+    </div>
+
+    <div class="agents-card-prompt-col">
+      <span class="agents-card-prompt-text">${escapeHtml(agent.prompt.slice(0, 120))}${agent.prompt.length > 120 ? '\u2026' : ''}</span>
+    </div>
+
+    <div class="agents-card-schedule-col">
+      <div class="agents-card-col-label">Run</div>
+      <div class="agents-card-col-value">${escapeHtml(scheduleLabel)}</div>
+    </div>
+
+    <div class="agents-card-model-col">
+      <div class="agents-card-col-label">Model</div>
+      <div class="agents-card-col-value">${escapeHtml(primaryModelName)}</div>
+    </div>
+
+    <div class="agents-card-actions">
       <button class="agents-card-enabled ${agent.enabled ? 'is-on' : ''}" type="button" data-action="toggle">
         ${agent.enabled ? 'Enabled' : 'Paused'}
       </button>
-    </div>
-    ${agent.description ? `<p class="agents-card-description">${escapeHtml(agent.description)}</p>` : ''}
-    <div class="agents-card-prompt">${escapeHtml(agent.prompt.slice(0, 220))}${agent.prompt.length > 220 ? '...' : ''}</div>
-    <div class="agents-card-meta">${meta}</div>
-    <div class="agents-card-footer">
-      <div class="agents-card-model">${escapeHtml(primaryModelName)}</div>
-      <div class="agents-card-actions">
-        <button class="agents-card-btn" type="button" data-action="run">${_runningAgentIds.has(agent.id) ? 'Running…' : 'Run now'}</button>
-        <button class="agents-card-btn" type="button" data-action="edit">Edit</button>
-        <button class="agents-card-btn agents-card-btn--danger" type="button" data-action="delete">Delete</button>
-      </div>
+      <button class="agents-card-btn" type="button" data-action="run">${_runningAgentIds.has(agent.id) ? 'Running…' : 'Run'}</button>
+      <button class="agents-card-btn" type="button" data-action="edit">Edit</button>
+      <button class="agents-card-btn agents-card-btn--danger" type="button" data-action="delete">Delete</button>
     </div>
   `;
 
@@ -453,11 +456,7 @@ function buildCard(agent) {
 }
 
 function updateCounts() {
-  totalCountEl.textContent = String(_allAgents.length);
-  enabledCountEl.textContent = String(_allAgents.filter((agent) => false !== agent.enabled).length);
-  scheduledCountEl.textContent = String(
-    _allAgents.filter((agent) => 'cron' === agent.schedule?.type && false !== agent.enabled).length,
-  );
+  // stats display removed
 }
 
 function renderWarning() {
@@ -601,9 +600,9 @@ export function mount(outlet) {
   addBtn = document.getElementById('agents-add-btn');
   createFirstBtn = document.getElementById('agents-create-first');
   warningEl = document.getElementById('agents-warning');
-  totalCountEl = document.getElementById('agents-total-count');
-  enabledCountEl = document.getElementById('agents-enabled-count');
-  scheduledCountEl = document.getElementById('agents-scheduled-count');
+  totalCountEl = null; // removed
+  enabledCountEl = null; // removed
+  scheduledCountEl = null; // removed
   modalBackdrop = document.getElementById('agents-modal-backdrop');
   modalEyebrow = document.getElementById('agents-modal-eyebrow');
   modalTitle = document.getElementById('agents-modal-title');
@@ -687,9 +686,7 @@ export function mount(outlet) {
   refreshAll().catch((error) => {
     console.error('[Agents] Initial load failed:', error);
   });
-  _refreshTimer = window.setInterval(() => {
-    refreshAll().catch(() => {});
-  }, 4000);
+  // Auto-refresh removed — page refreshes on events (jo:agents-runtime-updated, jo:agents-changed)
 
   return function cleanup() {
     window.clearInterval(_refreshTimer);

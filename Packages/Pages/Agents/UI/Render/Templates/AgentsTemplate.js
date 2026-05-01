@@ -1,6 +1,6 @@
 export function getAgentsHTML() {
   return /* html */ `
-<div class="agents-page">
+<main id="main" class="agents-main">
   <div class="agents-scroll">
     <div class="page-tagline-header">
       <div class="page-tagline-left">
@@ -29,39 +29,43 @@ export function getAgentsHTML() {
     <div class="agents-warning" id="agents-warning" hidden></div>
 
     <div class="agents-toolbar">
-      <div class="agents-search-wrapper" id="agents-search-wrapper" hidden>
-        <svg class="agents-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/>
-        </svg>
-        <input id="agents-search" class="agents-search-input" type="text" placeholder="Search agents, slash commands, workspaces..." autocomplete="off" spellcheck="false" />
-        <button id="agents-search-clear" class="agents-search-clear" type="button" aria-label="Clear search">×</button>
+      <div id="agents-search-wrapper" class="page-search-wrapper" hidden>
+        <div class="page-search-box">
+          <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
+          </svg>
+          <input id="agents-search" class="page-search-input" type="text" placeholder="Search agents, slash commands, workspaces..." autocomplete="off" spellcheck="false" />
+          <button id="agents-search-clear" class="page-search-clear" type="button" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="agents-stats" id="agents-stats">
-        <div class="agents-stat"><span class="agents-stat-value" id="agents-total-count">0</span><span class="agents-stat-label">Total</span></div>
-        <div class="agents-stat"><span class="agents-stat-value" id="agents-enabled-count">0</span><span class="agents-stat-label">Enabled</span></div>
-        <div class="agents-stat"><span class="agents-stat-value" id="agents-scheduled-count">0</span><span class="agents-stat-label">Scheduled</span></div>
-      </div>
+
     </div>
 
     <div class="agents-grid" id="agents-grid" hidden></div>
 
-    <div class="agents-empty" id="agents-empty" hidden>
-      <div class="shared-empty-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="40" height="40">
+    <div class="page-empty" id="agents-empty" hidden>
+      <div class="page-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
           <rect x="4" y="4" width="16" height="16" rx="4"/>
-          <path d="M9 9h6v6H9z"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
+          <path d="M9 9h6v6H9z"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
         </svg>
       </div>
-      <h2>No agents yet</h2>
+      <h3>No agents yet</h3>
       <p>Start with one useful repeatable task and give it a simple schedule.</p>
-      <button class="shared-empty-cta" id="agents-create-first" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:14px;height:14px"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+      <button class="page-empty-cta" id="agents-create-first" type="button">
         Create your first agent
       </button>
     </div>
   </div>
+</main>
 
-  <div class="agents-modal-backdrop" id="agents-modal-backdrop">
+<div class="agents-modal-backdrop" id="agents-modal-backdrop">
     <div class="agents-modal" role="dialog" aria-modal="true" aria-labelledby="agents-modal-eyebrow">
       <div class="agents-modal-header">
         <div>
