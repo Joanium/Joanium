@@ -322,9 +322,9 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(8, 11, 18, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(8, 11, 18, 0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 1500;
 }
 
@@ -333,17 +333,17 @@
 }
 
 .agents-modal {
-  width: min(880px, calc(100vw - 32px));
-  max-height: min(90vh, 920px);
+  width: min(760px, calc(100vw - 32px));
+  max-height: min(90vh, 860px);
   display: flex;
   flex-direction: column;
   border-radius: 24px;
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   box-shadow:
-    0 32px 96px rgba(0, 0, 0, 0.4),
+    0 32px 96px rgba(0, 0, 0, 0.28),
     0 0 0 1px var(--border-subtle);
-  transform: translateY(24px) scale(0.96);
+  transform: translateY(20px) scale(0.97);
   transition: transform 0.28s var(--ease-spring);
 }
 
@@ -373,23 +373,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  background: var(--bg-tertiary);
+  border-radius: 50%;
+  background: transparent;
   color: var(--text-muted);
   cursor: pointer;
   transition:
     background var(--transition-fast),
     color var(--transition-fast),
-    transform var(--transition-quick);
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .agents-modal-close:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
-  transform: scale(1.08);
+  border-color: var(--border);
+  transform: rotate(90deg);
+}
+
+.agents-modal-close svg {
+  width: 15px;
+  height: 15px;
 }
 
 .agents-modal-eyebrow {
@@ -449,8 +456,8 @@
 }
 
 .agents-modal-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
@@ -502,10 +509,10 @@
   width: 100%;
   padding: 11px 14px;
   background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
   font-family: var(--font-ui);
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--text-primary);
   outline: none;
   resize: none;
@@ -513,6 +520,23 @@
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
+}
+
+/* Custom-styled select — matches settings-select pattern */
+select.agents-field {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-input);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b95a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+select.agents-field:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background-color: var(--bg-hover);
 }
 
 .agents-field:focus {
@@ -550,6 +574,7 @@
   color: #f87171;
 }
 
+/* Toggle switch — replaces raw checkbox for the Enabled row */
 .agents-switch-row {
   display: flex;
   align-items: center;
@@ -559,6 +584,35 @@
   font-size: 13.5px;
   font-weight: 600;
   color: var(--text-primary);
+  cursor: pointer;
+}
+
+.agents-switch-row input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.agents-switch-row::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--border);
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.22s;
+}
+
+.agents-switch-row:has(input:checked)::after {
+  background: var(--accent);
+}
+
+.agents-switch-row::before {
+  display: none;
 }
 
 .agents-inline-fields {
@@ -602,10 +656,6 @@
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
-  .agents-modal-grid {
-    grid-template-columns: 1fr;
-  }
-
   .agents-card-schedule-col,
   .agents-card-model-col {
     display: none;
