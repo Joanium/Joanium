@@ -12,6 +12,41 @@ function channelLabel(name) {
 export async function fetchHistory() {
   const events = [];
   try {
+    const res = await window.electronAPI?.invoke?.('get-agent-runs'),
+      runs = Array.isArray(res?.runs) ? res.runs : [];
+    for (const [index, run] of runs.entries()) {
+      events.push({
+        id:
+          run.id ||
+          `agent__${run.agentId ?? 'unknown'}__${run.startedAt ?? run.timestamp ?? index}`,
+        type: 'agent',
+        source: run.agentName || 'Agent',
+        channel: null,
+        status: run.status || 'success',
+        timestamp: run.startedAt || run.timestamp || new Date().toISOString(),
+        summary: run.summary || '',
+        fullResponse: run.fullResponse || '',
+        replyText: run.fullResponse || '',
+        inboundMessage: '',
+        channelFrom: null,
+        jobName: run.workspacePath || '',
+        error: run.error || null,
+        skipReason: null,
+        trigger: run.trigger || null,
+        receivedAt: run.startedAt || run.timestamp || null,
+        repliedAt: run.finishedAt || null,
+        provider: run.provider || null,
+        model: run.model || null,
+        externalId: null,
+        targetId: run.projectId || null,
+        conversationId: null,
+        inputTokens: run.inputTokens ?? 0,
+        outputTokens: run.outputTokens ?? 0,
+        sourceKind: run.source || 'manual',
+      });
+    }
+  } catch {}
+  try {
     const res = await window.electronAPI?.invoke?.('get-channel-messages'),
       messages = Array.isArray(res?.messages) ? res.messages : [];
     for (const [index, entry] of messages.entries()) {

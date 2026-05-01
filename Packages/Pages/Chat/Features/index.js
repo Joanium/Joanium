@@ -3,6 +3,10 @@ import { welcome, chatView, chatMessages } from '../../../Pages/Shared/Core/DOM.
 import { reset as resetComposer, getActiveToolScopes } from './Composer/index.js';
 import { buildToolScopeFilter } from './Capabilities/Registry/Tools.js';
 import { agentLoop, selectSkillsForMessages } from './Core/Agent.js';
+import {
+  executeSavedAgent,
+  trackSavedAgentUsage,
+} from '#renderer/Application/Agents/AgentExecution.js';
 import { createLatencyMonitor } from './UI/LatencyMonitor.js';
 import {
   onChatMessagesClick,
@@ -38,6 +42,28 @@ document.documentElement.classList.add('show-tokens');
 initCompletionSound();
 let _currentAbortController = null;
 let _currentLiveRow = null;
+
+async function findSavedAgentCommand(text = '', { refresh = false } = {}) {
+  if (!window.joaniumAgents?.findAgentByCommand) return null;
+  const agent = await window.joaniumAgents.findAgentByCommand(text, { refresh });
+  return agent?.enabled ? agent : null;
+}
+
+async function executeSavedAgentFromMessage(messageText, live, signal) {
+  const agent =
+    (await findSavedAgentCommand(messageText)) ??
+    (await findSavedAgentCommand(messageText, { refresh: true }));
+  if (!agent) return null;
+  const result = await executeSavedAgent(agent, { live, signal });
+  await trackSavedAgentUsage(agent, result.usage, result.usedProvider, result.usedModel, {
+    chatId: state.currentChatId,
+  });
+  return {
+    ...result,
+    agent,
+    safeReply: sanitizeAssistantReply(result.text),
+  };
+}
 
 export function queueSteeringMessage(text, attachments) {
   state.queuedSteeringMessages = state.queuedSteeringMessages || [];
@@ -124,7 +150,11 @@ export function initChatUI() {
     updateTimeline());
 }
 async function doSendFromState() {
-  if (!state.selectedProvider || !state.selectedModel || state.isTyping) return;
+  if (state.isTyping) return;
+  const lastUserText =
+      [...state.messages].reverse().find((message) => 'user' === message?.role)?.content ?? '',
+    queuedAgent = await findSavedAgentCommand(lastUserText);
+  if ((!state.selectedProvider || !state.selectedModel) && !queuedAgent) return;
   (syncConversationSummaryWithMessages(), (state.isTyping = !0), _updateSendBtn());
   const _sendStartTime = Date.now();
   const live = createLiveRow(doSendFromState);
@@ -146,7 +176,7 @@ async function doSendFromState() {
   // so pending chats that match this topic float to the front.
   // Both happen before we touch the API — user query always goes first.
   markMemoryActivity();
-  reprioritizeMemoryQueue(text);
+  reprioritizeMemoryQueue(lastUserText);
 
   live.push('Thinking…');
   let plannedSkills = [],
@@ -156,30 +186,36 @@ async function doSendFromState() {
     showPlanningTrace(live, plannedSkills, plannedToolCalls));
   try {
     _currentAbortController = new AbortController();
+    const agentResult =
+      queuedAgent &&
+      (await executeSavedAgentFromMessage(lastUserText, live, _currentAbortController.signal));
     const {
         text: finalReply,
         usage: usage,
         usedProvider: usedProvider,
         usedModel: usedModel,
-      } = await agentLoop(
-        state.messages,
-        live,
-        plannedSkills,
-        plannedToolCalls,
-        state.systemPrompt,
-        _currentAbortController.signal,
-      ).finally(() => {
-        _currentAbortController = null;
-      }),
-      safeReply = sanitizeAssistantReply(finalReply);
+      } = agentResult
+        ? agentResult
+        : await agentLoop(
+            state.messages,
+            live,
+            plannedSkills,
+            plannedToolCalls,
+            state.systemPrompt,
+            _currentAbortController.signal,
+          ).finally(() => {
+            _currentAbortController = null;
+          }),
+      safeReply = agentResult?.safeReply ?? sanitizeAssistantReply(finalReply);
+    _currentAbortController = null;
     (safeReply !== finalReply && live.set(safeReply),
-      await trackUsage(usage, state.currentChatId, usedProvider, usedModel),
+      agentResult || (await trackUsage(usage, state.currentChatId, usedProvider, usedModel)),
       state.messages.push({
         role: 'assistant',
         content: safeReply,
         attachments: live.getAttachments?.() ?? [],
       }),
-      saveCurrentChat(),
+      saveCurrentChat(agentResult ? { provider: usedProvider, model: usedModel } : {}),
       queueConversationCompaction().catch(() => {}),
       bumpScrollBadge());
   } catch (err) {
@@ -237,6 +273,8 @@ export function restoreWelcome() {
 }
 export async function sendMessage({ text: text, attachments: attachments, sendBtnEl: sendBtnEl }) {
   if ((!text && 0 === attachments.length) || state.isTyping) return;
+  const queuedAgent =
+    (await findSavedAgentCommand(text)) ?? (await findSavedAgentCommand(text, { refresh: true }));
   // Capture slash-command tool scopes BEFORE resetComposer() clears the chips.
   const _activeToolScopes = getActiveToolScopes();
   if (
@@ -254,7 +292,7 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
       ],
       { duration: 350, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' },
     ),
-    !state.selectedProvider || !state.selectedModel)
+    (!state.selectedProvider || !state.selectedModel) && !queuedAgent)
   )
     return void appendMessage(
       'assistant',
@@ -302,31 +340,37 @@ export async function sendMessage({ text: text, attachments: attachments, sendBt
             },
           ]
         : state.messages;
+    const savedAgentResult =
+      queuedAgent &&
+      (await executeSavedAgentFromMessage(text, live, _currentAbortController.signal));
     const {
         text: finalReply,
         usage: usage,
         usedProvider: usedProvider,
         usedModel: usedModel,
-      } = await agentLoop(
-        _agentMessages,
-        live,
-        plannedSkills,
-        plannedToolCalls,
-        state.systemPrompt,
-        _currentAbortController.signal,
-        _scopeFilter ? { toolFilter: _scopeFilter } : {},
-      ).finally(() => {
-        _currentAbortController = null;
-      }),
-      safeReply = sanitizeAssistantReply(finalReply);
+      } = savedAgentResult
+        ? savedAgentResult
+        : await agentLoop(
+            _agentMessages,
+            live,
+            plannedSkills,
+            plannedToolCalls,
+            state.systemPrompt,
+            _currentAbortController.signal,
+            _scopeFilter ? { toolFilter: _scopeFilter } : {},
+          ).finally(() => {
+            _currentAbortController = null;
+          }),
+      safeReply = savedAgentResult?.safeReply ?? sanitizeAssistantReply(finalReply);
+    _currentAbortController = null;
     (safeReply !== finalReply && live.set(safeReply),
-      await trackUsage(usage, state.currentChatId, usedProvider, usedModel),
+      savedAgentResult || (await trackUsage(usage, state.currentChatId, usedProvider, usedModel)),
       state.messages.push({
         role: 'assistant',
         content: safeReply,
         attachments: live.getAttachments?.() ?? [],
       }),
-      saveCurrentChat(),
+      saveCurrentChat(savedAgentResult ? { provider: usedProvider, model: usedModel } : {}),
       queueConversationCompaction().catch(() => {}),
       // Use the post-response window (user is reading) to catch up one
       // pending memory sync. Natural idle time, zero added latency.

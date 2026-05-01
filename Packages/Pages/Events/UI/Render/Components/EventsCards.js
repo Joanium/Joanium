@@ -8,6 +8,8 @@ const STATUS_ICONS = {
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14" stroke-linecap="round"/></svg>',
   },
   STATUS_LABELS = { success: 'Acted', error: 'Error', skipped: 'Skipped' },
+  AGENT_TYPE_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="event-type-icon event-type-icon--agent">\n  <rect x="4" y="4" width="16" height="16" rx="4" stroke-linejoin="round"/>\n  <path d="M9 9h6v6H9z" stroke-linejoin="round"/>\n  <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>\n</svg>',
   CHANNEL_TYPE_ICON =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="event-type-icon event-type-icon--channel">\n  <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6A2.5 2.5 0 0 1 16.5 15H11l-4 4v-4h-.5A2.5 2.5 0 0 1 4 12.5v-6Z" stroke-linejoin="round"/>\n</svg>';
 
@@ -20,9 +22,13 @@ export function buildRunningCard(job) {
   ((card.className = 'event-row event-row--running'),
     (card.dataset.runKey = `${job.type ?? 'run'}__${job.jobId ?? ''}`));
   const sourceName = job.jobName || 'Run',
-    summaryText = 'Collecting data and processing with AI...';
+    typeIcon = 'agent' === job.type ? AGENT_TYPE_ICON : CHANNEL_TYPE_ICON,
+    summaryText =
+      'agent' === job.type
+        ? 'Running saved agent prompt and processing the result...'
+        : 'Collecting data and processing with AI...';
   return (
-    (card.innerHTML = `\n    <div class="event-status-icon event-status--running">\n      <svg class="running-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">\n        <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n      </svg>\n    </div>\n    <div class="event-row-body">\n      <div class="event-row-top">\n        <div class="event-source-wrap">\n          ${CHANNEL_TYPE_ICON}\n          <span class="event-source">${esc(sourceName)}</span>\n        </div>\n        <div class="event-row-badges">\n          ${job.trigger ? `<span class="event-trigger-badge">${esc(triggerLabel(job.trigger))}</span>` : ''}\n          <span class="event-status-badge event-status-badge--running">Running</span>\n        </div>\n      </div>\n      <div class="event-summary">${summaryText}</div>\n      <div class="event-row-footer">\n        <span class="event-time running-duration" data-started="${esc(job.startedAt)}">Started ${timeAgo(job.startedAt)}</span>\n        <span class="event-elapsed">Elapsed: <span class="elapsed-value">${runningDuration(job.startedAt)}</span></span>\n      </div>\n    </div>`),
+    (card.innerHTML = `\n    <div class="event-status-icon event-status--running">\n      <svg class="running-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">\n        <path d="M21 12a9 9 0 11-6.219-8.56" stroke-linecap="round"/>\n      </svg>\n    </div>\n    <div class="event-row-body">\n      <div class="event-row-top">\n        <div class="event-source-wrap">\n          ${typeIcon}\n          <span class="event-source">${esc(sourceName)}</span>\n        </div>\n        <div class="event-row-badges">\n          ${job.trigger ? `<span class="event-trigger-badge">${esc(triggerLabel(job.trigger))}</span>` : ''}\n          <span class="event-status-badge event-status-badge--running">Running</span>\n        </div>\n      </div>\n      <div class="event-summary">${summaryText}</div>\n      <div class="event-row-footer">\n        <span class="event-time running-duration" data-started="${esc(job.startedAt)}">Started ${timeAgo(job.startedAt)}</span>\n        <span class="event-elapsed">Elapsed: <span class="elapsed-value">${runningDuration(job.startedAt)}</span></span>\n      </div>\n    </div>`),
     card
   );
 }
@@ -31,11 +37,13 @@ export function buildEventRow(event, isNew = !1, onOpenDetail) {
   ((row.className = `event-row event-row--${event.status}${isNew ? ' event-row--new' : ''}`),
     (row.dataset.eventId = event.id));
   const statusIcon = STATUS_ICONS[event.status] ?? '',
-    typeIcon = CHANNEL_TYPE_ICON,
+    typeIcon = 'agent' === event.type ? AGENT_TYPE_ICON : CHANNEL_TYPE_ICON,
     statusLabel =
       'channel' === event.type && 'success' === event.status
         ? 'Replied'
-        : (STATUS_LABELS[event.status] ?? event.status),
+        : 'agent' === event.type && 'success' === event.status
+          ? 'Completed'
+          : (STATUS_LABELS[event.status] ?? event.status),
     triggerBadge = event.trigger
       ? `<span class="event-trigger-badge">${esc(triggerLabel(event.trigger))}</span>`
       : '',

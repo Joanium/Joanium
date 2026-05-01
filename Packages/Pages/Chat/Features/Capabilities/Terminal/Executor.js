@@ -6,6 +6,53 @@ import { toolsList } from './ToolsList.js';
 const _activeServers = new Map(); // key = `${normalizedCmd}\0${normalizedCwd}` → pid
 const LONG_RUNNING_CMD_RE =
   /(?:^|\s|&&|\|\||;)(?:npm\s+(?:start|run\s+(?:dev|serve|start|watch|preview))|npx\s+(?:next|vite|remix|astro)|yarn\s+(?:dev|start|serve)|pnpm\s+(?:dev|start|serve)|bun\s+(?:dev|run\s+dev)|node\s+\S+\.(?:js|mjs|ts)|python\s+(?:-m\s+(?:http\.server|flask|uvicorn|gunicorn|django)|manage\.py\s+runserver)|flask\s+run|uvicorn\s+|gunicorn\s+|cargo\s+run|go\s+run|ruby\s+\S+\.rb|rails\s+s(?:erver)?|php\s+(?:-S|artisan\s+serve))(?:\s|$)/i;
+function normalizeResolvedPath(value = '') {
+  return String(value ?? '')
+    .trim()
+    .replace(/[\\/]+$/, '')
+    .toLowerCase();
+}
+
+function isWithinWorkspaceFence(candidatePath, workspaceFencePath) {
+  const fence = String(workspaceFencePath ?? '').trim(),
+    candidate = String(candidatePath ?? '').trim();
+  if (!fence || !candidate) return true;
+  const normalizedFence = normalizeResolvedPath(fence),
+    normalizedCandidate = normalizeResolvedPath(candidate);
+  return (
+    normalizedCandidate === normalizedFence ||
+    normalizedCandidate.startsWith(`${normalizedFence}\\`) ||
+    normalizedCandidate.startsWith(`${normalizedFence}/`)
+  );
+}
+
+function enforceWorkspaceFence(params = {}, hooks = {}) {
+  const workspaceFencePath = String(hooks?.workspaceFencePath ?? '').trim();
+  if (!workspaceFencePath) return params;
+  const next = { ...params };
+  for (const [key, value] of Object.entries(next)) {
+    if ('string' != typeof value || !value.trim()) continue;
+    if ('paths' === key) {
+      const items = value
+        .split(',')
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+      items.every((entry) => isWithinWorkspaceFence(entry, workspaceFencePath)) ||
+        (() => {
+          throw new Error(`Path list "${key}" must stay inside ${workspaceFencePath}.`);
+        })();
+      continue;
+    }
+    if ('working_directory' === key || /(^path$|_path$|^directory$|_directory$|^cwd$)/i.test(key)) {
+      isWithinWorkspaceFence(value, workspaceFencePath) ||
+        (() => {
+          throw new Error(`"${key}" must stay inside ${workspaceFencePath}.`);
+        })();
+    }
+  }
+  return next;
+}
+
 function resolveWorkingDirectory(explicitPath) {
   return explicitPath?.trim() || state.workspacePath || '';
 }
@@ -156,7 +203,7 @@ function getCommentStyle(filePath, override) {
   const ext = filePath.split('.').pop().toLowerCase();
   return COMMENT_STYLES[ext] || { single: '//', block: null };
 }
-export const { handles: handles, execute: execute } = createExecutor({
+const _terminalExecutor = createExecutor({
   name: 'TerminalExecutor',
   tools: toolsList,
   handlers: {
@@ -6578,3 +6625,14 @@ export const { handles: handles, execute: execute } = createExecutor({
     },
   },
 });
+
+export const handles = _terminalExecutor.handles;
+export async function execute(toolName, params, hooksOrOnStage = () => {}) {
+  const hooks =
+    'function' == typeof hooksOrOnStage
+      ? { onStage: hooksOrOnStage }
+      : hooksOrOnStage && 'object' == typeof hooksOrOnStage
+        ? hooksOrOnStage
+        : {};
+  return _terminalExecutor.execute(toolName, enforceWorkspaceFence(params, hooks), hooks);
+}

@@ -12,7 +12,7 @@ function eventSourceKey(event) {
 }
 
 function runningSourceKey(job) {
-  return `channel:${job.jobId ?? 'running'}`;
+  return `${job.type ?? 'run'}:${job.jobId ?? 'running'}`;
 }
 
 function hasDetailValue(value) {
@@ -231,6 +231,28 @@ export function mount(outlet) {
     detailMeta.textContent = fullDateTime(event.timestamp);
 
     let html = '';
+
+    const detailItems = [
+      buildDetailInfoItem('Run source', event.sourceKind),
+      buildDetailInfoItem('Schedule', event.trigger ? triggerLabel(event.trigger) : ''),
+      buildDetailInfoItem('Workspace', event.jobName),
+      buildDetailInfoItem('Model', event.model),
+      buildDetailInfoItem('Provider', event.provider),
+      buildDetailInfoItem(
+        'Tokens',
+        event.inputTokens || event.outputTokens
+          ? `${Number(event.inputTokens ?? 0) + Number(event.outputTokens ?? 0)} total`
+          : '',
+      ),
+    ]
+      .filter(Boolean)
+      .join('');
+
+    detailItems &&
+      (html += `<div class="detail-section">
+        <div class="detail-section-label">Run Details</div>
+        <div class="detail-info-grid">${detailItems}</div>
+      </div>`);
 
     'error' === event.status &&
       (html += `<div class="detail-section detail-section--error">

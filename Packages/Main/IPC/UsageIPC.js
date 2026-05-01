@@ -24,6 +24,9 @@ export function register() {
           inputTokens: record.inputTokens ?? 0,
           outputTokens: record.outputTokens ?? 0,
           chatId: record.chatId ?? null,
+          sourceType: record.sourceType ?? 'chat',
+          sourceId: record.sourceId ?? null,
+          sourceName: record.sourceName ?? null,
         }),
           data.records.length > 2e4 && (data.records = data.records.slice(-2e4)),
           persist(data));

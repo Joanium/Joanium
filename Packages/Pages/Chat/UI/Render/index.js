@@ -268,6 +268,12 @@ export function mount(outlet, { settings: _settings, navigate: _navigate }) {
           window.electronAPI?.invoke?.('quit-app');
         } else if ('restart' === actionId) {
           window.electronAPI?.invoke?.('restart-app');
+        } else if (actionId.startsWith('agent:')) {
+          sendMessage({
+            text: `/${actionId.slice('agent:'.length)}`,
+            attachments: [],
+            sendBtnEl: sendBtn,
+          });
         }
         // nav-type commands (/skills, /personas, etc.) are handled directly
         // inside SlashCommands.js via window.appNavigate — no case needed here.

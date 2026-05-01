@@ -37,9 +37,12 @@ export function fullDateTime(iso) {
 }
 export function triggerLabel(trigger) {
   if (!trigger) return '';
+  if (trigger.label) return String(trigger.label);
   switch (trigger.type) {
     case 'on_startup':
       return 'Startup';
+    case 'cron':
+      return trigger.expression ? `Cron: ${trigger.expression}` : 'Scheduled';
     case 'interval':
       return `Every ${trigger.minutes}m`;
     case 'hourly':

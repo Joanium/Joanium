@@ -186,6 +186,7 @@ let _chipContainer = null;
 let _activeToolChips = []; // { id, name, iconSrc }
 let _commands = [];
 let _templateCommands = []; // user-defined prompt templates
+let _agentCommands = []; // saved agents
 let _filteredCmds = [];
 let _selectedIndex = 0;
 let _visible = false;
@@ -212,6 +213,7 @@ export function initSlashCommands(textarea, inputBox, { onAction } = {}) {
   _textarea.addEventListener('keydown', _onKeydown);
   document.addEventListener('click', _onDocClick);
   window.addEventListener('jo:templates-changed', _rebuildCommands);
+  window.addEventListener('jo:agents-changed', _rebuildCommands);
 
   _rebuildCommands();
 }
@@ -221,10 +223,12 @@ export function destroySlashCommands() {
   _textarea?.removeEventListener('keydown', _onKeydown);
   document.removeEventListener('click', _onDocClick);
   window.removeEventListener('jo:templates-changed', _rebuildCommands);
+  window.removeEventListener('jo:agents-changed', _rebuildCommands);
   _dropdown?.remove();
   _chipContainer?.remove();
   _activeToolChips = [];
   _templateCommands = [];
+  _agentCommands = [];
   _dropdown = null;
   _chipContainer = null;
   _connectorsCached = false;
@@ -345,7 +349,34 @@ async function _rebuildCommands() {
     _templateCommands = [];
   }
 
-  _commands = [...ACTION_COMMANDS, ...NAV_COMMANDS, ...toolCommands, ..._templateCommands];
+  try {
+    const agents = await window.electronAPI?.invoke?.('get-agents');
+    _agentCommands = Array.isArray(agents)
+      ? agents
+          .filter((agent) => false !== agent?.enabled && agent?.id && agent?.prompt)
+          .map((agent) => ({
+            id: agent.id,
+            label: agent.name || agent.id,
+            description: agent.description || agent.schedule?.label || 'Saved agent',
+            type: 'agent',
+            icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                   <rect x="4" y="4" width="16" height="16" rx="5"/>
+                   <path d="M9 12h6M12 9v6"/>
+                 </svg>`,
+          }))
+      : [];
+  } catch {
+    _agentCommands = [];
+  }
+
+  _commands = [
+    ...ACTION_COMMANDS,
+    ...NAV_COMMANDS,
+    ...toolCommands,
+    ..._agentCommands,
+    ..._templateCommands,
+  ];
 }
 
 // ── Event handlers ──────────────────────────────────────────────────────────
@@ -462,6 +493,7 @@ function _renderItems() {
   const actions = _filteredCmds.filter((c) => c.type === 'action');
   const navs = _filteredCmds.filter((c) => c.type === 'nav');
   const tools = _filteredCmds.filter((c) => c.type === 'tool');
+  const agents = _filteredCmds.filter((c) => c.type === 'agent');
   const templates = _filteredCmds.filter((c) => c.type === 'template');
 
   // Scrollable list wrapper (matches .slash-dropdown-list in CSS)
@@ -481,6 +513,10 @@ function _renderItems() {
   if (tools.length) {
     _buildSection(list, 'Tools', tools, offset);
     offset += tools.length;
+  }
+  if (agents.length) {
+    _buildSection(list, 'Agents', agents, offset);
+    offset += agents.length;
   }
   if (templates.length) {
     _buildSection(list, 'Templates', templates, offset);
@@ -594,9 +630,11 @@ function _buildSection(container, title, cmds, offset) {
         ? 'Action'
         : cmd.type === 'nav'
           ? 'Nav'
-          : cmd.type === 'template'
-            ? 'Template'
-            : 'Tool';
+          : cmd.type === 'agent'
+            ? 'Agent'
+            : cmd.type === 'template'
+              ? 'Template'
+              : 'Tool';
 
     item.append(iconEl, textEl, badge);
 
@@ -663,6 +701,9 @@ function _select(cmd) {
   } else if (cmd.type === 'tool') {
     restore('');
     _addToolChip(cmd);
+  } else if (cmd.type === 'agent') {
+    restore('');
+    _onAction(`agent:${cmd.id}`);
   } else if (cmd.prompt) {
     restore(cmd.prompt);
   }

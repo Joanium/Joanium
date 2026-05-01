@@ -440,6 +440,10 @@ export function renderActivity(records) {
       ? (element.innerHTML = recent
           .map((record) => {
             const total = (record.inputTokens ?? 0) + (record.outputTokens ?? 0),
+              sourceLabel =
+                'agent' === record.sourceType && record.sourceName
+                  ? `Agent: ${record.sourceName}`
+                  : providerLabel(record.provider ?? 'unknown'),
               pricing = {},
               cost = (() => {
                 const p = pricing[record.model] ?? { in: 1, out: 3 };
@@ -448,7 +452,7 @@ export function renderActivity(records) {
                   ((record.outputTokens ?? 0) / 1e6) * p.out
                 );
               })();
-            return `\n      <div class="activity-item">\n        <div class="activity-dot"></div>\n        <span class="activity-model">${record.modelName ?? record.model}</span>\n        <span class="activity-tokens">${fmtTokens(total)}</span>\n        <span class="activity-cost">${fmtCost(cost)}</span>\n        <span class="activity-time">${fmtTime(record.timestamp)}</span>\n      </div>`;
+            return `\n      <div class="activity-item">\n        <div class="activity-dot"></div>\n        <span class="activity-model">${record.modelName ?? record.model}</span>\n        <span class="activity-tokens">${fmtTokens(total)}</span>\n        <span class="activity-cost">${fmtCost(cost)}</span>\n        <span class="activity-time">${fmtTime(record.timestamp)}</span>\n        <span class="activity-source">${sourceLabel}</span>\n      </div>`;
           })
           .join(''))
       : (element.innerHTML = `<div style="color:var(--text-muted);font-size:13px;padding:18px;text-align:center">${t('usage.noActivity')}</div>`));

@@ -77,6 +77,12 @@ export const Paths = {
   get USAGE_FILE() {
     return path.join(getStateRoot(), 'Data', 'Usage.json');
   },
+  get AGENTS_FILE() {
+    return path.join(getStateRoot(), 'Data', 'Agents.json');
+  },
+  get AGENT_RUNS_FILE() {
+    return path.join(getStateRoot(), 'Data', 'AgentRuns.json');
+  },
   get MCP_FILE() {
     return path.join(getStateRoot(), 'Data', 'MCPServers.json');
   },

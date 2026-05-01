@@ -882,6 +882,9 @@ export async function agentLoop(
       allowImplicitFailover: allowImplicitFailover,
     } = resolveModelSelection(options),
     { workspacePath: workspacePath, activeProject: activeProject } = resolveRuntimeContext(options),
+    workspaceFencePath = Object.prototype.hasOwnProperty.call(options, 'workspaceFencePath')
+      ? String(options.workspaceFencePath ?? '').trim() || null
+      : null,
     { summary: conversationSummary, messageCount: conversationSummaryMessageCount } =
       resolveConversationSummary(options),
     loopMessages = [...messages];
@@ -1262,6 +1265,7 @@ export async function agentLoop(
                 ? executionHooks
                 : {}),
             workspacePath: workspacePath,
+            workspaceFencePath: workspaceFencePath,
             signal: signal,
           });
         }
@@ -1348,6 +1352,7 @@ export async function agentLoop(
                       ? executionHooks
                       : {}),
                   workspacePath: workspacePath,
+                  workspaceFencePath: workspaceFencePath,
                   signal: signal,
                 });
               return (handle?.done?.(!0), rawResult);

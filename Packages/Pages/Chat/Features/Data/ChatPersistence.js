@@ -47,15 +47,15 @@ export function buildChatPayload({
       }
     : void 0;
 }
-export async function saveCurrentChat() {
+export async function saveCurrentChat(overrides = {}) {
   if (state.isIncognito) return null;
   const payload = buildChatPayload({
     chatId: state.currentChatId,
     messages: state.messages,
-    provider: state.selectedProvider,
-    model: state.selectedModel,
-    activeProject: state.activeProject,
-    workspacePath: state.workspacePath,
+    provider: overrides.provider ?? state.selectedProvider,
+    model: overrides.model ?? state.selectedModel,
+    activeProject: overrides.activeProject ?? state.activeProject,
+    workspacePath: overrides.workspacePath ?? state.workspacePath,
     conversationSummary: state.conversationSummary,
     conversationSummaryMessageCount: state.conversationSummaryMessageCount,
   });

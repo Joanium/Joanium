@@ -2,6 +2,10 @@ import { ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import { wrapHandler, wrapRead } from './IPCWrapper.js';
+import {
+  BUILT_IN_SLASH_COMMAND_IDS,
+  sanitizeSlashCommandId,
+} from '../../System/Agents/CommandId.js';
 
 export const ipcMeta = { needs: [] };
 
@@ -9,25 +13,7 @@ const DATA_DIR = path.join(process.cwd(), 'Data', 'Templates');
 const INDEX_FILE = path.join(DATA_DIR, 'Index.json');
 
 // Built-in command IDs that must never be overridden by a user template.
-const BUILT_IN_IDS = new Set([
-  'new',
-  'private',
-  'settings',
-  'help',
-  'close',
-  'restart',
-  'skills',
-  'personas',
-  'marketplace',
-  'usage',
-  'events',
-  'chat',
-  'library',
-  'projects',
-  'templates',
-  'agents',
-  'setup',
-]);
+const BUILT_IN_IDS = new Set(BUILT_IN_SLASH_COMMAND_IDS);
 
 function ensureDir() {
   // mkdirSync with recursive:true is already idempotent — no existsSync check needed.
@@ -55,11 +41,7 @@ function writeIndex(index) {
 }
 
 function sanitizeId(trigger) {
-  return trigger
-    .replace(/^\//, '')
-    .replace(/\s+/g, '_')
-    .toLowerCase()
-    .replace(/[^a-z0-9_]/g, '');
+  return sanitizeSlashCommandId(trigger);
 }
 
 function readTemplate(id) {

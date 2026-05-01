@@ -16,6 +16,7 @@ import {
   registerFeaturePages,
 } from './PagesManifest.js';
 import { getFeatureBoot } from '../../Features/Core/FeatureBoot.js';
+import { initAgentManager } from './Agents/AgentManager.js';
 let PAGES = {},
   _currentPage = null,
   _currentCleanup = null,
@@ -140,6 +141,7 @@ async function leaveProject() {
     const boot = await getFeatureBoot();
     boot.pages?.length && registerFeaturePages(boot.pages);
   } catch {}
+  initAgentManager();
   (await discoverPages(),
     Object.assign(PAGES, buildPagesMap()),
     // Stamp data-platform on <html> so Titlebar.css can branch per-OS
