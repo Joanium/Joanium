@@ -103,187 +103,233 @@ export function getAgentsHTML() {
 </main>
 
 <div class="agents-modal-backdrop" id="agents-modal-backdrop">
-    <div class="agents-modal" role="dialog" aria-modal="true" aria-labelledby="agents-modal-title">
+  <div class="agents-modal" role="dialog" aria-modal="true" aria-labelledby="agents-modal-title">
 
-      <div class="agents-modal-header">
-        <div class="agents-modal-header-copy">
-          <div class="agents-modal-eyebrow" id="agents-modal-eyebrow">New Agent</div>
-          <h2 class="agents-modal-title" id="agents-modal-title">New Agent</h2>
-        </div>
-        <button id="agents-modal-close" class="agents-modal-close" type="button" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+    <!-- Header: compact, purpose-first -->
+    <div class="agents-modal-header">
+      <div class="agents-modal-header-left">
+        <div class="agents-modal-eyebrow-pill" id="agents-modal-eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
+            <rect x="4" y="4" width="16" height="16" rx="4"/>
+            <path d="M9 9h6v6H9z"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
           </svg>
-        </button>
+          New Agent
+        </div>
+      </div>
+      <button id="agents-modal-close" class="agents-modal-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Status bar -->
+    <div class="agents-modal-status" id="agents-modal-status" hidden></div>
+
+    <div class="agents-modal-body">
+
+      <!-- ── Identity hero ───────────────────────────────────── -->
+      <div class="agents-identity-hero">
+        <div class="agents-avatar-ring">
+          <img class="agents-avatar-img" id="agents-avatar-preview" alt="Agent avatar" />
+        </div>
+        <div class="agents-identity-fields">
+          <input
+            id="agents-name-input"
+            class="agents-name-hero"
+            type="text"
+            placeholder="Agent name"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <div class="agents-name-meta-row">
+            <div class="agents-input-hint" id="agents-name-hint"></div>
+          </div>
+          <input
+            id="agents-description-input"
+            class="agents-description-field"
+            type="text"
+            placeholder="Short description of what this agent does (optional)"
+            autocomplete="off"
+          />
+        </div>
       </div>
 
-      <div class="agents-modal-status" id="agents-modal-status" hidden></div>
+      <!-- ── Prompt ──────────────────────────────────────────── -->
+      <div class="agents-form-section">
+        <label class="agents-section-label" for="agents-prompt-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+            <polyline points="4 17 10 11 4 5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round"/>
+          </svg>
+          Prompt
+        </label>
+        <textarea
+          id="agents-prompt-input"
+          class="agents-field agents-textarea"
+          rows="6"
+          placeholder="Write the exact task this agent should do every time it runs."
+        ></textarea>
+      </div>
 
-      <div class="agents-modal-body">
+      <!-- ── Schedule + Model ───────────────────────────────── -->
+      <div class="agents-modal-grid">
 
-        <!-- Identity row -->
-        <div class="agents-modal-topline">
-          <div class="agents-avatar-preview">
-            <img id="agents-avatar-preview" alt="Agent avatar" />
-          </div>
-          <div class="agents-topline-fields">
-            <div>
-              <label class="agents-label" for="agents-name-input">Agent name</label>
-              <input id="agents-name-input" class="agents-field" type="text" placeholder="daily_standup" autocomplete="off" spellcheck="false" />
-              <div class="agents-input-hint" id="agents-name-hint"></div>
-            </div>
-            <div>
-              <label class="agents-label" for="agents-description-input">
-                Description <span class="agents-optional">(optional)</span>
-              </label>
-              <input id="agents-description-input" class="agents-field" type="text" placeholder="What this agent does" autocomplete="off" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Prompt -->
-        <div>
-          <label class="agents-label" for="agents-prompt-input">Prompt</label>
-          <textarea id="agents-prompt-input" class="agents-field agents-textarea" rows="6"
-            placeholder="Write the exact task this agent should do every time it runs."></textarea>
-        </div>
-
-        <!-- Schedule + Model side by side -->
-        <div class="agents-modal-grid">
-
-          <!-- Schedule panel -->
-          <div class="agents-modal-panel">
-            <div class="agents-panel-title">Schedule</div>
-            <div class="agents-field-grid">
-
-              <!-- Enabled toggle -->
-              <label class="agents-switch-row" for="agents-enabled-input">
-                <span class="agents-switch-label">Enabled</span>
-                <span class="agents-toggle-wrap">
-                  <input id="agents-enabled-input" class="agents-toggle-input" type="checkbox" checked />
-                  <span class="agents-toggle-track"><span class="agents-toggle-thumb"></span></span>
-                </span>
-              </label>
-
-              <!-- Trigger type -->
-              <div>
-                <label class="agents-label" for="agents-trigger-type">Run when</label>
-                <select id="agents-trigger-type" class="agents-field">
-                  <option value="on_startup">On app startup</option>
-                  <option value="cron">On a schedule</option>
-                </select>
-              </div>
-
-              <!-- Schedule sub-editor (shown when "On a schedule" chosen) -->
-              <div id="agents-schedule-editor" hidden>
-                <label class="agents-label" for="agents-schedule-mode">Repeat</label>
-                <select id="agents-schedule-mode" class="agents-field">
-                  <option value="interval">Every few minutes</option>
-                  <option value="hourly">Hourly</option>
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                </select>
-
-                <div class="agents-schedule-fields" data-mode="interval">
-                  <label class="agents-label" for="agents-interval-minutes">Every</label>
-                  <div class="agents-inline-fields">
-                    <input id="agents-interval-minutes" class="agents-field agents-field--narrow" type="number" min="1" max="59" value="15" />
-                    <span class="agents-inline-copy">minutes</span>
-                  </div>
-                </div>
-
-                <div class="agents-schedule-fields" data-mode="hourly" hidden>
-                  <label class="agents-label" for="agents-hourly-minute">At minute</label>
-                  <input id="agents-hourly-minute" class="agents-field agents-field--narrow" type="number" min="0" max="59" value="0" />
-                </div>
-
-                <div class="agents-schedule-fields" data-mode="daily" hidden>
-                  <label class="agents-label">At time</label>
-                  <div class="agents-inline-fields agents-inline-fields--time">
-                    <input id="agents-daily-hour" class="agents-field" type="number" min="0" max="23" value="9" />
-                    <span class="agents-inline-copy">:</span>
-                    <input id="agents-daily-minute" class="agents-field" type="number" min="0" max="59" value="0" />
-                  </div>
-                </div>
-
-                <div class="agents-schedule-fields" data-mode="weekly" hidden>
-                  <label class="agents-label" for="agents-weekly-day">Every</label>
-                  <select id="agents-weekly-day" class="agents-field">
-                    <option value="1">Monday</option>
-                    <option value="2">Tuesday</option>
-                    <option value="3">Wednesday</option>
-                    <option value="4">Thursday</option>
-                    <option value="5">Friday</option>
-                    <option value="6">Saturday</option>
-                    <option value="0">Sunday</option>
-                  </select>
-                  <div class="agents-inline-fields agents-inline-fields--time" style="margin-top:10px">
-                    <input id="agents-weekly-hour" class="agents-field" type="number" min="0" max="23" value="9" />
-                    <span class="agents-inline-copy">:</span>
-                    <input id="agents-weekly-minute" class="agents-field" type="number" min="0" max="59" value="0" />
-                  </div>
-                </div>
-
-                <!-- Hidden: kept for JS compatibility, never surfaced to the user -->
-                <input id="agents-custom-cron" type="hidden" value="" />
-              </div>
-
-              <!-- Human-readable preview -->
-              <div class="agents-schedule-preview">
-                <div class="agents-preview-line" id="agents-schedule-preview">On app startup</div>
-              </div>
-              <div id="agents-cron-preview" hidden></div>
-
-            </div>
-          </div>
-
-          <!-- Model panel -->
-          <div class="agents-modal-panel">
-            <div class="agents-panel-title">Model</div>
-            <div class="agents-field-grid">
-              <div>
-                <label class="agents-label" for="agents-primary-model">Primary model</label>
-                <select id="agents-primary-model" class="agents-field"></select>
-              </div>
-              <div>
-                <label class="agents-label" for="agents-fallback-model-1">
-                  Fallback 1 <span class="agents-optional">(optional)</span>
-                </label>
-                <select id="agents-fallback-model-1" class="agents-field"></select>
-              </div>
-              <div>
-                <label class="agents-label" for="agents-fallback-model-2">
-                  Fallback 2 <span class="agents-optional">(optional)</span>
-                </label>
-                <select id="agents-fallback-model-2" class="agents-field"></select>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Workspace panel — full width -->
+        <!-- Schedule panel -->
         <div class="agents-modal-panel">
           <div class="agents-panel-title">
-            Workspace <span class="agents-panel-optional">(optional)</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Schedule
+          </div>
+          <div class="agents-field-grid">
+
+            <label class="agents-switch-row" for="agents-enabled-input">
+              <span class="agents-switch-label">Enabled</span>
+              <span class="agents-toggle-wrap">
+                <input id="agents-enabled-input" class="agents-toggle-input" type="checkbox" checked />
+                <span class="agents-toggle-track"><span class="agents-toggle-thumb"></span></span>
+              </span>
+            </label>
+
+            <div>
+              <label class="agents-label" for="agents-trigger-type">Run when</label>
+              <select id="agents-trigger-type" class="agents-field">
+                <option value="on_startup">On app startup</option>
+                <option value="cron">On a schedule</option>
+              </select>
+            </div>
+
+            <div id="agents-schedule-editor" hidden>
+              <label class="agents-label" for="agents-schedule-mode">Repeat</label>
+              <select id="agents-schedule-mode" class="agents-field">
+                <option value="interval">Every few minutes</option>
+                <option value="hourly">Hourly</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+              </select>
+
+              <div class="agents-schedule-fields" data-mode="interval">
+                <label class="agents-label" for="agents-interval-minutes">Every</label>
+                <div class="agents-inline-fields">
+                  <input id="agents-interval-minutes" class="agents-field agents-field--narrow" type="number" min="1" max="59" value="15" />
+                  <span class="agents-inline-copy">minutes</span>
+                </div>
+              </div>
+
+              <div class="agents-schedule-fields" data-mode="hourly" hidden>
+                <label class="agents-label">Run at</label>
+                <div class="agents-inline-fields agents-inline-fields--time">
+                  <span class="agents-inline-fixed">every hour</span>
+                  <span class="agents-inline-copy">:</span>
+                  <input id="agents-hourly-minute" class="agents-field" type="number" min="0" max="59" value="0" />
+                </div>
+                <div class="agents-input-hint" style="margin-top:8px">Runs at this minute past every hour &mdash; e.g. <strong>30</strong> = 1:30, 2:30, 3:30&hellip;</div>
+              </div>
+
+              <div class="agents-schedule-fields" data-mode="daily" hidden>
+                <label class="agents-label">At time</label>
+                <div class="agents-inline-fields agents-inline-fields--time">
+                  <input id="agents-daily-hour" class="agents-field" type="number" min="0" max="23" value="9" />
+                  <span class="agents-inline-copy">:</span>
+                  <input id="agents-daily-minute" class="agents-field" type="number" min="0" max="59" value="0" />
+                </div>
+              </div>
+
+              <div class="agents-schedule-fields" data-mode="weekly" hidden>
+                <label class="agents-label" for="agents-weekly-day">Every</label>
+                <select id="agents-weekly-day" class="agents-field">
+                  <option value="1">Monday</option>
+                  <option value="2">Tuesday</option>
+                  <option value="3">Wednesday</option>
+                  <option value="4">Thursday</option>
+                  <option value="5">Friday</option>
+                  <option value="6">Saturday</option>
+                  <option value="0">Sunday</option>
+                </select>
+                <div class="agents-inline-fields agents-inline-fields--time" style="margin-top:10px">
+                  <input id="agents-weekly-hour" class="agents-field" type="number" min="0" max="23" value="9" />
+                  <span class="agents-inline-copy">:</span>
+                  <input id="agents-weekly-minute" class="agents-field" type="number" min="0" max="59" value="0" />
+                </div>
+              </div>
+
+              <input id="agents-custom-cron" type="hidden" value="" />
+            </div>
+
+            <div class="agents-schedule-preview">
+              <div class="agents-preview-line" id="agents-schedule-preview">On app startup</div>
+            </div>
+            <div id="agents-cron-preview" hidden></div>
+
+          </div>
+        </div>
+
+        <!-- Model panel -->
+        <div class="agents-modal-panel">
+          <div class="agents-panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Model
           </div>
           <div class="agents-field-grid">
             <div>
-              <label class="agents-label" for="agents-workspace-select">Project workspace</label>
-              <select id="agents-workspace-select" class="agents-field"></select>
+              <label class="agents-label" for="agents-primary-model">Primary</label>
+              <select id="agents-primary-model" class="agents-field"></select>
             </div>
-            <div class="agents-input-hint" id="agents-workspace-hint">By default the agent runs without a workspace. If you choose one, tool access is fenced to that project root.</div>
+            <div>
+              <label class="agents-label" for="agents-fallback-model-1">
+                Fallback 1 <span class="agents-optional">(optional)</span>
+              </label>
+              <select id="agents-fallback-model-1" class="agents-field"></select>
+            </div>
+            <div>
+              <label class="agents-label" for="agents-fallback-model-2">
+                Fallback 2 <span class="agents-optional">(optional)</span>
+              </label>
+              <select id="agents-fallback-model-2" class="agents-field"></select>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <div class="agents-modal-footer">
-        <button id="agents-modal-cancel" class="agents-modal-cancel-btn" type="button">Cancel</button>
-        <button id="agents-modal-save" class="agents-modal-save-btn" type="button">Save agent</button>
+      <!-- ── Workspace ───────────────────────────────────────── -->
+      <div class="agents-modal-panel agents-workspace-panel">
+        <div class="agents-panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Workspace <span class="agents-panel-optional">(optional)</span>
+        </div>
+        <div class="agents-field-grid">
+          <div>
+            <label class="agents-label" for="agents-workspace-select">Project</label>
+            <select id="agents-workspace-select" class="agents-field"></select>
+          </div>
+          <div class="agents-input-hint" id="agents-workspace-hint">By default the agent runs without a workspace. If you choose one, tool access is fenced to that project root.</div>
+        </div>
       </div>
 
     </div>
+
+    <!-- Footer -->
+    <div class="agents-modal-footer">
+      <button id="agents-modal-cancel" class="agents-modal-cancel-btn" type="button">Cancel</button>
+      <button id="agents-modal-save" class="agents-modal-save-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="14" height="14">
+          <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Save agent
+      </button>
+    </div>
+
   </div>
 </div>
 `;

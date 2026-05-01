@@ -766,10 +766,19 @@
 }
 
 .agents-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 14px;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.agents-panel-title svg {
+  flex-shrink: 0;
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 .agents-label,
@@ -819,21 +828,44 @@
     box-shadow var(--transition-fast);
 }
 
-/* Custom-styled select — matches settings-select pattern */
+/* Select fields use the same settings-select pattern */
 select.agents-field {
   appearance: none;
   -webkit-appearance: none;
   background-color: var(--bg-input);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b95a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 38px;
+  background-position: right 12px center;
+  padding-right: 36px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
   cursor: pointer;
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 select.agents-field:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
   background-color: var(--bg-hover);
+}
+
+select.agents-field:focus {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+select.agents-field option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
 }
 
 .agents-field:focus {
@@ -950,6 +982,14 @@ select.agents-field:hover {
   font-size: 13px;
 }
 
+.agents-inline-fixed {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
 .agents-schedule-fields {
   margin-top: 14px;
 }
@@ -976,6 +1016,189 @@ select.agents-field:hover {
 }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
+
+/* ── Modal header left ──────────────────────────────────────────────────────── */
+
+.agents-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Eyebrow pill ───────────────────────────────────────────────────────────── */
+
+.agents-modal-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-tertiary));
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.agents-modal-eyebrow-pill svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+/* ── Identity hero ──────────────────────────────────────────────────────────── */
+
+.agents-identity-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg-tertiary));
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border-subtle));
+  position: relative;
+}
+
+/* Subtle radial glow in the top-left corner, behind the avatar */
+.agents-identity-hero::before {
+  content: '';
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.agents-avatar-ring {
+  position: relative;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 21px;
+  padding: 3px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent) 70%, transparent),
+    color-mix(in srgb, var(--accent) 22%, transparent) 80%
+  );
+  box-shadow:
+    0 4px 20px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 1px 4px rgba(0, 0, 0, 0.18);
+  z-index: 1;
+}
+
+.agents-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-tertiary);
+}
+
+.agents-identity-fields {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-top: 3px;
+  z-index: 1;
+}
+
+.agents-name-hero {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  letter-spacing: -0.4px;
+  padding: 0;
+  line-height: 1.2;
+  caret-color: var(--accent);
+}
+
+.agents-name-hero::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.agents-name-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.agents-name-meta-row:empty,
+.agents-name-meta-row:has(.agents-input-hint:empty) {
+  display: none;
+}
+
+.agents-description-field {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  padding: 9px 14px;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.agents-description-field:focus {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.agents-description-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Prompt form section ────────────────────────────────────────────────────── */
+
+.agents-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agents-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+}
+
+.agents-section-label svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
   .agents-card-schedule-col,

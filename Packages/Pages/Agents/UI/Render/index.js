@@ -303,7 +303,6 @@ function closeModal() {
 async function openCreateModal() {
   _editingId = null;
   modalEyebrow.textContent = 'New Agent';
-  modalTitle.textContent = 'New Agent';
   nameInput.value = '';
   descriptionInput.value = '';
   promptInput.value = '';
@@ -329,8 +328,7 @@ async function openCreateModal() {
 
 async function openEditModal(agent) {
   _editingId = agent.id;
-  modalEyebrow.textContent = 'Edit Agent';
-  modalTitle.textContent = agent.name;
+  modalEyebrow.textContent = `Edit Agent — ${agent.name}`;
   nameInput.value = agent.name ?? agent.id;
   descriptionInput.value = agent.description ?? '';
   promptInput.value = agent.prompt ?? '';
@@ -720,7 +718,7 @@ export function mount(outlet) {
   scheduledCountEl = null; // removed
   modalBackdrop = document.getElementById('agents-modal-backdrop');
   modalEyebrow = document.getElementById('agents-modal-eyebrow');
-  modalTitle = document.getElementById('agents-modal-title');
+  modalTitle = null; // element removed — eyebrow pill handles the label
   modalClose = document.getElementById('agents-modal-close');
   modalCancel = document.getElementById('agents-modal-cancel');
   modalSave = document.getElementById('agents-modal-save');

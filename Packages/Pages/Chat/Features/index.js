@@ -6,7 +6,7 @@ import { agentLoop, selectSkillsForMessages } from './Core/Agent.js';
 import {
   executeSavedAgent,
   trackSavedAgentUsage,
-} from '#renderer/Application/Agents/AgentExecution.js';
+} from '../../../Renderer/Application/Agents/AgentExecution.js';
 import { createLatencyMonitor } from './UI/LatencyMonitor.js';
 import {
   onChatMessagesClick,
