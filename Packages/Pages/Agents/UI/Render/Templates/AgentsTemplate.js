@@ -8,8 +8,7 @@ export function getAgentsHTML() {
           Agents
           <span class="page-tagline-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12">
-              <rect x="4" y="4" width="16" height="16" rx="4"/>
-              <path d="M9 9h6v6H9z"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
+              <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Prompt + schedule + model
           </span>
@@ -31,9 +30,7 @@ export function getAgentsHTML() {
     <div class="agents-tab-bar">
       <button class="agents-tab is-active" id="agents-tab-agents" data-tab="agents" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14">
-          <rect x="4" y="4" width="16" height="16" rx="4"/>
-          <path d="M9 9h6v6H9z"/>
-          <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
+          <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Agents
       </button>
@@ -70,9 +67,7 @@ export function getAgentsHTML() {
       <div class="page-empty" id="agents-empty" hidden>
         <div class="page-empty-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-            <rect x="4" y="4" width="16" height="16" rx="4"/>
-            <path d="M9 9h6v6H9z"/>
-            <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
+            <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <h3>No agents yet</h3>
@@ -110,9 +105,7 @@ export function getAgentsHTML() {
       <div class="agents-modal-header-left">
         <div class="agents-modal-eyebrow-pill" id="agents-modal-eyebrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11">
-            <rect x="4" y="4" width="16" height="16" rx="4"/>
-            <path d="M9 9h6v6H9z"/>
-            <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke-linecap="round"/>
+            <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           New Agent
         </div>
