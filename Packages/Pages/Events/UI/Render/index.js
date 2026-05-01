@@ -86,6 +86,8 @@ export function mount(outlet) {
     switch (filter) {
       case 'channels':
         return events.filter((event) => 'channel' === event.type);
+      case 'agents':
+        return events.filter((event) => 'agent' === event.type);
       case 'errors':
         return events.filter((event) => 'error' === event.status);
       default:

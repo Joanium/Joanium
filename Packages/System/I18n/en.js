@@ -469,6 +469,7 @@ export default {
       'Real-time log of every channel interaction — successes, failures, and what happened.',
     filterAll: 'All',
     filterChannels: 'Channels',
+    filterAgents: 'Agents',
     filterErrors: 'Errors',
     clear: 'Clear',
     statTotal: 'Total events',

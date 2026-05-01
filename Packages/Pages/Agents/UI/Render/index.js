@@ -498,7 +498,51 @@ function render() {
     grid.innerHTML = `<div class="agents-no-results">No agents matched "${escapeHtml(_searchQuery)}".</div>`;
     return;
   }
-  filtered.forEach((agent) => grid.appendChild(buildCard(agent)));
+
+  // Diff-based update: keep existing cards to avoid DOM wipe flicker
+  const existingById = new Map();
+  // Clear any non-card children (e.g. "no results" message)
+  Array.from(grid.children).forEach((el) => {
+    if (!el.classList.contains('agents-card')) el.remove();
+  });
+  grid
+    .querySelectorAll('.agents-card[data-id]')
+    .forEach((el) => existingById.set(el.dataset.id, el));
+  // Remove stale cards
+  existingById.forEach((el, id) => {
+    if (!filtered.some((a) => a.id === id)) el.remove();
+  });
+  // Insert/replace cards in correct order
+  filtered.forEach((agent, index) => {
+    const newCard = buildCard(agent);
+    const ref = grid.children[index] || null;
+    if (ref && ref.dataset.id === agent.id) {
+      // Replace in-place only if state changed
+      const stateKey = JSON.stringify({
+        enabled: agent.enabled,
+        lastRunStatus: agent.lastRunStatus,
+        lastRunAt: agent.lastRunAt,
+        running: _runningAgentIds.has(agent.id),
+        schedule: agent.schedule?.label,
+        model: agent.primaryModel?.modelId,
+      });
+      if (ref.dataset.stateKey !== stateKey) {
+        newCard.dataset.stateKey = stateKey;
+        grid.replaceChild(newCard, ref);
+      }
+    } else {
+      newCard.dataset.stateKey = JSON.stringify({
+        enabled: agent.enabled,
+        lastRunStatus: agent.lastRunStatus,
+        lastRunAt: agent.lastRunAt,
+        running: _runningAgentIds.has(agent.id),
+        schedule: agent.schedule?.label,
+        model: agent.primaryModel?.modelId,
+      });
+      grid.insertBefore(newCard, ref);
+      if (existingById.has(agent.id)) existingById.get(agent.id).remove();
+    }
+  });
 }
 
 // ── History view ─────────────────────────────────────────────────────────────
@@ -773,9 +817,15 @@ export function mount(outlet) {
     onKeydown = (event) => {
       'Escape' === event.key && closeModal();
     },
-    onRuntimeUpdate = () => {
-      refreshAll().catch((error) => console.warn('[Agents] Refresh failed:', error));
-    };
+    onRuntimeUpdate = (() => {
+      let _debounceTimer = null;
+      return () => {
+        clearTimeout(_debounceTimer);
+        _debounceTimer = setTimeout(() => {
+          refreshAll().catch((error) => console.warn('[Agents] Refresh failed:', error));
+        }, 300);
+      };
+    })();
 
   searchInput?.addEventListener('input', onSearch);
   searchClearBtn?.addEventListener('click', onSearchClear);

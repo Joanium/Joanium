@@ -18,6 +18,7 @@ export function getEventsHTML() {
         <div class="events-filter-group">
           <button class="events-filter-btn active" data-filter="all">${t('events.filterAll')}</button>
           <button class="events-filter-btn" data-filter="channels">${t('events.filterChannels')}</button>
+          <button class="events-filter-btn" data-filter="agents">${t('events.filterAgents')}</button>
           <button class="events-filter-btn" data-filter="errors">${t('events.filterErrors')}</button>
         </div>
         <button class="events-clear-btn" id="events-clear-btn" title="Clear event log">
