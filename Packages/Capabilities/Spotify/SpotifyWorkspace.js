@@ -44,7 +44,7 @@ export function startOAuthFlow(clientId, clientSecret) {
     if (_activeServer) {
       try {
         _activeServer.close();
-      } catch (e) {}
+      } catch {}
       _activeServer = null;
     }
 

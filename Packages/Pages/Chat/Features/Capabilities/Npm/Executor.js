@@ -148,9 +148,6 @@ export const { handles, execute } = createExecutor({
 
     npm_package_downloads: async (params, onStage) => {
       const name = String(params.name ?? '').trim();
-      const period = ['last-week', 'last-month', 'last-year'].includes(params.period)
-        ? params.period
-        : 'last-week';
       if (!name) return '❌ Please provide a package name.';
 
       onStage(`📦 Fetching download stats for "${name}"…`);

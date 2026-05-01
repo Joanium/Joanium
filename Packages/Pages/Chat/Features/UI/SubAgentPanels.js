@@ -65,7 +65,7 @@ function formatUsage(usage = {}) {
         : `${total} tok`
     : '';
 }
-function createLogItem(log = {}) {
+function createLogItem() {
   const item = document.createElement('div');
   item.className = 'agent-subagent-log-item';
   const status = document.createElement('span');

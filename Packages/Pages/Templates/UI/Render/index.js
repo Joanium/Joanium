@@ -128,7 +128,6 @@ function buildCard(tpl) {
   card.className = 'templates-card';
   card.dataset.id = tpl.id;
 
-  const promptPreview = tpl.description || ''; // description is in index
   const timeLabel = tpl.updatedAt
     ? `Updated ${formatRelative(tpl.updatedAt)}`
     : tpl.createdAt

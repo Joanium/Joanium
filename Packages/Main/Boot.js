@@ -29,10 +29,7 @@ export async function boot() {
       invalidateSystemPrompt: invalidateSystemPrompt,
       userService: UserService,
     },
-    { context: context, engines: engines } = await instantiateDiscoveredEngines(
-      discovered,
-      baseContext,
-    );
+    { context: context } = await instantiateDiscoveredEngines(discovered, baseContext);
   (featureRegistry.setBaseContext({
     connectorEngine: context.connectorEngine,
     featureStorage: featureStorage,

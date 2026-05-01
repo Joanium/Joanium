@@ -750,7 +750,7 @@ export async function loadChannelsPanel() {
           const btn = document.getElementById(`ch-expand-btn-${name}`);
           const header = document.getElementById(`ch-card-header-${name}`);
           const card = document.getElementById(`ch-card-${name}`);
-          function toggleAccordion(e) {
+          function toggleAccordion(_e) {
             card?.classList.toggle('ch-expanded');
           }
           btn?.addEventListener('click', (e) => {

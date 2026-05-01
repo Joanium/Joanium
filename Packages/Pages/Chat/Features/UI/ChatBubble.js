@@ -827,12 +827,11 @@ function applyStarToRows(assistantRow, isStarred) {
   assistantRow.classList.toggle('is-starred', isStarred);
 }
 
-export function attachStarEvent(starBtn, assistantRow, msgRef) {
+export function attachStarEvent(starBtn, assistantRow, _msgRef) {
   if (!starBtn) return;
   // Resolve message ref from state at click time if not directly provided
   starBtn.onclick = () => {
     const rows = Array.from(chatMessages.querySelectorAll('.message-row'));
-    const rowIdx = rows.indexOf(assistantRow);
     // Find the corresponding state message (assistant messages only)
     const assistantRows = rows.filter((r) => r.classList.contains('assistant'));
     const assistantIdx = assistantRows.indexOf(assistantRow);

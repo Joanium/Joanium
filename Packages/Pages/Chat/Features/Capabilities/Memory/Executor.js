@@ -435,7 +435,6 @@ export const { handles, execute } = createExecutor({
 
       const messages = Array.isArray(chat.messages) ? chat.messages : [];
       const total = messages.length;
-      const time = formatChatTime(chat.updatedAt);
 
       const header = [
         `Chat: "${chat.title}"`,

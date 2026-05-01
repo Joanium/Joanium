@@ -134,7 +134,6 @@ function runGit(command, workingDir, opts = {}) {
 }
 
 const runGitNet = (cmd, dir) => runGit(cmd, dir, { timeout: 60_000 });
-const runGitCommit = (cmd, dir) => runGit(cmd, dir, { timeout: 300_000 });
 
 function clearLockFile(workingDir) {
   try {

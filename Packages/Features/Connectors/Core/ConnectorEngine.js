@@ -74,11 +74,11 @@ export class ConnectorEngine {
     const credentials = this.getCredentials(name);
     if (!credentials) return null;
     const {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      clientSecret: clientSecret,
-      token: token,
-      apiKey: apiKey,
+      accessToken: _accessToken,
+      refreshToken: _refreshToken,
+      clientSecret: _clientSecret,
+      token: _token,
+      apiKey: _apiKey,
       ...safe
     } = credentials;
     return safe;

@@ -1,8 +1,7 @@
 import { BrowserWindow } from 'electron';
 import electronUpdater from 'electron-updater';
 import log from 'electron-log';
-let enabled = !1,
-  pendingInstall = !1;
+let enabled = !1;
 export function setupAutoUpdates() {
   if (enabled) return;
   let autoUpdater;
@@ -48,8 +47,7 @@ export function setupAutoUpdates() {
         }));
     }),
     autoUpdater.on('update-downloaded', () => {
-      ((pendingInstall = !0),
-        log.info('[AutoUpdate] Update downloaded. Will install on app quit.'),
+      (log.info('[AutoUpdate] Update downloaded. Will install on app quit.'),
         sendToRenderer('update:downloaded', {}));
     }),
     autoUpdater.on('error', (err) => {

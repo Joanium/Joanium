@@ -66,8 +66,7 @@ function readTemplate(id) {
   const filePath = path.join(DATA_DIR, `${id}.json`);
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  } catch (err) {
-    // ENOENT = file doesn't exist; SyntaxError = bad JSON — both are non-fatal.
+  } catch {
     return null;
   }
 }

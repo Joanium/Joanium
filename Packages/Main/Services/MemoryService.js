@@ -439,7 +439,7 @@ export function initializePersonalMemoryLibrary() {
   }
 }
 export function listPersonalMemoryFiles() {
-  return getVisibleMemoryEntries().map(({ content: content, ...entry }) => entry);
+  return getVisibleMemoryEntries().map(({ content: _content, ...entry }) => entry);
 }
 export function searchPersonalMemory(query, limit = 5) {
   const terms = (function (query = '') {
