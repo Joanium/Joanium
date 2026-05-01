@@ -1,11 +1,3 @@
-import chatPage from './Chat/Page.js';
-import eventsPage from './Events/Page.js';
-import marketplacePage from './Marketplace/Page.js';
-import personasPage from './Personas/Page.js';
-import setupPage from './Setup/Page.js';
-import skillsPage from './Skills/Page.js';
-import templatesPage from './Templates/Page.js';
-import usagePage from './Usage/Page.js';
 export { default as chatPage } from './Chat/Page.js';
 export { default as eventsPage } from './Events/Page.js';
 export { default as marketplacePage } from './Marketplace/Page.js';

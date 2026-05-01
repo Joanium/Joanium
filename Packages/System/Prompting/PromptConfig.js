@@ -18,7 +18,3 @@ export async function getPromptConfigs() {
     _inflight = null;
   }
 }
-
-export function invalidatePromptConfigs() {
-  _config = null;
-}
