@@ -4,7 +4,7 @@
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| 2026.x.x | :white_check_mark: |
+| 2026.x.x | Will be retired on May 31st |
 
 ## Reporting a Vulnerability
 
