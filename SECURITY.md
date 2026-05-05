@@ -4,7 +4,7 @@
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| 2026.x.x | Will be retired on May 31st |
+| 2026.x.x | Will be retired on May 31st 2026 |
 
 ## Reporting a Vulnerability
 
