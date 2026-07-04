@@ -5,9 +5,13 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "meta-llama/llama-4-scout-17b-16e-instruct": {
-      "name": "Llama 4 Scout 17B 16e Instruct",
-      "context_window": 131072
+    "meta-llama/llama-prompt-guard-2-86m": {
+      "name": "Llama Prompt Guard 2 86M",
+      "context_window": 512
+    },
+    "canopylabs/orpheus-arabic-saudi": {
+      "name": "Orpheus Arabic Saudi",
+      "context_window": 4000
     },
     "llama-3.3-70b-versatile": {
       "name": "Llama 3.3 70B",
@@ -25,37 +29,13 @@
         "output": 0.79
       }
     },
-    "qwen/qwen3.6-27b": {
-      "name": "Qwen3 6 27B",
-      "context_window": 131072
-    },
     "groq/compound-mini": {
       "name": "Compound MINI",
-      "context_window": 131072
-    },
-    "allam-2-7b": {
-      "name": "Allam 2 7B",
-      "context_window": 4096
-    },
-    "meta-llama/llama-prompt-guard-2-86m": {
-      "name": "Llama Prompt Guard 2 86M",
-      "context_window": 512
-    },
-    "canopylabs/orpheus-arabic-saudi": {
-      "name": "Orpheus Arabic Saudi",
-      "context_window": 4000
-    },
-    "openai/gpt-oss-120b": {
-      "name": "Gpt OSS 120B",
       "context_window": 131072
     },
     "canopylabs/orpheus-v1-english": {
       "name": "Orpheus V1 English",
       "context_window": 4000
-    },
-    "meta-llama/llama-prompt-guard-2-22m": {
-      "name": "Llama Prompt Guard 2 22M",
-      "context_window": 512
     },
     "llama-3.1-8b-instant": {
       "name": "Llama 3.1 8B Instant",
@@ -73,22 +53,42 @@
         "output": 0.08
       }
     },
-    "openai/gpt-oss-safeguard-20b": {
-      "name": "Gpt OSS Safeguard 20B",
-      "context_window": 131072
-    },
-    "openai/gpt-oss-20b": {
-      "name": "Gpt OSS 20B",
+    "groq/compound": {
+      "name": "Compound",
       "context_window": 131072
     },
     "qwen/qwen3-32b": {
       "name": "Qwen3 32B",
       "context_window": 131072
     },
-    "groq/compound": {
-      "name": "Compound",
+    "openai/gpt-oss-120b": {
+      "name": "Gpt OSS 120B",
+      "context_window": 131072
+    },
+    "qwen/qwen3.6-27b": {
+      "name": "Qwen3 6 27B",
+      "context_window": 131072
+    },
+    "allam-2-7b": {
+      "name": "Allam 2 7B",
+      "context_window": 4096
+    },
+    "meta-llama/llama-4-scout-17b-16e-instruct": {
+      "name": "Llama 4 Scout 17B 16e Instruct",
+      "context_window": 131072
+    },
+    "openai/gpt-oss-safeguard-20b": {
+      "name": "Gpt OSS Safeguard 20B",
+      "context_window": 131072
+    },
+    "meta-llama/llama-prompt-guard-2-22m": {
+      "name": "Llama Prompt Guard 2 22M",
+      "context_window": 512
+    },
+    "openai/gpt-oss-20b": {
+      "name": "Gpt OSS 20B",
       "context_window": 131072
     }
   },
-  "_syncedAt": "2026-07-04T09:58:19.375Z"
+  "_syncedAt": "2026-07-04T15:38:28.029Z"
 }
