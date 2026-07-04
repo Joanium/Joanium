@@ -5,9 +5,6 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "gemma-4-31b": {
-      "name": "Gemma 4 31B"
-    },
     "gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "Cerebras' flagship open-source model — MoE architecture optimised for agentic and reasoning tasks at wafer-scale speed",
@@ -39,7 +36,10 @@
         "input": 0.5,
         "output": 0.5
       }
+    },
+    "gemma-4-31b": {
+      "name": "Gemma 4 31B"
     }
   },
-  "_syncedAt": "2026-07-03T13:35:33.238Z"
+  "_syncedAt": "2026-07-04T09:58:09.422Z"
 }
