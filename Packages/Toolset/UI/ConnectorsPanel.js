@@ -1,4 +1,4 @@
-import { createElement } from '../../Shared/Utils/DomUtils.js';
+import { createElement, setCardFeedback } from '../../Shared/Utils/DomUtils.js';
 import { invokeIpc } from '../../Shared/Ipc/RendererIpc.js';
 import { createIcon, createProviderIcon } from '../../Shared/Icons/Icons.js';
 import { createTwoColGrid } from '../../Shared/TwoColGrid/TwoColGrid.js';
@@ -77,9 +77,7 @@ export function createConnectorsPanel(strings = defaultStrings) {
   function setFeedback(connectorId, message, tone = 'info') {
     const ref = refs.get(connectorId);
     if (!ref) return;
-    ref.feedback.textContent = message;
-    ref.feedback.className = `connectors-card__feedback connectors-card__feedback--${tone}`;
-    ref.feedback.hidden = !message;
+    setCardFeedback(ref.feedback, message, tone, 'connectors-card__feedback');
   }
 
   function setCardState(connector) {

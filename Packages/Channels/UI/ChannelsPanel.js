@@ -1,4 +1,4 @@
-import { createElement, formatText } from '../../Shared/Utils/DomUtils.js';
+import { createElement, formatText, setCardFeedback } from '../../Shared/Utils/DomUtils.js';
 import { invokeIpc } from '../../Shared/Ipc/RendererIpc.js';
 import { createIcon, createProviderIcon } from '../../Shared/Icons/Icons.js';
 import { createTwoColGrid } from '../../Shared/TwoColGrid/TwoColGrid.js';
@@ -34,9 +34,7 @@ export function createChannelsPanel(strings) {
   function setFeedback(channelName, message, tone = 'info') {
     const refs = cardRefs.get(channelName);
     if (!refs?.feedback) return;
-    refs.feedback.textContent = message;
-    refs.feedback.className = `channels-card__feedback channels-card__feedback--${tone}`;
-    refs.feedback.hidden = !message;
+    setCardFeedback(refs.feedback, message, tone, 'channels-card__feedback');
   }
 
   function setCardState(channelName, config) {

@@ -1,4 +1,4 @@
-import { createElement } from '../../Shared/Utils/DomUtils.js';
+import { createElement, setCardFeedback } from '../../Shared/Utils/DomUtils.js';
 import { invokeIpc } from '../../Shared/Ipc/RendererIpc.js';
 import { createIcon, createProviderIcon } from '../../Shared/Icons/Icons.js';
 import { createTwoColGrid } from '../../Shared/TwoColGrid/TwoColGrid.js';
@@ -25,9 +25,7 @@ export function createProvidersPanel(strings) {
   function setFeedback(providerId, message, tone = 'info') {
     const refs = cardRefs.get(providerId);
     if (!refs?.feedback) return;
-    refs.feedback.textContent = message;
-    refs.feedback.className = `providers-card__feedback providers-card__feedback--${tone}`;
-    refs.feedback.hidden = !message;
+    setCardFeedback(refs.feedback, message, tone, 'providers-card__feedback');
   }
 
   function refreshDisconnectGuards() {

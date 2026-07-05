@@ -37,6 +37,12 @@ export function makeEditableTextarea(textarea) {
   textarea.style.cursor = 'text';
 }
 
+export function setCardFeedback(el, message, tone, baseClass) {
+  el.textContent = message;
+  el.className = `${baseClass} ${baseClass}--${tone}`;
+  el.hidden = !message;
+}
+
 export function setupDismissListeners(onClick, onKey) {
   setTimeout(() => {
     document.addEventListener('click', onClick, { capture: true });
