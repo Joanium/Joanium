@@ -6,6 +6,18 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.705.0] - 2026-07-05
+
+* refactor: replace manual event listener management with setupDismissListeners utility
+* Updated AI Models
+* Updated AI Models
+* Updated AI Models
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action/analyze from 4.36.2 to 4.36.3
+* Chore(deps): Bump github/codeql-action/init from 4.36.2 to 4.36.3
+
+---
+
 ## [2026.703.0] - 2026-07-03
 
 * Update model sync timestamps and enhance Markdown rendering
