@@ -37,6 +37,17 @@ export function makeEditableTextarea(textarea) {
   textarea.style.cursor = 'text';
 }
 
+export function setupDismissListeners(onClick, onKey) {
+  setTimeout(() => {
+    document.addEventListener('click', onClick, { capture: true });
+    document.addEventListener('keydown', onKey);
+  }, 0);
+  return () => {
+    document.removeEventListener('click', onClick, { capture: true });
+    document.removeEventListener('keydown', onKey);
+  };
+}
+
 function copyWithExecCommand(text) {
   const textarea = document.createElement('textarea');
   textarea.value = text;

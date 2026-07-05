@@ -1,4 +1,4 @@
-import { createElement } from '../../Shared/Utils/DomUtils.js';
+import { createElement, setupDismissListeners } from '../../Shared/Utils/DomUtils.js';
 import { collapseWhitespace } from '../../Shared/Utils/StringUtils.js';
 import { attachCustomScrollbar } from '../../Shared/CustomScrollbar/CustomScrollbar.js';
 import { createProviderIcon } from '../../Shared/Icons/Icons.js';
@@ -255,15 +255,7 @@ function createModelInfoPopover() {
       if (event.key === 'Escape') close();
     };
 
-    setTimeout(() => {
-      document.addEventListener('click', onDocClick, { capture: true });
-      document.addEventListener('keydown', onKey);
-    }, 0);
-
-    disposeListeners = () => {
-      document.removeEventListener('click', onDocClick, { capture: true });
-      document.removeEventListener('keydown', onKey);
-    };
+    disposeListeners = setupDismissListeners(onDocClick, onKey);
   }
 
   function close() {

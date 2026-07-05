@@ -1,4 +1,4 @@
-import { createElement, formatText } from '../../Shared/Utils/DomUtils.js';
+import { createElement, formatText, setupDismissListeners } from '../../Shared/Utils/DomUtils.js';
 import { collapseWhitespace } from '../../Shared/Utils/StringUtils.js';
 import { invokeIpc } from '../../Shared/Ipc/RendererIpc.js';
 import { createSearchBar } from '../../Shared/SearchBar/SearchBar.js';
@@ -263,14 +263,7 @@ export function createHistoryPanel(
     const onKey = (e) => {
       if (e.key === 'Escape') closeExportPopup();
     };
-    setTimeout(() => {
-      document.addEventListener('click', onDocClick, { capture: true });
-      document.addEventListener('keydown', onKey);
-    }, 0);
-    exportDisposeListeners = () => {
-      document.removeEventListener('click', onDocClick, { capture: true });
-      document.removeEventListener('keydown', onKey);
-    };
+    exportDisposeListeners = setupDismissListeners(onDocClick, onKey);
   }
 
   function disposeExportListeners() {

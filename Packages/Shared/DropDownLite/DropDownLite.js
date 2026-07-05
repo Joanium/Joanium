@@ -1,4 +1,4 @@
-import { createElement } from '../Utils/DomUtils.js';
+import { createElement, setupDismissListeners } from '../Utils/DomUtils.js';
 import { createPortalDropdownController } from '../Bubbly/DropDown/PortalDropdown.js';
 import { createProviderIcon } from '../Icons/Icons.js';
 import {
@@ -166,14 +166,7 @@ function createModelInfoPopoverDdm() {
     const onKey = (e) => {
       if (e.key === 'Escape') close();
     };
-    setTimeout(() => {
-      document.addEventListener('click', onDocClick, { capture: true });
-      document.addEventListener('keydown', onKey);
-    }, 0);
-    disposeListeners = () => {
-      document.removeEventListener('click', onDocClick, { capture: true });
-      document.removeEventListener('keydown', onKey);
-    };
+    disposeListeners = setupDismissListeners(onDocClick, onKey);
   }
 
   function close() {
