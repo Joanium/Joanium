@@ -1,13 +1,10 @@
 import { readUserState, writeUserState } from '../../Shared/UserData/UserData.js';
+import { normalizeString } from '../../Shared/Utils/StringUtils.js';
 import {
   CONNECTOR_CATALOG,
   createConnectorCatalog,
   getConnectorDefinition,
 } from './ConnectorCatalog.js';
-
-function sanitizeCredential(value) {
-  return typeof value === 'string' ? value.trim() : '';
-}
 
 function getConnectorFields(connector) {
   return Array.isArray(connector.fields) && connector.fields.length
@@ -22,18 +19,18 @@ function hasCredential(connector, details = {}) {
 
   return getConnectorFields(connector)
     .filter((field) => field.required !== false)
-    .every((field) => Boolean(sanitizeCredential(details[field.key])));
+    .every((field) => Boolean(normalizeString(details[field.key])));
 }
 
 function hasAnySavedCredential(connector, details = {}) {
   return getConnectorFields(connector).some((field) =>
-    Boolean(sanitizeCredential(details[field.key])),
+    Boolean(normalizeString(details[field.key])),
   );
 }
 
 function getSavedCredentialKeys(connector, details = {}) {
   return getConnectorFields(connector)
-    .filter((field) => Boolean(sanitizeCredential(details[field.key])))
+    .filter((field) => Boolean(normalizeString(details[field.key])))
     .map((field) => field.key);
 }
 
