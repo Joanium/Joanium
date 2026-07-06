@@ -39,7 +39,7 @@ export const PUBLIC_DATA_TOOL_DEFINITIONS = [
     'search',
     {
       query: { type: 'string', required: true, description: 'Search query.' },
-      limit: { type: 'number', required: false, description: 'Result count, default 8, max 10.' },
+      limit: { type: 'number', required: false, description: 'Result count, default 10, max 20.' },
     },
   ),
   tool('search_wikipedia', 'Get a Wikipedia summary for a topic.', 'wikipedia', {
