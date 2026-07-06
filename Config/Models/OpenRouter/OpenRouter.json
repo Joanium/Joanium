@@ -5,6 +5,30 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "tencent/hy3:free": {
+      "name": "Tencent: Hy3 (free)",
+      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tencent/hy3": {
+      "name": "Tencent: Hy3",
+      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.58
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "poolside/laguna-xs-2.1:free": {
       "name": "Poolside: Laguna XS 2.1 (free)",
       "description": "Laguna XS 2.1 is the latest coding agent model in the 33B-A3B category from [Poolside](https://poolside.ai/) and a step forward from their Laguna XS.2 model (released in April 2026). It combines...",
@@ -3650,9 +3674,9 @@
         "text": true
       }
     },
-    "inflection/inflection-3-productivity": {
-      "name": "Inflection: Inflection 3 Productivity",
-      "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news. For emotional...",
+    "inflection/inflection-3-pi": {
+      "name": "Inflection: Inflection 3 Pi",
+      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay. Pi...",
       "context_window": 8000,
       "pricing": {
         "input": 2.5,
@@ -3662,9 +3686,9 @@
         "text": true
       }
     },
-    "inflection/inflection-3-pi": {
-      "name": "Inflection: Inflection 3 Pi",
-      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay. Pi...",
+    "inflection/inflection-3-productivity": {
+      "name": "Inflection: Inflection 3 Productivity",
+      "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news. For emotional...",
       "context_window": 8000,
       "pricing": {
         "input": 2.5,
@@ -3880,8 +3904,8 @@
         "text": true
       }
     },
-    "openai/gpt-4o-mini": {
-      "name": "OpenAI: GPT-4o-mini",
+    "openai/gpt-4o-mini-2024-07-18": {
+      "name": "OpenAI: GPT-4o-mini (2024-07-18)",
       "description": "GPT-4o mini is OpenAI's newest model after [GPT-4 Omni](/models/openai/gpt-4o), supporting both text and image inputs with text outputs. As their most advanced small model, it is many multiples more affordable...",
       "context_window": 128000,
       "pricing": {
@@ -3893,8 +3917,8 @@
         "image": true
       }
     },
-    "openai/gpt-4o-mini-2024-07-18": {
-      "name": "OpenAI: GPT-4o-mini (2024-07-18)",
+    "openai/gpt-4o-mini": {
+      "name": "OpenAI: GPT-4o-mini",
       "description": "GPT-4o mini is OpenAI's newest model after [GPT-4 Omni](/models/openai/gpt-4o), supporting both text and image inputs with text outputs. As their most advanced small model, it is many multiples more affordable...",
       "context_window": 128000,
       "pricing": {
@@ -4181,5 +4205,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-06T13:30:29.860Z"
+  "_syncedAt": "2026-07-06T15:07:04.006Z"
 }
