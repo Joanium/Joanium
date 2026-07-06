@@ -6,6 +6,17 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.706.0] - 2026-07-06
+
+* fix: update search_web tool description and adjust result limit; enhance DuckDuckGo search functionality
+* Updated AI Models
+* refactor: replace body handling with bodyJson utility for consistency across requests
+* Updated AI Models
+* refactor: streamline feedback handling by introducing setCardFeedback utility
+* refactor: replace sanitizeCredential function with normalizeString utility for credential handling
+
+---
+
 ## [2026.705.0] - 2026-07-05
 
 * refactor: replace manual event listener management with setupDismissListeners utility
