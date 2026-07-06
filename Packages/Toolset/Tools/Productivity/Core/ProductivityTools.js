@@ -1,4 +1,4 @@
-import { buildUrl, requireConnectorCredentials } from '../../../Core/ConnectorHttp.js';
+import { bodyJson, buildUrl, requireConnectorCredentials } from '../../../Core/ConnectorHttp.js';
 import strings from '../I18n/en.js';
 import {
   compactObject,
@@ -38,7 +38,7 @@ async function airtableRequest(
       authorization: `Bearer ${credentials.token}`,
       'content-type': 'application/json',
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
   return readServiceJson(response, connectorLabels.airtable);
 }
@@ -61,7 +61,7 @@ async function todoistRequest(
       authorization: `Bearer ${credentials.token}`,
       'content-type': 'application/json',
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
   return readServiceJson(response, connectorLabels.todoist);
 }

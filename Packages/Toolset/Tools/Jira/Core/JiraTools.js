@@ -1,4 +1,5 @@
 import {
+  bodyJson,
   buildUrl,
   clampInteger,
   formatList,
@@ -40,7 +41,7 @@ async function jiraRequest(rootDirectory, path, { method = 'GET', body, searchPa
       'content-type': 'application/json',
       authorization: authHeader(credentials),
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
   const { data, text } = await parseResponseJson(response);
   if (!response.ok) {

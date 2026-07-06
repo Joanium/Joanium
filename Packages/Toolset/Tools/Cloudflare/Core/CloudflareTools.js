@@ -1,4 +1,5 @@
 import {
+  bodyJson,
   buildUrl,
   clampInteger,
   formatList,
@@ -27,7 +28,7 @@ async function cloudflareRequest(
       'content-type': 'application/json',
       authorization: `Bearer ${credentials.token}`,
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
   const data = await response.json().catch(() => null);
   if (!response.ok || data?.success === false) {

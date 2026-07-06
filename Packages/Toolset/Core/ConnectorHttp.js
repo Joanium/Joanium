@@ -52,6 +52,12 @@ export function formatList(title, rows, empty = 'No results found.') {
   return rows.length ? [title, '', ...rows].join('\n') : [title, '', empty].join('\n');
 }
 
+// Returns a fetch-compatible body option object.
+// If body is undefined, returns {} (no body). Otherwise JSON-stringifies it.
+export function bodyJson(body) {
+  return body === undefined ? {} : { body: JSON.stringify(body) };
+}
+
 // Builds a URL from a base + path and appends only non-empty search params.
 // Skips any entry whose value is undefined, null, or blank after trimming.
 export function buildUrl(base, path, searchParams = {}) {
@@ -195,7 +201,7 @@ export function makeConnectorRequest(
     return fetchJson(buildUrl(resolvedBase, path, searchParams), {
       method,
       headers: { 'content-type': 'application/json', ...authHeaders, ...extraHeaders },
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      ...bodyJson(body),
     });
   };
 }

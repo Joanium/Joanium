@@ -1,4 +1,5 @@
 import {
+  bodyJson,
   buildUrl,
   clampInteger,
   formatDate,
@@ -50,7 +51,7 @@ async function githubRequest(
       'x-github-api-version': '2022-11-28',
       ...(token ? { authorization: `Bearer ${token}` } : {}),
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
 
   if (raw) {

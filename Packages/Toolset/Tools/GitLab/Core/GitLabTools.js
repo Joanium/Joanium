@@ -1,4 +1,5 @@
 import {
+  bodyJson,
   buildUrl,
   clampInteger,
   formatDate,
@@ -43,7 +44,7 @@ async function gitLabRequest(
       'content-type': 'application/json',
       'private-token': credentials.token,
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...bodyJson(body),
   });
   const { data, text } = await parseResponseJson(response);
   if (!response.ok)
