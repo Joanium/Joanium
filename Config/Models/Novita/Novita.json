@@ -5,6 +5,15 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "tencent/hy3": {
+      "name": "Hy3",
+      "description": "Built for real-world business scenarios, Hy3 features a 295B/21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long-form comprehension, multi-turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across both high",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true
+      }
+    },
     "zai-org/glm-5.2": {
       "name": "GLM 5.2",
       "description": "GLM-5.2 is Z.AI's latest flagship model, meticulously engineered for long-horizon autonomous tasks. Capable of working continuously on a single assignment for up to 8 hours, it autonomously manages the entire workflow—from initial planning and execution to iterative optimization and the delivery of ",
@@ -1284,5 +1293,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-05T08:03:38.887Z"
+  "_syncedAt": "2026-07-06T11:54:36.914Z"
 }

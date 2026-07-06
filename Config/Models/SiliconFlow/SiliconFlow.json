@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "tencent/Hy3": {
+      "name": "Hy3"
+    },
     "meituan-longcat/LongCat-2.0": {
       "name": "LongCat 2 0"
     },
@@ -209,5 +212,5 @@
       "name": "Qwen2 5 7B Instruct"
     }
   },
-  "_syncedAt": "2026-07-05T08:03:34.410Z"
+  "_syncedAt": "2026-07-06T11:54:30.608Z"
 }
