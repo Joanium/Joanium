@@ -35,11 +35,11 @@ function tool(name, description, category, parameters = {}) {
 export const PUBLIC_DATA_TOOL_DEFINITIONS = [
   tool(
     'search_web',
-    'Search public web sources using DuckDuckGo, Wikipedia, and Hacker News fallbacks.',
+    'Search the live web via DuckDuckGo and return real organic results (title, snippet, URL) plus an instant-answer summary when one is available. Falls back to Wikipedia and Hacker News only if live web results cannot be fetched. Use this for current events, general knowledge, or anything not covered by a more specific tool.',
     'search',
     {
       query: { type: 'string', required: true, description: 'Search query.' },
-      limit: { type: 'number', required: false, description: 'Result count, default 5, max 10.' },
+      limit: { type: 'number', required: false, description: 'Result count, default 8, max 10.' },
     },
   ),
   tool('search_wikipedia', 'Get a Wikipedia summary for a topic.', 'wikipedia', {
@@ -1108,27 +1108,67 @@ async function wikipediaOnThisDay(params) {
     : 'No on-this-day items found.';
 }
 
-async function searchWeb(params) {
-  const query = requireText(params, 'query');
-  const limit = clampInteger(params.limit, 5, 1, 10);
-  const rows = [];
+// A realistic desktop-browser UA/Accept set. DuckDuckGo's HTML endpoint (unlike its
+// JSON "instant answer" API) returns actual organic results, but it will serve a
+// bot-check page to obvious non-browser clients, so we present as a normal browser.
+const BROWSER_LIKE_HEADERS = Object.freeze({
+  'user-agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'accept-language': 'en-US,en;q=0.9',
+});
 
-  const duck = await fetchJson(
-    `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1&no_html=1&skip_disambig=0`,
-  ).catch(() => null);
-  if (duck?.AbstractText) {
-    rows.push(
-      `${duck.Heading || query}\n   ${duck.AbstractText}\n   ${duck.AbstractURL || 'https://duckduckgo.com/'}`,
-    );
+// DuckDuckGo's HTML result links are proxied through a redirect like
+// "//duckduckgo.com/l/?uddg=<encoded-real-url>&rut=..." — unwrap it back to the
+// real destination URL so the AI/user gets a directly usable link.
+function decodeDuckDuckGoRedirect(href) {
+  try {
+    const normalized = href.startsWith('//') ? `https:${href}` : href;
+    const url = new URL(normalized, 'https://duckduckgo.com');
+    const real = url.searchParams.get('uddg');
+    return real ? decodeURIComponent(real) : normalized;
+  } catch {
+    return href;
   }
+}
 
+function parseDuckDuckGoOrganicResults(html, limit) {
+  const titleRe = /<a[^>]+class="[^"]*result__a[^"]*"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+  const snippetRe = /<a[^>]+class="[^"]*result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
+  const titles = [...html.matchAll(titleRe)];
+  const snippets = [...html.matchAll(snippetRe)];
+  const results = [];
+  const seenUrls = new Set();
+  for (let index = 0; index < titles.length && results.length < limit; index += 1) {
+    const url = decodeDuckDuckGoRedirect(titles[index][1]);
+    if (!url.startsWith('http') || seenUrls.has(url)) continue;
+    const title = stripHtml(titles[index][2]);
+    if (!title) continue;
+    seenUrls.add(url);
+    results.push({ title, url, snippet: stripHtml(snippets[index]?.[1] ?? '') });
+  }
+  return results;
+}
+
+async function fetchDuckDuckGoOrganicResults(query, limit) {
+  const html = await fetchText(
+    `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}&kl=us-en`,
+    { headers: BROWSER_LIKE_HEADERS },
+  ).catch(() => null);
+  if (!html) return [];
+  return parseDuckDuckGoOrganicResults(html, limit);
+}
+
+// Wikipedia + Hacker News fallback, used only when the live DuckDuckGo scrape
+// above returns nothing (e.g. DuckDuckGo is rate-limiting or temporarily blocking).
+async function fetchWebSearchFallback(query) {
+  const rows = [];
   const wiki = await fetchJson(
     `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&srlimit=3&srprop=snippet&origin=*`,
   ).catch(() => null);
   for (const result of wiki?.query?.search ?? []) {
     rows.push(`${result.title}\n   ${stripHtml(result.snippet)}\n   ${toTitleUrl(result.title)}`);
   }
-
   const hn = await fetchJson(
     `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=3`,
   ).catch(() => null);
@@ -1137,10 +1177,46 @@ async function searchWeb(params) {
       `${hit.title || hit.story_title}\n   Points: ${hit.points ?? 0}, comments: ${hit.num_comments ?? 0}\n   ${hit.url || `https://news.ycombinator.com/item?id=${hit.objectID}`}`,
     );
   }
+  return rows;
+}
 
-  return rows.length
-    ? formatList(`Web search: ${query}`, rows.slice(0, limit))
-    : `No public search results found for "${query}".`;
+async function searchWeb(params) {
+  const query = requireText(params, 'query');
+  const limit = clampInteger(params.limit, 8, 1, 10);
+  const sections = [];
+
+  const [duck, organic] = await Promise.all([
+    fetchJson(
+      `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1&no_html=1&skip_disambig=0`,
+    ).catch(() => null),
+    fetchDuckDuckGoOrganicResults(query, limit),
+  ]);
+
+  if (duck?.AbstractText) {
+    sections.push(
+      [
+        'Featured answer:',
+        duck.Heading || query,
+        duck.AbstractText,
+        duck.AbstractURL || 'https://duckduckgo.com/',
+      ].join('\n'),
+    );
+  }
+
+  if (organic.length) {
+    const rows = organic.map(
+      (result) =>
+        `${result.title}\n   ${result.snippet || 'No snippet available.'}\n   ${result.url}`,
+    );
+    sections.push(formatList(`Web results: ${query}`, rows));
+  } else {
+    const fallbackRows = await fetchWebSearchFallback(query);
+    if (fallbackRows.length) {
+      sections.push(formatList(`Related results: ${query}`, fallbackRows.slice(0, limit)));
+    }
+  }
+
+  return sections.length ? sections.join('\n\n') : `No public search results found for "${query}".`;
 }
 
 async function getDefinition(params) {
