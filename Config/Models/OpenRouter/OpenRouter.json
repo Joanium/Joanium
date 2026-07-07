@@ -3336,30 +3336,6 @@
         "text": true
       }
     },
-    "aion-labs/aion-1.0": {
-      "name": "AionLabs: Aion-1.0",
-      "description": "Aion-1.0 is a multi-model system designed for high performance across various tasks, including reasoning and coding. It is built on DeepSeek-R1, augmented with additional models and techniques such as Tree...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 4,
-        "output": 8
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "aion-labs/aion-1.0-mini": {
-      "name": "AionLabs: Aion-1.0-Mini",
-      "description": "Aion-1.0-Mini 32B parameter model is a distilled version of the DeepSeek-R1 model, designed for strong performance in reasoning domains such as mathematics, coding, and logic. It is a modified variant...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.7,
-        "output": 1.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "aion-labs/aion-rp-llama-3.1-8b": {
       "name": "AionLabs: Aion-RP 1.0 (8B)",
       "description": "Aion-RP-Llama-3.1-8B ranks the highest in the character evaluation portion of the RPBench-Auto benchmark, a roleplaying-specific variant of Arena-Hard-Auto, where LLMs evaluate each other’s responses. It is a fine-tuned base model...",
@@ -4180,6 +4156,30 @@
         "text": true
       }
     },
+    "aion-labs/aion-1.0": {
+      "name": "AionLabs: Aion-1.0",
+      "description": "Aion-1.0 is a multi-model system designed for high performance across various tasks, including reasoning and coding. It is built on DeepSeek-R1, augmented with additional models and techniques such as Tree...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 4,
+        "output": 8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "aion-labs/aion-1.0-mini": {
+      "name": "AionLabs: Aion-1.0-Mini",
+      "description": "Aion-1.0-Mini 32B parameter model is a distilled version of the DeepSeek-R1 model, designed for strong performance in reasoning domains such as mathematics, coding, and logic. It is a modified variant...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.7,
+        "output": 1.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "microsoft/phi-4-mini-instruct": {
       "name": "Microsoft: Phi 4 Mini Instruct",
       "description": "Phi-4-mini-instruct is a lightweight open model built upon synthetic data and filtered publicly available websites - with a focus on high-quality, reasoning dense data. The model belongs to the Phi-4...",
@@ -4218,5 +4218,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-07T12:36:12.138Z"
+  "_syncedAt": "2026-07-07T14:00:05.405Z"
 }
