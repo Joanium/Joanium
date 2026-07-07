@@ -205,9 +205,6 @@
     "gemma-4-31b-n": {
       "name": "Gemma 4 31B N"
     },
-    "kimi-k2.5-fw": {
-      "name": "Kimi K2 5 Fw"
-    },
     "seed-2.0-pro": {
       "name": "Seed 2 0 PRO"
     },
@@ -589,9 +586,6 @@
     },
     "amazon-nova-canvas": {
       "name": "Amazon Nova Canvas"
-    },
-    "kimi-k2-instruct-n": {
-      "name": "Kimi K2 Instruct N"
     },
     "pika-v1.5-effects": {
       "name": "Pika V1 5 Effects"
@@ -1101,9 +1095,6 @@
     "kling-pro-effects": {
       "name": "Kling PRO Effects"
     },
-    "hailuo-live": {
-      "name": "Hailuo Live"
-    },
     "hailuo-ai": {
       "name": "Hailuo Ai"
     },
@@ -1392,6 +1383,18 @@
     "seedance-2.0-mini": {
       "name": "Seedance 2 0 MINI"
     },
+    "hy3-n": {
+      "name": "Hy3 N"
+    },
+    "kimi-k2.5-fw": {
+      "name": "Kimi K2 5 Fw"
+    },
+    "kimi-k2-instruct-n": {
+      "name": "Kimi K2 Instruct N"
+    },
+    "hailuo-live": {
+      "name": "Hailuo Live"
+    },
     "kling-2.1-master": {
       "name": "Kling 2 1 Master"
     },
@@ -1508,5 +1511,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-06T15:07:24.084Z"
+  "_syncedAt": "2026-07-07T12:36:45.578Z"
 }

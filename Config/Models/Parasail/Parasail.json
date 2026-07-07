@@ -227,6 +227,18 @@
     "zai-org/GLM-5.2-FP8": {
       "name": "GLM 5 2 FP8"
     },
+    "parasail-qwen35-9b": {
+      "name": "Parasail Qwen35 9B"
+    },
+    "qwen/qwen3.5-9b": {
+      "name": "Qwen3 5 9B"
+    },
+    "parasail-llama-32-3b-instruct": {
+      "name": "Parasail Llama 32 3B Instruct"
+    },
+    "parasail-rocinante-12b": {
+      "name": "Parasail Rocinante 12B"
+    },
     "parasail-glm-52-nvfp4": {
       "name": "Parasail Glm 52 Nvfp4"
     },
@@ -234,5 +246,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-06T15:07:26.248Z"
+  "_syncedAt": "2026-07-07T12:36:49.038Z"
 }
