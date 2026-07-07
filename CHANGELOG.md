@@ -6,6 +6,15 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.707.0] - 2026-07-07
+
+* refactor: consolidate utility functions and constants in ConnectorUtils.js for reuse in ChatExecutor
+* Updated AI Models
+* Updated AI Models
+* fix: update search tool limit description to reflect new default and maximum values
+
+---
+
 ## [2026.706.0] - 2026-07-06
 
 * fix: update search_web tool description and adjust result limit; enhance DuckDuckGo search functionality
