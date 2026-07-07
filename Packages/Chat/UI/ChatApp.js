@@ -9,7 +9,12 @@ import {
   getPrivateGreeting,
 } from '../../../Datasets/Messages.js';
 import { getRandomSuggestions } from '../../../Datasets/Suggestions.js';
-import { copyToClipboard, createElement, formatText } from '../../Shared/Utils/DomUtils.js';
+import {
+  copyToClipboard,
+  createElement,
+  createLoadingDots,
+  formatText,
+} from '../../Shared/Utils/DomUtils.js';
 import { collapseWhitespace, extractJsonObject, truncate } from '../../Shared/Utils/StringUtils.js';
 import { toFileUrl } from '../../Shared/Utils/UrlUtils.js';
 import { invokeIpc, onIpc } from '../../Shared/Ipc/RendererIpc.js';
@@ -232,9 +237,7 @@ export async function createChatView(
       const row = createElement('div', 'chat-message__row');
       const contentEl = createElement('div', 'chat-message__content');
       const bubble = createElement('div', 'chat-message__bubble');
-      const dots = createElement('span', 'chat-message__dots');
-      dots.innerHTML = '<span></span><span></span><span></span>';
-      bubble.append(dots);
+      bubble.append(createLoadingDots());
       contentEl.append(bubble);
       const currentProfile = getProfile?.() ?? profile;
       row.append(contentEl, createUserAvatar(currentProfile));

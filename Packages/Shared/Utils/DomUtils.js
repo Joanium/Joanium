@@ -37,6 +37,13 @@ export function makeEditableTextarea(textarea) {
   textarea.style.cursor = 'text';
 }
 
+// The dots that you see when the user is typing or when the system is generating a response. The dots are animated with CSS.
+export function createLoadingDots(className = 'chat-message__dots') {
+  const dots = createElement('span', className);
+  dots.innerHTML = '<span></span><span></span><span></span>';
+  return dots;
+}
+
 export function setCardFeedback(el, message, tone, baseClass) {
   el.textContent = message;
   el.className = `${baseClass} ${baseClass}--${tone}`;

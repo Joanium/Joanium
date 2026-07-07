@@ -1,4 +1,4 @@
-import { createElement, formatText } from '../../Shared/Utils/DomUtils.js';
+import { createElement, createLoadingDots, formatText } from '../../Shared/Utils/DomUtils.js';
 import { getNameInitials } from '../../Shared/Utils/StringUtils.js';
 import { toFileUrl } from '../../Shared/Utils/UrlUtils.js';
 import { createIcon, iconMarkup, createProviderIcon } from '../../Shared/Icons/Icons.js';
@@ -196,9 +196,7 @@ export function createMessageElement(
     if (message.needsContinuation) {
       bubble.append(createContinuationElement(strings, onContinue));
     } else if (message.pending || (message.streaming && !message.content)) {
-      const dots = createElement('span', 'chat-message__dots');
-      dots.innerHTML = '<span></span><span></span><span></span>';
-      bubble.append(dots);
+      bubble.append(createLoadingDots());
     } else if (message.streaming) {
       bubble.append(renderMarkdown((message.content ?? '').trimStart(), 'chat-message__md'));
       bubble.append(createElement('span', 'chat-message__stream-dot'));
@@ -536,9 +534,7 @@ export function createAssistantGroupElement(
           bubble.append(createContinuationElement(strings, onContinue));
         } else if (message.pending || (message.streaming && !message.content)) {
           if (!message.terminal) {
-            const dots = createElement('span', 'chat-message__dots');
-            dots.innerHTML = '<span></span><span></span><span></span>';
-            bubble.append(dots);
+            bubble.append(createLoadingDots());
           }
         } else if (message.streaming && contentTrimmed) {
           bubble.append(renderMarkdown(contentTrimmed, 'chat-message__md'));
