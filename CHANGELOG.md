@@ -6,6 +6,17 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.708.0] - 2026-07-08
+
+* Updated AI Models
+* Updated AI Models
+* Updated AI Models
+* Chore(deps-dev): Bump electron from 43.0.0 to 43.1.0
+* Updated AI Models
+* refactor: add createLoadingDots utility function and update usage in ChatApp and MessageElements
+
+---
+
 ## [2026.707.0] - 2026-07-07
 
 * refactor: consolidate utility functions and constants in ConnectorUtils.js for reuse in ChatExecutor
