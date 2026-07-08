@@ -21,6 +21,9 @@
         "output": 0.5
       }
     },
+    "gemma-4-31b": {
+      "name": "Gemma 4 31B"
+    },
     "gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "Cerebras' flagship open-source model — MoE architecture optimised for agentic and reasoning tasks at wafer-scale speed",
@@ -36,10 +39,7 @@
         "input": 0.6,
         "output": 0.6
       }
-    },
-    "gemma-4-31b": {
-      "name": "Gemma 4 31B"
     }
   },
-  "_syncedAt": "2026-07-07T14:00:14.280Z"
+  "_syncedAt": "2026-07-08T09:31:00.958Z"
 }
