@@ -205,6 +205,7 @@ export function createDropDownLite({
   searchable = false,
   searchPlaceholder = 'Search…',
   onChange,
+  onToggleFavourite,
 } = {}) {
   let currentValue = value;
   let searchQuery = '';
@@ -361,6 +362,36 @@ export function createDropDownLite({
         });
 
         item.append(infoBtn);
+      }
+
+      if (opt.favourite !== undefined || onToggleFavourite) {
+        const starBtn = createElement('button', 'joanium-ddm-lite__star-btn');
+        starBtn.type = 'button';
+        if (opt.favourite) starBtn.classList.add('joanium-ddm-lite__star-btn--active');
+        starBtn.setAttribute(
+          'aria-label',
+          opt.favourite ? 'Remove from favourites' : 'Add to favourites',
+        );
+        starBtn.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="' +
+          (opt.favourite ? 'currentColor' : 'none') +
+          '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+        if (onToggleFavourite) {
+          starBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isNowFav = starBtn.classList.toggle('joanium-ddm-lite__star-btn--active');
+            starBtn.setAttribute(
+              'aria-label',
+              isNowFav ? 'Remove from favourites' : 'Add to favourites',
+            );
+            starBtn.querySelector('svg').setAttribute('fill', isNowFav ? 'currentColor' : 'none');
+            onToggleFavourite(opt);
+          });
+        } else {
+          starBtn.disabled = true;
+          starBtn.style.pointerEvents = 'none';
+        }
+        item.append(starBtn);
       }
 
       item.addEventListener('click', (e) => {

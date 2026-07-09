@@ -155,6 +155,20 @@
   object-fit: contain;
 }
 
+.joanium-ddm-lite__favourite-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  color: var(--color-accent);
+  opacity: 0.85;
+}
+
+.joanium-ddm-lite__favourite-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 .joanium-ddm-lite__trigger-icon {
   flex-shrink: 0;
   width: 16px;
@@ -285,4 +299,50 @@
 .joanium-ddm-lite__info-icon svg {
   width: 100%;
   height: 100%;
+}
+
+/* ── Star / Favourite button ─────────────────────────────────────────────── */
+
+.joanium-ddm-lite__star-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 99px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-chat-text-muted);
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+  transition:
+    opacity 130ms ease,
+    background-color 130ms ease,
+    color 130ms ease,
+    transform 130ms ease;
+}
+
+.joanium-ddm-lite__star-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.joanium-ddm-lite__option:hover .joanium-ddm-lite__star-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.joanium-ddm-lite__star-btn--active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: #fbbf24;
+}
+
+.joanium-ddm-lite__star-btn:hover {
+  background: rgba(251, 191, 36, 0.14);
+  color: #fbbf24;
+  transform: scale(1.1);
 }

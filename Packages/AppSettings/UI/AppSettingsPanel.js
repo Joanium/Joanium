@@ -155,9 +155,10 @@ export function createAppSettingsPanel(strings) {
 
   async function populate() {
     // Fetch app settings and provider catalog in parallel.
-    const [nextSettings, bootstrap] = await Promise.all([
+    const [nextSettings, bootstrap, modelFavourites] = await Promise.all([
       invokeIpc('app-settings:get'),
       invokeIpc('chat:bootstrap').catch(() => ({ providers: [], user: {} })),
+      invokeIpc('providers:list-model-favourites').catch(() => []),
     ]);
 
     if (disposed) {
@@ -209,7 +210,9 @@ export function createAppSettingsPanel(strings) {
     // ── Default model row ──────────────────────────────────────────────────
     const providers = Array.isArray(bootstrap.providers) ? bootstrap.providers : [];
     const userProviderDetails = bootstrap.user?.providers?.details ?? {};
-    const modelOptions = buildAvailableModelOptions(providers, userProviderDetails);
+    const modelOptions = buildAvailableModelOptions(providers, userProviderDetails, {
+      modelFavourites,
+    });
 
     const savedModelValue = encodeModelValue(state.settings.defaultModel);
     const currentModelValue = savedModelValue || (modelOptions[0]?.value ?? '');
@@ -222,6 +225,13 @@ export function createAppSettingsPanel(strings) {
       searchPlaceholder: strings.defaultModel.searchPlaceholder ?? 'Search models…',
       onChange: (value) => {
         void updateDefaultModel(value);
+      },
+      onToggleFavourite: async (opt) => {
+        if (!opt.provider?.id || !opt.model?.id) return;
+        await invokeIpc('providers:toggle-model-favourite', opt.provider.id, opt.model.id).catch(
+          () => null,
+        );
+        void populate();
       },
     });
 

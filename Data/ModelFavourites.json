@@ -1,0 +1,19 @@
+{
+  "favourites": [
+    {
+      "providerId": "nvidia",
+      "modelId": "minimaxai/minimax-m2.7",
+      "addedAt": "2026-07-08T14:58:26.395Z"
+    },
+    {
+      "providerId": "nvidia",
+      "modelId": "microsoft/kosmos-2",
+      "addedAt": "2026-07-08T14:58:10.486Z"
+    },
+    {
+      "providerId": "nvidia",
+      "modelId": "meta/llama2-70b",
+      "addedAt": "2026-07-08T14:58:08.786Z"
+    }
+  ]
+}

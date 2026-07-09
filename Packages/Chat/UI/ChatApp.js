@@ -121,12 +121,14 @@ export async function createChatView(
 ) {
   initSounds();
 
-  const [payload, appSettings] = await Promise.all([
+  const [payload, appSettings, fetchedFavourites] = await Promise.all([
     invokeIpc('chat:bootstrap'),
     invokeIpc('app-settings:get').catch(() => null),
+    invokeIpc('providers:list-model-favourites').catch(() => []),
   ]);
   const view = createElement('div', 'chat-view');
   let currentAppSettings = appSettings ?? {};
+  let modelFavourites = fetchedFavourites || [];
   const dropOverlay = createDropZoneOverlay(strings);
   const profile = getProfile?.() ?? payload.user?.profile ?? {};
   const firstName = getFirstName(profile.name, strings.appName);
@@ -183,6 +185,7 @@ export async function createChatView(
   let modelPickerDispose = null;
   let modelPickerHide = null;
   let modelPickerOpen = false;
+  let modelPickerNeedsRebuild = false;
   let terminalPanel = null;
   let scrollToBottomBtn = null;
   let diagTimer = null;
@@ -1679,6 +1682,7 @@ export async function createChatView(
       sessionCreatedAt = session.createdAt ?? new Date().toISOString();
       userScrolledUp = false;
       fileDiffTracker?.reset();
+
       syncScrollToBottomBtn();
       renderThread();
       focusComposer();
@@ -1723,11 +1727,24 @@ export async function createChatView(
     }
 
     closeGitBranchPicker();
+    if (modelPickerNeedsRebuild && modelPickerPanel) {
+      modelPickerDispose?.();
+      modelPickerPanel?.remove();
+      modelPickerPanel = null;
+      modelPickerNeedsRebuild = false;
+    }
+
     if (!modelPickerPanel) {
       const picker = createModelPickerPanel({
         providers: payload.providers,
         userProviderDetails: payload.user?.providers?.details ?? {},
         strings,
+        favourites: modelFavourites,
+        onToggleFavourite: async (provider, model) => {
+          const result = await invokeIpc('providers:toggle-model-favourite', provider.id, model.id);
+          modelFavourites = result?.favourites ?? [];
+          modelPickerNeedsRebuild = true;
+        },
         onSelect(provider, model) {
           activeProvider = provider;
           activeModel = model;

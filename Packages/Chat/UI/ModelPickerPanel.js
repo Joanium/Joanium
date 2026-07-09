@@ -280,7 +280,14 @@ function createModelInfoPopover() {
 
 // ── Main panel factory ────────────────────────────────────────────────────
 
-export function createModelPickerPanel({ providers, userProviderDetails, strings, onSelect }) {
+export function createModelPickerPanel({
+  providers,
+  userProviderDetails,
+  strings,
+  onSelect,
+  favourites = [],
+  onToggleFavourite,
+}) {
   const panel = createElement('div', 'chat-model-picker');
   document.body.append(panel);
 
@@ -311,6 +318,127 @@ export function createModelPickerPanel({ providers, userProviderDetails, strings
 
   const groups = [];
 
+  function isFavourite(providerId, modelId) {
+    return favourites.some((f) => f.providerId === providerId && f.modelId === modelId);
+  }
+
+  function createOptionEntry(provider, model, groupEl) {
+    const option = createElement('button', 'chat-model-picker__option');
+    option.type = 'button';
+    option._pickerProviderId = provider.id;
+    option._pickerModelId = model.id;
+
+    // Provider icon
+    if (provider.iconPath) {
+      option.append(
+        createProviderIcon(provider.iconPath, {
+          className: 'chat-model-picker__option-provider-icon',
+          alt: provider.label ?? '',
+        }),
+      );
+    }
+
+    // Model name label
+    const label = createElement('span', 'chat-model-picker__option-label', model.name ?? model.id);
+    option.append(label);
+
+    // Info button — only when this model has metadata worth showing
+    if (hasModelInfo(model)) {
+      const infoBtn = createElement('button', 'chat-model-picker__info-btn');
+      infoBtn.type = 'button';
+      infoBtn.setAttribute('aria-label', strings.modelInfo.infoButton);
+      infoBtn.append(createInfoButtonIcon());
+
+      infoBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+
+        if (infoPopover.isOpenFor(provider.id, model.id)) {
+          infoPopover.close();
+          infoBtn.classList.remove('chat-model-picker__info-btn--active');
+          return;
+        }
+
+        // Close any other active info button highlight
+        panel
+          .querySelectorAll('.chat-model-picker__info-btn--active')
+          .forEach((btn) => btn.classList.remove('chat-model-picker__info-btn--active'));
+
+        infoBtn.classList.add('chat-model-picker__info-btn--active');
+        infoPopover.open(provider, model, infoBtn, panel, strings);
+      });
+
+      option.append(infoBtn);
+    }
+
+    const isFav = isFavourite(provider.id, model.id);
+    const starBtn = createElement('button', 'chat-model-picker__star-btn');
+    if (isFav) starBtn.classList.add('chat-model-picker__star-btn--active');
+    starBtn.type = 'button';
+    starBtn.setAttribute('aria-label', isFav ? 'Remove from favourites' : 'Add to favourites');
+    const starSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    starSvg.setAttribute('viewBox', '0 0 24 24');
+    starSvg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+    starSvg.setAttribute('stroke', 'currentColor');
+    starSvg.setAttribute('stroke-width', '2');
+    starSvg.setAttribute('stroke-linecap', 'round');
+    starSvg.setAttribute('stroke-linejoin', 'round');
+    const starPolygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    starPolygon.setAttribute(
+      'points',
+      '12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2',
+    );
+    starSvg.append(starPolygon);
+    starBtn.append(starSvg);
+
+    starBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const isNowFav = starBtn.classList.toggle('chat-model-picker__star-btn--active');
+      starBtn.setAttribute('aria-label', isNowFav ? 'Remove from favourites' : 'Add to favourites');
+      starSvg.setAttribute('fill', isNowFav ? 'currentColor' : 'none');
+      onToggleFavourite?.(provider, model);
+    });
+
+    option.append(starBtn);
+
+    option.addEventListener('click', (event) => {
+      event.stopPropagation();
+      infoPopover.close();
+      panel
+        .querySelectorAll('.chat-model-picker__info-btn--active')
+        .forEach((btn) => btn.classList.remove('chat-model-picker__info-btn--active'));
+      onSelect(provider, model);
+    });
+
+    groupEl.append(option);
+    return {
+      option,
+      searchText: `${model.name ?? model.id} ${provider.label}`.toLowerCase(),
+    };
+  }
+
+  // ── Starred Group ───────────────────────────────────────────────────────
+  const starredModels = [];
+  for (const provider of readyProviders) {
+    for (const model of provider.models) {
+      if (isFavourite(provider.id, model.id)) {
+        starredModels.push({ provider, model });
+      }
+    }
+  }
+
+  if (starredModels.length > 0) {
+    const group = createElement('div', 'chat-model-picker__group');
+    group.append(createElement('div', 'chat-model-picker__group-header', '⭐ Starred Models'));
+
+    const modelEntries = [];
+    for (const { provider, model } of starredModels) {
+      modelEntries.push(createOptionEntry(provider, model, group));
+    }
+
+    scroller.append(group);
+    groups.push({ group, modelEntries });
+  }
+
   for (const provider of readyProviders) {
     const group = createElement('div', 'chat-model-picker__group');
     group.append(createElement('div', 'chat-model-picker__group-header', provider.label));
@@ -318,71 +446,7 @@ export function createModelPickerPanel({ providers, userProviderDetails, strings
     const modelEntries = [];
 
     for (const model of provider.models) {
-      const option = createElement('button', 'chat-model-picker__option');
-      option.type = 'button';
-      option._pickerProviderId = provider.id;
-      option._pickerModelId = model.id;
-
-      // Provider icon
-      if (provider.iconPath) {
-        option.append(
-          createProviderIcon(provider.iconPath, {
-            className: 'chat-model-picker__option-provider-icon',
-            alt: provider.label ?? '',
-          }),
-        );
-      }
-
-      // Model name label
-      const label = createElement(
-        'span',
-        'chat-model-picker__option-label',
-        model.name ?? model.id,
-      );
-      option.append(label);
-
-      // Info button — only when this model has metadata worth showing
-      if (hasModelInfo(model)) {
-        const infoBtn = createElement('button', 'chat-model-picker__info-btn');
-        infoBtn.type = 'button';
-        infoBtn.setAttribute('aria-label', strings.modelInfo.infoButton);
-        infoBtn.append(createInfoButtonIcon());
-
-        infoBtn.addEventListener('click', (event) => {
-          event.stopPropagation();
-
-          if (infoPopover.isOpenFor(provider.id, model.id)) {
-            infoPopover.close();
-            infoBtn.classList.remove('chat-model-picker__info-btn--active');
-            return;
-          }
-
-          // Close any other active info button highlight
-          panel
-            .querySelectorAll('.chat-model-picker__info-btn--active')
-            .forEach((btn) => btn.classList.remove('chat-model-picker__info-btn--active'));
-
-          infoBtn.classList.add('chat-model-picker__info-btn--active');
-          infoPopover.open(provider, model, infoBtn, panel, strings);
-        });
-
-        option.append(infoBtn);
-      }
-
-      option.addEventListener('click', (event) => {
-        event.stopPropagation();
-        infoPopover.close();
-        panel
-          .querySelectorAll('.chat-model-picker__info-btn--active')
-          .forEach((btn) => btn.classList.remove('chat-model-picker__info-btn--active'));
-        onSelect(provider, model);
-      });
-
-      group.append(option);
-      modelEntries.push({
-        option,
-        searchText: `${model.name ?? model.id} ${provider.label}`.toLowerCase(),
-      });
+      modelEntries.push(createOptionEntry(provider, model, group));
     }
 
     scroller.append(group);

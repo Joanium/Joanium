@@ -113,14 +113,21 @@ export function createAgentsPanel(strings) {
 
   // ── Provider loading ──────────────────────────────────────────────────────
 
+  let cachedModelFavourites = [];
+
   async function loadProviders() {
     try {
-      const bootstrap = await invokeIpc('chat:bootstrap');
+      const [bootstrap, favourites] = await Promise.all([
+        invokeIpc('chat:bootstrap'),
+        invokeIpc('providers:list-model-favourites').catch(() => []),
+      ]);
       cachedProviders = Array.isArray(bootstrap.providers) ? bootstrap.providers : [];
       cachedUserProviderDetails = bootstrap.user?.providers?.details ?? {};
+      cachedModelFavourites = Array.isArray(favourites) ? favourites : [];
     } catch {
       cachedProviders = [];
       cachedUserProviderDetails = {};
+      cachedModelFavourites = [];
     }
     rebuildModelDropdown();
   }
@@ -128,6 +135,7 @@ export function createAgentsPanel(strings) {
   function buildModelOptions() {
     return buildAvailableModelOptions(cachedProviders, cachedUserProviderDetails, {
       defaultOption: { value: 'default', label: strings.modelDefault },
+      modelFavourites: cachedModelFavourites,
     });
   }
 
@@ -153,6 +161,18 @@ export function createAgentsPanel(strings) {
       searchPlaceholder: strings.modelSearchPlaceholder ?? 'Search models…',
       onChange: (value) => {
         draftModel = decodeModelValue(value, 'default');
+      },
+      onToggleFavourite: async (opt) => {
+        if (!opt.provider?.id || !opt.model?.id) return;
+        const result = await invokeIpc(
+          'providers:toggle-model-favourite',
+          opt.provider.id,
+          opt.model.id,
+        ).catch(() => null);
+        if (result?.favourites) {
+          cachedModelFavourites = result.favourites;
+          rebuildModelDropdown();
+        }
       },
     });
 

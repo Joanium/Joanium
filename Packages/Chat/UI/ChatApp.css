@@ -3443,7 +3443,8 @@ summary.chat-terminal-call__header::marker {
 
 /* ── Model picker — info button ──────────────────────────────────────── */
 
-.chat-model-picker__info-btn {
+.chat-model-picker__info-btn,
+.chat-model-picker__star-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3465,21 +3466,41 @@ summary.chat-terminal-call__header::marker {
     transform 130ms ease;
 }
 
-.chat-model-picker__option:hover .chat-model-picker__info-btn {
+.chat-model-picker__star-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.chat-model-picker__option:hover .chat-model-picker__info-btn,
+.chat-model-picker__option:hover .chat-model-picker__star-btn {
   opacity: 1;
   pointer-events: auto;
 }
 
-.chat-model-picker__info-btn--active {
+.chat-model-picker__info-btn--active,
+.chat-model-picker__star-btn--active {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+
+.chat-model-picker__info-btn--active {
   color: var(--color-accent);
   background: rgba(var(--color-accent-rgb), 0.1);
+}
+
+.chat-model-picker__star-btn--active {
+  color: #fbbf24;
 }
 
 .chat-model-picker__info-btn:hover {
   background: rgba(var(--color-accent-rgb), 0.12);
   color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.chat-model-picker__star-btn:hover {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
   transform: scale(1.1);
 }
 

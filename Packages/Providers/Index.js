@@ -1,9 +1,11 @@
 import { createProviderStateManager } from './Core/ProviderState.js';
+import { createModelFavouritesState } from './Core/ModelFavouritesState.js';
 import { syncProvider } from '../Shared/ProviderCatalog/ModelSync.js';
 import { readUserState } from '../Shared/UserData/UserData.js';
 
 export async function createPackage({ rootDirectory }) {
   const providerStateManager = createProviderStateManager({ rootDirectory });
+  const modelFavouritesState = createModelFavouritesState({ rootDirectory });
 
   // Delay startup sync by 15 s so the app fully boots before we touch the JSON files.
   // No-op when app is packaged (guarded inside ModelSync).
@@ -45,6 +47,15 @@ export async function createPackage({ rootDirectory }) {
       {
         channel: 'providers:remove',
         handler: async (_event, providerId) => providerStateManager.removeProvider(providerId),
+      },
+      {
+        channel: 'providers:list-model-favourites',
+        handler: async () => modelFavouritesState.list(),
+      },
+      {
+        channel: 'providers:toggle-model-favourite',
+        handler: async (_event, providerId, modelId) =>
+          modelFavouritesState.toggle(providerId, modelId),
       },
     ],
   };
