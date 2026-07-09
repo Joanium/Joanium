@@ -1,6 +1,7 @@
 node_modules/
 .env
 .tmp
+.mimocode
 Build/
 dist/
 Data/Agents/
