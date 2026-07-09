@@ -12,6 +12,9 @@
         "max_output_tokens": 128000
       }
     },
+    "grok-4.5": {
+      "name": "Grok 4 5"
+    },
     "gemini-omni-flash": {
       "name": "Gemini Omni FLASH"
     },
@@ -879,6 +882,9 @@
     "hailuo-music-v1.5": {
       "name": "Hailuo Music V1 5"
     },
+    "elevenlabs-music-v2": {
+      "name": "Elevenlabs Music V2"
+    },
     "elevenlabs-music": {
       "name": "Elevenlabs Music",
       "context_window": {
@@ -1511,5 +1517,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-08T13:15:29.270Z"
+  "_syncedAt": "2026-07-09T13:19:29.105Z"
 }

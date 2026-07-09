@@ -889,6 +889,20 @@
         "image": true
       }
     },
+    "google/gemini-omni-flash-preview": {
+      "name": "Gemini Omni Flash Preview",
+      "description": "Gemini Omni Flash (Preview) is a multimodal model designed for video, image, and text tasks. It is optimized for video generation, offering video output alongside text responses in a single model.",
+      "context_window": 1000000,
+      "max_output": 57920,
+      "pricing": {
+        "input": 1.5,
+        "output": 9
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemma-4-26b-a4b-it": {
       "name": "Gemma 4 26B A4B IT",
       "description": "Gemma is a family of open models built by Google DeepMind. Gemma 4 models are multimodal, handling text and image input (with audio supported on small models) and generating text output. This release includes open-weights models in both pre-trained and instruction-tuned variants. Gemma 4 features a ",
@@ -2384,6 +2398,20 @@
         "image": true
       }
     },
+    "xai/grok-4.5": {
+      "name": "Grok 4.5",
+      "description": "SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
+      "context_window": 500000,
+      "max_output": 500000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "xai/grok-build-0.1": {
       "name": "Grok Build 0.1",
       "description": "xAI's fast coding model trained specifically for agentic coding.",
@@ -2648,5 +2676,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-08T13:15:26.788Z"
+  "_syncedAt": "2026-07-09T13:19:27.873Z"
 }

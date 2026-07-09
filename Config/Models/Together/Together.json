@@ -85,10 +85,6 @@
       "name": "Arize AI Qwen 2 1.5B Instruct",
       "context_window": 32768
     },
-    "LiquidAI/LFM2-24B-A2B": {
-      "name": "LFM2-24B-A2B",
-      "context_window": 32768
-    },
     "deepcogito/cogito-v2-1-671b": {
       "name": "Cogito v2.1 671B",
       "context_window": 163840
@@ -100,6 +96,10 @@
     "Qwen/Qwen3.7-Plus": {
       "name": "Qwen3.7 Plus",
       "context_window": 1000000
+    },
+    "LiquidAI/LFM2.5-8B-A1B": {
+      "name": "LFM2.5-8B-A1B",
+      "context_window": 32768
     },
     "Qwen/Qwen3.5-397B-A17B": {
       "name": "Qwen3.5 397B A17b",
@@ -743,6 +743,10 @@
       "name": "Qwen3.6 35B A3B Lora",
       "context_window": 262144
     },
+    "LiquidAI/LFM2-24B-A2B": {
+      "name": "LFM2-24B-A2B",
+      "context_window": 32768
+    },
     "Qwen/Qwen3.5-35B-A3B-Base-Lora": {
       "name": "Qwen3.5 35B A3B Base Lora",
       "context_window": 262144
@@ -776,5 +780,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-08T13:15:08.657Z"
+  "_syncedAt": "2026-07-09T13:19:07.031Z"
 }

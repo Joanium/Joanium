@@ -203,12 +203,6 @@
     "mistral-vibe-cli-with-tools": {
       "name": "mistral-vibe-cli-with-tools"
     },
-    "voxtral-mini-2507": {
-      "name": "Voxtral MINI 2507"
-    },
-    "voxtral-mini-latest": {
-      "name": "voxtral-mini-latest"
-    },
     "magistral-small-2509": {
       "name": "magistral-small-2509"
     },
@@ -251,6 +245,9 @@
     "voxtral-mini-2602": {
       "name": "voxtral-mini-2602"
     },
+    "voxtral-mini-latest": {
+      "name": "voxtral-mini-latest"
+    },
     "voxtral-mini-transcribe-realtime-2602": {
       "name": "voxtral-mini-transcribe-realtime-2602"
     },
@@ -259,6 +256,9 @@
     },
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
+    },
+    "voxtral-mini-2507": {
+      "name": "Voxtral MINI 2507"
     },
     "labs-leanstral-2603": {
       "name": "labs-leanstral-2603"
@@ -270,5 +270,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-08T13:15:04.539Z"
+  "_syncedAt": "2026-07-09T13:19:02.881Z"
 }
