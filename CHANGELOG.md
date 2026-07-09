@@ -6,6 +6,14 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.709.0] - 2026-07-09
+
+* feat: add model favourites functionality and UI enhancements
+* feat: add model favourites functionality and UI enhancements
+* Updated AI Models
+
+---
+
 ## [2026.708.0] - 2026-07-08
 
 * Updated AI Models
