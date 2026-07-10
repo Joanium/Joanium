@@ -24,7 +24,7 @@
     "jscpd": "5.0.12",
     "lint-staged": "17.0.8",
     "markdownlint-cli": "0.49.0",
-    "prettier": "3.9.4"
+    "prettier": "3.9.5"
   },
   "overrides": {
     "glob": ">=10.5.0",
