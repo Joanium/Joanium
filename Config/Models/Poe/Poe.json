@@ -32,6 +32,9 @@
         "max_output_tokens": 128000
       }
     },
+    "muse-spark-1-1": {
+      "name": "Muse Spark 1 1"
+    },
     "gemini-3.5-flash": {
       "name": "Gemini 3 5 FLASH",
       "context_window": {
@@ -902,13 +905,6 @@
     "deepgram-nova-3": {
       "name": "Deepgram Nova 3"
     },
-    "imagen-4-ultra": {
-      "name": "Imagen 4 ULTRA",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
     "dreamina-3.1": {
       "name": "Dreamina 3 1"
     },
@@ -1392,6 +1388,13 @@
     "hy3-n": {
       "name": "Hy3 N"
     },
+    "imagen-4-ultra": {
+      "name": "Imagen 4 ULTRA",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
     "kimi-k2.5-fw": {
       "name": "Kimi K2 5 Fw"
     },
@@ -1517,5 +1520,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-09T13:19:29.105Z"
+  "_syncedAt": "2026-07-10T12:42:33.415Z"
 }

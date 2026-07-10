@@ -5,14 +5,20 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "text-embedding-ada-002": {
-      "name": "text-embedding-ada-002"
-    },
     "gpt-3.5-turbo": {
       "name": "gpt-3.5-turbo"
     },
-    "gpt-3.5-turbo-16k": {
-      "name": "gpt-3.5-turbo-16k"
+    "gpt-realtime-2.1-mini": {
+      "name": "Gpt Realtime 2 1 MINI"
+    },
+    "gpt-realtime-translate": {
+      "name": "gpt-realtime-translate"
+    },
+    "gpt-realtime-2": {
+      "name": "gpt-realtime-2"
+    },
+    "gpt-realtime-2.1": {
+      "name": "Gpt Realtime 2 1"
     },
     "davinci-002": {
       "name": "davinci-002"
@@ -415,18 +421,12 @@
     "chat-latest": {
       "name": "chat-latest"
     },
-    "gpt-realtime-translate": {
-      "name": "gpt-realtime-translate"
+    "gpt-3.5-turbo-16k": {
+      "name": "gpt-3.5-turbo-16k"
     },
-    "gpt-realtime-2": {
-      "name": "gpt-realtime-2"
-    },
-    "gpt-realtime-2.1": {
-      "name": "Gpt Realtime 2 1"
-    },
-    "gpt-realtime-2.1-mini": {
-      "name": "Gpt Realtime 2 1 MINI"
+    "text-embedding-ada-002": {
+      "name": "text-embedding-ada-002"
     }
   },
-  "_syncedAt": "2026-07-09T13:19:05.088Z"
+  "_syncedAt": "2026-07-10T12:42:11.332Z"
 }

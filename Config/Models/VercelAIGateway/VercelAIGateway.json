@@ -1135,6 +1135,20 @@
         "image": true
       }
     },
+    "meta/muse-spark-1.1": {
+      "name": "Muse Spark 1.1",
+      "description": "Muse Spark 1.1 is strongest at agentic performance, tool use, and computer use. It does well on long-running tasks with 1M token context window, can delegate execution to sub-agents running in parallel, and is trained to use computer interfaces on desktop, mobile, or browser.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "minimax/minimax-m2": {
       "name": "MiniMax M2",
       "description": "MiniMax-M2 redefines efficiency for agents. It is a compact, fast, and cost-effective MoE model (230 billion total parameters with 10 billion active parameters) built for elite performance in coding and agentic tasks, all while maintaining powerful general intelligence.",
@@ -2079,6 +2093,48 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-luna": {
+      "name": "GPT 5.6 Luna",
+      "description": "GPT-5.6 Luna is a fast, affordable GPT-5.6 model that brings strong capability at the lowest cost in the series.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-sol": {
+      "name": "GPT 5.6 Sol",
+      "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-terra": {
+      "name": "GPT 5.6 Terra",
+      "description": "GPT-5.6 Terra is a balanced GPT-5.6 model for everyday work, with performance comparable to the previous generation at half the cost.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -2676,5 +2732,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-09T13:19:27.873Z"
+  "_syncedAt": "2026-07-10T12:42:30.661Z"
 }
