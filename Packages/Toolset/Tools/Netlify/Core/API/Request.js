@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 const BASE = 'https://api.netlify.com/api/v1';
 
 function headers(creds) {
@@ -12,7 +14,7 @@ export async function netlifyRequest(path, creds, { method = 'GET', body, succes
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
+    const data = await tryParseJson(response);
     throw new Error(data.message ?? data.error ?? `Netlify API error: ${response.status}`);
   }
 

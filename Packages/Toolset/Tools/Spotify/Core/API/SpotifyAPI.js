@@ -1,4 +1,5 @@
 import { mapArtist, mapPlaylist } from './Utils.js';
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
 
 const BASE = 'https://api.spotify.com/v1';
 
@@ -10,7 +11,7 @@ async function spFetch(path, creds) {
   const res = await fetch(`${BASE}${path}`, { headers: headers(creds) });
   if (res.status === 204) return null;
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.error?.message ?? `Spotify API error: ${res.status}`);
   }
   return res.json();

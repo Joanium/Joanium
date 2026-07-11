@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { BrowserWindow, net } from 'electron';
 import { isConfigured } from './ChannelState.js';
 import { toIso } from '../../Shared/Utils/DateUtils.js';
+import { tryParseJson } from '../../Shared/Utils/AsyncUtils.js';
 
 const CHANNEL_LABELS = Object.freeze({
   telegram: 'Telegram',
@@ -92,7 +93,7 @@ function getMattermostHeaders(accessToken) {
 }
 
 async function readChannelJson(response, fallbackMessage) {
-  const data = await response.json().catch(() => ({}));
+  const data = await tryParseJson(response);
   if (!response.ok) {
     throw new Error(
       data.msg ?? data.message ?? data.error ?? `${fallbackMessage} HTTP ${response.status}`,
@@ -186,7 +187,7 @@ async function sendTelegram(botToken, chatId, text) {
     });
 
     if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
+      const data = await tryParseJson(response);
       throw new Error(data.description ?? `Telegram sendMessage HTTP ${response.status}`);
     }
   }
@@ -209,7 +210,7 @@ async function sendWhatsApp(config, to, text) {
     );
 
     if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
+      const data = await tryParseJson(response);
       throw new Error(data.message ?? `Twilio sendMessage HTTP ${response.status}`);
     }
   }
@@ -230,7 +231,7 @@ async function sendDiscord(botToken, channelId, text) {
     );
 
     if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
+      const data = await tryParseJson(response);
       throw new Error(data.message ?? `Discord sendMessage HTTP ${response.status}`);
     }
   }
@@ -804,7 +805,7 @@ export function createChannelRuntime({ channelStateManager }) {
         const authResponse = await channelFetch('https://slack.com/api/auth.test', {
           headers: { Authorization: `Bearer ${config.botToken}` },
         });
-        const authData = await authResponse.json().catch(() => ({}));
+        const authData = await tryParseJson(authResponse);
         if (authData.ok) {
           botUserId = authData.bot_id ?? authData.user_id ?? '';
         }
