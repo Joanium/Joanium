@@ -1861,18 +1861,6 @@
         "image": true
       }
     },
-    "arcee-ai/trinity-mini": {
-      "name": "Arcee AI: Trinity Mini",
-      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model featuring 128 experts with 8 active per token. Engineered for efficient reasoning over long contexts (131k) with robust function...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepseek/deepseek-v3.2": {
       "name": "DeepSeek: DeepSeek V3.2",
       "description": "DeepSeek-V3.2 is a large language model designed to harmonize high computational efficiency with strong reasoning and agentic tool-use performance. It introduces DeepSeek Sparse Attention (DSA), a fine-grained sparse attention mechanism...",
@@ -4036,18 +4024,6 @@
         "image": true
       }
     },
-    "meta-llama/llama-3-8b-instruct": {
-      "name": "Meta: Llama 3 8B Instruct",
-      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong...",
-      "context_window": 8192,
-      "pricing": {
-        "input": 0.04,
-        "output": 0.04
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "mistralai/mixtral-8x22b-instruct": {
       "name": "Mistral: Mixtral 8x22B Instruct",
       "description": "Mistral's official instruct fine-tuned version of [Mixtral 8x22B](/models/mistralai/mixtral-8x22b). It uses 39B active parameters out of 141B, offering unparalleled cost efficiency for its size. Its strengths include: - strong math, coding,...",
@@ -4235,6 +4211,30 @@
         "text": true
       }
     },
+    "arcee-ai/trinity-mini": {
+      "name": "Arcee AI: Trinity Mini",
+      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model featuring 128 experts with 8 active per token. Engineered for efficient reasoning over long contexts (131k) with robust function...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3-8b-instruct": {
+      "name": "Meta: Llama 3 8B Instruct",
+      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong...",
+      "context_window": 8192,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.04
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "poolside/laguna-xs.2:free": {
       "name": "Poolside: Laguna XS.2 (free)",
       "description": "Laguna XS.2 is the second-generation model in the XS size class from [Poolside](https://poolside.ai), their efficient coding agent series. It combines tool calling and reasoning capabilities with a compact footprint, offering...",
@@ -4358,5 +4358,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-10T12:42:07.074Z"
+  "_syncedAt": "2026-07-11T12:57:26.678Z"
 }
