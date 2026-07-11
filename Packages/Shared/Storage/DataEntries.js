@@ -16,6 +16,7 @@ export const KNOWN_DATA_ENTRIES = [
   'Logs',
   'Memories',
   'MCPServers.json',
+  'ModelFavourites.json',
   'Models',
   'Projects',
   'Screenshots',
