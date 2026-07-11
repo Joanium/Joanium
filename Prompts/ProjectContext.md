@@ -11,6 +11,8 @@
 * Find if its a git repository by running `git status`.
 * Read Docs if available.
 * Before reading a file make sure that file exists (run `list directory`)
+* Read all the relevant skills and do a thorough research with the help of Live Browser (browser_navigate)
+* After doing all of the above things now start working in the directory.
 
 ## Following Conventions
 
