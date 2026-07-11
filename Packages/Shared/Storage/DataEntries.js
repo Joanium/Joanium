@@ -17,13 +17,11 @@ export const KNOWN_DATA_ENTRIES = [
   'Memories',
   'MCPServers.json',
   'ModelFavourites.json',
-  'Models',
   'Projects',
   'Screenshots',
   'Security.json',
   'System.json',
   'Templates',
   'Usage',
-  'Usage.json',
   'User.json',
 ];
