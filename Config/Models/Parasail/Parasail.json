@@ -239,6 +239,18 @@
     "parasail-rocinante-12b": {
       "name": "Parasail Rocinante 12B"
     },
+    "parasail-qwen3-embedding-4b": {
+      "name": "Parasail Qwen3 Embedding 4B"
+    },
+    "qwen/qwen3-embedding-4b": {
+      "name": "Qwen3 Embedding 4B"
+    },
+    "parasail-qwen3-embedding-8b": {
+      "name": "Parasail Qwen3 Embedding 8B"
+    },
+    "qwen/qwen3-embedding-8b": {
+      "name": "Qwen3 Embedding 8B"
+    },
     "parasail-glm-52-nvfp4": {
       "name": "Parasail Glm 52 Nvfp4"
     },
@@ -246,5 +258,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-10T12:42:36.180Z"
+  "_syncedAt": "2026-07-11T08:46:27.982Z"
 }

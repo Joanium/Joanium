@@ -11,11 +11,14 @@
     "gpt-realtime-2.1-mini": {
       "name": "Gpt Realtime 2 1 MINI"
     },
-    "gpt-realtime-translate": {
-      "name": "gpt-realtime-translate"
+    "gpt-5.6-sol": {
+      "name": "Gpt 5 6 Sol"
     },
-    "gpt-realtime-2": {
-      "name": "gpt-realtime-2"
+    "gpt-5.6-terra": {
+      "name": "Gpt 5 6 Terra"
+    },
+    "gpt-5.6-luna": {
+      "name": "Gpt 5 6 Luna"
     },
     "gpt-realtime-2.1": {
       "name": "Gpt Realtime 2 1"
@@ -421,6 +424,12 @@
     "chat-latest": {
       "name": "chat-latest"
     },
+    "gpt-realtime-translate": {
+      "name": "gpt-realtime-translate"
+    },
+    "gpt-realtime-2": {
+      "name": "gpt-realtime-2"
+    },
     "gpt-3.5-turbo-16k": {
       "name": "gpt-3.5-turbo-16k"
     },
@@ -428,5 +437,5 @@
       "name": "text-embedding-ada-002"
     }
   },
-  "_syncedAt": "2026-07-10T12:42:11.332Z"
+  "_syncedAt": "2026-07-11T08:45:54.731Z"
 }

@@ -21,10 +21,6 @@
       "name": "Deepseek V4 Pro",
       "context_window": 512000
     },
-    "zai-org/GLM-5.1": {
-      "name": "GLM 5.1 FP4",
-      "context_window": 202752
-    },
     "nvidia/nemotron-3-ultra-550b-a55b": {
       "name": "NVIDIA Nemotron 3 Ultra 550B A55B NVFP4",
       "context_window": 512288
@@ -61,10 +57,6 @@
       "name": "Qwen3.5 9B FP8",
       "context_window": 262144
     },
-    "Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
-      "name": "Qwen3 235B A22B Instruct 2507 FP8 Throughput",
-      "context_window": 262144
-    },
     "Qwen/Qwen2.5-7B-Instruct-Turbo": {
       "name": "Qwen2.5 7B Instruct Turbo",
       "context_window": 32768
@@ -72,10 +64,6 @@
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
       "name": "Meta Llama 3.3 70B Instruct Turbo",
       "context_window": 131072
-    },
-    "meta-llama/Meta-Llama-3-8B-Instruct-Lite": {
-      "name": "Meta Llama 3 8B Instruct Lite",
-      "context_window": 8192
     },
     "google/gemma-3n-E4B-it": {
       "name": "Gemma 3N E4B Instruct",
@@ -100,6 +88,10 @@
     "LiquidAI/LFM2.5-8B-A1B": {
       "name": "LFM2.5-8B-A1B",
       "context_window": 32768
+    },
+    "zai-org/GLM-5.1": {
+      "name": "GLM 5.1 FP4",
+      "context_window": 202752
     },
     "Qwen/Qwen3.5-397B-A17B": {
       "name": "Qwen3.5 397B A17b",
@@ -743,6 +735,14 @@
       "name": "Qwen3.6 35B A3B Lora",
       "context_window": 262144
     },
+    "Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
+      "name": "Qwen3 235B A22B Instruct 2507 FP8 Throughput",
+      "context_window": 262144
+    },
+    "meta-llama/Meta-Llama-3-8B-Instruct-Lite": {
+      "name": "Meta Llama 3 8B Instruct Lite",
+      "context_window": 8192
+    },
     "LiquidAI/LFM2-24B-A2B": {
       "name": "LFM2-24B-A2B",
       "context_window": 32768
@@ -780,5 +780,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-10T12:42:13.386Z"
+  "_syncedAt": "2026-07-11T08:45:56.888Z"
 }

@@ -1388,6 +1388,12 @@
     "hy3-n": {
       "name": "Hy3 N"
     },
+    "seedream-5.0-pro": {
+      "name": "Seedream 5 0 PRO"
+    },
+    "step-3.7-flash": {
+      "name": "Step 3 7 FLASH"
+    },
     "imagen-4-ultra": {
       "name": "Imagen 4 ULTRA",
       "context_window": {
@@ -1520,5 +1526,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-10T12:42:33.415Z"
+  "_syncedAt": "2026-07-11T08:46:23.914Z"
 }
