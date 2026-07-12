@@ -6,6 +6,22 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.712.0] - 2026-07-12
+
+* Updated AI Models
+* docs: remove redundant instruction from ProjectContext.md
+* docs: add instruction to research skills using Live Browser
+* Updated AI Models
+* fix: correct typos and improve clarity in guidelines
+* refactor: update guidelines for fabrication prevention, assumption transparency, requirement completeness, and self-monitoring
+* feat: add guidelines for anti-hallucination, uncertainty, task decomposition, error recovery, ambiguity resolution, instruction following, and self-monitoring
+* Updated AI Models
+* feat: implement tryParseJson utility for safer JSON parsing across API requests
+* feat: remove 'Models' and 'Usage.json' from known data entries
+* Chore(deps-dev): Bump prettier from 3.9.4 to 3.9.5
+
+---
+
 ## [2026.711.0] - 2026-07-11
 
 * feat: add 'ModelFavourites.json' to known data entries
