@@ -1,4 +1,5 @@
 import { apiFetch } from '../../../../Core/ConnectorHttp.js';
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
 import { mapDeployment } from './Utils.js';
 
 const BASE = 'https://api.vercel.com';
@@ -210,7 +211,7 @@ export async function getDeploymentFileContent(creds, deploymentId, fileId) {
     { headers: headers(creds) },
   );
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.error?.message ?? `Vercel API error: ${res.status}`);
   }
   return { content: await res.text() };

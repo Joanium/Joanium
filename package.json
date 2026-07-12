@@ -1,6 +1,6 @@
 {
   "name": "Joanium",
-  "version": "2026.709.0",
+  "version": "2026.711.0",
   "description": "Joanium - Agentic AI Desktop Assistant",
   "type": "module",
   "engines": {
@@ -19,7 +19,7 @@
     "electron-builder": "26.11.1",
     "eslint": "10.6.0",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "fast-check": "^4.8.0",
+    "fast-check": "^4.9.0",
     "husky": "9.1.7",
     "jscpd": "5.0.12",
     "lint-staged": "17.0.8",

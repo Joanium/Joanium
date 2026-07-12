@@ -8,3 +8,7 @@ export function createEnqueue() {
 
   return enqueue;
 }
+
+export async function tryParseJson(response) {
+  return response.json().catch(() => ({}));
+}

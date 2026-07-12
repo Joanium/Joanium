@@ -56,12 +56,12 @@
         "output": 4
       }
     },
-    "accounts/fireworks/models/kimi-k2p5": {
-      "name": "Kimi K2p5"
-    },
     "accounts/fireworks/models/glm-5p2": {
       "name": "Glm 5p2"
+    },
+    "accounts/fireworks/models/kimi-k2p5": {
+      "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-07-10T12:42:17.334Z"
+  "_syncedAt": "2026-07-12T03:20:45.033Z"
 }

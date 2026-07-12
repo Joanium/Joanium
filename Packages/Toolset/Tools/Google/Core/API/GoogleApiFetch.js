@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 function getGoogleApiErrorDetail(body = {}) {
   return body.error?.message ?? JSON.stringify(body);
 }
@@ -23,7 +25,7 @@ export function createGoogleApiFetch(refreshCreds, defaults = {}) {
       },
     });
     if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
+      const errorBody = await tryParseJson(response);
       const detail = getGoogleApiErrorDetail(errorBody);
       if (403 === response.status && forbiddenErrorMessage)
         throw new Error(`${forbiddenErrorMessage}. Detail: ${detail}`);

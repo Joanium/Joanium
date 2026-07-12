@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 async function githubFetch(endpoint, token, options = {}) {
   const res = await fetch(`https://api.github.com${endpoint}`, {
     ...options,
@@ -10,7 +12,7 @@ async function githubFetch(endpoint, token, options = {}) {
     },
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await tryParseJson(res);
     throw new Error(`GitHub API ${res.status} on ${endpoint}: ${err?.message ?? 'Unknown error'}`);
   }
   return 204 === res.status ? null : res.json();
@@ -120,7 +122,7 @@ export async function getPRDiff(credentials, owner, repo, prNumber) {
     },
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await tryParseJson(res);
     throw new Error(err?.message ?? `GitHub API ${res.status}`);
   }
   return res.text();
@@ -1541,7 +1543,7 @@ export async function getReadmeHtml(credentials, owner, repo, ref = '') {
       },
     });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await tryParseJson(res);
     throw new Error(err?.message ?? `GitHub API ${res.status}`);
   }
   return res.text();

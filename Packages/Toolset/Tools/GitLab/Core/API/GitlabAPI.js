@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 function pid(owner, repo) {
   return encodeURIComponent(`${owner}/${repo}`);
 }
@@ -11,7 +13,7 @@ async function gitlabFetch(endpoint, token, options = {}) {
     },
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({})),
+    const err = await tryParseJson(res),
       msg = Array.isArray(err?.message)
         ? err.message.join(', ')
         : (err?.message ?? `GitLab API ${res.status}`);

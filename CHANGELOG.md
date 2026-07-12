@@ -6,6 +6,17 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.711.0] - 2026-07-11
+
+* feat: add 'ModelFavourites.json' to known data entries
+* Updated AI Models
+* Chore(deps-dev): Bump fast-check from 4.8.0 to 4.9.0
+* Updated AI Models
+* Update README.md
+* Chore(deps-dev): Bump jscpd from 5.0.11 to 5.0.12
+
+---
+
 ## [2026.709.0] - 2026-07-09
 
 * feat: add model favourites functionality and UI enhancements

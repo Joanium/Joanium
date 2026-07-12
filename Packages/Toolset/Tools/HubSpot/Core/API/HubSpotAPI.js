@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 const BASE = 'https://api.hubapi.com';
 
 function headers(creds) {
@@ -7,7 +9,7 @@ function headers(creds) {
 async function hFetch(path, creds, options = {}) {
   const res = await fetch(`${BASE}${path}`, { headers: headers(creds), ...options });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.message ?? `HubSpot API error: ${res.status}`);
   }
   if (res.status === 204) return null;

@@ -41,7 +41,7 @@ export {
   orderProvidersBySelection,
   providerIsConfigured,
 } from './ProviderCatalog/ProviderUtils.js';
-export { createEnqueue } from './Utils/AsyncUtils.js';
+export { createEnqueue, tryParseJson } from './Utils/AsyncUtils.js';
 export { readJsonDirectory } from './Storage/JsonDirectory.js';
 export {
   deleteJsonFile,
