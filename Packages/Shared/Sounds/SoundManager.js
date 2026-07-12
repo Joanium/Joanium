@@ -3,6 +3,7 @@ import { invokeIpc } from '../Ipc/RendererIpc.js';
 const SOUNDS = {
   'sidebar-click': { file: '../../../Assets/Sounds/SidebarClick.mp3', volume: 1 },
   completion: { file: '../../../Assets/Sounds/Notification.mp3', volume: 1 },
+  type: { file: '../../../Assets/Sounds/Type.wav', volume: 1 },
 };
 
 const MIN_DURATION_MS = 3000;
