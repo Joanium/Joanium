@@ -1559,30 +1559,6 @@
         "text": true
       }
     },
-    "liquid/lfm-2.5-1.2b-thinking:free": {
-      "name": "LiquidAI: LFM2.5-1.2B-Thinking (free)",
-      "description": "LFM2.5-1.2B-Thinking is a lightweight reasoning-focused model optimized for agentic tasks, data extraction, and RAG—while still running comfortably on edge devices. It supports long context (up to 32K tokens) and is...",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "liquid/lfm-2.5-1.2b-instruct:free": {
-      "name": "LiquidAI: LFM2.5-1.2B-Instruct (free)",
-      "description": "LFM2.5-1.2B-Instruct is a compact, high-performance instruction-tuned model built for fast on-device AI. It delivers strong chat quality in a 1.2B parameter footprint, with efficient edge inference and broad runtime support.",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "z-ai/glm-4.7-flash": {
       "name": "Z.ai: GLM 4.7 Flash",
       "description": "As a 30B-class SOTA model, GLM-4.7-Flash offers a new option that balances performance and efficiency. It is further optimized for agentic coding use cases, strengthening coding capabilities, long-horizon task planning,...",
@@ -4211,6 +4187,30 @@
         "text": true
       }
     },
+    "liquid/lfm-2.5-1.2b-thinking:free": {
+      "name": "LiquidAI: LFM2.5-1.2B-Thinking (free)",
+      "description": "LFM2.5-1.2B-Thinking is a lightweight reasoning-focused model optimized for agentic tasks, data extraction, and RAG—while still running comfortably on edge devices. It supports long context (up to 32K tokens) and is...",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "liquid/lfm-2.5-1.2b-instruct:free": {
+      "name": "LiquidAI: LFM2.5-1.2B-Instruct (free)",
+      "description": "LFM2.5-1.2B-Instruct is a compact, high-performance instruction-tuned model built for fast on-device AI. It delivers strong chat quality in a 1.2B parameter footprint, with efficient edge inference and broad runtime support.",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "arcee-ai/trinity-mini": {
       "name": "Arcee AI: Trinity Mini",
       "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model featuring 128 experts with 8 active per token. Engineered for efficient reasoning over long contexts (131k) with robust function...",
@@ -4358,5 +4358,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-13T11:26:41.999Z"
+  "_syncedAt": "2026-07-13T15:41:39.965Z"
 }
