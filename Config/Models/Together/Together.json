@@ -735,6 +735,10 @@
       "name": "Qwen3.6 35B A3B Lora",
       "context_window": 262144
     },
+    "google/gemma-4-12B-it": {
+      "name": "Gemma 4 12B It",
+      "context_window": 262144
+    },
     "Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
       "name": "Qwen3 235B A22B Instruct 2507 FP8 Throughput",
       "context_window": 262144
@@ -780,5 +784,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-12T12:35:27.716Z"
+  "_syncedAt": "2026-07-13T11:26:47.457Z"
 }
