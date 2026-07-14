@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 const BASE = 'https://api.notion.com/v1';
 const NOTION_VERSION = '2022-06-28';
 
@@ -15,7 +17,7 @@ async function nFetch(path, creds, options = {}) {
     headers: { ...headers(creds), ...(options.headers ?? {}) },
   });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.message ?? `Notion API error: ${res.status}`);
   }
   return res.json();

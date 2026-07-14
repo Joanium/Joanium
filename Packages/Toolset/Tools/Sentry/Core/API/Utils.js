@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 async function sRequest(BASE, path, creds, headers, { method = 'GET', body } = {}) {
   const res = await fetch(`${BASE}${path}`, {
     method,
@@ -5,7 +7,7 @@ async function sRequest(BASE, path, creds, headers, { method = 'GET', body } = {
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.detail ?? `Sentry API error: ${res.status}`);
   }
   return res.json();
@@ -22,7 +24,7 @@ export function createSentryRequestHelpers(BASE, headers) {
 export async function sDelete(BASE, path, creds, headers) {
   const res = await fetch(`${BASE}${path}`, { method: 'DELETE', headers: headers(creds) });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.detail ?? `Sentry API error: ${res.status}`);
   }
   return { deleted: true };

@@ -1,7 +1,9 @@
 node_modules/
 .env
 .tmp
-.mimocode
+.mimocode/
+.agents/
+.vscode/
 Build/
 dist/
 Data/Agents/

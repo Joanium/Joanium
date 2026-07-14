@@ -421,6 +421,15 @@
     "gpt-realtime-2": {
       "name": "gpt-realtime-2"
     },
+    "gpt-5.6-sol": {
+      "name": "Gpt 5 6 Sol"
+    },
+    "gpt-5.6-terra": {
+      "name": "Gpt 5 6 Terra"
+    },
+    "gpt-5.6-luna": {
+      "name": "Gpt 5 6 Luna"
+    },
     "gpt-realtime-2.1": {
       "name": "Gpt Realtime 2 1"
     },
@@ -428,5 +437,5 @@
       "name": "Gpt Realtime 2 1 MINI"
     }
   },
-  "_syncedAt": "2026-07-09T13:19:05.088Z"
+  "_syncedAt": "2026-07-14T11:56:15.637Z"
 }

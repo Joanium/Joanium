@@ -394,20 +394,6 @@
         "image": true
       }
     },
-    "anthropic/claude-3.5-haiku": {
-      "name": "Claude 3.5 Haiku",
-      "description": "Claude 3 Haiku is Anthropic's fastest, most compact model for near-instant responsiveness. It answers simple queries and requests with speed. Customers will be able to build seamless AI experiences that mimic human interactions. Claude 3 Haiku can process images and return text outputs, and features",
-      "context_window": 200000,
-      "max_output": 8192,
-      "pricing": {
-        "input": 0.8,
-        "output": 4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-fable-5": {
       "name": "Claude Fable 5",
       "description": "Claude Fable 5 is a Mythos-class model with robust safeguards. It can handle long-running, complex, and asynchronous tasks where previous models would have needed more frequent check-ins.",
@@ -576,19 +562,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "arcee-ai/trinity-large-preview": {
-      "name": "Trinity Large Preview",
-      "description": "Trinity Large (Preview) is a 400B-parameter (13B active) sparse mixture-of-experts language model, engineered to scale model capacity while maintaining inference efficiency over long contexts, with strong performance in reasoning-heavy workloads including math, coding-related tasks, and multi-step a",
-      "context_window": 131000,
-      "max_output": 131000,
-      "pricing": {
-        "input": 0.25,
-        "output": 1
-      },
-      "inputs": {
-        "text": true
       }
     },
     "arcee-ai/trinity-large-thinking": {
@@ -970,6 +943,19 @@
         "text": true
       }
     },
+    "kwaipilot/kat-coder-air-v2.5": {
+      "name": "Kat Coder Air V2.5",
+      "description": "Fast response version of Kat Coder V2.5 optimized for Agent and Claw use cases.",
+      "context_window": 256000,
+      "max_output": 80000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "kwaipilot/kat-coder-pro-v1": {
       "name": "KAT-Coder-Pro V1",
       "description": "KAT-Coder-Pro V1 is KwaiKAT's most advanced agentic coding model in the KwaiKAT series. Designed specifically for agentic coding tasks, it excels in real-world software engineering scenarios, achieving a remarkable 73.4% solve rate on the SWE-Bench Verified benchmark. KAT-Coder-Pro V1 delivers top-t",
@@ -996,20 +982,15 @@
         "text": true
       }
     },
-    "meituan/longcat-flash-chat": {
-      "name": "LongCat Flash Chat",
-      "description": "LongCat-Flash-Chat is a high-throughput MoE chat model (128k context) optimized for agentic tasks.",
-      "context_window": 128000,
-      "max_output": 100000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "meituan/longcat-flash-thinking-2601": {
-      "name": "LongCat Flash Thinking 2601",
-      "description": "A version built for deep and general agentic thinking.",
-      "context_window": 32768,
-      "max_output": 32768,
+    "kwaipilot/kat-coder-pro-v2.5": {
+      "name": "Kat Coder Pro V2.5",
+      "description": "KAT-Coder-V2.5 is a coding-focused agentic model trained to act autonomously inside real, executable repositories rather than as a single-turn code generator.",
+      "context_window": 256000,
+      "max_output": 80000,
+      "pricing": {
+        "input": 0.74,
+        "output": 2.96
+      },
       "inputs": {
         "text": true
       }
@@ -1129,6 +1110,20 @@
       "pricing": {
         "input": 0.17,
         "output": 0.66
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.1": {
+      "name": "Muse Spark 1.1",
+      "description": "Muse Spark 1.1 is strongest at agentic performance, tool use, and computer use. It does well on long-running tasks with 1M token context window, can delegate execution to sub-agents running in parallel, and is trained to use computer interfaces on desktop, mobile, or browser.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
       },
       "inputs": {
         "text": true,
@@ -1263,19 +1258,6 @@
       "pricing": {
         "input": 0.4,
         "output": 2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "mistral/devstral-small": {
-      "name": "Devstral Small 1.1",
-      "description": "Devstral is an agentic LLM for software engineering tasks built under a collaboration between Mistral AI and All Hands AI 🙌. Devstral excels at using tools to explore codebases, editing multiple files and power software engineering agents.",
-      "context_window": 128000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.3
       },
       "inputs": {
         "text": true
@@ -1438,20 +1420,6 @@
       "pricing": {
         "input": 0.15,
         "output": 0.15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistral/pixtral-large": {
-      "name": "Pixtral Large",
-      "description": "Pixtral Large is the second model in our multimodal family and demonstrates frontier-level image understanding. Particularly, the model is able to understand documents, charts and natural images, while maintaining the leading text-only understanding of Mistral Large 2.",
-      "context_window": 128000,
-      "max_output": 4000,
-      "pricing": {
-        "input": 2,
-        "output": 6
       },
       "inputs": {
         "text": true,
@@ -1640,19 +1608,6 @@
       "pricing": {
         "input": 0.5,
         "output": 1.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/gpt-3.5-turbo-instruct": {
-      "name": "GPT-3.5 Turbo Instruct",
-      "description": "Similar capabilities as GPT-3 era models. Compatible with legacy Completions endpoint and not Chat Completions.",
-      "context_window": 8192,
-      "max_output": 4096,
-      "pricing": {
-        "input": 1.5,
-        "output": 2
       },
       "inputs": {
         "text": true
@@ -2079,6 +2034,48 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-luna": {
+      "name": "GPT 5.6 Luna",
+      "description": "GPT-5.6 Luna is a fast, affordable GPT-5.6 model that brings strong capability at the lowest cost in the series.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-sol": {
+      "name": "GPT 5.6 Sol",
+      "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-terra": {
+      "name": "GPT 5.6 Terra",
+      "description": "GPT-5.6 Terra is a balanced GPT-5.6 model for everyday work, with performance comparable to the previous generation at half the cost.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -2426,32 +2423,6 @@
         "image": true
       }
     },
-    "xiaomi/mimo-v2-flash": {
-      "name": "MiMo V2 Flash",
-      "description": "Xiaomi MiMo-V2-Flash is a proprietary MoE model developed by Xiaomi, designed for extreme inference efficiency with 309B total parameters (15B active). By incorporating an innovative Hybrid attention architecture and multi-layer MTP inference acceleration, it ranks among the top 2 global open-source",
-      "context_window": 262144,
-      "max_output": 32000,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "xiaomi/mimo-v2-pro": {
-      "name": "MiMo V2 Pro",
-      "description": "Xiaomi MiMo-V2-Pro is built for demanding real-world Agent workflows. It has over 1T total parameters, with 42B active parameters, uses an innovative hybrid attention architecture, and supports an ultra-long context window of up to 1M tokens.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 1,
-        "output": 3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "xiaomi/mimo-v2.5": {
       "name": "MiMo M2.5",
       "description": "A native full-modal model supporting text, image, video, and audio understanding, with powerful Agent capabilities.",
@@ -2674,7 +2645,118 @@
         "text": true,
         "image": true
       }
+    },
+    "anthropic/claude-3.5-haiku": {
+      "name": "Claude 3.5 Haiku",
+      "description": "Claude 3 Haiku is Anthropic's fastest, most compact model for near-instant responsiveness. It answers simple queries and requests with speed. Customers will be able to build seamless AI experiences that mimic human interactions. Claude 3 Haiku can process images and return text outputs, and features",
+      "context_window": 200000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.8,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "arcee-ai/trinity-large-preview": {
+      "name": "Trinity Large Preview",
+      "description": "Trinity Large (Preview) is a 400B-parameter (13B active) sparse mixture-of-experts language model, engineered to scale model capacity while maintaining inference efficiency over long contexts, with strong performance in reasoning-heavy workloads including math, coding-related tasks, and multi-step a",
+      "context_window": 131000,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.25,
+        "output": 1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meituan/longcat-flash-chat": {
+      "name": "LongCat Flash Chat",
+      "description": "LongCat-Flash-Chat is a high-throughput MoE chat model (128k context) optimized for agentic tasks.",
+      "context_window": 128000,
+      "max_output": 100000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "meituan/longcat-flash-thinking-2601": {
+      "name": "LongCat Flash Thinking 2601",
+      "description": "A version built for deep and general agentic thinking.",
+      "context_window": 32768,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/devstral-small": {
+      "name": "Devstral Small 1.1",
+      "description": "Devstral is an agentic LLM for software engineering tasks built under a collaboration between Mistral AI and All Hands AI 🙌. Devstral excels at using tools to explore codebases, editing multiple files and power software engineering agents.",
+      "context_window": 128000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/pixtral-large": {
+      "name": "Pixtral Large",
+      "description": "Pixtral Large is the second model in our multimodal family and demonstrates frontier-level image understanding. Particularly, the model is able to understand documents, charts and natural images, while maintaining the leading text-only understanding of Mistral Large 2.",
+      "context_window": 128000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-3.5-turbo-instruct": {
+      "name": "GPT-3.5 Turbo Instruct",
+      "description": "Similar capabilities as GPT-3 era models. Compatible with legacy Completions endpoint and not Chat Completions.",
+      "context_window": 8192,
+      "max_output": 4096,
+      "pricing": {
+        "input": 1.5,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2-flash": {
+      "name": "MiMo V2 Flash",
+      "description": "Xiaomi MiMo-V2-Flash is a proprietary MoE model developed by Xiaomi, designed for extreme inference efficiency with 309B total parameters (15B active). By incorporating an innovative Hybrid attention architecture and multi-layer MTP inference acceleration, it ranks among the top 2 global open-source",
+      "context_window": 262144,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2-pro": {
+      "name": "MiMo V2 Pro",
+      "description": "Xiaomi MiMo-V2-Pro is built for demanding real-world Agent workflows. It has over 1T total parameters, with 42B active parameters, uses an innovative hybrid attention architecture, and supports an ultra-long context window of up to 1M tokens.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 3
+      },
+      "inputs": {
+        "text": true
+      }
     }
   },
-  "_syncedAt": "2026-07-09T13:19:27.873Z"
+  "_syncedAt": "2026-07-14T11:56:39.568Z"
 }

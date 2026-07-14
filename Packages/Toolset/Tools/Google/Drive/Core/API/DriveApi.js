@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../../Shared/Utils/AsyncUtils.js';
+
 async function getFreshGoogleCreds(creds) {
   const { getFreshCreds: getFreshCreds } = await import('../../../../GoogleWorkspace.js');
   return getFreshCreds(creds);
@@ -28,7 +30,7 @@ async function driveFetch(credentials, url, options = {}) {
       headers: { Authorization: `Bearer ${fresh.accessToken}`, ...(options.headers ?? {}) },
     });
   if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
+    const errorBody = await tryParseJson(response);
     throw new Error(
       `Drive API error (${response.status}): ${errorBody.error?.message ?? JSON.stringify(errorBody)}`,
     );
@@ -144,7 +146,7 @@ export async function createFile(
       },
     );
   if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
+    const errorBody = await tryParseJson(response);
     throw new Error(`Drive create failed (${response.status}): ${errorBody.error?.message ?? ''}`);
   }
   return response.json();
@@ -157,7 +159,7 @@ export async function updateFileContent(credentials, fileId, content, mimeType =
       body: content,
     });
   if (!response.ok) {
-    const errorBody = await response.json().catch(() => ({}));
+    const errorBody = await tryParseJson(response);
     throw new Error(`Drive update failed (${response.status}): ${errorBody.error?.message ?? ''}`);
   }
   return response.json();

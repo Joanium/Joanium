@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../../Shared/Utils/AsyncUtils.js';
+
 async function getFreshGoogleCreds(creds) {
   const { getFreshCreds: getFreshCreds } = await import('../../../../GoogleWorkspace.js');
   return getFreshCreds(creds);
@@ -10,7 +12,7 @@ async function gmailFetch(creds, url, options = {}) {
       headers: { Authorization: `Bearer ${fresh.accessToken}`, ...(options.headers ?? {}) },
     });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = await tryParseJson(res);
     throw new Error(
       `Gmail API error (${res.status}): ${body.error?.message ?? JSON.stringify(body)}`,
     );
@@ -45,7 +47,7 @@ async function postGmailJson(creds, path, body, errorPrefix) {
       body: JSON.stringify(body),
     });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await tryParseJson(res);
     throw new Error(`${errorPrefix}: ${err.error?.message ?? res.status}`);
   }
   return 204 === res.status ? null : res.json();
@@ -417,7 +419,7 @@ export async function sendDraft(creds, draftId) {
       body: JSON.stringify({ id: draftId }),
     });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const err = await tryParseJson(res);
     throw new Error(`Failed to send draft: ${err.error?.message ?? res.status}`);
   }
   return res.json();

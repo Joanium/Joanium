@@ -1,4 +1,5 @@
 import { readUserState } from '../../Shared/UserData/UserData.js';
+import { tryParseJson } from '../../Shared/Utils/AsyncUtils.js';
 import { clampInteger, optionalText } from '../../Shared/Utils/ValueUtils.js';
 
 export function requireText(value, label) {
@@ -153,7 +154,7 @@ export async function fetchJson(url, { headers = {}, ...options } = {}) {
 export async function apiFetch(url, headers, options = {}, extractError = null) {
   const res = await fetch(url, { ...options, headers });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     const message = extractError
       ? extractError(data, res)
       : extractErrorMessage(data, '', res.statusText);

@@ -1,4 +1,5 @@
 import { mapBucket } from './Utils.js';
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
 
 const BASE = 'https://api.supabase.com/v1';
 
@@ -9,7 +10,7 @@ function headers(creds) {
 async function sbFetch(path, creds, options = {}) {
   const res = await fetch(`${BASE}${path}`, { headers: headers(creds), ...options });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.message ?? `Supabase API error: ${res.status}`);
   }
   return res.json();

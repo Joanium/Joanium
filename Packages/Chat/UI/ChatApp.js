@@ -70,6 +70,7 @@ import {
 import {
   initSounds,
   markCompletionAborted,
+  play,
   playCompletion,
 } from '../../Shared/Sounds/SoundManager.js';
 import { attachCustomScrollbar } from '../../Shared/CustomScrollbar/CustomScrollbar.js';
@@ -4198,6 +4199,7 @@ export async function createChatView(
     syncComposerFieldHeight();
     syncComposer();
     void updateSlashMenu();
+    void play('type');
     // User typing indicator
     if (draftValue.trim() && messages.length > 0) {
       clearTimeout(userTypingTimer);

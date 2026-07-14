@@ -5,6 +5,106 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "kwaipilot/kat-coder-air-v2.5": {
+      "name": "Kwaipilot: KAT-Coder-Air V2.5",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v2.5": {
+      "name": "Kwaipilot: KAT-Coder-Pro V2.5",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.74,
+        "output": 2.96
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-5.6-luna-pro": {
+      "name": "OpenAI: GPT-5.6 Luna Pro",
+      "description": "GPT-5.6 Luna Pro is the same underlying model as [GPT-5.6 Luna](https://openrouter.ai/openai/gpt-5.6-luna), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-luna": {
+      "name": "OpenAI: GPT-5.6 Luna",
+      "description": "GPT-5.6 Luna is a fast, cost-efficient model in OpenAI's GPT-5.6 series. It is suited for high-volume, latency-sensitive tasks such as chat, classification, and lightweight agentic workflows, providing capable reasoning for...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-terra-pro": {
+      "name": "OpenAI: GPT-5.6 Terra Pro",
+      "description": "GPT-5.6 Terra Pro is the same underlying model as [GPT-5.6 Terra](https://openrouter.ai/openai/gpt-5.6-terra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2.5,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-terra": {
+      "name": "OpenAI: GPT-5.6 Terra",
+      "description": "GPT-5.6 Terra is a balanced model in OpenAI's GPT-5.6 series, positioned between the flagship Sol tier and the cost-efficient Luna tier. It is suited for everyday coding, reasoning, and agentic...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2.5,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-sol-pro": {
+      "name": "OpenAI: GPT-5.6 Sol Pro",
+      "description": "GPT-5.6 Sol Pro is the same underlying model as [GPT-5.6 Sol](https://openrouter.ai/openai/gpt-5.6-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-sol": {
+      "name": "OpenAI: GPT-5.6 Sol",
+      "description": "GPT-5.6 Sol is the flagship model in OpenAI's GPT-5.6 series. It is suited for complex reasoning, coding, and agentic workflows, and is particularly strong at command-line and multi-step coding tasks...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "x-ai/grok-4.5": {
       "name": "xAI: Grok 4.5",
       "description": "Grok 4.5 is SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
@@ -55,18 +155,6 @@
         "text": true
       }
     },
-    "tencent/hy3:free": {
-      "name": "Tencent: Hy3 (free)",
-      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "tencent/hy3": {
       "name": "Tencent: Hy3",
       "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
@@ -79,9 +167,9 @@
         "text": true
       }
     },
-    "poolside/laguna-xs-2.1:free": {
-      "name": "Poolside: Laguna XS 2.1 (free)",
-      "description": "Laguna XS 2.1 is the latest coding agent model in the 33B-A3B category from [Poolside](https://poolside.ai/) and a step forward from their Laguna XS.2 model (released in April 2026). It combines...",
+    "tencent/hy3:free": {
+      "name": "Tencent: Hy3 (free)",
+      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
       "context_window": 262144,
       "pricing": {
         "input": 0,
@@ -98,6 +186,18 @@
       "pricing": {
         "input": 0.06,
         "output": 0.12
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "poolside/laguna-xs-2.1:free": {
+      "name": "Poolside: Laguna XS 2.1 (free)",
+      "description": "Laguna XS 2.1 is the latest coding agent model in the 33B-A3B category from [Poolside](https://poolside.ai/) and a step forward from their Laguna XS.2 model (released in April 2026). It combines...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -243,18 +343,6 @@
         "image": true
       }
     },
-    "nvidia/nemotron-3-ultra-550b-a55b:free": {
-      "name": "NVIDIA: Nemotron 3 Ultra (free)",
-      "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "nvidia/nemotron-3-ultra-550b-a55b": {
       "name": "NVIDIA: Nemotron 3 Ultra",
       "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
@@ -262,6 +350,18 @@
       "pricing": {
         "input": 0.5,
         "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nvidia/nemotron-3-ultra-550b-a55b:free": {
+      "name": "NVIDIA: Nemotron 3 Ultra (free)",
+      "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -485,18 +585,6 @@
         "image": true
       }
     },
-    "poolside/laguna-m.1:free": {
-      "name": "Poolside: Laguna M.1 (free)",
-      "description": "Laguna M.1 is the flagship coding agent model from [Poolside](https://poolside.ai), optimized for complex software engineering tasks. Designed for agentic coding workflows, it supports tool calling and reasoning, with a 128K...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "poolside/laguna-m.1": {
       "name": "Poolside: Laguna M.1",
       "description": "Laguna M.1 is the flagship coding agent model from [Poolside](https://poolside.ai/), optimized for complex software engineering tasks. Designed for agentic coding workflows, it supports tool calling and reasoning, with a 256K...",
@@ -504,6 +592,18 @@
       "pricing": {
         "input": 0.2,
         "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "poolside/laguna-m.1:free": {
+      "name": "Poolside: Laguna M.1 (free)",
+      "description": "Laguna M.1 is the flagship coding agent model from [Poolside](https://poolside.ai), optimized for complex software engineering tasks. Designed for agentic coding workflows, it supports tool calling and reasoning, with a 128K...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -838,19 +938,6 @@
         "text": true
       }
     },
-    "google/gemma-4-26b-a4b-it:free": {
-      "name": "Google: Gemma 4 26B A4B  (free)",
-      "description": "Gemma 4 26B A4B IT is an instruction-tuned Mixture-of-Experts (MoE) model from Google DeepMind. Despite 25.2B total parameters, only 3.8B activate per token during inference — delivering near-31B quality at...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemma-4-26b-a4b-it": {
       "name": "Google: Gemma 4 26B A4B ",
       "description": "Gemma 4 26B A4B IT is an instruction-tuned Mixture-of-Experts (MoE) model from Google DeepMind. Despite 25.2B total parameters, only 3.8B activate per token during inference — delivering near-31B quality at...",
@@ -864,9 +951,9 @@
         "image": true
       }
     },
-    "google/gemma-4-31b-it:free": {
-      "name": "Google: Gemma 4 31B (free)",
-      "description": "Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window, configurable thinking/reasoning mode, native function...",
+    "google/gemma-4-26b-a4b-it:free": {
+      "name": "Google: Gemma 4 26B A4B  (free)",
+      "description": "Gemma 4 26B A4B IT is an instruction-tuned Mixture-of-Experts (MoE) model from Google DeepMind. Despite 25.2B total parameters, only 3.8B activate per token during inference — delivering near-31B quality at...",
       "context_window": 262144,
       "pricing": {
         "input": 0,
@@ -891,6 +978,19 @@
       "pricing": {
         "input": 0.1,
         "output": 0.2
+      }
+    },
+    "google/gemma-4-31b-it:free": {
+      "name": "Google: Gemma 4 31B (free)",
+      "description": "Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window, configurable thinking/reasoning mode, native function...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "qwen/qwen3.6-plus": {
@@ -1071,18 +1171,6 @@
         "text": true
       }
     },
-    "nvidia/nemotron-3-super-120b-a12b:free": {
-      "name": "NVIDIA: Nemotron 3 Super (free)",
-      "description": "NVIDIA Nemotron 3 Super is a 120B-parameter open hybrid MoE model, activating just 12B parameters for maximum compute efficiency and accuracy in complex multi-agent applications. Built on a hybrid Mamba-Transformer...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "nvidia/nemotron-3-super-120b-a12b": {
       "name": "NVIDIA: Nemotron 3 Super",
       "description": "NVIDIA Nemotron 3 Super is a 120B-parameter open hybrid MoE model, activating just 12B parameters for maximum compute efficiency and accuracy in complex multi-agent applications. Built on a hybrid Mamba-Transformer...",
@@ -1090,6 +1178,18 @@
       "pricing": {
         "input": 0.09,
         "output": 0.45
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nvidia/nemotron-3-super-120b-a12b:free": {
+      "name": "NVIDIA: Nemotron 3 Super (free)",
+      "description": "NVIDIA Nemotron 3 Super is a 120B-parameter open hybrid MoE model, activating just 12B parameters for maximum compute efficiency and accuracy in complex multi-agent applications. Built on a hybrid Mamba-Transformer...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -1481,30 +1581,6 @@
         "text": true
       }
     },
-    "liquid/lfm-2.5-1.2b-thinking:free": {
-      "name": "LiquidAI: LFM2.5-1.2B-Thinking (free)",
-      "description": "LFM2.5-1.2B-Thinking is a lightweight reasoning-focused model optimized for agentic tasks, data extraction, and RAG—while still running comfortably on edge devices. It supports long context (up to 32K tokens) and is...",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "liquid/lfm-2.5-1.2b-instruct:free": {
-      "name": "LiquidAI: LFM2.5-1.2B-Instruct (free)",
-      "description": "LFM2.5-1.2B-Instruct is a compact, high-performance instruction-tuned model built for fast on-device AI. It delivers strong chat quality in a 1.2B parameter footprint, with efficient edge inference and broad runtime support.",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "z-ai/glm-4.7-flash": {
       "name": "Z.ai: GLM 4.7 Flash",
       "description": "As a 30B-class SOTA model, GLM-4.7-Flash offers a new option that balances performance and efficiency. It is further optimized for agentic coding use cases, strengthening coding capabilities, long-horizon task planning,...",
@@ -1593,18 +1669,6 @@
         "image": true
       }
     },
-    "nvidia/nemotron-3-nano-30b-a3b:free": {
-      "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
-      "description": "NVIDIA Nemotron 3 Nano 30B A3B is a small language MoE model with highest compute efficiency and accuracy for developers to build specialized agentic AI systems. The model is fully...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "nvidia/nemotron-3-nano-30b-a3b": {
       "name": "NVIDIA: Nemotron 3 Nano 30B A3B",
       "description": "NVIDIA Nemotron 3 Nano 30B A3B is a small language MoE model with highest compute efficiency and accuracy for developers to build specialized agentic AI systems. The model is fully...",
@@ -1612,6 +1676,18 @@
       "pricing": {
         "input": 0.05,
         "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nvidia/nemotron-3-nano-30b-a3b:free": {
+      "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
+      "description": "NVIDIA Nemotron 3 Nano 30B A3B is a small language MoE model with highest compute efficiency and accuracy for developers to build specialized agentic AI systems. The model is fully...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -1781,18 +1857,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "arcee-ai/trinity-mini": {
-      "name": "Arcee AI: Trinity Mini",
-      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model featuring 128 experts with 8 active per token. Engineered for efficient reasoning over long contexts (131k) with robust function...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
       }
     },
     "deepseek/deepseek-v3.2": {
@@ -2284,18 +2348,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-next-80b-a3b-instruct:free": {
-      "name": "Qwen: Qwen3 Next 80B A3B Instruct (free)",
-      "description": "Qwen3-Next-80B-A3B-Instruct is an instruction-tuned chat model in the Qwen3-Next series optimized for fast, stable responses without “thinking” traces. It targets complex tasks across reasoning, code generation, knowledge QA, and multilingual...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-next-80b-a3b-instruct": {
       "name": "Qwen: Qwen3 Next 80B A3B Instruct",
       "description": "Qwen3-Next-80B-A3B-Instruct is an instruction-tuned chat model in the Qwen3-Next series optimized for fast, stable responses without “thinking” traces. It targets complex tasks across reasoning, code generation, knowledge QA, and multilingual...",
@@ -2308,8 +2360,20 @@
         "text": true
       }
     },
-    "qwen/qwen-plus-2025-07-28:thinking": {
-      "name": "Qwen: Qwen Plus 0728 (thinking)",
+    "qwen/qwen3-next-80b-a3b-instruct:free": {
+      "name": "Qwen: Qwen3 Next 80B A3B Instruct (free)",
+      "description": "Qwen3-Next-80B-A3B-Instruct is an instruction-tuned chat model in the Qwen3-Next series optimized for fast, stable responses without “thinking” traces. It targets complex tasks across reasoning, code generation, knowledge QA, and multilingual...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen-plus-2025-07-28": {
+      "name": "Qwen: Qwen Plus 0728",
       "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
       "context_window": 1000000,
       "pricing": {
@@ -2320,8 +2384,8 @@
         "text": true
       }
     },
-    "qwen/qwen-plus-2025-07-28": {
-      "name": "Qwen: Qwen Plus 0728",
+    "qwen/qwen-plus-2025-07-28:thinking": {
+      "name": "Qwen: Qwen Plus 0728 (thinking)",
       "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
       "context_window": 1000000,
       "pricing": {
@@ -2494,18 +2558,6 @@
         "image": true
       }
     },
-    "openai/gpt-oss-120b:free": {
-      "name": "OpenAI: gpt-oss-120b (free)",
-      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-oss-120b": {
       "name": "OpenAI: gpt-oss-120b",
       "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
@@ -2518,18 +2570,6 @@
         "text": true
       }
     },
-    "openai/gpt-oss-20b:free": {
-      "name": "OpenAI: gpt-oss-20b (free)",
-      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-oss-20b": {
       "name": "OpenAI: gpt-oss-20b",
       "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
@@ -2537,6 +2577,18 @@
       "pricing": {
         "input": 0.03,
         "output": 0.14
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-oss-20b:free": {
+      "name": "OpenAI: gpt-oss-20b (free)",
+      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -2627,18 +2679,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-coder:free": {
-      "name": "Qwen: Qwen3 Coder 480B A35B (free)",
-      "description": "Qwen3-Coder-480B-A35B-Instruct is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-coder": {
       "name": "Qwen: Qwen3 Coder 480B A35B",
       "description": "Qwen3-Coder-480B-A35B-Instruct is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over...",
@@ -2646,6 +2686,18 @@
       "pricing": {
         "input": 0.22,
         "output": 1.8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-coder:free": {
+      "name": "Qwen: Qwen3 Coder 480B A35B (free)",
+      "description": "Qwen3-Coder-480B-A35B-Instruct is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -2696,6 +2748,18 @@
       "pricing": {
         "input": 0.57,
         "output": 2.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "cognitivecomputations/dolphin-mistral-24b-venice-edition": {
+      "name": "Venice: Uncensored",
+      "description": "Venice Uncensored Dolphin Mistral 24B Venice Edition is a fine-tuned variant of Mistral-Small-24B-Instruct-2501, developed by dphn.ai in collaboration with Venice.ai. This model is designed as an “uncensored” instruct-tuned LLM, preserving...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.9
       },
       "inputs": {
         "text": true
@@ -3513,18 +3577,6 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.3-70b-instruct:free": {
-      "name": "Meta: Llama 3.3 70B Instruct (free)",
-      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.3-70b-instruct": {
       "name": "Llama 3.3 70B Instruct",
       "description": "Meta's proven 70B open model — great performance-to-cost ratio",
@@ -3539,6 +3591,18 @@
       "pricing": {
         "input": 0.2,
         "output": 0.2
+      }
+    },
+    "meta-llama/llama-3.3-70b-instruct:free": {
+      "name": "Meta: Llama 3.3 70B Instruct (free)",
+      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
       }
     },
     "amazon/nova-lite-v1": {
@@ -3688,13 +3752,26 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.2-3b-instruct:free": {
-      "name": "Meta: Llama 3.2 3B Instruct (free)",
-      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it...",
+    "meta-llama/llama-3.2-11b-vision-instruct": {
+      "name": "Meta: Llama 3.2 11B Vision Instruct",
+      "description": "Llama 3.2 11B Vision is a multimodal model with 11 billion parameters, designed to handle tasks combining visual and textual data. It excels in tasks such as image captioning and...",
       "context_window": 131072,
       "pricing": {
-        "input": 0,
-        "output": 0
+        "input": 0.25,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta-llama/llama-3.2-1b-instruct": {
+      "name": "Meta: Llama 3.2 1B Instruct",
+      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.2
       },
       "inputs": {
         "text": true
@@ -3712,29 +3789,16 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.2-1b-instruct": {
-      "name": "Meta: Llama 3.2 1B Instruct",
-      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate...",
+    "meta-llama/llama-3.2-3b-instruct:free": {
+      "name": "Meta: Llama 3.2 3B Instruct (free)",
+      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it...",
       "context_window": 131072,
       "pricing": {
-        "input": 0.03,
-        "output": 0.2
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
-      }
-    },
-    "meta-llama/llama-3.2-11b-vision-instruct": {
-      "name": "Meta: Llama 3.2 11B Vision Instruct",
-      "description": "Llama 3.2 11B Vision is a multimodal model with 11 billion parameters, designed to handle tasks combining visual and textual data. It excels in tasks such as image captioning and...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.25,
-        "output": 0.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "qwen/qwen-2.5-72b-instruct": {
@@ -3797,18 +3861,6 @@
         "text": true
       }
     },
-    "nousresearch/hermes-3-llama-3.1-405b:free": {
-      "name": "Nous: Hermes 3 405B Instruct (free)",
-      "description": "Hermes 3 is a generalist language model with many improvements over Hermes 2, including advanced agentic capabilities, much better roleplaying, reasoning, multi-turn conversation, long context coherence, and improvements across the...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "nousresearch/hermes-3-llama-3.1-405b": {
       "name": "Nous: Hermes 3 405B Instruct",
       "description": "Hermes 3 is a generalist language model with many improvements over Hermes 2, including advanced agentic capabilities, much better roleplaying, reasoning, multi-turn conversation, long context coherence, and improvements across the...",
@@ -3816,6 +3868,18 @@
       "pricing": {
         "input": 1,
         "output": 1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nousresearch/hermes-3-llama-3.1-405b:free": {
+      "name": "Nous: Hermes 3 405B Instruct (free)",
+      "description": "Hermes 3 is a generalist language model with many improvements over Hermes 2, including advanced agentic capabilities, much better roleplaying, reasoning, multi-turn conversation, long context coherence, and improvements across the...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -3846,18 +3910,6 @@
         "image": true
       }
     },
-    "meta-llama/llama-3.1-8b-instruct": {
-      "name": "Meta: Llama 3.1 8B Instruct",
-      "description": "Meta's latest class of model (Llama 3.1) launched with a variety of sizes & flavors. This 8B instruct-tuned version is fast and efficient. It has demonstrated strong performance compared to...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.02,
-        "output": 0.05
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.1-70b-instruct": {
       "name": "Meta: Llama 3.1 70B Instruct",
       "description": "Meta's latest class of model (Llama 3.1) launched with a variety of sizes & flavors. This 70B instruct-tuned version is optimized for high quality dialogue usecases. It has demonstrated strong...",
@@ -3865,6 +3917,18 @@
       "pricing": {
         "input": 0.4,
         "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3.1-8b-instruct": {
+      "name": "Meta: Llama 3.1 8B Instruct",
+      "description": "Meta's latest class of model (Llama 3.1) launched with a variety of sizes & flavors. This 8B instruct-tuned version is fast and efficient. It has demonstrated strong performance compared to...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.02,
+        "output": 0.05
       },
       "inputs": {
         "text": true
@@ -3882,8 +3946,8 @@
         "text": true
       }
     },
-    "openai/gpt-4o-mini-2024-07-18": {
-      "name": "OpenAI: GPT-4o-mini (2024-07-18)",
+    "openai/gpt-4o-mini": {
+      "name": "OpenAI: GPT-4o-mini",
       "description": "GPT-4o mini is OpenAI's newest model after [GPT-4 Omni](/models/openai/gpt-4o), supporting both text and image inputs with text outputs. As their most advanced small model, it is many multiples more affordable...",
       "context_window": 128000,
       "pricing": {
@@ -3895,8 +3959,8 @@
         "image": true
       }
     },
-    "openai/gpt-4o-mini": {
-      "name": "OpenAI: GPT-4o-mini",
+    "openai/gpt-4o-mini-2024-07-18": {
+      "name": "OpenAI: GPT-4o-mini (2024-07-18)",
       "description": "GPT-4o mini is OpenAI's newest model after [GPT-4 Omni](/models/openai/gpt-4o), supporting both text and image inputs with text outputs. As their most advanced small model, it is many multiples more affordable...",
       "context_window": 128000,
       "pricing": {
@@ -3920,19 +3984,6 @@
         "text": true
       }
     },
-    "openai/gpt-4o-2024-05-13": {
-      "name": "OpenAI: GPT-4o (2024-05-13)",
-      "description": "GPT-4o (\"o\" for \"omni\") is OpenAI's latest AI model, supporting both text and image inputs with text outputs. It maintains the intelligence level of [GPT-4 Turbo](/models/openai/gpt-4-turbo) while being twice as...",
-      "context_window": 128000,
-      "pricing": {
-        "input": 5,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "openai/gpt-4o": {
       "name": "OpenAI: GPT-4o",
       "description": "GPT-4o (\"o\" for \"omni\") is OpenAI's latest AI model, supporting both text and image inputs with text outputs. It maintains the intelligence level of [GPT-4 Turbo](/models/openai/gpt-4-turbo) while being twice as...",
@@ -3946,16 +3997,17 @@
         "image": true
       }
     },
-    "meta-llama/llama-3-8b-instruct": {
-      "name": "Meta: Llama 3 8B Instruct",
-      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong...",
-      "context_window": 8192,
+    "openai/gpt-4o-2024-05-13": {
+      "name": "OpenAI: GPT-4o (2024-05-13)",
+      "description": "GPT-4o (\"o\" for \"omni\") is OpenAI's latest AI model, supporting both text and image inputs with text outputs. It maintains the intelligence level of [GPT-4 Turbo](/models/openai/gpt-4-turbo) while being twice as...",
+      "context_window": 128000,
       "pricing": {
-        "input": 0.04,
-        "output": 0.04
+        "input": 5,
+        "output": 15
       },
       "inputs": {
-        "text": true
+        "text": true,
+        "image": true
       }
     },
     "mistralai/mixtral-8x22b-instruct": {
@@ -4121,6 +4173,18 @@
         "text": true
       }
     },
+    "openai/gpt-3.5-turbo": {
+      "name": "OpenAI: GPT-3.5 Turbo",
+      "description": "GPT-3.5 Turbo is OpenAI's fastest model. It can understand and generate natural language or code, and is optimized for chat and traditional completion tasks.\n\nTraining data up to Sep 2021.",
+      "context_window": 16385,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-4": {
       "name": "OpenAI: GPT-4",
       "description": "OpenAI's flagship model, GPT-4 is a large-scale multimodal language model capable of solving difficult problems with greater accuracy than previous models due to its broader general knowledge and advanced reasoning...",
@@ -4133,13 +4197,61 @@
         "text": true
       }
     },
-    "openai/gpt-3.5-turbo": {
-      "name": "OpenAI: GPT-3.5 Turbo",
-      "description": "GPT-3.5 Turbo is OpenAI's fastest model. It can understand and generate natural language or code, and is optimized for chat and traditional completion tasks.\n\nTraining data up to Sep 2021.",
-      "context_window": 16385,
+    "openai/gpt-oss-120b:free": {
+      "name": "OpenAI: gpt-oss-120b (free)",
+      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
+      "context_window": 131072,
       "pricing": {
-        "input": 0.5,
-        "output": 1.5
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "liquid/lfm-2.5-1.2b-thinking:free": {
+      "name": "LiquidAI: LFM2.5-1.2B-Thinking (free)",
+      "description": "LFM2.5-1.2B-Thinking is a lightweight reasoning-focused model optimized for agentic tasks, data extraction, and RAG—while still running comfortably on edge devices. It supports long context (up to 32K tokens) and is...",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "liquid/lfm-2.5-1.2b-instruct:free": {
+      "name": "LiquidAI: LFM2.5-1.2B-Instruct (free)",
+      "description": "LFM2.5-1.2B-Instruct is a compact, high-performance instruction-tuned model built for fast on-device AI. It delivers strong chat quality in a 1.2B parameter footprint, with efficient edge inference and broad runtime support.",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "arcee-ai/trinity-mini": {
+      "name": "Arcee AI: Trinity Mini",
+      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model featuring 128 experts with 8 active per token. Engineered for efficient reasoning over long contexts (131k) with robust function...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3-8b-instruct": {
+      "name": "Meta: Llama 3 8B Instruct",
+      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong...",
+      "context_window": 8192,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.04
       },
       "inputs": {
         "text": true
@@ -4268,5 +4380,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-09T13:19:00.945Z"
+  "_syncedAt": "2026-07-14T11:56:11.864Z"
 }

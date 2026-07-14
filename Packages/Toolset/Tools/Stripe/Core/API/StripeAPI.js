@@ -1,3 +1,4 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
 import {
   mapCharge,
   mapSubscription,
@@ -27,7 +28,7 @@ function headers(creds) {
 async function stripeFetch(path, creds) {
   const res = await fetch(`${BASE}${path}`, { headers: headers(creds) });
   if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+    const data = await tryParseJson(res);
     throw new Error(data.error?.message ?? `Stripe API error: ${res.status}`);
   }
   return res.json();

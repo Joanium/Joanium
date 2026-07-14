@@ -6,6 +6,52 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.714.0] - 2026-07-14
+
+* Updated AI Models
+* chore: add .agents/ to .gitignore
+* chore: remove unused VSCode configuration files and update .gitignore
+* Updated AI Models
+
+---
+
+## [2026.713.0] - 2026-07-13
+
+* Updated AI Models
+* Chore(deps-dev): Bump eslint from 10.6.0 to 10.7.0
+* Updated AI Models
+* Updated AI Models
+* Refactor code structure for improved readability and maintainability
+
+---
+
+## [2026.712.0] - 2026-07-12
+
+* Updated AI Models
+* docs: remove redundant instruction from ProjectContext.md
+* docs: add instruction to research skills using Live Browser
+* Updated AI Models
+* fix: correct typos and improve clarity in guidelines
+* refactor: update guidelines for fabrication prevention, assumption transparency, requirement completeness, and self-monitoring
+* feat: add guidelines for anti-hallucination, uncertainty, task decomposition, error recovery, ambiguity resolution, instruction following, and self-monitoring
+* Updated AI Models
+* feat: implement tryParseJson utility for safer JSON parsing across API requests
+* feat: remove 'Models' and 'Usage.json' from known data entries
+* Chore(deps-dev): Bump prettier from 3.9.4 to 3.9.5
+
+---
+
+## [2026.711.0] - 2026-07-11
+
+* feat: add 'ModelFavourites.json' to known data entries
+* Updated AI Models
+* Chore(deps-dev): Bump fast-check from 4.8.0 to 4.9.0
+* Updated AI Models
+* Update README.md
+* Chore(deps-dev): Bump jscpd from 5.0.11 to 5.0.12
+
+---
+
 ## [2026.709.0] - 2026-07-09
 
 * feat: add model favourites functionality and UI enhancements

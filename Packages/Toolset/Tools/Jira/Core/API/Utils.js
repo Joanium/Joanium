@@ -1,3 +1,5 @@
+import { tryParseJson } from '../../../../../Shared/Utils/AsyncUtils.js';
+
 /**
  * Maps a raw Jira issue (from board/sprint/backlog endpoints) to a compact board shape.
  * @param {object} i - Raw issue object.
@@ -20,6 +22,6 @@ export function mapBoardIssue(i) {
  * @param {string} label - API label used in the fallback error message.
  */
 export async function throwJiraError(res, label) {
-  const data = await res.json().catch(() => ({}));
+  const data = await tryParseJson(res);
   throw new Error(data.errorMessages?.[0] ?? data.message ?? `${label} error: ${res.status}`);
 }
