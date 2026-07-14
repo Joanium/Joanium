@@ -1036,6 +1036,15 @@
         "text": true
       }
     },
+    "xai/grok-4.5": {
+      "name": "xai/grok-4.5",
+      "context_window": 500000,
+      "max_output": 500000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ring-2.6-1t": {
       "name": "Ring-2.6-1T",
       "context_window": 262144,
@@ -1293,5 +1302,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-13T15:42:00.387Z"
+  "_syncedAt": "2026-07-14T11:56:32.492Z"
 }
