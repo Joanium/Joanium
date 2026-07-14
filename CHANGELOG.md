@@ -6,6 +6,15 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.714.0] - 2026-07-14
+
+* Updated AI Models
+* chore: add .agents/ to .gitignore
+* chore: remove unused VSCode configuration files and update .gitignore
+* Updated AI Models
+
+---
+
 ## [2026.713.0] - 2026-07-13
 
 * Updated AI Models
