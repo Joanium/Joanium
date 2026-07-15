@@ -6,6 +6,15 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.715.0] - 2026-07-15
+
+* Updated AI Models
+* Chore(deps-dev): Bump electron from 43.1.0 to 43.1.1
+* feat: add joanium.cmd script for application launch
+* Chore(deps): Bump github/codeql-action/init from 4.36.3 to 4.37.0
+
+---
+
 ## [2026.714.0] - 2026-07-14
 
 * Updated AI Models
