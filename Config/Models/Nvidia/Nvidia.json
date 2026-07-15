@@ -145,12 +145,6 @@
     "microsoft/phi-3.5-moe-instruct": {
       "name": "microsoft/phi-3.5-moe-instruct"
     },
-    "microsoft/phi-4-mini-instruct": {
-      "name": "microsoft/phi-4-mini-instruct"
-    },
-    "microsoft/phi-4-multimodal-instruct": {
-      "name": "microsoft/phi-4-multimodal-instruct"
-    },
     "minimaxai/minimax-m2.7": {
       "name": "MiniMax M2.7",
       "description": "MiniMax's 230B MoE flagship — coding, reasoning, and office tasks via NVIDIA NIM (added Apr 2026)",
@@ -285,9 +279,6 @@
     "nvidia/nemoretriever-parse": {
       "name": "nvidia/nemoretriever-parse"
     },
-    "nvidia/nemotron-3-content-safety": {
-      "name": "nvidia/nemotron-3-content-safety"
-    },
     "nvidia/nemotron-3-nano-30b-a3b": {
       "name": "nvidia/nemotron-3-nano-30b-a3b"
     },
@@ -321,9 +312,6 @@
     },
     "nvidia/nemotron-4-340b-reward": {
       "name": "nvidia/nemotron-4-340b-reward"
-    },
-    "nvidia/nemotron-content-safety-reasoning-4b": {
-      "name": "nvidia/nemotron-content-safety-reasoning-4b"
     },
     "nvidia/nemotron-mini-4b-instruct": {
       "name": "nvidia/nemotron-mini-4b-instruct"
@@ -420,9 +408,6 @@
     "stepfun-ai/step-3.7-flash": {
       "name": "Step 3 7 FLASH"
     },
-    "stockmark/stockmark-2-100b-instruct": {
-      "name": "stockmark/stockmark-2-100b-instruct"
-    },
     "upstage/solar-10.7b-instruct": {
       "name": "upstage/solar-10.7b-instruct"
     },
@@ -444,9 +429,24 @@
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
     },
+    "microsoft/phi-4-mini-instruct": {
+      "name": "microsoft/phi-4-mini-instruct"
+    },
+    "microsoft/phi-4-multimodal-instruct": {
+      "name": "microsoft/phi-4-multimodal-instruct"
+    },
+    "nvidia/nemotron-3-content-safety": {
+      "name": "nvidia/nemotron-3-content-safety"
+    },
+    "nvidia/nemotron-content-safety-reasoning-4b": {
+      "name": "nvidia/nemotron-content-safety-reasoning-4b"
+    },
+    "stockmark/stockmark-2-100b-instruct": {
+      "name": "stockmark/stockmark-2-100b-instruct"
+    },
     "z-ai/glm-5.1": {
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-14T11:56:01.835Z"
+  "_syncedAt": "2026-07-15T09:48:31.249Z"
 }

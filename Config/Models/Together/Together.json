@@ -89,6 +89,10 @@
       "name": "LFM2.5-8B-A1B",
       "context_window": 32768
     },
+    "Prism-ML/Ternary-Bonsai-27B": {
+      "name": "Ternary Bonsai 27B",
+      "context_window": 262144
+    },
     "zai-org/GLM-5.1": {
       "name": "GLM 5.1 FP4",
       "context_window": 202752
@@ -784,5 +788,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-14T11:56:18.195Z"
+  "_syncedAt": "2026-07-15T09:48:50.269Z"
 }

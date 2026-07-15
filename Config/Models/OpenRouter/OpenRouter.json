@@ -3516,18 +3516,6 @@
         "text": true
       }
     },
-    "sao10k/l3.1-70b-hanami-x1": {
-      "name": "Sao10K: Llama 3.1 70B Hanami x1",
-      "description": "This is [Sao10K](/sao10k)'s experiment over [Euryale v2.2](/sao10k/l3.1-euryale-70b).",
-      "context_window": 16000,
-      "pricing": {
-        "input": 3,
-        "output": 3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepseek/deepseek-chat": {
       "name": "DeepSeek: DeepSeek V3",
       "description": "DeepSeek-V3 is the latest model from the DeepSeek team, building upon the instruction following and coding abilities of the previous versions. Pre-trained on nearly 15 trillion tokens, the reported evaluations...",
@@ -4197,6 +4185,18 @@
         "text": true
       }
     },
+    "sao10k/l3.1-70b-hanami-x1": {
+      "name": "Sao10K: Llama 3.1 70B Hanami x1",
+      "description": "This is [Sao10K](/sao10k)'s experiment over [Euryale v2.2](/sao10k/l3.1-euryale-70b).",
+      "context_window": 16000,
+      "pricing": {
+        "input": 3,
+        "output": 3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-oss-120b:free": {
       "name": "OpenAI: gpt-oss-120b (free)",
       "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
@@ -4380,5 +4380,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-14T11:56:11.864Z"
+  "_syncedAt": "2026-07-15T09:48:34.019Z"
 }

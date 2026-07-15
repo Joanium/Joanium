@@ -492,6 +492,20 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.7-fast": {
+      "name": "Claude Opus 4.7 (Fast)",
+      "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 30,
+        "output": 150
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-4.8": {
       "name": "Claude Opus 4.8",
       "description": "Opus 4.8 is a focused upgrade to Opus 4.7 and is Anthropic's best generally available model for coding, agentic tasks, and enterprise workflows. It builds on the strengths of previous Opus models with stronger performance on complex, multi-step coding tasks. Anthropic recommends using it on long-hor",
@@ -500,6 +514,20 @@
       "pricing": {
         "input": 5,
         "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4.8-fast": {
+      "name": "Claude Opus 4.8 (Fast)",
+      "description": "Opus 4.8 is a focused upgrade to Opus 4.7 and is Anthropic's best generally available model for coding, agentic tasks, and enterprise workflows. It builds on the strengths of previous Opus models with stronger performance on complex, multi-step coding tasks. Anthropic recommends using it on long-hor",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
       },
       "inputs": {
         "text": true,
@@ -2758,5 +2786,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-14T11:56:39.568Z"
+  "_syncedAt": "2026-07-15T09:49:17.751Z"
 }

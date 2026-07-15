@@ -218,6 +218,9 @@
     "parasail-gpt-oss-120b-fast": {
       "name": "Parasail Gpt OSS 120B FAST"
     },
+    "openai/gpt-oss-120b-fast": {
+      "name": "Gpt OSS 120B FAST"
+    },
     "parasail-glm-52": {
       "name": "Parasail Glm 52"
     },
@@ -230,23 +233,38 @@
     "parasail-qwen35-9b": {
       "name": "Parasail Qwen35 9B"
     },
+    "Qwen/Qwen3.5-9B": {
+      "name": "Qwen3 5 9B"
+    },
     "qwen/qwen3.5-9b": {
       "name": "Qwen3 5 9B"
     },
     "parasail-llama-32-3b-instruct": {
       "name": "Parasail Llama 32 3B Instruct"
     },
+    "meta-llama/Llama-3.2-3B-Instruct": {
+      "name": "Llama 3 2 3B Instruct"
+    },
     "parasail-rocinante-12b": {
       "name": "Parasail Rocinante 12B"
+    },
+    "TheDrummer/Rocinante-12B-v1.1": {
+      "name": "Rocinante 12B V1 1"
     },
     "parasail-qwen3-embedding-4b": {
       "name": "Parasail Qwen3 Embedding 4B"
     },
-    "qwen/qwen3-embedding-4b": {
+    "Qwen/Qwen3-Embedding-4B": {
       "name": "Qwen3 Embedding 4B"
     },
     "parasail-qwen3-embedding-8b": {
       "name": "Parasail Qwen3 Embedding 8B"
+    },
+    "Qwen/Qwen3-Embedding-8B": {
+      "name": "Qwen3 Embedding 8B"
+    },
+    "qwen/qwen3-embedding-4b": {
+      "name": "Qwen3 Embedding 4B"
     },
     "qwen/qwen3-embedding-8b": {
       "name": "Qwen3 Embedding 8B"
@@ -258,5 +276,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-14T11:56:44.509Z"
+  "_syncedAt": "2026-07-15T09:49:21.499Z"
 }
