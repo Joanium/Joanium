@@ -294,9 +294,6 @@
     "kimi-k2-thinking": {
       "name": "Kimi K2 Thinking"
     },
-    "glm-5.1-t": {
-      "name": "Glm 5 1 T"
-    },
     "gpt-5.2-codex": {
       "name": "Gpt 5 2 Codex",
       "context_window": {
@@ -999,9 +996,6 @@
     "kling-2.5-turbo-pro": {
       "name": "Kling 2 5 TURBO PRO"
     },
-    "hailuo-02": {
-      "name": "Hailuo 02"
-    },
     "hailuo-02-standard": {
       "name": "Hailuo 02 Standard"
     },
@@ -1394,6 +1388,15 @@
     "step-3.7-flash": {
       "name": "Step 3 7 FLASH"
     },
+    "seed-2.1-turbo": {
+      "name": "Seed 2 1 TURBO"
+    },
+    "glm-5.1-t": {
+      "name": "Glm 5 1 T"
+    },
+    "hailuo-02": {
+      "name": "Hailuo 02"
+    },
     "imagen-4-ultra": {
       "name": "Imagen 4 ULTRA",
       "context_window": {
@@ -1526,5 +1529,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-14T11:56:41.219Z"
+  "_syncedAt": "2026-07-15T09:49:18.820Z"
 }

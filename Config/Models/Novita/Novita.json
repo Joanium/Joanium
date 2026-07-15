@@ -1036,15 +1036,6 @@
         "text": true
       }
     },
-    "xai/grok-4.5": {
-      "name": "xai/grok-4.5",
-      "context_window": 500000,
-      "max_output": 500000,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "inclusionai/ring-2.6-1t": {
       "name": "Ring-2.6-1T",
       "context_window": 262144,
@@ -1300,7 +1291,16 @@
       "inputs": {
         "text": true
       }
+    },
+    "xai/grok-4.5": {
+      "name": "xai/grok-4.5",
+      "context_window": 500000,
+      "max_output": 500000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
     }
   },
-  "_syncedAt": "2026-07-14T11:56:32.492Z"
+  "_syncedAt": "2026-07-15T09:49:13.978Z"
 }

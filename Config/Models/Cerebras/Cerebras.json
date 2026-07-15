@@ -5,6 +5,22 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "gpt-oss-120b": {
+      "name": "GPT OSS 120B",
+      "description": "Cerebras' flagship open-source model — MoE architecture optimised for agentic and reasoning tasks at wafer-scale speed",
+      "context_window": 32768,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.6,
+        "output": 0.6
+      }
+    },
     "gemma-4-31b": {
       "name": "Gemma 4 31B"
     },
@@ -23,23 +39,7 @@
         "input": 0.5,
         "output": 0.5
       }
-    },
-    "gpt-oss-120b": {
-      "name": "GPT OSS 120B",
-      "description": "Cerebras' flagship open-source model — MoE architecture optimised for agentic and reasoning tasks at wafer-scale speed",
-      "context_window": 32768,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.6,
-        "output": 0.6
-      }
     }
   },
-  "_syncedAt": "2026-07-14T11:56:21.901Z"
+  "_syncedAt": "2026-07-15T09:48:56.468Z"
 }
