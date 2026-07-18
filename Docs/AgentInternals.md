@@ -8,20 +8,20 @@ Background agent scheduling, execution, and replay system.
 
 ```text
 Packages/Agents/
-├── Index.js              (374 lines — IPC handlers)
+├── Index.js              — IPC handlers, renderer-delegated tool loop
 ├── Core/
-│   ├── AgentState.js     (CRUD + run management)
-│   ├── AgentScheduler.js (cron-like scheduling)
-│   └── ReplayStore.js   (run replay storage)
+│   ├── AgentState.js     — CRUD + run management
+│   ├── AgentScheduler.js — Cron-like scheduling
+│   └── ReplayStore.js   — Run replay storage
 ├── IPC/
-│   └── ReplayIpc.js     (replay IPC handlers)
+│   └── ReplayIpc.js     — Replay IPC handlers
 ├── UI/
-│   ├── AgentGateway.js   (renderer-side execution)
-│   ├── AgentsPanel.js    (agent list UI)
-│   ├── ExecutionReplay.js(replay viewer)
-│   └── Prompts.js        (agent-specific prompts)
+│   ├── AgentGateway.js   — Renderer-side execution
+│   ├── AgentsPanel.js    — Agent list UI
+│   ├── ExecutionReplay.js — Replay viewer
+│   └── Prompts.js        — Agent-specific prompts
 └── I18n/
-    └── en.js             (agent strings)
+    └── en.js             — Agent strings
 ```
 
 ---
@@ -65,6 +65,7 @@ Each agent is a JSON file in `Data/Agents/`:
 - Checks each enabled agent's schedule against current time
 - Runs agents sequentially with 5-second gaps (prevents rate limiting)
 - Pre-queues agents so the Events feed shows pending status immediately
+- Waits for renderer-ready handshake before dispatching startup agents
 
 ### Schedule Matching
 
@@ -135,6 +136,8 @@ disposeChunk = onIpc('agents:stream-chunk', ({ streamId, type, text }) => {
 });
 ```
 
+Progress is written to the run log so the Events panel picks it up on its next poll.
+
 ---
 
 ## Run Management
@@ -145,15 +148,32 @@ Each agent run is logged in `Data/Agents/Runs/`:
 
 ```js
 {
-  runId: 'daily-digest-abc123-2026-06-15T09-00-00-000Z',
+  id: 'daily-digest-abc123-2026-06-15T09-00-00-000Z',
   agentId: 'daily-digest-abc123',
-  status: 'completed',  // or 'running', 'failed', 'queued'
-  startedAt: '2026-06-15T09:00:00.000Z',
-  completedAt: '2026-06-15T09:02:30.000Z',
-  result: { text: '...', thinking: '...' },
-  toolCalls: [...],
+  agentName: 'Daily Digest',
+  agentAvatar: 'digest',
+  prompt: 'Summarize...',
+  schedule: { type: 'daily', time: '09:00' },
+  firedAt: '2026-06-15T09:00:00.000Z',
+  startedAt: '2026-06-15T09:00:01.000Z',
+  finishedAt: '2026-06-15T09:02:30.000Z',
+  status: 'completed',  // or 'running', 'error', 'queued'
+  fullResponse: '...',
+  thinking: '...',
+  terminals: [...],
+  provider: 'OpenAI',
+  model: 'GPT-4o',
+  inputTokens: 1234,
+  outputTokens: 567,
+  error: null,
 }
 ```
+
+### Queue → Run Flow
+
+1. `queueAgent(agent)` — Pre-writes a 'queued' log entry
+2. `runAgent(agent, preAllocated)` — Promotes the queued entry to 'running'
+3. Writes final status ('completed' or 'error') with full response and token counts
 
 ### ReplayStore.js
 
@@ -163,9 +183,13 @@ Stores run data for execution replay:
 - Allows replaying past agent runs in the UI
 - Stored in `Data/Agents/Runs/`
 
+### Interrupted Run Recovery
+
+On startup, `agentStateManager.recoverInterruptedRuns()` recovers runs that were interrupted by the app closing unexpectedly.
+
 ---
 
-## IPC Handlers
+## IPC Handlers (13 channels)
 
 | Channel | Purpose |
 |---|---|

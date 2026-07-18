@@ -8,13 +8,13 @@ OS-level screen, mouse, keyboard, clipboard, and window tools.
 
 ```text
 Packages/Toolset/Tools/ComputerUse/
-├── Index.js        (14 lines — tool package entry)
-├── Tools.js        (tool definitions)
-├── Prompt.js       (prompt section builder)
+├── Index.js        — Tool package entry
+├── Tools.js        — Tool definitions
+├── Prompt.js       — Prompt section builder
 └── Core/
-    ├── ComputerUseTools.js (tool handlers)
+    ├── ComputerUseTools.js — Tool handlers
     └── Chat/
-        └── Tools.js       (tool definitions for chat context)
+        └── Tools.js       — Tool definitions for chat context
 ```
 
 ---

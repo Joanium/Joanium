@@ -8,31 +8,31 @@ Renderer-side UI components for the chat interface.
 
 ```text
 Packages/Chat/UI/
-├── ChatApp.js              (4691 lines — main chat orchestrator)
-├── ChatApp.css             (chat styles)
-├── MessageElements.js      (message rendering, avatars, streaming updates)
-├── TerminalPanel.js        (terminal tool output display)
-├── ThinkingBlock.js        (AI thinking/reasoning block display)
-├── SubAgentSections.js     (sub-agent task cards and results)
-├── ModelPickerPanel.js     (provider/model selection panel)
-├── AttachmentPill.js       (file attachment pills)
-├── BrowserPreviewPanel.js  (live browser preview in chat)
-├── TechFeedPanel.js        (tech news feed panel)
-├── DiagnosticPanel.js      (provider diagnostics and latency testing)
-├── DropZoneOverlay.js      (drag-and-drop file overlay)
-├── FileDiffTracker.js      (file change tracking and diff display)
-├── GitBranchPickerPanel.js (git branch selection panel)
-├── WhatsNewOverlay.js      (what's new changelog overlay)
-├── Utils.js                (chat UI utilities)
+├── ChatApp.js              — Main chat orchestrator (message management, tool loop, streaming)
+├── ChatApp.css             — Chat styles
+├── MessageElements.js      — Message rendering, avatars, streaming updates
+├── TerminalPanel.js        — Terminal tool output display
+├── ThinkingBlock.js        — AI thinking/reasoning block display
+├── SubAgentSections.js     — Sub-agent task cards and results
+├── ModelPickerPanel.js     — Provider/model selection panel
+├── AttachmentPill.js       — File attachment pills
+├── BrowserPreviewPanel.js  — Live browser preview in chat
+├── TechFeedPanel.js        — Tech news feed panel
+├── DiagnosticPanel.js      — Provider diagnostics and latency testing
+├── DropZoneOverlay.js      — Drag-and-drop file overlay
+├── FileDiffTracker.js      — File change tracking and diff display
+├── GitBranchPickerPanel.js — Git branch selection panel
+├── WhatsNewOverlay.js      — What's new changelog overlay
+├── Utils.js                — Chat UI utilities
 └── Shared/
-    └── DefaultSearchInfo.js (search info display)
+    └── DefaultSearchInfo.js — Search info display
 ```
 
 ---
 
 ## ChatApp.js
 
-The main chat orchestrator (4691 lines). Responsibilities:
+The main chat orchestrator. Responsibilities:
 
 - **Message management**: User/assistant message history, streaming state
 - **Tool loop execution**: Parses AI tool calls, executes via IPC, feeds results back

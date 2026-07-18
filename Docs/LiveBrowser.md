@@ -8,12 +8,12 @@ Embedded Chromium browser view with AI interaction tools.
 
 ```text
 Packages/LiveBrowser/
-├── Index.js                    (139 lines — IPC handlers, dual export)
+├── Index.js                    — IPC handlers, dual export
 ├── Core/
-│   ├── BrowserPreviewService.js (browser view management)
-│   └── BrowserRuntime.js       (browser runtime, global state)
+│   ├── BrowserPreviewService.js — Browser view management
+│   └── BrowserRuntime.js       — Browser runtime, global state
 └── I18n/
-    └── en.js                   (browser strings)
+    └── en.js                   — Browser strings
 ```
 
 ---
@@ -45,7 +45,7 @@ This allows it to function both as an IPC package and as a tool provider.
 
 ---
 
-## IPC Handlers
+## IPC Handlers (18 channels)
 
 | Channel | Purpose |
 |---|---|
@@ -103,6 +103,7 @@ Manages the BrowserView lifecycle:
 - `getState()` — Returns current state (URL, title, canGoBack, canGoForward)
 - `goBack()` / `goForward()` / `reload()` — Navigation
 - `pause()` / `resume()` — Lifecycle management
+- `executeTool(tool, params, context)` — Execute browser AI tools
 
 ---
 

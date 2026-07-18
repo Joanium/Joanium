@@ -10,7 +10,7 @@ Data folder structure, persistence patterns, and path resolution.
 Data/
 ├── Agents/              Agent definitions and run logs
 ├── Avatar.jpg           User avatar image
-├── Browsing/            Browser history
+├── Browsing/            Browser history (organized by date)
 ├── ChannelMessages/     Channel message history
 ├── Channels.json        Channel configurations
 ├── Chats/               Chat session files
@@ -22,7 +22,7 @@ Data/
 ├── System.json          System info snapshot
 ├── Templates/           Prompt templates
 ├── Usage/               Token usage analytics
-└── User.json            User profile and settings
+└── User.json            User profile, providers, connectors, settings
 ```
 
 ---
@@ -45,7 +45,7 @@ Stores user profile, providers, connectors, and settings:
   "providers": {
     "selected": ["openai", "anthropic", "..."],
     "details": {
-      "openai": { "apiKey": "sk-..." },
+      "openai": { "apiKey": "sk-...", "endpoint": "https://api.openai.com/v1" },
       "ollama": { "endpoint": "http://127.0.0.1:11434/..." }
     }
   },
@@ -59,7 +59,7 @@ Stores user profile, providers, connectors, and settings:
   "appSettings": {
     "runOnStartup": false,
     "keepAwake": false,
-    "soundEffects": true,
+    "completionSound": true,
     "autoMemoryUpdates": true,
     "autoUpdate": true,
     "showTechFeed": true,
@@ -87,8 +87,13 @@ App lock configuration:
 {
   "enabled": false,
   "passwordHash": "...",
-  "autoLockTimeout": 5,
-  "recoveryAnswer": "..."
+  "passwordSalt": "...",
+  "secretQuestion": "What is your pet's name?",
+  "secretAnswerHash": "...",
+  "secretAnswerSalt": "...",
+  "autoLockTimeout": "5min",
+  "failedAttempts": 0,
+  "lockoutUntil": null
 }
 ```
 
@@ -104,7 +109,7 @@ System info snapshot:
   "platform": "win32",
   "arch": "x64",
   "nodeVersion": "22.0.0",
-  "electronVersion": "42.4.0",
+  "electronVersion": "43.1.1",
   "totalMemory": 16384,
   "cpuModel": "..."
 }
@@ -143,7 +148,7 @@ Chat session files. Each session is a JSON file containing:
 
 ## Memories/
 
-Long-term memory markdown files. Each file represents a memory topic.
+Long-term memory markdown files. Each file represents a memory topic or category.
 
 ---
 
@@ -151,8 +156,8 @@ Long-term memory markdown files. Each file represents a memory topic.
 
 Agent definitions and run logs:
 
-- Agent config (name, prompt, schedule, tools)
-- Run history (status, output, timestamps)
+- Agent config (name, prompt, schedule, model, avatar)
+- Run history (status, output, timestamps, tool calls, tokens)
 
 ---
 
@@ -179,6 +184,21 @@ Token usage analytics. Stored per-day and per-model.
 
 ---
 
+## Browsing/
+
+Browser history organized by date:
+
+```text
+Data/Browsing/
+└── 2026/
+    └── 07/
+        └── 01.json
+```
+
+History entries include URL, title, timestamp, and visit count.
+
+---
+
 ## Path Resolution
 
 ### Development
@@ -200,7 +220,7 @@ The `Data/` folder ships only seed/static files. User-generated data is excluded
 ```js
 import { getWritableDataDirectory } from '../Shared/Storage/ResourcePaths.js';
 
-const dataDir = getWritableDataDirectory();
+const dataDir = getWritableDataDirectory(rootDirectory);
 // Returns correct path for dev or packaged build
 ```
 
@@ -210,11 +230,13 @@ const dataDir = getWritableDataDirectory();
 
 `Packages/Shared/Storage/ResourcePaths.js` provides:
 
-- `getWritableDataDirectory(rootDirectory)` — Writable data directory
+- `getWritableDataDirectory(rootDirectory)` — Writable data directory (`app.getPath('userData')` in packaged, `<project>/Data/` in dev)
 - `getBundledResourceDirectory(rootDirectory, resourceName)` — Read-only bundled resources
 - `getResourcePath(rootDirectory, resourceName, ...segments)` — Resolves to correct location
+- `getResourceFileUrl(rootDirectory, resourceName, ...segments)` — Returns `app://` URL for renderer
 - `readJsonResource(rootDirectory, resourceName, ...segments)` — Reads JSON from bundled resources
 - `writeJsonResource(rootDirectory, resourceName, fileName, data, options)` — Writes JSON to writable directory
+- `readTextResource(rootDirectory, resourceName, ...segments, options)` — Reads text from bundled resources
 - `getTrayIconPath(rootDirectory)` — Tray icon path
 
 ### Path Resolution Rules
@@ -236,27 +258,29 @@ Most packages use a similar pattern:
 
 ```js
 // Read state
-const state = await readJsonResource('SomeState.json');
+const state = await readJsonResource(rootDirectory, 'SomePackage', 'SomeState.json');
 
 // Write state
-await writeJsonResource('SomeState.json', state);
+await writeJsonResource(rootDirectory, 'SomePackage', 'SomeState.json', state);
 ```
 
 `Shared/Storage/JsonDirectory.js` reads all `.json` files from a directory.
+
+`Shared/Storage/SingleFileState.js` provides `createSingleFileState({ filePath, defaults })` for single-file state management with defaults merging.
 
 ---
 
 ## Safe Path Handling
 
-`Shared/Storage/SafePath.js` sanitizes file stems and path segments to prevent path traversal attacks.
+`Shared/Storage/SafePath.js` provides `sanitizeFileStem(stem)` to sanitize file stems and path segments to prevent path traversal attacks.
 
 ---
 
 ## UserData
 
-`Packages/Shared/UserData/UserData.js` (411 lines) manages user state:
+`Packages/Shared/UserData/UserData.js` manages user state:
 
 - `createDefaultUserState()` — Default state with locale, profile, providers, connectors, app settings, theme
-- `readUserState()` — Reads and sanitizes state
-- `writeUserState()` — Writes with serialized write queue
-- Full sanitization of incoming state
+- `readUserState(rootDirectory)` — Reads and sanitizes state from `Data/User.json`
+- `writeUserState(rootDirectory, state)` — Writes with serialized write queue (prevents concurrent writes)
+- Full sanitization of incoming state (removes unknown keys, validates types)

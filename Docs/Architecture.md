@@ -1,6 +1,6 @@
 # Architecture
 
-Joanium is a **local-first AI desktop assistant** built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js >= 24. Cross-platform: Windows, macOS, Linux.
+Joanium is a **local-first AI desktop assistant** built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js >= 22. Cross-platform: Windows, macOS, Linux.
 
 ---
 
@@ -16,12 +16,13 @@ Joanium is a **local-first AI desktop assistant** built with Electron and vanill
 
 ## Tech Stack
 
-- **Runtime**: Node.js >= 22, Electron 42.4.0
+- **Runtime**: Node.js >= 22, Electron 43.1.1
 - **Language**: JavaScript (ESM only — no CommonJS)
 - **UI**: Vanilla JS, CSS, custom DOM utilities
-- **Build**: electron-builder, custom build scripts
-- **Linting**: ESLint, Prettier, markdownlint
+- **Build**: electron-builder 26.11.1, custom build scripts
+- **Linting**: ESLint 10.7.0, Prettier 3.9.5, markdownlint 0.49.0
 - **Testing**: Fast-check (fuzz), manual
+- **Key dependencies**: electron-updater 6.8.9, jszip, mammoth (DOCX), pdf-parse, exceljs
 
 ---
 
@@ -32,9 +33,9 @@ Joanium is a **local-first AI desktop assistant** built with Electron and vanill
 | `Packages/` | All features. Each is an independent package. | Read (code) | Inside asar |
 | `Packages/Shared/` | Code used by more than one package. | Read (code) | Inside asar |
 | `Assets/` | Images, audio, video. | Read-only | Inside asar |
-| `Config/` | App config files (model catalogs, etc.). | Read-only | Inside asar |
+| `Config/` | App config files (model catalogs). | Read-only | Inside asar |
 | `Data/` | User data. | Read-write | Outside asar |
-| `Datasets/` | Static datasets. | Read-only | Inside asar |
+| `Datasets/` | Static datasets (greetings, suggestions). | Read-only | Inside asar |
 | `Personas/` | AI persona markdown files. | Read-write | Outside asar |
 | `Prompts/` | System prompt markdown files. | Read-only | Inside asar |
 | `Scripts/` | Build scripts only. | Read-only | N/A |
@@ -57,12 +58,40 @@ Packages/<Name>/
 └── Utils.js       ← Helpers for this package (only if needed)
 ```
 
-### Why this structure?
+### Package Index
 
-- **Index.js isolation**: Every package exposes a single entry point. Nothing outside a package imports its inner files. This enforces the microservice boundary.
-- **Core/UI/IPC separation**: Backend logic, frontend presentation, and IPC handlers are cleanly separated.
-- **I18n ownership**: All user-facing strings live in `I18n/` files. No hardcoded text in JS or HTML.
-- **Utils.js**: Helper functions supporting main logic live alongside the main file, not scattered.
+There are **28 packages** in `Packages/` (plus `Index.js` which is the bootstrap entry):
+
+| Package | Type | Description |
+|---|---|---|
+| Boot | Infrastructure | Package auto-discovery engine |
+| Electron | Infrastructure | Electron main process shell, window creation, production hardening |
+| Shell | Infrastructure | Main app shell, SPA router, ipcCompanion resolution |
+| Shared | Library | Cross-package shared utilities, components, runtime |
+| Chat | Feature | Conversation engine, AI streaming, prompt assembly |
+| Toolset | Feature | AI tools, connectors, built-in utilities |
+| Providers | Feature | AI provider management, model catalogs |
+| Memory | Feature | Long-term personal memory |
+| Agents | Feature | Scheduled background agents |
+| Channels | Feature | External messaging gateway |
+| MCP | Feature | Model Context Protocol server connections |
+| Setup | Feature | Onboarding wizard |
+| History | Feature | Chat session persistence |
+| Themes | Feature | UI theme management |
+| Security | Feature | App lock, password protection |
+| User | Feature | User profile and custom instructions |
+| About | Feature | App metadata, what's new |
+| Projects | Feature | Project workspace management |
+| Templates | Feature | Prompt template storage |
+| Skills | Feature | AI skill documents |
+| Personas | Feature | AI persona management |
+| SlashCommands | Feature | Chat slash command registry |
+| Events | Feature | Event feed panel (stub) |
+| Usage | Feature | Token usage analytics |
+| Leaderboard | Feature | Usage leaderboard (stub) |
+| LiveBrowser | Feature | Embedded browser preview with AI tools |
+| Marketplace | Feature | Marketplace installer |
+| AppSettings | Feature | Application settings with runtime side effects |
 
 ---
 
@@ -76,18 +105,21 @@ The Shell package declares all other packages as `ipcCompanions`. This merges ev
 
 ```text
 Shell BrowserWindow
-├── Shell's own IPC handlers
-├── Chat's IPC handlers (merged via companions)
-├── Memory's IPC handlers (merged via companions)
-├── Toolset's IPC handlers (merged via companions)
+├── Shell's own IPC handlers (shell:bootstrap)
+├── Chat's IPC handlers (11 channels)
+├── Memory's IPC handlers (16 channels)
+├── Toolset's IPC handlers (6 channels)
 ├── ... (all other packages)
 ```
+
+The companion resolution excludes: `Boot`, `Electron`, `LiveBrowser`, `Setup`, `Shared`, and `Shell` itself. All other packages are automatically discovered and merged. Circular companion dependencies are detected and throw an error.
 
 ### Package Communication Rules
 
 1. **Never import across packages** — if something is shared, it lives in `Packages/Shared/`.
 2. **IPC for cross-package signals** — packages communicate through IPC channels.
 3. **Shared events** — `Packages/Shared/Events/` defines custom DOM events for renderer-side communication.
+4. **Auto-discovery** — Packages are discovered dynamically by scanning `Packages/` for directories with non-empty `Index.js`.
 
 ---
 
@@ -147,49 +179,155 @@ User data is stored in the `Data/` folder:
 | `Data/Browsing/` | Browser history |
 | `Data/Screenshots/` | Browser screenshots |
 | `Data/Dreams/` | Dream journal (memory consolidation) |
-| `Data/User.json` | User profile and settings |
+| `Data/User.json` | User profile, providers, connectors, settings |
 | `Data/Security.json` | App lock configuration |
 | `Data/System.json` | System info snapshot |
 | `Data/Avatar.jpg` | User avatar image |
 
 ---
 
-## Project Workspace
+## System Prompt Assembly
 
-The projects view behaves like a native workspace browser with searchable project cards and visually rich previews. Opening a project makes that workspace context visible to the user inside chat. Project records preserve the selected workspace folder as `folderPath` / `rootPath`; Chat includes it in the system context and uses it as the default working directory for terminal, Git, and project checks.
+The system prompt is assembled in `ChatState.js` by concatenating multiple sources:
+
+```text
+1. Prompts/System.md + Runtime info (user, version, time, timezone, platform)
+2. Active persona (from Personas/ directory)
+3. Mode instruction (if a slash command mode is active)
+4. Custom user instructions (from user profile)
+5. Project context (from project documentation)
+6. Memory context (from Data/Memories/ via memory:get-context)
+7. Terminal tool instructions (from Prompts/Terminal.md with tool names injected)
+8. Toolset tool instructions (from Prompts/Toolset.md with tool list injected)
+9. Skills context (from Skills/ directory)
+10. "No Project Context" instruction (if source is 'chat' and no project is open)
+```
+
+The final prompt is prepended with `latestUserMessageAnchor` — a lightweight multi-turn anchor so weaker models always know which message they should respond to.
+
+### Provider-Specific Streaming
+
+The chat engine uses Node.js HTTP (not Electron's fetch) to stream responses directly from the IncomingMessage. Three streaming paths:
+
+- **OpenAI-compatible**: Standard SSE with `delta.content` for text and `delta.reasoning_content` / `delta.reasoning` for thinking tokens (DeepSeek-R1, Qwen-QwQ)
+- **Anthropic**: Native API with `content_block_delta` events for text and `thinking_delta` for extended thinking (claude-3-7-sonnet, claude-4)
+- **Google Gemini**: Native API with `generateContent` → `streamGenerateContent` endpoint swap and `?alt=sse` format
+
+All three paths support multimodal user turns (image attachments as base64 inline data).
+
+### Retry Logic
+
+Transient errors (429, 500, 502, 503, 504, network codes like ECONNRESET) are retried up to 3 times with exponential backoff (800ms base). Retries only happen before any tokens are emitted — once streaming starts, mid-stream failures are surfaced immediately.
+
+Empty responses (stream ends with zero tokens) are also retried as transient failures.
 
 ---
 
-## Ported Features from Original App
+## Tool Execution Flow
 
-### Chat
+The tool loop is implemented in `Shared/ToolLoop/RendererToolLoop.js` and runs in the renderer process:
 
-- Attachments and completion sound (file picking, validation, extraction, drag-and-drop)
-- Slash commands (inline `/` command palette)
-- Terminal drawer and terminal tool loop
+```text
+AI response contains tool call block
+    ↓
+parseAllToolRequests() — extracts joanium-terminal and joanium-tool blocks
+    ↓
+Falls back to plain JSON / ```json blocks for reasoning models
+    ↓
+Deduplicates identical tool calls
+    ↓
+Terminal tools → toolset:execute-tool IPC call → ToolsetService
+Toolset tools → toolset:execute-tool IPC call → ToolsetService
+    ↓
+Handler executes with 30-second timeout
+    ↓
+Result injected into AI context as tool response
+    ↓
+Loop repeats up to maxToolCalls (10 for chat, 1000 for agents)
+```
 
-### Channels
+Tool calls use fenced code blocks:
 
-- External messaging: Telegram, WhatsApp, Discord, Slack, Zulip, Mattermost, ntfy
-- Uses shared assistant pipeline for replies
+- `joanium-terminal` — local tools (shell, filesystem, git, browser)
+- `joanium-tool` — connector/API tools (GitHub, Jira, etc.)
 
-### Toolset
+### Built-in Tools (in ToolsetService.js)
 
-- Tool discovery, connector state, built-in chat tools
-- 28 tool packages (Cloudflare, GitHub, Google, Jira, Linear, Notion, etc.)
-- Public data tools (Wikipedia, weather, crypto, NASA, etc.)
+The tool executor registers built-in handlers for:
 
-### Other
+- **Math**: `calculate_expression` (full expression evaluator with operator precedence)
+- **Unit conversion**: `convert_units` (30+ units across length, weight, volume, speed, temperature)
+- **Date/time**: `get_time_in_timezone`, `calculate_date`, `convert_timezone`, `is_weekend`, `business_days_between`, `add_business_days`, `next_weekday_occurrence`, `age_calculator`, `days_until_birthday`, `get_season`, `get_month_info`, `get_quarter_info`, `lunar_phase`, `week_bounds`, `month_bounds`, `year_progress`, `detailed_difference`, `nth_weekday_of_month`, `timezone_overlap`, `century_decade_info`, `unix_converter`, `time_until_datetime`
+- **URL**: `parse_url`, `extract_query_params`, `build_url`, `add_utm_params`, `remove_tracking_params`, `encode_url`, `decode_url`, `extract_domain`, `slugify_to_url`, `extract_urls_from_text`, `compare_urls`, `url_to_markdown_link`, `url_to_html_link`, `url_to_base64`, `count_url_params`
+- **Geospatial**: `get_distance`, `get_midpoint`, `check_point_in_radius`, `convert_dms_to_dd`, `convert_dd_to_dms`, `encode_geohash`, `decode_geohash`, `get_map_url`
+- **Crypto**: `generate_uuid`, `hash_text` (SHA-1/256/384/512)
+- **Encoding**: `encode_base64`, `decode_base64`
+- **JSON**: `format_json` (with optional key sorting)
+- **Text**: `convert_text_case`, `get_text_stats`
+- **Security**: `generate_password`
 
-- Browser Preview (Electron browser view with AI tools)
-- App Settings (persisted behavior, keep-awake, auto-update)
-- Window State (persisted bounds and maximized/fullscreen restore)
-- Memory (long-term personal memory with auto-updates)
-- Scheduled Agents (background execution with full tool access)
-- MCP (Model Context Protocol server connections)
-- About/System Info (app metadata and system snapshot)
-- Custom Instructions (user-written behavior hints)
-- Birthday Card (celebratory overlay on user's birthday)
+### Tool Discovery
+
+`ToolDiscovery.js` scans `Tools/` for subdirectories with `Index.js`, skipping `Core/` (support directory). It also discovers external tool packages from other packages (e.g., `LiveBrowser`). Each tool package exports:
+
+- `toolDefinitions` — name, description, parameters
+- `toolHandlers` — execution functions
+- `promptSections` — additional system prompt content
+- `connectors` — required API credentials
+- `ipcHandlers` — additional IPC channels
+
+---
+
+## IPC Communication
+
+### Main Process (handler registration)
+
+```js
+ipcMain.handle('package:action', async (_event, payload) => {
+  // logic
+  return result;
+});
+```
+
+### Renderer Process (calling IPC)
+
+```js
+const result = await window.Joanium.ipc.invoke('package:action', payload);
+```
+
+### Streaming Pattern
+
+For long-running operations (AI completions), the streaming pattern uses abort controllers:
+
+```js
+// Main process
+ipcMain.handle('chat:stream-message', async (event, payload) => {
+  const streamId = payload.streamId;
+  const abortController = new AbortController();
+  activeStreams.set(streamId, abortController);
+  
+  // Stream chunks via event.sender.send()
+  for await (const chunk of stream) {
+    event.sender.send('chat:stream-chunk', { streamId, chunk });
+  }
+  
+  event.sender.send('chat:stream-done', { streamId });
+  activeStreams.delete(streamId);
+});
+```
+
+### Custom Renderer Events
+
+`Packages/Shared/Events/RendererEvents.js` defines custom DOM events for renderer-side communication:
+
+| Event | Purpose |
+|---|---|
+| `PROVIDERS_CHANGED` | Provider configuration changed |
+| `CONNECTORS_CHANGED` | Connector configuration changed |
+| `APP_SETTINGS_CHANGED` | App settings changed |
+| `MEMORY_SYNC` | Memory sync triggered |
+| `TRIGGER_MEMORY_SYNC` | Request memory sync |
+| `THEME_CHANGED` | Theme changed |
 
 ---
 

@@ -47,6 +47,7 @@ All prompt files live in `Prompts/` at the project root:
 7. Terminal tool instructions (from Terminal.md)
 8. Toolset tool instructions (from Toolset.md with tool list injected)
 9. Skills context (from Skills/ directory)
+10. "No Project Context" instruction (if source is 'chat' and no project is open)
 ```
 
 When no project is open (source is `'chat'` and no `projectInfo`), a "No Project Context" instruction is appended that restricts the AI to conversational responses only.
@@ -118,6 +119,7 @@ Modes are defined in `Packages/SlashCommands/Core/Commands.js` with type `'mode'
 ```js
 export const CHAT_PROMPTS = {
   fallbackSystem: '...',  // Fallback if System.md is unreadable
+  latestUserMessageAnchor: '...',  // Multi-turn anchor for weak models
   // ... other chat-specific prompt templates
 };
 ```

@@ -8,12 +8,12 @@ External messaging gateway — Telegram, WhatsApp, Discord, Slack, Zulip, Matter
 
 ```text
 Channels Package
-├── Index.js              (198 lines — IPC handlers)
+├── Index.js              — IPC handlers
 ├── Core/
-│   ├── ChannelState.js   (channel configuration)
-│   └── ChannelRuntime.js (polling, validation, reply dispatch)
+│   ├── ChannelState.js   — Channel configuration
+│   └── ChannelRuntime.js — Polling, validation, reply dispatch
 └── I18n/
-    └── en.js             (channel strings)
+    └── en.js             — Channel strings
 ```
 
 ---
@@ -32,7 +32,7 @@ Channels Package
 
 ---
 
-## IPC Handlers
+## IPC Handlers (12 channels)
 
 | Channel | Purpose |
 |---|---|
@@ -108,14 +108,11 @@ Message saved to ChannelMessages
 Channels use the same `AssistantPipeline` as Chat:
 
 ```js
-// Packages/Shared/AssistantRuntime/AssistantPipeline.js
-const pipeline = new AssistantPipeline();
-const response = await pipeline.execute({
-  messages: [...],
-  persona: activePersona,
-  memory: memoryContext,
-  tools: toolDefinitions,
-  // ...
+const result = await runAssistantPipeline({
+  messages: [{ role: 'user', content: incomingMessage }],
+  persona: channelSystemPrompt,
+  source: 'channel',
+  maxToolCalls: 5,
 });
 ```
 
@@ -139,19 +136,19 @@ Messages are stored in `Data/ChannelMessages/` for history and reference.
 
 `channels:validate` checks credentials per channel type:
 
-- Telegram: Verify bot token
-- WhatsApp: Verify Twilio accountSid and auth token
-- Discord: Verify bot token and channel ID
-- Slack: Verify bot token and channel ID
-- Zulip: Verify site URL, bot email, API key, and stream
-- Mattermost: Verify site URL, access token, and channel ID
-- ntfy: Verify site URL and topic
+- **Telegram**: Verify bot token
+- **WhatsApp**: Verify Twilio accountSid and auth token
+- **Discord**: Verify bot token and channel ID
+- **Slack**: Verify bot token and channel ID
+- **Zulip**: Verify site URL, bot email, API key, and stream
+- **Mattermost**: Verify site URL, access token, and channel ID
+- **ntfy**: Verify site URL and topic
 
 ---
 
 ## Channel Icons
 
-`channels:icon-paths` returns file paths for channel icons used in the UI.
+`channels:icon-paths` returns file paths for channel icons used in the UI. Icons are stored in `Assets/Icons/`.
 
 ---
 

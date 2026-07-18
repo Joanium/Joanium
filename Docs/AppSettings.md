@@ -8,19 +8,19 @@ Application settings with runtime side effects.
 
 ```text
 Packages/AppSettings/
-├── Index.js              (145 lines — IPC handlers)
+├── Index.js              — IPC handlers
 ├── Core/
-│   ├── AppSettingsState.js       (settings persistence)
-│   ├── PowerService.js           (keep-awake mode)
-│   ├── AutoUpdateService.js      (electron-updater integration)
-│   └── DataPortabilityService.js (ZIP export/import)
+│   ├── AppSettingsState.js       — Settings persistence
+│   ├── PowerService.js           — Keep-awake mode
+│   ├── AutoUpdateService.js      — electron-updater integration
+│   └── DataPortabilityService.js — ZIP export/import
 └── I18n/
-    └── en.js             (settings strings)
+    └── en.js             — Settings strings
 ```
 
 ---
 
-## IPC Handlers
+## IPC Handlers (10 channels)
 
 | Channel | Purpose |
 |---|---|
@@ -82,6 +82,7 @@ if (settings.autoUpdate) {
 ```js
 app.setLoginItemSettings({
   openAtLogin: settings.runOnStartup,
+  openAsHidden: process.platform !== 'linux',
 });
 ```
 
@@ -111,11 +112,11 @@ await invokeIpc('data:export');
 ### Import
 
 ```js
-await invokeIpc('data:import', zipPath);
-// Restores data from ZIP
+await invokeIpc('data:import');
+// Opens file picker, restores data from ZIP
 ```
 
-`DataPortabilityService.js` handles ZIP creation and extraction using Electron's native APIs.
+`DataPortabilityService.js` handles ZIP creation and extraction using jszip.
 
 ---
 
@@ -127,7 +128,7 @@ await invokeIpc('app-settings:reset-app');
 
 This:
 
-1. Deletes all user data from `Data/`
+1. Deletes all entries from `KNOWN_DATA_ENTRIES` (Data/ folder contents)
 2. Resets settings to defaults
 3. Relaunches the app
 

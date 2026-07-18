@@ -8,9 +8,9 @@ The shared prompt execution pipeline used by Chat, Channels, and Agents.
 
 ```text
 Shared/AssistantRuntime/
-├── AssistantPipeline.js   (160 lines — pipeline orchestration)
-├── AssistantContext.js     (78 lines — context caching and loading)
-└── Utils.js               (optional-value helpers)
+├── AssistantPipeline.js   — Pipeline orchestration
+├── AssistantContext.js     — Context caching and loading
+└── Utils.js               — Optional-value helpers
 ```
 
 ---

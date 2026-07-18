@@ -8,8 +8,8 @@ Static data files used by the chat interface.
 
 ```text
 Datasets/
-├── Messages.js    (greeting messages, holiday messages)
-└── Suggestions.js (chat input suggestions)
+├── Messages.js    — Greeting messages, holiday messages
+└── Suggestions.js — Chat input suggestions
 ```
 
 ---

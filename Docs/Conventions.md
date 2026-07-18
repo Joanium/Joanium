@@ -26,7 +26,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```text
 feat: add Gemini provider support
 fix: resolve crash on empty chat history
-chore: bump electron to 42.0.1
+chore: bump electron to 43.1.1
 docs: update README setup steps
 refactor: simplify package bootstrap logic
 ```
@@ -73,9 +73,15 @@ element.textContent = t('key');
 export function createPackage() {
   return {
     id: 'PackageName',
-    ipcHandlers: {
-      'package:action': handler,
-    },
+    ipcHandlers: [
+      {
+        channel: 'package:action',
+        handler: async (_event, payload) => {
+          // logic
+          return result;
+        },
+      },
+    ],
   };
 }
 ```

@@ -16,6 +16,8 @@ App.js
 
 `bootstrapApplication()` is imported from `Packages/Index.js`.
 
+Boot logs go to `Build/Logs/electron-boot.log` in dev or `process.resourcesPath/Logs/electron-boot.log` in packaged builds.
+
 ---
 
 ## Bootstrap Sequence: `Packages/Index.js`
@@ -44,7 +46,7 @@ The `Electron` and `Setup` packages are loaded first because they are needed bef
 ### Step 3: Resolve Entry Package
 
 ```js
-const entryPackageName = setup.resolveLaunchPackage();
+const entryPackageName = setup.resolveLaunchPackage({ rootDirectory });
 ```
 
 `resolveLaunchPackage()` checks if onboarding is complete:
@@ -55,22 +57,23 @@ const entryPackageName = setup.resolveLaunchPackage();
 ### Step 4: Create Entry Package
 
 ```js
-const entryPackage = createPackage(entryPackageName);
+const entryPackage = await createPackage(entryPackageName);
 ```
 
 `createPackage()` is a recursive function that:
 
 1. Loads the package module from the registry
-2. Calls its `createPackage()` export
+2. Calls its `createPackage()` export with `{ rootDirectory, packagesDirectory, registry }`
 3. Recursively creates any `ipcCompanions` (packages whose IPC handlers are merged into the current window)
-4. Merges all IPC handlers into a single `ipcHandlers` map
+4. Merges all IPC handlers into a single `ipcHandlers` array
+5. Detects circular companion dependencies and throws an error
 
 For Shell, this means ALL other packages' IPC handlers get merged into one BrowserWindow.
 
 ### Step 5: Boot Electron
 
 ```js
-electron.bootElectron(entryPackage);
+electron.bootElectron({ rootDirectory, entryPackage, loadPackage: createPackage });
 ```
 
 `bootElectron()` creates the BrowserWindow, registers IPC handlers, and starts the app.
@@ -83,11 +86,11 @@ The boot system has 3 exports:
 
 ### `discoverPackages(packagesDirectory)`
 
-Scans `Packages/` for directories with non-empty `Index.js`. Returns a `Map` of discovered packages.
+Scans `Packages/` for directories with non-empty `Index.js`. Returns a `Map` of discovered packages. Filters out non-directories and empty files.
 
 ### `loadPackageModule(registry, packageName)`
 
-Dynamic `import()` of a package's `Index.js`. The module is cached after first load.
+Dynamic `import()` of a package's `Index.js` using `pathToFileURL` for cross-platform compatibility. The module is cached after first load.
 
 ### `createBootLogger(logFilePath)`
 
@@ -101,11 +104,11 @@ When Shell creates its BrowserWindow, it declares all other packages as `ipcComp
 
 ```text
 Shell
-├── Shell.ipcHandlers
-├── Chat.ipcHandlers (merged)
-├── Memory.ipcHandlers (merged)
-├── Toolset.ipcHandlers (merged)
-├── Providers.ipcHandlers (merged)
+├── Shell.ipcHandlers (shell:bootstrap)
+├── Chat.ipcHandlers (11 channels — merged)
+├── Memory.ipcHandlers (16 channels — merged)
+├── Toolset.ipcHandlers (6 channels — merged)
+├── Providers.ipcHandlers (6 channels — merged)
 ├── ... (all other packages)
 └── All handlers registered on ipcMain
 ```
@@ -118,13 +121,44 @@ This means a single BrowserWindow has access to every package's IPC channels. Th
 
 `bootElectron()` configures:
 
-1. **Chromium flags**: Disable backgrounding, GPU features, force sRGB
-2. **Protocol**: Registers `app://` for cross-origin resource loading
-3. **BrowserWindow**: Frameless, persisted window state, titlebar overlay
-4. **IPC registration**: Registers/unregisters handlers on package navigation
-5. **Production hardening**: Blocks reload/devtools/view-source/context-menu in packaged builds
-6. **Geolocation**: Permission handler for Location tools
-7. **Power**: `powerSaveBlocker.start('prevent-app-suspension')`
+**Chromium flags** (before app ready):
+
+- `disable-renderer-backgrounding` — Prevents timer/IPC throttling when backgrounded
+- `disable-background-timer-throttling` — Same for background timers
+- `disable-backgrounding-occluded-windows` — Same for occluded windows
+- `force-color-profile srgb` — Consistent color rendering
+- `disable-features CalculateNativeWinOcclusion,OccludedWindowWebContentsExperiment` — Prevents Windows occlusion-based throttling
+- `enable-features EarlyEstablishGpuChannel,EstablishGpuChannelAsync` — Faster GPU initialization
+
+**Protocol registration**:
+
+- Registers `app://` as a privileged scheme with `standard`, `secure`, and `supportFetchAPI` privileges
+- Protocol handler serves files from resource directories via `app://AssetName/path`
+
+**Window creation**:
+
+- Frameless window with `titlebarStyle: hidden` (macOS native) or `titlebarOverlay` (Windows/Linux)
+- Min size: 1160×780
+- Background color: `#f2eafa`
+- Context isolation enabled, sandbox disabled, node integration disabled
+- DevTools disabled in packaged builds
+- Window state persistence (bounds, maximized) via `Data/WindowState.json`
+
+**Production hardening** (packaged builds only):
+
+- Blocks reload, hard-reload, DevTools, view-source keyboard shortcuts via `before-input-event`
+- Suppresses default Chromium context menu (removes "Inspect" and "View Page Source")
+- Strips default application menu (removes Ctrl+R, F5, Ctrl+Shift+R, F12, Ctrl+U accelerators)
+- Applied to all WebContents via `web-contents-created` event
+
+**Other behaviors**:
+
+- `powerSaveBlocker.start('prevent-app-suspension')` on launch
+- Geolocation permission granted for Location tools
+- Background throttling disabled on both webPreferences and WebContents level
+- Compositor invalidated on window focus/show for immediate repaint
+- Boot logging to `Build/Logs/electron-boot.log` (dev) or `process.resourcesPath/Logs/electron-boot.log` (packaged)
+- Navigation via `app:navigate` IPC — creates new window, destroys old one, transfers IPC handlers
 
 ---
 

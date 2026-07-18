@@ -8,13 +8,13 @@ Delegates complex tasks to multiple focused read-only sub-agents.
 
 ```text
 Packages/Toolset/Tools/SubAgents/
-├── Index.js        (17 lines — tool package entry)
-├── Tools.js        (tool definitions)
-├── Executors.js    (tool execution handlers)
-├── Prompt.js       (prompt section builder)
-├── API.js          (task normalization)
+├── Index.js        — Tool package entry
+├── Tools.js        — Tool definitions
+├── Executors.js    — Tool execution handlers
+├── Prompt.js       — Prompt section builder
+├── API.js          — Task normalization
 └── I18n/
-    └── en.js       (tool definitions and strings)
+    └── en.js       — Tool definitions and strings
 ```
 
 ---

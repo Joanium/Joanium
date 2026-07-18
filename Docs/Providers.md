@@ -8,41 +8,46 @@ AI provider management — configuration, model catalogs, and runtime selection.
 
 ```text
 Providers Package
-├── Index.js              (51 lines — IPC handlers)
+├── Index.js                      — IPC bootstrap and handler registration
 ├── Core/
-│   └── ProviderState.js  (state management, background sync)
-└── I18n/
-    └── en.js             (provider strings)
+│   ├── ProviderState.js         — Reads and writes provider state; runs background sync
+│   └── ModelFavouritesState.js — Persists per-provider model favourites
+├── I18n/
+│   └── en.js                    — Provider UI strings
+└── UI/
+    └── ProvidersPanel.js        — Provider connection and catalog UI
 ```
+
+The catalog builder itself lives in `Packages/Shared/ProviderCatalog/` and is consumed by chat, setup, and UI flows.
 
 ---
 
 ## Supported Providers
 
-Joanium supports 35 AI providers:
+The current catalog contains 35 provider definitions from `Config/Models/index.json`.
 
-### API-Based Providers
+### Cloud providers
 
 | Provider | Type |
 |---|---|
-| OpenAI | API |
-| Anthropic | API |
-| Google (Gemini) | API |
-| xAI (Grok) | API |
-| Mistral | API |
-| Cohere | API |
-| DeepSeek | API |
-| Groq | API |
-| Fireworks | API |
-| Together | API |
-| Perplexity | API |
-| AI21 | API |
-| Alibaba | API |
-| MiniMax | API |
-| Moonshot | API |
-| Writer | API |
-| StepFun | API |
-| ZAI | API |
+| OpenAI | Cloud |
+| Anthropic | Cloud |
+| Google (Gemini) | Cloud |
+| xAI (Grok) | Cloud |
+| Mistral | Cloud |
+| Cohere | Cloud |
+| DeepSeek | Cloud |
+| Groq | Cloud |
+| Fireworks | Cloud |
+| Together | Cloud |
+| Perplexity | Cloud |
+| AI21 | Cloud |
+| Alibaba | Cloud |
+| MiniMax | Cloud |
+| Moonshot | Cloud |
+| Writer | Cloud |
+| StepFun | Cloud |
+| ZAI | Cloud |
 
 ### Aggregators
 
@@ -50,8 +55,12 @@ Joanium supports 35 AI providers:
 |---|---|
 | OpenRouter | Aggregator |
 | Requesty | Aggregator |
+| GitHub Models | Gateway |
+| Vercel AI Gateway | Gateway |
+| MuleRouter | Gateway |
+| Poe | Gateway |
 
-### Local Providers
+### Local providers
 
 | Provider | Type |
 |---|---|
@@ -62,112 +71,115 @@ Joanium supports 35 AI providers:
 
 | Provider | Type |
 |---|---|
-| Cerebras | Inference |
-| HuggingFace | Inference |
-| Hyperbolic | Inference |
-| Lambda | Inference |
-| Novita | Inference |
-| Nvidia | Inference |
-| Parasail | Inference |
-| SambaNova | Inference |
-| SiliconFlow | Inference |
-
-### Gateways
-
-| Provider | Type |
-|---|---|
-| GitHub Models | Gateway |
-| Vercel AI Gateway | Gateway |
-| MuleRouter | Gateway |
-| Poe | Gateway |
+| Cerebras | Specialized |
+| HuggingFace | Specialized |
+| Hyperbolic | Specialized |
+| Lambda | Specialized |
+| Novita | Specialized |
+| Nvidia | Specialized |
+| Parasail | Specialized |
+| SambaNova | Specialized |
+| SiliconFlow | Specialized |
 
 ---
 
 ## Provider Catalog
 
-`Config/Models/index.json` contains provider metadata with:
+`Config/Models/index.json` is an array of provider JSON filenames. Each provider is read from `Config/Models/<ProviderName>/<ProviderName>.json` and converted into a runtime catalog record with:
 
-- Provider name and ID
-- API endpoint
-- Model list
-- Tint/glow color palette (for UI)
-- Capability flags
+- provider ID and display label
+- endpoint and auth metadata
+- model list and summary fields
+- tint/glow palette for the UI
+- requirements metadata (`apiKey` or `endpoint`)
 
-Each provider has its own directory under `Config/Models/<ProviderName>/`.
+The runtime builder in `Packages/Shared/ProviderCatalog/ProviderCatalog.js` exposes fields such as `id`, `label`, `endpoint`, `requiresApiKey`, `type`, `modelCount`, `models`, `featuredModels`, `summary`, `iconPath`, `palette`, and `requirements`.
 
 ---
 
 ## Provider State
 
-`ProviderState.js` manages:
+`ProviderState.js` manages the persisted provider configuration in `Data/User.json` via `readUserState()` and `writeUserState()`.
 
-- Provider configuration (API keys, endpoints, selected model)
-- Background model-list sync (24-hour TTL per provider)
-- State persistence
+It stores:
+
+- `providers.selected` — the list of enabled provider IDs
+- `providers.details` — per-provider credentials, currently consisting of `apiKey` and/or `endpoint`
 
 ### State Shape
 
 ```js
 {
   providers: {
-    'openai': {
-      apiKey: 'sk-...',
-      endpoint: 'https://api.openai.com/v1',
-      selectedModel: 'gpt-4o'
+    selected: ['openai', 'anthropic'],
+    details: {
+      openai: {
+        apiKey: 'sk-...',
+        endpoint: 'https://api.openai.com/v1/chat/completions',
+      },
+      anthropic: {
+        apiKey: 'sk-ant-...',
+      },
     },
-    'anthropic': {
-      apiKey: 'sk-ant-...',
-      selectedModel: 'claude-sonnet-4-20250514'
-    },
-    // ...
-  }
+  },
 }
 ```
 
+`saveProvider()` writes only the relevant field for the provider type: `apiKey` for providers that require one, or `endpoint` for local providers. The implementation does not persist a `selectedModel` field.
+
+### Background Sync
+
+- delayed by 15 seconds on startup to avoid boot interference
+- no-op in packaged builds
+- runs with a 1-hour TTL per provider (tracked by `_syncedAt` inside each provider JSON)
+- fetches the latest model list from the provider API
+- invalidates the in-memory catalog cache after sync
+
 ---
 
-## IPC Handlers
+## Model Favourites
+
+`ModelFavouritesState.js` manages favourited model IDs per provider:
+
+- persists to `Data/ModelFavourites.json` in the writable data directory
+- returns a normalized `{ providerId, modelId, addedAt }` list
+- supports toggle on/off per model
+
+---
+
+## IPC Handlers (6 channels)
 
 | Channel | Purpose |
 |---|---|
-| `providers:list-catalog` | Full provider catalog with model lists |
-| `providers:list-configured` | Only configured providers |
-| `providers:save` | Save provider config + trigger model sync |
+| `providers:list-catalog` | Return the full provider catalog with model metadata |
+| `providers:list-configured` | Return configured providers plus their saved credentials state |
+| `providers:save` | Save provider config and trigger a provider-model sync |
 | `providers:remove` | Remove provider config |
+| `providers:list-model-favourites` | List favourited models |
+| `providers:toggle-model-favourite` | Toggle model favourite status |
 
 ---
 
 ## Model Sync
 
-When a provider is saved, `ModelSync.js` triggers a background sync to fetch the latest model list from the provider's API. This sync runs with a 24-hour TTL per provider.
+When a provider is saved, `Packages/Shared/ProviderCatalog/ModelSync.js` can immediately sync that provider's model catalog from its API. The sync logic:
+
+- runs only in unpackaged builds
+- merges live provider models into the curated JSON while preserving existing metadata
+- skips non-chat model slugs such as image and audio models
+- uses `_syncedAt` to avoid re-syncing until the 1-hour TTL expires
 
 ---
 
 ## Provider Selection in Chat
 
-`ChatState.js` uses the active provider and model selection to:
+`ChatState.js` resolves the provider catalog and then routes requests through one of three paths:
 
-1. Determine the API endpoint
-2. Set authentication headers
-3. Format the request for the provider's API
-4. Handle provider-specific response formats
+1. `streamGoogleMessage()` for Google-style providers
+2. `streamAnthropicMessage()` for Anthropic
+3. `streamOpenAiCompatibleMessage()` for the rest of the OpenAI-compatible providers
 
-### Provider-Specific Handling
-
-- **OpenAI-compatible**: Standard chat completions API
-- **Anthropic**: Native API with different request/response format
-- **Google**: Native Gemini API with different request/response format
-
----
-
-## Provider UI
-
-The providers settings panel lets users:
-
-1. Browse the full provider catalog
-2. Configure API keys and endpoints
-3. Select active models
-4. View model lists with capabilities
+The provider list is determined from the runtime catalog, and the chat layer uses the provider's endpoint plus auth headers to format requests.
 
 ---
 
@@ -175,15 +187,15 @@ The providers settings panel lets users:
 
 `ProviderUtils.js` provides:
 
-- `orderProvidersBySelection()` — Sorts providers by selection state
-- `providerIsConfigured()` — Checks if a provider has valid credentials
+- `orderProvidersBySelection(user, providers)` — sorts providers according to the persisted selection order
+- `providerIsConfigured(provider, details = {})` — checks whether a provider has the required endpoint/API key and at least one model entry
 
 ---
 
 ## Provider Catalog UI
 
-`ProviderCatalog.js` reads provider metadata and provides:
+The provider UI consumes the catalog data from the IPC layer and renders:
 
-- Tint/glow color palette for 35+ providers
-- Provider card rendering
-- Model selection UI
+- tint/glow palette cards for each provider
+- provider connection state and credentials form
+- model lists and favourite toggles

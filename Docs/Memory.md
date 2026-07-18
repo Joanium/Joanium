@@ -8,12 +8,12 @@ Long-term personal memory stored as markdown files in `Data/Memories/`.
 
 ```text
 Memory Package
-├── Index.js              (88 lines — IPC handlers)
+├── Index.js              — IPC handlers
 ├── Core/
-│   ├── MemoryState.js    (CRUD operations)
-│   └── MemoryCleanup.js  (automatic deduplication)
+│   ├── MemoryState.js    — CRUD operations
+│   └── MemoryCleanup.js  — Automatic deduplication and dream journal
 └── I18n/
-    └── en.js             (memory strings)
+    └── en.js             — Memory strings
 ```
 
 ---
@@ -41,7 +41,7 @@ Memory files are stored as markdown in `Data/Memories/`. Each file represents a 
 
 ---
 
-## IPC Handlers
+## IPC Handlers (16 channels)
 
 | Channel | Purpose |
 |---|---|
@@ -74,13 +74,13 @@ The memory context is included in the system prompt by `ChatState.js`.
 
 ## Auto Memory Updates
 
-After saved non-private chat sessions, `Chat` schedules private background memory syncs:
+After saved non-private chat sessions, `History` marks sessions as pending memory sync:
 
 1. Session is saved to history
-2. `History` marks session as pending memory sync
+2. `History` marks session as pending memory sync (`history:list-memory-pending`)
 3. Background sync uses `Prompts/Memory.md` to extract durable user facts
 4. `memory:apply-updates` writes facts back to `Data/Memories`
-5. Session is marked as memory-synced
+5. Session is marked as memory-synced (`history:mark-memory-synced`)
 
 This ensures the AI remembers important information across conversations.
 
@@ -101,20 +101,30 @@ The triage system (`memory:get-triage-prompt`) helps organize and consolidate me
 
 `MemoryCleanup.js` handles automatic deduplication:
 
-- Triggered via `memory:run-cleanup`
+- Cleanup service starts automatically on package creation
+- Triggered via `memory:run-cleanup` (force mode)
 - Uses AI to identify redundant memories
 - Merges or removes duplicates
 - Maintains memory quality over time
+
+The cleanup flow:
+
+1. `memory:run-cleanup` triggers cleanup
+2. Cleanup service loads memory catalog
+3. AI identifies redundant/duplicate memories
+4. `memory:cleanup-ai-reply` processes AI response
+5. Updates are applied via `memory:apply-updates`
 
 ---
 
 ## Dream Journal
 
-The dream system (`memory:list-dreams`, `memory:read-dream`) provides periodic AI consolidation of memories:
+The dream system provides periodic AI consolidation of memories:
 
-- AI reviews memories and creates "dream" summaries
-- Stored in `Data/Dreams/`
-- Periodic background process
+- `memory:list-dreams` — List dream journal entries
+- `memory:read-dream` — Read a dream journal entry
+
+Dreams are stored in `Data/Dreams/` and represent AI-generated summaries of memory patterns.
 
 ---
 

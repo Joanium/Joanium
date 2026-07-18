@@ -6,7 +6,7 @@ This file gives AI coding assistants (Claude Code, Cursor, Copilot, Gemini CLI, 
 
 ## What This Project Is
 
-Joanium is a local-first AI desktop assistant built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js >= 24. Cross-platform: Windows, macOS, Linux.
+Joanium is a local-first AI desktop assistant built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js >= 22. Cross-platform: Windows, macOS, Linux.
 
 ---
 

@@ -46,7 +46,7 @@ npm run test                 # Run fuzz tests
 YYYY.MMDD.patch
 ```
 
-Example: `2026.614.1`
+Example: `2026.715.0`
 
 The 2-part base version is written to stdout so CI can append its own counter.
 

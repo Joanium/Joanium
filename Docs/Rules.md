@@ -133,7 +133,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```text
 feat: add Gemini provider support
 fix: resolve crash on empty chat history
-chore: bump electron to 42.0.1
+chore: bump electron to 43.1.1
 docs: update README setup steps
 refactor: simplify package bootstrap logic
 ```
@@ -222,9 +222,15 @@ element.textContent = t('key');
 export function createPackage() {
   return {
     id: 'PackageName',
-    ipcHandlers: {
-      'package:action': handler,
-    },
+    ipcHandlers: [
+      {
+        channel: 'package:action',
+        handler: async (_event, payload) => {
+          // logic
+          return result;
+        },
+      },
+    ],
   };
 }
 ```
@@ -236,26 +242,27 @@ export function createPackage() {
 In packaged builds, `extraResources` files (Data, Skills, Personas) are at `process.resourcesPath`, not the app root. Always use:
 
 ```js
-const dataRoot = app.isPackaged ? process.resourcesPath : rootDirectory;
+import { getWritableDataDirectory } from '../Shared/Storage/ResourcePaths.js';
+const dataDir = getWritableDataDirectory(rootDirectory);
 ```
 
 ---
 
 ## Folder Roles
 
-| Folder | Purpose |
-|---|---|
-| `Packages/` | All features. Each is an independent package. |
-| `Packages/Shared/` | Code used by more than one package. |
-| `Assets/` | Images, audio, video. Read-only. Inside asar. |
-| `Config/` | App config files. Read-only. Inside asar. |
-| `Data/` | User data. Read-write. Outside asar. Gitignored. |
-| `Datasets/` | Static datasets. Read-only. Inside asar. |
-| `Personas/` | AI persona markdown files. Outside asar. |
-| `Prompts/` | System prompt markdown files. Inside asar. |
-| `Scripts/` | Build scripts only. |
-| `Skills/` | AI skill markdown files. Outside asar. |
-| `Docs/` | Developer documentation. |
+| Folder | Purpose | Read/Write | Packaging |
+|---|---|---|---|
+| `Packages/` | All features. Each is an independent package. | Read (code) | Inside asar |
+| `Packages/Shared/` | Code used by more than one package. | Read (code) | Inside asar |
+| `Assets/` | Images, audio, video. | Read-only | Inside asar |
+| `Config/` | App config files (model catalogs). | Read-only | Inside asar |
+| `Data/` | User data. | Read-write | Outside asar |
+| `Datasets/` | Static datasets (greetings, suggestions). | Read-only | Inside asar |
+| `Personas/` | AI persona markdown files. | Read-write | Outside asar |
+| `Prompts/` | System prompt markdown files. | Read-only | Inside asar |
+| `Scripts/` | Build scripts only. | Read-only | N/A |
+| `Skills/` | AI skill markdown files. | Read-write | Outside asar |
+| `Docs/` | Developer documentation. | Read-only | N/A |
 
 ---
 

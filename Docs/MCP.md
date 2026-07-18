@@ -8,14 +8,14 @@ Manages connections to MCP servers for extended tool capabilities.
 
 ```text
 Packages/MCP/
-├── Index.js              (91 lines — IPC handlers, auto-connect)
+├── Index.js              — IPC handlers, auto-connect
 ├── Core/
-│   ├── MCPState.js       (server configuration persistence)
-│   └── MCPRegistry.js    (connection management, JSON-RPC protocol)
+│   ├── MCPState.js       — Server configuration persistence
+│   └── MCPRegistry.js    — Connection management, JSON-RPC protocol
 ├── UI/
-│   └── MCPPanel.js       (server configuration UI)
+│   └── MCPPanel.js       — Server configuration UI
 └── I18n/
-    └── en.js             (MCP strings)
+    └── en.js             — MCP strings
 ```
 
 ---
@@ -26,7 +26,7 @@ Model Context Protocol (MCP) is a standard for connecting AI assistants to exter
 
 ---
 
-## IPC Handlers
+## IPC Handlers (8 channels)
 
 | Channel | Purpose |
 |---|---|
@@ -104,7 +104,11 @@ const connectEnabledServers = async () => {
   const servers = await stateManager.listServers();
   for (const server of servers) {
     if (!server.enabled) continue;
-    await registry.connect(server);
+    try {
+      await registry.connect(server);
+    } catch {
+      console.warn('[MCP] Auto-connect failed for a server.');
+    }
   }
 };
 ```

@@ -8,11 +8,11 @@ App lock, password protection, and tamper detection.
 
 ```text
 Packages/Security/
-├── Index.js              (56 lines — IPC handlers)
+├── Index.js              — IPC handlers
 ├── Core/
-│   └── SecurityState.js  (305 lines — crypto, lockout, backup)
+│   └── SecurityState.js  — Crypto, lockout, backup
 └── I18n/
-    └── en.js             (security strings)
+    └── en.js             — Security strings
 ```
 
 ---
@@ -80,7 +80,7 @@ Stored in `Data/Security.json`:
 
 ---
 
-## IPC Handlers
+## IPC Handlers (10 channels)
 
 | Channel | Purpose |
 |---|---|

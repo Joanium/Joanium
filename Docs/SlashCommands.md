@@ -8,12 +8,12 @@ Chat input slash command system for quick actions, mode switching, and navigatio
 
 ```text
 Packages/SlashCommands/
-├── Index.js              (19 lines — IPC handlers)
+├── Index.js              — IPC handlers
 ├── Core/
-│   ├── SlashRegistry.js  (command registry, mode instruction loading)
-│   └── Commands.js       (958 lines — all command definitions)
+│   ├── SlashRegistry.js  — Command registry, mode instruction loading
+│   └── Commands.js       — All command definitions
 └── I18n/
-    └── en.js             (slash command strings)
+    └── en.js             — Slash command strings
 ```
 
 ---
