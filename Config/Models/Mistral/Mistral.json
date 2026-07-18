@@ -257,6 +257,9 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "voxtral-mini-realtime-mellon-greek-2606-solutions": {
+      "name": "Voxtral MINI Realtime Mellon Greek 2606 Solutions"
+    },
     "voxtral-mini-2507": {
       "name": "Voxtral MINI 2507"
     },
@@ -270,5 +273,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-15T09:48:45.230Z"
+  "_syncedAt": "2026-07-18T14:03:47.550Z"
 }

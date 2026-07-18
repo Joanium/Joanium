@@ -5,6 +5,10 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "thinkingmachines/Inkling": {
+      "name": "Inkling FP4",
+      "context_window": 524288
+    },
     "zai-org/GLM-5.2": {
       "name": "GLM 5.2",
       "context_window": 262144
@@ -92,18 +96,6 @@
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
-    },
-    "zai-org/GLM-5.1": {
-      "name": "GLM 5.1 FP4",
-      "context_window": 202752
-    },
-    "Qwen/Qwen3.5-397B-A17B": {
-      "name": "Qwen3.5 397B A17b",
-      "context_window": 262144
-    },
-    "zai-org/GLM-5": {
-      "name": "GLM 5 Fp4",
-      "context_window": 202752
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -632,9 +624,17 @@
       "name": "GLM 5 Fp4",
       "context_window": 202752
     },
+    "zai-org/GLM-5": {
+      "name": "GLM 5 Fp4",
+      "context_window": 202752
+    },
     "MiniMaxAI/MiniMax-M2.5-FP4": {
       "name": "MiniMax M2.5 FP4",
       "context_window": 8192
+    },
+    "Qwen/Qwen3.5-397B-A17B": {
+      "name": "Qwen3.5 397B A17b",
+      "context_window": 262144
     },
     "zai-org/GLM-4.7-FP8": {
       "name": "Glm 4.7 Fp8",
@@ -675,6 +675,10 @@
     "Hcompany/Holo3-35B-A3B": {
       "name": "Holo3 35B A3b",
       "context_window": 262144
+    },
+    "zai-org/GLM-5.1": {
+      "name": "GLM 5.1 FP4",
+      "context_window": 202752
     },
     "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16": {
       "name": "Nvidia Nemotron 3 Super 120B A12b Bf16",
@@ -788,5 +792,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-15T09:48:50.269Z"
+  "_syncedAt": "2026-07-18T14:03:51.713Z"
 }

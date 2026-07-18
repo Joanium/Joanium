@@ -12,6 +12,13 @@
         "max_output_tokens": 128000
       }
     },
+    "kimi-k3": {
+      "name": "Kimi K3",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
     "grok-4.5": {
       "name": "Grok 4 5"
     },
@@ -30,6 +37,13 @@
       "context_window": {
         "context_length": 1048576,
         "max_output_tokens": 128000
+      }
+    },
+    "inkling": {
+      "name": "Inkling",
+      "context_window": {
+        "context_length": 256000,
+        "max_output_tokens": null
       }
     },
     "muse-spark-1-1": {
@@ -1361,12 +1375,6 @@
     "minimax-m3-t": {
       "name": "Minimax M3 T"
     },
-    "glm-5.2": {
-      "name": "Glm 5 2"
-    },
-    "glm-5.2-el": {
-      "name": "Glm 5 2 El"
-    },
     "kling-3.0-turbo": {
       "name": "Kling 3 0 TURBO"
     },
@@ -1390,6 +1398,18 @@
     },
     "seed-2.1-turbo": {
       "name": "Seed 2 1 TURBO"
+    },
+    "kimi-k3-el": {
+      "name": "Kimi K3 El"
+    },
+    "glm-5.2-n": {
+      "name": "Glm 5 2 N"
+    },
+    "glm-5.2-el": {
+      "name": "Glm 5 2 El"
+    },
+    "glm-5.2": {
+      "name": "Glm 5 2"
     },
     "glm-5.1-t": {
       "name": "Glm 5 1 T"
@@ -1529,5 +1549,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-15T09:49:18.820Z"
+  "_syncedAt": "2026-07-18T14:04:11.598Z"
 }

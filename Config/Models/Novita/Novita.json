@@ -5,6 +5,16 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "moonshotai/kimi-k3": {
+      "name": "Kimi K3",
+      "description": "Kimi K3 is Kimi’s most capable model to date, with 2.8 trillion parameters. Built on Kimi Delta Attention, a hybrid linear attention mechanism, and Attention Residuals, it offers native visual understanding and a 1M-token context window for frontier intelligence scenarios such as software engineerin",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tencent/hy3": {
       "name": "Hy3",
       "description": "Built for real-world business scenarios, Hy3 features a 295B/21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long-form comprehension, multi-turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across both high",
@@ -1302,5 +1312,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-15T09:49:13.978Z"
+  "_syncedAt": "2026-07-18T14:04:05.353Z"
 }

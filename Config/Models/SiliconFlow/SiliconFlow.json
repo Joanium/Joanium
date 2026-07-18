@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "moonshotai/Kimi-K3": {
+      "name": "Kimi K3"
+    },
     "tencent/Hy3": {
       "name": "Hy3"
     },
@@ -212,5 +215,5 @@
       "name": "Qwen2 5 7B Instruct"
     }
   },
-  "_syncedAt": "2026-07-15T09:49:02.257Z"
+  "_syncedAt": "2026-07-18T14:03:59.724Z"
 }

@@ -1049,60 +1049,6 @@
         "text": true
       }
     },
-    "meta/llama-3.2-11b": {
-      "name": "Llama 3.2 11B Vision Instruct",
-      "description": "Instruction-tuned image reasoning generative model (text + images in / text out) optimized for visual recognition, image reasoning, captioning and answering general questions about the image.",
-      "context_window": 128000,
-      "max_output": 8192,
-      "pricing": {
-        "input": 0.16,
-        "output": 0.16
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "meta/llama-3.2-1b": {
-      "name": "Llama 3.2 1B Instruct",
-      "description": "Text-only model, supporting on-device use cases such as multilingual local knowledge retrieval, summarization, and rewriting.",
-      "context_window": 128000,
-      "max_output": 8192,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "meta/llama-3.2-3b": {
-      "name": "Llama 3.2 3B Instruct",
-      "description": "Text-only model, fine-tuned for supporting on-device use cases such as multilingual local knowledge retrieval, summarization, and rewriting.",
-      "context_window": 128000,
-      "max_output": 8192,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "meta/llama-3.2-90b": {
-      "name": "Llama 3.2 90B Vision Instruct",
-      "description": "Instruction-tuned image reasoning generative model (text + images in / text out) optimized for visual recognition, image reasoning, captioning and answering general questions about the image.",
-      "context_window": 128000,
-      "max_output": 8192,
-      "pricing": {
-        "input": 0.72,
-        "output": 0.72
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "meta/llama-3.3-70b": {
       "name": "Llama 3.3 70B Instruct",
       "description": "Where performance meets efficiency. This model supports high-performance conversational AI designed for content creation, enterprise applications, and research, offering advanced language understanding capabilities, including text summarization, classification, sentiment analysis, and code generatio",
@@ -1530,6 +1476,20 @@
       "pricing": {
         "input": 1.9,
         "output": 8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3": {
+      "name": "Kimi K3",
+      "description": "Kimi’s flagship model for long-horizon coding and end-to-end knowledge work, with a 1M-token context window.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 3,
+        "output": 15
       },
       "inputs": {
         "text": true,
@@ -2296,6 +2256,20 @@
         "image": true
       }
     },
+    "thinkingmachines/inkling": {
+      "name": "Inkling",
+      "description": "Inkling is a multimodal MoE model (975B total, 41B active, 256k context) reasoning over text, image, and audio inputs.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 1,
+        "output": 4.05
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "xai/grok-4.1-fast-non-reasoning": {
       "name": "Grok 4.1 Fast Non-Reasoning",
       "description": "Low-latency xAI model routed through Vercel AI Gateway for fast chat, tool use, and multimodal tasks",
@@ -2674,6 +2648,60 @@
         "image": true
       }
     },
+    "meta/llama-3.2-11b": {
+      "name": "Llama 3.2 11B Vision Instruct",
+      "description": "Instruction-tuned image reasoning generative model (text + images in / text out) optimized for visual recognition, image reasoning, captioning and answering general questions about the image.",
+      "context_window": 128000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.16,
+        "output": 0.16
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/llama-3.2-1b": {
+      "name": "Llama 3.2 1B Instruct",
+      "description": "Text-only model, supporting on-device use cases such as multilingual local knowledge retrieval, summarization, and rewriting.",
+      "context_window": 128000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta/llama-3.2-3b": {
+      "name": "Llama 3.2 3B Instruct",
+      "description": "Text-only model, fine-tuned for supporting on-device use cases such as multilingual local knowledge retrieval, summarization, and rewriting.",
+      "context_window": 128000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta/llama-3.2-90b": {
+      "name": "Llama 3.2 90B Vision Instruct",
+      "description": "Instruction-tuned image reasoning generative model (text + images in / text out) optimized for visual recognition, image reasoning, captioning and answering general questions about the image.",
+      "context_window": 128000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.72,
+        "output": 0.72
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-3.5-haiku": {
       "name": "Claude 3.5 Haiku",
       "description": "Claude 3 Haiku is Anthropic's fastest, most compact model for near-instant responsiveness. It answers simple queries and requests with speed. Customers will be able to build seamless AI experiences that mimic human interactions. Claude 3 Haiku can process images and return text outputs, and features",
@@ -2786,5 +2814,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-15T09:49:17.751Z"
+  "_syncedAt": "2026-07-18T14:04:10.340Z"
 }

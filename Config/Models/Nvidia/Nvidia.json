@@ -279,6 +279,9 @@
     "nvidia/nemoretriever-parse": {
       "name": "nvidia/nemoretriever-parse"
     },
+    "nvidia/nemotron-3-embed-1b": {
+      "name": "Nemotron 3 Embed 1B"
+    },
     "nvidia/nemotron-3-nano-30b-a3b": {
       "name": "nvidia/nemotron-3-nano-30b-a3b"
     },
@@ -374,6 +377,9 @@
         "output": 0.1
       }
     },
+    "poolside/laguna-xs-2.1": {
+      "name": "Laguna Xs 2 1"
+    },
     "qwen/qwen3-next-80b-a3b-instruct": {
       "name": "qwen/qwen3-next-80b-a3b-instruct"
     },
@@ -407,6 +413,9 @@
     },
     "stepfun-ai/step-3.7-flash": {
       "name": "Step 3 7 FLASH"
+    },
+    "thinkingmachines/inkling": {
+      "name": "Inkling"
     },
     "upstage/solar-10.7b-instruct": {
       "name": "upstage/solar-10.7b-instruct"
@@ -448,5 +457,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-15T09:48:31.249Z"
+  "_syncedAt": "2026-07-18T14:03:40.775Z"
 }
