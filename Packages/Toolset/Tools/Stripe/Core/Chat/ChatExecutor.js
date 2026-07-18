@@ -2,6 +2,12 @@ import * as StripeAPI from '../API/StripeAPI.js';
 import { getStripeCredentials, notConnected } from '../Shared/Common.js';
 import { runCredentialedChatTool } from '../../../Core/ConnectorUtils.js';
 
+async function handleGetById(creds, params, apiFn, paramName) {
+  if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
+  const result = await apiFn(creds, params.id);
+  return { ok: true, [paramName]: result };
+}
+
 export async function executeStripeChatTool(ctx, toolName, params) {
   return runCredentialedChatTool(ctx, getStripeCredentials, notConnected, async (creds) => {
     // ── Existing ────────────────────────────────────────────────────────────
@@ -110,65 +116,26 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // ── Existing: Get by ID tools ────────────────────────────────────────────
-    if (toolName === 'stripe_get_customer') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const customer = await StripeAPI.getCustomer(creds, params.id);
-      return { ok: true, customer };
-    }
-
-    if (toolName === 'stripe_get_charge') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const charge = await StripeAPI.getCharge(creds, params.id);
-      return { ok: true, charge };
-    }
-
-    if (toolName === 'stripe_get_subscription') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const subscription = await StripeAPI.getSubscription(creds, params.id);
-      return { ok: true, subscription };
-    }
-
-    if (toolName === 'stripe_get_invoice') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const invoice = await StripeAPI.getInvoice(creds, params.id);
-      return { ok: true, invoice };
-    }
-
-    if (toolName === 'stripe_get_payment_intent') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const paymentIntent = await StripeAPI.getPaymentIntent(creds, params.id);
-      return { ok: true, paymentIntent };
-    }
-
-    if (toolName === 'stripe_get_product') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const product = await StripeAPI.getProduct(creds, params.id);
-      return { ok: true, product };
-    }
-
-    if (toolName === 'stripe_get_refund') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const refund = await StripeAPI.getRefund(creds, params.id);
-      return { ok: true, refund };
-    }
-
-    if (toolName === 'stripe_get_dispute') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const dispute = await StripeAPI.getDispute(creds, params.id);
-      return { ok: true, dispute };
-    }
-
-    if (toolName === 'stripe_get_payout') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const payout = await StripeAPI.getPayout(creds, params.id);
-      return { ok: true, payout };
-    }
-
-    if (toolName === 'stripe_get_coupon') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const coupon = await StripeAPI.getCoupon(creds, params.id);
-      return { ok: true, coupon };
-    }
+    if (toolName === 'stripe_get_customer')
+      return handleGetById(creds, params, StripeAPI.getCustomer, 'customer');
+    if (toolName === 'stripe_get_charge')
+      return handleGetById(creds, params, StripeAPI.getCharge, 'charge');
+    if (toolName === 'stripe_get_subscription')
+      return handleGetById(creds, params, StripeAPI.getSubscription, 'subscription');
+    if (toolName === 'stripe_get_invoice')
+      return handleGetById(creds, params, StripeAPI.getInvoice, 'invoice');
+    if (toolName === 'stripe_get_payment_intent')
+      return handleGetById(creds, params, StripeAPI.getPaymentIntent, 'paymentIntent');
+    if (toolName === 'stripe_get_product')
+      return handleGetById(creds, params, StripeAPI.getProduct, 'product');
+    if (toolName === 'stripe_get_refund')
+      return handleGetById(creds, params, StripeAPI.getRefund, 'refund');
+    if (toolName === 'stripe_get_dispute')
+      return handleGetById(creds, params, StripeAPI.getDispute, 'dispute');
+    if (toolName === 'stripe_get_payout')
+      return handleGetById(creds, params, StripeAPI.getPayout, 'payout');
+    if (toolName === 'stripe_get_coupon')
+      return handleGetById(creds, params, StripeAPI.getCoupon, 'coupon');
 
     // ── New: 30 additional tools ─────────────────────────────────────────────
 
@@ -189,11 +156,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 3. Get subscription item
-    if (toolName === 'stripe_get_subscription_item') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const subscriptionItem = await StripeAPI.getSubscriptionItem(creds, params.id);
-      return { ok: true, subscriptionItem };
-    }
+    if (toolName === 'stripe_get_subscription_item')
+      return handleGetById(creds, params, StripeAPI.getSubscriptionItem, 'subscriptionItem');
 
     // 4. List invoice items
     if (toolName === 'stripe_list_invoice_items') {
@@ -202,11 +166,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 5. Get invoice item
-    if (toolName === 'stripe_get_invoice_item') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const invoiceItem = await StripeAPI.getInvoiceItem(creds, params.id);
-      return { ok: true, invoiceItem };
-    }
+    if (toolName === 'stripe_get_invoice_item')
+      return handleGetById(creds, params, StripeAPI.getInvoiceItem, 'invoiceItem');
 
     // 6. List credit notes
     if (toolName === 'stripe_list_credit_notes') {
@@ -215,11 +176,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 7. Get credit note
-    if (toolName === 'stripe_get_credit_note') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const creditNote = await StripeAPI.getCreditNote(creds, params.id);
-      return { ok: true, creditNote };
-    }
+    if (toolName === 'stripe_get_credit_note')
+      return handleGetById(creds, params, StripeAPI.getCreditNote, 'creditNote');
 
     // 8. List shipping rates
     if (toolName === 'stripe_list_shipping_rates') {
@@ -228,11 +186,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 9. Get shipping rate
-    if (toolName === 'stripe_get_shipping_rate') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const shippingRate = await StripeAPI.getShippingRate(creds, params.id);
-      return { ok: true, shippingRate };
-    }
+    if (toolName === 'stripe_get_shipping_rate')
+      return handleGetById(creds, params, StripeAPI.getShippingRate, 'shippingRate');
 
     // 10. List top-ups
     if (toolName === 'stripe_list_topups') {
@@ -241,11 +196,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 11. Get top-up
-    if (toolName === 'stripe_get_topup') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const topup = await StripeAPI.getTopup(creds, params.id);
-      return { ok: true, topup };
-    }
+    if (toolName === 'stripe_get_topup')
+      return handleGetById(creds, params, StripeAPI.getTopup, 'topup');
 
     // 12. List Radar reviews
     if (toolName === 'stripe_list_reviews') {
@@ -254,11 +206,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 13. Get Radar review
-    if (toolName === 'stripe_get_review') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const review = await StripeAPI.getReview(creds, params.id);
-      return { ok: true, review };
-    }
+    if (toolName === 'stripe_get_review')
+      return handleGetById(creds, params, StripeAPI.getReview, 'review');
 
     // 14. List early fraud warnings
     if (toolName === 'stripe_list_early_fraud_warnings') {
@@ -279,18 +228,12 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 17. Get plan
-    if (toolName === 'stripe_get_plan') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const plan = await StripeAPI.getPlan(creds, params.id);
-      return { ok: true, plan };
-    }
+    if (toolName === 'stripe_get_plan')
+      return handleGetById(creds, params, StripeAPI.getPlan, 'plan');
 
     // 18. Get payment method
-    if (toolName === 'stripe_get_payment_method') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const paymentMethod = await StripeAPI.getPaymentMethod(creds, params.id);
-      return { ok: true, paymentMethod };
-    }
+    if (toolName === 'stripe_get_payment_method')
+      return handleGetById(creds, params, StripeAPI.getPaymentMethod, 'paymentMethod');
 
     // 19. List customer payment methods
     if (toolName === 'stripe_list_customer_payment_methods') {
@@ -361,11 +304,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 27. Get file
-    if (toolName === 'stripe_get_file') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const file = await StripeAPI.getFile(creds, params.id);
-      return { ok: true, file };
-    }
+    if (toolName === 'stripe_get_file')
+      return handleGetById(creds, params, StripeAPI.getFile, 'file');
 
     // 28. List file links
     if (toolName === 'stripe_list_file_links') {
@@ -380,11 +320,8 @@ export async function executeStripeChatTool(ctx, toolName, params) {
     }
 
     // 30. Get payment link
-    if (toolName === 'stripe_get_payment_link') {
-      if (!params?.id) return { ok: false, error: 'Missing required parameter: id' };
-      const paymentLink = await StripeAPI.getPaymentLink(creds, params.id);
-      return { ok: true, paymentLink };
-    }
+    if (toolName === 'stripe_get_payment_link')
+      return handleGetById(creds, params, StripeAPI.getPaymentLink, 'paymentLink');
 
     return null;
   });
