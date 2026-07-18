@@ -6,6 +6,18 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.718.0] - 2026-07-18
+
+* chore: update Node.js engine version and add ini dependency
+* chore: update version to 2026.715.0 in package-lock.json
+* Update documentation and code structure across multiple files
+* refactor: consolidate get by ID logic into a reusable function
+* Updated AI Models
+* Chore(deps): Bump actions/setup-node from 6.4.0 to 7.0.0
+* Chore(deps-dev): Bump markdownlint-cli from 0.49.0 to 0.49.1
+
+---
+
 ## [2026.715.0] - 2026-07-15
 
 * Updated AI Models
