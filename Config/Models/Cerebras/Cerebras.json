@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "gemma-4-31b": {
+      "name": "Gemma 4 31B"
+    },
     "zai-glm-4.7": {
       "name": "Z.ai GLM 4.7",
       "description": "355B parameter reasoning model from Z.ai — strong multilingual performance and chain-of-thought on Cerebras silicon",
@@ -36,10 +39,7 @@
         "input": 0.6,
         "output": 0.6
       }
-    },
-    "gemma-4-31b": {
-      "name": "Gemma 4 31B"
     }
   },
-  "_syncedAt": "2026-07-18T14:03:55.163Z"
+  "_syncedAt": "2026-07-19T04:35:48.591Z"
 }
