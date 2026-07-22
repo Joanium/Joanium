@@ -139,9 +139,19 @@
       "context_window": 1048576,
       "max_output": 65536
     },
+    "gemini-3.5-flash-lite": {
+      "name": "Gemini 3.5 Flash Lite",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
     "gemini-omni-flash-preview": {
       "name": "Gemini Omni Flash Preview",
       "context_window": 131072,
+      "max_output": 65536
+    },
+    "gemini-3.6-flash": {
+      "name": "Gemini 3.6 Flash",
+      "context_window": 1048576,
       "max_output": 65536
     },
     "lyria-3-clip-preview": {
@@ -190,5 +200,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-07-19T04:35:43.040Z"
+  "_syncedAt": "2026-07-22T10:21:30.401Z"
 }

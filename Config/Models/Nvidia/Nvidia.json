@@ -383,9 +383,6 @@
     "qwen/qwen3-next-80b-a3b-instruct": {
       "name": "qwen/qwen3-next-80b-a3b-instruct"
     },
-    "qwen/qwen3.5-122b-a10b": {
-      "name": "qwen/qwen3.5-122b-a10b"
-    },
     "qwen/qwen3.5-397b-a17b": {
       "name": "Qwen 3.5 397B A17B",
       "description": "Alibaba's 400B VLM MoE — multimodal reasoning, vision, and agentic tasks via NVIDIA NIM",
@@ -438,6 +435,9 @@
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
     },
+    "qwen/qwen3.5-122b-a10b": {
+      "name": "qwen/qwen3.5-122b-a10b"
+    },
     "microsoft/phi-4-mini-instruct": {
       "name": "microsoft/phi-4-mini-instruct"
     },
@@ -457,5 +457,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-19T04:35:12.693Z"
+  "_syncedAt": "2026-07-22T10:21:25.950Z"
 }

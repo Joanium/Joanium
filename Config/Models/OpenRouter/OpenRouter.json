@@ -5,6 +5,68 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "poolside/laguna-s-2.1": {
+      "name": "Poolside: Laguna S 2.1",
+      "description": "Laguna S 2.1 is the latest coding agent model from [Poolside](<https://poolside.ai/>). Laguna S 2.1 is a 118B total parameter model with 8B active parameters, scoring 70.2% on Terminal-Bench 2.1 and...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "poolside/laguna-s-2.1:free": {
+      "name": "Poolside: Laguna S 2.1 (free)",
+      "description": "Laguna S 2.1 is the latest coding agent model from [Poolside](<https://poolside.ai/>). Laguna S 2.1 is a 118B total parameter model with 8B active parameters, scoring 70.2% on Terminal-Bench 2.1 and...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "google/gemini-3.6-flash": {
+      "name": "Google: Gemini 3.6 Flash",
+      "description": "Gemini 3.6 Flash is a high-efficiency model from Google for coding, agentic workflows, and web and app development. It is designed to produce polished outputs with fewer unnecessary edits and...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.5-flash-lite": {
+      "name": "Google: Gemini 3.5 Flash-Lite",
+      "description": "Gemini 3.5 Flash-Lite is a high-efficiency model from Google with upgraded agentic capabilities. It is suited for subagents that execute focused tasks within complex, multi-agent workflows.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meituan/longcat-2.0": {
+      "name": "Meituan: LongCat 2.0",
+      "description": "LongCat 2.0 is a sparse mixture-of-experts language model from Meituan, with 48B active parameters out of 1.6T total. It is suited for coding, repository-level changes, long-horizon problem solving, and agentic...",
+      "context_window": 1048756,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "thinkingmachines/inkling": {
       "name": "Thinking Machines: Inkling",
       "description": "Inkling is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 41B active parameters out of 975B total. It is designed for general-purpose reasoning, coding, agentic and tool-use systems,...",
@@ -214,18 +276,6 @@
       "pricing": {
         "input": 0.14,
         "output": 0.58
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "tencent/hy3:free": {
-      "name": "Tencent: Hy3 (free)",
-      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -2400,18 +2450,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-next-80b-a3b-instruct:free": {
-      "name": "Qwen: Qwen3 Next 80B A3B Instruct (free)",
-      "description": "Qwen3-Next-80B-A3B-Instruct is an instruction-tuned chat model in the Qwen3-Next series optimized for fast, stable responses without “thinking” traces. It targets complex tasks across reasoning, code generation, knowledge QA, and multilingual...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen-plus-2025-07-28": {
       "name": "Qwen: Qwen Plus 0728",
       "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
@@ -2731,18 +2769,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-coder:free": {
-      "name": "Qwen: Qwen3 Coder 480B A35B (free)",
-      "description": "Qwen3-Coder-480B-A35B-Instruct is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "bytedance/ui-tars-1.5-7b": {
       "name": "ByteDance: UI-TARS 7B ",
       "description": "UI-TARS-1.5 is a multimodal vision-language agent optimized for GUI-based environments, including desktop interfaces, web browsers, mobile systems, and games. Built by ByteDance, it builds upon the UI-TARS framework with reinforcement...",
@@ -2800,18 +2826,6 @@
       "pricing": {
         "input": 0.2,
         "output": 0.9
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "cognitivecomputations/dolphin-mistral-24b-venice-edition:free": {
-      "name": "Venice: Uncensored (free)",
-      "description": "Venice Uncensored Dolphin Mistral 24B Venice Edition is a fine-tuned variant of Mistral-Small-24B-Instruct-2501, developed by dphn.ai in collaboration with Venice.ai. This model is designed as an “uncensored” instruct-tuned LLM, preserving...",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -3609,18 +3623,6 @@
         "output": 0.2
       }
     },
-    "meta-llama/llama-3.3-70b-instruct:free": {
-      "name": "Meta: Llama 3.3 70B Instruct (free)",
-      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "amazon/nova-lite-v1": {
       "name": "Amazon: Nova Lite 1.0",
       "description": "Amazon Nova Lite 1.0 is a very low-cost multimodal model from Amazon that focused on fast processing of image, video, and text inputs to generate text output. Amazon Nova Lite...",
@@ -3792,18 +3794,6 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.2-3b-instruct:free": {
-      "name": "Meta: Llama 3.2 3B Instruct (free)",
-      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen-2.5-72b-instruct": {
       "name": "Qwen2.5 72B Instruct",
       "description": "Qwen2.5 72B is the latest series of Qwen large language models. Qwen2.5 brings the following improvements upon Qwen2: - Significantly more knowledge and has greatly improved capabilities in coding and...",
@@ -3871,18 +3861,6 @@
       "pricing": {
         "input": 1,
         "output": 1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "nousresearch/hermes-3-llama-3.1-405b:free": {
-      "name": "Nous: Hermes 3 405B Instruct (free)",
-      "description": "Hermes 3 is a generalist language model with many improvements over Hermes 2, including advanced agentic capabilities, much better roleplaying, reasoning, multi-turn conversation, long context coherence, and improvements across the...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -4200,6 +4178,90 @@
         "text": true
       }
     },
+    "tencent/hy3:free": {
+      "name": "Tencent: Hy3 (free)",
+      "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-next-80b-a3b-instruct:free": {
+      "name": "Qwen: Qwen3 Next 80B A3B Instruct (free)",
+      "description": "Qwen3-Next-80B-A3B-Instruct is an instruction-tuned chat model in the Qwen3-Next series optimized for fast, stable responses without “thinking” traces. It targets complex tasks across reasoning, code generation, knowledge QA, and multilingual...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-coder:free": {
+      "name": "Qwen: Qwen3 Coder 480B A35B (free)",
+      "description": "Qwen3-Coder-480B-A35B-Instruct is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "cognitivecomputations/dolphin-mistral-24b-venice-edition:free": {
+      "name": "Venice: Uncensored (free)",
+      "description": "Venice Uncensored Dolphin Mistral 24B Venice Edition is a fine-tuned variant of Mistral-Small-24B-Instruct-2501, developed by dphn.ai in collaboration with Venice.ai. This model is designed as an “uncensored” instruct-tuned LLM, preserving...",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3.3-70b-instruct:free": {
+      "name": "Meta: Llama 3.3 70B Instruct (free)",
+      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3.2-3b-instruct:free": {
+      "name": "Meta: Llama 3.2 3B Instruct (free)",
+      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nousresearch/hermes-3-llama-3.1-405b:free": {
+      "name": "Nous: Hermes 3 405B Instruct (free)",
+      "description": "Hermes 3 is a generalist language model with many improvements over Hermes 2, including advanced agentic capabilities, much better roleplaying, reasoning, multi-turn conversation, long context coherence, and improvements across the...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "nvidia/llama-3.3-nemotron-super-49b-v1.5": {
       "name": "NVIDIA: Llama 3.3 Nemotron Super 49B V1.5",
       "description": "Llama-3.3-Nemotron-Super-49B-v1.5 is a 49B-parameter, English-centric reasoning/chat model derived from Meta’s Llama-3.3-70B-Instruct with a 128K context. It’s post-trained for agentic workflows (RAG, tool calling) via SFT across math, code, science, and...",
@@ -4432,5 +4494,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-19T04:35:41.250Z"
+  "_syncedAt": "2026-07-22T10:21:27.381Z"
 }
