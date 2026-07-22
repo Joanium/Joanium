@@ -890,6 +890,34 @@
         "image": true
       }
     },
+    "google/gemini-3.5-flash-lite": {
+      "name": "Gemini 3.5 Flash Lite",
+      "description": "Gemini 3.5 Flash Lite features upgraded agentic capabilities, making the model ideal for subagents in complex workflows.",
+      "context_window": 1000000,
+      "max_output": 65000,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.6-flash": {
+      "name": "Gemini 3.6 Flash",
+      "description": "Gemini 3.6 Flash delivers higher quality across coding, agentic workflows, and web development with reduced token consumption and fewer model calls compared to previous model iterations.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-omni-flash-preview": {
       "name": "Gemini Omni Flash Preview",
       "description": "Gemini Omni Flash (Preview) is a multimodal model designed for video, image, and text tasks. It is optimized for video generation, offering video output alongside text responses in a single model.",
@@ -2215,6 +2243,32 @@
         "text": true
       }
     },
+    "poolside/laguna-s-2.1": {
+      "name": "Laguna S 2.1",
+      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "poolside/laguna-s-2.1-free": {
+      "name": "Laguna S 2.1 Free",
+      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
+      "context_window": 256000,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "sakana/fugu-ultra": {
       "name": "Fugu Ultra",
       "description": "Fugu Ultra coordinates a deeper pool of expert agents to maximize answer quality on hard, high-stakes problems. Fugu Ultra focuses on maximizing performance, for a higher cost. It routes between one to three agents, depending on the problem.",
@@ -2814,5 +2868,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-19T04:36:00.012Z"
+  "_syncedAt": "2026-07-22T11:54:30.379Z"
 }

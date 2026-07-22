@@ -32,6 +32,12 @@
         "max_output_tokens": null
       }
     },
+    "gemini-3.6-flash": {
+      "name": "Gemini 3 6 FLASH"
+    },
+    "gemini-3.5-flash-lite": {
+      "name": "Gemini 3 5 FLASH LITE"
+    },
     "claude-opus-4.8": {
       "name": "Claude Opus 4 8",
       "context_window": {
@@ -308,15 +314,8 @@
     "kimi-k2-thinking": {
       "name": "Kimi K2 Thinking"
     },
-    "gpt-5.2-codex": {
-      "name": "Gpt 5 2 Codex",
-      "context_window": {
-        "context_length": 400000,
-        "max_output_tokens": 128000
-      }
-    },
-    "deepseek-v3.2": {
-      "name": "Deepseek V3 2",
+    "deepseek-v3.2-n": {
+      "name": "Deepseek V3 2 N",
       "context_window": {
         "context_length": 128000,
         "max_output_tokens": null
@@ -404,20 +403,6 @@
     "glm-4.7-flash": {
       "name": "Glm 4 7 FLASH"
     },
-    "gpt-5.1-instant": {
-      "name": "Gpt 5 1 Instant",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 16384
-      }
-    },
-    "gpt-5.1-codex": {
-      "name": "Gpt 5 1 Codex",
-      "context_window": {
-        "context_length": 400000,
-        "max_output_tokens": 128000
-      }
-    },
     "elevenlabs-v3": {
       "name": "Elevenlabs V3",
       "context_window": {
@@ -445,13 +430,6 @@
     "seedance-2.0-pro-el": {
       "name": "Seedance 2 0 PRO El"
     },
-    "gpt-5-chat": {
-      "name": "Gpt 5 Chat",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 16384
-      }
-    },
     "claude-opus-4.1": {
       "name": "Claude Opus 4 1",
       "context_window": {
@@ -461,20 +439,6 @@
     },
     "glm-4.6": {
       "name": "Glm 4 6"
-    },
-    "gpt-5.1-codex-mini": {
-      "name": "Gpt 5 1 Codex MINI",
-      "context_window": {
-        "context_length": 400000,
-        "max_output_tokens": 128000
-      }
-    },
-    "gpt-5.1-codex-max": {
-      "name": "Gpt 5 1 Codex MAX",
-      "context_window": {
-        "context_length": 400000,
-        "max_output_tokens": 128000
-      }
     },
     "glm-4.6v": {
       "name": "Glm 4 6v"
@@ -522,13 +486,6 @@
       "context_window": {
         "context_length": 1024000,
         "max_output_tokens": 64000
-      }
-    },
-    "gpt-5-codex": {
-      "name": "Gpt 5 Codex",
-      "context_window": {
-        "context_length": 400000,
-        "max_output_tokens": 128000
       }
     },
     "grok-4-fast-non-reasoning": {
@@ -634,13 +591,6 @@
         "max_output_tokens": 100000
       }
     },
-    "o4-mini-deep-research": {
-      "name": "O4 MINI Deep Research",
-      "context_window": {
-        "context_length": 200000,
-        "max_output_tokens": 100000
-      }
-    },
     "grok-3": {
       "name": "Grok 3",
       "context_window": {
@@ -657,13 +607,6 @@
     },
     "o3": {
       "name": "O3",
-      "context_window": {
-        "context_length": 200000,
-        "max_output_tokens": 100000
-      }
-    },
-    "o3-deep-research": {
-      "name": "O3 Deep Research",
       "context_window": {
         "context_length": 200000,
         "max_output_tokens": 100000
@@ -826,13 +769,6 @@
     },
     "deepseek-prover-v2": {
       "name": "Deepseek Prover V2"
-    },
-    "deepseek-v3.2-fw": {
-      "name": "Deepseek V3 2 Fw",
-      "context_window": {
-        "context_length": 160000,
-        "max_output_tokens": null
-      }
     },
     "deepseek-r1-di": {
       "name": "Deepseek R1 Di",
@@ -1408,6 +1344,83 @@
     "glm-5.2-el": {
       "name": "Glm 5 2 El"
     },
+    "gpt-5.2-codex": {
+      "name": "Gpt 5 2 Codex",
+      "context_window": {
+        "context_length": 400000,
+        "max_output_tokens": 128000
+      }
+    },
+    "deepseek-v3.2": {
+      "name": "Deepseek V3 2",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "gpt-5.1-instant": {
+      "name": "Gpt 5 1 Instant",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 16384
+      }
+    },
+    "gpt-5.1-codex": {
+      "name": "Gpt 5 1 Codex",
+      "context_window": {
+        "context_length": 400000,
+        "max_output_tokens": 128000
+      }
+    },
+    "gpt-5-chat": {
+      "name": "Gpt 5 Chat",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 16384
+      }
+    },
+    "gpt-5.1-codex-mini": {
+      "name": "Gpt 5 1 Codex MINI",
+      "context_window": {
+        "context_length": 400000,
+        "max_output_tokens": 128000
+      }
+    },
+    "gpt-5.1-codex-max": {
+      "name": "Gpt 5 1 Codex MAX",
+      "context_window": {
+        "context_length": 400000,
+        "max_output_tokens": 128000
+      }
+    },
+    "gpt-5-codex": {
+      "name": "Gpt 5 Codex",
+      "context_window": {
+        "context_length": 400000,
+        "max_output_tokens": 128000
+      }
+    },
+    "o4-mini-deep-research": {
+      "name": "O4 MINI Deep Research",
+      "context_window": {
+        "context_length": 200000,
+        "max_output_tokens": 100000
+      }
+    },
+    "o3-deep-research": {
+      "name": "O3 Deep Research",
+      "context_window": {
+        "context_length": 200000,
+        "max_output_tokens": 100000
+      }
+    },
+    "deepseek-v3.2-fw": {
+      "name": "Deepseek V3 2 Fw",
+      "context_window": {
+        "context_length": 160000,
+        "max_output_tokens": null
+      }
+    },
     "glm-5.2": {
       "name": "Glm 5 2"
     },
@@ -1549,5 +1562,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-19T04:36:02.431Z"
+  "_syncedAt": "2026-07-22T11:54:31.148Z"
 }
