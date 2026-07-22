@@ -23,7 +23,7 @@
     "husky": "9.1.7",
     "ini": "6.0.0",
     "jscpd": "5.0.12",
-    "lint-staged": "17.0.8",
+    "lint-staged": "17.1.1",
     "markdownlint-cli": "0.49.1",
     "prettier": "3.9.5"
   },
