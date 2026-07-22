@@ -6,6 +6,16 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.722.0] - 2026-07-22
+
+* Updated AI Models
+* Updated AI Models
+* Chore(deps-dev): Bump electron from 43.1.1 to 43.2.0
+* Updated AI Models
+* chore: update version to 2026.719.0 in package-lock.json
+
+---
+
 ## [2026.719.0] - 2026-07-19
 
 * chore: update version to 2026.718.0 in package-lock.json
