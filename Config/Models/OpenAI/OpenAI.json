@@ -5,23 +5,14 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "text-embedding-ada-002": {
+      "name": "text-embedding-ada-002"
+    },
     "gpt-3.5-turbo": {
       "name": "gpt-3.5-turbo"
     },
-    "gpt-realtime-2.1-mini": {
-      "name": "Gpt Realtime 2 1 MINI"
-    },
-    "gpt-5.6-sol": {
-      "name": "Gpt 5 6 Sol"
-    },
-    "gpt-5.6-terra": {
-      "name": "Gpt 5 6 Terra"
-    },
-    "gpt-5.6-luna": {
-      "name": "Gpt 5 6 Luna"
-    },
-    "gpt-realtime-2.1": {
-      "name": "Gpt Realtime 2 1"
+    "gpt-3.5-turbo-16k": {
+      "name": "gpt-3.5-turbo-16k"
     },
     "davinci-002": {
       "name": "davinci-002"
@@ -430,12 +421,21 @@
     "gpt-realtime-2": {
       "name": "gpt-realtime-2"
     },
-    "gpt-3.5-turbo-16k": {
-      "name": "gpt-3.5-turbo-16k"
+    "gpt-5.6-sol": {
+      "name": "Gpt 5 6 Sol"
     },
-    "text-embedding-ada-002": {
-      "name": "text-embedding-ada-002"
+    "gpt-5.6-terra": {
+      "name": "Gpt 5 6 Terra"
+    },
+    "gpt-5.6-luna": {
+      "name": "Gpt 5 6 Luna"
+    },
+    "gpt-realtime-2.1": {
+      "name": "Gpt Realtime 2 1"
+    },
+    "gpt-realtime-2.1-mini": {
+      "name": "Gpt Realtime 2 1 MINI"
     }
   },
-  "_syncedAt": "2026-07-22T11:54:09.915Z"
+  "_syncedAt": "2026-07-22T16:10:23.869Z"
 }
