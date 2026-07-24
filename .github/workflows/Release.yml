@@ -159,6 +159,7 @@ jobs:
 
           gh release create "${TAG_NAME}" \
             --title "${VERSION}" \
+            --draft \
             --notes "${RELEASE_NOTES}"
 
   build-and-upload:
@@ -193,3 +194,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx electron-builder ${{ matrix.target }} --publish always
+
+  publish-release:
+    needs: [prepare-release, build-and-upload]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish completed release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.prepare-release.outputs.tag_name }}
+        run: gh release edit "${TAG_NAME}" --draft=false
