@@ -4,7 +4,7 @@
   "description": "Joanium - Agentic AI Desktop Assistant",
   "type": "module",
   "engines": {
-    "node": ">=22.22.2"
+    "node": "^24.18.0"
   },
   "dependencies": {
     "@huggingface/transformers": "3.8.1",
@@ -12,7 +12,8 @@
     "exceljs": "^4.4.0",
     "jszip": "^3.10.1",
     "mammoth": "^1.12.0",
-    "pdf-parse": "^2.4.5"
+    "pdf-parse": "^2.4.5",
+    "uuid": "14.0.1"
   },
   "devDependencies": {
     "@electron/fuses": "2.1.3",
