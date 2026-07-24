@@ -85,6 +85,24 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash": {
+      "name": "Ling-3.0-flash",
+      "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "mindai/macaron-v1-venti": {
+      "name": "Macaron V1 Venti",
+      "description": "Macaron-V1-Venti is a 748B-parameter flagship model in the Macaron-V1 family, built for personal intelligence, tool use, coding workflows, and code-native Generative UI. The model uses a Mixture of LoRA (MoL) architecture on top of GLM-5.2, consisting of a 744B-parameter base model and four 1B-param",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
     "stepfun/step-3.7-flash": {
       "name": "Step-3.7-Flash",
       "description": "Step-3.7-Flash is StepFun's fast reasoning model with 256K context window, three-level reasoning  effort control (low/medium/high), strong multi-step  tool calling and agent capabilities.",
@@ -1312,5 +1330,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-22T16:10:38.065Z"
+  "_syncedAt": "2026-07-24T12:42:03.875Z"
 }

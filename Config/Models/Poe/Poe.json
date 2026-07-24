@@ -158,18 +158,18 @@
         "max_output_tokens": null
       }
     },
-    "qwen3.6-plus": {
-      "name": "Qwen3 6 PLUS"
+    "qwen3.6-plus-el": {
+      "name": "Qwen3 6 PLUS El"
     },
-    "kimi-k2.5": {
-      "name": "Kimi K2 5",
+    "kimi-k2.5-n": {
+      "name": "Kimi K2 5 N",
       "context_window": {
         "context_length": 128000,
         "max_output_tokens": null
       }
     },
-    "minimax-m2.7": {
-      "name": "Minimax M2 7"
+    "minimax-m2.7-n": {
+      "name": "Minimax M2 7 N"
     },
     "mistral-small-4": {
       "name": "Mistral Small 4"
@@ -177,14 +177,14 @@
     "mimo-v2-flash": {
       "name": "Mimo V2 FLASH"
     },
-    "qwen3.5-plus": {
-      "name": "Qwen3 5 PLUS"
+    "qwen3.5-plus-el": {
+      "name": "Qwen3 5 PLUS El"
     },
     "qwen3.5-omni-flash": {
       "name": "Qwen3 5 Omni FLASH"
     },
-    "qwen3.5-flash": {
-      "name": "Qwen3 5 FLASH"
+    "qwen3.5-flash-el": {
+      "name": "Qwen3 5 FLASH El"
     },
     "seed-2.0-lite": {
       "name": "Seed 2 0 LITE"
@@ -237,8 +237,8 @@
     "manus": {
       "name": "Manus"
     },
-    "glm-5": {
-      "name": "Glm 5"
+    "glm-5-n": {
+      "name": "Glm 5 N"
     },
     "gpt-5.2": {
       "name": "Gpt 5 2",
@@ -275,8 +275,8 @@
         "max_output_tokens": null
       }
     },
-    "qwen3-max-thinking": {
-      "name": "Qwen3 MAX Thinking"
+    "qwen3-max-thinking-el": {
+      "name": "Qwen3 MAX Thinking El"
     },
     "claude-sonnet-4.5": {
       "name": "Claude Sonnet 4 5",
@@ -298,11 +298,11 @@
         "max_output_tokens": null
       }
     },
-    "qwen3-coder-next": {
-      "name": "Qwen3 Coder Next"
+    "qwen3-coder-next-n": {
+      "name": "Qwen3 Coder Next N"
     },
-    "minimax-m2.5": {
-      "name": "Minimax M2 5"
+    "minimax-m2.5-n": {
+      "name": "Minimax M2 5 N"
     },
     "grok-4.1-fast-non-reasoning": {
       "name": "Grok 4 1 FAST Non Reasoning",
@@ -311,8 +311,8 @@
         "max_output_tokens": null
       }
     },
-    "kimi-k2-thinking": {
-      "name": "Kimi K2 Thinking"
+    "kimi-k2-thinking-n": {
+      "name": "Kimi K2 Thinking N"
     },
     "deepseek-v3.2-n": {
       "name": "Deepseek V3 2 N",
@@ -334,8 +334,8 @@
     "claude-code": {
       "name": "Claude Code"
     },
-    "minimax-m2.1": {
-      "name": "Minimax M2 1"
+    "minimax-m2.1-n": {
+      "name": "Minimax M2 1 N"
     },
     "perplexity-adv-deep-research": {
       "name": "Perplexity Adv Deep Research"
@@ -400,8 +400,8 @@
     "kling-omni": {
       "name": "Kling Omni"
     },
-    "glm-4.7-flash": {
-      "name": "Glm 4 7 FLASH"
+    "glm-4.7-flash-n": {
+      "name": "Glm 4 7 FLASH N"
     },
     "elevenlabs-v3": {
       "name": "Elevenlabs V3",
@@ -437,11 +437,11 @@
         "max_output_tokens": 32000
       }
     },
-    "glm-4.6": {
-      "name": "Glm 4 6"
+    "glm-4.6-n": {
+      "name": "Glm 4 6 N"
     },
-    "glm-4.6v": {
-      "name": "Glm 4 6v"
+    "glm-4.6v-n": {
+      "name": "Glm 4 6v N"
     },
     "nano-banana-pro": {
       "name": "Nano Banana PRO",
@@ -523,8 +523,8 @@
     "nova-lite-1.0": {
       "name": "Nova LITE 1 0"
     },
-    "minimax-m2": {
-      "name": "Minimax M2"
+    "minimax-m2-n": {
+      "name": "Minimax M2 N"
     },
     "kling-2.6-pro": {
       "name": "Kling 2 6 PRO",
@@ -612,8 +612,8 @@
         "max_output_tokens": 100000
       }
     },
-    "deepseek-v3.1-tm": {
-      "name": "Deepseek V3 1 Tm"
+    "deepseek-v3.1-terminus-n": {
+      "name": "Deepseek V3 1 Terminus N"
     },
     "gpt-4.1": {
       "name": "Gpt 4 1",
@@ -636,14 +636,14 @@
         "max_output_tokens": 32768
       }
     },
-    "qwen3-max": {
-      "name": "Qwen3 MAX"
+    "qwen3-max-el": {
+      "name": "Qwen3 MAX El"
     },
-    "gpt-oss-120b": {
-      "name": "Gpt OSS 120B"
+    "gpt-oss-120b-n": {
+      "name": "Gpt OSS 120B N"
     },
-    "gpt-oss-20b": {
-      "name": "Gpt OSS 20B"
+    "gpt-oss-20b-n": {
+      "name": "Gpt OSS 20B N"
     },
     "gpt-oss-120b-cs": {
       "name": "Gpt OSS 120B Cs",
@@ -719,8 +719,8 @@
         "max_output_tokens": 4096
       }
     },
-    "qwen3-max-preview": {
-      "name": "Qwen3 MAX Preview"
+    "qwen3-max-preview-el": {
+      "name": "Qwen3 MAX Preview El"
     },
     "o3-mini": {
       "name": "O3 MINI",
@@ -760,8 +760,8 @@
         "max_output_tokens": null
       }
     },
-    "llama-3.3-70b": {
-      "name": "Llama 3 3 70B",
+    "llama-3.3-70b-t": {
+      "name": "Llama 3 3 70B T",
       "context_window": {
         "context_length": 131072,
         "max_output_tokens": null
@@ -1229,8 +1229,8 @@
     "minimax-m2.7-fw": {
       "name": "Minimax M2 7 Fw"
     },
-    "kimi-k2.6": {
-      "name": "Kimi K2 6"
+    "kimi-k2.6-n": {
+      "name": "Kimi K2 6 N"
     },
     "qwen3.6-max-preview": {
       "name": "Qwen3 6 MAX Preview"
@@ -1241,11 +1241,11 @@
     "seed-2.0-code": {
       "name": "Seed 2 0 Code"
     },
-    "mimo-v2.5": {
-      "name": "Mimo V2 5"
+    "mimo-v2.5-el": {
+      "name": "Mimo V2 5 El"
     },
-    "mimo-v2.5-pro": {
-      "name": "Mimo V2 5 PRO"
+    "mimo-v2.5-pro-el": {
+      "name": "Mimo V2 5 PRO El"
     },
     "happyhorse-1.0-el": {
       "name": "Happyhorse 1 0 El"
@@ -1280,8 +1280,8 @@
     "pearl-gemma-4-31b": {
       "name": "Pearl Gemma 4 31B"
     },
-    "qwen3.7-max": {
-      "name": "Qwen3 7 MAX"
+    "qwen3.7-max-el": {
+      "name": "Qwen3 7 MAX El"
     },
     "qwen3.7-max-t": {
       "name": "Qwen3 7 MAX T"
@@ -1289,8 +1289,8 @@
     "minimax-m3-el": {
       "name": "Minimax M3 El"
     },
-    "qwen3.7-plus": {
-      "name": "Qwen3 7 PLUS"
+    "qwen3.7-plus-el": {
+      "name": "Qwen3 7 PLUS El"
     },
     "perplexity-sonar-pro": {
       "name": "Perplexity Sonar PRO",
@@ -1302,8 +1302,8 @@
     "minimax-m3-n": {
       "name": "Minimax M3 N"
     },
-    "kimi-k2.7-code": {
-      "name": "Kimi K2 7 Code"
+    "kimi-k2.7-code-n": {
+      "name": "Kimi K2 7 Code N"
     },
     "kimi-k2.7-code-el": {
       "name": "Kimi K2 7 Code El"
@@ -1317,8 +1317,8 @@
     "happyhorse-1.1": {
       "name": "Happyhorse 1 1"
     },
-    "fugu-ultra": {
-      "name": "Fugu ULTRA"
+    "fugu-ultra-v1.0-el": {
+      "name": "Fugu ULTRA V1 0 El"
     },
     "seedance-2.0-mini": {
       "name": "Seedance 2 0 MINI"
@@ -1329,8 +1329,8 @@
     "seedream-5.0-pro": {
       "name": "Seedream 5 0 PRO"
     },
-    "step-3.7-flash": {
-      "name": "Step 3 7 FLASH"
+    "step-3.7-flash-el": {
+      "name": "Step 3 7 FLASH El"
     },
     "seed-2.1-turbo": {
       "name": "Seed 2 1 TURBO"
@@ -1343,6 +1343,101 @@
     },
     "glm-5.2-el": {
       "name": "Glm 5 2 El"
+    },
+    "qwen3.6-plus": {
+      "name": "Qwen3 6 PLUS"
+    },
+    "kimi-k2.5": {
+      "name": "Kimi K2 5",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "minimax-m2.7": {
+      "name": "Minimax M2 7"
+    },
+    "qwen3.5-plus": {
+      "name": "Qwen3 5 PLUS"
+    },
+    "qwen3.5-flash": {
+      "name": "Qwen3 5 FLASH"
+    },
+    "glm-5": {
+      "name": "Glm 5"
+    },
+    "qwen3-max-thinking": {
+      "name": "Qwen3 MAX Thinking"
+    },
+    "qwen3-coder-next": {
+      "name": "Qwen3 Coder Next"
+    },
+    "minimax-m2.5": {
+      "name": "Minimax M2 5"
+    },
+    "kimi-k2-thinking": {
+      "name": "Kimi K2 Thinking"
+    },
+    "minimax-m2.1": {
+      "name": "Minimax M2 1"
+    },
+    "glm-4.7-flash": {
+      "name": "Glm 4 7 FLASH"
+    },
+    "glm-4.6": {
+      "name": "Glm 4 6"
+    },
+    "glm-4.6v": {
+      "name": "Glm 4 6v"
+    },
+    "minimax-m2": {
+      "name": "Minimax M2"
+    },
+    "deepseek-v3.1-tm": {
+      "name": "Deepseek V3 1 Tm"
+    },
+    "qwen3-max": {
+      "name": "Qwen3 MAX"
+    },
+    "gpt-oss-120b": {
+      "name": "Gpt OSS 120B"
+    },
+    "gpt-oss-20b": {
+      "name": "Gpt OSS 20B"
+    },
+    "qwen3-max-preview": {
+      "name": "Qwen3 MAX Preview"
+    },
+    "llama-3.3-70b": {
+      "name": "Llama 3 3 70B",
+      "context_window": {
+        "context_length": 131072,
+        "max_output_tokens": null
+      }
+    },
+    "kimi-k2.6": {
+      "name": "Kimi K2 6"
+    },
+    "mimo-v2.5": {
+      "name": "Mimo V2 5"
+    },
+    "mimo-v2.5-pro": {
+      "name": "Mimo V2 5 PRO"
+    },
+    "qwen3.7-max": {
+      "name": "Qwen3 7 MAX"
+    },
+    "qwen3.7-plus": {
+      "name": "Qwen3 7 PLUS"
+    },
+    "kimi-k2.7-code": {
+      "name": "Kimi K2 7 Code"
+    },
+    "fugu-ultra": {
+      "name": "Fugu ULTRA"
+    },
+    "step-3.7-flash": {
+      "name": "Step 3 7 FLASH"
     },
     "gpt-5.2-codex": {
       "name": "Gpt 5 2 Codex",
@@ -1562,5 +1657,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-22T16:10:44.125Z"
+  "_syncedAt": "2026-07-24T12:42:10.757Z"
 }
