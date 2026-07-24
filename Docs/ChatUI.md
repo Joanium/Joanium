@@ -1,5 +1,9 @@
 # Chat UI Components
 
+## Voice input
+
+The chat composer includes a microphone control for dictation. It requests audio-only microphone access in the Electron main process, records audio in the renderer, and sends 16 kHz mono samples to the Chat main process. The main process transcribes with a local Whisper model supplied by `@huggingface/transformers`. The model downloads once to the user's data directory, and later transcriptions work entirely offline.
+
 Renderer-side UI components for the chat interface.
 
 ---

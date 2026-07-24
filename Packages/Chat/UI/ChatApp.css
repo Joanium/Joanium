@@ -2275,6 +2275,16 @@
   background: rgba(var(--color-accent-rgb), 0.12);
 }
 
+.chat-composer__icon-button--listening {
+  animation: chat-voice-input-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes chat-voice-input-pulse {
+  50% {
+    box-shadow: 0 0 0 6px rgba(var(--color-accent-rgb), 0.08);
+  }
+}
+
 /* ── Enhance-prompt glow state ──────────────────────────────────────────── */
 
 .chat-composer__branch:disabled,
