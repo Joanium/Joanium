@@ -6,6 +6,13 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.724.1] - 2026-07-24
+
+* chore: update release workflow to create draft releases and publish after successful uploads
+* Updated AI Models
+
+---
+
 ## [2026.724.0] - 2026-07-24
 
 * Chore(deps): Bump builder-util-runtime
