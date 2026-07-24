@@ -6,6 +6,20 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.724.0] - 2026-07-24
+
+* Chore(deps): Bump builder-util-runtime
+* chore: update Node.js version to 24.18.0 in configuration files
+* feat: add voice transcription functionality with Hugging Face model
+* Updated AI Models
+* Chore(deps-dev): Bump prettier from 3.9.5 to 3.9.6
+* Chore(deps-dev): Bump ini from 6.0.0 to 7.0.0
+* Chore(deps-dev): Bump lint-staged from 17.1.1 to 17.2.0
+* Updated AI Models
+* Chore(deps-dev): Bump lint-staged from 17.0.8 to 17.1.1
+
+---
+
 ## [2026.722.0] - 2026-07-22
 
 * Updated AI Models
