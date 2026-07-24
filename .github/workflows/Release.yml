@@ -218,4 +218,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ needs.prepare-release.outputs.tag_name }}
-        run: gh release edit "${TAG_NAME}" --draft=false
+        run: gh release edit "${TAG_NAME}" --repo "${GITHUB_REPOSITORY}" --draft=false
