@@ -6,6 +6,12 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.724.4] - 2026-07-24
+
+* chore: specify repository in gh release edit command
+
+---
+
 ## [2026.724.3] - 2026-07-24
 
 * chore: implement retry logic for build and publish step in Release workflow
