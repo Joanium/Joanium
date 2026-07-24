@@ -49,9 +49,9 @@ jobs:
 
           PREV_TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
           if [ -n "${PREV_TAG}" ]; then
-            CHANGES="$(git log "${PREV_TAG}..HEAD" --no-merges --max-count=30 --pretty=format:'* %s' | grep -v '\[skip ci\]')"
+            CHANGES="$(git log "${PREV_TAG}..HEAD" --no-merges --max-count=30 --pretty=format:'* %s' | sed '/\[skip ci\]/d')"
           else
-            CHANGES="$(git log HEAD --no-merges --max-count=30 --pretty=format:'* %s' | grep -v '\[skip ci\]')"
+            CHANGES="$(git log HEAD --no-merges --max-count=30 --pretty=format:'* %s' | sed '/\[skip ci\]/d')"
           fi
 
           {
