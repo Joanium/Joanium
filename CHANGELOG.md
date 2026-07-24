@@ -6,6 +6,12 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.724.3] - 2026-07-24
+
+* chore: implement retry logic for build and publish step in Release workflow
+
+---
+
 ## [2026.724.2] - 2026-07-24
 
 * chore: update Node.js version to 24.18.0 in Release workflow
