@@ -21,7 +21,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "fast-check": "^4.9.0",
     "husky": "9.1.7",
-    "ini": "6.0.0",
+    "ini": "7.0.0",
     "jscpd": "5.0.12",
     "lint-staged": "17.2.0",
     "markdownlint-cli": "0.49.1",
@@ -31,7 +31,7 @@
     "glob": ">=10.5.0",
     "markdown-it": ">=14.1.1",
     "smol-toml": ">=1.6.1",
-    "ini": "6.0.0"
+    "ini": "7.0.0"
   },
   "main": "App.js",
   "scripts": {
