@@ -167,6 +167,7 @@ jobs:
     permissions:
       contents: write
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
@@ -191,9 +192,21 @@ jobs:
         run: npm install
 
       - name: Build and publish
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx electron-builder ${{ matrix.target }} --publish always
+        run: |
+          for attempt in 1 2 3; do
+            if npx electron-builder ${{ matrix.target }} --publish always; then
+              exit 0
+            fi
+
+            if [ "${attempt}" -eq 3 ]; then
+              exit 1
+            fi
+
+            sleep $((attempt * 30))
+          done
 
   publish-release:
     needs: [prepare-release, build-and-upload]
