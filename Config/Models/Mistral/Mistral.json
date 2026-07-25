@@ -209,6 +209,9 @@
     "mistral-small-2506": {
       "name": "mistral-small-2506"
     },
+    "deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
+    },
     "mistral-embed-2312": {
       "name": "mistral-embed-2312"
     },
@@ -273,5 +276,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-22T11:54:07.232Z"
+  "_syncedAt": "2026-07-24T14:24:05.468Z"
 }

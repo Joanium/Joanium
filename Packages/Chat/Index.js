@@ -1,5 +1,7 @@
-import { dialog } from 'electron';
+import path from 'node:path';
+import { app, dialog } from 'electron';
 import { createChatStateManager } from './Core/ChatState.js';
+import { createVoiceTranscriber } from './Core/VoiceTranscriber.js';
 import strings from './I18n/en.js';
 import {
   getSupportedAttachmentExtensions,
@@ -10,6 +12,9 @@ import { createUsageTracker, estimateTokens } from '../Shared/UsageTracker/Usage
 
 export async function createPackage({ rootDirectory }) {
   const chatStateManager = createChatStateManager({ rootDirectory });
+  const voiceTranscriber = createVoiceTranscriber({
+    cacheDirectory: path.join(app.getPath('userData'), 'Models', 'Whisper'),
+  });
   const usageTracker = createUsageTracker({ rootDirectory });
   const activeStreams = new Map();
   const networkErrorCodes = new Set([
@@ -44,6 +49,19 @@ export async function createPackage({ rootDirectory }) {
     if (!event.sender.isDestroyed()) {
       event.sender.send(channel, payload);
     }
+  }
+
+  function toAudioSamples(value) {
+    if (value instanceof ArrayBuffer) return new Float32Array(value);
+    if (!ArrayBuffer.isView(value) || value.BYTES_PER_ELEMENT !== Float32Array.BYTES_PER_ELEMENT) {
+      return null;
+    }
+
+    return new Float32Array(
+      value.buffer,
+      value.byteOffset,
+      value.byteLength / Float32Array.BYTES_PER_ELEMENT,
+    );
   }
 
   function createUsageExchange(meta, isNewSession) {
@@ -196,6 +214,25 @@ export async function createPackage({ rootDirectory }) {
           const result = await chatStateManager.enhancePrompt({ raw, providerId, modelId });
           await recordUsage(result, false);
           return result;
+        },
+      },
+      {
+        channel: 'chat:transcribe-voice',
+        handler: async (event, request = {}) => {
+          const samples = toAudioSamples(request.samples);
+          if (!samples) return { ok: false, code: 'recording' };
+
+          try {
+            const text = await voiceTranscriber.transcribe(samples, (progress) => {
+              sendIfAlive(event, 'chat:voice-model-progress', {
+                progress: Number(progress?.progress ?? 0),
+                status: progress?.status ?? '',
+              });
+            });
+            return { ok: true, text };
+          } catch (error) {
+            return { ok: false, code: error?.code ?? 'transcription' };
+          }
         },
       },
       {

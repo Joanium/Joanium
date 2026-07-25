@@ -5,6 +5,18 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "inclusionai/ling-3.0-flash:free": {
+      "name": "Ling-3.0-flash (free)",
+      "description": "*Ling-3.0-flash* is a *124B-parameter Mixture-of-Experts (MoE) model*, with approximately *5.1B parameters activated per token*. The model is designed with *token efficiency and production-scale agentic inference* as key priorities, enabling developers...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "poolside/laguna-s-2.1": {
       "name": "Poolside: Laguna S 2.1",
       "description": "Laguna S 2.1 is the latest coding agent model from [Poolside](<https://poolside.ai/>). Laguna S 2.1 is a 118B total parameter model with 8B active parameters, scoring 70.2% on Terminal-Bench 2.1 and...",
@@ -4494,5 +4506,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-22T11:54:06.014Z"
+  "_syncedAt": "2026-07-24T14:24:04.120Z"
 }

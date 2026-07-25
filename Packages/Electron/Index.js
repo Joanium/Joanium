@@ -204,15 +204,18 @@ async function createMainWindow(entryPackage) {
   });
 
   // ── Geolocation permission ────────────────────────────────────────────────
-  // Grant geolocation so the Location toolset can call navigator.geolocation
-  // via executeJavaScript. Both handlers are required: the check handler for
-  // synchronous permission queries and the request handler for the async
-  // permission-prompt callback that Chromium fires when the API is first used.
+  const isAllowedPermission = (permission, details = {}) =>
+    permission === 'geolocation' ||
+    (permission === 'media' &&
+      (details.mediaType === 'audio' || details.mediaTypes?.includes('audio')));
+
   browserWindow.webContents.session.setPermissionCheckHandler(
-    (_webContents, permission) => permission === 'geolocation',
+    (_webContents, permission, _requestingOrigin, details) =>
+      isAllowedPermission(permission, details),
   );
   browserWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, permission, callback) => callback(permission === 'geolocation'),
+    (_webContents, permission, callback, details) =>
+      callback(isAllowedPermission(permission, details)),
   );
 
   await browserWindow.loadFile(entryPackage.rendererPath);

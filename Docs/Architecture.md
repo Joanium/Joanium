@@ -1,6 +1,6 @@
 # Architecture
 
-Joanium is a **local-first AI desktop assistant** built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js >= 22. Cross-platform: Windows, macOS, Linux.
+Joanium is a **local-first AI desktop assistant** built with Electron and vanilla JavaScript (ESM). No React, no frameworks. Node.js 24.18.0. Cross-platform: Windows, macOS, Linux.
 
 ---
 
@@ -16,7 +16,7 @@ Joanium is a **local-first AI desktop assistant** built with Electron and vanill
 
 ## Tech Stack
 
-- **Runtime**: Node.js >= 22, Electron 43.1.1
+- **Runtime**: Node.js 24.18.0, Electron 43.1.1
 - **Language**: JavaScript (ESM only — no CommonJS)
 - **UI**: Vanilla JS, CSS, custom DOM utilities
 - **Build**: electron-builder 26.11.1, custom build scripts

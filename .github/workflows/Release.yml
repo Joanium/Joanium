@@ -49,9 +49,9 @@ jobs:
 
           PREV_TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
           if [ -n "${PREV_TAG}" ]; then
-            CHANGES="$(git log "${PREV_TAG}..HEAD" --no-merges --max-count=30 --pretty=format:'* %s' | grep -v '\[skip ci\]')"
+            CHANGES="$(git log "${PREV_TAG}..HEAD" --no-merges --max-count=30 --pretty=format:'* %s' | sed '/\[skip ci\]/d')"
           else
-            CHANGES="$(git log HEAD --no-merges --max-count=30 --pretty=format:'* %s' | grep -v '\[skip ci\]')"
+            CHANGES="$(git log HEAD --no-merges --max-count=30 --pretty=format:'* %s' | sed '/\[skip ci\]/d')"
           fi
 
           {
@@ -159,6 +159,7 @@ jobs:
 
           gh release create "${TAG_NAME}" \
             --title "${VERSION}" \
+            --draft \
             --notes "${RELEASE_NOTES}"
 
   build-and-upload:
@@ -166,6 +167,7 @@ jobs:
     permissions:
       contents: write
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
@@ -184,12 +186,36 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '22'
+          node-version: '24.18.0'
 
       - name: Install dependencies
         run: npm install
 
       - name: Build and publish
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx electron-builder ${{ matrix.target }} --publish always
+        run: |
+          for attempt in 1 2 3; do
+            if npx electron-builder ${{ matrix.target }} --publish always; then
+              exit 0
+            fi
+
+            if [ "${attempt}" -eq 3 ]; then
+              exit 1
+            fi
+
+            sleep $((attempt * 30))
+          done
+
+  publish-release:
+    needs: [prepare-release, build-and-upload]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish completed release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.prepare-release.outputs.tag_name }}
+        run: gh release edit "${TAG_NAME}" --repo "${GITHUB_REPOSITORY}" --draft=false

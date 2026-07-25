@@ -40,6 +40,7 @@ import { createBrowserPreviewPanel } from './BrowserPreviewPanel.js';
 import { createTechFeedPanel } from './TechFeedPanel.js';
 import { createDiagnosticPanel, measureFetch, resolveProviderBaseUrl } from './DiagnosticPanel.js';
 import { createDropZoneOverlay } from './DropZoneOverlay.js';
+import { createVoiceInput } from './VoiceInput.js';
 import { createWhatsNewOverlay } from './WhatsNewOverlay.js';
 import { createFileDiffTracker } from './FileDiffTracker.js';
 import { createGitBranchPickerPanel, orderGitBranches } from './GitBranchPickerPanel.js';
@@ -170,6 +171,10 @@ export async function createChatView(
   let attachmentNoticeTimer = null;
   let isSending = false;
   let isEnhancing = false;
+  let voiceInput = null;
+  let voiceInputBaseDraft = '';
+  let voiceInputFailed = false;
+  let voiceInputNoticeVisible = false;
   let isPrivate = false;
   let accText = '';
   let accThinking = '';
@@ -267,6 +272,7 @@ export async function createChatView(
   let attachBtn = null;
   let terminalBtn = null;
   let browserBtn = null;
+  let microphoneBtn = null;
   let thread = null;
   let userTypingEl = null;
   let userTypingTimer = null;
@@ -418,7 +424,7 @@ export async function createChatView(
     }
   }
 
-  function showAttachmentNotice(message, tone = 'info') {
+  function showAttachmentNotice(message, tone = 'info', duration = 3200) {
     if (!attachmentNotice) return;
 
     clearTimeout(attachmentNoticeTimer);
@@ -426,12 +432,14 @@ export async function createChatView(
     attachmentNotice.hidden = false;
     attachmentNotice.className = `chat-composer__notice chat-composer__notice--${tone}`;
 
+    if (!duration) return;
+
     attachmentNoticeTimer = setTimeout(() => {
       if (attachmentNotice) {
         attachmentNotice.hidden = true;
         attachmentNotice.textContent = '';
       }
-    }, 3200);
+    }, duration);
   }
 
   function renderPendingAttachments() {
@@ -2274,6 +2282,22 @@ export async function createChatView(
       browserBtn.classList.toggle('chat-composer__icon-button--active', isBrowserOpen);
     }
 
+    if (microphoneBtn) {
+      const isListening = voiceInput?.isListening ?? false;
+      const isTranscribing = voiceInput?.state === 'transcribing';
+      microphoneBtn.disabled = isEnhancing || isSending || isTranscribing;
+      microphoneBtn.classList.toggle('chat-composer__icon-button--active', isListening);
+      microphoneBtn.classList.toggle('chat-composer__icon-button--listening', isListening);
+      microphoneBtn.setAttribute(
+        'aria-label',
+        isListening
+          ? strings.composer.stopVoiceInput
+          : isTranscribing
+            ? strings.composer.voiceInputTranscribing
+            : strings.composer.startVoiceInput,
+      );
+    }
+
     if (composer) {
       composer.classList.toggle('chat-composer--enhancing', isEnhancing);
     }
@@ -2287,9 +2311,62 @@ export async function createChatView(
     composerField.setSelectionRange(draftValue.length, draftValue.length);
   }
 
+  function applyVoiceTranscript(transcript) {
+    const normalizedTranscript = transcript.trim();
+    draftValue = [voiceInputBaseDraft, normalizedTranscript].filter(Boolean).join(' ');
+    syncComposer();
+    focusComposer();
+  }
+
+  function showVoiceInputNotice(message) {
+    voiceInputNoticeVisible = true;
+    showAttachmentNotice(message, 'info', 0);
+  }
+
+  function hideVoiceInputNotice() {
+    if (!voiceInputNoticeVisible || !attachmentNotice) return;
+    attachmentNotice.hidden = true;
+    attachmentNotice.textContent = '';
+    voiceInputNoticeVisible = false;
+  }
+
+  async function transcribeVoiceInput(samples) {
+    const result = await invokeIpc('chat:transcribe-voice', { samples: samples.buffer });
+    if (result?.ok) return result.text;
+
+    const error = new Error('Voice transcription failed.');
+    error.code = result?.code ?? 'transcription';
+    throw error;
+  }
+
+  function showVoiceInputError(reason) {
+    const messagesByReason = {
+      unsupported: strings.composer.voiceInputUnsupported,
+      permission: strings.composer.voiceInputPermissionDenied,
+      microphone: strings.composer.voiceInputMicrophoneUnavailable,
+      recording: strings.composer.voiceInputRecordingFailed,
+      model: strings.composer.voiceInputModelFailed,
+      'no-speech': strings.composer.voiceInputNoSpeech,
+      start: strings.composer.voiceInputStartFailed,
+    };
+    voiceInputFailed = true;
+    voiceInputNoticeVisible = false;
+    showAttachmentNotice(
+      messagesByReason[reason] ?? strings.composer.voiceInputStartFailed,
+      'warning',
+    );
+  }
+
+  function toggleVoiceInput() {
+    if (!voiceInput || isEnhancing || isSending) return;
+    if (!voiceInput.isBusy) voiceInputBaseDraft = draftValue.trim();
+    voiceInput.toggle();
+  }
+
   function clearConversation() {
     generationToken += 1;
     cancelActiveStream();
+    voiceInput?.stop();
     messages = [];
     draftValue = '';
     pendingAttachments = [];
@@ -4195,6 +4272,7 @@ export async function createChatView(
   composerField.placeholder = strings.composer.placeholder;
   composerField.rows = 1;
   composerField.addEventListener('input', (event) => {
+    if (voiceInput?.isListening) voiceInput.stop();
     draftValue = event.target.value;
     syncComposerFieldHeight();
     syncComposer();
@@ -4259,7 +4337,40 @@ export async function createChatView(
   });
   // ─────────────────────────────────────────────────────────────────────────
 
-  composerActions.append(attachBtn, enhanceBtn, terminalBtn, browserBtn);
+  microphoneBtn = createElement('button', 'chat-composer__icon-button');
+  microphoneBtn.type = 'button';
+  microphoneBtn.setAttribute('aria-label', strings.composer.startVoiceInput);
+  microphoneBtn.append(createIcon('microphone', 'chat-composer__icon'));
+  microphoneBtn.addEventListener('click', toggleVoiceInput);
+
+  voiceInput = createVoiceInput({
+    onStateChange(state) {
+      if (state === 'recording') {
+        voiceInputFailed = false;
+        showVoiceInputNotice(strings.composer.voiceInputRecording);
+      } else if (state === 'transcribing') {
+        showVoiceInputNotice(strings.composer.voiceInputTranscribing);
+      } else if (!voiceInputFailed) {
+        hideVoiceInputNotice();
+      }
+      syncComposer();
+    },
+    onTranscript: applyVoiceTranscript,
+    onAudio: transcribeVoiceInput,
+    onError: showVoiceInputError,
+  });
+
+  onIpc('chat:voice-model-progress', (payload) => {
+    if (!voiceInput?.isBusy) return;
+    const progress = Math.round(Number(payload?.progress ?? 0));
+    const message =
+      progress > 0
+        ? formatText(strings.composer.voiceInputDownloading, { progress: String(progress) })
+        : strings.composer.voiceInputDownloadingInitial;
+    showVoiceInputNotice(message);
+  });
+
+  composerActions.append(attachBtn, enhanceBtn, terminalBtn, browserBtn, microphoneBtn);
 
   const contextVizBtn = createElement('button', 'chat-composer__icon-button');
   contextVizBtn.type = 'button';

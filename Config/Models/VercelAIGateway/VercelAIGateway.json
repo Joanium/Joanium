@@ -986,6 +986,19 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash-free": {
+      "name": "Ling 3.0 Flash",
+      "description": "Ling 3.0 Flash is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, latency, and serving-cost budgets.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "interfaze/interfaze-beta": {
       "name": "Interfaze Beta",
       "description": "Interfaze is an AI model built on a new architecture that merges specialized DNN/CNN models with LLMs for developer tasks that require deterministic output and high consistency like OCR, scraping, classification, STT and more.",
@@ -2310,6 +2323,19 @@
         "image": true
       }
     },
+    "tencent/hy3": {
+      "name": "Hy3",
+      "description": "Built for real-world business scenarios, Hy3 features a 295B/21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long-form comprehension, multi-turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across both high",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.58
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "thinkingmachines/inkling": {
       "name": "Inkling",
       "description": "Inkling is a multimodal MoE model (975B total, 41B active, 256k context) reasoning over text, image, and audio inputs.",
@@ -2868,5 +2894,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-22T11:54:30.379Z"
+  "_syncedAt": "2026-07-24T14:24:31.005Z"
 }

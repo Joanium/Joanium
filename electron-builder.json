@@ -3,6 +3,7 @@
   "productName": "Joanium",
   "copyright": "Copyright © 2026 Joel Jolly",
   "asar": true,
+  "asarUnpack": ["node_modules/onnxruntime-node/**"],
   "afterSign": "Scripts/Fuses.cjs",
   "files": [
     "App.js",
@@ -69,7 +70,10 @@
     "target": "dmg",
     "icon": "Assets/Logo/Logo.icns",
     "category": "public.app-category.productivity",
-    "artifactName": "Joanium.dmg"
+    "artifactName": "Joanium.dmg",
+    "extendInfo": {
+      "NSMicrophoneUsageDescription": "Joanium uses your microphone to turn speech into chat messages."
+    }
   },
   "linux": {
     "target": "AppImage",
