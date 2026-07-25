@@ -209,9 +209,6 @@
     "mistral-small-2506": {
       "name": "mistral-small-2506"
     },
-    "deepseek-v4-flash": {
-      "name": "Deepseek V4 FLASH"
-    },
     "mistral-embed-2312": {
       "name": "mistral-embed-2312"
     },
@@ -260,6 +257,12 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "voxtral-mini-realtime-charente-2606-solutions": {
+      "name": "Voxtral MINI Realtime Charente 2606 Solutions"
+    },
+    "deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
+    },
     "voxtral-mini-realtime-mellon-greek-2606-solutions": {
       "name": "Voxtral MINI Realtime Mellon Greek 2606 Solutions"
     },
@@ -276,5 +279,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-24T14:24:05.468Z"
+  "_syncedAt": "2026-07-25T11:48:29.510Z"
 }

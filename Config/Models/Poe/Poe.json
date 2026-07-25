@@ -1344,6 +1344,9 @@
     "glm-5.2-el": {
       "name": "Glm 5 2 El"
     },
+    "fugu-ultra-v1.1-el": {
+      "name": "Fugu ULTRA V1 1 El"
+    },
     "qwen3.6-plus": {
       "name": "Qwen3 6 PLUS"
     },
@@ -1657,5 +1660,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-24T14:24:32.368Z"
+  "_syncedAt": "2026-07-25T11:48:52.842Z"
 }

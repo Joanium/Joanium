@@ -5,6 +5,22 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "zai-glm-4.7": {
+      "name": "Z.ai GLM 4.7",
+      "description": "355B parameter reasoning model from Z.ai — strong multilingual performance and chain-of-thought on Cerebras silicon",
+      "context_window": 32768,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.5,
+        "output": 0.5
+      }
+    },
     "gemma-4-31b": {
       "name": "Gemma 4 31B"
     },
@@ -23,23 +39,7 @@
         "input": 0.6,
         "output": 0.6
       }
-    },
-    "zai-glm-4.7": {
-      "name": "Z.ai GLM 4.7",
-      "description": "355B parameter reasoning model from Z.ai — strong multilingual performance and chain-of-thought on Cerebras silicon",
-      "context_window": 32768,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.5,
-        "output": 0.5
-      }
     }
   },
-  "_syncedAt": "2026-07-24T14:24:15.421Z"
+  "_syncedAt": "2026-07-25T11:48:36.790Z"
 }
