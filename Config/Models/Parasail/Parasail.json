@@ -215,15 +215,6 @@
     "openai/gpt-oss-120b-fast": {
       "name": "Gpt OSS 120B FAST"
     },
-    "parasail-glm-52": {
-      "name": "Parasail Glm 52"
-    },
-    "zai-org/GLM-5.2": {
-      "name": "GLM 5 2"
-    },
-    "zai-org/GLM-5.2-FP8": {
-      "name": "GLM 5 2 FP8"
-    },
     "parasail-qwen35-9b": {
       "name": "Parasail Qwen35 9B"
     },
@@ -257,6 +248,15 @@
     "Qwen/Qwen3-Embedding-8B": {
       "name": "Qwen3 Embedding 8B"
     },
+    "parasail-glm-52": {
+      "name": "Parasail Glm 52"
+    },
+    "zai-org/GLM-5.2": {
+      "name": "GLM 5 2"
+    },
+    "zai-org/GLM-5.2-FP8": {
+      "name": "GLM 5 2 FP8"
+    },
     "parasail-mistral-small-32-24b": {
       "name": "Parasail Mistral Small 32 24B"
     },
@@ -279,5 +279,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-26T04:12:03.956Z"
+  "_syncedAt": "2026-07-26T13:19:11.959Z"
 }
