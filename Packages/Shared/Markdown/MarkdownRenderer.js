@@ -1,13 +1,13 @@
 /**
  * Shared/Markdown/MarkdownRenderer.js
  *
- * Lightweight, dependency-free Markdown → DOM renderer for Joanium.
+ * Lightweight Markdown → DOM renderer for Joanium.
  *
  * Supported syntax:
  *   Blocks  : headings (h1–h6), paragraphs, fenced code blocks,
  *             blockquotes, unordered lists, ordered lists, horizontal rules,
- *             GFM tables (with column alignment).
- *   Inlines : **bold**, *italic*, `code`, [label](url).
+ *             GFM tables (with column alignment), display math.
+ *   Inlines : **bold**, *italic*, `code`, [label](url), inline math.
  *
  * Usage:
  *   import { renderMarkdown } from '../../Shared/Markdown/MarkdownRenderer.js';
@@ -19,6 +19,7 @@ import { iconMarkup } from '../Icons/Icons.js';
 import { invokeIpc } from '../Ipc/RendererIpc.js';
 import { copyToClipboard } from '../Utils/DomUtils.js';
 import strings from '../I18n/en.js';
+import katex from '../../../node_modules/katex/dist/katex.mjs';
 
 const codeBlockStrings = strings.markdown.codeBlock;
 
@@ -36,6 +37,102 @@ function sanitizeEscapedMarkdownUrl(url) {
   return escapeAttributeFromEscapedText(candidate);
 }
 
+function isEscaped(text, index) {
+  let slashCount = 0;
+  for (let cursor = index - 1; cursor >= 0 && text[cursor] === '\\'; cursor--) {
+    slashCount++;
+  }
+  return slashCount % 2 === 1;
+}
+
+function renderMath(latex, displayMode = false) {
+  try {
+    return katex.renderToString(latex, {
+      displayMode,
+      output: 'htmlAndMathml',
+      throwOnError: true,
+      strict: 'ignore',
+      trust: false,
+    });
+  } catch {
+    return `<span class="md-math-fallback">${escapeHtml(latex)}</span>`;
+  }
+}
+
+function extractInlineMath(text) {
+  const mathTokens = [];
+  let output = '';
+  let index = 0;
+
+  while (index < text.length) {
+    if (text.startsWith('\\(', index) && !isEscaped(text, index)) {
+      const end = text.indexOf('\\)', index + 2);
+      if (end !== -1 && !isEscaped(text, end)) {
+        const latex = text.slice(index + 2, end);
+        if (latex.trim()) {
+          const token = `@@JOANIUMMATH${mathTokens.length}@@`;
+          mathTokens.push(renderMath(latex));
+          output += token;
+          index = end + 2;
+          continue;
+        }
+      }
+    }
+
+    if (text[index] === '$' && text[index + 1] !== '$' && !isEscaped(text, index)) {
+      let end = index + 1;
+      while (end < text.length) {
+        if (text[end] === '$' && !isEscaped(text, end)) break;
+        end++;
+      }
+      const latex = text.slice(index + 1, end);
+      if (end < text.length && latex.trim() && latex === latex.trim()) {
+        const token = `@@JOANIUMMATH${mathTokens.length}@@`;
+        mathTokens.push(renderMath(latex));
+        output += token;
+        index = end + 1;
+        continue;
+      }
+    }
+
+    output += text[index];
+    index++;
+  }
+
+  return { mathTokens, text: output };
+}
+
+function findDisplayMath(lines, index) {
+  const line = lines[index];
+  const dollarMatch = line.match(/^\s*\$\$(.*?)\$\$\s*$/);
+  if (dollarMatch) return { end: index, latex: dollarMatch[1] };
+
+  if (/^\s*\$\$\s*$/.test(line)) {
+    const mathLines = [];
+    for (let cursor = index + 1; cursor < lines.length; cursor++) {
+      if (/^\s*\$\$\s*$/.test(lines[cursor])) {
+        return { end: cursor, latex: mathLines.join('\n') };
+      }
+      mathLines.push(lines[cursor]);
+    }
+  }
+
+  const bracketMatch = line.match(/^\s*\\\[(.*?)\\\]\s*$/);
+  if (bracketMatch) return { end: index, latex: bracketMatch[1] };
+
+  if (/^\s*\\\[\s*$/.test(line)) {
+    const mathLines = [];
+    for (let cursor = index + 1; cursor < lines.length; cursor++) {
+      if (/^\s*\\\]\s*$/.test(lines[cursor])) {
+        return { end: cursor, latex: mathLines.join('\n') };
+      }
+      mathLines.push(lines[cursor]);
+    }
+  }
+
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Inline renderer
 // ---------------------------------------------------------------------------
@@ -50,29 +147,28 @@ function sanitizeEscapedMarkdownUrl(url) {
 export function renderInline(text) {
   const inlineCodeTokens = [];
 
-  // 1. Escape HTML special chars
-  let out = escapeHtml(text);
-
-  // 2. Inline code  `code`  — must run before bold/italic so backticks win
-  out = out.replace(/`([^`]+)`/g, (_, code) => {
+  // 1. Protect inline code before extracting math syntax.
+  let out = String(text).replace(/`([^`]+)`/g, (_, code) => {
     const token = `@@JOANIUMINLINECODE${inlineCodeTokens.length}@@`;
-    inlineCodeTokens.push(`<code class="md-code-inline">${code}</code>`);
+    inlineCodeTokens.push(`<code class="md-code-inline">${escapeHtml(code)}</code>`);
     return token;
   });
+  const { mathTokens, text: textWithoutMath } = extractInlineMath(out);
+  out = escapeHtml(textWithoutMath);
 
-  // 3. Bold  **text** or __text__
+  // 2. Bold  **text** or __text__
   out = out.replace(/\*\*(.+?)\*\*|__(.+?)__/g, (_, a, b) => `<strong>${a ?? b}</strong>`);
 
-  // 4. Italic  *text* or _text_  (single star/underscore, not already consumed)
+  // 3. Italic  *text* or _text_  (single star/underscore, not already consumed)
   out = out.replace(/\*([^*]+)\*|_([^_]+)_/g, (_, a, b) => `<em>${a ?? b}</em>`);
 
-  // 5. Links  [label](url)
+  // 4. Links  [label](url)
   out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
     const safe = sanitizeEscapedMarkdownUrl(url);
     return `<a class="md-link" href="${safe}" rel="noopener noreferrer">${label}</a>`;
   });
 
-  // 6. Auto-link bare URLs  https://… or http://…
+  // 5. Auto-link bare URLs  https://… or http://…
   //    Must run after [label](url) so already-linked URLs aren't double-processed.
   out = out.replace(/(?<!href=")(https?:\/\/[^\s<>"'\)\]]+)/g, (match) => {
     const safe = escapeAttributeFromEscapedText(match);
@@ -81,6 +177,10 @@ export function renderInline(text) {
 
   out = inlineCodeTokens.reduce((next, html, index) => {
     return next.replace(`@@JOANIUMINLINECODE${index}@@`, html);
+  }, out);
+
+  out = mathTokens.reduce((next, html, index) => {
+    return next.replace(`@@JOANIUMMATH${index}@@`, html);
   }, out);
 
   return out;
@@ -160,6 +260,13 @@ function parseBlocks(lines) {
     }
 
     // ── Horizontal rule  --- / *** / ___ ───────────────────────────────
+    const displayMath = findDisplayMath(lines, i);
+    if (displayMath && displayMath.latex.trim()) {
+      blocks.push({ type: 'math', latex: displayMath.latex });
+      i = displayMath.end + 1;
+      continue;
+    }
+
     if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(line.trim())) {
       blocks.push({ type: 'hr' });
       i++;
@@ -276,6 +383,14 @@ function buildDom(blocks) {
         const el = document.createElement('p');
         el.className = 'md-p';
         el.innerHTML = renderInline(block.text);
+        frag.append(el);
+        break;
+      }
+
+      case 'math': {
+        const el = document.createElement('div');
+        el.className = 'md-math md-math--display';
+        el.innerHTML = renderMath(block.latex, true);
         frag.append(el);
         break;
       }

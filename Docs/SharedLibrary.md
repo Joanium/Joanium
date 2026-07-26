@@ -72,7 +72,7 @@ The shared prompt execution pipeline used by Chat, Channels, and Agents.
 
 - **Frontmatter.js** — Parse/strip YAML frontmatter from markdown files
 - **MarkdownLibrary.js** — List/load markdown from namespaced directories
-- **MarkdownRenderer.js** + `.css` — Client-side markdown rendering with syntax highlighting
+- **MarkdownRenderer.js** + `.css` — Client-side Markdown and KaTeX math rendering
 - **NamespacedResourceLibrary.js** — Dual-directory lookup: bundled (read-only) + writable. Used for personas, skills, and other namespaced content.
 - **ThinkingParser.js** — Extracts `<think>` blocks from AI responses for separate display
 

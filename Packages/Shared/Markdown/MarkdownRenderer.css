@@ -69,6 +69,27 @@
   margin-bottom: 0;
 }
 
+.md-math--display {
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: var(--color-chat-text-title);
+}
+
+.md-math--display:last-child {
+  margin-bottom: 0;
+}
+
+.md-math--display .katex-display {
+  margin: 0;
+  text-align: left;
+}
+
+.md-math-fallback {
+  font-family: var(--font-family);
+  color: var(--color-chat-text-secondary);
+}
+
 /* ── Inline code ────────────────────────────────────────────────────────── */
 
 .md-code-inline {
