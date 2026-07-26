@@ -5,6 +5,32 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "anthropic/claude-opus-5-fast": {
+      "name": "Claude Opus 5 (Fast)",
+      "description": "Fast-mode variant of [Opus 5](/anthropic/claude-opus-5) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 5.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5": {
+      "name": "Claude Opus 5",
+      "description": "Claude Opus 5 is Anthropic’s flagship model for demanding reasoning, coding, and long-horizon agentic work. It is particularly strong at end-to-end software tasks, code review and bug finding, visual analysis...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ling-3.0-flash:free": {
       "name": "Ling-3.0-flash (free)",
       "description": "*Ling-3.0-flash* is a *124B-parameter Mixture-of-Experts (MoE) model*, with approximately *5.1B parameters activated per token*. The model is designed with *token efficiency and production-scale agentic inference* as key priorities, enabling developers...",
@@ -4506,5 +4532,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-24T14:24:04.120Z"
+  "_syncedAt": "2026-07-25T11:48:27.568Z"
 }

@@ -492,20 +492,6 @@
         "image": true
       }
     },
-    "anthropic/claude-opus-4.7-fast": {
-      "name": "Claude Opus 4.7 (Fast)",
-      "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 30,
-        "output": 150
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-opus-4.8": {
       "name": "Claude Opus 4.8",
       "description": "Opus 4.8 is a focused upgrade to Opus 4.7 and is Anthropic's best generally available model for coding, agentic tasks, and enterprise workflows. It builds on the strengths of previous Opus models with stronger performance on complex, multi-step coding tasks. Anthropic recommends using it on long-hor",
@@ -523,6 +509,34 @@
     "anthropic/claude-opus-4.8-fast": {
       "name": "Claude Opus 4.8 (Fast)",
       "description": "Opus 4.8 is a focused upgrade to Opus 4.7 and is Anthropic's best generally available model for coding, agentic tasks, and enterprise workflows. It builds on the strengths of previous Opus models with stronger performance on complex, multi-step coding tasks. Anthropic recommends using it on long-hor",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5": {
+      "name": "Claude Opus 5",
+      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5-fast": {
+      "name": "Claude Opus 5 (Fast)",
+      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
       "context_window": 1000000,
       "max_output": 128000,
       "pricing": {
@@ -837,20 +851,6 @@
     "google/gemini-3.1-flash-lite": {
       "name": "Gemini 3.1 Flash Lite",
       "description": "Gemini 3.1 Flash Lite outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code completio",
-      "context_window": 1000000,
-      "max_output": 65000,
-      "pricing": {
-        "input": 0.25,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "google/gemini-3.1-flash-lite-preview": {
-      "name": "Gemini 3.1 Flash Lite Preview",
-      "description": "Gemini 3.1 Flash Lite Preview outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code c",
       "context_window": 1000000,
       "max_output": 65000,
       "pricing": {
@@ -1753,20 +1753,6 @@
         "image": true
       }
     },
-    "openai/gpt-5-chat": {
-      "name": "GPT 5 Chat",
-      "description": "GPT-5 Chat points to the GPT-5 snapshot currently used in ChatGPT.",
-      "context_window": 128000,
-      "max_output": 16384,
-      "pricing": {
-        "input": 1.25,
-        "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "openai/gpt-5-codex": {
       "name": "GPT-5-Codex",
       "description": "GPT-5-Codex is a version of GPT-5 optimized for agentic coding tasks in Codex or similar environments.",
@@ -1897,20 +1883,6 @@
       "description": "GPT-5.2 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
       "context_window": 400000,
       "max_output": 128000,
-      "pricing": {
-        "input": 1.75,
-        "output": 14
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-5.2-chat": {
-      "name": "GPT 5.2 Chat",
-      "description": "The model powering ChatGPT is gpt-5.2-chat-latest: this is OpenAI's best general-purpose model, part of the GPT-5 flagship model family.",
-      "context_window": 128000,
-      "max_output": 16384,
       "pricing": {
         "input": 1.75,
         "output": 14
@@ -2728,6 +2700,62 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.7-fast": {
+      "name": "Claude Opus 4.7 (Fast)",
+      "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 30,
+        "output": 150
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.1-flash-lite-preview": {
+      "name": "Gemini 3.1 Flash Lite Preview",
+      "description": "Gemini 3.1 Flash Lite Preview outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code c",
+      "context_window": 1000000,
+      "max_output": 65000,
+      "pricing": {
+        "input": 0.25,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5-chat": {
+      "name": "GPT 5 Chat",
+      "description": "GPT-5 Chat points to the GPT-5 snapshot currently used in ChatGPT.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 1.25,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.2-chat": {
+      "name": "GPT 5.2 Chat",
+      "description": "The model powering ChatGPT is gpt-5.2-chat-latest: this is OpenAI's best general-purpose model, part of the GPT-5 flagship model family.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 1.75,
+        "output": 14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/llama-3.2-11b": {
       "name": "Llama 3.2 11B Vision Instruct",
       "description": "Instruction-tuned image reasoning generative model (text + images in / text out) optimized for visual recognition, image reasoning, captioning and answering general questions about the image.",
@@ -2894,5 +2922,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-24T14:24:31.005Z"
+  "_syncedAt": "2026-07-25T11:48:50.966Z"
 }
