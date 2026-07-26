@@ -179,9 +179,6 @@
     "mistralai/mistral-large-2-instruct": {
       "name": "mistralai/mistral-large-2-instruct"
     },
-    "mistralai/mistral-large-3-675b-instruct-2512": {
-      "name": "mistralai/mistral-large-3-675b-instruct-2512"
-    },
     "mistralai/mistral-medium-3.5-128b": {
       "name": "mistralai/mistral-medium-3.5-128b"
     },
@@ -227,6 +224,9 @@
     },
     "nvidia/ising-calibration-1-35b-a3b": {
       "name": "nvidia/ising-calibration-1-35b-a3b"
+    },
+    "nvidia/ising-calibration-1.5-31b": {
+      "name": "Ising Calibration 1 5 31B"
     },
     "nvidia/llama-3.1-nemoguard-8b-content-safety": {
       "name": "nvidia/llama-3.1-nemoguard-8b-content-safety"
@@ -435,6 +435,9 @@
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
     },
+    "mistralai/mistral-large-3-675b-instruct-2512": {
+      "name": "mistralai/mistral-large-3-675b-instruct-2512"
+    },
     "qwen/qwen3.5-122b-a10b": {
       "name": "qwen/qwen3.5-122b-a10b"
     },
@@ -457,5 +460,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-22T11:54:03.459Z"
+  "_syncedAt": "2026-07-26T04:11:37.752Z"
 }

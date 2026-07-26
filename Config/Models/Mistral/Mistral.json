@@ -257,6 +257,12 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "voxtral-mini-realtime-charente-2606-solutions": {
+      "name": "Voxtral MINI Realtime Charente 2606 Solutions"
+    },
+    "deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
+    },
     "voxtral-mini-realtime-mellon-greek-2606-solutions": {
       "name": "Voxtral MINI Realtime Mellon Greek 2606 Solutions"
     },
@@ -273,5 +279,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-22T11:54:07.232Z"
+  "_syncedAt": "2026-07-26T04:11:40.401Z"
 }

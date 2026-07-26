@@ -4,6 +4,9 @@
   "endpoint": "https://api.anthropic.com/v1/messages",
   "auth_header": "x-api-key",
   "models": {
+    "claude-opus-5": {
+      "name": "Claude Opus 5"
+    },
     "claude-sonnet-5": {
       "name": "Claude Sonnet 5"
     },
@@ -80,5 +83,5 @@
       "name": "Claude Opus 4.1"
     }
   },
-  "_syncedAt": "2026-07-22T11:54:35.367Z"
+  "_syncedAt": "2026-07-26T04:12:04.496Z"
 }

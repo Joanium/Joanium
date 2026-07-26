@@ -153,12 +153,13 @@ Packages/<Name>/
 - **Trigger**: Manual (`workflow_dispatch`)
 - **Steps**:
   1. Version and tag
-  2. Create GitHub release
+  2. Create a draft GitHub release
   3. Fan out to parallel jobs:
      - Windows (NSIS installer)
      - macOS (DMG)
      - Linux (AppImage)
   4. Each job calls `electron-builder --publish always` with `GH_TOKEN`
+  5. Publish the release only after all platform uploads succeed
 
 ---
 
