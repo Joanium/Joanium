@@ -6,6 +6,15 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.726.0] - 2026-07-26
+
+* Updated AI Models
+* Updated AI Models
+* Chore(deps): Bump tar in the npm_and_yarn group across 1 directory
+* Chore(deps): Bump actions/checkout from 7.0.0 to 7.0.1
+
+---
+
 ## [2026.724.4] - 2026-07-24
 
 * chore: specify repository in gh release edit command
