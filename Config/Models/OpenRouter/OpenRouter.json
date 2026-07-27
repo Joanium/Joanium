@@ -3346,18 +3346,6 @@
         "text": true
       }
     },
-    "openai/gpt-4o-mini-search-preview": {
-      "name": "OpenAI: GPT-4o-mini Search Preview",
-      "description": "GPT-4o mini Search Preview is a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
-      "context_window": 128000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-4o-search-preview": {
       "name": "OpenAI: GPT-4o Search Preview",
       "description": "GPT-4o Search Previewis a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
@@ -3767,30 +3755,6 @@
       "pricing": {
         "input": 0.04,
         "output": 0.1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inflection/inflection-3-pi": {
-      "name": "Inflection: Inflection 3 Pi",
-      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay. Pi...",
-      "context_window": 8000,
-      "pricing": {
-        "input": 2.5,
-        "output": 10
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inflection/inflection-3-productivity": {
-      "name": "Inflection: Inflection 3 Productivity",
-      "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news. For emotional...",
-      "context_window": 8000,
-      "pricing": {
-        "input": 2.5,
-        "output": 10
       },
       "inputs": {
         "text": true
@@ -4216,6 +4180,42 @@
         "text": true
       }
     },
+    "openai/gpt-4o-mini-search-preview": {
+      "name": "OpenAI: GPT-4o-mini Search Preview",
+      "description": "GPT-4o mini Search Preview is a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inflection/inflection-3-pi": {
+      "name": "Inflection: Inflection 3 Pi",
+      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay. Pi...",
+      "context_window": 8000,
+      "pricing": {
+        "input": 2.5,
+        "output": 10
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inflection/inflection-3-productivity": {
+      "name": "Inflection: Inflection 3 Productivity",
+      "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news. For emotional...",
+      "context_window": 8000,
+      "pricing": {
+        "input": 2.5,
+        "output": 10
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "tencent/hy3:free": {
       "name": "Tencent: Hy3 (free)",
       "description": "Hy3 is a 295B-parameter Mixture-of-Experts model from Tencent (21B active, 192 experts with top-8 routing) built for reasoning, agentic workflows, and real-world production use. It supports a configurable reasoning effort:...",
@@ -4532,5 +4532,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-26T13:18:47.796Z"
+  "_syncedAt": "2026-07-27T11:53:03.029Z"
 }

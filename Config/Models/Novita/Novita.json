@@ -43,6 +43,15 @@
         "image": true
       }
     },
+    "mindai/macaron-v1-venti": {
+      "name": "Macaron V1 Venti",
+      "description": "Macaron-V1-Venti is a 748B-parameter flagship model in the Macaron-V1 family, built for personal intelligence, tool use, coding workflows, and code-native Generative UI. The model uses a Mixture of LoRA (MoL) architecture on top of GLM-5.2, consisting of a 744B-parameter base model and four 1B-param",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
     "minimax/minimax-m3": {
       "name": "MiniMax M3",
       "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding, and tool use. It is built on MiniMax Sparse Attention (MSA), which replaces full attention with KV-blo",
@@ -53,11 +62,10 @@
         "image": true
       }
     },
-    "deepseek/deepseek-v4-pro": {
-      "name": "DeepSeek V4 Pro",
-      "description": "Novita-hosted DeepSeek flagship model for agentic coding, reasoning, and long-context professional work",
+    "deepseek/deepseek-v4-flash": {
+      "name": "DeepSeek V4 Flash",
+      "description": "Fast Novita-hosted DeepSeek model for cost-efficient chat, coding, and text generation",
       "context_window": 1048576,
-      "max_output": 393216,
       "inputs": {
         "text": true,
         "image": false,
@@ -65,10 +73,11 @@
         "docx": false
       }
     },
-    "deepseek/deepseek-v4-flash": {
-      "name": "DeepSeek V4 Flash",
-      "description": "Fast Novita-hosted DeepSeek model for cost-efficient chat, coding, and text generation",
+    "deepseek/deepseek-v4-pro": {
+      "name": "DeepSeek V4 Pro",
+      "description": "Novita-hosted DeepSeek flagship model for agentic coding, reasoning, and long-context professional work",
       "context_window": 1048576,
+      "max_output": 393216,
       "inputs": {
         "text": true,
         "image": false,
@@ -90,15 +99,6 @@
       "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
       "context_window": 262144,
       "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "mindai/macaron-v1-venti": {
-      "name": "Macaron V1 Venti",
-      "description": "Macaron-V1-Venti is a 748B-parameter flagship model in the Macaron-V1 family, built for personal intelligence, tool use, coding workflows, and code-native Generative UI. The model uses a Mixture of LoRA (MoL) architecture on top of GLM-5.2, consisting of a 744B-parameter base model and four 1B-param",
-      "context_window": 1048576,
-      "max_output": 131072,
       "inputs": {
         "text": true
       }
@@ -1330,5 +1330,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-26T13:19:03.696Z"
+  "_syncedAt": "2026-07-27T11:53:26.620Z"
 }

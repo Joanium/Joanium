@@ -9,9 +9,6 @@
     "01-ai/yi-large": {
       "name": "01-ai/yi-large"
     },
-    "abacusai/dracarys-llama-3.1-70b-instruct": {
-      "name": "abacusai/dracarys-llama-3.1-70b-instruct"
-    },
     "adept/fuyu-8b": {
       "name": "adept/fuyu-8b"
     },
@@ -26,9 +23,6 @@
     },
     "bigcode/starcoder2-15b": {
       "name": "bigcode/starcoder2-15b"
-    },
-    "bytedance/seed-oss-36b-instruct": {
-      "name": "bytedance/seed-oss-36b-instruct"
     },
     "databricks/dbrx-instruct": {
       "name": "databricks/dbrx-instruct"
@@ -54,9 +48,6 @@
     "google/diffusiongemma-26b-a4b-it": {
       "name": "Diffusiongemma 26B A4b It"
     },
-    "google/gemma-2-2b-it": {
-      "name": "google/gemma-2-2b-it"
-    },
     "google/gemma-2b": {
       "name": "google/gemma-2b"
     },
@@ -65,12 +56,6 @@
     },
     "google/gemma-3-4b-it": {
       "name": "google/gemma-3-4b-it"
-    },
-    "google/gemma-3n-e2b-it": {
-      "name": "google/gemma-3n-e2b-it"
-    },
-    "google/gemma-3n-e4b-it": {
-      "name": "google/gemma-3n-e4b-it"
     },
     "google/gemma-4-31b-it": {
       "name": "Gemma 4 31B IT",
@@ -127,9 +112,6 @@
     "meta/llama-3.3-70b-instruct": {
       "name": "meta/llama-3.3-70b-instruct"
     },
-    "meta/llama-4-maverick-17b-128e-instruct": {
-      "name": "meta/llama-4-maverick-17b-128e-instruct"
-    },
     "meta/llama-guard-4-12b": {
       "name": "meta/llama-guard-4-12b"
     },
@@ -145,30 +127,11 @@
     "microsoft/phi-3.5-moe-instruct": {
       "name": "microsoft/phi-3.5-moe-instruct"
     },
-    "minimaxai/minimax-m2.7": {
-      "name": "MiniMax M2.7",
-      "description": "MiniMax's 230B MoE flagship — coding, reasoning, and office tasks via NVIDIA NIM (added Apr 2026)",
-      "context_window": 131072,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.01,
-        "output": 0.02
-      }
-    },
     "minimaxai/minimax-m3": {
       "name": "Minimax M3"
     },
     "mistralai/codestral-22b-instruct-v0.1": {
       "name": "mistralai/codestral-22b-instruct-v0.1"
-    },
-    "mistralai/ministral-14b-instruct-2512": {
-      "name": "mistralai/ministral-14b-instruct-2512"
     },
     "mistralai/mistral-7b-instruct-v0.3": {
       "name": "mistralai/mistral-7b-instruct-v0.3"
@@ -185,14 +148,8 @@
     "mistralai/mistral-nemotron": {
       "name": "mistralai/mistral-nemotron"
     },
-    "mistralai/mistral-small-4-119b-2603": {
-      "name": "mistralai/mistral-small-4-119b-2603"
-    },
     "mistralai/mixtral-8x22b-v0.1": {
       "name": "mistralai/mixtral-8x22b-v0.1"
-    },
-    "mistralai/mixtral-8x7b-instruct-v0.1": {
-      "name": "mistralai/mixtral-8x7b-instruct-v0.1"
     },
     "moonshotai/kimi-k2.6": {
       "name": "Kimi K2.6",
@@ -218,9 +175,6 @@
     },
     "nvidia/embed-qa-4": {
       "name": "nvidia/embed-qa-4"
-    },
-    "nvidia/gliner-pii": {
-      "name": "nvidia/gliner-pii"
     },
     "nvidia/ising-calibration-1-35b-a3b": {
       "name": "nvidia/ising-calibration-1-35b-a3b"
@@ -380,6 +334,79 @@
     "poolside/laguna-xs-2.1": {
       "name": "Laguna Xs 2 1"
     },
+    "snowflake/arctic-embed-l": {
+      "name": "snowflake/arctic-embed-l"
+    },
+    "stepfun-ai/step-3.7-flash": {
+      "name": "Step 3 7 FLASH"
+    },
+    "thinkingmachines/inkling": {
+      "name": "Inkling"
+    },
+    "writer/palmyra-creative-122b": {
+      "name": "writer/palmyra-creative-122b"
+    },
+    "writer/palmyra-fin-70b-32k": {
+      "name": "writer/palmyra-fin-70b-32k"
+    },
+    "writer/palmyra-med-70b": {
+      "name": "writer/palmyra-med-70b"
+    },
+    "writer/palmyra-med-70b-32k": {
+      "name": "writer/palmyra-med-70b-32k"
+    },
+    "z-ai/glm-5.2": {
+      "name": "Glm 5 2"
+    },
+    "zyphra/zamba2-7b-instruct": {
+      "name": "zyphra/zamba2-7b-instruct"
+    },
+    "abacusai/dracarys-llama-3.1-70b-instruct": {
+      "name": "abacusai/dracarys-llama-3.1-70b-instruct"
+    },
+    "bytedance/seed-oss-36b-instruct": {
+      "name": "bytedance/seed-oss-36b-instruct"
+    },
+    "google/gemma-2-2b-it": {
+      "name": "google/gemma-2-2b-it"
+    },
+    "google/gemma-3n-e2b-it": {
+      "name": "google/gemma-3n-e2b-it"
+    },
+    "google/gemma-3n-e4b-it": {
+      "name": "google/gemma-3n-e4b-it"
+    },
+    "meta/llama-4-maverick-17b-128e-instruct": {
+      "name": "meta/llama-4-maverick-17b-128e-instruct"
+    },
+    "minimaxai/minimax-m2.7": {
+      "name": "MiniMax M2.7",
+      "description": "MiniMax's 230B MoE flagship — coding, reasoning, and office tasks via NVIDIA NIM (added Apr 2026)",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.01,
+        "output": 0.02
+      }
+    },
+    "mistralai/ministral-14b-instruct-2512": {
+      "name": "mistralai/ministral-14b-instruct-2512"
+    },
+    "mistralai/mistral-small-4-119b-2603": {
+      "name": "mistralai/mistral-small-4-119b-2603"
+    },
+    "mistralai/mixtral-8x7b-instruct-v0.1": {
+      "name": "mistralai/mixtral-8x7b-instruct-v0.1"
+    },
+    "nvidia/gliner-pii": {
+      "name": "nvidia/gliner-pii"
+    },
     "qwen/qwen3-next-80b-a3b-instruct": {
       "name": "qwen/qwen3-next-80b-a3b-instruct"
     },
@@ -402,38 +429,11 @@
     "sarvamai/sarvam-m": {
       "name": "sarvamai/sarvam-m"
     },
-    "snowflake/arctic-embed-l": {
-      "name": "snowflake/arctic-embed-l"
-    },
     "stepfun-ai/step-3.5-flash": {
       "name": "stepfun-ai/step-3.5-flash"
     },
-    "stepfun-ai/step-3.7-flash": {
-      "name": "Step 3 7 FLASH"
-    },
-    "thinkingmachines/inkling": {
-      "name": "Inkling"
-    },
     "upstage/solar-10.7b-instruct": {
       "name": "upstage/solar-10.7b-instruct"
-    },
-    "writer/palmyra-creative-122b": {
-      "name": "writer/palmyra-creative-122b"
-    },
-    "writer/palmyra-fin-70b-32k": {
-      "name": "writer/palmyra-fin-70b-32k"
-    },
-    "writer/palmyra-med-70b": {
-      "name": "writer/palmyra-med-70b"
-    },
-    "writer/palmyra-med-70b-32k": {
-      "name": "writer/palmyra-med-70b-32k"
-    },
-    "z-ai/glm-5.2": {
-      "name": "Glm 5 2"
-    },
-    "zyphra/zamba2-7b-instruct": {
-      "name": "zyphra/zamba2-7b-instruct"
     },
     "mistralai/mistral-large-3-675b-instruct-2512": {
       "name": "mistralai/mistral-large-3-675b-instruct-2512"
@@ -460,5 +460,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-26T13:18:42.128Z"
+  "_syncedAt": "2026-07-27T11:52:24.780Z"
 }

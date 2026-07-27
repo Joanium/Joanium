@@ -194,15 +194,6 @@
     "XiaomiMiMo/MiMo-V2.5": {
       "name": "MiMo V2 5"
     },
-    "parasail-minimax-m3": {
-      "name": "Parasail Minimax M3"
-    },
-    "MiniMaxAI/MiniMax-M3": {
-      "name": "MiniMax M3"
-    },
-    "MiniMaxAI/Minimax-M3": {
-      "name": "Minimax M3"
-    },
     "parasail-kimi-k27-code": {
       "name": "Parasail Kimi K27 Code"
     },
@@ -214,6 +205,15 @@
     },
     "openai/gpt-oss-120b-fast": {
       "name": "Gpt OSS 120B FAST"
+    },
+    "parasail-glm-52": {
+      "name": "Parasail Glm 52"
+    },
+    "zai-org/GLM-5.2": {
+      "name": "GLM 5 2"
+    },
+    "zai-org/GLM-5.2-FP8": {
+      "name": "GLM 5 2 FP8"
     },
     "parasail-qwen35-9b": {
       "name": "Parasail Qwen35 9B"
@@ -248,14 +248,14 @@
     "Qwen/Qwen3-Embedding-8B": {
       "name": "Qwen3 Embedding 8B"
     },
-    "parasail-glm-52": {
-      "name": "Parasail Glm 52"
+    "parasail-minimax-m3": {
+      "name": "Parasail Minimax M3"
     },
-    "zai-org/GLM-5.2": {
-      "name": "GLM 5 2"
+    "MiniMaxAI/MiniMax-M3": {
+      "name": "MiniMax M3"
     },
-    "zai-org/GLM-5.2-FP8": {
-      "name": "GLM 5 2 FP8"
+    "MiniMaxAI/Minimax-M3": {
+      "name": "Minimax M3"
     },
     "parasail-mistral-small-32-24b": {
       "name": "Parasail Mistral Small 32 24B"
@@ -279,5 +279,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-26T13:19:11.959Z"
+  "_syncedAt": "2026-07-27T11:53:35.663Z"
 }
