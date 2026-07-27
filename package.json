@@ -7,7 +7,7 @@
     "node": "^24.18.0"
   },
   "dependencies": {
-    "@huggingface/transformers": "3.8.1",
+    "@huggingface/transformers": "4.2.0",
     "electron-updater": "6.8.9",
     "exceljs": "^4.4.0",
     "jszip": "^3.10.1",
