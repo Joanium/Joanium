@@ -6,6 +6,17 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.727.0] - 2026-07-27
+
+* Updated AI Models
+* Chore(deps): Bump katex from 0.16.47 to 0.18.1
+* Chore(deps): Bump @huggingface/transformers from 3.8.1 to 4.2.0
+* Updated AI Models
+* feat: add KaTeX support for math rendering in Markdown
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.1 to 4.37.3
+
+---
+
 ## [2026.726.0] - 2026-07-26
 
 * Updated AI Models
