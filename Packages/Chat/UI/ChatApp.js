@@ -4269,7 +4269,19 @@ export async function createChatView(
 
   composerField = document.createElement('textarea');
   composerField.className = 'chat-composer__field';
-  composerField.placeholder = strings.composer.placeholder;
+
+  const placeholders = strings.composer.placeholders || [strings.composer.placeholder];
+  composerField.placeholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+
+  if (placeholders.length > 1) {
+    setInterval(() => {
+      if (!composerField.value && document.activeElement !== composerField) {
+        const nextIndex = Math.floor(Math.random() * placeholders.length);
+        composerField.placeholder = placeholders[nextIndex];
+      }
+    }, 5000);
+  }
+
   composerField.rows = 1;
   composerField.addEventListener('input', (event) => {
     if (voiceInput?.isListening) voiceInput.stop();
