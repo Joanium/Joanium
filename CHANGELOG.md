@@ -6,6 +6,15 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.728.0] - 2026-07-28
+
+* feat: add dynamic placeholders for composer input field
+* Updated AI Models
+* Chore(deps-dev): Bump jscpd from 5.0.12 to 5.0.14
+* Chore(deps-dev): Bump eslint from 10.7.0 to 10.8.0
+
+---
+
 ## [2026.727.0] - 2026-07-27
 
 * Updated AI Models
