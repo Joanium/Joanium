@@ -5,6 +5,19 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "qwen/qwen3.7-flash": {
+      "name": "Qwen: Qwen3.7 Flash",
+      "description": "Qwen3.7 Flash is a vision-language reasoning model from Alibaba. It is suited for multimodal agents, visual coding, search, and computer interaction, with strengths in object recognition, spatial understanding, and real-world...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.13
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-5-fast": {
       "name": "Claude Opus 5 (Fast)",
       "description": "Fast-mode variant of [Opus 5](/anthropic/claude-opus-5) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 5.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
@@ -2622,19 +2635,6 @@
         "text": true
       }
     },
-    "openai/gpt-5-chat": {
-      "name": "OpenAI: GPT-5 Chat",
-      "description": "GPT-5 Chat is designed for advanced, natural, multimodal, and context-aware conversations for enterprise applications.",
-      "context_window": 128000,
-      "pricing": {
-        "input": 1.25,
-        "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "openai/gpt-5": {
       "name": "OpenAI: GPT-5",
       "description": "GPT-5 is OpenAI’s most advanced model, offering major improvements in reasoning, code quality, and user experience. It is optimized for complex tasks that require step-by-step reasoning, instruction following, and accuracy...",
@@ -3338,18 +3338,6 @@
       "name": "Cohere: Command A",
       "description": "Command A is an open-weights 111B parameter model with a 256k context window focused on delivering great performance across agentic, multilingual, and coding use cases. Compared to other leading proprietary...",
       "context_window": 256000,
-      "pricing": {
-        "input": 2.5,
-        "output": 10
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/gpt-4o-search-preview": {
-      "name": "OpenAI: GPT-4o Search Preview",
-      "description": "GPT-4o Search Previewis a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
-      "context_window": 128000,
       "pricing": {
         "input": 2.5,
         "output": 10
@@ -4180,6 +4168,31 @@
         "text": true
       }
     },
+    "openai/gpt-5-chat": {
+      "name": "OpenAI: GPT-5 Chat",
+      "description": "GPT-5 Chat is designed for advanced, natural, multimodal, and context-aware conversations for enterprise applications.",
+      "context_window": 128000,
+      "pricing": {
+        "input": 1.25,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4o-search-preview": {
+      "name": "OpenAI: GPT-4o Search Preview",
+      "description": "GPT-4o Search Previewis a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
+      "context_window": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 10
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-4o-mini-search-preview": {
       "name": "OpenAI: GPT-4o-mini Search Preview",
       "description": "GPT-4o mini Search Preview is a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
@@ -4532,5 +4545,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-27T11:53:03.029Z"
+  "_syncedAt": "2026-07-28T12:15:10.316Z"
 }

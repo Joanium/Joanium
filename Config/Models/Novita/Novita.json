@@ -103,6 +103,15 @@
         "text": true
       }
     },
+    "mindai/macaron-v1-tall": {
+      "name": "Macaron V1 Tall",
+      "description": "Macaron-V1-Tall is the efficient model of the Macaron-V1 family, built on Qwen3.6-35B-A3B with four specialist LoRA adapters for Chat, Agent, Coding, and GenUI. It follows the same routed Mixture of LoRA (MoL) design as Macaron-V1-Venti, bringing Macaron’s personal-intelligence, coding, tool-use, an",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
     "stepfun/step-3.7-flash": {
       "name": "Step-3.7-Flash",
       "description": "Step-3.7-Flash is StepFun's fast reasoning model with 256K context window, three-level reasoning  effort control (low/medium/high), strong multi-step  tool calling and agent capabilities.",
@@ -1330,5 +1339,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-27T11:53:26.620Z"
+  "_syncedAt": "2026-07-28T12:15:35.757Z"
 }

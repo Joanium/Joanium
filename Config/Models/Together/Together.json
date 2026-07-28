@@ -5,6 +5,10 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "moonshotai/Kimi-K3": {
+      "name": "Kimi K3",
+      "context_window": 1000000
+    },
     "thinkingmachines/Inkling": {
       "name": "Inkling FP4",
       "context_window": 524288
@@ -32,10 +36,6 @@
     "moonshotai/Kimi-K2.6": {
       "name": "Kimi K2.6 Fp4",
       "context_window": 262144
-    },
-    "MiniMaxAI/MiniMax-M2.7": {
-      "name": "MiniMax M2.7 FP4",
-      "context_window": 196608
     },
     "Qwen/Qwen3.7-Max": {
       "name": "Qwen3.7 Max",
@@ -92,6 +92,10 @@
     "LiquidAI/LFM2.5-8B-A1B": {
       "name": "LFM2.5-8B-A1B",
       "context_window": 32768
+    },
+    "MiniMaxAI/MiniMax-M2.7": {
+      "name": "MiniMax M2.7 FP4",
+      "context_window": 196608
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -792,5 +796,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-27T11:53:11.867Z"
+  "_syncedAt": "2026-07-28T12:15:16.003Z"
 }

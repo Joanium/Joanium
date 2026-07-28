@@ -834,20 +834,6 @@
         "output": 3
       }
     },
-    "google/gemini-3-pro-preview": {
-      "name": "Gemini 3 Pro Preview",
-      "description": "This model improves upon Gemini 2.5 Pro and is catered towards challenging tasks, especially those involving complex reasoning or agentic workflows. Improvements highlighted include use cases for coding, multi-step function calling, planning, reasoning, deep knowledge tasks, and instruction followin",
-      "context_window": 1000000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 2,
-        "output": 12
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-3.1-flash-lite": {
       "name": "Gemini 3.1 Flash Lite",
       "description": "Gemini 3.1 Flash Lite outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code completio",
@@ -1531,6 +1517,20 @@
       "pricing": {
         "input": 3,
         "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3-fast": {
+      "name": "Kimi K3 Fast",
+      "description": "Fast version of Kimi’s flagship model for long-horizon coding and end-to-end knowledge work, with a 1M-token context window.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 4.5,
+        "output": 22.5
       },
       "inputs": {
         "text": true,
@@ -2700,6 +2700,20 @@
         "image": true
       }
     },
+    "google/gemini-3-pro-preview": {
+      "name": "Gemini 3 Pro Preview",
+      "description": "This model improves upon Gemini 2.5 Pro and is catered towards challenging tasks, especially those involving complex reasoning or agentic workflows. Improvements highlighted include use cases for coding, multi-step function calling, planning, reasoning, deep knowledge tasks, and instruction followin",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 2,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-4.7-fast": {
       "name": "Claude Opus 4.7 (Fast)",
       "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
@@ -2922,5 +2936,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-27T11:53:31.525Z"
+  "_syncedAt": "2026-07-28T12:15:39.588Z"
 }

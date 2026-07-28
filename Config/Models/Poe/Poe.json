@@ -430,13 +430,6 @@
     "seedance-2.0-pro-el": {
       "name": "Seedance 2 0 PRO El"
     },
-    "claude-opus-4.1": {
-      "name": "Claude Opus 4 1",
-      "context_window": {
-        "context_length": 196608,
-        "max_output_tokens": 32000
-      }
-    },
     "glm-4.6-n": {
       "name": "Glm 4 6 N"
     },
@@ -858,22 +851,8 @@
     "svi-2.0-pro": {
       "name": "Svi 2 0 PRO"
     },
-    "imagen-3": {
-      "name": "Imagen 3",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
     "wan-animate": {
       "name": "Wan Animate"
-    },
-    "imagen-3-fast": {
-      "name": "Imagen 3 FAST",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
     },
     "seedream-3.0": {
       "name": "Seedream 3 0"
@@ -1347,6 +1326,27 @@
     "fugu-ultra-v1.1-el": {
       "name": "Fugu ULTRA V1 1 El"
     },
+    "claude-opus-4.1": {
+      "name": "Claude Opus 4 1",
+      "context_window": {
+        "context_length": 196608,
+        "max_output_tokens": 32000
+      }
+    },
+    "imagen-3": {
+      "name": "Imagen 3",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
+    "imagen-3-fast": {
+      "name": "Imagen 3 FAST",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
     "qwen3.6-plus": {
       "name": "Qwen3 6 PLUS"
     },
@@ -1660,5 +1660,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-27T11:53:32.362Z"
+  "_syncedAt": "2026-07-28T12:15:40.413Z"
 }

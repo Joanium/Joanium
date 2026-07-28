@@ -176,9 +176,6 @@
     "nvidia/embed-qa-4": {
       "name": "nvidia/embed-qa-4"
     },
-    "nvidia/ising-calibration-1-35b-a3b": {
-      "name": "nvidia/ising-calibration-1-35b-a3b"
-    },
     "nvidia/ising-calibration-1.5-31b": {
       "name": "Ising Calibration 1 5 31B"
     },
@@ -309,6 +306,9 @@
     "nvidia/riva-translate-4b-instruct-v1.1": {
       "name": "nvidia/riva-translate-4b-instruct-v1.1"
     },
+    "nvidia/riva-translate-4b-instruct-v2": {
+      "name": "Riva Translate 4B Instruct V2"
+    },
     "nvidia/vila": {
       "name": "nvidia/vila"
     },
@@ -360,6 +360,9 @@
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "nvidia/ising-calibration-1-35b-a3b": {
+      "name": "nvidia/ising-calibration-1-35b-a3b"
     },
     "abacusai/dracarys-llama-3.1-70b-instruct": {
       "name": "abacusai/dracarys-llama-3.1-70b-instruct"
@@ -460,5 +463,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-07-27T11:52:24.780Z"
+  "_syncedAt": "2026-07-28T12:14:35.282Z"
 }
