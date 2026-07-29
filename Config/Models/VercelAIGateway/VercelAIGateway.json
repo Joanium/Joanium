@@ -299,6 +299,20 @@
         "image": true
       }
     },
+    "alibaba/qwen3.7-flash": {
+      "name": "Qwen 3.7 Flash",
+      "description": "The Qwen3.7 native vision-language Flash model series delivers a comprehensive upgrade over 3.6-Flash in multimodal understanding and agent execution. This model particularly excels in enhanced multimodal foundations with stronger universal object recognition, further improved real-world perception ",
+      "context_window": 991000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.13
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.7-max": {
       "name": "Qwen 3.7 Max",
       "description": "Qwen3.7 is a next‑generation flagship model designed for the agent‑centric era, with its core strengths lying in the breadth and depth of its agent‑level capabilities: it excels at programming, office and productivity tasks, and long‑term autonomous execution.",
@@ -2936,5 +2950,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-28T12:15:39.588Z"
+  "_syncedAt": "2026-07-29T13:49:40.364Z"
 }

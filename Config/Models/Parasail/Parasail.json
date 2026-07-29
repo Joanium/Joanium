@@ -41,6 +41,12 @@
     "ByteDance-Seed/UI-TARS-1.5-7B": {
       "name": "UI TARS 1 5 7B"
     },
+    "parasail-mistral-small-32-24b": {
+      "name": "Parasail Mistral Small 32 24B"
+    },
+    "mistralai/Mistral-Small-3.2-24B-Instruct-2506": {
+      "name": "Mistral Small 3 2 24B Instruct 2506"
+    },
     "parasail-qwen3-235b-a22b-instruct-2507": {
       "name": "Parasail Qwen3 235B A22b Instruct 2507"
     },
@@ -263,12 +269,6 @@
     "moonshotai/Kimi-K3": {
       "name": "Kimi K3"
     },
-    "parasail-mistral-small-32-24b": {
-      "name": "Parasail Mistral Small 32 24B"
-    },
-    "mistralai/Mistral-Small-3.2-24B-Instruct-2506": {
-      "name": "Mistral Small 3 2 24B Instruct 2506"
-    },
     "parasail-deepseek-v4-flash-h100": {
       "name": "Parasail Deepseek V4 FLASH H100"
     },
@@ -285,5 +285,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-28T12:15:43.698Z"
+  "_syncedAt": "2026-07-29T13:49:45.347Z"
 }

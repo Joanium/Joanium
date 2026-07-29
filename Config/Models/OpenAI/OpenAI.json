@@ -435,7 +435,13 @@
     },
     "gpt-realtime-2.1-mini": {
       "name": "Gpt Realtime 2 1 MINI"
+    },
+    "gpt-transcribe": {
+      "name": "Gpt Transcribe"
+    },
+    "gpt-live-transcribe": {
+      "name": "Gpt Live Transcribe"
     }
   },
-  "_syncedAt": "2026-07-28T12:15:13.831Z"
+  "_syncedAt": "2026-07-29T13:49:16.371Z"
 }

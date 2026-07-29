@@ -42,9 +42,6 @@
         "docx": false
       }
     },
-    "tencent/Hy3-preview": {
-      "name": "Hy3 Preview"
-    },
     "zai-org/GLM-5.1": {
       "name": "GLM-5.1",
       "description": "GLM model hosted by SiliconFlow",
@@ -213,7 +210,10 @@
     },
     "Qwen/Qwen2.5-7B-Instruct": {
       "name": "Qwen2 5 7B Instruct"
+    },
+    "tencent/Hy3-preview": {
+      "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-07-28T12:15:24.874Z"
+  "_syncedAt": "2026-07-29T13:49:27.280Z"
 }

@@ -5,6 +5,18 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "accounts/fireworks/models/glm-5p1": {
+      "name": "Glm 5p1"
+    },
+    "accounts/fireworks/routers/glm-5p1-fast": {
+      "name": "Glm 5p1 FAST"
+    },
+    "accounts/fireworks/models/glm-5p2": {
+      "name": "Glm 5p2"
+    },
+    "accounts/fireworks/routers/glm-5p2-fast": {
+      "name": "Glm 5p2 FAST"
+    },
     "accounts/fireworks/models/kimi-k2p6": {
       "name": "Kimi K2.6",
       "description": "Moonshot AI's frontier MoE model — top-tier coding, reasoning, and agentic tasks with 262K context",
@@ -20,6 +32,21 @@
         "input": 0.95,
         "output": 4
       }
+    },
+    "accounts/fireworks/routers/kimi-k2p6-turbo": {
+      "name": "Kimi K2p6 TURBO"
+    },
+    "accounts/fireworks/models/kimi-k2p7-code": {
+      "name": "Kimi K2p7 Code"
+    },
+    "accounts/fireworks/routers/kimi-k2p7-code-fast": {
+      "name": "Kimi K2p7 Code FAST"
+    },
+    "accounts/fireworks/models/minimax-m2p7": {
+      "name": "Minimax M2p7"
+    },
+    "accounts/fireworks/models/minimax-m3": {
+      "name": "Minimax M3"
     },
     "accounts/fireworks/models/gpt-oss-120b": {
       "name": "GPT OSS 120B",
@@ -37,8 +64,8 @@
         "output": 0.6
       }
     },
-    "accounts/fireworks/models/glm-5p1": {
-      "name": "Glm 5p1"
+    "accounts/fireworks/models/deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
     },
     "accounts/fireworks/models/deepseek-v4-pro": {
       "name": "DeepSeek V4 Pro",
@@ -56,12 +83,33 @@
         "output": 3.48
       }
     },
-    "accounts/fireworks/models/glm-5p2": {
-      "name": "Glm 5p2"
+    "accounts/fireworks/models/qwen3p7-plus": {
+      "name": "Qwen3p7 PLUS"
+    },
+    "accounts/fireworks/models/gpt-oss-20b": {
+      "name": "Gpt OSS 20B"
+    },
+    "accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
+      "name": "Nemotron 3 ULTRA Nvfp4"
+    },
+    "accounts/fireworks/models/qwen3-reranker-8b": {
+      "name": "Qwen3 Reranker 8B"
+    },
+    "accounts/fireworks/models/qwen3-embedding-8b": {
+      "name": "Qwen3 Embedding 8B"
+    },
+    "accounts/fireworks/models/kimi-k3": {
+      "name": "Kimi K3"
+    },
+    "accounts/fireworks/routers/kimi-k3-fast": {
+      "name": "Kimi K3 FAST"
+    },
+    "accounts/fireworks/models/inkling": {
+      "name": "Inkling"
     },
     "accounts/fireworks/models/kimi-k2p5": {
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-07-28T12:15:20.029Z"
+  "_syncedAt": "2026-07-29T13:49:23.482Z"
 }

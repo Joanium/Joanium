@@ -1326,6 +1326,9 @@
     "fugu-ultra-v1.1-el": {
       "name": "Fugu ULTRA V1 1 El"
     },
+    "qwen3.7-flash-el": {
+      "name": "Qwen3 7 FLASH El"
+    },
     "claude-opus-4.1": {
       "name": "Claude Opus 4 1",
       "context_window": {
@@ -1660,5 +1663,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-28T12:15:40.413Z"
+  "_syncedAt": "2026-07-29T13:49:41.378Z"
 }

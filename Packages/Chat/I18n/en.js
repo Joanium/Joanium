@@ -10,6 +10,7 @@ const en = {
       "Let's build something great.",
       'Type a command or ask a question...',
       "What's on your mind?",
+      'Shoot me your hardest question',
       "What's your next big idea?",
       "Let's solve something interesting.",
       'Design, code, write, or brainstorm...',
