@@ -6,6 +6,14 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.729.0] - 2026-07-29
+
+* Updated OpenRouter AI Models
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action/init from 4.37.1 to 4.37.3
+
+---
+
 ## [2026.728.0] - 2026-07-28
 
 * feat: add dynamic placeholders for composer input field
