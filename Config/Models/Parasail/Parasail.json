@@ -269,6 +269,15 @@
     "moonshotai/Kimi-K3": {
       "name": "Kimi K3"
     },
+    "parasail-unslopnemo-12b": {
+      "name": "Parasail Unslopnemo 12B"
+    },
+    "parasail-kimi-k3-fast": {
+      "name": "Parasail Kimi K3 FAST"
+    },
+    "parasail-mythomax-13b": {
+      "name": "Parasail Mythomax 13B"
+    },
     "parasail-deepseek-v4-flash-h100": {
       "name": "Parasail Deepseek V4 FLASH H100"
     },
@@ -285,5 +294,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-29T13:49:45.347Z"
+  "_syncedAt": "2026-07-30T13:31:46.335Z"
 }

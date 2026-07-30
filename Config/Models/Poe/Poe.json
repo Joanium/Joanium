@@ -141,9 +141,6 @@
         "max_output_tokens": 8192
       }
     },
-    "glm-5.1-fw": {
-      "name": "Glm 5 1 Fw"
-    },
     "gpt-5.3-instant": {
       "name": "Gpt 5 3 Instant",
       "context_window": {
@@ -746,13 +743,6 @@
         "max_output_tokens": 4096
       }
     },
-    "llama-3.3-70b-fw": {
-      "name": "Llama 3 3 70B Fw",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": null
-      }
-    },
     "llama-3.3-70b-t": {
       "name": "Llama 3 3 70B T",
       "context_window": {
@@ -881,9 +871,6 @@
     },
     "stablediffusion3.5-l": {
       "name": "Stablediffusion3 5 L"
-    },
-    "glm-4.7-fw": {
-      "name": "Glm 4 7 Fw"
     },
     "veo-3.1": {
       "name": "Veo 3 1",
@@ -1317,17 +1304,104 @@
     "kimi-k3-el": {
       "name": "Kimi K3 El"
     },
+    "glm-5.2": {
+      "name": "Glm 5 2"
+    },
     "glm-5.2-n": {
       "name": "Glm 5 2 N"
     },
     "glm-5.2-el": {
       "name": "Glm 5 2 El"
     },
+    "qwen3.6-plus": {
+      "name": "Qwen3 6 PLUS"
+    },
+    "minimax-m3": {
+      "name": "Minimax M3"
+    },
+    "gpt-oss-120b": {
+      "name": "Gpt OSS 120B"
+    },
     "fugu-ultra-v1.1-el": {
       "name": "Fugu ULTRA V1 1 El"
     },
+    "deepseek-v3.1": {
+      "name": "Deepseek V3 1"
+    },
     "qwen3.7-flash-el": {
       "name": "Qwen3 7 FLASH El"
+    },
+    "qwen3.7-plus": {
+      "name": "Qwen3 7 PLUS"
+    },
+    "deepseek-v3.1-terminus": {
+      "name": "Deepseek V3 1 Terminus"
+    },
+    "deepseek-v3.2": {
+      "name": "Deepseek V3 2",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "minimax-m2": {
+      "name": "Minimax M2"
+    },
+    "minimax-m2.1": {
+      "name": "Minimax M2 1"
+    },
+    "minimax-m2.5": {
+      "name": "Minimax M2 5"
+    },
+    "minimax-m2.7": {
+      "name": "Minimax M2 7"
+    },
+    "kimi-k2-thinking": {
+      "name": "Kimi K2 Thinking"
+    },
+    "kimi-k2.5": {
+      "name": "Kimi K2 5",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "kimi-k2.6": {
+      "name": "Kimi K2 6"
+    },
+    "kimi-k2.7-code": {
+      "name": "Kimi K2 7 Code"
+    },
+    "hy3": {
+      "name": "Hy3"
+    },
+    "mimo-v2.5-pro": {
+      "name": "Mimo V2 5 PRO"
+    },
+    "glm-4.6": {
+      "name": "Glm 4 6"
+    },
+    "glm-4.7": {
+      "name": "Glm 4 7"
+    },
+    "glm-5": {
+      "name": "Glm 5"
+    },
+    "glm-5.1": {
+      "name": "Glm 5 1"
+    },
+    "glm-5.1-fw": {
+      "name": "Glm 5 1 Fw"
+    },
+    "llama-3.3-70b-fw": {
+      "name": "Llama 3 3 70B Fw",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "glm-4.7-fw": {
+      "name": "Glm 4 7 Fw"
     },
     "claude-opus-4.1": {
       "name": "Claude Opus 4 1",
@@ -1350,27 +1424,11 @@
         "max_output_tokens": null
       }
     },
-    "qwen3.6-plus": {
-      "name": "Qwen3 6 PLUS"
-    },
-    "kimi-k2.5": {
-      "name": "Kimi K2 5",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": null
-      }
-    },
-    "minimax-m2.7": {
-      "name": "Minimax M2 7"
-    },
     "qwen3.5-plus": {
       "name": "Qwen3 5 PLUS"
     },
     "qwen3.5-flash": {
       "name": "Qwen3 5 FLASH"
-    },
-    "glm-5": {
-      "name": "Glm 5"
     },
     "qwen3-max-thinking": {
       "name": "Qwen3 MAX Thinking"
@@ -1378,35 +1436,17 @@
     "qwen3-coder-next": {
       "name": "Qwen3 Coder Next"
     },
-    "minimax-m2.5": {
-      "name": "Minimax M2 5"
-    },
-    "kimi-k2-thinking": {
-      "name": "Kimi K2 Thinking"
-    },
-    "minimax-m2.1": {
-      "name": "Minimax M2 1"
-    },
     "glm-4.7-flash": {
       "name": "Glm 4 7 FLASH"
     },
-    "glm-4.6": {
-      "name": "Glm 4 6"
-    },
     "glm-4.6v": {
       "name": "Glm 4 6v"
-    },
-    "minimax-m2": {
-      "name": "Minimax M2"
     },
     "deepseek-v3.1-tm": {
       "name": "Deepseek V3 1 Tm"
     },
     "qwen3-max": {
       "name": "Qwen3 MAX"
-    },
-    "gpt-oss-120b": {
-      "name": "Gpt OSS 120B"
     },
     "gpt-oss-20b": {
       "name": "Gpt OSS 20B"
@@ -1421,23 +1461,11 @@
         "max_output_tokens": null
       }
     },
-    "kimi-k2.6": {
-      "name": "Kimi K2 6"
-    },
     "mimo-v2.5": {
       "name": "Mimo V2 5"
     },
-    "mimo-v2.5-pro": {
-      "name": "Mimo V2 5 PRO"
-    },
     "qwen3.7-max": {
       "name": "Qwen3 7 MAX"
-    },
-    "qwen3.7-plus": {
-      "name": "Qwen3 7 PLUS"
-    },
-    "kimi-k2.7-code": {
-      "name": "Kimi K2 7 Code"
     },
     "fugu-ultra": {
       "name": "Fugu ULTRA"
@@ -1450,13 +1478,6 @@
       "context_window": {
         "context_length": 400000,
         "max_output_tokens": 128000
-      }
-    },
-    "deepseek-v3.2": {
-      "name": "Deepseek V3 2",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": null
       }
     },
     "gpt-5.1-instant": {
@@ -1521,9 +1542,6 @@
         "context_length": 160000,
         "max_output_tokens": null
       }
-    },
-    "glm-5.2": {
-      "name": "Glm 5 2"
     },
     "glm-5.1-t": {
       "name": "Glm 5 1 T"
@@ -1663,5 +1681,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-29T13:49:41.378Z"
+  "_syncedAt": "2026-07-30T13:31:43.121Z"
 }

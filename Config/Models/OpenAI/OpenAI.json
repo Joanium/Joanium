@@ -441,7 +441,10 @@
     },
     "gpt-live-transcribe": {
       "name": "Gpt Live Transcribe"
+    },
+    "ra-gpt-5.6-sol": {
+      "name": "Ra Gpt 5 6 Sol"
     }
   },
-  "_syncedAt": "2026-07-29T13:49:16.371Z"
+  "_syncedAt": "2026-07-30T13:31:18.995Z"
 }

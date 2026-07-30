@@ -5,12 +5,6 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "accounts/fireworks/models/glm-5p1": {
-      "name": "Glm 5p1"
-    },
-    "accounts/fireworks/routers/glm-5p1-fast": {
-      "name": "Glm 5p1 FAST"
-    },
     "accounts/fireworks/models/glm-5p2": {
       "name": "Glm 5p2"
     },
@@ -107,9 +101,15 @@
     "accounts/fireworks/models/inkling": {
       "name": "Inkling"
     },
+    "accounts/fireworks/models/glm-5p1": {
+      "name": "Glm 5p1"
+    },
+    "accounts/fireworks/routers/glm-5p1-fast": {
+      "name": "Glm 5p1 FAST"
+    },
     "accounts/fireworks/models/kimi-k2p5": {
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-07-29T13:49:23.482Z"
+  "_syncedAt": "2026-07-30T13:31:26.028Z"
 }
