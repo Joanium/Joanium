@@ -6,6 +6,16 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.801.0] - 2026-08-01
+
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action from 4 to 4.37.3
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action/analyze from 4.37.1 to 4.37.3
+* Chore(deps): Bump ossf/scorecard-action from 2.4.3 to 2.4.4
+
+---
+
 ## [2026.729.0] - 2026-07-29
 
 * Updated OpenRouter AI Models
