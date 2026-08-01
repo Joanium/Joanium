@@ -98,6 +98,9 @@
     "accounts/fireworks/routers/kimi-k3-fast": {
       "name": "Kimi K3 FAST"
     },
+    "accounts/fireworks/models/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 FLASH 0731"
+    },
     "accounts/fireworks/models/inkling": {
       "name": "Inkling"
     },
@@ -111,5 +114,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-07-30T13:31:26.028Z"
+  "_syncedAt": "2026-08-01T09:55:59.383Z"
 }

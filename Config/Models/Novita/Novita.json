@@ -43,6 +43,15 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 Flash 0731",
+      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows.",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
+      }
+    },
     "mindai/macaron-v1-venti": {
       "name": "Macaron V1 Venti",
       "description": "Macaron-V1-Venti is a 748B-parameter flagship model in the Macaron-V1 family, built for personal intelligence, tool use, coding workflows, and code-native Generative UI. The model uses a Mixture of LoRA (MoL) architecture on top of GLM-5.2, consisting of a 744B-parameter base model and four 1B-param",
@@ -1339,5 +1348,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-30T13:31:35.125Z"
+  "_syncedAt": "2026-08-01T09:56:09.620Z"
 }

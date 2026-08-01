@@ -9,6 +9,10 @@
       "name": "Kimi K3",
       "context_window": 1000000
     },
+    "thinkingmachines/Inkling-Small": {
+      "name": "Inkling Small",
+      "context_window": 524288
+    },
     "thinkingmachines/Inkling": {
       "name": "Inkling FP4",
       "context_window": 524288
@@ -92,10 +96,6 @@
     "LiquidAI/LFM2.5-8B-A1B": {
       "name": "LFM2.5-8B-A1B",
       "context_window": 32768
-    },
-    "MiniMaxAI/MiniMax-M2.7": {
-      "name": "MiniMax M2.7 FP4",
-      "context_window": 196608
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -684,6 +684,10 @@
       "name": "Nvidia Nemotron 3 Super 120B A12b Bf16",
       "context_window": 262144
     },
+    "MiniMaxAI/MiniMax-M2.7": {
+      "name": "MiniMax M2.7 FP4",
+      "context_window": 196608
+    },
     "google/gemma-4-E4B-it": {
       "name": "Gemma 4 E4B-it",
       "context_window": 131072
@@ -796,5 +800,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-07-30T13:31:22.614Z"
+  "_syncedAt": "2026-08-01T09:55:55.280Z"
 }

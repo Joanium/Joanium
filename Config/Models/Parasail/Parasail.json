@@ -278,6 +278,21 @@
     "parasail-mythomax-13b": {
       "name": "Parasail Mythomax 13B"
     },
+    "parasail-mistralaimistral-nemo": {
+      "name": "Parasail Mistralaimistral Nemo"
+    },
+    "parasail-googlegemma-3-4b-it": {
+      "name": "Parasail Googlegemma 3 4B It"
+    },
+    "parasail-deepseek-v4-flash-0731": {
+      "name": "Parasail Deepseek V4 FLASH 0731"
+    },
+    "deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "name": "DeepSeek V4 FLASH 0731"
+    },
+    "parasail-sao10kl3-lunaris-8b": {
+      "name": "Parasail Sao10kl3 Lunaris 8B"
+    },
     "parasail-deepseek-v4-flash-h100": {
       "name": "Parasail Deepseek V4 FLASH H100"
     },
@@ -294,5 +309,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-07-30T13:31:46.335Z"
+  "_syncedAt": "2026-08-01T09:56:20.933Z"
 }

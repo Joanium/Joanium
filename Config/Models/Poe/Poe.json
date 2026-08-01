@@ -155,19 +155,6 @@
         "max_output_tokens": null
       }
     },
-    "qwen3.6-plus-el": {
-      "name": "Qwen3 6 PLUS El"
-    },
-    "kimi-k2.5-n": {
-      "name": "Kimi K2 5 N",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": null
-      }
-    },
-    "minimax-m2.7-n": {
-      "name": "Minimax M2 7 N"
-    },
     "mistral-small-4": {
       "name": "Mistral Small 4"
     },
@@ -234,9 +221,6 @@
     "manus": {
       "name": "Manus"
     },
-    "glm-5-n": {
-      "name": "Glm 5 N"
-    },
     "gpt-5.2": {
       "name": "Gpt 5 2",
       "context_window": {
@@ -298,23 +282,10 @@
     "qwen3-coder-next-n": {
       "name": "Qwen3 Coder Next N"
     },
-    "minimax-m2.5-n": {
-      "name": "Minimax M2 5 N"
-    },
     "grok-4.1-fast-non-reasoning": {
       "name": "Grok 4 1 FAST Non Reasoning",
       "context_window": {
         "context_length": 2000000,
-        "max_output_tokens": null
-      }
-    },
-    "kimi-k2-thinking-n": {
-      "name": "Kimi K2 Thinking N"
-    },
-    "deepseek-v3.2-n": {
-      "name": "Deepseek V3 2 N",
-      "context_window": {
-        "context_length": 128000,
         "max_output_tokens": null
       }
     },
@@ -330,9 +301,6 @@
     },
     "claude-code": {
       "name": "Claude Code"
-    },
-    "minimax-m2.1-n": {
-      "name": "Minimax M2 1 N"
     },
     "perplexity-adv-deep-research": {
       "name": "Perplexity Adv Deep Research"
@@ -407,9 +375,6 @@
         "max_output_tokens": null
       }
     },
-    "glm-4.7-n": {
-      "name": "Glm 4 7 N"
-    },
     "gpt-5.1": {
       "name": "Gpt 5 1",
       "context_window": {
@@ -426,9 +391,6 @@
     },
     "seedance-2.0-pro-el": {
       "name": "Seedance 2 0 PRO El"
-    },
-    "glm-4.6-n": {
-      "name": "Glm 4 6 N"
     },
     "glm-4.6v-n": {
       "name": "Glm 4 6v N"
@@ -513,9 +475,6 @@
     "nova-lite-1.0": {
       "name": "Nova LITE 1 0"
     },
-    "minimax-m2-n": {
-      "name": "Minimax M2 N"
-    },
     "kling-2.6-pro": {
       "name": "Kling 2 6 PRO",
       "context_window": {
@@ -553,12 +512,6 @@
     },
     "pika-v1.5-effects": {
       "name": "Pika V1 5 Effects"
-    },
-    "glm-4.5-n": {
-      "name": "Glm 4 5 N"
-    },
-    "deepseek-v3.1-n": {
-      "name": "Deepseek V3 1 N"
     },
     "o4-mini": {
       "name": "O4 MINI",
@@ -629,9 +582,6 @@
     "qwen3-max-el": {
       "name": "Qwen3 MAX El"
     },
-    "gpt-oss-120b-n": {
-      "name": "Gpt OSS 120B N"
-    },
     "gpt-oss-20b-n": {
       "name": "Gpt OSS 20B N"
     },
@@ -684,9 +634,6 @@
     },
     "qwen3-235b-a22b-n": {
       "name": "Qwen3 235B A22b N"
-    },
-    "magistral-medium-el": {
-      "name": "Magistral Medium El"
     },
     "o1": {
       "name": "O1",
@@ -1195,9 +1142,6 @@
     "minimax-m2.7-fw": {
       "name": "Minimax M2 7 Fw"
     },
-    "kimi-k2.6-n": {
-      "name": "Kimi K2 6 N"
-    },
     "qwen3.6-max-preview": {
       "name": "Qwen3 6 MAX Preview"
     },
@@ -1210,20 +1154,11 @@
     "mimo-v2.5-el": {
       "name": "Mimo V2 5 El"
     },
-    "mimo-v2.5-pro-el": {
-      "name": "Mimo V2 5 PRO El"
-    },
     "happyhorse-1.0-el": {
       "name": "Happyhorse 1 0 El"
     },
     "deepseek-v4-pro-t": {
       "name": "Deepseek V4 PRO T"
-    },
-    "deepseek-v4-flash-el": {
-      "name": "Deepseek V4 FLASH El"
-    },
-    "deepseek-v4-pro-el": {
-      "name": "Deepseek V4 PRO El"
     },
     "qwen3.6-plus-t": {
       "name": "Qwen3 6 PLUS T"
@@ -1252,27 +1187,12 @@
     "qwen3.7-max-t": {
       "name": "Qwen3 7 MAX T"
     },
-    "minimax-m3-el": {
-      "name": "Minimax M3 El"
-    },
-    "qwen3.7-plus-el": {
-      "name": "Qwen3 7 PLUS El"
-    },
     "perplexity-sonar-pro": {
       "name": "Perplexity Sonar PRO",
       "context_window": {
         "context_length": 200000,
         "max_output_tokens": null
       }
-    },
-    "minimax-m3-n": {
-      "name": "Minimax M3 N"
-    },
-    "kimi-k2.7-code-n": {
-      "name": "Kimi K2 7 Code N"
-    },
-    "kimi-k2.7-code-el": {
-      "name": "Kimi K2 7 Code El"
     },
     "minimax-m3-t": {
       "name": "Minimax M3 T"
@@ -1289,9 +1209,6 @@
     "seedance-2.0-mini": {
       "name": "Seedance 2 0 MINI"
     },
-    "hy3-n": {
-      "name": "Hy3 N"
-    },
     "seedream-5.0-pro": {
       "name": "Seedream 5 0 PRO"
     },
@@ -1306,12 +1223,6 @@
     },
     "glm-5.2": {
       "name": "Glm 5 2"
-    },
-    "glm-5.2-n": {
-      "name": "Glm 5 2 N"
-    },
-    "glm-5.2-el": {
-      "name": "Glm 5 2 El"
     },
     "qwen3.6-plus": {
       "name": "Qwen3 6 PLUS"
@@ -1389,6 +1300,101 @@
     },
     "glm-5.1": {
       "name": "Glm 5 1"
+    },
+    "deepseek-v4-pro": {
+      "name": "Deepseek V4 PRO"
+    },
+    "deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
+    },
+    "qwen3.6-plus-el": {
+      "name": "Qwen3 6 PLUS El"
+    },
+    "kimi-k2.5-n": {
+      "name": "Kimi K2 5 N",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "minimax-m2.7-n": {
+      "name": "Minimax M2 7 N"
+    },
+    "glm-5-n": {
+      "name": "Glm 5 N"
+    },
+    "minimax-m2.5-n": {
+      "name": "Minimax M2 5 N"
+    },
+    "kimi-k2-thinking-n": {
+      "name": "Kimi K2 Thinking N"
+    },
+    "deepseek-v3.2-n": {
+      "name": "Deepseek V3 2 N",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": null
+      }
+    },
+    "minimax-m2.1-n": {
+      "name": "Minimax M2 1 N"
+    },
+    "glm-4.7-n": {
+      "name": "Glm 4 7 N"
+    },
+    "glm-4.6-n": {
+      "name": "Glm 4 6 N"
+    },
+    "minimax-m2-n": {
+      "name": "Minimax M2 N"
+    },
+    "glm-4.5-n": {
+      "name": "Glm 4 5 N"
+    },
+    "deepseek-v3.1-n": {
+      "name": "Deepseek V3 1 N"
+    },
+    "gpt-oss-120b-n": {
+      "name": "Gpt OSS 120B N"
+    },
+    "magistral-medium-el": {
+      "name": "Magistral Medium El"
+    },
+    "kimi-k2.6-n": {
+      "name": "Kimi K2 6 N"
+    },
+    "mimo-v2.5-pro-el": {
+      "name": "Mimo V2 5 PRO El"
+    },
+    "deepseek-v4-flash-el": {
+      "name": "Deepseek V4 FLASH El"
+    },
+    "deepseek-v4-pro-el": {
+      "name": "Deepseek V4 PRO El"
+    },
+    "minimax-m3-el": {
+      "name": "Minimax M3 El"
+    },
+    "qwen3.7-plus-el": {
+      "name": "Qwen3 7 PLUS El"
+    },
+    "minimax-m3-n": {
+      "name": "Minimax M3 N"
+    },
+    "kimi-k2.7-code-n": {
+      "name": "Kimi K2 7 Code N"
+    },
+    "kimi-k2.7-code-el": {
+      "name": "Kimi K2 7 Code El"
+    },
+    "hy3-n": {
+      "name": "Hy3 N"
+    },
+    "glm-5.2-n": {
+      "name": "Glm 5 2 N"
+    },
+    "glm-5.2-el": {
+      "name": "Glm 5 2 El"
     },
     "glm-5.1-fw": {
       "name": "Glm 5 1 Fw"
@@ -1681,5 +1687,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-30T13:31:43.121Z"
+  "_syncedAt": "2026-08-01T09:56:17.827Z"
 }

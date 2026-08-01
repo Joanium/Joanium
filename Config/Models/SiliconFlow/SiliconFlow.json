@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "name": "DeepSeek V4 FLASH 0731"
+    },
     "moonshotai/Kimi-K3": {
       "name": "Kimi K3"
     },
@@ -215,5 +218,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-07-30T13:31:30.124Z"
+  "_syncedAt": "2026-08-01T09:56:03.278Z"
 }

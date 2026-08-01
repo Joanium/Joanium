@@ -777,6 +777,18 @@
         "text": true
       }
     },
+    "deepseek/deepseek-v4-flash-0731": {
+      "name": "DeepSeek V4 Flash 0731",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.26
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "deepseek/deepseek-v4-pro": {
       "name": "DeepSeek V4 Pro",
       "description": "DeepSeek-V4 series incorporate several key upgrades in architecture and optimization: (1) a hybrid attention architecture that combines Compressed Sparse Attention (CSA)\nand Heavily Compressed Attention (HCA) to improve long-context efficiency; (2) ManifoldConstrained Hyper-Connections (mHC) that en",
@@ -2336,6 +2348,20 @@
         "image": true
       }
     },
+    "thinkingmachines/inkling-small": {
+      "name": "Inkling Small",
+      "description": "Inkling-Small is a lighter-weight model with 12B active parameters, trained with a similar recipe, to Inkling that achieves strong performance with even lower cost and latency.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "xai/grok-4.1-fast-non-reasoning": {
       "name": "Grok 4.1 Fast Non-Reasoning",
       "description": "Low-latency xAI model routed through Vercel AI Gateway for fast chat, tool use, and multimodal tasks",
@@ -2950,5 +2976,5 @@
       }
     }
   },
-  "_syncedAt": "2026-07-30T13:31:40.105Z"
+  "_syncedAt": "2026-08-01T09:56:15.185Z"
 }

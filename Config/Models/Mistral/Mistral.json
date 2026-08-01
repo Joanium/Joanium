@@ -11,18 +11,6 @@
     "mistral-medium-2508": {
       "name": "mistral-medium-2508"
     },
-    "open-mistral-nemo": {
-      "name": "open-mistral-nemo"
-    },
-    "open-mistral-nemo-2407": {
-      "name": "open-mistral-nemo-2407"
-    },
-    "mistral-tiny-2407": {
-      "name": "mistral-tiny-2407"
-    },
-    "mistral-tiny-latest": {
-      "name": "mistral-tiny-latest"
-    },
     "codestral-2508": {
       "name": "codestral-2508"
     },
@@ -97,25 +85,6 @@
     },
     "magistral-small-latest": {
       "name": "magistral-small-latest"
-    },
-    "magistral-medium-2509": {
-      "name": "magistral-medium-2509"
-    },
-    "magistral-medium-latest": {
-      "name": "Magistral Medium",
-      "description": "Mistral's flagship reasoning model — extended chain-of-thought for complex problem solving",
-      "context_window": 131000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 2,
-        "output": 5
-      }
     },
     "voxtral-small-2507": {
       "name": "voxtral-small-2507"
@@ -203,12 +172,6 @@
     "mistral-vibe-cli-with-tools": {
       "name": "mistral-vibe-cli-with-tools"
     },
-    "magistral-small-2509": {
-      "name": "magistral-small-2509"
-    },
-    "mistral-small-2506": {
-      "name": "mistral-small-2506"
-    },
     "mistral-embed-2312": {
       "name": "mistral-embed-2312"
     },
@@ -257,6 +220,43 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "open-mistral-nemo": {
+      "name": "open-mistral-nemo"
+    },
+    "open-mistral-nemo-2407": {
+      "name": "open-mistral-nemo-2407"
+    },
+    "mistral-tiny-2407": {
+      "name": "mistral-tiny-2407"
+    },
+    "mistral-tiny-latest": {
+      "name": "mistral-tiny-latest"
+    },
+    "magistral-medium-2509": {
+      "name": "magistral-medium-2509"
+    },
+    "magistral-medium-latest": {
+      "name": "Magistral Medium",
+      "description": "Mistral's flagship reasoning model — extended chain-of-thought for complex problem solving",
+      "context_window": 131000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2,
+        "output": 5
+      }
+    },
+    "magistral-small-2509": {
+      "name": "magistral-small-2509"
+    },
+    "mistral-small-2506": {
+      "name": "mistral-small-2506"
+    },
     "voxtral-mini-realtime-charente-2606-solutions": {
       "name": "Voxtral MINI Realtime Charente 2606 Solutions"
     },
@@ -279,5 +279,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-07-30T13:31:14.573Z"
+  "_syncedAt": "2026-08-01T09:55:49.953Z"
 }
