@@ -95,21 +95,6 @@
     "Qwen/Qwen3-Coder-Next": {
       "name": "Qwen3 Coder Next"
     },
-    "parasail-glm-5": {
-      "name": "Parasail Glm 5"
-    },
-    "zai-org/GLM-5": {
-      "name": "GLM 5"
-    },
-    "zai-org/GLM-5-FP8": {
-      "name": "GLM 5 FP8"
-    },
-    "parasail-minimax-m25": {
-      "name": "Parasail Minimax M25"
-    },
-    "MiniMaxAI/MiniMax-M2.5": {
-      "name": "MiniMax M2 5"
-    },
     "parasail-qwen35-397b-a17b": {
       "name": "Parasail Qwen35 397B A17b"
     },
@@ -263,17 +248,17 @@
     "Qwen/Qwen3-Embedding-8B": {
       "name": "Qwen3 Embedding 8B"
     },
-    "parasail-kimi-k3": {
-      "name": "Parasail Kimi K3"
-    },
-    "moonshotai/Kimi-K3": {
-      "name": "Kimi K3"
-    },
     "parasail-unslopnemo-12b": {
       "name": "Parasail Unslopnemo 12B"
     },
     "parasail-kimi-k3-fast": {
       "name": "Parasail Kimi K3 FAST"
+    },
+    "moonshotai/Kimi-K3": {
+      "name": "Kimi K3"
+    },
+    "moonshotai/kimi-K3": {
+      "name": "Kimi K3"
     },
     "parasail-mythomax-13b": {
       "name": "Parasail Mythomax 13B"
@@ -293,6 +278,24 @@
     "parasail-sao10kl3-lunaris-8b": {
       "name": "Parasail Sao10kl3 Lunaris 8B"
     },
+    "parasail-glm-5": {
+      "name": "Parasail Glm 5"
+    },
+    "zai-org/GLM-5": {
+      "name": "GLM 5"
+    },
+    "zai-org/GLM-5-FP8": {
+      "name": "GLM 5 FP8"
+    },
+    "parasail-minimax-m25": {
+      "name": "Parasail Minimax M25"
+    },
+    "MiniMaxAI/MiniMax-M2.5": {
+      "name": "MiniMax M2 5"
+    },
+    "parasail-kimi-k3": {
+      "name": "Parasail Kimi K3"
+    },
     "parasail-deepseek-v4-flash-h100": {
       "name": "Parasail Deepseek V4 FLASH H100"
     },
@@ -309,5 +312,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-08-02T05:35:30.123Z"
+  "_syncedAt": "2026-08-06T13:46:47.552Z"
 }

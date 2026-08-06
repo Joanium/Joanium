@@ -341,6 +341,20 @@
         "image": true
       }
     },
+    "alibaba/qwen3.8-max": {
+      "name": "Qwen 3.8 Max",
+      "description": "Qwen 3.8 Max is a 2.4-trillion-parameter MoE model delivering a comprehensive leap in coding and professional work. Autonomously codes and delivers complete projects spanning 10+ days. Handles hundreds of specialized tasks across legal, financial, design, and other professional domains, producing pr",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "amazon/nova-2-lite": {
       "name": "Nova 2 Lite",
       "description": "Nova 2 Lite is a fast, cost-effective reasoning model for everyday workloads that can process text, images, and videos to generate text.",
@@ -450,20 +464,6 @@
         "image": true
       }
     },
-    "anthropic/claude-opus-4.1": {
-      "name": "Claude Opus 4.1",
-      "description": "Claude Opus 4.1 is a drop-in replacement for Opus 4 that delivers superior performance and precision for real-world coding and agentic tasks. Opus 4.1 advances state-of-the-art coding performance to 74.5% on SWE-bench Verified, and handles complex, multi-step problems with more rigor and attention t",
-      "context_window": 200000,
-      "max_output": 32000,
-      "pricing": {
-        "input": 15,
-        "output": 75
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-opus-4.5": {
       "name": "Claude Opus 4.5",
       "description": "Claude Opus 4.5 is Anthropic’s latest model in the Opus series, meant for demanding reasoning tasks and complex problem solving. This model has improvements in general intelligence and vision compared to previous iterations. In addition, it is suited for difficult coding tasks and agentic workflows,",
@@ -542,20 +542,6 @@
       "pricing": {
         "input": 5,
         "output": 25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "anthropic/claude-opus-5-fast": {
-      "name": "Claude Opus 5 (Fast)",
-      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 10,
-        "output": 50
       },
       "inputs": {
         "text": true,
@@ -1151,6 +1137,34 @@
       "pricing": {
         "input": 1.25,
         "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.2": {
+      "name": "Muse Spark 1.2",
+      "description": "A coding-optimized model purpose-built for agentic workflows. Improvements to code generation, debugging, and codebase understanding — with a 1M context window that handles your entire project in one session.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.2-contributor": {
+      "name": "Muse Spark 1.2 Contributor",
+      "description": "A coding-optimized model with pricing designed for builders. Same model, same capabilities — up to 95% less than Standard. Your inputs and outputs are used to train and improve Meta's AI models.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
       },
       "inputs": {
         "text": true,
@@ -2740,6 +2754,34 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.1": {
+      "name": "Claude Opus 4.1",
+      "description": "Claude Opus 4.1 is a drop-in replacement for Opus 4 that delivers superior performance and precision for real-world coding and agentic tasks. Opus 4.1 advances state-of-the-art coding performance to 74.5% on SWE-bench Verified, and handles complex, multi-step problems with more rigor and attention t",
+      "context_window": 200000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 15,
+        "output": 75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5-fast": {
+      "name": "Claude Opus 5 (Fast)",
+      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-3-pro-preview": {
       "name": "Gemini 3 Pro Preview",
       "description": "This model improves upon Gemini 2.5 Pro and is catered towards challenging tasks, especially those involving complex reasoning or agentic workflows. Improvements highlighted include use cases for coding, multi-step function calling, planning, reasoning, deep knowledge tasks, and instruction followin",
@@ -2976,5 +3018,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-02T05:35:21.672Z"
+  "_syncedAt": "2026-08-06T13:46:42.544Z"
 }

@@ -196,14 +196,17 @@
     "mistral-ocr-3": {
       "name": "Mistral Ocr 3"
     },
-    "mistral-ocr-latest": {
-      "name": "mistral-ocr-latest"
-    },
     "mistral-ocr-4-0": {
       "name": "Mistral Ocr 4 0"
     },
+    "mistral-ocr-latest": {
+      "name": "mistral-ocr-latest"
+    },
     "mistral-ocr-4": {
       "name": "Mistral Ocr 4"
+    },
+    "mistral-ocr-4-1": {
+      "name": "Mistral Ocr 4 1"
     },
     "voxtral-mini-2602": {
       "name": "voxtral-mini-2602"
@@ -279,5 +282,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-08-02T05:34:30.380Z"
+  "_syncedAt": "2026-08-06T13:45:58.085Z"
 }

@@ -141,13 +141,6 @@
         "max_output_tokens": 8192
       }
     },
-    "gpt-5.3-instant": {
-      "name": "Gpt 5 3 Instant",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 16384
-      }
-    },
     "grok-4.20-multi-agent": {
       "name": "Grok 4 20 Multi Agent",
       "context_window": {
@@ -233,13 +226,6 @@
       "context_window": {
         "context_length": 1048576,
         "max_output_tokens": 65536
-      }
-    },
-    "gpt-5.2-instant": {
-      "name": "Gpt 5 2 Instant",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 16384
       }
     },
     "grok-4.1-fast-reasoning": {
@@ -555,9 +541,6 @@
         "max_output_tokens": 100000
       }
     },
-    "deepseek-v3.1-terminus-n": {
-      "name": "Deepseek V3 1 Terminus N"
-    },
     "gpt-4.1": {
       "name": "Gpt 4 1",
       "context_window": {
@@ -614,13 +597,6 @@
     },
     "qwen3-vl-235b-a22b-i": {
       "name": "Qwen3 VL 235B A22b I"
-    },
-    "qwen-3-235b-2507-t": {
-      "name": "Qwen 3 235B 2507 T",
-      "context_window": {
-        "context_length": 40960,
-        "max_output_tokens": null
-      }
     },
     "qwen3-coder-480b-n": {
       "name": "Qwen3 Coder 480B N"
@@ -696,9 +672,6 @@
         "context_length": 131072,
         "max_output_tokens": null
       }
-    },
-    "deepseek-prover-v2": {
-      "name": "Deepseek Prover V2"
     },
     "deepseek-r1-di": {
       "name": "Deepseek R1 Di",
@@ -1307,6 +1280,42 @@
     "deepseek-v4-flash": {
       "name": "Deepseek V4 FLASH"
     },
+    "ds-v4-flash-0731-el": {
+      "name": "Ds V4 FLASH 0731 El"
+    },
+    "qwen3.8-max-el": {
+      "name": "Qwen3 8 MAX El"
+    },
+    "minimax-h3-el": {
+      "name": "Minimax H3 El"
+    },
+    "gpt-5.3-instant": {
+      "name": "Gpt 5 3 Instant",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 16384
+      }
+    },
+    "gpt-5.2-instant": {
+      "name": "Gpt 5 2 Instant",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 16384
+      }
+    },
+    "deepseek-v3.1-terminus-n": {
+      "name": "Deepseek V3 1 Terminus N"
+    },
+    "qwen-3-235b-2507-t": {
+      "name": "Qwen 3 235B 2507 T",
+      "context_window": {
+        "context_length": 40960,
+        "max_output_tokens": null
+      }
+    },
+    "deepseek-prover-v2": {
+      "name": "Deepseek Prover V2"
+    },
     "qwen3.6-plus-el": {
       "name": "Qwen3 6 PLUS El"
     },
@@ -1687,5 +1696,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-02T05:35:23.332Z"
+  "_syncedAt": "2026-08-06T13:46:43.735Z"
 }

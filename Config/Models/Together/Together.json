@@ -9,20 +9,24 @@
       "name": "Kimi K3",
       "context_window": 1000000
     },
-    "thinkingmachines/Inkling-Small": {
-      "name": "Inkling Small",
-      "context_window": 524288
+    "zai-org/GLM-5.2": {
+      "name": "GLM 5.2",
+      "context_window": 262144
+    },
+    "deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "name": "Deepseek V4 Flash 0731",
+      "context_window": 1048576
     },
     "thinkingmachines/Inkling": {
       "name": "Inkling FP4",
       "context_window": 524288
     },
-    "zai-org/GLM-5.2": {
-      "name": "GLM 5.2",
-      "context_window": 262144
-    },
     "MiniMaxAI/MiniMax-M3": {
       "name": "MiniMax M3",
+      "context_window": 524288
+    },
+    "thinkingmachines/Inkling-Small": {
+      "name": "Inkling Small",
       "context_window": 524288
     },
     "moonshotai/Kimi-K2.7-Code": {
@@ -751,6 +755,14 @@
       "name": "Gemma 4 12B It",
       "context_window": 262144
     },
+    "zai-org/GLM-5.2-FP8": {
+      "name": "GLM 5.2 FP8",
+      "context_window": 1048576
+    },
+    "zai-org/GLM-5.2-FP8-Lora": {
+      "name": "GLM 5.2 FP8 Lora",
+      "context_window": 1048576
+    },
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
@@ -800,5 +812,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-08-02T05:34:42.934Z"
+  "_syncedAt": "2026-08-06T13:46:19.434Z"
 }

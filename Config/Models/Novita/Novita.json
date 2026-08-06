@@ -1082,6 +1082,16 @@
         "text": true
       }
     },
+    "qwen/qwen3.8-max": {
+      "name": "Qwen3.8 Max",
+      "description": " A 2.4T-parameter MoE flagship for coding and knowledge work. Programs autonomously for days to deliver complete projects end to end, with native visual understanding across planning, execution, and verification, plus deep semantic analysis of ultra-long documents and video.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ring-2.6-1t": {
       "name": "Ring-2.6-1T",
       "context_window": 262144,
@@ -1348,5 +1358,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-02T05:35:03.987Z"
+  "_syncedAt": "2026-08-06T13:46:37.109Z"
 }
