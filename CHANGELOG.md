@@ -6,6 +6,16 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.806.0] - 2026-08-06
+
+* Updated AI Models
+* Chore(deps-dev): Bump fast-uri
+* Chore(deps): Bump the npm_and_yarn group across 1 directory with 2 updates
+* Chore(deps-dev): Bump lint-staged from 17.2.0 to 17.3.0
+* Updated AI Models
+
+---
+
 ## [2026.801.0] - 2026-08-01
 
 * Updated AI Models
