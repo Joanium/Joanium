@@ -236,29 +236,14 @@
     "TheDrummer/Rocinante-12B-v1.1": {
       "name": "Rocinante 12B V1 1"
     },
-    "parasail-qwen3-embedding-4b": {
-      "name": "Parasail Qwen3 Embedding 4B"
-    },
-    "Qwen/Qwen3-Embedding-4B": {
-      "name": "Qwen3 Embedding 4B"
-    },
-    "parasail-qwen3-embedding-8b": {
-      "name": "Parasail Qwen3 Embedding 8B"
-    },
-    "Qwen/Qwen3-Embedding-8B": {
-      "name": "Qwen3 Embedding 8B"
-    },
-    "parasail-unslopnemo-12b": {
-      "name": "Parasail Unslopnemo 12B"
-    },
-    "parasail-kimi-k3-fast": {
-      "name": "Parasail Kimi K3 FAST"
+    "parasail-kimi-k3": {
+      "name": "Parasail Kimi K3"
     },
     "moonshotai/Kimi-K3": {
       "name": "Kimi K3"
     },
-    "moonshotai/kimi-K3": {
-      "name": "Kimi K3"
+    "parasail-unslopnemo-12b": {
+      "name": "Parasail Unslopnemo 12B"
     },
     "parasail-mythomax-13b": {
       "name": "Parasail Mythomax 13B"
@@ -278,6 +263,24 @@
     "parasail-sao10kl3-lunaris-8b": {
       "name": "Parasail Sao10kl3 Lunaris 8B"
     },
+    "parasail-qwen3-embedding-4b": {
+      "name": "Parasail Qwen3 Embedding 4B"
+    },
+    "Qwen/Qwen3-Embedding-4B": {
+      "name": "Qwen3 Embedding 4B"
+    },
+    "parasail-qwen3-embedding-8b": {
+      "name": "Parasail Qwen3 Embedding 8B"
+    },
+    "Qwen/Qwen3-Embedding-8B": {
+      "name": "Qwen3 Embedding 8B"
+    },
+    "parasail-kimi-k3-fast": {
+      "name": "Parasail Kimi K3 FAST"
+    },
+    "moonshotai/kimi-K3": {
+      "name": "Kimi K3"
+    },
     "parasail-glm-5": {
       "name": "Parasail Glm 5"
     },
@@ -292,9 +295,6 @@
     },
     "MiniMaxAI/MiniMax-M2.5": {
       "name": "MiniMax M2 5"
-    },
-    "parasail-kimi-k3": {
-      "name": "Parasail Kimi K3"
     },
     "parasail-deepseek-v4-flash-h100": {
       "name": "Parasail Deepseek V4 FLASH H100"
@@ -312,5 +312,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-08-06T13:46:47.552Z"
+  "_syncedAt": "2026-08-09T14:07:00.855Z"
 }

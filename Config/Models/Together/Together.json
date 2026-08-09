@@ -101,6 +101,10 @@
       "name": "LFM2.5-8B-A1B",
       "context_window": 32768
     },
+    "Prism-ML/Ternary-Bonsai-27B": {
+      "name": "Ternary Bonsai 27B",
+      "context_window": 262144
+    },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
       "context_window": 32768
@@ -763,10 +767,6 @@
       "name": "GLM 5.2 FP8 Lora",
       "context_window": 1048576
     },
-    "Prism-ML/Ternary-Bonsai-27B": {
-      "name": "Ternary Bonsai 27B",
-      "context_window": 262144
-    },
     "Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
       "name": "Qwen3 235B A22B Instruct 2507 FP8 Throughput",
       "context_window": 262144
@@ -812,5 +812,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-08-06T13:46:19.434Z"
+  "_syncedAt": "2026-08-09T14:06:35.926Z"
 }

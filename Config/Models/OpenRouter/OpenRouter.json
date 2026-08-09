@@ -5,6 +5,18 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "inclusionai/ling-3.0-tiny:free": {
+      "name": "inclusionAI: Ling 3.0 Tiny (free)",
+      "description": "Ling 3.0 Tiny is a mixture-of-experts model from InclusionAI, with 1.3B active parameters out of 7.9B total. It is designed for responsive agents, instruction following, and multi-turn conversations, with switchable...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "meta/muse-spark-1.2": {
       "name": "Meta: Muse Spark 1.2",
       "description": "Muse Spark 1.2 is a reasoning model from Meta, designed for complex agentic tasks. It accepts text, images, video, audio, and PDF documents, returns text, and offers a 1M-token context...",
@@ -127,18 +139,6 @@
       "pricing": {
         "input": 0.08,
         "output": 0.22
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.0-flash:free": {
-      "name": "Ling-3.0-flash (free)",
-      "description": "*Ling-3.0-flash* is a *124B-parameter Mixture-of-Experts (MoE) model*, with approximately *5.1B parameters activated per token*. The model is designed with *token efficiency and production-scale agentic inference* as key priorities, enabling developers...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -4930,6 +4930,18 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash:free": {
+      "name": "Ling-3.0-flash (free)",
+      "description": "*Ling-3.0-flash* is a *124B-parameter Mixture-of-Experts (MoE) model*, with approximately *5.1B parameters activated per token*. The model is designed with *token efficiency and production-scale agentic inference* as key priorities, enabling developers...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "mistralai/devstral-2512": {
       "name": "Mistral: Devstral 2 2512",
       "description": "Devstral 2 is a state-of-the-art open-source model by Mistral AI specializing in agentic coding. It is a 123B-parameter dense transformer model supporting a 256K context window. Devstral 2 supports exploring...",
@@ -5395,5 +5407,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-06T13:45:56.002Z"
+  "_syncedAt": "2026-08-09T14:06:25.897Z"
 }

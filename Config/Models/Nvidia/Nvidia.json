@@ -30,11 +30,8 @@
     "deepseek-ai/deepseek-coder-6.7b-instruct": {
       "name": "deepseek-ai/deepseek-coder-6.7b-instruct"
     },
-    "deepseek-ai/deepseek-v4-flash": {
-      "name": "deepseek-ai/deepseek-v4-flash"
-    },
-    "deepseek-ai/deepseek-v4-pro": {
-      "name": "deepseek-ai/deepseek-v4-pro"
+    "deepseek-ai/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 FLASH 0731"
     },
     "google/codegemma-1.1-7b": {
       "name": "google/codegemma-1.1-7b"
@@ -141,9 +138,6 @@
     },
     "mistralai/mistral-large-2-instruct": {
       "name": "mistralai/mistral-large-2-instruct"
-    },
-    "mistralai/mistral-medium-3.5-128b": {
-      "name": "mistralai/mistral-medium-3.5-128b"
     },
     "mistralai/mistral-nemotron": {
       "name": "mistralai/mistral-nemotron"
@@ -361,6 +355,15 @@
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
     },
+    "deepseek-ai/deepseek-v4-flash": {
+      "name": "deepseek-ai/deepseek-v4-flash"
+    },
+    "deepseek-ai/deepseek-v4-pro": {
+      "name": "deepseek-ai/deepseek-v4-pro"
+    },
+    "mistralai/mistral-medium-3.5-128b": {
+      "name": "mistralai/mistral-medium-3.5-128b"
+    },
     "nvidia/ising-calibration-1-35b-a3b": {
       "name": "nvidia/ising-calibration-1-35b-a3b"
     },
@@ -463,5 +466,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-08-06T13:45:38.193Z"
+  "_syncedAt": "2026-08-09T14:06:19.775Z"
 }

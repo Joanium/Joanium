@@ -984,15 +984,24 @@
         "text": true
       }
     },
-    "inclusionai/ling-3.0-flash-free": {
+    "inclusionai/ling-3.0-flash": {
       "name": "Ling 3.0 Flash",
       "description": "Ling 3.0 Flash is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, latency, and serving-cost budgets.",
       "context_window": 256000,
-      "max_output": 256000,
+      "max_output": 32000,
       "pricing": {
-        "input": 0,
-        "output": 0
+        "input": 0.06,
+        "output": 0.18
       },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-tiny-free": {
+      "name": "Ling 3.0 Tiny (Free)",
+      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations. The model features a 256K context window, native function calling, prompt caching, and swi",
+      "context_window": 256000,
+      "max_output": 32000,
       "inputs": {
         "text": true
       }
@@ -2754,6 +2763,19 @@
         "image": true
       }
     },
+    "inclusionai/ling-3.0-flash-free": {
+      "name": "Ling 3.0 Flash",
+      "description": "Ling 3.0 Flash is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, latency, and serving-cost budgets.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "anthropic/claude-opus-4.1": {
       "name": "Claude Opus 4.1",
       "description": "Claude Opus 4.1 is a drop-in replacement for Opus 4 that delivers superior performance and precision for real-world coding and agentic tasks. Opus 4.1 advances state-of-the-art coding performance to 74.5% on SWE-bench Verified, and handles complex, multi-step problems with more rigor and attention t",
@@ -3018,5 +3040,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-06T13:46:42.544Z"
+  "_syncedAt": "2026-08-09T14:06:56.145Z"
 }

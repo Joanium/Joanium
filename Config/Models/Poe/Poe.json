@@ -1289,6 +1289,9 @@
     "minimax-h3-el": {
       "name": "Minimax H3 El"
     },
+    "seedance-2.5-el": {
+      "name": "Seedance 2 5 El"
+    },
     "gpt-5.3-instant": {
       "name": "Gpt 5 3 Instant",
       "context_window": {
@@ -1696,5 +1699,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-06T13:46:43.735Z"
+  "_syncedAt": "2026-08-09T14:06:57.304Z"
 }

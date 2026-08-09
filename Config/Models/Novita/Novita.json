@@ -103,6 +103,15 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-tiny": {
+      "name": "Ling 3.0 Tiny",
+      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations.\nThe model features a 256K context window, native function calling, prompt caching, and swi",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
     "inclusionai/ling-3.0-flash": {
       "name": "Ling-3.0-flash",
       "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
@@ -1358,5 +1367,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-06T13:46:37.109Z"
+  "_syncedAt": "2026-08-09T14:06:51.079Z"
 }
