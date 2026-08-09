@@ -6,6 +6,17 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.809.0] - 2026-08-09
+
+* Updated Package.json
+* Updated AI models
+* Chore(deps): Bump github/codeql-action from 4.37.3 to 4.37.6
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.3 to 4.37.6
+* Chore(deps): Bump github/codeql-action/analyze from 4.37.3 to 4.37.6
+* Chore(deps): Bump github/codeql-action/init from 4.37.3 to 4.37.6
+
+---
+
 ## [2026.806.0] - 2026-08-06
 
 * Updated AI Models
