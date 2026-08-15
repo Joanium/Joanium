@@ -6,6 +6,16 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.815.0] - 2026-08-15
+
+* Updated AI Models
+* Chore(deps): Bump katex from 0.18.3 to 0.18.4
+* Chore(deps): Bump mammoth from 1.12.0 to 1.12.1
+* Chore(deps): Bump katex from 0.18.1 to 0.18.3
+* Chore(deps-dev): Bump eslint from 10.8.0 to 10.8.1
+
+---
+
 ## [2026.809.0] - 2026-08-09
 
 * Updated Package.json
