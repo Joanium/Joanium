@@ -5,6 +5,12 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek-ai/DeepSeek-V4-Pro-0813": {
+      "name": "DeepSeek V4 PRO 0813"
+    },
+    "Qwen/Qwen3.8-2.4T-A95B": {
+      "name": "Qwen3 8 2 4T A95B"
+    },
     "deepseek-ai/DeepSeek-V4-Flash-0731": {
       "name": "DeepSeek V4 FLASH 0731"
     },
@@ -218,5 +224,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-08-09T14:06:45.328Z"
+  "_syncedAt": "2026-08-15T09:27:57.928Z"
 }

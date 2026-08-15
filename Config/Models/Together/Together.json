@@ -13,6 +13,14 @@
       "name": "GLM 5.2",
       "context_window": 262144
     },
+    "meta-models/Muse-Glimmer-30B": {
+      "name": "Muse Glimmer 30B",
+      "context_window": 131072
+    },
+    "Qwen/Qwen3.8-2.4T-A95B": {
+      "name": "Qwen3.8-2.4T-A95B",
+      "context_window": 1010000
+    },
     "deepseek-ai/DeepSeek-V4-Flash-0731": {
       "name": "Deepseek V4 Flash 0731",
       "context_window": 1048576
@@ -812,5 +820,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-08-09T14:06:35.926Z"
+  "_syncedAt": "2026-08-15T09:27:48.573Z"
 }

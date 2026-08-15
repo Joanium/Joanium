@@ -58,9 +58,6 @@
         "output": 0.6
       }
     },
-    "accounts/fireworks/models/deepseek-v4-flash": {
-      "name": "Deepseek V4 FLASH"
-    },
     "accounts/fireworks/models/deepseek-v4-pro": {
       "name": "DeepSeek V4 Pro",
       "description": "DeepSeek's latest frontier model — strong reasoning, coding, and math at competitive pricing with 1M context",
@@ -101,8 +98,26 @@
     "accounts/fireworks/models/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731"
     },
+    "accounts/fireworks/models/muse-glimmer-30b": {
+      "name": "Muse Glimmer 30B"
+    },
+    "accounts/fireworks/models/qwen3p8-max": {
+      "name": "Qwen3p8 MAX"
+    },
+    "accounts/fireworks/models/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813"
+    },
     "accounts/fireworks/models/inkling": {
       "name": "Inkling"
+    },
+    "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
+      "name": "Qwen3p8 2p4t A95b"
+    },
+    "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
+      "name": "Nemotron Lightning 3p5 30B A3b"
+    },
+    "accounts/fireworks/models/deepseek-v4-flash": {
+      "name": "Deepseek V4 FLASH"
     },
     "accounts/fireworks/models/glm-5p1": {
       "name": "Glm 5p1"
@@ -114,5 +129,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-08-09T14:06:40.000Z"
+  "_syncedAt": "2026-08-15T09:27:52.750Z"
 }

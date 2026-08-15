@@ -341,6 +341,19 @@
         "image": true
       }
     },
+    "alibaba/qwen3.8-2.4t-a95b": {
+      "name": "Qwen3.8 2.4T A95B",
+      "description": "Open-weights release of the Qwen3.8 flagship (2.4T MoE, ~95B active); thinking always on with reasoning_effort low/medium/xhigh. The hosted Qwen 3.8 Max (vision, non-thinking, 1M default context) is Alibaba-only.",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "alibaba/qwen3.8-max": {
       "name": "Qwen 3.8 Max",
       "description": "Qwen 3.8 Max is a 2.4-trillion-parameter MoE model delivering a comprehensive leap in coding and professional work. Autonomously codes and delivers complete projects spanning 10+ days. Handles hundreds of specialized tasks across legal, financial, design, and other professional domains, producing pr",
@@ -542,6 +555,20 @@
       "pricing": {
         "input": 5,
         "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5-fast": {
+      "name": "Claude Opus 5 (Fast)",
+      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
       },
       "inputs": {
         "text": true,
@@ -788,6 +815,19 @@
         "text": true
       }
     },
+    "deepseek/deepseek-v4-pro-0813": {
+      "name": "DeepSeek V4 Pro 0813",
+      "description": "This is the 8/13 updated weights version of DeepSeek V4 Pro.",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 1.32,
+        "output": 3.96
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "google/gemini-2.5-flash": {
       "name": "Gemini 2.5 Flash",
       "description": "Gemini 2.5 Flash is a thinking model that offers great, well-rounded capabilities. It is designed to offer a balance between price and performance with multimodal support and a 1M token context window.",
@@ -916,6 +956,19 @@
         "image": true
       }
     },
+    "google/gemini-3.7-flash": {
+      "name": "Gemini 3.7 Flash",
+      "context_window": 1000000,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-omni-flash-preview": {
       "name": "Gemini Omni Flash Preview",
       "description": "Gemini Omni Flash (Preview) is a multimodal model designed for video, image, and text tasks. It is optimized for video generation, offering video output alongside text responses in a single model.",
@@ -993,15 +1046,6 @@
         "input": 0.06,
         "output": 0.18
       },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.0-tiny-free": {
-      "name": "Ling 3.0 Tiny (Free)",
-      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations. The model features a 256K context window, native function calling, prompt caching, and swi",
-      "context_window": 256000,
-      "max_output": 32000,
       "inputs": {
         "text": true
       }
@@ -1132,6 +1176,19 @@
       "pricing": {
         "input": 0.17,
         "output": 0.66
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-glimmer-30b": {
+      "name": "Muse Glimmer 30B",
+      "context_window": 131072,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.35,
+        "output": 1.5
       },
       "inputs": {
         "text": true,
@@ -1899,20 +1956,6 @@
         "image": true
       }
     },
-    "openai/gpt-5.1-instant": {
-      "name": "GPT-5.1 Instant",
-      "description": "GPT-5.1 Instant (or GPT-5.1 chat) is a warmer and more conversational version of GPT-5-chat, with improved instruction following and adaptive reasoning for deciding when to think before responding.",
-      "context_window": 128000,
-      "max_output": 16384,
-      "pricing": {
-        "input": 1.25,
-        "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "openai/gpt-5.1-thinking": {
       "name": "GPT 5.1 Thinking",
       "description": "An upgraded version of GPT-5 that adapts thinking time more precisely to the question to spend more time on complex questions and respond more quickly to simpler tasks.",
@@ -1963,20 +2006,6 @@
       "pricing": {
         "input": 21,
         "output": 168
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-5.3-chat": {
-      "name": "GPT-5.3 Chat",
-      "description": "The model powering ChatGPT is gpt-5.3-chat-latest: this is OpenAI's best general-purpose model, part of the GPT-5 flagship model family.",
-      "context_window": 128000,
-      "max_output": 16384,
-      "pricing": {
-        "input": 1.75,
-        "output": 14
       },
       "inputs": {
         "text": true,
@@ -2317,6 +2346,20 @@
         "image": true
       }
     },
+    "sakana/namazu": {
+      "name": "Sakana Namazu",
+      "description": "Sakana Namazu is a Japanese-specialized LLM that combines a deep understanding of Japanese culture and business customs with high-performance language capabilities. Built on the open model Kimi K2.6 and refined with Sakana AI's in-house data for Japanese language and business workflows, it handles c",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0.95,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "stepfun/step-3.5-flash": {
       "name": "StepFun 3.5 Flash",
       "description": "Step 3.5 Flash is an open-source reasoning model by StepFun with 196B total parameters (11B active) using Mixture of Experts. It features a 256K context window, deep reasoning, tool calling, and agentic capabilities, achieving 97.3 on AIME 2025 and 74.4% on SWE-bench Verified.",
@@ -2515,6 +2558,20 @@
     "xai/grok-4.5": {
       "name": "Grok 4.5",
       "description": "SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
+      "context_window": 500000,
+      "max_output": 500000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xai/grok-4.6": {
+      "name": "Grok 4.6",
+      "description": "Grok 4.6 builds on Grok 4.5 with a particular focus on long-running agents and more ambitious interactive and visual work. It stays with complex tasks across many steps, whether researching a topic, analyzing information, working across a codebase, or turning an idea into a polished application or w",
       "context_window": 500000,
       "max_output": 500000,
       "pricing": {
@@ -2763,6 +2820,43 @@
         "image": true
       }
     },
+    "inclusionai/ling-3.0-tiny-free": {
+      "name": "Ling 3.0 Tiny (Free)",
+      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations. The model features a 256K context window, native function calling, prompt caching, and swi",
+      "context_window": 256000,
+      "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-5.1-instant": {
+      "name": "GPT-5.1 Instant",
+      "description": "GPT-5.1 Instant (or GPT-5.1 chat) is a warmer and more conversational version of GPT-5-chat, with improved instruction following and adaptive reasoning for deciding when to think before responding.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 1.25,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.3-chat": {
+      "name": "GPT-5.3 Chat",
+      "description": "The model powering ChatGPT is gpt-5.3-chat-latest: this is OpenAI's best general-purpose model, part of the GPT-5 flagship model family.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 1.75,
+        "output": 14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ling-3.0-flash-free": {
       "name": "Ling 3.0 Flash",
       "description": "Ling 3.0 Flash is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, latency, and serving-cost budgets.",
@@ -2784,20 +2878,6 @@
       "pricing": {
         "input": 15,
         "output": 75
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "anthropic/claude-opus-5-fast": {
-      "name": "Claude Opus 5 (Fast)",
-      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 10,
-        "output": 50
       },
       "inputs": {
         "text": true,
@@ -3040,5 +3120,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-09T14:06:56.145Z"
+  "_syncedAt": "2026-08-15T09:28:18.690Z"
 }

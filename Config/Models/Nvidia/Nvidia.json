@@ -115,6 +115,9 @@
     "meta/llama2-70b": {
       "name": "meta/llama2-70b"
     },
+    "meta/muse-glimmer-30b": {
+      "name": "Muse Glimmer 30B"
+    },
     "microsoft/kosmos-2": {
       "name": "microsoft/kosmos-2"
     },
@@ -254,6 +257,9 @@
     },
     "nvidia/nemotron-3.5-content-safety": {
       "name": "Nemotron 3 5 Content Safety"
+    },
+    "nvidia/nemotron-3.5-lightning-30b-a3b": {
+      "name": "Nemotron 3 5 Lightning 30B A3b"
     },
     "nvidia/nemotron-4-340b-instruct": {
       "name": "nvidia/nemotron-4-340b-instruct"
@@ -466,5 +472,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-08-09T14:06:19.775Z"
+  "_syncedAt": "2026-08-15T09:27:27.081Z"
 }

@@ -5,16 +5,193 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "inclusionai/ling-3.0-tiny:free": {
-      "name": "inclusionAI: Ling 3.0 Tiny (free)",
-      "description": "Ling 3.0 Tiny is a mixture-of-experts model from InclusionAI, with 1.3B active parameters out of 7.9B total. It is designed for responsive agents, instruction following, and multi-turn conversations, with switchable...",
+    "qwen/qwen3.8-27b": {
+      "name": "Qwen: Qwen3.8 27B",
+      "description": "Qwen3.8 27B is an open-weight dense vision-language model from Qwen. It is suited for coding, professional workflows, research, multimodal interaction, and long-running agent tasks, with flexible thinking that can be...",
       "context_window": 262144,
+      "pricing": {
+        "input": 0.45,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "dots-studio/dots-3-note-preview:free": {
+      "name": "Dots Studio: Dots3-Note Preview (free)",
+      "description": "Dots3-Note Preview is an open-weight mixture-of-experts model from Dots Studio, with 16B active parameters out of 280B total. It is the lightest model in the Dots 3 family and is...",
+      "context_window": 512000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.7-flash": {
+      "name": "Google: Gemini 3.7 Flash",
+      "description": "Gemini 3.7 Flash is a multimodal model from Google for fast agentic workflows, coding, and complex multi-step reasoning. It is designed for tasks that require responsive performance and reliable multi-step...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.88
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.7-flash:batch": {
+      "name": "Google: Gemini 3.7 Flash (batch)",
+      "description": "Gemini 3.7 Flash is a multimodal model from Google for fast agentic workflows, coding, and complex multi-step reasoning. It is designed for tasks that require responsive performance and reliable multi-step...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.19,
+        "output": 0.94
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bytedance-seed/seed-2-1-turbo": {
+      "name": "ByteDance Seed: Seed 2.1 Turbo",
+      "description": "Seed 2.1 Turbo is a multimodal model from ByteDance Seed for coding and long-horizon agent workflows. It is suited for end-to-end software delivery, multi-step task execution, and understanding visual and...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3.8-2.4t-a95b": {
+      "name": "Qwen: Qwen3.8 2.4T A95B",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "bytedance-seed/seed-2.0-code": {
+      "name": "ByteDance Seed: Seed-2.0-Code",
+      "description": "Seed 2.0 Code is a model from ByteDance Seed optimized for agentic coding. It is suited for frontend development, multilingual programming tasks, and coding-agent workflows in tools such as Claude...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-pro-0813": {
+      "name": "DeepSeek: DeepSeek V4 Pro 0813",
+      "description": "DeepSeek V4 Pro 0813 is a large-scale mixture-of-experts model from DeepSeek. This is the GA release of DeepSeek V4 Pro.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "x-ai/grok-4.6": {
+      "name": "SpaceXAI: Grok 4.6",
+      "description": "Grok 4.6 is SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
+      "context_window": 500000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "liquid/lfm-2.5-2.6b:free": {
+      "name": "LiquidAI: LFM2.5-2.6B (free)",
+      "description": "LFM2.5-2.6B is a compact reasoning model from Liquid AI. It is suited for agent workflows, data extraction, RAG, and long-context processing. Liquid advises against using it for agentic coding or...",
+      "context_window": 128000,
       "pricing": {
         "input": 0,
         "output": 0
       },
       "inputs": {
         "text": true
+      }
+    },
+    "nvidia/nemotron-3.5-lightning": {
+      "name": "NVIDIA: Nemotron 3.5 Lightning",
+      "description": "NVIDIA Nemotron 3.5 Lightning is an open mixture-of-experts model from NVIDIA, with 3B active parameters out of 30B total. It is suited for high-throughput agentic workloads and specialized tasks that...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nvidia/nemotron-3.5-lightning:free": {
+      "name": "NVIDIA: Nemotron 3.5 Lightning (free)",
+      "description": "NVIDIA Nemotron 3.5 Lightning is an open mixture-of-experts model from NVIDIA, with 3B active parameters out of 30B total. It is suited for high-throughput agentic workloads and specialized tasks that...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "sakana/sakana-namazu": {
+      "name": "Sakana: Sakana Namazu",
+      "description": "Sakana Namazu is a Japanese-specialized reasoning model from Sakana AI, based on Kimi K2.6 with additional training for Japanese language and business contexts. It is suited for Japanese instruction following,...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.95,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "upstage/solar-pro4": {
+      "name": "Upstage: Solar Pro 4",
+      "description": "Solar Pro 4 is Upstage's cost-efficient large language model, featuring a 524K context window. It is built for long-horizon tasks and agentic workflows, with strong capabilities in office productivity, document-intensive...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.12
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta/muse-glimmer-30b": {
+      "name": "Meta: Muse Glimmer 30B",
+      "description": "Muse Glimmer 30B is a dense, open-weight multimodal model from Meta Superintelligence Labs, distilled from Muse Spark and optimized for autonomous agents on consumer hardware. It is suited for long-horizon...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.35,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "meta/muse-spark-1.2": {
@@ -1800,19 +1977,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "openai/gpt-5.3-chat": {
-      "name": "OpenAI: GPT-5.3 Chat",
-      "description": "GPT-5.3 Chat is an update to ChatGPT's most-used model that makes everyday conversations smoother, more useful, and more directly helpful. It delivers more accurate answers with better contextualization and significantly...",
-      "context_window": 128000,
-      "pricing": {
-        "input": 1.75,
-        "output": 14
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "google/gemini-3.1-flash-lite-preview": {
@@ -4930,6 +5094,31 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-tiny:free": {
+      "name": "inclusionAI: Ling 3.0 Tiny (free)",
+      "description": "Ling 3.0 Tiny is a mixture-of-experts model from InclusionAI, with 1.3B active parameters out of 7.9B total. It is designed for responsive agents, instruction following, and multi-turn conversations, with switchable...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-5.3-chat": {
+      "name": "OpenAI: GPT-5.3 Chat",
+      "description": "GPT-5.3 Chat is an update to ChatGPT's most-used model that makes everyday conversations smoother, more useful, and more directly helpful. It delivers more accurate answers with better contextualization and significantly...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 1.75,
+        "output": 14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ling-3.0-flash:free": {
       "name": "Ling-3.0-flash (free)",
       "description": "*Ling-3.0-flash* is a *124B-parameter Mixture-of-Experts (MoE) model*, with approximately *5.1B parameters activated per token*. The model is designed with *token efficiency and production-scale agentic inference* as key priorities, enabling developers...",
@@ -5407,5 +5596,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-09T14:06:25.897Z"
+  "_syncedAt": "2026-08-15T09:27:39.916Z"
 }

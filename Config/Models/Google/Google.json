@@ -36,28 +36,6 @@
         "output": 10
       }
     },
-    "gemini-2.0-flash": {
-      "name": "Gemini 2.0 Flash",
-      "description": "Previous-generation fast model — widely available, 1M context",
-      "context_window": 1048576,
-      "max_output": 8192
-    },
-    "gemini-2.0-flash-001": {
-      "name": "Gemini 2.0 Flash 001",
-      "context_window": 1048576,
-      "max_output": 8192
-    },
-    "gemini-2.0-flash-lite-001": {
-      "name": "Gemini 2.0 Flash-Lite 001",
-      "context_window": 1048576,
-      "max_output": 8192
-    },
-    "gemini-2.0-flash-lite": {
-      "name": "Gemini 2.0 Flash-Lite",
-      "description": "Lightest 2.0 model — optimised for speed and volume",
-      "context_window": 1048576,
-      "max_output": 8192
-    },
     "gemma-4-26b-a4b-it": {
       "name": "Gemma 4 26B A4B IT",
       "context_window": 262144,
@@ -98,11 +76,6 @@
         "input": 0.1,
         "output": 0.4
       }
-    },
-    "gemini-3-pro-preview": {
-      "name": "Gemini 3 Pro Preview",
-      "context_window": 1048576,
-      "max_output": 65536
     },
     "gemini-3-flash-preview": {
       "name": "Gemini 3 Flash Preview",
@@ -154,6 +127,11 @@
       "context_window": 1048576,
       "max_output": 65536
     },
+    "gemini-3.7-flash": {
+      "name": "Gemini 3.7 Flash",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
     "lyria-3-clip-preview": {
       "name": "Lyria 3 Clip Preview",
       "context_window": 1048576,
@@ -161,11 +139,6 @@
     },
     "lyria-3-pro-preview": {
       "name": "Lyria 3 Pro Preview",
-      "context_window": 1048576,
-      "max_output": 65536
-    },
-    "gemini-robotics-er-1.5-preview": {
-      "name": "Gemini Robotics-ER 1.5 Preview",
       "context_window": 1048576,
       "max_output": 65536
     },
@@ -203,7 +176,39 @@
       "name": "Deep Research Pro Preview (Dec-12-2025)",
       "context_window": 131072,
       "max_output": 65536
+    },
+    "gemini-2.0-flash": {
+      "name": "Gemini 2.0 Flash",
+      "description": "Previous-generation fast model — widely available, 1M context",
+      "context_window": 1048576,
+      "max_output": 8192
+    },
+    "gemini-2.0-flash-001": {
+      "name": "Gemini 2.0 Flash 001",
+      "context_window": 1048576,
+      "max_output": 8192
+    },
+    "gemini-2.0-flash-lite-001": {
+      "name": "Gemini 2.0 Flash-Lite 001",
+      "context_window": 1048576,
+      "max_output": 8192
+    },
+    "gemini-2.0-flash-lite": {
+      "name": "Gemini 2.0 Flash-Lite",
+      "description": "Lightest 2.0 model — optimised for speed and volume",
+      "context_window": 1048576,
+      "max_output": 8192
+    },
+    "gemini-3-pro-preview": {
+      "name": "Gemini 3 Pro Preview",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
+    "gemini-robotics-er-1.5-preview": {
+      "name": "Gemini Robotics-ER 1.5 Preview",
+      "context_window": 1048576,
+      "max_output": 65536
     }
   },
-  "_syncedAt": "2026-08-09T14:06:28.128Z"
+  "_syncedAt": "2026-08-15T09:27:42.633Z"
 }

@@ -172,6 +172,12 @@
     "mistral-vibe-cli-with-tools": {
       "name": "mistral-vibe-cli-with-tools"
     },
+    "glm-5-2": {
+      "name": "Glm 5 2"
+    },
+    "zai-glm-5-2": {
+      "name": "Zai Glm 5 2"
+    },
     "mistral-embed-2312": {
       "name": "mistral-embed-2312"
     },
@@ -282,5 +288,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-08-09T14:06:27.336Z"
+  "_syncedAt": "2026-08-15T09:27:41.968Z"
 }

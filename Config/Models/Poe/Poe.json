@@ -12,6 +12,13 @@
         "max_output_tokens": 128000
       }
     },
+    "grok-4.6": {
+      "name": "Grok 4 6",
+      "context_window": {
+        "context_length": 500000,
+        "max_output_tokens": null
+      }
+    },
     "kimi-k3": {
       "name": "Kimi K3",
       "context_window": {
@@ -19,8 +26,12 @@
         "max_output_tokens": null
       }
     },
-    "grok-4.5": {
-      "name": "Grok 4 5"
+    "gemini-3.7-flash": {
+      "name": "Gemini 3 7 FLASH",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
     },
     "gemini-omni-flash": {
       "name": "Gemini Omni FLASH"
@@ -32,9 +43,6 @@
         "max_output_tokens": null
       }
     },
-    "gemini-3.6-flash": {
-      "name": "Gemini 3 6 FLASH"
-    },
     "gemini-3.5-flash-lite": {
       "name": "Gemini 3 5 FLASH LITE"
     },
@@ -45,6 +53,9 @@
         "max_output_tokens": 128000
       }
     },
+    "gemini-3.6-flash": {
+      "name": "Gemini 3 6 FLASH"
+    },
     "inkling": {
       "name": "Inkling",
       "context_window": {
@@ -54,6 +65,9 @@
     },
     "muse-spark-1-1": {
       "name": "Muse Spark 1 1"
+    },
+    "grok-4.5": {
+      "name": "Grok 4 5"
     },
     "gemini-3.5-flash": {
       "name": "Gemini 3 5 FLASH",
@@ -1292,6 +1306,18 @@
     "seedance-2.5-el": {
       "name": "Seedance 2 5 El"
     },
+    "muse-glimmer-30b-el": {
+      "name": "Muse Glimmer 30B El"
+    },
+    "deepseek-v3": {
+      "name": "Deepseek V3"
+    },
+    "qwen3.8-27b-el": {
+      "name": "Qwen3 8 27B El"
+    },
+    "deepseek-v4-pro-0813-el": {
+      "name": "Deepseek V4 PRO 0813 El"
+    },
     "gpt-5.3-instant": {
       "name": "Gpt 5 3 Instant",
       "context_window": {
@@ -1699,5 +1725,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-09T14:06:57.304Z"
+  "_syncedAt": "2026-08-15T09:28:21.396Z"
 }

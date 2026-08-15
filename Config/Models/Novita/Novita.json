@@ -5,6 +5,14 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek/deepseek-v4-pro-0813": {
+      "name": "DeepSeek V4 Pro 0813",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
+      }
+    },
     "moonshotai/kimi-k3": {
       "name": "Kimi K3",
       "description": "Kimi K3 is Kimi’s most capable model to date, with 2.8 trillion parameters. Built on Kimi Delta Attention, a hybrid linear attention mechanism, and Attention Residuals, it offers native visual understanding and a 1M-token context window for frontier intelligence scenarios such as software engineerin",
@@ -1367,5 +1375,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-09T14:06:51.079Z"
+  "_syncedAt": "2026-08-15T09:28:03.620Z"
 }
