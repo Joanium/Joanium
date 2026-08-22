@@ -14,7 +14,7 @@
     "katex": "0.18.4",
     "mammoth": "^1.12.1",
     "pdf-parse": "^2.4.5",
-    "uuid": "14.0.1"
+    "uuid": "14.0.2"
   },
   "devDependencies": {
     "@electron/fuses": "2.1.3",
