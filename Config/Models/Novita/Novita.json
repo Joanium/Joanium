@@ -5,6 +5,15 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "zai-org/glm-5.3": {
+      "name": "GLM 5.3",
+      "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
     "deepseek/deepseek-v4-pro-0813": {
       "name": "DeepSeek V4 Pro 0813",
       "context_window": 1048576,
@@ -111,6 +120,15 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash-fast": {
+      "name": "Ling 3.0 Flash Fast",
+      "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
     "inclusionai/ling-3.0-tiny": {
       "name": "Ling 3.0 Tiny",
       "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations.\nThe model features a 256K context window, native function calling, prompt caching, and swi",
@@ -118,6 +136,16 @@
       "max_output": 32768,
       "inputs": {
         "text": true
+      }
+    },
+    "qwen/qwen3.8-max": {
+      "name": "Qwen3.8 Max",
+      "description": " A 2.4T-parameter MoE flagship for coding and knowledge work. Programs autonomously for days to deliver complete projects end to end, with native visual understanding across planning, execution, and verification, plus deep semantic analysis of ultra-long documents and video.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "inclusionai/ling-3.0-flash": {
@@ -1099,16 +1127,6 @@
         "text": true
       }
     },
-    "qwen/qwen3.8-max": {
-      "name": "Qwen3.8 Max",
-      "description": " A 2.4T-parameter MoE flagship for coding and knowledge work. Programs autonomously for days to deliver complete projects end to end, with native visual understanding across planning, execution, and verification, plus deep semantic analysis of ultra-long documents and video.",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "inclusionai/ring-2.6-1t": {
       "name": "Ring-2.6-1T",
       "context_window": 262144,
@@ -1375,5 +1393,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-15T09:28:03.620Z"
+  "_syncedAt": "2026-08-22T09:33:57.365Z"
 }

@@ -107,14 +107,14 @@
     "accounts/fireworks/models/deepseek-v4-pro-0813": {
       "name": "Deepseek V4 PRO 0813"
     },
-    "accounts/fireworks/models/inkling": {
-      "name": "Inkling"
-    },
     "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
       "name": "Qwen3p8 2p4t A95b"
     },
     "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
       "name": "Nemotron Lightning 3p5 30B A3b"
+    },
+    "accounts/fireworks/models/inkling": {
+      "name": "Inkling"
     },
     "accounts/fireworks/models/deepseek-v4-flash": {
       "name": "Deepseek V4 FLASH"
@@ -129,5 +129,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:52.750Z"
+  "_syncedAt": "2026-08-22T09:33:44.497Z"
 }

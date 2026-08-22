@@ -10,7 +10,10 @@
     },
     "deepseek-v4-pro": {
       "name": "Deepseek V4 PRO"
+    },
+    "deepseek-v4-flash-vision-exp": {
+      "name": "Deepseek V4 FLASH Vision Exp"
     }
   },
-  "_syncedAt": "2026-08-15T09:28:00.516Z"
+  "_syncedAt": "2026-08-22T09:33:52.919Z"
 }

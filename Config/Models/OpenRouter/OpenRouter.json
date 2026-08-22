@@ -5,6 +5,93 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "meta/muse-spark-1.2-contributor": {
+      "name": "Meta: Muse Spark 1.2 Contributor",
+      "description": "Muse Spark 1.2 contributor tier is a reasoning model from Meta designed for developers who want to start building at an even lower cost. It’s meaningfully cheaper than Muse Spark...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-vision-exp": {
+      "name": "DeepSeek: DeepSeek V4 Flash Vision Exp",
+      "description": "DeepSeek V4 Flash Vision Exp is an experimental vision-enabled version of [DeepSeek V4 Flash 0731](https://openrouter.ai/deepseek/deepseek-v4-flash-0731) from DeepSeek, adding image understanding while matching the base model on text capabilities including agents,...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.44,
+        "output": 1.32
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stealth/ox-alpha": {
+      "name": "Ox Alpha",
+      "description": "Ox Alpha is a reasoning model designed for coding, sustained agentic work, and production workloads. It is suited for long-horizon software engineering, complex reasoning, and workflows that combine text with...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy-mt2-1.8b": {
+      "name": "Tencent: Hy-MT2-1.8B",
+      "description": "Hy-MT2-1.8B is a compact 1.8B-parameter translation model from Tencent. It supports 33 language pairs and five Chinese dialect and minority-language pairs, with workflows for structured, delimiter-based, contextual, glossary-based, and style-guided...",
+      "context_window": 8192,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tencent/hy-mt2-30b-a3b": {
+      "name": "Tencent: Hy-MT2-30B-A3B",
+      "description": "Hy-MT2-30B-A3B is Tencent's flagship translation model in the Hy-MT2 family. It supports 33 language pairs and five Chinese dialect and minority-language pairs, with workflows for structured, delimiter-based, contextual, glossary-based, and...",
+      "context_window": 8192,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "~z-ai/glm-latest": {
+      "name": "Z.ai: GLM Latest",
+      "description": "This model always redirects to the latest GLM model from Z.ai.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.3": {
+      "name": "Z.ai: GLM 5.3",
+      "description": "GLM-5.3 is a large-scale reasoning model from Z.ai, built for complex software engineering and long-horizon agent tasks. It supports text input and output with a 1M-token context window, and improves...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "qwen/qwen3.8-27b": {
       "name": "Qwen: Qwen3.8 27B",
       "description": "Qwen3.8 27B is an open-weight dense vision-language model from Qwen. It is suited for coding, professional workflows, research, multimodal interaction, and long-running agent tasks, with flexible thinking that can be...",
@@ -257,6 +344,19 @@
         "image": true
       }
     },
+    "thinkingmachines/inkling-small:free": {
+      "name": "Thinking Machines: Inkling Small (free)",
+      "description": "Inkling Small is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 12B active parameters out of 276B total. It is positioned as the smaller, more efficient member of...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "qwen/qwen3.7-flash": {
       "name": "Qwen: Qwen3.7 Flash",
       "description": "Qwen3.7 Flash is a vision-language reasoning model from Alibaba. It is suited for multimodal agents, visual coding, search, and computer interaction, with strengths in object recognition, spatial understanding, and real-world...",
@@ -429,6 +529,19 @@
       "pricing": {
         "input": 0.5,
         "output": 2.03
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "thinkingmachines/inkling:free": {
+      "name": "Thinking Machines: Inkling (free)",
+      "description": "Inkling is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 41B active parameters out of 975B total. It is designed for general-purpose reasoning, coding, agentic and tool-use systems,...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true,
@@ -821,6 +934,18 @@
       "pricing": {
         "input": 0.7,
         "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.2:free": {
+      "name": "Z.ai: GLM 5.2 (free)",
+      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -2679,18 +2804,6 @@
         "text": true
       }
     },
-    "deepcogito/cogito-v2.1-671b": {
-      "name": "Deep Cogito: Cogito v2.1 671B",
-      "description": "Cogito v2.1 671B MoE represents one of the strongest open models globally, matching performance of frontier closed and open models. This model is trained using self play with reinforcement learning...",
-      "context_window": 128000,
-      "pricing": {
-        "input": 1.25,
-        "output": 1.25
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-5.1": {
       "name": "OpenAI: GPT-5.1",
       "description": "GPT-5.1 is the latest frontier-grade model in the GPT-5 series, offering stronger general-purpose reasoning, improved instruction adherence, and a more natural conversational style compared to GPT-5. It uses adaptive reasoning...",
@@ -3266,18 +3379,6 @@
         "image": true
       }
     },
-    "ai21/jamba-large-1.7": {
-      "name": "AI21: Jamba Large 1.7",
-      "description": "Jamba Large 1.7 is the latest model in the Jamba open family, offering improvements in grounding, instruction-following, and overall efficiency. Built on a hybrid SSM-Transformer architecture with a 256K context...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 2,
-        "output": 8
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-5": {
       "name": "OpenAI: GPT-5",
       "description": "GPT-5 is OpenAI’s most advanced model, offering major improvements in reasoning, code quality, and user experience. It is optimized for complex tasks that require step-by-step reasoning, instruction following, and accuracy...",
@@ -3375,18 +3476,6 @@
       "pricing": {
         "input": 0.03,
         "output": 0.14
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/gpt-oss-20b:free": {
-      "name": "OpenAI: gpt-oss-20b (free)",
-      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -4611,6 +4700,18 @@
         "text": true
       }
     },
+    "mistralai/ministral-8b": {
+      "name": "Mistral: Ministral 8B",
+      "description": "Ministral 8B is an 8B parameter model featuring a unique interleaved sliding-window attention pattern for faster, memory-efficient inference. Designed for edge use cases, it supports up to 128k context length...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.11
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "qwen/qwen-2.5-7b-instruct": {
       "name": "Qwen: Qwen2.5 7B Instruct",
       "description": "Qwen2.5 7B is the latest series of Qwen large language models. Qwen2.5 brings the following improvements upon Qwen2: - Significantly more knowledge and has greatly improved capabilities in coding and...",
@@ -5089,6 +5190,42 @@
       "pricing": {
         "input": 30,
         "output": 60
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepcogito/cogito-v2.1-671b": {
+      "name": "Deep Cogito: Cogito v2.1 671B",
+      "description": "Cogito v2.1 671B MoE represents one of the strongest open models globally, matching performance of frontier closed and open models. This model is trained using self play with reinforcement learning...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 1.25,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "ai21/jamba-large-1.7": {
+      "name": "AI21: Jamba Large 1.7",
+      "description": "Jamba Large 1.7 is the latest model in the Jamba open family, offering improvements in grounding, instruction-following, and overall efficiency. Built on a hybrid SSM-Transformer architecture with a 256K context...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 2,
+        "output": 8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-oss-20b:free": {
+      "name": "OpenAI: gpt-oss-20b (free)",
+      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -5596,5 +5733,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-15T09:27:39.916Z"
+  "_syncedAt": "2026-08-22T09:33:32.872Z"
 }
