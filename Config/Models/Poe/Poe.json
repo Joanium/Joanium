@@ -1196,6 +1196,9 @@
     "seedance-2.0-mini": {
       "name": "Seedance 2 0 MINI"
     },
+    "hy3-n": {
+      "name": "Hy3 N"
+    },
     "seedream-5.0-pro": {
       "name": "Seedream 5 0 PRO"
     },
@@ -1210,6 +1213,9 @@
     },
     "glm-5.2": {
       "name": "Glm 5 2"
+    },
+    "glm-5.2-n": {
+      "name": "Glm 5 2 N"
     },
     "qwen3.6-plus": {
       "name": "Qwen3 6 PLUS"
@@ -1424,12 +1430,6 @@
     },
     "kimi-k2.7-code-el": {
       "name": "Kimi K2 7 Code El"
-    },
-    "hy3-n": {
-      "name": "Hy3 N"
-    },
-    "glm-5.2-n": {
-      "name": "Glm 5 2 N"
     },
     "glm-5.2-el": {
       "name": "Glm 5 2 El"
@@ -1725,5 +1725,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-15T09:28:21.396Z"
+  "_syncedAt": "2026-08-22T09:34:03.933Z"
 }

@@ -164,6 +164,9 @@
         "output": 3
       }
     },
+    "moonshotai/kimi-k3": {
+      "name": "Kimi K3"
+    },
     "nv-mistralai/mistral-nemo-12b-instruct": {
       "name": "nv-mistralai/mistral-nemo-12b-instruct"
     },
@@ -355,11 +358,11 @@
     "writer/palmyra-med-70b-32k": {
       "name": "writer/palmyra-med-70b-32k"
     },
-    "z-ai/glm-5.2": {
-      "name": "Glm 5 2"
-    },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "z-ai/glm-5.2": {
+      "name": "Glm 5 2"
     },
     "deepseek-ai/deepseek-v4-flash": {
       "name": "deepseek-ai/deepseek-v4-flash"
@@ -472,5 +475,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:27.081Z"
+  "_syncedAt": "2026-08-22T09:32:50.003Z"
 }
