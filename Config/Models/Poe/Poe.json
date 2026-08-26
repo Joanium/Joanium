@@ -1181,6 +1181,9 @@
         "max_output_tokens": null
       }
     },
+    "kimi-k2.7-code-n": {
+      "name": "Kimi K2 7 Code N"
+    },
     "minimax-m3-t": {
       "name": "Minimax M3 T"
     },
@@ -1324,6 +1327,12 @@
     "deepseek-v4-pro-0813-el": {
       "name": "Deepseek V4 PRO 0813 El"
     },
+    "glm-5.3-el": {
+      "name": "Glm 5 3 El"
+    },
+    "wan-3.0": {
+      "name": "Wan 3 0"
+    },
     "gpt-5.3-instant": {
       "name": "Gpt 5 3 Instant",
       "context_window": {
@@ -1424,9 +1433,6 @@
     },
     "minimax-m3-n": {
       "name": "Minimax M3 N"
-    },
-    "kimi-k2.7-code-n": {
-      "name": "Kimi K2 7 Code N"
     },
     "kimi-k2.7-code-el": {
       "name": "Kimi K2 7 Code El"
@@ -1725,5 +1731,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-22T09:34:03.933Z"
+  "_syncedAt": "2026-08-25T12:43:20.162Z"
 }
