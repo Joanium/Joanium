@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "zai-org/GLM-5.3": {
+      "name": "GLM 5 3"
+    },
     "deepseek-ai/DeepSeek-V4-Pro-0813": {
       "name": "DeepSeek V4 PRO 0813"
     },
@@ -224,5 +227,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:57.928Z"
+  "_syncedAt": "2026-08-25T12:43:09.277Z"
 }

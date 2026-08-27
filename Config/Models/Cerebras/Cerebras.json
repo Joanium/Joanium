@@ -21,6 +21,9 @@
         "output": 0.6
       }
     },
+    "gemma-4-31b": {
+      "name": "Gemma 4 31B"
+    },
     "zai-glm-4.7": {
       "name": "Z.ai GLM 4.7",
       "description": "355B parameter reasoning model from Z.ai — strong multilingual performance and chain-of-thought on Cerebras silicon",
@@ -36,10 +39,7 @@
         "input": 0.5,
         "output": 0.5
       }
-    },
-    "gemma-4-31b": {
-      "name": "Gemma 4 31B"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:51.881Z"
+  "_syncedAt": "2026-08-25T12:42:59.943Z"
 }

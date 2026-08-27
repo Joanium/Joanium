@@ -172,6 +172,22 @@
     "mistral-vibe-cli-with-tools": {
       "name": "mistral-vibe-cli-with-tools"
     },
+    "magistral-medium-latest": {
+      "name": "Magistral Medium",
+      "description": "Mistral's flagship reasoning model — extended chain-of-thought for complex problem solving",
+      "context_window": 131000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2,
+        "output": 5
+      }
+    },
     "glm-5-2": {
       "name": "Glm 5 2"
     },
@@ -244,22 +260,6 @@
     "magistral-medium-2509": {
       "name": "magistral-medium-2509"
     },
-    "magistral-medium-latest": {
-      "name": "Magistral Medium",
-      "description": "Mistral's flagship reasoning model — extended chain-of-thought for complex problem solving",
-      "context_window": 131000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 2,
-        "output": 5
-      }
-    },
     "magistral-small-2509": {
       "name": "magistral-small-2509"
     },
@@ -288,5 +288,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:41.968Z"
+  "_syncedAt": "2026-08-25T12:42:51.623Z"
 }

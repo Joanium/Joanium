@@ -6,6 +6,16 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.822.0] - 2026-08-22
+
+* Updated AI Models
+* Chore(deps-dev): Bump jscpd from 5.0.15 to 5.0.16
+* Chore(deps-dev): Bump electron from 43.3.0 to 43.4.0
+* Chore(deps-dev): Bump jscpd from 5.0.14 to 5.0.15
+* Chore(deps-dev): Bump electron from 43.2.0 to 43.3.0
+
+---
+
 ## [2026.815.0] - 2026-08-15
 
 * Updated AI Models

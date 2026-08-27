@@ -21,6 +21,10 @@
       "name": "Qwen3.8-2.4T-A95B",
       "context_window": 1010000
     },
+    "deepseek-ai/DeepSeek-V4-Pro-0813": {
+      "name": "DeepSeek V4 Pro 0813",
+      "context_window": 1048576
+    },
     "deepseek-ai/DeepSeek-V4-Flash-0731": {
       "name": "Deepseek V4 Flash 0731",
       "context_window": 1048576
@@ -49,10 +53,6 @@
       "name": "NVIDIA Nemotron 3 Ultra 550B A55B NVFP4",
       "context_window": 512288
     },
-    "moonshotai/Kimi-K2.6": {
-      "name": "Kimi K2.6 Fp4",
-      "context_window": 262144
-    },
     "Qwen/Qwen3.7-Max": {
       "name": "Qwen3.7 Max",
       "context_window": 1000000
@@ -77,10 +77,6 @@
       "name": "Qwen3.5 9B FP8",
       "context_window": 262144
     },
-    "Qwen/Qwen2.5-7B-Instruct-Turbo": {
-      "name": "Qwen2.5 7B Instruct Turbo",
-      "context_window": 32768
-    },
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
       "name": "Meta Llama 3.3 70B Instruct Turbo",
       "context_window": 131072
@@ -93,10 +89,6 @@
       "name": "Arize AI Qwen 2 1.5B Instruct",
       "context_window": 32768
     },
-    "deepcogito/cogito-v2-1-671b": {
-      "name": "Cogito v2.1 671B",
-      "context_window": 163840
-    },
     "Qwen/Qwen3.6-Plus": {
       "name": "Qwen3.6 Plus",
       "context_window": 1000000
@@ -105,13 +97,17 @@
       "name": "Qwen3.7 Plus",
       "context_window": 1000000
     },
-    "LiquidAI/LFM2.5-8B-A1B": {
-      "name": "LFM2.5-8B-A1B",
-      "context_window": 32768
-    },
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
+    },
+    "moonshotai/Kimi-K2.6": {
+      "name": "Kimi K2.6 Fp4",
+      "context_window": 262144
+    },
+    "Qwen/Qwen2.5-7B-Instruct-Turbo": {
+      "name": "Qwen2.5 7B Instruct Turbo",
+      "context_window": 32768
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -775,6 +771,14 @@
       "name": "GLM 5.2 FP8 Lora",
       "context_window": 1048576
     },
+    "deepcogito/cogito-v2-1-671b": {
+      "name": "Cogito v2.1 671B",
+      "context_window": 163840
+    },
+    "LiquidAI/LFM2.5-8B-A1B": {
+      "name": "LFM2.5-8B-A1B",
+      "context_window": 32768
+    },
     "Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
       "name": "Qwen3 235B A22B Instruct 2507 FP8 Throughput",
       "context_window": 262144
@@ -820,5 +824,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-08-15T09:27:48.573Z"
+  "_syncedAt": "2026-08-25T12:42:57.213Z"
 }

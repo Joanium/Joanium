@@ -5,14 +5,23 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "text-embedding-ada-002": {
-      "name": "text-embedding-ada-002"
-    },
     "gpt-3.5-turbo": {
       "name": "gpt-3.5-turbo"
     },
-    "gpt-3.5-turbo-16k": {
-      "name": "gpt-3.5-turbo-16k"
+    "gpt-live-transcribe": {
+      "name": "Gpt Live Transcribe"
+    },
+    "gpt-5.6-luna": {
+      "name": "Gpt 5 6 Luna"
+    },
+    "gpt-realtime-2.1": {
+      "name": "Gpt Realtime 2 1"
+    },
+    "gpt-realtime-2.1-mini": {
+      "name": "Gpt Realtime 2 1 MINI"
+    },
+    "gpt-transcribe": {
+      "name": "Gpt Transcribe"
     },
     "davinci-002": {
       "name": "davinci-002"
@@ -424,20 +433,11 @@
     "gpt-5.6-terra": {
       "name": "Gpt 5 6 Terra"
     },
-    "gpt-5.6-luna": {
-      "name": "Gpt 5 6 Luna"
+    "gpt-3.5-turbo-16k": {
+      "name": "gpt-3.5-turbo-16k"
     },
-    "gpt-realtime-2.1": {
-      "name": "Gpt Realtime 2 1"
-    },
-    "gpt-realtime-2.1-mini": {
-      "name": "Gpt Realtime 2 1 MINI"
-    },
-    "gpt-transcribe": {
-      "name": "Gpt Transcribe"
-    },
-    "gpt-live-transcribe": {
-      "name": "Gpt Live Transcribe"
+    "text-embedding-ada-002": {
+      "name": "text-embedding-ada-002"
     },
     "gpt-realtime-mini-2025-10-06": {
       "name": "gpt-realtime-mini-2025-10-06"
@@ -446,5 +446,5 @@
       "name": "Ra Gpt 5 6 Sol"
     }
   },
-  "_syncedAt": "2026-08-15T09:27:45.775Z"
+  "_syncedAt": "2026-08-25T12:42:54.730Z"
 }

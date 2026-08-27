@@ -354,6 +354,20 @@
         "text": true
       }
     },
+    "alibaba/qwen3.8-27b": {
+      "name": "Qwen3.8 27B",
+      "description": "Built on the architectural foundation of Qwen3.5, Qwen3.8 delivers substantial gains across coding, professional work, research, and long-horizon agentic tasks. Qwen3.8-27B brings these advances to a compact, deployment-friendly dense model: a native vision-language model that understands images and",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.55,
+        "output": 3.3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.8-max": {
       "name": "Qwen 3.8 Max",
       "description": "Qwen 3.8 Max is a 2.4-trillion-parameter MoE model delivering a comprehensive leap in coding and professional work. Autonomously codes and delivers complete projects spanning 10+ days. Handles hundreds of specialized tasks across legal, financial, design, and other professional domains, producing pr",
@@ -646,19 +660,6 @@
         "text": true
       }
     },
-    "arcee-ai/trinity-mini": {
-      "name": "Trinity Mini",
-      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model, engineered for efficient inference over long contexts with robust function calling and multi-step agent workflows.",
-      "context_window": 131072,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "bytedance/seed-1.6": {
       "name": "Seed 1.6",
       "description": "ByteDance's new multimodal deep-thinking model, supporting both text and visual inputs with enhanced reasoning capabilities.",
@@ -800,6 +801,20 @@
       },
       "inputs": {
         "text": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-vision-exp": {
+      "name": "DeepSeek V4 Flash Vision Exp",
+      "description": "DeepSeek-V4-Flash-Vision-Exp is an experimental multimodal model that combines the agentic reasoning, coding, and world knowledge capabilities of DeepSeek-V4-Flash with advanced visual understanding. It delivers major gains on vision-dependent agent workflows while performing strongly across leading",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.22,
+        "output": 0.66
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "deepseek/deepseek-v4-pro": {
@@ -1316,6 +1331,19 @@
         "image": true
       }
     },
+    "minimax/minimax-m2.7-free": {
+      "name": "Minimax M2.7 (Free)",
+      "description": "M2.7 delivers outstanding performance in real-world software engineering, including end-to-end full project delivery, log analysis and bug troubleshooting, code security, machine learning, and more.",
+      "context_window": 196608,
+      "max_output": 196608,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "minimax/minimax-m2.7-highspeed": {
       "name": "MiniMax M2.7 High Speed",
       "description": "M2.7 Highspeed: Same performance, faster and more agile (output speed approximately 100 tps)",
@@ -1338,6 +1366,20 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimax/minimax-m3-free": {
+      "name": "MiniMax M3 (Free)",
+      "description": "MiniMax-M3 is a frontier-class foundation model that unites the three capabilities defining today's frontier: a 1M-token context window, frontier coding and agentic performance, and native multimodality — the first open-weight model to deliver all three in a single system.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true,
@@ -1381,34 +1423,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "mistral/magistral-medium": {
-      "name": "Magistral Medium 2509",
-      "description": "Complex thinking, backed by deep understanding, with transparent reasoning you can follow and verify. The model excels in maintaining high-fidelity reasoning across numerous languages, even when switching between languages mid-task.",
-      "context_window": 128000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 2,
-        "output": 5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistral/magistral-small": {
-      "name": "Magistral Small 2509",
-      "description": "Complex thinking, backed by deep understanding, with transparent reasoning you can follow and verify. The model excels in maintaining high-fidelity reasoning across numerous languages, even when switching between languages mid-task.",
-      "context_window": 128000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "mistral/ministral-14b": {
@@ -1708,6 +1722,19 @@
         "text": true
       }
     },
+    "nvidia/nemotron-3.5-lightning": {
+      "name": "Nemotron 3.5 Lightning 30B",
+      "description": "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 is a large language model (LLM) trained by NVIDIA.\n\nThe model employs a hybrid Mixture-of-Experts architecture, utilizing interleaved Mamba-2 and MoE layers, along with select Attention layers. The Lightning 3.5 model is released alongside a number of spec",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "nvidia/nemotron-nano-12b-v2-vl": {
       "name": "Nvidia Nemotron Nano 12B V2 VL",
       "description": "The model is an auto-regressive vision language model that uses an optimized transformer architecture. The model enables multi-image reasoning and video understanding, along with strong document intelligence, visual Q&A and summarization capabilities.",
@@ -1776,6 +1803,20 @@
         "image": true
       }
     },
+    "openai/gpt-4.1-fast": {
+      "name": "GPT-4.1 (Fast)",
+      "description": "GPT 4.1 is OpenAI's flagship model for complex tasks. It is well suited for problem solving across domains.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 3.5,
+        "output": 14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-4.1-mini": {
       "name": "GPT-4.1 mini",
       "description": "GPT 4.1 mini provides a balance between intelligence, speed, and cost that makes it an attractive model for many use cases.",
@@ -1784,6 +1825,20 @@
       "pricing": {
         "input": 0.4,
         "output": 1.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4.1-mini-fast": {
+      "name": "GPT-4.1 mini (Fast)",
+      "description": "GPT 4.1 mini provides a balance between intelligence, speed, and cost that makes it an attractive model for many use cases.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.8
       },
       "inputs": {
         "text": true,
@@ -1804,6 +1859,20 @@
         "image": true
       }
     },
+    "openai/gpt-4.1-nano-fast": {
+      "name": "GPT-4.1 nano (Fast)",
+      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-4o": {
       "name": "GPT-4o",
       "description": "GPT-4o from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It matches GPT-4 Turbo performance with a faster and cheaper API.",
@@ -1812,6 +1881,20 @@
       "pricing": {
         "input": 2.5,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4o-fast": {
+      "name": "GPT-4o (Fast)",
+      "description": "GPT-4o from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It matches GPT-4 Turbo performance with a faster and cheaper API.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 4.25,
+        "output": 17
       },
       "inputs": {
         "text": true,
@@ -1832,17 +1915,18 @@
         "image": true
       }
     },
-    "openai/gpt-4o-mini-search-preview": {
-      "name": "GPT 4o Mini Search Preview",
-      "description": "GPT-4o mini Search Preview is a specialized model trained to understand and execute web search queries with the Chat Completions API. In addition to token fees, web search queries have a fee per tool call.",
+    "openai/gpt-4o-mini-fast": {
+      "name": "GPT-4o mini (Fast)",
+      "description": "GPT-4o mini from OpenAI is their most advanced and cost-efficient small model. It is multi-modal (accepting text or image inputs and outputting text) and has higher intelligence than gpt-3.5-turbo but is just as fast.",
       "context_window": 128000,
       "max_output": 16384,
       "pricing": {
-        "input": 0.15,
-        "output": 0.6
+        "input": 0.25,
+        "output": 1
       },
       "inputs": {
-        "text": true
+        "text": true,
+        "image": true
       }
     },
     "openai/gpt-5": {
@@ -1853,6 +1937,20 @@
       "pricing": {
         "input": 1.25,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5-fast": {
+      "name": "GPT-5 (Fast)",
+      "description": "GPT-5 is OpenAI's flagship language model that excels at complex reasoning, broad real-world knowledge, code-intensive, and multi-step agentic tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 20
       },
       "inputs": {
         "text": true,
@@ -1880,6 +1978,20 @@
       "pricing": {
         "input": 0.25,
         "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5-mini-fast": {
+      "name": "GPT-5 mini (Fast)",
+      "description": "GPT-5 mini is a cost optimized model that excels at reasoning/chat tasks. It offers an optimal balance between speed, cost, and capability.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.45,
+        "output": 3.6
       },
       "inputs": {
         "text": true,
@@ -1970,6 +2082,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.1-thinking-fast": {
+      "name": "GPT 5.1 Thinking (Fast)",
+      "description": "An upgraded version of GPT-5 that adapts thinking time more precisely to the question to spend more time on complex questions and respond more quickly to simpler tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.2": {
       "name": "GPT 5.2",
       "description": "GPT-5.2 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
@@ -1978,6 +2104,20 @@
       "pricing": {
         "input": 1.75,
         "output": 14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.2-fast": {
+      "name": "GPT 5.2 (Fast)",
+      "description": "GPT-5.2 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 3.5,
+        "output": 28
       },
       "inputs": {
         "text": true,
@@ -2026,6 +2166,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.3-codex-fast": {
+      "name": "GPT 5.3 Codex (Fast)",
+      "description": "GPT-5.3-Codex advances both the frontier coding performance of GPT‑5.2-Codex and the reasoning and professional knowledge capabilities of GPT‑5.2, together in one model, which is also 25% faster. This enables it to take on long-running tasks that involve research, tool use, and complex execution.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 3.5,
+        "output": 28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.4": {
       "name": "GPT 5.4",
       "description": "OpenAI flagship routed through Vercel AI Gateway for high-quality reasoning, coding, and agentic tasks",
@@ -2042,6 +2196,20 @@
         "output": 15
       }
     },
+    "openai/gpt-5.4-fast": {
+      "name": "GPT 5.4 (Fast)",
+      "description": "GPT-5.4 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.4-mini": {
       "name": "GPT 5.4 Mini",
       "description": "Fast GPT-5.4 variant through Vercel AI Gateway for high-volume assistant workflows",
@@ -2056,6 +2224,20 @@
       "pricing": {
         "input": 0.75,
         "output": 4.5
+      }
+    },
+    "openai/gpt-5.4-mini-fast": {
+      "name": "GPT 5.4 Mini (Fast)",
+      "description": "GPT-5.4 Mini brings the strengths of GPT-5.4 to a faster, more efficient model designed for high-volume workloads.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.5,
+        "output": 9
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "openai/gpt-5.4-nano": {
@@ -2100,6 +2282,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.5-fast": {
+      "name": "GPT 5.5 (Fast)",
+      "description": "GPT‑5.5 understands what you’re trying to do faster and can carry more of the work itself. It excels at writing and debugging code, researching online, analyzing data, creating documents and spreadsheets, operating software, and moving across tools until a task is finished. Instead of carefully mana",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 12.5,
+        "output": 75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.5-pro": {
       "name": "GPT 5.5 Pro",
       "context_window": 1000000,
@@ -2127,6 +2323,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-luna-fast": {
+      "name": "GPT 5.6 Luna (Fast)",
+      "description": "GPT-5.6 Luna is a fast, affordable GPT-5.6 model that brings strong capability at the lowest cost in the series.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.4,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.6-sol": {
       "name": "GPT 5.6 Sol",
       "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
@@ -2141,6 +2351,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-sol-fast": {
+      "name": "GPT 5.6 Sol (Fast)",
+      "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.6-terra": {
       "name": "GPT 5.6 Terra",
       "description": "GPT-5.6 Terra is a balanced GPT-5.6 model for everyday work, with performance comparable to the previous generation at half the cost.",
@@ -2149,6 +2373,20 @@
       "pricing": {
         "input": 2.5,
         "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-terra-fast": {
+      "name": "GPT 5.6 Terra (Fast)",
+      "description": "GPT-5.6 Terra is a balanced GPT-5.6 model for everyday work, with performance comparable to the previous generation at half the cost.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 24
       },
       "inputs": {
         "text": true,
@@ -2176,6 +2414,19 @@
       "pricing": {
         "input": 0.05,
         "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-oss-safeguard-120b": {
+      "name": "GPT OSS Safeguard 120B",
+      "description": "GPT OSS Safeguard 120B is OpenAI’s open-weight safety model for content moderation and guardrail enforcement. It helps teams evaluate content against custom safety policies and build scalable, adaptable protections for production AI applications.",
+      "context_window": 128000,
+      "max_output": 16000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
       },
       "inputs": {
         "text": true
@@ -2222,14 +2473,14 @@
         "image": true
       }
     },
-    "openai/o3-deep-research": {
-      "name": "o3-deep-research",
-      "description": "o3-deep-research is OpenAI's most advanced model for deep research, designed to tackle complex, multi-step research tasks. It can search and synthesize information from across the internet as well as from your own data—brought in through MCP connectors.",
+    "openai/o3-fast": {
+      "name": "o3 (Fast)",
+      "description": "OpenAI's o3 is their most powerful reasoning model, setting new state-of-the-art benchmarks in coding, math, science, and visual perception. It excels at complex queries requiring multi-faceted analysis, with particular strength in analyzing images, charts, and graphics.",
       "context_window": 200000,
       "max_output": 100000,
       "pricing": {
-        "input": 10,
-        "output": 40
+        "input": 3.5,
+        "output": 14
       },
       "inputs": {
         "text": true,
@@ -2271,6 +2522,20 @@
       "pricing": {
         "input": 1.1,
         "output": 4.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/o4-mini-fast": {
+      "name": "o4-mini (Fast)",
+      "description": "OpenAI's o4-mini delivers fast, cost-efficient reasoning with exceptional performance for its size, particularly excelling in math (best-performing on AIME benchmarks), coding, and visual tasks.",
+      "context_window": 200000,
+      "max_output": 100000,
+      "pricing": {
+        "input": 2,
+        "output": 8
       },
       "inputs": {
         "text": true,
@@ -2387,6 +2652,45 @@
         "image": true
       }
     },
+    "tencent/hy-mt2-lite": {
+      "name": "Tencent Hy-MT2-Lite",
+      "description": "Hy-MT2-Lite is Tencent Cloud Hunyuan’s lightweight 1.8B translation model, combining efficient performance with an 8K-token context window and broad multilingual coverage. It supports translation across 33 languages and five ethnic Chinese and dialect variants, delivering strong results on benchmark",
+      "context_window": 8000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tencent/hy-mt2-plus": {
+      "name": "Tencent Hy-MT2-Plus",
+      "description": "Hy-MT2-Plus is Tencent Cloud Hunyuan’s 7B translation model, offering an 8K-token context window and broad multilingual coverage. Optimized for translation across 33 languages and five ethnic Chinese and dialect variants, it delivers industry-leading performance on benchmarks including FLORES-200 an",
+      "context_window": 8000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tencent/hy-mt2-pro": {
+      "name": "Tencent Hy-MT2-Pro",
+      "description": "Hy-MT2-Pro is Tencent Cloud Hunyuan’s flagship translation model, featuring 30B-A3B parameters and an 8K-token context window. It delivers bidirectional translation across 33 core language pairs, plus five minority-language and dialect pairs. With industry-leading performance on FLORES-200 and WMT25",
+      "context_window": 8000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "tencent/hy3": {
       "name": "Hy3",
       "description": "Built for real-world business scenarios, Hy3 features a 295B/21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long-form comprehension, multi-turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across both high",
@@ -2422,6 +2726,452 @@
       "pricing": {
         "input": 0.5,
         "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.1-fast-non-reasoning": {
+      "name": "Grok 4.1 Fast Non-Reasoning",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.1-fast-reasoning": {
+      "name": "Grok 4.1 Fast Reasoning",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-multi-agent": {
+      "name": "Grok 4.20 Multi-Agent",
+      "description": "Multiple agents collaborate in parallel to perform deep research tasks.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-multi-agent-beta": {
+      "name": "Grok 4.20 Multi Agent Beta",
+      "description": "Multiple agents collaborate in parallel to perform deep research tasks.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-non-reasoning": {
+      "name": "Grok 4.20 Non-Reasoning",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherence, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-non-reasoning-beta": {
+      "name": "Grok 4.20 Beta Non-Reasoning",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherance, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-reasoning": {
+      "name": "Grok 4.20 Reasoning",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherence, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-reasoning-beta": {
+      "name": "Grok 4.20 Beta Reasoning",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherance, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.3": {
+      "name": "Grok 4.3",
+      "description": "Grok 4.3 is a new model matching the scale of Grok 4.20 with an improved architecture and a December 2025 knowledge cutoff.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.5": {
+      "name": "Grok 4.5",
+      "description": "SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
+      "context_window": 500000,
+      "max_output": 500000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.6": {
+      "name": "Grok 4.6",
+      "description": "Grok 4.6 builds on Grok 4.5 with a particular focus on long-running agents and more ambitious interactive and visual work. It stays with complex tasks across many steps, whether researching a topic, analyzing information, working across a codebase, or turning an idea into a polished application or w",
+      "context_window": 500000,
+      "max_output": 500000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-build-0.1": {
+      "name": "Grok Build 0.1",
+      "description": "xAI's fast coding model trained specifically for agentic coding.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 1,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.5": {
+      "name": "MiMo M2.5",
+      "description": "A native full-modal model supporting text, image, video, and audio understanding, with powerful Agent capabilities.",
+      "context_window": 1050000,
+      "max_output": 131100,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.5-pro": {
+      "name": "MiMo V2.5 Pro",
+      "description": "MiMo V2.5 Pro delivers significant improvements over its predecessor, MiMo-V2-Pro, in general agentic capabilities, complex software engineering, and long-horizon tasks. MiMo-V2.5-Pro is a 1.02T-parameter Mixture-of-Experts model with 42B active parameters, built on a hybrid-attention architecture w",
+      "context_window": 1050000,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai/glm-4.5": {
+      "name": "GLM-4.5",
+      "description": "GLM-4.5 and GLM-4.5-Air are our latest flagship models, purpose-built as foundational models for agent-oriented applications. Both leverage a Mixture-of-Experts (MoE) architecture. GLM-4.5 has a total parameter count of 355B with 32B active parameters per forward pass, while GLM-4.5-Air adopts a mor",
+      "context_window": 128000,
+      "max_output": 96000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-4.5-air": {
+      "name": "GLM 4.5 Air",
+      "description": "GLM-4.5 and GLM-4.5-Air are our latest flagship models, purpose-built as foundational models for agent-oriented applications. Both leverage a Mixture-of-Experts (MoE) architecture. GLM-4.5 has a total parameter count of 355B with 32B active parameters per forward pass, while GLM-4.5-Air adopts a mor",
+      "context_window": 128000,
+      "max_output": 96000,
+      "pricing": {
+        "input": 0.2,
+        "output": 1.1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-4.5v": {
+      "name": "GLM 4.5V",
+      "description": "Built on the GLM-4.5-Air base model, GLM-4.5V inherits proven techniques from GLM-4.1V-Thinking while achieving effective scaling through a powerful 106B-parameter MoE architecture.",
+      "context_window": 66000,
+      "max_output": 16000,
+      "pricing": {
+        "input": 0.6,
+        "output": 1.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai/glm-4.6": {
+      "name": "GLM 4.6",
+      "description": "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications.",
+      "context_window": 200000,
+      "max_output": 96000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-4.7": {
+      "name": "GLM 4.7",
+      "description": "GLM-4.7 is Z.ai’s latest flagship model, with major upgrades focused on two key areas: stronger coding capabilities and more stable multi-step reasoning and execution.",
+      "context_window": 131000,
+      "max_output": 40000,
+      "pricing": {
+        "input": 2.25,
+        "output": 2.75
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-4.7-flash": {
+      "name": "GLM 4.7 Flash",
+      "description": "GLM-4.7-Flash balances high performance with efficiency, making it the perfect lightweight deployment option. Beyond coding, it is also recommended for creative writing, translation, long-context tasks, and roleplay.",
+      "context_window": 200000,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-4.7-flashx": {
+      "name": "GLM 4.7 FlashX",
+      "description": " GLM-4.7-Flash balances high performance with efficiency, making it the perfect lightweight deployment option. ",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5": {
+      "name": "GLM 5",
+      "description": "GLM-5 is Zai’s new-generation flagship foundation model, designed for Agentic Engineering, capable of providing reliable productivity in complex system engineering and long-range Agent tasks. In terms of Coding and Agent capabilities, GLM-5 has achieved state-of-the-art (SOTA) performance in open so",
+      "context_window": 202800,
+      "max_output": 131100,
+      "pricing": {
+        "input": 1,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5-turbo": {
+      "name": "GLM 5 Turbo",
+      "description": "GLM 5 Turbo is a foundation model deeply optimized for the OpenClaw scenario. It has been specifically optimized for the core requirements of OpenClaw tasks since the training phase, enhancing key capabilities such as tool invocation, command following, timed and persistent tasks, and long-chain exe",
+      "context_window": 202800,
+      "max_output": 131100,
+      "pricing": {
+        "input": 1.2,
+        "output": 4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5.1": {
+      "name": "GLM 5.1",
+      "description": "GLM-5.1 delivers a major leap in coding capability, with particularly significant gains in handling long-horizon tasks. Unlike previous models built around minute-level interactions, GLM-5.1 can work independently and continuously on a single task for more than 8 hours—autonomously planning, executi",
+      "context_window": 202800,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5.2": {
+      "name": "GLM 5.2",
+      "description": "GLM-5.2 delivers powerful coding capabilities, usable 1M-context support, and continued strengths in long-horizon tasks.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5.2-fast": {
+      "name": "GLM 5.2 Fast",
+      "description": "GLM-5.2 delivers powerful coding capabilities, usable 1M-context support, and continued strengths in long-horizon tasks.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 3,
+        "output": 10.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5.3": {
+      "name": "GLM 5.3",
+      "description": "GLM 5.3 delivers comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training.",
+      "context_window": 1000000,
+      "max_output": 12800,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai/glm-5v-turbo": {
+      "name": "GLM 5V Turbo",
+      "description": "GLM-5V-Turbo is Z.AI’s first multimodal coding foundation model, built for vision-based coding tasks. It can natively process multimodal inputs such as images, video, and text, while also excelling at long-horizon planning, complex coding, and action execution. Deeply optimized for agent workflows, ",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.2,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "arcee-ai/trinity-mini": {
+      "name": "Trinity Mini",
+      "description": "Trinity Mini is a 26B-parameter (3B active) sparse mixture-of-experts language model, engineered for efficient inference over long contexts with robust function calling and multi-step agent workflows.",
+      "context_window": 131072,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/magistral-medium": {
+      "name": "Magistral Medium 2509",
+      "description": "Complex thinking, backed by deep understanding, with transparent reasoning you can follow and verify. The model excels in maintaining high-fidelity reasoning across numerous languages, even when switching between languages mid-task.",
+      "context_window": 128000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 2,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistral/magistral-small": {
+      "name": "Magistral Small 2509",
+      "description": "Complex thinking, backed by deep understanding, with transparent reasoning you can follow and verify. The model excels in maintaining high-fidelity reasoning across numerous languages, even when switching between languages mid-task.",
+      "context_window": 128000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4o-mini-search-preview": {
+      "name": "GPT 4o Mini Search Preview",
+      "description": "GPT-4o mini Search Preview is a specialized model trained to understand and execute web search queries with the Chat Completions API. In addition to token fees, web search queries have a fee per tool call.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/o3-deep-research": {
+      "name": "o3-deep-research",
+      "description": "o3-deep-research is OpenAI's most advanced model for deep research, designed to tackle complex, multi-step research tasks. It can search and synthesize information from across the internet as well as from your own data—brought in through MCP connectors.",
+      "context_window": 200000,
+      "max_output": 100000,
+      "pricing": {
+        "input": 10,
+        "output": 40
       },
       "inputs": {
         "text": true,
@@ -2597,87 +3347,6 @@
         "image": true
       }
     },
-    "xiaomi/mimo-v2.5": {
-      "name": "MiMo M2.5",
-      "description": "A native full-modal model supporting text, image, video, and audio understanding, with powerful Agent capabilities.",
-      "context_window": 1050000,
-      "max_output": 131100,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "xiaomi/mimo-v2.5-pro": {
-      "name": "MiMo V2.5 Pro",
-      "description": "MiMo V2.5 Pro delivers significant improvements over its predecessor, MiMo-V2-Pro, in general agentic capabilities, complex software engineering, and long-horizon tasks. MiMo-V2.5-Pro is a 1.02T-parameter Mixture-of-Experts model with 42B active parameters, built on a hybrid-attention architecture w",
-      "context_window": 1050000,
-      "max_output": 131000,
-      "pricing": {
-        "input": 0.44,
-        "output": 0.87
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "zai/glm-4.5": {
-      "name": "GLM-4.5",
-      "description": "GLM-4.5 and GLM-4.5-Air are our latest flagship models, purpose-built as foundational models for agent-oriented applications. Both leverage a Mixture-of-Experts (MoE) architecture. GLM-4.5 has a total parameter count of 355B with 32B active parameters per forward pass, while GLM-4.5-Air adopts a mor",
-      "context_window": 128000,
-      "max_output": 96000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-4.5-air": {
-      "name": "GLM 4.5 Air",
-      "description": "GLM-4.5 and GLM-4.5-Air are our latest flagship models, purpose-built as foundational models for agent-oriented applications. Both leverage a Mixture-of-Experts (MoE) architecture. GLM-4.5 has a total parameter count of 355B with 32B active parameters per forward pass, while GLM-4.5-Air adopts a mor",
-      "context_window": 128000,
-      "max_output": 96000,
-      "pricing": {
-        "input": 0.2,
-        "output": 1.1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-4.5v": {
-      "name": "GLM 4.5V",
-      "description": "Built on the GLM-4.5-Air base model, GLM-4.5V inherits proven techniques from GLM-4.1V-Thinking while achieving effective scaling through a powerful 106B-parameter MoE architecture.",
-      "context_window": 66000,
-      "max_output": 16000,
-      "pricing": {
-        "input": 0.6,
-        "output": 1.8
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "zai/glm-4.6": {
-      "name": "GLM 4.6",
-      "description": "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications.",
-      "context_window": 200000,
-      "max_output": 96000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "zai/glm-4.6v": {
       "name": "GLM-4.6V",
       "description": "GLM-4.6V series are Z.ai’s iterations in a multimodal large language model. GLM-4.6V scales its context window to 128k tokens in training, and achieves SoTA performance in visual understanding among models of similar parameter scales.",
@@ -2697,124 +3366,6 @@
       "description": "For local deployment and low-latency applications. GLM-4.6V series are Z.ai’s iterations in a multimodal large language model. GLM-4.6V scales its context window to 128k tokens in training, and achieves SoTA performance in visual understanding among models of similar parameter scales.",
       "context_window": 128000,
       "max_output": 24000,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "zai/glm-4.7": {
-      "name": "GLM 4.7",
-      "description": "GLM-4.7 is Z.ai’s latest flagship model, with major upgrades focused on two key areas: stronger coding capabilities and more stable multi-step reasoning and execution.",
-      "context_window": 131000,
-      "max_output": 40000,
-      "pricing": {
-        "input": 2.25,
-        "output": 2.75
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-4.7-flash": {
-      "name": "GLM 4.7 Flash",
-      "description": "GLM-4.7-Flash balances high performance with efficiency, making it the perfect lightweight deployment option. Beyond coding, it is also recommended for creative writing, translation, long-context tasks, and roleplay.",
-      "context_window": 200000,
-      "max_output": 131000,
-      "pricing": {
-        "input": 0.07,
-        "output": 0.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-4.7-flashx": {
-      "name": "GLM 4.7 FlashX",
-      "description": " GLM-4.7-Flash balances high performance with efficiency, making it the perfect lightweight deployment option. ",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.06,
-        "output": 0.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5": {
-      "name": "GLM 5",
-      "description": "GLM-5 is Zai’s new-generation flagship foundation model, designed for Agentic Engineering, capable of providing reliable productivity in complex system engineering and long-range Agent tasks. In terms of Coding and Agent capabilities, GLM-5 has achieved state-of-the-art (SOTA) performance in open so",
-      "context_window": 202800,
-      "max_output": 131100,
-      "pricing": {
-        "input": 1,
-        "output": 3.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5-turbo": {
-      "name": "GLM 5 Turbo",
-      "description": "GLM 5 Turbo is a foundation model deeply optimized for the OpenClaw scenario. It has been specifically optimized for the core requirements of OpenClaw tasks since the training phase, enhancing key capabilities such as tool invocation, command following, timed and persistent tasks, and long-chain exe",
-      "context_window": 202800,
-      "max_output": 131100,
-      "pricing": {
-        "input": 1.2,
-        "output": 4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5.1": {
-      "name": "GLM 5.1",
-      "description": "GLM-5.1 delivers a major leap in coding capability, with particularly significant gains in handling long-horizon tasks. Unlike previous models built around minute-level interactions, GLM-5.1 can work independently and continuously on a single task for more than 8 hours—autonomously planning, executi",
-      "context_window": 202800,
-      "max_output": 64000,
-      "pricing": {
-        "input": 1.4,
-        "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5.2": {
-      "name": "GLM 5.2",
-      "description": "GLM-5.2 delivers powerful coding capabilities, usable 1M-context support, and continued strengths in long-horizon tasks.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 1.4,
-        "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5.2-fast": {
-      "name": "GLM 5.2 Fast",
-      "description": "GLM-5.2 delivers powerful coding capabilities, usable 1M-context support, and continued strengths in long-horizon tasks.",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 3,
-        "output": 10.25
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai/glm-5v-turbo": {
-      "name": "GLM 5V Turbo",
-      "description": "GLM-5V-Turbo is Z.AI’s first multimodal coding foundation model, built for vision-based coding tasks. It can natively process multimodal inputs such as images, video, and text, while also excelling at long-horizon planning, complex coding, and action execution. Deeply optimized for agent workflows, ",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 1.2,
-        "output": 4
-      },
       "inputs": {
         "text": true,
         "image": true
@@ -3120,5 +3671,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-15T09:28:18.690Z"
+  "_syncedAt": "2026-08-25T12:43:19.010Z"
 }

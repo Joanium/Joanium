@@ -56,6 +56,9 @@
         "output": 1.5
       }
     },
+    "MiniMax-M3": {
+      "name": "MiniMax M3"
+    },
     "gemma-4-31B-it": {
       "name": "Gemma 4 31B It"
     },
@@ -76,5 +79,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-15T09:27:53.615Z"
+  "_syncedAt": "2026-08-25T12:43:03.797Z"
 }

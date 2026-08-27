@@ -1,6 +1,6 @@
 {
   "name": "Joanium",
-  "version": "2026.815.0",
+  "version": "2026.822.0",
   "description": "Joanium - Agentic AI Desktop Assistant",
   "type": "module",
   "engines": {
@@ -14,18 +14,18 @@
     "katex": "0.18.4",
     "mammoth": "^1.12.1",
     "pdf-parse": "^2.4.5",
-    "uuid": "14.0.1"
+    "uuid": "14.0.2"
   },
   "devDependencies": {
     "@electron/fuses": "2.1.3",
-    "electron": "43.4.0",
+    "electron": "43.4.1",
     "electron-builder": "26.15.3",
-    "eslint": "10.8.1",
+    "eslint": "10.9.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "fast-check": "^4.9.0",
     "husky": "9.1.7",
     "ini": "7.0.0",
-    "jscpd": "5.0.15",
+    "jscpd": "5.0.16",
     "lint-staged": "17.3.0",
     "markdownlint-cli": "0.49.1",
     "prettier": "3.9.6"
