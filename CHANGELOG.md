@@ -6,6 +6,22 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.901.0] - 2026-09-01
+
+* Chore(deps-dev): Bump lint-staged from 17.3.0 to 17.4.1
+* Chore(deps-dev): Bump eslint from 10.9.0 to 10.9.1
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.7 to 4.37.8
+* Chore(deps-dev): Bump electron from 43.4.1 to 44.0.0
+* Updated AI Models
+* Chore(deps-dev): Bump eslint from 10.8.1 to 10.9.0
+* Chore(deps-dev): Bump electron from 43.4.0 to 43.4.1
+* Chore(deps): Bump github/codeql-action from 4.37.6 to 4.37.7
+* Chore(deps-dev): Bump js-yaml
+* Chore(deps): Bump github/codeql-action/init from 4.37.6 to 4.37.7
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.6 to 4.37.7
+
+---
+
 ## [2026.822.0] - 2026-08-22
 
 * Updated AI Models
