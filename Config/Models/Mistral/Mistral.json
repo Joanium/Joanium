@@ -5,12 +5,6 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "mistral-medium-2505": {
-      "name": "mistral-medium-2505"
-    },
-    "mistral-medium-2508": {
-      "name": "mistral-medium-2508"
-    },
     "codestral-2508": {
       "name": "codestral-2508"
     },
@@ -35,31 +29,6 @@
     },
     "mistral-code-fim-latest": {
       "name": "Mistral Code Fim Latest"
-    },
-    "devstral-2512": {
-      "name": "devstral-2512"
-    },
-    "devstral-medium-latest": {
-      "name": "devstral-medium-latest"
-    },
-    "devstral-latest": {
-      "name": "Devstral 2",
-      "description": "Open-weight coding agent (Dec 2025) — SOTA SWE-bench at 72.2%, built for autonomous software tasks",
-      "context_window": 256000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      }
-    },
-    "mistral-code-agent-latest": {
-      "name": "Mistral Code Agent Latest"
     },
     "mistral-small-2603": {
       "name": "mistral-small-2603"
@@ -188,12 +157,6 @@
         "output": 5
       }
     },
-    "glm-5-2": {
-      "name": "Glm 5 2"
-    },
-    "zai-glm-5-2": {
-      "name": "Zai Glm 5 2"
-    },
     "mistral-embed-2312": {
       "name": "mistral-embed-2312"
     },
@@ -245,6 +208,43 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "mistral-medium-2505": {
+      "name": "mistral-medium-2505"
+    },
+    "mistral-medium-2508": {
+      "name": "mistral-medium-2508"
+    },
+    "devstral-2512": {
+      "name": "devstral-2512"
+    },
+    "devstral-medium-latest": {
+      "name": "devstral-medium-latest"
+    },
+    "devstral-latest": {
+      "name": "Devstral 2",
+      "description": "Open-weight coding agent (Dec 2025) — SOTA SWE-bench at 72.2%, built for autonomous software tasks",
+      "context_window": 256000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      }
+    },
+    "mistral-code-agent-latest": {
+      "name": "Mistral Code Agent Latest"
+    },
+    "glm-5-2": {
+      "name": "Glm 5 2"
+    },
+    "zai-glm-5-2": {
+      "name": "Zai Glm 5 2"
+    },
     "open-mistral-nemo": {
       "name": "open-mistral-nemo"
     },
@@ -288,5 +288,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-08-25T12:42:51.623Z"
+  "_syncedAt": "2026-09-02T12:29:32.157Z"
 }

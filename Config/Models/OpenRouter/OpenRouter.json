@@ -5,6 +5,132 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "anthropic/claude-fable-5.1": {
+      "name": "Anthropic: Claude Fable 5.1",
+      "description": "Claude Fable 5.1 improves on Claude Fable 5 across the board, with the biggest gains in agentic coding, long-running agentic workflows, and knowledge work: long code refactors, front-end and visual...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5.1:batch": {
+      "name": "Anthropic: Claude Fable 5.1 (batch)",
+      "description": "Claude Fable 5.1 improves on Claude Fable 5 across the board, with the biggest gains in agentic coding, long-running agentic workflows, and knowledge work: long code refactors, front-end and visual...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inception/mercury-2.5-preview": {
+      "name": "Inception: Mercury 2.5 Preview",
+      "description": "Mercury 2.5 is the fastest reasoning LLM, and the latest diffusion LLM (dLLM) from Inception. Instead of generating tokens sequentially, Mercury 2.5 produces and refines multiple tokens in parallel, achieving...",
+      "context_window": 260000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "ibm-granite/granite-4.2-8b": {
+      "name": "IBM: Granite 4.2 8B",
+      "description": "Granite 4.2 8B is a dense reasoning model from IBM. It is suited for mathematics, code generation, multilingual dialogue, and agentic workflows that need multi-step reasoning. It supports full, low-effort,...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tencent/hy4-preview": {
+      "name": "Tencent: Hy4 preview",
+      "description": "Tencent: Hy4 preview is a mixture-of-experts model from Tencent, with 49B active parameters out of 770B total. It is designed for coding agents, complex tool-use workflows, and productivity tasks that...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.83,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin:free": {
+      "name": "Ling 3.0 Flash Fin (free)",
+      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "~z-ai/glm-flash-latest": {
+      "name": "Z.ai: GLM Flash Latest",
+      "description": "This model always redirects to the latest model in the GLM Flash family.",
+      "context_window": 1310720,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3.8-flash": {
+      "name": "Qwen: Qwen3.8 Flash",
+      "description": "Qwen3.8 Flash is a multimodal reasoning model from Alibaba. It is suited for coding assistance, agentic workflows, visual understanding, document and codebase analysis, desktop interaction, chart analysis, and long-video analysis.",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.47
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "z-ai/glm-5.3-flash": {
+      "name": "Z.ai: GLM 5.3 Flash",
+      "description": "GLM-5.3-Flash is a native multimodal model from Z.ai. It is suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while...",
+      "context_window": 1310720,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "z-ai/glm-5.3-flash:batch": {
+      "name": "Z.ai: GLM 5.3 Flash (batch)",
+      "description": "GLM-5.3-Flash is a native multimodal model from Z.ai. It is suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while...",
+      "context_window": 1048575,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/muse-spark-1.2-contributor": {
       "name": "Meta: Muse Spark 1.2 Contributor",
       "description": "Muse Spark 1.2 contributor tier is a reasoning model from Meta designed for developers who want to start building at an even lower cost. It’s meaningfully cheaper than Muse Spark...",
@@ -25,19 +151,6 @@
       "pricing": {
         "input": 0.44,
         "output": 1.32
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "stealth/ox-alpha": {
-      "name": "Ox Alpha",
-      "description": "Ox Alpha is a reasoning model designed for coding, sustained agentic work, and production workloads. It is suited for long-horizon software engineering, complex reasoning, and workflows that combine text with...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -181,6 +294,18 @@
         "text": true
       }
     },
+    "qwen/qwen3.8-2.4t-a95b:batch": {
+      "name": "Qwen: Qwen3.8 2.4T A95B (batch)",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
+      "context_window": 1010000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "bytedance-seed/seed-2.0-code": {
       "name": "ByteDance Seed: Seed-2.0-Code",
       "description": "Seed 2.0 Code is a model from ByteDance Seed optimized for agentic coding. It is suited for frontend development, multilingual programming tasks, and coding-agent workflows in tools such as Claude...",
@@ -201,6 +326,18 @@
       "pricing": {
         "input": 0.44,
         "output": 0.87
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4-pro-0813:batch": {
+      "name": "DeepSeek: DeepSeek V4 Pro 0813 (batch)",
+      "description": "DeepSeek V4 Pro 0813 is a large-scale mixture-of-experts model from DeepSeek. This is the GA release of DeepSeek V4 Pro.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.32,
+        "output": 3.96
       },
       "inputs": {
         "text": true
@@ -293,6 +430,19 @@
         "image": true
       }
     },
+    "meta/muse-glimmer-30b:batch": {
+      "name": "Meta: Muse Glimmer 30B (batch)",
+      "description": "Muse Glimmer 30B is a dense, open-weight multimodal model from Meta Superintelligence Labs, distilled from Muse Spark and optimized for autonomous agents on consumer hardware. It is suited for long-horizon...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.35,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/muse-spark-1.2": {
       "name": "Meta: Muse Spark 1.2",
       "description": "Muse Spark 1.2 is a reasoning model from Meta, designed for complex agentic tasks. It accepts text, images, video, audio, and PDF documents, returns text, and offers a 1M-token context...",
@@ -343,8 +493,33 @@
         "text": true
       }
     },
+    "deepseek/deepseek-v4-flash-0731:batch": {
+      "name": "DeepSeek: DeepSeek V4 Flash 0731 (batch)",
+      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows....",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "thinkingmachines/inkling-small": {
       "name": "Thinking Machines: Inkling Small",
+      "description": "Inkling Small is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 12B active parameters out of 276B total. It is positioned as the smaller, more efficient member of...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "thinkingmachines/inkling-small:batch": {
+      "name": "Thinking Machines: Inkling Small (batch)",
       "description": "Inkling Small is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 12B active parameters out of 276B total. It is positioned as the smaller, more efficient member of...",
       "context_window": 524288,
       "pricing": {
@@ -376,19 +551,6 @@
       "pricing": {
         "input": 0.03,
         "output": 0.13
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "anthropic/claude-opus-5-fast": {
-      "name": "Claude Opus 5 (Fast)",
-      "description": "Fast-mode variant of [Opus 5](/anthropic/claude-opus-5) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 5.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 10,
-        "output": 50
       },
       "inputs": {
         "text": true,
@@ -586,6 +748,19 @@
         "image": true
       }
     },
+    "moonshotai/kimi-k3:batch": {
+      "name": "MoonshotAI: Kimi K3 (batch)",
+      "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/muse-spark-1.1": {
       "name": "Meta: Muse Spark 1.1",
       "description": "Muse Spark 1.1 is a multimodal reasoning model from Meta, built for agentic tasks. It accepts text, images, video, audio, and PDF documents and returns text, with a 1M-token context...",
@@ -597,17 +772,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "kwaipilot/kat-coder-air-v2.5": {
-      "name": "Kwaipilot: KAT-Coder-Air V2.5",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
       }
     },
     "kwaipilot/kat-coder-pro-v2.5": {
@@ -939,18 +1103,6 @@
         "text": true
       }
     },
-    "z-ai/glm-5.2:batch": {
-      "name": "Z.ai: GLM 5.2 (batch)",
-      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
-      "context_window": 512000,
-      "pricing": {
-        "input": 0.7,
-        "output": 2.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "z-ai/glm-5.2:free": {
       "name": "Z.ai: GLM 5.2 (free)",
       "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
@@ -982,19 +1134,6 @@
       "pricing": {
         "input": 0.95,
         "output": 4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "moonshotai/kimi-k2.7-code:batch": {
-      "name": "MoonshotAI: Kimi K2.7 Code (batch)",
-      "description": "MoonshotAI: Kimi K2.7 Code is a coding-focused model in Moonshot AI's Kimi K2 family, built to complete end-to-end programming tasks reliably over long contexts. It uses a native multimodal mixture-of-experts...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.48,
-        "output": 2
       },
       "inputs": {
         "text": true,
@@ -1167,19 +1306,6 @@
         "image": true
       }
     },
-    "anthropic/claude-opus-4.8-fast": {
-      "name": "Anthropic: Claude Opus 4.8 (Fast)",
-      "description": "Fast-mode variant of [Opus 4.8](/anthropic/claude-opus-4.8) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 4.8.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 10,
-        "output": 50
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-opus-4.8": {
       "name": "Anthropic: Claude Opus 4.8",
       "description": "Claude Opus 4.8 is Anthropic's most capable generally available model in the Opus family. It supports text, image, and file inputs with text output, with reasoning support and a 1M-token...",
@@ -1251,19 +1377,6 @@
       "pricing": {
         "input": 0.75,
         "output": 4.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "anthropic/claude-opus-4.7-fast": {
-      "name": "Anthropic: Claude Opus 4.7 (Fast)",
-      "description": "Fast-mode variant of [Opus 4.7](/anthropic/claude-opus-4.7) - identical capabilities with higher output speed at premium 6x pricing.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 30,
-        "output": 150
       },
       "inputs": {
         "text": true,
@@ -1354,6 +1467,19 @@
       "pricing": {
         "input": 1.5,
         "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-medium-3-5:batch": {
+      "name": "Mistral: Mistral Medium 3.5 (batch)",
+      "description": "Mistral Medium 3.5 is a dense 128B instruction-following model from Mistral AI. It supports text and image inputs with text output, and is designed for agentic workflows, coding, and complex...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
       },
       "inputs": {
         "text": true,
@@ -1759,6 +1885,19 @@
         "output": 0.2
       }
     },
+    "google/gemma-4-31b-it:batch": {
+      "name": "Google: Gemma 4 31B (batch)",
+      "description": "Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window, configurable thinking/reasoning mode, native function...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.39,
+        "output": 0.97
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemma-4-31b-it:free": {
       "name": "Google: Gemma 4 31B (free)",
       "description": "Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window, configurable thinking/reasoning mode, native function...",
@@ -2032,6 +2171,19 @@
       "pricing": {
         "input": 0.04,
         "output": 0.15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3.5-9b:batch": {
+      "name": "Qwen: Qwen3.5-9B (batch)",
+      "description": "Qwen3.5-9B is a multimodal foundation model from the Qwen3.5 family, designed to deliver strong reasoning, coding, and visual understanding in an efficient 9B-parameter architecture. It uses a unified vision-language design...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.17,
+        "output": 0.25
       },
       "inputs": {
         "text": true,
@@ -2793,18 +2945,6 @@
         "image": true
       }
     },
-    "allenai/olmo-3-32b-think": {
-      "name": "AllenAI: Olmo 3 32B Think",
-      "description": "Olmo 3 32B Think is a large-scale, 32-billion-parameter model purpose-built for deep reasoning, complex logic chains and advanced instruction-following scenarios. Its capacity enables strong performance on demanding evaluation tasks and...",
-      "context_window": 65536,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-5.1": {
       "name": "OpenAI: GPT-5.1",
       "description": "GPT-5.1 is the latest frontier-grade model in the GPT-5 series, offering stronger general-purpose reasoning, improved instruction adherence, and a more natural conversational style compared to GPT-5. It uses adaptive reasoning...",
@@ -3184,19 +3324,6 @@
         "text": true
       }
     },
-    "openai/gpt-5-codex:batch": {
-      "name": "OpenAI: GPT-5 Codex (batch)",
-      "description": "GPT-5-Codex is a specialized version of GPT-5 optimized for software engineering and coding workflows. It is designed for both interactive development sessions and long, independent execution of complex engineering tasks....",
-      "context_window": 400000,
-      "pricing": {
-        "input": 0.63,
-        "output": 5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepseek/deepseek-v3.1-terminus": {
       "name": "DeepSeek: DeepSeek V3.1 Terminus",
       "description": "DeepSeek-V3.1 Terminus is an update to [DeepSeek V3.1](/deepseek/deepseek-chat-v3.1) that maintains the model's original capabilities while addressing issues reported by users, including language consistency and agent capabilities, further optimizing the model's...",
@@ -3247,18 +3374,6 @@
     },
     "qwen/qwen-plus-2025-07-28": {
       "name": "Qwen: Qwen Plus 0728",
-      "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0.26,
-        "output": 0.78
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen-plus-2025-07-28:thinking": {
-      "name": "Qwen: Qwen Plus 0728 (thinking)",
       "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
       "context_window": 1000000,
       "pricing": {
@@ -3445,6 +3560,18 @@
         "text": true
       }
     },
+    "openai/gpt-oss-120b:batch": {
+      "name": "OpenAI: gpt-oss-120b (batch)",
+      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-oss-20b": {
       "name": "OpenAI: gpt-oss-20b",
       "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
@@ -3452,6 +3579,18 @@
       "pricing": {
         "input": 0.03,
         "output": 0.14
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-oss-20b:batch": {
+      "name": "OpenAI: gpt-oss-20b (batch)",
+      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
       },
       "inputs": {
         "text": true
@@ -3781,19 +3920,6 @@
         "image": true
       }
     },
-    "openai/o3-pro:batch": {
-      "name": "OpenAI: o3 Pro (batch)",
-      "description": "The o-series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o3-pro model uses more compute to think harder and provide consistently...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 10,
-        "output": 40
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-2.5-pro-preview": {
       "name": "Google: Gemini 2.5 Pro Preview 06-05",
       "description": "Gemini 2.5 Pro is Google’s state-of-the-art AI model designed for advanced reasoning, coding, mathematics, and scientific tasks. It employs “thinking” capabilities, enabling it to reason through responses with enhanced accuracy...",
@@ -3845,18 +3971,6 @@
         "image": true
       }
     },
-    "google/gemma-3n-e4b-it": {
-      "name": "Google: Gemma 3n 4B",
-      "description": "Gemma 3n E4B-it is optimized for efficient execution on mobile and low-resource devices, such as phones, laptops, and tablets. It supports multimodal inputs—including text, visual data, and audio—enabling diverse tasks...",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0.06,
-        "output": 0.12
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "mistralai/mistral-medium-3": {
       "name": "Mistral: Mistral Medium 3",
       "description": "Mistral Medium 3 is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances state-of-the-art reasoning and multimodal performance with 8× lower cost...",
@@ -3881,18 +3995,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "arcee-ai/virtuoso-large": {
-      "name": "Arcee AI: Virtuoso Large",
-      "description": "Virtuoso‑Large is Arcee's top‑tier general‑purpose LLM at 72 B parameters, tuned to tackle cross‑domain reasoning, creative writing and enterprise QA. Unlike many 70 B peers, it retains the 128 k...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.75,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
       }
     },
     "meta-llama/llama-guard-4-12b": {
@@ -3979,19 +4081,6 @@
       "pricing": {
         "input": 1.1,
         "output": 4.4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/o4-mini-high:batch": {
-      "name": "OpenAI: o4 Mini High (batch)",
-      "description": "OpenAI o4-mini-high is the same model as [o4-mini](/openai/o4-mini) with reasoning_effort set to high. OpenAI o4-mini is a compact reasoning model in the o-series, optimized for fast, cost-efficient performance while retaining...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 0.55,
-        "output": 2.2
       },
       "inputs": {
         "text": true,
@@ -4185,19 +4274,6 @@
         "image": true
       }
     },
-    "openai/o1-pro:batch": {
-      "name": "OpenAI: o1-pro (batch)",
-      "description": "The o1 series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o1-pro model uses more compute to think harder and provide...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 75,
-        "output": 300
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistralai/mistral-small-3.1-24b-instruct": {
       "name": "Mistral: Mistral Small 3.1 24B",
       "description": "Mistral Small 3.1 24B Instruct is an upgraded variant of Mistral Small 3 (2501), featuring 24 billion parameters with advanced multimodal capabilities. It provides state-of-the-art performance in text-based reasoning and...",
@@ -4343,18 +4419,6 @@
       "pricing": {
         "input": 1.1,
         "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/o3-mini-high:batch": {
-      "name": "OpenAI: o3 Mini High (batch)",
-      "description": "OpenAI o3-mini-high is the same model as [o3-mini](/openai/o3-mini) with reasoning_effort set to high. o3-mini is a cost-efficient language model optimized for STEM reasoning tasks, particularly excelling in science, mathematics, and...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 0.55,
-        "output": 2.2
       },
       "inputs": {
         "text": true
@@ -4536,19 +4600,6 @@
         "image": true
       }
     },
-    "openai/o1:batch": {
-      "name": "OpenAI: o1 (batch)",
-      "description": "The latest and strongest model family from OpenAI, o1 is designed to spend more time thinking before responding. The o1 model series is trained with large-scale reinforcement learning to reason...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 7.5,
-        "output": 30
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "cohere/command-r7b-12-2024": {
       "name": "Cohere: Command R7B (12-2024)",
       "description": "Command R7B (12-2024) is a small, fast update of the Command R+ model, delivered in December 2024. It excels at RAG, tool use, agents, and similar tasks requiring complex reasoning...",
@@ -4676,18 +4727,6 @@
         "text": true
       }
     },
-    "mistralai/ministral-8b": {
-      "name": "Mistral: Ministral 8B",
-      "description": "Ministral 8B is an 8B parameter model featuring a unique interleaved sliding-window attention pattern for faster, memory-efficient inference. Designed for edge use cases, it supports up to 128k context length...",
-      "context_window": 128000,
-      "pricing": {
-        "input": 0.11,
-        "output": 0.11
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen-2.5-7b-instruct": {
       "name": "Qwen: Qwen2.5 7B Instruct",
       "description": "Qwen2.5 7B is the latest series of Qwen large language models. Qwen2.5 brings the following improvements upon Qwen2: - Significantly more knowledge and has greatly improved capabilities in coding and...",
@@ -4695,18 +4734,6 @@
       "pricing": {
         "input": 0.04,
         "output": 0.1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "thedrummer/rocinante-12b": {
-      "name": "TheDrummer: Rocinante 12B",
-      "description": "Rocinante 12B is designed for engaging storytelling and rich prose. Early testers have reported: - Expanded vocabulary with unique and expressive word choices - Enhanced creativity for vivid narratives -...",
-      "context_window": 32768,
-      "pricing": {
-        "input": 0.17,
-        "output": 0.43
       },
       "inputs": {
         "text": true
@@ -5166,6 +5193,243 @@
       "pricing": {
         "input": 30,
         "output": 60
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "stealth/ox-alpha": {
+      "name": "Ox Alpha",
+      "description": "Ox Alpha is a reasoning model designed for coding, sustained agentic work, and production workloads. It is suited for long-horizon software engineering, complex reasoning, and workflows that combine text with...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5-fast": {
+      "name": "Claude Opus 5 (Fast)",
+      "description": "Fast-mode variant of [Opus 5](/anthropic/claude-opus-5) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 5.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "kwaipilot/kat-coder-air-v2.5": {
+      "name": "Kwaipilot: KAT-Coder-Air V2.5",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.2:batch": {
+      "name": "Z.ai: GLM 5.2 (batch)",
+      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
+      "context_window": 512000,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k2.7-code:batch": {
+      "name": "MoonshotAI: Kimi K2.7 Code (batch)",
+      "description": "MoonshotAI: Kimi K2.7 Code is a coding-focused model in Moonshot AI's Kimi K2 family, built to complete end-to-end programming tasks reliably over long contexts. It uses a native multimodal mixture-of-experts...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.48,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4.8-fast": {
+      "name": "Anthropic: Claude Opus 4.8 (Fast)",
+      "description": "Fast-mode variant of [Opus 4.8](/anthropic/claude-opus-4.8) - identical capabilities with higher output speed at 2x pricing relative to regular Opus 4.8.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4.7-fast": {
+      "name": "Anthropic: Claude Opus 4.7 (Fast)",
+      "description": "Fast-mode variant of [Opus 4.7](/anthropic/claude-opus-4.7) - identical capabilities with higher output speed at premium 6x pricing.\n\nLearn more in Anthropic's docs: https://platform.claude.com/docs/en/build-with-claude/fast-mode",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 30,
+        "output": 150
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "allenai/olmo-3-32b-think": {
+      "name": "AllenAI: Olmo 3 32B Think",
+      "description": "Olmo 3 32B Think is a large-scale, 32-billion-parameter model purpose-built for deep reasoning, complex logic chains and advanced instruction-following scenarios. Its capacity enables strong performance on demanding evaluation tasks and...",
+      "context_window": 65536,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-5-codex:batch": {
+      "name": "OpenAI: GPT-5 Codex (batch)",
+      "description": "GPT-5-Codex is a specialized version of GPT-5 optimized for software engineering and coding workflows. It is designed for both interactive development sessions and long, independent execution of complex engineering tasks....",
+      "context_window": 400000,
+      "pricing": {
+        "input": 0.63,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen-plus-2025-07-28:thinking": {
+      "name": "Qwen: Qwen Plus 0728 (thinking)",
+      "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.26,
+        "output": 0.78
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/o3-pro:batch": {
+      "name": "OpenAI: o3 Pro (batch)",
+      "description": "The o-series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o3-pro model uses more compute to think harder and provide consistently...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 10,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemma-3n-e4b-it": {
+      "name": "Google: Gemma 3n 4B",
+      "description": "Gemma 3n E4B-it is optimized for efficient execution on mobile and low-resource devices, such as phones, laptops, and tablets. It supports multimodal inputs—including text, visual data, and audio—enabling diverse tasks...",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.12
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "arcee-ai/virtuoso-large": {
+      "name": "Arcee AI: Virtuoso Large",
+      "description": "Virtuoso‑Large is Arcee's top‑tier general‑purpose LLM at 72 B parameters, tuned to tackle cross‑domain reasoning, creative writing and enterprise QA. Unlike many 70 B peers, it retains the 128 k...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.75,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/o4-mini-high:batch": {
+      "name": "OpenAI: o4 Mini High (batch)",
+      "description": "OpenAI o4-mini-high is the same model as [o4-mini](/openai/o4-mini) with reasoning_effort set to high. OpenAI o4-mini is a compact reasoning model in the o-series, optimized for fast, cost-efficient performance while retaining...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 0.55,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/o1-pro:batch": {
+      "name": "OpenAI: o1-pro (batch)",
+      "description": "The o1 series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o1-pro model uses more compute to think harder and provide...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 75,
+        "output": 300
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/o3-mini-high:batch": {
+      "name": "OpenAI: o3 Mini High (batch)",
+      "description": "OpenAI o3-mini-high is the same model as [o3-mini](/openai/o3-mini) with reasoning_effort set to high. o3-mini is a cost-efficient language model optimized for STEM reasoning tasks, particularly excelling in science, mathematics, and...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 0.55,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/o1:batch": {
+      "name": "OpenAI: o1 (batch)",
+      "description": "The latest and strongest model family from OpenAI, o1 is designed to spend more time thinking before responding. The o1 model series is trained with large-scale reinforcement learning to reason...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 7.5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/ministral-8b": {
+      "name": "Mistral: Ministral 8B",
+      "description": "Ministral 8B is an 8B parameter model featuring a unique interleaved sliding-window attention pattern for faster, memory-efficient inference. Designed for edge use cases, it supports up to 128k context length...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.11
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "thedrummer/rocinante-12b": {
+      "name": "TheDrummer: Rocinante 12B",
+      "description": "Rocinante 12B is designed for engaging storytelling and rich prose. Early testers have reported: - Expanded vocabulary with unique and expressive word choices - Enhanced creativity for vivid narratives -...",
+      "context_window": 32768,
+      "pricing": {
+        "input": 0.17,
+        "output": 0.43
       },
       "inputs": {
         "text": true
@@ -5770,5 +6034,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-25T12:42:49.557Z"
+  "_syncedAt": "2026-09-02T12:29:31.300Z"
 }

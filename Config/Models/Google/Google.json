@@ -122,6 +122,16 @@
       "context_window": 131072,
       "max_output": 65536
     },
+    "gemini-omni-1.1-flash": {
+      "name": "Gemini Omni 1.1 Flash",
+      "context_window": 131072,
+      "max_output": 65536
+    },
+    "gemini-3.5-transcribe": {
+      "name": "Gemini 3.5 Transcribe",
+      "context_window": 98304,
+      "max_output": 32768
+    },
     "gemini-3.6-flash": {
       "name": "Gemini 3.6 Flash",
       "context_window": 1048576,
@@ -140,11 +150,6 @@
     "lyria-3-pro-preview": {
       "name": "Lyria 3 Pro Preview",
       "context_window": 1048576,
-      "max_output": 65536
-    },
-    "gemini-robotics-er-1.6-preview": {
-      "name": "Gemini Robotics-ER 1.6 Preview",
-      "context_window": 131072,
       "max_output": 65536
     },
     "gemini-robotics-er-2-preview": {
@@ -174,6 +179,11 @@
     },
     "deep-research-pro-preview-12-2025": {
       "name": "Deep Research Pro Preview (Dec-12-2025)",
+      "context_window": 131072,
+      "max_output": 65536
+    },
+    "gemini-robotics-er-1.6-preview": {
+      "name": "Gemini Robotics-ER 1.6 Preview",
       "context_window": 131072,
       "max_output": 65536
     },
@@ -210,5 +220,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-08-25T12:42:52.416Z"
+  "_syncedAt": "2026-09-02T12:29:32.738Z"
 }

@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "zai-org/GLM-5.3-Flash": {
+      "name": "GLM 5 3 FLASH"
+    },
     "zai-org/GLM-5.3": {
       "name": "GLM 5 3"
     },
@@ -227,5 +230,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-08-25T12:43:09.277Z"
+  "_syncedAt": "2026-09-02T12:29:46.117Z"
 }

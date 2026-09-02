@@ -122,15 +122,6 @@
     "google/gemma-4-31b-it": {
       "name": "Gemma 4 31B It"
     },
-    "parasail-trinity-large-thinking": {
-      "name": "Parasail Trinity Large Thinking"
-    },
-    "arcee-ai/Trinity-Large-Thinking": {
-      "name": "Trinity Large Thinking"
-    },
-    "arcee-ai/Trinity-Large-Thinking-FP8-Block": {
-      "name": "Trinity Large Thinking FP8 Block"
-    },
     "parasail-gemma-4-26b-a4b-it": {
       "name": "Parasail Gemma 4 26B A4b It"
     },
@@ -139,15 +130,6 @@
     },
     "google/gemma-4-26B-A4B": {
       "name": "Gemma 4 26B A4B"
-    },
-    "parasail-glm-51": {
-      "name": "Parasail Glm 51"
-    },
-    "zai-org/GLM-5.1": {
-      "name": "GLM 5 1"
-    },
-    "zai-org/GLM-5.1-FP8": {
-      "name": "GLM 5 1 FP8"
     },
     "parasail-bge-m3": {
       "name": "Parasail Bge M3"
@@ -179,12 +161,6 @@
     "deepseek-ai/DeepSeek-V4-Flash": {
       "name": "DeepSeek V4 FLASH"
     },
-    "parasail-mimo-v25": {
-      "name": "Parasail Mimo V25"
-    },
-    "XiaomiMiMo/MiMo-V2.5": {
-      "name": "MiMo V2 5"
-    },
     "parasail-minimax-m3": {
       "name": "Parasail Minimax M3"
     },
@@ -193,12 +169,6 @@
     },
     "MiniMaxAI/Minimax-M3": {
       "name": "Minimax M3"
-    },
-    "parasail-kimi-k27-code": {
-      "name": "Parasail Kimi K27 Code"
-    },
-    "moonshotai/Kimi-K2.7-Code": {
-      "name": "Kimi K2 7 Code"
     },
     "parasail-gpt-oss-120b-fast": {
       "name": "Parasail Gpt OSS 120B FAST"
@@ -239,8 +209,14 @@
     "parasail-unslopnemo-12b": {
       "name": "Parasail Unslopnemo 12B"
     },
+    "TheDrummer/UnslopNemo-12B": {
+      "name": "UnslopNemo 12B"
+    },
     "parasail-mythomax-13b": {
       "name": "Parasail Mythomax 13B"
+    },
+    "Gryphe/MythoMax-L2-13b": {
+      "name": "MythoMax L2 13B"
     },
     "parasail-mistralaimistral-nemo": {
       "name": "Parasail Mistralaimistral Nemo"
@@ -251,6 +227,9 @@
     "parasail-googlegemma-3-4b-it": {
       "name": "Parasail Googlegemma 3 4B It"
     },
+    "google/gemma-3-4b-it": {
+      "name": "Gemma 3 4B It"
+    },
     "parasail-deepseek-v4-flash-0731": {
       "name": "Parasail Deepseek V4 FLASH 0731"
     },
@@ -260,17 +239,68 @@
     "parasail-sao10kl3-lunaris-8b": {
       "name": "Parasail Sao10kl3 Lunaris 8B"
     },
+    "Sao10K/L3-8B-Lunaris": {
+      "name": "L3 8B Lunaris"
+    },
     "parasail-deepseek-v4-pro-0813": {
       "name": "Parasail Deepseek V4 PRO 0813"
     },
     "deepseek-ai/DeepSeek-V4-Pro-0813": {
       "name": "DeepSeek V4 PRO 0813"
     },
-    "parasail-muse-glimmer-30b": {
-      "name": "Parasail Muse Glimmer 30B"
-    },
     "parasail-qwen38-27b": {
       "name": "Parasail Qwen38 27B"
+    },
+    "Qwen/Qwen3.8-27B": {
+      "name": "Qwen3 8 27B"
+    },
+    "parasail-glm-53-flash": {
+      "name": "Parasail Glm 53 FLASH"
+    },
+    "zai-org/GLM-5.3-Flash": {
+      "name": "GLM 5 3 FLASH"
+    },
+    "parasail-glm-53": {
+      "name": "Parasail Glm 53"
+    },
+    "zai-org/GLM-5.3": {
+      "name": "GLM 5 3"
+    },
+    "z-ai/glm-5.3": {
+      "name": "Glm 5 3"
+    },
+    "parasail-trinity-large-thinking": {
+      "name": "Parasail Trinity Large Thinking"
+    },
+    "arcee-ai/Trinity-Large-Thinking": {
+      "name": "Trinity Large Thinking"
+    },
+    "arcee-ai/Trinity-Large-Thinking-FP8-Block": {
+      "name": "Trinity Large Thinking FP8 Block"
+    },
+    "parasail-glm-51": {
+      "name": "Parasail Glm 51"
+    },
+    "zai-org/GLM-5.1": {
+      "name": "GLM 5 1"
+    },
+    "zai-org/GLM-5.1-FP8": {
+      "name": "GLM 5 1 FP8"
+    },
+    "parasail-mimo-v25": {
+      "name": "Parasail Mimo V25"
+    },
+    "XiaomiMiMo/MiMo-V2.5": {
+      "name": "MiMo V2 5"
+    },
+    "parasail-kimi-k27-code": {
+      "name": "Parasail Kimi K27 Code"
+    },
+    "moonshotai/Kimi-K2.7-Code": {
+      "name": "Kimi K2 7 Code"
+    },
+    "parasail-muse-glimmer-30b": {
+      "name": "Parasail Muse Glimmer 30B"
     },
     "parasail-rocinante-12b": {
       "name": "Parasail Rocinante 12B"
@@ -327,5 +357,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-08-25T12:43:24.018Z"
+  "_syncedAt": "2026-09-02T12:30:03.535Z"
 }

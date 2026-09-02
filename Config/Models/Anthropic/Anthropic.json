@@ -4,6 +4,9 @@
   "endpoint": "https://api.anthropic.com/v1/messages",
   "auth_header": "x-api-key",
   "models": {
+    "claude-fable-5-1": {
+      "name": "Claude Fable 5.1"
+    },
     "claude-opus-5": {
       "name": "Claude Opus 5"
     },
@@ -83,5 +86,5 @@
       "name": "Claude Opus 4.1"
     }
   },
-  "_syncedAt": "2026-08-25T12:43:25.001Z"
+  "_syncedAt": "2026-09-02T12:30:04.270Z"
 }

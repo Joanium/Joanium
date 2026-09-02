@@ -5,6 +5,16 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "zai-org/glm-5.3-flash": {
+      "name": "GLM 5.3 Flash",
+      "description": "GLM-5.3-Flash is a native multimodal model from Z.ai. It is suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while reducing compute overhead.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai-org/glm-5.3": {
       "name": "GLM 5.3",
       "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
@@ -55,6 +65,16 @@
       "description": "Kimi K2.7 Code is MoonshotAI's strongest coding & agentic model — a 1T-parameter MoE (32B activated) , 256K context and interleaved thinking with multi-step tool calling. It delivers major gains on long-horizon coding tasks while cutting thinking-token usage by ~30% vs K2.6, and accepts text, image ",
       "context_window": 262144,
       "max_output": 262144,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3.8-flash": {
+      "name": "Qwen3.8 Flash",
+      "description": "Qwen3.8-Flash is Alibaba's multimodal MoE model and an early preview of the Qwen4 architecture: 125B total parameters with only 6B activated per token, plus a 51B N-gram embedding, built on GDN + QSA hybrid attention. It accepts text, image and video input across a 1M-token context and emits up to 1",
+      "context_window": 1000000,
+      "max_output": 131072,
       "inputs": {
         "text": true,
         "image": true
@@ -126,6 +146,33 @@
       "description": "We introduce DeepSeek-V3.2, a next-generation foundation model designed to unify high computational efficiency with state-of-the-art reasoning and agentic performance. DeepSeek-V3.2 is built upon three core technical breakthroughs:\n\n• DeepSeek Sparse Attention (DSA):\nA new highly efficient attention",
       "context_window": 163840,
       "max_output": 65536,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.8-27b": {
+      "name": "Qwen3.8 27B",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin": {
+      "name": "Ling 3.0 Flash Fin",
+      "description": "Ling-3.0-flash-Fin is a finance-enhanced MoE model built on Ling-3.0-flash, with 124 billion total parameters and approximately 5.1 billion activated parameters. Designed for real-world investment workflows, it is optimized for complex multi-step tasks and long-horizon planning and execution. With a",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.8-2.4t-a95b": {
+      "name": "Qwen3.8 2.4T A95B",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.Text-only.",
+      "context_window": 1000000,
+      "max_output": 131072,
       "inputs": {
         "text": true
       }
@@ -1169,14 +1216,6 @@
         "text": true
       }
     },
-    "minimax/m2-her": {
-      "name": "M2-her",
-      "description": "M2-her测试",
-      "context_window": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
     "baidu/ernie-4.5-vl-28b-a3b-thinking": {
       "name": "ERNIE-4.5-VL-28B-A3B-Thinking",
       "description": "Built upon the powerful ERNIE-4.5-VL-28B-A3B architecture, the newly upgraded ERNIE-4.5-VL-28B-A3B-Thinking achieves a remarkable leap forward in multimodal reasoning capabilities. 🧠✨ Through an extensive mid-training phase, the model absorbed a vast and highly diverse corpus of premium visual-lang",
@@ -1393,6 +1432,14 @@
         "text": true
       }
     },
+    "minimax/m2-her": {
+      "name": "M2-her",
+      "description": "M2-her测试",
+      "context_window": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
     "xai/grok-4.5": {
       "name": "xai/grok-4.5",
       "context_window": 500000,
@@ -1403,5 +1450,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-25T12:43:14.875Z"
+  "_syncedAt": "2026-09-02T12:29:54.070Z"
 }

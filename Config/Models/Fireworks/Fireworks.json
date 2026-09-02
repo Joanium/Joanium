@@ -27,14 +27,8 @@
         "output": 4
       }
     },
-    "accounts/fireworks/routers/kimi-k2p6-turbo": {
-      "name": "Kimi K2p6 TURBO"
-    },
     "accounts/fireworks/models/kimi-k2p7-code": {
       "name": "Kimi K2p7 Code"
-    },
-    "accounts/fireworks/routers/kimi-k2p7-code-fast": {
-      "name": "Kimi K2p7 Code FAST"
     },
     "accounts/fireworks/models/minimax-m2p7": {
       "name": "Minimax M2p7"
@@ -77,9 +71,6 @@
     "accounts/fireworks/models/qwen3p7-plus": {
       "name": "Qwen3p7 PLUS"
     },
-    "accounts/fireworks/models/gpt-oss-20b": {
-      "name": "Gpt OSS 20B"
-    },
     "accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
       "name": "Nemotron 3 ULTRA Nvfp4"
     },
@@ -107,6 +98,15 @@
     "accounts/fireworks/models/deepseek-v4-pro-0813": {
       "name": "Deepseek V4 PRO 0813"
     },
+    "accounts/fireworks/models/glm-5p3": {
+      "name": "Glm 5p3"
+    },
+    "accounts/fireworks/models/glm-5p3-flash": {
+      "name": "Glm 5p3 FLASH"
+    },
+    "accounts/fireworks/models/deepseek-v4-flash-vision-exp": {
+      "name": "Deepseek V4 FLASH Vision Exp"
+    },
     "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
       "name": "Qwen3p8 2p4t A95b"
     },
@@ -115,6 +115,15 @@
     },
     "accounts/fireworks/models/inkling": {
       "name": "Inkling"
+    },
+    "accounts/fireworks/routers/kimi-k2p6-turbo": {
+      "name": "Kimi K2p6 TURBO"
+    },
+    "accounts/fireworks/routers/kimi-k2p7-code-fast": {
+      "name": "Kimi K2p7 Code FAST"
+    },
+    "accounts/fireworks/models/gpt-oss-20b": {
+      "name": "Gpt OSS 20B"
     },
     "accounts/fireworks/models/deepseek-v4-flash": {
       "name": "Deepseek V4 FLASH"
@@ -129,5 +138,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-08-25T12:43:02.082Z"
+  "_syncedAt": "2026-09-02T12:29:42.138Z"
 }

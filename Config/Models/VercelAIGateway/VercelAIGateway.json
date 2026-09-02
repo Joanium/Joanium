@@ -368,10 +368,52 @@
         "image": true
       }
     },
+    "alibaba/qwen3.8-flash": {
+      "name": "Qwen 3.8 Flash",
+      "description": "Qwen3.8-Flash is Qwen’s fast, cost-efficient multimodal model, combining advanced reasoning and generation with a native 1M-token context window. Built for coding, agentic workflows, and visual understanding, it handles large codebases, long documents, charts, videos, and desktop applications.",
+      "context_window": 991000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.16,
+        "output": 0.47
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3.8-flash-next": {
+      "name": "Qwen 3.8 Flash Next",
+      "description": "Qwen3.8-Flash-Next is Qwen’s experimental open-weight multimodal language model, pairing 125B parameters with just 6B activated for efficient reasoning and generation. With native 262K-token context extensible to 1M, vision support, and an architecture optimized for lower long-context latency, it is",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.12,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.8-max": {
       "name": "Qwen 3.8 Max",
       "description": "Qwen 3.8 Max is a 2.4-trillion-parameter MoE model delivering a comprehensive leap in coding and professional work. Autonomously codes and delivers complete projects spanning 10+ days. Handles hundreds of specialized tasks across legal, financial, design, and other professional domains, producing pr",
       "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3.8-max-0902": {
+      "name": "Qwen3.8 Max 0902",
+      "description": "Qwen3.8-Max-0902 is an upgraded snapshot of qwen3.8-max.",
+      "context_window": 991000,
       "max_output": 128000,
       "pricing": {
         "input": 2,
@@ -452,6 +494,20 @@
     "anthropic/claude-fable-5": {
       "name": "Claude Fable 5",
       "description": "Claude Fable 5 is a Mythos-class model with robust safeguards. It can handle long-running, complex, and asynchronous tasks where previous models would have needed more frequent check-ins.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5.1": {
+      "name": "Claude Fable 5.1",
+      "description": "Claude Fable 5.1 improves on Fable 5 across long-running agentic coding, knowledge work, and research, following instructions precisely over sessions that run unattended for hours.",
       "context_window": 1000000,
       "max_output": 128000,
       "pricing": {
@@ -708,19 +764,6 @@
       "pricing": {
         "input": 1.35,
         "output": 5.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v3": {
-      "name": "DeepSeek V3 0324",
-      "description": "Fast general-purpose LLM with enhanced reasoning capabilities",
-      "context_window": 163840,
-      "max_output": 16384,
-      "pricing": {
-        "input": 0.77,
-        "output": 0.77
       },
       "inputs": {
         "text": true
@@ -1060,6 +1103,32 @@
       "pricing": {
         "input": 0.06,
         "output": 0.18
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin": {
+      "name": "Ling 3.0 Flash Fin",
+      "description": "Ling 3.0 Flash Fin is InclusionAI’s finance-enhanced MoE language model, combining 124 billion total parameters with approximately 5.1 billion active parameters for efficient financial reasoning. Its 256K context window, function calling, and support for complex, multi-step investment workflows make",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin-free": {
+      "name": "Ling 3.0 Flash Fin (Free)",
+      "description": "Ling 3.0 Flash Fin is InclusionAI’s finance-enhanced MoE language model, combining 124 billion total parameters with approximately 5.1 billion active parameters for efficient financial reasoning. Its 256K context window, function calling, and support for complex, multi-step investment workflows make",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -2704,6 +2773,19 @@
         "text": true
       }
     },
+    "tencent/hy4-preview": {
+      "name": "Tencent Hy4 Preview",
+      "description": "Tencent Hy4 preview is Tencent Hy’s open-source large language model, featuring 770B total parameters, 49B active parameters, and a context window exceeding 1 million tokens. Built for real-world productivity, it supports long-horizon coding, cross-document analysis, office content creation, game de",
+      "context_window": 1024000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.83,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "thinkingmachines/inkling": {
       "name": "Inkling",
       "description": "Inkling is a multimodal MoE model (975B total, 41B active, 256k context) reasoning over text, image, and audio inputs.",
@@ -2926,6 +3008,19 @@
         "image": true
       }
     },
+    "xiaomi/mimo-v2.5-pro-ultraspeed": {
+      "name": "MiMo V2.5 Pro UltraSpeed",
+      "description": "MiMo-V2.5-Pro-UltraSpeed is Xiaomi’s ultra-fast, text-based flagship reasoning model, pairing a trillion-parameter model with a 1,048,576-token context window and generation speeds of roughly 500–1,000 tokens per second. It supports deep thinking, tool calling, streaming output, and context caching,",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 1.31,
+        "output": 2.61
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "zai/glm-4.5": {
       "name": "GLM-4.5",
       "description": "GLM-4.5 and GLM-4.5-Air are our latest flagship models, purpose-built as foundational models for agent-oriented applications. Both leverage a Mixture-of-Experts (MoE) architecture. GLM-4.5 has a total parameter count of 355B with 32B active parameters per forward pass, while GLM-4.5-Air adopts a mor",
@@ -3096,6 +3191,20 @@
         "text": true
       }
     },
+    "zai/glm-5.3-flash": {
+      "name": "GLM 5.3 Flash",
+      "description": "GLM-5.3-Flash is Z.ai’s native multimodal coding model, featuring 320B total parameters, 18B activated parameters, and a 1M-token context window. Its efficient hybrid attention architecture supports visual coding, tool use, and end-to-end professional workflows across code, browsers, documents, and ",
+      "context_window": 1000000,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai/glm-5v-turbo": {
       "name": "GLM 5V Turbo",
       "description": "GLM-5V-Turbo is Z.AI’s first multimodal coding foundation model, built for vision-based coding tasks. It can natively process multimodal inputs such as images, video, and text, while also excelling at long-horizon planning, complex coding, and action execution. Deeply optimized for agent workflows, ",
@@ -3108,6 +3217,19 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "deepseek/deepseek-v3": {
+      "name": "DeepSeek V3 0324",
+      "description": "Fast general-purpose LLM with enhanced reasoning capabilities",
+      "context_window": 163840,
+      "max_output": 16384,
+      "pricing": {
+        "input": 0.77,
+        "output": 0.77
+      },
+      "inputs": {
+        "text": true
       }
     },
     "arcee-ai/trinity-mini": {
@@ -3671,5 +3793,5 @@
       }
     }
   },
-  "_syncedAt": "2026-08-25T12:43:19.010Z"
+  "_syncedAt": "2026-09-02T12:29:59.166Z"
 }
