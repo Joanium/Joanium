@@ -1184,6 +1184,25 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash-vl": {
+      "name": "Ling 3.0 Flash VL",
+      "description": "Ling-3.0-flash-VL builds on Ling-3.0-flash, further strengthening its language capabilities while adding native visual perception and advanced visual agent capabilities. ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-sante": {
+      "name": "Ling 3.0 Flash Sante",
+      "description": "Ling-3.0-Flash-Sante is a Mixture-of-Experts (MoE) model with enhanced capabilities across health and medicine. Built on Ling-3.0-Flash, it has 124 billion total parameters and activates approximately 5.1 billion parameters per token. The model excels in medical knowledge reasoning, clinical safety,",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
     "inclusionai/ring-2.6-1t": {
       "name": "Ring-2.6-1T",
       "context_window": 262144,
@@ -1450,5 +1469,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-02T12:29:54.070Z"
+  "_syncedAt": "2026-09-04T15:53:11.677Z"
 }

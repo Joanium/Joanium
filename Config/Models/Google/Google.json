@@ -142,6 +142,11 @@
       "context_window": 1048576,
       "max_output": 65536
     },
+    "gemini-3.8-flash": {
+      "name": "Gemini 3.8 Flash",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
     "lyria-3-clip-preview": {
       "name": "Lyria 3 Clip Preview",
       "context_window": 1048576,
@@ -149,6 +154,11 @@
     },
     "lyria-3-pro-preview": {
       "name": "Lyria 3 Pro Preview",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
+    "lyria-3.5": {
+      "name": "Lyria 3.5",
       "context_window": 1048576,
       "max_output": 65536
     },
@@ -220,5 +230,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-09-02T12:29:32.738Z"
+  "_syncedAt": "2026-09-04T15:52:53.320Z"
 }

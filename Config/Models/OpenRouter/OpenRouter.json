@@ -5,6 +5,58 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "meta/muse-spark-1.3-contributor": {
+      "name": "Meta: Muse Spark 1.3 Contributor",
+      "description": "Muse Spark 1.3 Contributor is the cost-efficient contributor tier of Meta’s multimodal reasoning model for experimentation, learning, and early-stage agentic, multi-agent, and coding workflows. It is designed to track information...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.3": {
+      "name": "Meta: Muse Spark 1.3",
+      "description": "Muse Spark 1.3 is a multimodal reasoning model from Meta for long-running agentic, multi-agent, and coding workflows. It is designed to keep track of information across extended tasks, work through...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.8-flash": {
+      "name": "Google: Gemini 3.8 Flash",
+      "description": "Gemini 3.8 Flash is Google's most intelligent Flash model with significant gains from 3.7 Flash across software engineering, agentic tasks, and multi-step reasoning.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.8-flash:batch": {
+      "name": "Google: Gemini 3.8 Flash (batch)",
+      "description": "Gemini 3.8 Flash is Google's most intelligent Flash model with significant gains from 3.7 Flash across software engineering, agentic tasks, and multi-step reasoning.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.88
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-fable-5.1": {
       "name": "Anthropic: Claude Fable 5.1",
       "description": "Claude Fable 5.1 improves on Claude Fable 5 across the board, with the biggest gains in agentic coding, long-running agentic workflows, and knowledge work: long code refactors, front-end and visual...",
@@ -62,6 +114,18 @@
       "pricing": {
         "input": 0.83,
         "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin": {
+      "name": "Ling 3.0 Flash Fin",
+      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.18
       },
       "inputs": {
         "text": true
@@ -1192,6 +1256,19 @@
         "image": true
       }
     },
+    "nvidia/nemotron-3.5-content-safety": {
+      "name": "NVIDIA: Nemotron 3.5 Content Safety",
+      "description": "NVIDIA Nemotron 3.5 Content Safety is a compact 4B-parameter multimodal guardrail model from NVIDIA, fine-tuned from Google Gemma-3-4B. It moderates both inputs to and responses from LLMs and VLMs, accepting...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "nvidia/nemotron-3.5-content-safety:free": {
       "name": "NVIDIA: Nemotron 3.5 Content Safety (free)",
       "description": "NVIDIA Nemotron 3.5 Content Safety is a compact 4B-parameter multimodal guardrail model from NVIDIA, fine-tuned from Google Gemma-3-4B. It moderates both inputs to and responses from LLMs and VLMs, accepting...",
@@ -1212,18 +1289,6 @@
       "pricing": {
         "input": 0.5,
         "output": 2.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "nvidia/nemotron-3-ultra-550b-a55b:batch": {
-      "name": "NVIDIA: Nemotron 3 Ultra (batch)",
-      "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
-      "context_window": 512288,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.8
       },
       "inputs": {
         "text": true
@@ -1442,6 +1507,19 @@
       "pricing": {
         "input": 1.25,
         "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "x-ai/grok-4.3:batch": {
+      "name": "SpaceXAI: Grok 4.3 (batch)",
+      "description": "Grok 4.3 is a reasoning model from SpaceXAI. It accepts text and image inputs with text output, and is suited for agentic workflows, instruction-following tasks, and applications requiring high factual...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 1,
+        "output": 2
       },
       "inputs": {
         "text": true,
@@ -5198,6 +5276,18 @@
         "text": true
       }
     },
+    "nvidia/nemotron-3-ultra-550b-a55b:batch": {
+      "name": "NVIDIA: Nemotron 3 Ultra (batch)",
+      "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
+      "context_window": 512288,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "stealth/ox-alpha": {
       "name": "Ox Alpha",
       "description": "Ox Alpha is a reasoning model designed for coding, sustained agentic work, and production workloads. It is suited for long-horizon software engineering, complex reasoning, and workflows that combine text with...",
@@ -6034,5 +6124,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-02T12:29:31.300Z"
+  "_syncedAt": "2026-09-04T15:52:50.123Z"
 }

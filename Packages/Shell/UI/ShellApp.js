@@ -2,7 +2,7 @@ import strings from '../I18n/en.js';
 import { createElement, formatText } from '../../Shared/Utils/DomUtils.js';
 import { collapseWhitespace, getNameInitials } from '../../Shared/Utils/StringUtils.js';
 import { toFileUrl } from '../../Shared/Utils/UrlUtils.js';
-import { invokeIpc } from '../../Shared/Ipc/RendererIpc.js';
+import { invokeIpc, onIpc } from '../../Shared/Ipc/RendererIpc.js';
 import { createIcon, iconMarkup } from '../../Shared/Icons/Icons.js';
 import { EVENTS } from '../../Shared/Events/RendererEvents.js';
 import { createChatView } from '../../Chat/UI/ChatApp.js';
@@ -120,6 +120,7 @@ async function bootstrap() {
   let settingsPanel = null;
   let avatarInitials = null;
   let avatarImg = null;
+  let sidebarAvatarContent = null;
   const channelGateway = createChannelGateway(strings.channels, {
     chatStrings: strings.chat,
     getActivePersona: () => activePersona,
@@ -479,7 +480,7 @@ async function bootstrap() {
         avatarImg = createElement('img', 'chat-sidebar__avatar-img');
         avatarImg.src = src;
         avatarImg.alt = '';
-        sidebarAvatar.replaceChildren(avatarImg);
+        sidebarAvatarContent.replaceChildren(avatarImg);
         avatarInitials = null;
       }
     } else {
@@ -490,7 +491,7 @@ async function bootstrap() {
           'chat-sidebar__avatar-initials',
           getNameInitials(profile.name),
         );
-        sidebarAvatar.replaceChildren(avatarInitials);
+        sidebarAvatarContent.replaceChildren(avatarInitials);
         avatarImg = null;
       } else if (avatarInitials) {
         // Just updating the name initials
@@ -716,21 +717,38 @@ async function bootstrap() {
   const sidebarAvatar = createElement('button', 'chat-sidebar__avatar');
   sidebarAvatar.type = 'button';
   sidebarAvatar.setAttribute('aria-label', strings.profile);
+  const avatarProgress = createElement('span', 'chat-sidebar__avatar-progress');
+  avatarProgress.setAttribute('aria-hidden', 'true');
+  sidebarAvatarContent = createElement('span', 'chat-sidebar__avatar-content');
 
   // Initial render — show photo if we already have one, otherwise initials.
   if (profile.avatarPath) {
     avatarImg = createElement('img', 'chat-sidebar__avatar-img');
     avatarImg.src = toFileUrl(profile.avatarPath);
     avatarImg.alt = '';
-    sidebarAvatar.append(avatarImg);
+    sidebarAvatarContent.append(avatarImg);
   } else {
     avatarInitials = createElement(
       'span',
       'chat-sidebar__avatar-initials',
       getNameInitials(profile.name),
     );
-    sidebarAvatar.append(avatarInitials);
+    sidebarAvatarContent.append(avatarInitials);
   }
+
+  sidebarAvatar.append(avatarProgress, sidebarAvatarContent);
+
+  function syncUpdateDownloadProgress(updateState) {
+    const isDownloading = updateState?.status === 'downloading';
+    const rawPercent = Number(updateState?.progress?.percent);
+    const percent = Number.isFinite(rawPercent) ? Math.min(100, Math.max(0, rawPercent)) : 0;
+
+    avatarProgress.style.setProperty('--download-progress', `${percent * 3.6}deg`);
+    avatarProgress.classList.toggle('chat-sidebar__avatar-progress--visible', isDownloading);
+  }
+
+  syncUpdateDownloadProgress(appSettings.autoUpdateState);
+  onIpc('auto-update:state', syncUpdateDownloadProgress);
 
   sidebarAvatar.addEventListener('click', () => {
     void play('sidebar-click');

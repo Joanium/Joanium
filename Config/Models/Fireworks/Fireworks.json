@@ -101,6 +101,9 @@
     "accounts/fireworks/models/glm-5p3": {
       "name": "Glm 5p3"
     },
+    "accounts/fireworks/routers/glm-5p3-fast": {
+      "name": "Glm 5p3 FAST"
+    },
     "accounts/fireworks/models/glm-5p3-flash": {
       "name": "Glm 5p3 FLASH"
     },
@@ -138,5 +141,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-09-02T12:29:42.138Z"
+  "_syncedAt": "2026-09-04T15:53:01.114Z"
 }

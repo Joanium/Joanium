@@ -261,9 +261,6 @@
     "nvidia/vila": {
       "name": "nvidia/vila"
     },
-    "openai/gpt-oss-120b": {
-      "name": "openai/gpt-oss-120b"
-    },
     "openai/gpt-oss-20b": {
       "name": "GPT OSS 20B",
       "description": "OpenAI's open-source 20B model — cheapest per-token on NIM at $0.03/1M input",
@@ -300,6 +297,9 @@
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "openai/gpt-oss-120b": {
+      "name": "openai/gpt-oss-120b"
     },
     "meta/llama-3.1-70b-instruct": {
       "name": "meta/llama-3.1-70b-instruct"
@@ -478,5 +478,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-02T12:29:29.518Z"
+  "_syncedAt": "2026-09-04T15:52:44.005Z"
 }

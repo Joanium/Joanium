@@ -1027,6 +1027,20 @@
         "image": true
       }
     },
+    "google/gemini-3.8-flash": {
+      "name": "Gemini 3.8 Flash",
+      "description": "Gemini 3.8 Flash is the high-efficiency, cost-effective powerhouse of the Gemini 3 family. It delivers Pro-level agentic capabilities, major leaps in code generation and terminal execution. 3.8 Flash serves as the primary agentic workhorse in the Gemini 3 family, bridging the gap between deep-reason",
+      "context_window": 1000000,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-omni-flash-preview": {
       "name": "Gemini Omni Flash Preview",
       "description": "Gemini Omni Flash (Preview) is a multimodal model designed for video, image, and text tasks. It is optimized for video generation, offering video output alongside text responses in a single model.",
@@ -1310,6 +1324,34 @@
     "meta/muse-spark-1.2-contributor": {
       "name": "Muse Spark 1.2 Contributor",
       "description": "A coding-optimized model with pricing designed for builders. Same model, same capabilities — up to 95% less than Standard. Your inputs and outputs are used to train and improve Meta's AI models.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.3": {
+      "name": "Muse Spark 1.3",
+      "description": "Muse Spark 1.3 is Meta’s multimodal reasoning model for long-horizon agentic and coding workflows. With a 1M-token context window, reliable tool calling, higher first-attempt accuracy, and native understanding of video, images, and documents, it helps developers build capable coding agents and AI de",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.3-contributor": {
+      "name": "Muse Spark 1.3 Contributor",
+      "description": "Muse Spark 1.3 Contributor is Meta’s cost-optimized API option for agentic coding workflows. It offers a 1M-token context window, dependable tool calling, and multimodal perception at $0.10 per million input tokens and $0.20 per million output tokens, with usage permitted to improve Meta’s products.",
       "context_window": 1048576,
       "max_output": 1048576,
       "pricing": {
@@ -3191,6 +3233,19 @@
         "text": true
       }
     },
+    "zai/glm-5.3-fast": {
+      "name": "GLM 5.3 Fast",
+      "description": "Speed-optimized version of Z.AI’s GLM-5.3 agentic coding model, built for responsive, real-time workloads. It supports advanced coding, long-horizon task execution, testing, vulnerability discovery, and cybersecurity analysis, making it ideal for developer tools, coding agents, and complex multi-ste",
+      "context_window": 1048576,
+      "max_output": 262144,
+      "pricing": {
+        "input": 2.1,
+        "output": 6.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "zai/glm-5.3-flash": {
       "name": "GLM 5.3 Flash",
       "description": "GLM-5.3-Flash is Z.ai’s native multimodal coding model, featuring 320B total parameters, 18B activated parameters, and a 1M-token context window. Its efficient hybrid attention architecture supports visual coding, tool use, and end-to-end professional workflows across code, browsers, documents, and ",
@@ -3203,6 +3258,19 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "zai/glm-5.3-promo-50": {
+      "name": "GLM 5.3 (50% off)",
+      "description": "GLM 5.3 delivers comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
       }
     },
     "zai/glm-5v-turbo": {
@@ -3793,5 +3861,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-02T12:29:59.166Z"
+  "_syncedAt": "2026-09-04T15:53:17.472Z"
 }

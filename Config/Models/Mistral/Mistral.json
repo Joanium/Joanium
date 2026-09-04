@@ -67,25 +67,6 @@
     "labs-leanstral-1-5": {
       "name": "Labs Leanstral 1 5"
     },
-    "mistral-large-2512": {
-      "name": "mistral-large-2512"
-    },
-    "mistral-large-latest": {
-      "name": "Mistral Large 3",
-      "description": "Open-weight flagship — multimodal reasoning with 262K context, Apache 2.0 licensed",
-      "context_window": 262000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      }
-    },
     "ministral-3b-2512": {
       "name": "ministral-3b-2512"
     },
@@ -208,6 +189,25 @@
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
     },
+    "mistral-large-2512": {
+      "name": "mistral-large-2512"
+    },
+    "mistral-large-latest": {
+      "name": "Mistral Large 3",
+      "description": "Open-weight flagship — multimodal reasoning with 262K context, Apache 2.0 licensed",
+      "context_window": 262000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      }
+    },
     "mistral-medium-2505": {
       "name": "mistral-medium-2505"
     },
@@ -288,5 +288,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-09-02T12:29:32.157Z"
+  "_syncedAt": "2026-09-04T15:52:52.111Z"
 }

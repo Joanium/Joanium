@@ -26,8 +26,8 @@
         "max_output_tokens": null
       }
     },
-    "gemini-3.7-flash": {
-      "name": "Gemini 3 7 FLASH",
+    "gemini-3.8-flash": {
+      "name": "Gemini 3 8 FLASH",
       "context_window": {
         "context_length": 1048576,
         "max_output_tokens": null
@@ -57,8 +57,12 @@
         "max_output_tokens": 128000
       }
     },
-    "gemini-3.6-flash": {
-      "name": "Gemini 3 6 FLASH"
+    "gemini-3.7-flash": {
+      "name": "Gemini 3 7 FLASH",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
     },
     "inkling": {
       "name": "Inkling",
@@ -76,12 +80,8 @@
     "gemini-omni-flash": {
       "name": "Gemini Omni FLASH"
     },
-    "gemini-3.5-flash": {
-      "name": "Gemini 3 5 FLASH",
-      "context_window": {
-        "context_length": 1048576,
-        "max_output_tokens": 65536
-      }
+    "gemini-3.6-flash": {
+      "name": "Gemini 3 6 FLASH"
     },
     "nano-banana-2": {
       "name": "Nano Banana 2",
@@ -112,6 +112,13 @@
       "context_window": {
         "context_length": 400000,
         "max_output_tokens": 128000
+      }
+    },
+    "gemini-3.5-flash": {
+      "name": "Gemini 3 5 FLASH",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": 65536
       }
     },
     "gemini-3.1-pro": {
@@ -1306,6 +1313,13 @@
     "deepseek-vision-exp": {
       "name": "Deepseek Vision Exp"
     },
+    "qwen3.8-max-0902-el": {
+      "name": "Qwen3 8 MAX 0902 El",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
     "grok-4.1-fast-reasoning": {
       "name": "Grok 4 1 FAST Reasoning",
       "context_window": {
@@ -1779,5 +1793,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-02T12:30:00.249Z"
+  "_syncedAt": "2026-09-04T15:53:19.521Z"
 }
