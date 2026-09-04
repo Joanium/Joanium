@@ -6,6 +6,14 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.904.0] - 2026-09-04
+
+* Update model configurations and enhance sidebar avatar functionality
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.8 to 4.37.9
+* Chore(deps-dev): Bump jscpd from 5.0.16 to 5.1.0
+
+---
+
 ## [2026.902.0] - 2026-09-02
 
 * Updated Joanium Version
