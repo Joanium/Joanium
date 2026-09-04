@@ -280,6 +280,13 @@
 .joanium-theme-dark {
   color-scheme: dark;
 
+  /* ── Semantic colours ─────────────────────────────────────────────── */
+
+  --color-danger: #f4a09a;
+  --color-danger-rgb: 244, 160, 154;
+  --color-danger-text: #f4a09a;
+  --color-danger-subtle: #e18179;
+
   /* ── Text colours ─────────────────────────────────────────────────── */
 
   --color-text: #f0e8ff;

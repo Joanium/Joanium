@@ -38,9 +38,6 @@
     "ibm-granite/granite-4.2-3b": {
       "name": "Granite 4 2 3B"
     },
-    "zai-org/GLM-5.3-BF16": {
-      "name": "GLM 5 3 BF16"
-    },
     "Qwen/Qwen3.8-2.4T-A95B": {
       "name": "Qwen3 8 2 4T A95B"
     },
@@ -49,6 +46,9 @@
     },
     "openai/gpt-oss-20b": {
       "name": "Gpt OSS 20B"
+    },
+    "zai-org/GLM-5.3-BF16": {
+      "name": "GLM 5 3 BF16"
     },
     "deepseek-ai/DeepSeek-V4-Flash": {
       "name": "DeepSeek V4 FLASH"
@@ -59,20 +59,23 @@
     "google/gemma-4-26B-A4B-it": {
       "name": "Gemma 4 26B A4B It"
     },
-    "Qwen/Qwen3.5-9B": {
-      "name": "Qwen3 5 9B"
-    },
     "thinkingmachines/Inkling-Small": {
       "name": "Inkling Small"
+    },
+    "Qwen/Qwen3.5-9B": {
+      "name": "Qwen3 5 9B"
     },
     "inclusionAI/Ling-3.0-flash": {
       "name": "Ling 3 0 FLASH"
     },
+    "zai-org/GLM-5.3-Flash-BF16": {
+      "name": "GLM 5 3 FLASH BF16"
+    },
     "deepseek-ai/DeepSeek-V4-Pro": {
       "name": "DeepSeek V4 PRO"
     },
-    "zai-org/GLM-5.3-Flash-BF16": {
-      "name": "GLM 5 3 FLASH BF16"
+    "prism-ml/Ternary-Bonsai-27B-gguf": {
+      "name": "Ternary Bonsai 27B Gguf"
     },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
@@ -83,9 +86,6 @@
         "pdf": false,
         "docx": false
       }
-    },
-    "prism-ml/Ternary-Bonsai-27B-gguf": {
-      "name": "Ternary Bonsai 27B Gguf"
     },
     "thinkingmachines/Inkling": {
       "name": "Inkling"
@@ -120,47 +120,44 @@
     "Qwen/Qwen2.5-7B-Instruct": {
       "name": "Qwen2 5 7B Instruct"
     },
-    "swiss-ai/Apertus-v1.5-8B": {
-      "name": "Apertus V1 5 8B"
+    "Qwen/Qwen3-14B": {
+      "name": "Qwen3 14B"
     },
     "Qwen/Qwen2.5-Coder-32B-Instruct": {
       "name": "Qwen2 5 Coder 32B Instruct"
     },
+    "swiss-ai/Apertus-v1.5-8B": {
+      "name": "Apertus V1 5 8B"
+    },
     "Qwen/Qwen3-Coder-Next": {
       "name": "Qwen3 Coder Next"
-    },
-    "Qwen/Qwen3-14B": {
-      "name": "Qwen3 14B"
     },
     "Qwen/Qwen3-4B-Instruct-2507": {
       "name": "Qwen3 4B Instruct 2507"
     },
-    "zai-org/GLM-4.7-Flash": {
-      "name": "GLM 4 7 FLASH"
-    },
     "Qwen/Qwen3.6-27B": {
       "name": "Qwen3 6 27B"
-    },
-    "XiaomiMiMo/MiMo-V2.5": {
-      "name": "MiMo V2 5"
     },
     "Qwen/Qwen3-30B-A3B": {
       "name": "Qwen3 30B A3B"
     },
+    "XiaomiMiMo/MiMo-V2.5": {
+      "name": "MiMo V2 5"
+    },
+    "zai-org/GLM-4.7-Flash": {
+      "name": "GLM 4 7 FLASH"
+    },
     "moonshotai/Kimi-K2.7-Code": {
       "name": "Kimi K2 7 Code"
-    },
-    "Qwen/Qwen3.5-35B-A3B": {
-      "name": "Qwen3 5 35B A3B"
     },
     "google/gemma-3-27b-it": {
       "name": "Gemma 3 27B It"
     },
-    "XiaomiMiMo/MiMo-V2.5-Pro": {
-      "name": "MiMo V2 5 PRO"
-    },
     "microsoft/phi-4": {
       "name": "Phi 4"
+    },
+    "XiaomiMiMo/MiMo-V2.5-Pro": {
+      "name": "MiMo V2 5 PRO"
     },
     "Qwen/Qwen3.5-122B-A10B": {
       "name": "Qwen3 5 122B A10B"
@@ -168,68 +165,98 @@
     "Qwen/Qwen3-Coder-30B-A3B-Instruct": {
       "name": "Qwen3 Coder 30B A3B Instruct"
     },
-    "speakleash/Bielik-11B-v3.0-Instruct": {
-      "name": "Bielik 11B V3 0 Instruct"
-    },
-    "zai-org/GLM-5.2-FP8": {
-      "name": "GLM 5 2 FP8"
-    },
-    "Qwen/Qwen3-235B-A22B-Instruct-2507": {
-      "name": "Qwen3 235B A22B Instruct 2507"
-    },
-    "Qwen/Qwen3-VL-30B-A3B-Instruct": {
-      "name": "Qwen3 VL 30B A3B Instruct"
-    },
-    "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16": {
-      "name": "NVIDIA Nemotron 3 ULTRA 550B A55B BF16"
+    "Qwen/Qwen3.5-35B-A3B": {
+      "name": "Qwen3 5 35B A3B"
     },
     "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4": {
       "name": "NVIDIA Nemotron 3 ULTRA 550B A55B NVFP4"
     },
-    "Sao10K/L3-8B-Stheno-v3.2": {
-      "name": "L3 8B Stheno V3 2"
+    "speakleash/Bielik-11B-v3.0-Instruct": {
+      "name": "Bielik 11B V3 0 Instruct"
+    },
+    "Qwen/Qwen3-235B-A22B-Instruct-2507": {
+      "name": "Qwen3 235B A22B Instruct 2507"
+    },
+    "zai-org/GLM-5.2-FP8": {
+      "name": "GLM 5 2 FP8"
+    },
+    "Qwen/Qwen3-VL-30B-A3B-Instruct": {
+      "name": "Qwen3 VL 30B A3B Instruct"
     },
     "swiss-ai/Apertus-v1.5-70B": {
       "name": "Apertus V1 5 70B"
     },
+    "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16": {
+      "name": "NVIDIA Nemotron 3 ULTRA 550B A55B BF16"
+    },
+    "Sao10K/L3-8B-Stheno-v3.2": {
+      "name": "L3 8B Stheno V3 2"
+    },
     "meta-llama/Llama-4-Scout-17B-16E-Instruct": {
       "name": "Llama 4 Scout 17B 16E Instruct"
-    },
-    "moonshotai/Kimi-K2.5": {
-      "name": "Kimi K2 5"
     },
     "Qwen/Qwen3.5-397B-A17B": {
       "name": "Qwen3 5 397B A17B"
     },
+    "NousResearch/Hermes-3-Llama-3.1-70B": {
+      "name": "Hermes 3 Llama 3 1 70B"
+    },
     "Qwen/Qwen3-235B-A22B": {
       "name": "Qwen3 235B A22B"
-    },
-    "Qwen/Qwen3.5-27B": {
-      "name": "Qwen3 5 27B"
-    },
-    "Qwen/Qwen3-Next-80B-A3B-Instruct": {
-      "name": "Qwen3 Next 80B A3B Instruct"
-    },
-    "moonshotai/Kimi-K2.6": {
-      "name": "Kimi K2 6"
     },
     "Qwen/Qwen3-32B": {
       "name": "Qwen3 32B"
     },
-    "NousResearch/Hermes-3-Llama-3.1-70B": {
-      "name": "Hermes 3 Llama 3 1 70B"
+    "Qwen/Qwen3-Next-80B-A3B-Instruct": {
+      "name": "Qwen3 Next 80B A3B Instruct"
     },
     "Qwen/Qwen3-4B-Thinking-2507": {
       "name": "Qwen3 4B Thinking 2507"
     },
+    "moonshotai/Kimi-K2.5": {
+      "name": "Kimi K2 5"
+    },
     "google/gemma-3-4b-it": {
       "name": "Gemma 3 4B It"
+    },
+    "Qwen/Qwen3.5-27B": {
+      "name": "Qwen3 5 27B"
+    },
+    "moonshotai/Kimi-K2.6": {
+      "name": "Kimi K2 6"
     },
     "zai-org/GLM-4.7": {
       "name": "GLM 4 7"
     },
+    "alpindale/WizardLM-2-8x22B": {
+      "name": "WizardLM 2 8x22B"
+    },
     "baidu/ERNIE-4.5-VL-424B-A47B-Base-PT": {
       "name": "ERNIE 4 5 VL 424B A47B Base PT"
+    },
+    "Sao10K/L3-8B-Lunaris-v1": {
+      "name": "L3 8B Lunaris V1"
+    },
+    "zai-org/GLM-4.6V-Flash": {
+      "name": "GLM 4 6V FLASH"
+    },
+    "moonshotai/Kimi-K2-Instruct": {
+      "name": "Kimi K2 Instruct"
+    },
+    "zai-org/AutoGLM-Phone-9B-Multilingual": {
+      "name": "AutoGLM Phone 9B Multilingual"
+    },
+    "Qwen/Qwen3-235B-A22B-Thinking-2507": {
+      "name": "Qwen3 235B A22B Thinking 2507"
+    },
+    "zai-org/GLM-4.7-FP8": {
+      "name": "GLM 4 7 FP8"
+    },
+    "deepseek-ai/DeepSeek-V3.1": {
+      "name": "DeepSeek V3 1"
+    },
+    "zai-org/GLM-5.1": {
+      "name": "GLM 5 1"
     },
     "deepseek-ai/DeepSeek-R1-Distill-Llama-8B": {
       "name": "DeepSeek R1 Distill Llama 8B"
@@ -237,86 +264,77 @@
     "google/gemma-3-12b-it": {
       "name": "Gemma 3 12B It"
     },
-    "zai-org/GLM-4.6V-Flash": {
-      "name": "GLM 4 6V FLASH"
-    },
     "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B": {
       "name": "DeepSeek R1 Distill Qwen 7B"
     },
     "stepfun-ai/Step-3.7-Flash": {
       "name": "Step 3 7 FLASH"
     },
-    "zai-org/AutoGLM-Phone-9B-Multilingual": {
-      "name": "AutoGLM Phone 9B Multilingual"
-    },
     "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B": {
       "name": "DeepSeek R1 Distill Qwen 14B"
-    },
-    "zai-org/GLM-4.7-FP8": {
-      "name": "GLM 4 7 FP8"
     },
     "Qwen/Qwen2.5-72B-Instruct": {
       "name": "Qwen2 5 72B Instruct"
     },
-    "zai-org/GLM-5.1": {
-      "name": "GLM 5 1"
-    },
     "deepseek-ai/DeepSeek-V3-0324": {
       "name": "DeepSeek V3 0324"
-    },
-    "alpindale/WizardLM-2-8x22B": {
-      "name": "WizardLM 2 8x22B"
-    },
-    "Qwen/Qwen3-235B-A22B-Thinking-2507": {
-      "name": "Qwen3 235B A22B Thinking 2507"
-    },
-    "Sao10K/L3-8B-Lunaris-v1": {
-      "name": "L3 8B Lunaris V1"
-    },
-    "deepseek-ai/DeepSeek-V3.1": {
-      "name": "DeepSeek V3 1"
-    },
-    "moonshotai/Kimi-K2-Instruct": {
-      "name": "Kimi K2 Instruct"
     },
     "deepseek-ai/DeepSeek-V3": {
       "name": "DeepSeek V3"
     },
-    "meta-llama/Llama-Guard-4-12B": {
-      "name": "Llama Guard 4 12B"
+    "CohereLabs/c4ai-command-r-08-2024": {
+      "name": "C4ai Command R 08 2024"
     },
     "zai-org/GLM-4.5V-FP8": {
       "name": "GLM 4 5V FP8"
     },
-    "deepseek-ai/DeepSeek-R1-Distill-Llama-70B": {
-      "name": "DeepSeek R1 Distill Llama 70B"
+    "openai/gpt-oss-safeguard-20b": {
+      "name": "Gpt OSS Safeguard 20B"
     },
     "deepseek-ai/DeepSeek-R1-0528": {
       "name": "DeepSeek R1 0528"
     },
-    "Qwen/Qwen3-VL-235B-A22B-Instruct": {
-      "name": "Qwen3 VL 235B A22B Instruct"
+    "CohereLabs/aya-expanse-32b": {
+      "name": "Aya Expanse 32B"
     },
     "zai-org/GLM-4.5V": {
       "name": "GLM 4 5V"
     },
-    "zai-org/GLM-4-32B-0414": {
-      "name": "GLM 4 32B 0414"
+    "CohereLabs/aya-vision-32b": {
+      "name": "Aya Vision 32B"
     },
     "deepseek-ai/DeepSeek-V3.1-Terminus": {
       "name": "DeepSeek V3 1 Terminus"
     },
-    "CohereLabs/aya-vision-32b": {
-      "name": "Aya Vision 32B"
+    "CohereLabs/c4ai-command-r7b-12-2024": {
+      "name": "C4ai Command R7B 12 2024"
     },
     "zai-org/GLM-4.6V": {
       "name": "GLM 4 6V"
     },
-    "MiniMaxAI/MiniMax-M1-80k": {
-      "name": "MiniMax M1 80K"
+    "meta-llama/Llama-Guard-4-12B": {
+      "name": "Llama Guard 4 12B"
     },
     "zai-org/GLM-4.6": {
       "name": "GLM 4 6"
+    },
+    "CohereLabs/c4ai-command-r7b-arabic-02-2025": {
+      "name": "C4ai Command R7B Arabic 02 2025"
+    },
+    "zai-org/GLM-4.6V-FP8": {
+      "name": "GLM 4 6V FP8"
+    },
+    "Qwen/Qwen3-VL-235B-A22B-Instruct": {
+      "name": "Qwen3 VL 235B A22B Instruct"
+    },
+    "deepseek-ai/DeepSeek-V3.2": {
+      "name": "DeepSeek V3 2"
+    },
+    "CohereLabs/c4ai-command-a-03-2025": {
+      "name": "C4ai Command A 03 2025"
+    },
+    "Qwen/Qwen2.5-VL-72B-Instruct": {
+      "name": "Qwen2 5 VL 72B Instruct"
     },
     "zai-org/GLM-4.5": {
       "name": "GLM-4.5",
@@ -328,20 +346,47 @@
         "docx": false
       }
     },
-    "zai-org/GLM-4.6V-FP8": {
-      "name": "GLM 4 6V FP8"
+    "stepfun-ai/Step-3.5-Flash": {
+      "name": "Step 3 5 FLASH"
+    },
+    "CohereLabs/command-a-reasoning-08-2025": {
+      "name": "Command A Reasoning 08 2025"
+    },
+    "deepseek-ai/DeepSeek-R1-Distill-Llama-70B": {
+      "name": "DeepSeek R1 Distill Llama 70B"
     },
     "zai-org/GLM-4.5-Air": {
       "name": "GLM 4 5 Air"
     },
-    "deepseek-ai/DeepSeek-V3.2": {
-      "name": "DeepSeek V3 2"
+    "zai-org/GLM-5": {
+      "name": "GLM 5"
+    },
+    "CohereLabs/command-a-translate-08-2025": {
+      "name": "Command A Translate 08 2025"
+    },
+    "zai-org/GLM-4-32B-0414": {
+      "name": "GLM 4 32B 0414"
     },
     "zai-org/GLM-4.6-FP8": {
       "name": "GLM 4 6 FP8"
     },
-    "aisingapore/Gemma-SEA-LION-v4-27B-IT": {
-      "name": "Gemma SEA LION V4 27B IT"
+    "MiniMaxAI/MiniMax-M2.7": {
+      "name": "MiniMax M2 7"
+    },
+    "CohereLabs/tiny-aya-global": {
+      "name": "Tiny Aya Global"
+    },
+    "MiniMaxAI/MiniMax-M1-80k": {
+      "name": "MiniMax M1 80K"
+    },
+    "Qwen/Qwen2.5-Coder-3B-Instruct": {
+      "name": "Qwen2 5 Coder 3B Instruct"
+    },
+    "zai-org/GLM-5.1-FP8": {
+      "name": "GLM 5 1 FP8"
+    },
+    "CohereLabs/tiny-aya-water": {
+      "name": "Tiny Aya Water"
     },
     "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
       "name": "Qwen3 Coder 480B A35B Instruct",
@@ -353,92 +398,47 @@
         "docx": false
       }
     },
-    "stepfun-ai/Step-3.5-Flash": {
-      "name": "Step 3 5 FLASH"
-    },
-    "zai-org/GLM-5": {
-      "name": "GLM 5"
-    },
-    "swiss-ai/Apertus-8B-Instruct-2509": {
-      "name": "Apertus 8B Instruct 2509"
-    },
-    "moonshotai/Kimi-K2-Instruct-0905": {
-      "name": "Kimi K2 Instruct 0905"
-    },
-    "MiniMaxAI/MiniMax-M2.7": {
-      "name": "MiniMax M2 7"
-    },
-    "zai-org/GLM-5.1-FP8": {
-      "name": "GLM 5 1 FP8"
-    },
-    "swiss-ai/Apertus-70B-Instruct-2509": {
-      "name": "Apertus 70B Instruct 2509"
-    },
-    "deepseek-ai/DeepSeek-V3.2-Exp": {
-      "name": "DeepSeek V3 2 Exp"
-    },
-    "Qwen/Qwen2.5-Coder-3B-Instruct": {
-      "name": "Qwen2 5 Coder 3B Instruct"
-    },
-    "CohereLabs/c4ai-command-r-08-2024": {
-      "name": "C4ai Command R 08 2024"
-    },
-    "aisingapore/Qwen-SEA-LION-v4-32B-IT": {
-      "name": "Qwen SEA LION V4 32B IT"
-    },
-    "prism-ml/Ternary-Bonsai-27B-AWQ-4bit": {
-      "name": "Ternary Bonsai 27B AWQ 4bit"
-    },
-    "MiniMaxAI/MiniMax-M2": {
-      "name": "MiniMax M2"
-    },
-    "CohereLabs/aya-expanse-32b": {
-      "name": "Aya Expanse 32B"
-    },
-    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
-      "name": "Llama 4 Maverick 17B 128E Instruct FP8"
-    },
-    "MiniMaxAI/MiniMax-M2.1": {
-      "name": "MiniMax M2 1"
-    },
-    "CohereLabs/c4ai-command-r7b-12-2024": {
-      "name": "C4ai Command R7B 12 2024"
-    },
-    "Qwen/Qwen3-VL-235B-A22B-Thinking": {
-      "name": "Qwen3 VL 235B A22B Thinking"
-    },
-    "MiniMaxAI/MiniMax-M2.5": {
-      "name": "MiniMax M2 5"
-    },
-    "CohereLabs/c4ai-command-r7b-arabic-02-2025": {
-      "name": "C4ai Command R7B Arabic 02 2025"
-    },
-    "Qwen/Qwen2.5-VL-72B-Instruct": {
-      "name": "Qwen2 5 VL 72B Instruct"
-    },
-    "openai/gpt-oss-safeguard-20b": {
-      "name": "Gpt OSS Safeguard 20B"
-    },
-    "CohereLabs/c4ai-command-a-03-2025": {
-      "name": "C4ai Command A 03 2025"
-    },
-    "CohereLabs/command-a-reasoning-08-2025": {
-      "name": "Command A Reasoning 08 2025"
-    },
-    "CohereLabs/command-a-translate-08-2025": {
-      "name": "Command A Translate 08 2025"
-    },
-    "CohereLabs/tiny-aya-global": {
-      "name": "Tiny Aya Global"
-    },
-    "CohereLabs/tiny-aya-water": {
-      "name": "Tiny Aya Water"
+    "aisingapore/Gemma-SEA-LION-v4-27B-IT": {
+      "name": "Gemma SEA LION V4 27B IT"
     },
     "CohereLabs/tiny-aya-earth": {
       "name": "Tiny Aya Earth"
     },
+    "moonshotai/Kimi-K2-Instruct-0905": {
+      "name": "Kimi K2 Instruct 0905"
+    },
+    "swiss-ai/Apertus-8B-Instruct-2509": {
+      "name": "Apertus 8B Instruct 2509"
+    },
     "CohereLabs/tiny-aya-fire": {
       "name": "Tiny Aya Fire"
+    },
+    "deepseek-ai/DeepSeek-V3.2-Exp": {
+      "name": "DeepSeek V3 2 Exp"
+    },
+    "swiss-ai/Apertus-70B-Instruct-2509": {
+      "name": "Apertus 70B Instruct 2509"
+    },
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
+      "name": "Llama 4 Maverick 17B 128E Instruct FP8"
+    },
+    "MiniMaxAI/MiniMax-M2": {
+      "name": "MiniMax M2"
+    },
+    "aisingapore/Qwen-SEA-LION-v4-32B-IT": {
+      "name": "Qwen SEA LION V4 32B IT"
+    },
+    "Qwen/Qwen3-VL-235B-A22B-Thinking": {
+      "name": "Qwen3 VL 235B A22B Thinking"
+    },
+    "prism-ml/Ternary-Bonsai-27B-AWQ-4bit": {
+      "name": "Ternary Bonsai 27B AWQ 4bit"
+    },
+    "MiniMaxAI/MiniMax-M2.1": {
+      "name": "MiniMax M2 1"
+    },
+    "MiniMaxAI/MiniMax-M2.5": {
+      "name": "MiniMax M2 5"
     },
     "CohereLabs/command-a-vision-07-2025": {
       "name": "Command A Vision 07 2025"
@@ -498,5 +498,5 @@
       "name": "Qwen3 Next 80B A3B Thinking"
     }
   },
-  "_syncedAt": "2026-09-04T15:53:03.128Z"
+  "_syncedAt": "2026-09-04T16:57:04.595Z"
 }

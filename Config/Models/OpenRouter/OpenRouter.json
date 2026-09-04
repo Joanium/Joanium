@@ -1526,18 +1526,6 @@
         "image": true
       }
     },
-    "ibm-granite/granite-4.1-8b": {
-      "name": "IBM: Granite 4.1 8B",
-      "description": "Granite 4.1 8B is a dense, decoder-only 8-billion-parameter language model from IBM, part of the Granite 4.1 family. It supports a 131K-token context window and is designed for enterprise tasks...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.1
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "mistralai/mistral-medium-3-5": {
       "name": "Mistral: Mistral Medium 3.5",
       "description": "Mistral Medium 3.5 is a dense 128B instruction-following model from Mistral AI. It supports text and image inputs with text output, and is designed for agentic workflows, coding, and complex...",
@@ -5276,6 +5264,18 @@
         "text": true
       }
     },
+    "ibm-granite/granite-4.1-8b": {
+      "name": "IBM: Granite 4.1 8B",
+      "description": "Granite 4.1 8B is a dense, decoder-only 8-billion-parameter language model from IBM, part of the Granite 4.1 family. It supports a 131K-token context window and is designed for enterprise tasks...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "nvidia/nemotron-3-ultra-550b-a55b:batch": {
       "name": "NVIDIA: Nemotron 3 Ultra (batch)",
       "description": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hybrid Transformer-Mamba mixture-of-experts architecture, it...",
@@ -6124,5 +6124,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-04T15:52:50.123Z"
+  "_syncedAt": "2026-09-04T16:56:51.780Z"
 }

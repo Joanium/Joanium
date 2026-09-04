@@ -380,12 +380,14 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(var(--color-danger-rgb), 0.1);
   backdrop-filter: blur(12px) saturate(1.4);
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
-  color: rgba(200, 100, 88, 0.55);
+  color: var(--color-danger);
   border: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--color-danger-rgb), 0.22),
+    0 4px 12px rgba(var(--color-danger-rgb), 0.12);
   transition:
     background-color var(--transition-base),
     color var(--transition-base),
@@ -396,25 +398,24 @@
 }
 
 .chat-history__delete-all-btn:hover {
-  background: rgba(210, 65, 48, 0.14);
-  color: rgba(220, 80, 62, 0.92);
+  background: rgba(var(--color-danger-rgb), 0.2);
   box-shadow:
-    inset 0 0 0 1px rgba(210, 80, 62, 0.22),
-    0 6px 16px rgba(180, 55, 40, 0.12);
+    inset 0 0 0 1px rgba(var(--color-danger-rgb), 0.32),
+    0 8px 20px rgba(var(--color-danger-rgb), 0.18);
   transform: translateY(-1px);
 }
 
 .chat-history__delete-all-btn--confirm {
-  background: rgba(192, 57, 43, 0.88);
-  color: rgba(255, 255, 255, 0.97);
+  background: var(--color-danger);
+  color: var(--color-chat-send-foreground);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 8px 18px rgba(160, 48, 34, 0.28);
+    0 8px 18px rgba(var(--color-danger-rgb), 0.28);
   animation: chat-history-confirm-pulse 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .chat-history__delete-all-btn--confirm:hover {
-  background: rgba(169, 48, 36, 0.92);
+  background: rgba(var(--color-danger-rgb), 0.86);
 }
 
 .chat-history__delete-all-icon {
