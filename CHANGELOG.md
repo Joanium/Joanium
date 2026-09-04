@@ -6,6 +6,12 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.904.1] - 2026-09-04
+
+* Fixed: The color in the delete button in the history modal.
+
+---
+
 ## [2026.904.0] - 2026-09-04
 
 * Update model configurations and enhance sidebar avatar functionality
