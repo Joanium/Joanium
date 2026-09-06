@@ -6,6 +6,14 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.906.0] - 2026-09-06
+
+* feat: add button to showcase other products with link
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action/analyze from 4.37.6 to 4.37.9
+
+---
+
 ## [2026.904.1] - 2026-09-04
 
 * Fixed: The color in the delete button in the history modal.
