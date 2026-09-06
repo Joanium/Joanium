@@ -265,6 +265,32 @@ export function createAboutPanel(strings) {
       { label: strings.lastUpdated, value: parseBuildDate(info.version) || unknownValue },
     ]);
 
+    const productsBtn = createElement('a', 'chat-profile__about-products-btn');
+    productsBtn.href = '#';
+    productsBtn.setAttribute('aria-label', strings.otherProducts);
+
+    const productsLabel = createElement(
+      'span',
+      'chat-profile__about-products-label',
+      strings.otherProducts,
+    );
+
+    const productsIcon = createElement('span', 'chat-profile__about-products-icon');
+    productsIcon.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    `;
+
+    productsBtn.append(productsLabel, productsIcon);
+
+    productsBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      void invokeIpc('about:open-external', strings.otherProductsUrl);
+    });
+
     const osVersion = system.osVersion || '';
     const osName = system.osName || '';
     const osDisplay = osVersion.startsWith(osName)
@@ -298,7 +324,7 @@ export function createAboutPanel(strings) {
     ]);
 
     const leftCol = createElement('div', 'chat-profile__about-col chat-profile__about-col--left');
-    leftCol.append(metaCard);
+    leftCol.append(metaCard, productsBtn);
 
     const rightCol = createElement('div', 'chat-profile__about-col chat-profile__about-col--right');
     rightCol.append(systemCard);
