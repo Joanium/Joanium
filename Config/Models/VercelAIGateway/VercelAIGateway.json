@@ -2530,6 +2530,34 @@
         "image": true
       }
     },
+    "openai/gpt-6-astra": {
+      "name": "GPT-6 Astra",
+      "description": "GPT-6 Astra is OpenAI's most capable model for complex reasoning, coding, computer use, research, and document creation.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-astra-fast": {
+      "name": "GPT-6 Astra (Fast)",
+      "description": "GPT-6 Astra is OpenAI's most capable model for complex reasoning, coding, computer use, research, and document creation.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 20,
+        "output": 100
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -3887,5 +3915,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-04T16:57:15.349Z"
+  "_syncedAt": "2026-09-06T11:12:37.950Z"
 }
