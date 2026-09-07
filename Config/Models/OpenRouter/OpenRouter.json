@@ -5,6 +5,83 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "openai/gpt-6-astra": {
+      "name": "OpenAI: GPT-6 Astra",
+      "description": "GPT-6 Astra is OpenAI's flagship model for demanding end-to-end work. It is suited for advanced analysis, software engineering, deep research, scientific work, and document creation, with particular strengths in long-horizon...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-astra:batch": {
+      "name": "OpenAI: GPT-6 Astra (batch)",
+      "description": "GPT-6 Astra is OpenAI's flagship model for demanding end-to-end work. It is suited for advanced analysis, software engineering, deep research, scientific work, and document creation, with particular strengths in long-horizon...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-astra-pro": {
+      "name": "OpenAI: GPT-6 Astra Pro",
+      "description": "GPT-6 Astra Pro is the same underlying model as [GPT-6 Astra](https://openrouter.ai/openai/gpt-6-astra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-astra-pro:batch": {
+      "name": "OpenAI: GPT-6 Astra Pro (batch)",
+      "description": "GPT-6 Astra Pro is the same underlying model as [GPT-6 Astra](https://openrouter.ai/openai/gpt-6-astra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-sante:free": {
+      "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
+      "description": "Ling 3.0 Flash Sante is a health and medicine-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.8-max-0902": {
+      "name": "Qwen: Qwen3.8 Max (0902)",
+      "description": "Qwen3.8 Max 0902 is an updated snapshot of Qwen3.8 Max from Alibaba's Qwen team. It is a 2.4-trillion-parameter mixture-of-experts model that accepts text, image, and video input and returns text,...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/muse-spark-1.3-contributor": {
       "name": "Meta: Muse Spark 1.3 Contributor",
       "description": "Muse Spark 1.3 Contributor is the cost-efficient contributor tier of Meta’s multimodal reasoning model for experimentation, learning, and early-stage agentic, multi-agent, and coding workflows. It is designed to track information...",
@@ -514,19 +591,6 @@
       "pricing": {
         "input": 1.25,
         "output": 4.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3.8-max": {
-      "name": "Qwen: Qwen3.8 Max",
-      "description": "Qwen3.8 Max is the flagship model in Alibaba's Qwen3.8 series, the general-availability successor to the Qwen3.8 Max Preview. It is a multimodal reasoning model intended for complex reasoning, visual understanding,...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 2,
-        "output": 6
       },
       "inputs": {
         "text": true,
@@ -5264,6 +5328,19 @@
         "text": true
       }
     },
+    "qwen/qwen3.8-max": {
+      "name": "Qwen: Qwen3.8 Max",
+      "description": "Qwen3.8 Max is the flagship model in Alibaba's Qwen3.8 series, the general-availability successor to the Qwen3.8 Max Preview. It is a multimodal reasoning model intended for complex reasoning, visual understanding,...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "ibm-granite/granite-4.1-8b": {
       "name": "IBM: Granite 4.1 8B",
       "description": "Granite 4.1 8B is a dense, decoder-only 8-billion-parameter language model from IBM, part of the Granite 4.1 family. It supports a 131K-token context window and is designed for enterprise tasks...",
@@ -6124,5 +6201,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-04T16:56:51.780Z"
+  "_syncedAt": "2026-09-06T11:12:14.050Z"
 }

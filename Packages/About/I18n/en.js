@@ -6,6 +6,8 @@ const en = {
   author: 'Author',
   lastUpdated: 'Last Updated',
   unknownValue: 'Not Available',
+  otherProducts: 'Check out my other products',
+  otherProductsUrl: 'https://joeljolly.vercel.app/',
   system: 'System',
   os: 'OS',
   cpu: 'CPU',
