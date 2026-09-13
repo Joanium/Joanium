@@ -6,6 +6,11 @@ import { readFile } from 'node:fs/promises';
 import { app } from 'electron';
 import { readProviderCatalog } from '../../Shared/ProviderCatalog/ProviderCatalog.js';
 import { createLiveModelFilter } from '../../Shared/ProviderCatalog/LiveModelFilter.js';
+import {
+  normalizeLocalEndpoint,
+  resolveLmStudioChatEndpoint,
+  resolveOllamaChatEndpoint,
+} from '../../Shared/ProviderCatalog/ProviderEndpointUtils.js';
 import { getResourceFileUrl, readTextResource } from '../../Shared/Storage/ResourcePaths.js';
 import {
   SUB_AGENT_TERMINAL_TOOL_NAMES,
@@ -208,11 +213,22 @@ function resolveProviderDetails(user, provider) {
 }
 
 function resolveProviderEndpoint(provider, providerDetails, modelId) {
-  const configuredEndpoint =
+  const rawEndpoint =
     collapseWhitespace(providerDetails?.endpoint) || collapseWhitespace(provider.endpoint);
+  const configuredEndpoint = provider.requiresApiKey
+    ? rawEndpoint
+    : normalizeLocalEndpoint(rawEndpoint);
 
   if (!configuredEndpoint) {
     return '';
+  }
+
+  if (provider.id === 'ollama') {
+    return resolveOllamaChatEndpoint(configuredEndpoint);
+  }
+
+  if (provider.id === 'lmstudio') {
+    return resolveLmStudioChatEndpoint(configuredEndpoint);
   }
 
   return modelId ? configuredEndpoint.replace('{model}', modelId) : configuredEndpoint;
@@ -1041,10 +1057,15 @@ export function createChatStateManager({ rootDirectory }) {
   // all getBootstrapPayload() calls within the same app session.
   const liveModelFilter = createLiveModelFilter();
 
+  async function getActiveProviders(user) {
+    const providers = await readProviderCatalog(rootDirectory);
+    return app.isPackaged ? liveModelFilter.filterProviders(providers, user) : providers;
+  }
+
   return {
     async getBootstrapPayload() {
+      const user = await readUserState(rootDirectory);
       const [
-        user,
         providers,
         terminalPrompt,
         subAgentPrompt,
@@ -1054,8 +1075,7 @@ export function createChatStateManager({ rootDirectory }) {
         gitCommitPrompt,
         gitCommitDiffPrompt,
       ] = await Promise.all([
-        readUserState(rootDirectory),
-        readProviderCatalog(rootDirectory),
+        getActiveProviders(user),
         readTerminalPromptFile(rootDirectory),
         readSubAgentPromptFile(rootDirectory),
         readSubAgentTerminalPromptFile(rootDirectory),
@@ -1072,13 +1092,9 @@ export function createChatStateManager({ rootDirectory }) {
       // archive and ModelSync never runs. Use the live model filter to cross-
       // reference each provider's API and remove models no longer listed.
       // In dev mode ModelSync already keeps the JSONs up-to-date on disk.
-      const activeProviders = app.isPackaged
-        ? await liveModelFilter.filterProviders(providers, user)
-        : providers;
-
       return {
         user,
-        providers: activeProviders,
+        providers,
         terminalPrompt,
         subAgentPrompt,
         subAgentTerminalPrompt,
@@ -1096,10 +1112,8 @@ export function createChatStateManager({ rootDirectory }) {
     // onError(error) is called if anything goes wrong.
     async streamMessage(request, { onChunk, onDone, onError }) {
       try {
-        const [user, providers] = await Promise.all([
-          readUserState(rootDirectory),
-          readProviderCatalog(rootDirectory),
-        ]);
+        const user = await readUserState(rootDirectory);
+        const providers = await getActiveProviders(user);
         const baseSystemPrompt = await buildBaseSystemPrompt(rootDirectory, user);
 
         const meta = await requestChatCompletionStreamWithRetry({
@@ -1120,10 +1134,8 @@ export function createChatStateManager({ rootDirectory }) {
     },
 
     async completeMessage(request) {
-      const [user, providers] = await Promise.all([
-        readUserState(rootDirectory),
-        readProviderCatalog(rootDirectory),
-      ]);
+      const user = await readUserState(rootDirectory);
+      const providers = await getActiveProviders(user);
       const baseSystemPrompt = await buildBaseSystemPrompt(rootDirectory, user);
 
       let text = '';
@@ -1146,10 +1158,8 @@ export function createChatStateManager({ rootDirectory }) {
       const instruction = await readEnhancePromptFile(rootDirectory);
       const content = `${instruction}\n\n${raw}`;
 
-      const [user, providers] = await Promise.all([
-        readUserState(rootDirectory),
-        readProviderCatalog(rootDirectory),
-      ]);
+      const user = await readUserState(rootDirectory);
+      const providers = await getActiveProviders(user);
       const baseSystemPrompt = await buildBaseSystemPrompt(rootDirectory, user);
 
       let text = '';

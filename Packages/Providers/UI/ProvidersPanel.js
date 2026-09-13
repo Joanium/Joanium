@@ -49,6 +49,7 @@ export function createProvidersPanel(strings) {
     refs.status.textContent = configured ? strings.connected : strings.notConnected;
     refs.status.className = `providers-card__status${configured ? ' providers-card__status--active' : ''}`;
     refs.disconnect.hidden = !configured;
+    refs.modelCount.textContent = strings.models(provider?.modelCount ?? 0);
 
     if (refs.apiKeyInput && provider?.apiKeySaved) {
       refs.apiKeyInput.placeholder = strings.savedSecret;
@@ -158,8 +159,12 @@ export function createProvidersPanel(strings) {
     );
     titleRow.append(typePill);
 
-    const meta = createElement('p', 'providers-card__meta', strings.models(provider.modelCount));
-    titleWrap.append(titleRow, meta);
+    const modelCount = createElement(
+      'p',
+      'providers-card__meta',
+      strings.models(provider.modelCount),
+    );
+    titleWrap.append(titleRow, modelCount);
 
     const status = createElement('span', 'providers-card__status', strings.notConnected);
 
@@ -241,6 +246,7 @@ export function createProvidersPanel(strings) {
       connectBtn,
       connectLabel,
       feedback,
+      modelCount,
       apiKeyInput,
       endpointInput,
     });
