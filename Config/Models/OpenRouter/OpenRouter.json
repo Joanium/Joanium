@@ -5,6 +5,185 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "inference-net/schematron-v2-turbo": {
+      "name": "Inference.net: Schematron V2 Turbo",
+      "description": "Schematron V2 Turbo is a 3B-parameter HTML-to-JSON extraction model from Inference.net. It prioritizes throughput for high-volume extraction workloads. Extraction instructions must be supplied through a JSON schema in response_format rather...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inference-net/schematron-v2-small": {
+      "name": "Inference.net: Schematron V2 Small",
+      "description": "Schematron V2 Small is a 3B-parameter HTML-to-JSON extraction model from Inference.net. It prioritizes extraction quality for complex schemas and long pages. Extraction instructions must be supplied through a JSON schema...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.23
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "~openai/gpt-astra-latest": {
+      "name": "OpenAI: GPT Astra Latest",
+      "description": "This model always redirects to the latest model in the GPT Astra family.",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~openai/gpt-sol-latest": {
+      "name": "OpenAI: GPT Sol Latest",
+      "description": "This model always redirects to the latest model in the GPT Sol family.",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~openai/gpt-terra-latest": {
+      "name": "OpenAI: GPT Terra Latest",
+      "description": "This model always redirects to the latest model in the GPT Terra family.",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~openai/gpt-luna-latest": {
+      "name": "OpenAI: GPT Luna Latest",
+      "description": "This model always redirects to the latest model in the GPT Luna family.",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 0.2,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "sakana/fugu-ultra-v2": {
+      "name": "Sakana: Fugu Ultra v2",
+      "description": "Fugu Ultra v2 is the higher-performance model in Sakana AI's Fugu family. Rather than a single monolithic model, Fugu is a learned multi-agent orchestration system: a language model trained to...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "sakana/fugu-max": {
+      "name": "Sakana: Fugu Max",
+      "description": "Fugu Max is the cost-performance model in Sakana AI's Fugu family. Rather than a single monolithic model, Fugu is a learned multi-agent orchestration system: a language model trained to route...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-vl": {
+      "name": "inclusionAI: Ling 3.0 Flash VL",
+      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash (124B total / 5.5B active MoE from InclusionAI), further strengthening its language capabilities while adding native visual perception and advanced visual...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-vl:free": {
+      "name": "inclusionAI: Ling 3.0 Flash VL (free)",
+      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash (124B total / 5.5B active MoE from InclusionAI), further strengthening its language capabilities while adding native visual perception and advanced visual...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash": {
+      "name": "DeepSeek: DeepSeek V4.1 Flash",
+      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inception/mercury-2.5": {
+      "name": "Inception: Mercury 2.5",
+      "description": "Mercury 2.5 is the fastest reasoning LLM, and the latest diffusion LLM (dLLM) from Inception. Instead of generating tokens sequentially, Mercury 2.5 produces and refines multiple tokens in parallel, achieving...",
+      "context_window": 260000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nex-agi/nex-n2.5-mini:free": {
+      "name": "Nex AGI: Nex-N2.5-Mini (free)",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nex-agi/nex-n2.5-pro:free": {
+      "name": "Nex AGI: Nex-N2.5-Pro (free)",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6-astra": {
       "name": "OpenAI: GPT-6 Astra",
       "description": "GPT-6 Astra is OpenAI's flagship model for demanding end-to-end work. It is suited for advanced analysis, software engineering, deep research, scientific work, and document creation, with particular strengths in long-horizon...",
@@ -160,18 +339,6 @@
         "image": true
       }
     },
-    "inception/mercury-2.5-preview": {
-      "name": "Inception: Mercury 2.5 Preview",
-      "description": "Mercury 2.5 is the fastest reasoning LLM, and the latest diffusion LLM (dLLM) from Inception. Instead of generating tokens sequentially, Mercury 2.5 produces and refines multiple tokens in parallel, achieving...",
-      "context_window": 260000,
-      "pricing": {
-        "input": 0.04,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "ibm-granite/granite-4.2-8b": {
       "name": "IBM: Granite 4.2 8B",
       "description": "Granite 4.2 8B is a dense reasoning model from IBM. It is suited for mathematics, code generation, multilingual dialogue, and agentic workflows that need multi-step reasoning. It supports full, low-effort,...",
@@ -298,6 +465,19 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4-flash-vision-exp:batch": {
+      "name": "DeepSeek: DeepSeek V4 Flash Vision Exp (batch)",
+      "description": "DeepSeek V4 Flash Vision Exp is an experimental vision-enabled version of [DeepSeek V4 Flash 0731](https://openrouter.ai/deepseek/deepseek-v4-flash-0731) from DeepSeek, adding image understanding while matching the base model on text capabilities including agents,...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.33
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tencent/hy-mt2-1.8b": {
       "name": "Tencent: Hy-MT2-1.8B",
       "description": "Hy-MT2-1.8B is a compact 1.8B-parameter translation model from Tencent. It supports 33 language pairs and five Chinese dialect and minority-language pairs, with workflows for structured, delimiter-based, contextual, glossary-based, and style-guided...",
@@ -353,6 +533,18 @@
       "pricing": {
         "input": 1.4,
         "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.3:batch": {
+      "name": "Z.ai: GLM 5.3 (batch)",
+      "description": "GLM-5.3 is a large-scale reasoning model from Z.ai, built for complex software engineering and long-horizon agent tasks. It supports text input and output with a 1M-token context window, and improves...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.2
       },
       "inputs": {
         "text": true
@@ -1181,19 +1373,6 @@
         "image": true
       }
     },
-    "nex-agi/nex-n2-mini": {
-      "name": "Nex AGI: Nex-N2-Mini",
-      "description": "Nex-N2-Mini is an open-source agentic mixture-of-experts model from Nex AGI, the smaller sibling in the Nex-N2 series. It accepts text and image input and is built for coding, tool use,...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.03,
-        "output": 0.1
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "sakana/fugu-ultra": {
       "name": "Sakana: Fugu Ultra",
       "description": "Fugu Ultra is the higher-performance model in Sakana AI's Fugu family. Rather than a single monolithic model, Fugu is a learned multi-agent orchestration system: a language model trained to route...",
@@ -1231,13 +1410,13 @@
         "text": true
       }
     },
-    "z-ai/glm-5.2:free": {
-      "name": "Z.ai: GLM 5.2 (free)",
+    "z-ai/glm-5.2:batch": {
+      "name": "Z.ai: GLM 5.2 (batch)",
       "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
-      "context_window": 256000,
+      "context_window": 512000,
       "pricing": {
-        "input": 0,
-        "output": 0
+        "input": 0.7,
+        "output": 2.2
       },
       "inputs": {
         "text": true
@@ -1301,19 +1480,6 @@
       "pricing": {
         "input": 5,
         "output": 25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "nex-agi/nex-n2-pro": {
-      "name": "Nex AGI: Nex-N2-Pro",
-      "description": "Nex-N2-Pro is an agentic mixture-of-experts model from Nex AGI, with 17B active parameters out of 397B total. Built on the Qwen3.5 architecture, it accepts text and image input and produces...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.5
       },
       "inputs": {
         "text": true,
@@ -1403,19 +1569,6 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "minimax/minimax-m3:free": {
-      "name": "MiniMax: MiniMax M3 (free)",
-      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding,...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -1701,19 +1854,6 @@
       "pricing": {
         "input": 3,
         "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "~openai/gpt-latest": {
-      "name": "OpenAI GPT Latest",
-      "description": "This model always redirects to the latest model in the OpenAI GPT family.",
-      "context_window": 1050000,
-      "pricing": {
-        "input": 5,
-        "output": 30
       },
       "inputs": {
         "text": true,
@@ -2168,18 +2308,6 @@
         "text": true
       }
     },
-    "minimax/minimax-m2.7:free": {
-      "name": "MiniMax: MiniMax M2.7 (free)",
-      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent...",
-      "context_window": 196608,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-5.4-nano": {
       "name": "OpenAI: GPT-5.4 Nano",
       "description": "GPT-5.4 nano is the most lightweight and cost-efficient variant of the GPT-5.4 family, optimized for speed-critical and high-volume tasks. It supports text and image inputs and is designed for low-latency...",
@@ -2239,6 +2367,19 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-small-2603:batch": {
+      "name": "Mistral: Mistral Small 4 (batch)",
+      "description": "Mistral Small 4 is the next major release in the Mistral Small family, unifying the capabilities of several flagship Mistral models into a single system. It combines strong reasoning from...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
       },
       "inputs": {
         "text": true,
@@ -3011,6 +3152,19 @@
         "image": true
       }
     },
+    "mistralai/ministral-8b-2512:batch": {
+      "name": "Mistral: Ministral 3 8B 2512 (batch)",
+      "description": "A balanced model in the Ministral 3 family, Ministral 3 8B is a powerful, efficient tiny language model with vision capabilities.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.08
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "mistralai/ministral-3b-2512": {
       "name": "Mistral: Ministral 3 3B 2512",
       "description": "The smallest model in the Ministral 3 family, Ministral 3 3B is a powerful, efficient tiny language model with vision capabilities.",
@@ -3031,6 +3185,19 @@
       "pricing": {
         "input": 0.5,
         "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-large-2512:batch": {
+      "name": "Mistral: Mistral Large 3 2512 (batch)",
+      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.75
       },
       "inputs": {
         "text": true,
@@ -3538,18 +3705,6 @@
         "text": true
       }
     },
-    "nousresearch/hermes-4-70b": {
-      "name": "Nous: Hermes 4 70B",
-      "description": "Hermes 4 70B is a hybrid reasoning model from Nous Research, built on Meta-Llama-3.1-70B. It introduces the same hybrid mode as the larger 405B release, allowing the model to either...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.13,
-        "output": 0.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "nousresearch/hermes-4-405b": {
       "name": "Nous: Hermes 4 405B",
       "description": "Hermes 4 is a large-scale reasoning model built on Meta-Llama-3.1-405B and released by Nous Research. It introduces a hybrid reasoning mode, where the model can choose to deliberate internally with...",
@@ -3581,6 +3736,19 @@
       "pricing": {
         "input": 0.4,
         "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-medium-3.1:batch": {
+      "name": "Mistral: Mistral Medium 3.1 (batch)",
+      "description": "Mistral Medium 3.1 is an updated version of Mistral Medium 3, which is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.2,
+        "output": 1
       },
       "inputs": {
         "text": true,
@@ -3759,6 +3927,18 @@
       "pricing": {
         "input": 0.3,
         "output": 0.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistralai/codestral-2508:batch": {
+      "name": "Mistral: Codestral 2508 (batch)",
+      "description": "Mistral's cutting-edge language model for coding released end of July 2025. Codestral specializes in low-latency, high-frequency tasks such as fill-in-the-middle (FIM), code correction and test generation.\n\n[Blog Post](https://mistral.ai/news/codestral-25-08)",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.45
       },
       "inputs": {
         "text": true
@@ -5328,6 +5508,106 @@
         "text": true
       }
     },
+    "inception/mercury-2.5-preview": {
+      "name": "Inception: Mercury 2.5 Preview",
+      "description": "Mercury 2.5 is the fastest reasoning LLM, and the latest diffusion LLM (dLLM) from Inception. Instead of generating tokens sequentially, Mercury 2.5 produces and refines multiple tokens in parallel, achieving...",
+      "context_window": 260000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nex-agi/nex-n2-mini": {
+      "name": "Nex AGI: Nex-N2-Mini",
+      "description": "Nex-N2-Mini is an open-source agentic mixture-of-experts model from Nex AGI, the smaller sibling in the Nex-N2 series. It accepts text and image input and is built for coding, tool use,...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "z-ai/glm-5.2:free": {
+      "name": "Z.ai: GLM 5.2 (free)",
+      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nex-agi/nex-n2-pro": {
+      "name": "Nex AGI: Nex-N2-Pro",
+      "description": "Nex-N2-Pro is an agentic mixture-of-experts model from Nex AGI, with 17B active parameters out of 397B total. Built on the Qwen3.5 architecture, it accepts text and image input and produces...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimax/minimax-m3:free": {
+      "name": "MiniMax: MiniMax M3 (free)",
+      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding,...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~openai/gpt-latest": {
+      "name": "OpenAI GPT Latest",
+      "description": "This model always redirects to the latest model in the OpenAI GPT family.",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimax/minimax-m2.7:free": {
+      "name": "MiniMax: MiniMax M2.7 (free)",
+      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent...",
+      "context_window": 196608,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nousresearch/hermes-4-70b": {
+      "name": "Nous: Hermes 4 70B",
+      "description": "Hermes 4 70B is a hybrid reasoning model from Nous Research, built on Meta-Llama-3.1-70B. It introduces the same hybrid mode as the larger 405B release, allowing the model to either...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "qwen/qwen3.8-max": {
       "name": "Qwen: Qwen3.8 Max",
       "description": "Qwen3.8 Max is the flagship model in Alibaba's Qwen3.8 series, the general-availability successor to the Qwen3.8 Max Preview. It is a multimodal reasoning model intended for complex reasoning, visual understanding,...",
@@ -5397,18 +5677,6 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "z-ai/glm-5.2:batch": {
-      "name": "Z.ai: GLM 5.2 (batch)",
-      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
-      "context_window": 512000,
-      "pricing": {
-        "input": 0.7,
-        "output": 2.2
       },
       "inputs": {
         "text": true
@@ -6201,5 +6469,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-06T11:12:14.050Z"
+  "_syncedAt": "2026-09-13T14:53:01.816Z"
 }

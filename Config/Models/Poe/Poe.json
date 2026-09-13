@@ -827,9 +827,6 @@
     "wan-2.5": {
       "name": "Wan 2 5"
     },
-    "pixverse-v4.5": {
-      "name": "Pixverse V4 5"
-    },
     "lyria-3": {
       "name": "Lyria 3"
     },
@@ -1320,6 +1317,21 @@
         "max_output_tokens": null
       }
     },
+    "ling-3.0-flash-fin": {
+      "name": "Ling 3 0 FLASH Fin"
+    },
+    "minimax-h3-n": {
+      "name": "Minimax H3 N"
+    },
+    "ling-3.0-flash-vl": {
+      "name": "Ling 3 0 FLASH VL"
+    },
+    "deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH"
+    },
+    "pixverse-v4.5": {
+      "name": "Pixverse V4 5"
+    },
     "grok-4.1-fast-reasoning": {
       "name": "Grok 4 1 FAST Reasoning",
       "context_window": {
@@ -1793,5 +1805,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-06T11:12:40.679Z"
+  "_syncedAt": "2026-09-13T14:53:27.100Z"
 }

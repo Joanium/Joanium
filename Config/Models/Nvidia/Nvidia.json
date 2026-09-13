@@ -112,9 +112,6 @@
     "microsoft/phi-3.5-moe-instruct": {
       "name": "microsoft/phi-3.5-moe-instruct"
     },
-    "minimaxai/minimax-m3": {
-      "name": "Minimax M3"
-    },
     "mistralai/codestral-22b-instruct-v0.1": {
       "name": "mistralai/codestral-22b-instruct-v0.1"
     },
@@ -240,6 +237,9 @@
     "nvidia/nemotron-parse": {
       "name": "nvidia/nemotron-parse"
     },
+    "nvidia/nemotron-parse-2.0": {
+      "name": "Nemotron Parse 2 0"
+    },
     "nvidia/neva-22b": {
       "name": "nvidia/neva-22b"
     },
@@ -295,8 +295,14 @@
     "writer/palmyra-med-70b-32k": {
       "name": "writer/palmyra-med-70b-32k"
     },
+    "z-ai/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH"
+    },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "minimaxai/minimax-m3": {
+      "name": "Minimax M3"
     },
     "openai/gpt-oss-120b": {
       "name": "openai/gpt-oss-120b"
@@ -478,5 +484,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:12.161Z"
+  "_syncedAt": "2026-09-13T14:52:53.442Z"
 }

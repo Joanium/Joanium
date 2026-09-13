@@ -5,6 +5,10 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek-ai/DeepSeek-V4.1-Flash": {
+      "name": "DeepSeek V4.1 Flash",
+      "context_window": 1048576
+    },
     "zai-org/GLM-5.3": {
       "name": "GLM 5.3",
       "context_window": 1048575
@@ -708,10 +712,6 @@
       "name": "Qwen3.6 35B A3b Fp8",
       "context_window": 262144
     },
-    "deepseek-ai/DeepSeek-V4-Pro": {
-      "name": "Deepseek V4 Pro",
-      "context_window": 512000
-    },
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning-fp8": {
       "name": "Nemotron 3 Nano Omni 30B A3b Reasoning Fp8",
       "context_window": 131072
@@ -783,6 +783,10 @@
       "name": "GLM 5.3 FP8 Lora",
       "context_window": 1048576
     },
+    "deepseek-ai/DeepSeek-V4-Pro": {
+      "name": "Deepseek V4 Pro",
+      "context_window": 512000
+    },
     "pearl-ai/gemma-4-31b-it": {
       "name": "Pearl-ai Gemma-4-31B-it-pearl",
       "context_window": 32000
@@ -844,5 +848,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-09-06T11:12:21.604Z"
+  "_syncedAt": "2026-09-13T14:53:07.376Z"
 }

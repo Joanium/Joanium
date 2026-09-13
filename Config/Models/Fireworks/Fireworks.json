@@ -110,6 +110,9 @@
     "accounts/fireworks/models/deepseek-v4-flash-vision-exp": {
       "name": "Deepseek V4 FLASH Vision Exp"
     },
+    "accounts/fireworks/models/deepseek-v4p1-flash": {
+      "name": "Deepseek V4P1 FLASH"
+    },
     "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
       "name": "Qwen3p8 2p4t A95b"
     },
@@ -141,5 +144,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:24.522Z"
+  "_syncedAt": "2026-09-13T14:53:11.033Z"
 }

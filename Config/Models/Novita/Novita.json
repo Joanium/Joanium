@@ -15,6 +15,24 @@
         "image": true
       }
     },
+    "zai-org/glm-5.3-p": {
+      "name": "zai-org/glm-5.3-p",
+      "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash": {
+      "name": "DeepSeek V4.1 Flash",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai-org/glm-5.3": {
       "name": "GLM 5.3",
       "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
@@ -173,24 +191,6 @@
       "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.Text-only.",
       "context_window": 1000000,
       "max_output": 131072,
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.0-flash-fast": {
-      "name": "Ling 3.0 Flash Fast",
-      "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
-      "context_window": 262144,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.0-tiny": {
-      "name": "Ling 3.0 Tiny",
-      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations.\nThe model features a 256K context window, native function calling, prompt caching, and swi",
-      "context_window": 262144,
-      "max_output": 32768,
       "inputs": {
         "text": true
       }
@@ -364,15 +364,6 @@
         "text": true
       }
     },
-    "xiaomimimo/mimo-v2-pro": {
-      "name": "XiaomiMiMo/MiMo-V2-Pro",
-      "description": "Xiaomi’s MiMo-V2-Pro is a flagship, >1T parameter foundation model with a 1M context window, specifically optimized for advanced agentic workflows. Highly compatible with frameworks like OpenClaw, it secures top-tier global rankings on PinchBench and ClawBench, with a perceived capability approachin",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "inputs": {
-        "text": true
-      }
-    },
     "minimax/minimax-m2.7": {
       "name": "MiniMax M2.7",
       "description": "MiniMax M2.7 is an all-around evolved, versatile open-source large language model that seamlessly blends hardcore engineering productivity with high-EQ, human-like interaction capabilities.\nIn real-world software engineering, M2.7 excels by independently driving end-to-end project delivery while eff",
@@ -524,15 +515,6 @@
         "text": true
       }
     },
-    "xiaomimimo/mimo-v2-flash": {
-      "name": "XiaomiMiMo/MiMo-V2-Flash",
-      "description": "Xiaomi MiMo-V2-Flash is a proprietary MoE model developed by Xiaomi, designed for extreme inference efficiency with 309B total parameters (15B active). By incorporating an innovative Hybrid attention architecture and multi-layer MTP inference acceleration, it ranks among the top 2 global open-source",
-      "context_window": 262144,
-      "max_output": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
     "zai-org/autoglm-phone-9b-multilingual": {
       "name": "AutoGLM-Phone-9B-Multilingual",
       "description": "Phone Agent is a mobile intelligent assistant framework built on AutoGLM, capable of understanding smartphone screens through multimodal perception and executing automated operations to complete tasks.\nThe system controls devices via ADB (Android Debug Bridge), uses a vision-language model for scree",
@@ -627,15 +609,6 @@
         "image": true
       }
     },
-    "kwaipilot/kat-coder-pro": {
-      "name": "Kat Coder Pro",
-      "description": "KAT-Coder-Pro V2 by KwaiKAT is a non-reasoning model optimized for agentic coding. It delivers strong performance on reasoning-style tasks while requiring significantly fewer output tokens than peer models. With the 1210 release, it achieved a score of 64 on the Artificial Analysis Intelligence Inde",
-      "context_window": 256000,
-      "max_output": 128000,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-next-80b-a3b-instruct": {
       "name": "Qwen3 Next 80B A3B Instruct",
       "description": "Qwen3-Next uses a highly sparse MoE design: 80B total parameters, but only ~3B activated per inference step. Experiments show that, with global load balancing, increasing total expert parameters while keeping activated experts fixed steadily reduces training loss.Compared to Qwen3’s MoE (128 total e",
@@ -643,24 +616,6 @@
       "max_output": 32768,
       "inputs": {
         "text": true
-      }
-    },
-    "qwen/qwen3-next-80b-a3b-thinking": {
-      "name": "Qwen3 Next 80B A3B Thinking",
-      "description": "Qwen3-Next uses a highly sparse MoE design: 80B total parameters, but only ~3B activated per inference step. Experiments show that, with global load balancing, increasing total expert parameters while keeping activated experts fixed steadily reduces training loss.Compared to Qwen3’s MoE (128 total e",
-      "context_window": 131072,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-ocr": {
-      "name": "DeepSeek-OCR",
-      "context_window": 8192,
-      "max_output": 8192,
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "deepseek/deepseek-v3.1-terminus": {
@@ -688,16 +643,6 @@
       "max_output": 65536,
       "inputs": {
         "text": true
-      }
-    },
-    "nex-agi/nex-n2-pro": {
-      "name": "Nex-N2-Pro",
-      "description": "Nex-N2-Pro is Nex AGI's open-source agentic reasoning model, post-trained on Qwen3.5-397B-A17B (MoE). Its Agentic Thinking framework unifies reasoning, tool use, and environment execution for complex, long-horizon tasks like agentic coding, software engineering, and deep research. It supports a 256K",
-      "context_window": 262144,
-      "max_output": 262144,
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "deepseek/deepseek-v3.1": {
@@ -752,27 +697,6 @@
       "description": "Kimi K2 is a state-of-the-art mixture-of-experts (MoE) language model with 32 billion activated parameters and 1 trillion total parameters. Trained with the Muon optimizer, Kimi K2 achieves exceptional performance across frontier knowledge, reasoning, and coding tasks while being meticulously optimi",
       "context_window": 131072,
       "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v3-0324": {
-      "name": "DeepSeek V3 0324",
-      "description": "DeepSeek mixture-of-experts chat model on Novita for general instruction following and coding",
-      "context_window": 163840,
-      "max_output": 65536,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      }
-    },
-    "zai-org/glm-4.5": {
-      "name": "GLM-4.5",
-      "description": "GLM-4.5 Series Models are foundation models specifically engineered for intelligent agents. The flagship GLM-4.5 integrates 355 billion total parameters (32 billion active), unifying reasoning, coding, and agent capabilities to address complex application demands.\nAs a hybrid reasoning system, it of",
-      "context_window": 131072,
-      "max_output": 98304,
       "inputs": {
         "text": true
       }
@@ -842,15 +766,6 @@
         "text": true
       }
     },
-    "deepseek/deepseek-r1-distill-qwen-14b": {
-      "name": "DeepSeek R1 Distill Qwen 14B",
-      "description": "DeepSeek R1 Distill Qwen 14B is a distilled large language model based on Qwen 2.5 14B, using outputs from DeepSeek R1. It outperforms OpenAI's o1-mini across various benchmarks, achieving new state-of-the-art results for dense models.\n\nOther benchmark results include:\n\nAIME 2024 pass@1: 69.7\nMATH-5",
-      "context_window": 32768,
-      "max_output": 16384,
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.3-70b-instruct": {
       "name": "Llama 3.3 70B Instruct",
       "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed c",
@@ -896,24 +811,6 @@
         "text": true
       }
     },
-    "deepseek/deepseek-r1-distill-qwen-32b": {
-      "name": "DeepSeek R1 Distill Qwen 32B",
-      "description": "DeepSeek R1 Distill Qwen 32B is a distilled large language model based on Qwen 2.5 32B, using outputs from DeepSeek R1. It outperforms OpenAI's o1-mini across various benchmarks, achieving new state-of-the-art results for dense models.\n\nOther benchmark results include:\nAIME 2024 pass@1: 72.6\nMATH-50",
-      "context_window": 64000,
-      "max_output": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "meta-llama/llama-3-8b-instruct": {
-      "name": "Llama 3 8B Instruct",
-      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong performance compared to leading closed-source models in human evaluations.",
-      "context_window": 8192,
-      "max_output": 8192,
-      "inputs": {
-        "text": true
-      }
-    },
     "microsoft/wizardlm-2-8x22b": {
       "name": "Wizardlm 2 8x22B",
       "description": "WizardLM-2 8x22B is Microsoft AI's most advanced Wizard model. It demonstrates highly competitive performance compared to leading proprietary models, and it consistently outperforms all existing state-of-the-art opensource models.",
@@ -937,15 +834,6 @@
       "description": "DeepSeek R1 Distill LLama 70B",
       "context_window": 8192,
       "max_output": 8192,
-      "inputs": {
-        "text": true
-      }
-    },
-    "meta-llama/llama-3-70b-instruct": {
-      "name": "Llama3 70B Instruct",
-      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 70B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong performance compared to leading closed-source models in human evaluations.",
-      "context_window": 8192,
-      "max_output": 8000,
       "inputs": {
         "text": true
       }
@@ -984,15 +872,6 @@
         "image": true
       }
     },
-    "openchat/openchat-7b": {
-      "name": "OpenChat 7B",
-      "description": "OpenChat 7B is a library of open-source language models, fine-tuned with \"C-RLFT (Conditioned Reinforcement Learning Fine-Tuning)\" - a strategy inspired by offline reinforcement learning. It has been trained on mixed-quality data without preference labels.",
-      "context_window": 4096,
-      "max_output": 4096,
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-4-scout-17b-16e-instruct": {
       "name": "Llama 4 Scout Instruct",
       "description": "Llama 4 Scout 17B Instruct (16E) is a mixture-of-experts (MoE) language model developed by Meta, activating 17 billion parameters out of a total of 109B. It supports native multimodal input (text and image) and multilingual output (text and code) across 12 supported languages. Designed for assistant",
@@ -1012,48 +891,11 @@
         "text": true
       }
     },
-    "qwen/qwen2.5-vl-72b-instruct": {
-      "name": "Qwen2.5 VL 72B Instruct",
-      "description": "Qwen2.5-VL, the latest vision-language model in the Qwen2.5 series, delivers enhanced multimodal capabilities including advanced visual comprehension for object/text recognition, chart/layout analysis, and agent-based dynamic tool orchestration. It processes long-form videos (>1 hour) with key event",
-      "context_window": 32768,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "sao10k/l3-70b-euryale-v2.1": {
       "name": "L3 70B Euryale V2.1\t",
       "description": "The uncensored llama3 model is a powerhouse of creativity, excelling in both roleplay and story writing. It offers a liberating experience during roleplays, free from any restrictions. This model stands out for its immense creativity, boasting a vast array of unique ideas and plots, truly a treasure",
       "context_window": 8192,
       "max_output": 8192,
-      "inputs": {
-        "text": true
-      }
-    },
-    "nousresearch/nous-hermes-llama2-13b": {
-      "name": "Nous Hermes Llama2 13B",
-      "description": "Nous-Hermes-Llama2-13b is a state-of-the-art language model fine-tuned on over 300,000 instructions. This model was fine-tuned by Nous Research, with Teknium and Emozilla leading the fine tuning process and dataset curation, Redmond AI sponsoring the compute, and several other contributors.",
-      "context_window": 4096,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "teknium/openhermes-2.5-mistral-7b": {
-      "name": "Openhermes2.5 Mistral 7B",
-      "description": "OpenHermes 2.5 Mistral 7B is a state of the art Mistral Fine-tune, a continuation of OpenHermes 2 model, which trained on additional code datasets.",
-      "context_window": 4096,
-      "max_output": 8000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "baidu/ernie-4.5-21B-a3b-thinking": {
-      "name": "ERNIE-4.5-21B-A3B-Thinking",
-      "description": "ERNIE-4.5-21B-A3B-Thinking is a text-based Mixture of Experts (MoE) post-training model featuring 21B total parameters with 3B active parameters per token. It delivers enhanced performance on reasoning tasks, including logical reasoning, mathematics, science, coding, text generation, and academic be",
-      "context_window": 131072,
-      "max_output": 65536,
       "inputs": {
         "text": true
       }
@@ -1086,42 +928,6 @@
         "image": true
       }
     },
-    "baidu/ernie-4.5-300b-a47b-paddle": {
-      "name": "ERNIE 4.5 300B A47B",
-      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
-      "context_window": 123000,
-      "max_output": 12000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-prover-v2-671b": {
-      "name": "Deepseek Prover V2 671B",
-      "description": "DeepSeek Launches Open-Source Model DeepSeek-Prover-V2-671B, Specializing in Mathematical Theorem Proving\nThe new model employs a Mixture of Experts (MoE) architecture and is trained using the Lean 4 framework for formal reasoning. With 671 billion parameters, it leverages reinforcement learning and",
-      "context_window": 160000,
-      "max_output": 160000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-32b-fp8": {
-      "name": "Qwen3 32B",
-      "description": "Achieves effective integration of inference and non-inference modes, allowing seamless switching between modes during conversations. Its inference capability matches that of QwQ-32B with a smaller parameter size, and its general capabilities significantly surpass those of Qwen2.5-14B, reaching the s",
-      "context_window": 40960,
-      "max_output": 20000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-30b-a3b-fp8": {
-      "name": "Qwen3 30B A3B",
-      "description": "Achieves effective integration of inference and non-inference modes, allowing seamless switching between modes during conversations. Its inference capability matches that of QwQ-32B with a smaller parameter size, and its general capabilities significantly surpass those of Qwen2.5-14B, reaching the s",
-      "context_window": 40960,
-      "max_output": 20000,
-      "inputs": {
-        "text": true
-      }
-    },
     "google/gemma-3-27b-it": {
       "name": "Gemma 3 27B",
       "description": "Gemma 3 introduces multimodality, supporting vision-language input and text outputs. It handles context windows up to 32k tokens, understands over 140 languages, and offers improved math, reasoning, and chat capabilities, including structured outputs. Gemma 3 27B is Google's latest open source model",
@@ -1130,15 +936,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "deepseek/deepseek-v3-turbo": {
-      "name": "DeepSeek V3 (Turbo)\t",
-      "description": "DeepSeek-V3 is the latest model from the DeepSeek team, building upon the instruction following and coding abilities of the previous versions. Pre-trained on nearly 15 trillion tokens, the reported evaluations reveal that the model outperforms other open-source models and rivals leading closed-sourc",
-      "context_window": 64000,
-      "max_output": 16000,
-      "inputs": {
-        "text": true
       }
     },
     "deepseek/deepseek-r1-turbo": {
@@ -1199,6 +996,327 @@
       "description": "Ling-3.0-Flash-Sante is a Mixture-of-Experts (MoE) model with enhanced capabilities across health and medicine. Built on Ling-3.0-Flash, it has 124 billion total parameters and activates approximately 5.1 billion parameters per token. The model excels in medical knowledge reasoning, clinical safety,",
       "context_window": 262144,
       "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "dev/glm46": {
+      "name": "dev/glm46",
+      "context_window": 256000,
+      "max_output": 256000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai-org/glm-4.5-air": {
+      "name": "zai-org/glm-4.5-air",
+      "context_window": 131072,
+      "max_output": 98304,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-vl-30b-a3b-instruct": {
+      "name": "qwen/qwen3-vl-30b-a3b-instruct",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-omni-30b-a3b-thinking": {
+      "name": "Qwen3 Omni 30B A3B Thinking",
+      "description": "The Qwen-Omni model accepts combined inputs of text and a single additional modality (image, audio, or video) to generate responses in text or speech. It offers a variety of human-like voices, supports speech output in multiple languages and dialects, and is suitable for applications such as text cr",
+      "context_window": 65536,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-omni-30b-a3b-instruct": {
+      "name": "Qwen3 Omni 30B A3B Instruct",
+      "description": "The Qwen-Omni model accepts combined inputs of text and a single additional modality (image, audio, or video) to generate responses in text or speech. It offers a variety of human-like voices, supports speech output in multiple languages and dialects, and is suitable for applications such as text cr",
+      "context_window": 65536,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen-mt-plus": {
+      "name": "Qwen MT Plus",
+      "description": "Qwen-MT is a large language model optimized for machine translation, built upon the foundation of the Tongyi Qianwen model. It supports translation across 92 languages — including Chinese, English, Japanese, Korean, French, Spanish, German, Thai, Indonesian, Vietnamese, Arabic, and more — enabling s",
+      "context_window": 16384,
+      "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "baidu/ernie-4.5-21B-a3b": {
+      "name": "ERNIE 4.5 21B A3B",
+      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
+      "context_window": 120000,
+      "max_output": 8000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "thudm/glm-4-32b-0414": {
+      "name": "GLM-4-32B-0414",
+      "description": "GLM-4-32B-0414 is the latest open-source model in the GLM series, featuring 32 billion parameters. Its performance is comparable to OpenAI's GPT series and DeepSeek's V3/R1 series, while also supporting highly user-friendly local deployment capabilities.\nGLM-4-32B-Base-0414 was pre-trained on 15T of",
+      "context_window": 32000,
+      "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "gt-4p": {
+      "name": "gt-4p",
+      "description": "chatgpt-4o",
+      "context_window": 0,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta-llama/llama-3.2-1b-instruct": {
+      "name": "Llama 3.2 1B Instruct\t",
+      "description": "The Meta Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (text in/text out).",
+      "context_window": 131000,
+      "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "sao10k/l31-70b-euryale-v2.2": {
+      "name": "L31 70B Euryale V2.2",
+      "description": "Euryale L3.1 70B v2.2 is a model focused on creative roleplay from Sao10k. It is the successor of Euryale L3 70B v2.1.",
+      "context_window": 8192,
+      "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fast": {
+      "name": "Ling 3.0 Flash Fast",
+      "description": "Ling-3.0-flash is a 124B-parameter Mixture-of-Experts (MoE) model, with approximately 5.1B parameters activated per token.\nThe model is designed with token efficiency and production-scale agentic inference as key priorities, enabling developers to complete more useful work within constrained token, ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-tiny": {
+      "name": "Ling 3.0 Tiny",
+      "description": "Ling-3.0-tiny is an efficient 7.9B-parameter MoE model with only 1.3B active parameters per token. It is designed for responsive AI agents, reliable instruction following, and natural multi-turn conversations.\nThe model features a 256K context window, native function calling, prompt caching, and swi",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomimimo/mimo-v2-pro": {
+      "name": "XiaomiMiMo/MiMo-V2-Pro",
+      "description": "Xiaomi’s MiMo-V2-Pro is a flagship, >1T parameter foundation model with a 1M context window, specifically optimized for advanced agentic workflows. Highly compatible with frameworks like OpenClaw, it secures top-tier global rankings on PinchBench and ClawBench, with a perceived capability approachin",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomimimo/mimo-v2-flash": {
+      "name": "XiaomiMiMo/MiMo-V2-Flash",
+      "description": "Xiaomi MiMo-V2-Flash is a proprietary MoE model developed by Xiaomi, designed for extreme inference efficiency with 309B total parameters (15B active). By incorporating an innovative Hybrid attention architecture and multi-layer MTP inference acceleration, it ranks among the top 2 global open-source",
+      "context_window": 262144,
+      "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "kwaipilot/kat-coder-pro": {
+      "name": "Kat Coder Pro",
+      "description": "KAT-Coder-Pro V2 by KwaiKAT is a non-reasoning model optimized for agentic coding. It delivers strong performance on reasoning-style tasks while requiring significantly fewer output tokens than peer models. With the 1210 release, it achieved a score of 64 on the Artificial Analysis Intelligence Inde",
+      "context_window": 256000,
+      "max_output": 128000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-next-80b-a3b-thinking": {
+      "name": "Qwen3 Next 80B A3B Thinking",
+      "description": "Qwen3-Next uses a highly sparse MoE design: 80B total parameters, but only ~3B activated per inference step. Experiments show that, with global load balancing, increasing total expert parameters while keeping activated experts fixed steadily reduces training loss.Compared to Qwen3’s MoE (128 total e",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-ocr": {
+      "name": "DeepSeek-OCR",
+      "context_window": 8192,
+      "max_output": 8192,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nex-agi/nex-n2-pro": {
+      "name": "Nex-N2-Pro",
+      "description": "Nex-N2-Pro is Nex AGI's open-source agentic reasoning model, post-trained on Qwen3.5-397B-A17B (MoE). Its Agentic Thinking framework unifies reasoning, tool use, and environment execution for complex, long-horizon tasks like agentic coding, software engineering, and deep research. It supports a 256K",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v3-0324": {
+      "name": "DeepSeek V3 0324",
+      "description": "DeepSeek mixture-of-experts chat model on Novita for general instruction following and coding",
+      "context_window": 163840,
+      "max_output": 65536,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      }
+    },
+    "zai-org/glm-4.5": {
+      "name": "GLM-4.5",
+      "description": "GLM-4.5 Series Models are foundation models specifically engineered for intelligent agents. The flagship GLM-4.5 integrates 355 billion total parameters (32 billion active), unifying reasoning, coding, and agent capabilities to address complex application demands.\nAs a hybrid reasoning system, it of",
+      "context_window": 131072,
+      "max_output": 98304,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-r1-distill-qwen-14b": {
+      "name": "DeepSeek R1 Distill Qwen 14B",
+      "description": "DeepSeek R1 Distill Qwen 14B is a distilled large language model based on Qwen 2.5 14B, using outputs from DeepSeek R1. It outperforms OpenAI's o1-mini across various benchmarks, achieving new state-of-the-art results for dense models.\n\nOther benchmark results include:\n\nAIME 2024 pass@1: 69.7\nMATH-5",
+      "context_window": 32768,
+      "max_output": 16384,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-r1-distill-qwen-32b": {
+      "name": "DeepSeek R1 Distill Qwen 32B",
+      "description": "DeepSeek R1 Distill Qwen 32B is a distilled large language model based on Qwen 2.5 32B, using outputs from DeepSeek R1. It outperforms OpenAI's o1-mini across various benchmarks, achieving new state-of-the-art results for dense models.\n\nOther benchmark results include:\nAIME 2024 pass@1: 72.6\nMATH-50",
+      "context_window": 64000,
+      "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3-8b-instruct": {
+      "name": "Llama 3 8B Instruct",
+      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong performance compared to leading closed-source models in human evaluations.",
+      "context_window": 8192,
+      "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta-llama/llama-3-70b-instruct": {
+      "name": "Llama3 70B Instruct",
+      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 70B instruct-tuned version was optimized for high quality dialogue usecases. It has demonstrated strong performance compared to leading closed-source models in human evaluations.",
+      "context_window": 8192,
+      "max_output": 8000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "openchat/openchat-7b": {
+      "name": "OpenChat 7B",
+      "description": "OpenChat 7B is a library of open-source language models, fine-tuned with \"C-RLFT (Conditioned Reinforcement Learning Fine-Tuning)\" - a strategy inspired by offline reinforcement learning. It has been trained on mixed-quality data without preference labels.",
+      "context_window": 4096,
+      "max_output": 4096,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen2.5-vl-72b-instruct": {
+      "name": "Qwen2.5 VL 72B Instruct",
+      "description": "Qwen2.5-VL, the latest vision-language model in the Qwen2.5 series, delivers enhanced multimodal capabilities including advanced visual comprehension for object/text recognition, chart/layout analysis, and agent-based dynamic tool orchestration. It processes long-form videos (>1 hour) with key event",
+      "context_window": 32768,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nousresearch/nous-hermes-llama2-13b": {
+      "name": "Nous Hermes Llama2 13B",
+      "description": "Nous-Hermes-Llama2-13b is a state-of-the-art language model fine-tuned on over 300,000 instructions. This model was fine-tuned by Nous Research, with Teknium and Emozilla leading the fine tuning process and dataset curation, Redmond AI sponsoring the compute, and several other contributors.",
+      "context_window": 4096,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "teknium/openhermes-2.5-mistral-7b": {
+      "name": "Openhermes2.5 Mistral 7B",
+      "description": "OpenHermes 2.5 Mistral 7B is a state of the art Mistral Fine-tune, a continuation of OpenHermes 2 model, which trained on additional code datasets.",
+      "context_window": 4096,
+      "max_output": 8000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "baidu/ernie-4.5-21B-a3b-thinking": {
+      "name": "ERNIE-4.5-21B-A3B-Thinking",
+      "description": "ERNIE-4.5-21B-A3B-Thinking is a text-based Mixture of Experts (MoE) post-training model featuring 21B total parameters with 3B active parameters per token. It delivers enhanced performance on reasoning tasks, including logical reasoning, mathematics, science, coding, text generation, and academic be",
+      "context_window": 131072,
+      "max_output": 65536,
+      "inputs": {
+        "text": true
+      }
+    },
+    "baidu/ernie-4.5-300b-a47b-paddle": {
+      "name": "ERNIE 4.5 300B A47B",
+      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
+      "context_window": 123000,
+      "max_output": 12000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-prover-v2-671b": {
+      "name": "Deepseek Prover V2 671B",
+      "description": "DeepSeek Launches Open-Source Model DeepSeek-Prover-V2-671B, Specializing in Mathematical Theorem Proving\nThe new model employs a Mixture of Experts (MoE) architecture and is trained using the Lean 4 framework for formal reasoning. With 671 billion parameters, it leverages reinforcement learning and",
+      "context_window": 160000,
+      "max_output": 160000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-32b-fp8": {
+      "name": "Qwen3 32B",
+      "description": "Achieves effective integration of inference and non-inference modes, allowing seamless switching between modes during conversations. Its inference capability matches that of QwQ-32B with a smaller parameter size, and its general capabilities significantly surpass those of Qwen2.5-14B, reaching the s",
+      "context_window": 40960,
+      "max_output": 20000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-30b-a3b-fp8": {
+      "name": "Qwen3 30B A3B",
+      "description": "Achieves effective integration of inference and non-inference modes, allowing seamless switching between modes during conversations. Its inference capability matches that of QwQ-32B with a smaller parameter size, and its general capabilities significantly surpass those of Qwen2.5-14B, reaching the s",
+      "context_window": 40960,
+      "max_output": 20000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v3-turbo": {
+      "name": "DeepSeek V3 (Turbo)\t",
+      "description": "DeepSeek-V3 is the latest model from the DeepSeek team, building upon the instruction following and coding abilities of the previous versions. Pre-trained on nearly 15 trillion tokens, the reported evaluations reveal that the model outperforms other open-source models and rivals leading closed-sourc",
+      "context_window": 64000,
+      "max_output": 16000,
       "inputs": {
         "text": true
       }
@@ -1269,33 +1387,8 @@
         "text": true
       }
     },
-    "dev/glm46": {
-      "name": "dev/glm46",
-      "context_window": 256000,
-      "max_output": 256000,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-vl-8b-instruct": {
       "name": "qwen/qwen3-vl-8b-instruct",
-      "context_window": 131072,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "zai-org/glm-4.5-air": {
-      "name": "zai-org/glm-4.5-air",
-      "context_window": 131072,
-      "max_output": 98304,
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-vl-30b-a3b-instruct": {
-      "name": "qwen/qwen3-vl-30b-a3b-instruct",
       "context_window": 131072,
       "max_output": 32768,
       "inputs": {
@@ -1312,35 +1405,6 @@
         "image": true
       }
     },
-    "qwen/qwen3-omni-30b-a3b-thinking": {
-      "name": "Qwen3 Omni 30B A3B Thinking",
-      "description": "The Qwen-Omni model accepts combined inputs of text and a single additional modality (image, audio, or video) to generate responses in text or speech. It offers a variety of human-like voices, supports speech output in multiple languages and dialects, and is suitable for applications such as text cr",
-      "context_window": 65536,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3-omni-30b-a3b-instruct": {
-      "name": "Qwen3 Omni 30B A3B Instruct",
-      "description": "The Qwen-Omni model accepts combined inputs of text and a single additional modality (image, audio, or video) to generate responses in text or speech. It offers a variety of human-like voices, supports speech output in multiple languages and dialects, and is suitable for applications such as text cr",
-      "context_window": 65536,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen-mt-plus": {
-      "name": "Qwen MT Plus",
-      "description": "Qwen-MT is a large language model optimized for machine translation, built upon the foundation of the Tongyi Qianwen model. It supports translation across 92 languages — including Chinese, English, Japanese, Korean, French, Spanish, German, Thai, Indonesian, Vietnamese, Arabic, and more — enabling s",
-      "context_window": 16384,
-      "max_output": 8192,
-      "inputs": {
-        "text": true
-      }
-    },
     "baidu/ernie-4.5-vl-28b-a3b": {
       "name": "ERNIE 4.5 VL 28B A3B",
       "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
@@ -1349,15 +1413,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "baidu/ernie-4.5-21B-a3b": {
-      "name": "ERNIE 4.5 21B A3B",
-      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
-      "context_window": 120000,
-      "max_output": 8000,
-      "inputs": {
-        "text": true
       }
     },
     "qwen/qwen3-8b-fp8": {
@@ -1378,15 +1433,6 @@
         "text": true
       }
     },
-    "thudm/glm-4-32b-0414": {
-      "name": "GLM-4-32B-0414",
-      "description": "GLM-4-32B-0414 is the latest open-source model in the GLM series, featuring 32 billion parameters. Its performance is comparable to OpenAI's GPT series and DeepSeek's V3/R1 series, while also supporting highly user-friendly local deployment capabilities.\nGLM-4-32B-Base-0414 was pre-trained on 15T of",
-      "context_window": 32000,
-      "max_output": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen2.5-7b-instruct": {
       "name": "Qwen2.5 7B Instruct",
       "description": "Qwen2.5 is the latest series of Qwen large language models. For Qwen2.5, we release a number of base language models and instruction-tuned language models ranging from 0.5 to 72 billion parameters. Qwen2.5 brings the following improvements upon Qwen2:\n- Significantly more knowledge and has greatly i",
@@ -1394,16 +1440,6 @@
       "max_output": 8192,
       "inputs": {
         "text": true
-      }
-    },
-    "gt-4p": {
-      "name": "gt-4p",
-      "description": "chatgpt-4o",
-      "context_window": 0,
-      "max_output": 131072,
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "qwen/qwen-2-vl-72b-instruct": {
@@ -1415,29 +1451,11 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.2-1b-instruct": {
-      "name": "Llama 3.2 1B Instruct\t",
-      "description": "The Meta Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (text in/text out).",
-      "context_window": 131000,
-      "max_output": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.2-3b-instruct": {
       "name": "Llama 3.2 3B Instruct",
       "description": "The Meta Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (text in/text out)",
       "context_window": 32768,
       "max_output": 32000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "sao10k/l31-70b-euryale-v2.2": {
-      "name": "L31 70B Euryale V2.2",
-      "description": "Euryale L3.1 70B v2.2 is a model focused on creative roleplay from Sao10k. It is the successor of Euryale L3 70B v2.1.",
-      "context_window": 8192,
-      "max_output": 8192,
       "inputs": {
         "text": true
       }
@@ -1469,5 +1487,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-06T11:12:34.042Z"
+  "_syncedAt": "2026-09-13T14:53:20.813Z"
 }

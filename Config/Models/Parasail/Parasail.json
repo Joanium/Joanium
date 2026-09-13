@@ -269,6 +269,12 @@
     "z-ai/glm-5.3": {
       "name": "Glm 5 3"
     },
+    "parasail-deepseek-v41-flash": {
+      "name": "Parasail Deepseek V41 FLASH"
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash": {
+      "name": "DeepSeek V4 1 FLASH"
+    },
     "parasail-trinity-large-thinking": {
       "name": "Parasail Trinity Large Thinking"
     },
@@ -357,5 +363,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:43.873Z"
+  "_syncedAt": "2026-09-13T15:14:15.186Z"
 }
