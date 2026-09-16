@@ -77,9 +77,6 @@
     "grok-4.5": {
       "name": "Grok 4 5"
     },
-    "gemini-omni-flash": {
-      "name": "Gemini Omni FLASH"
-    },
     "gemini-3.6-flash": {
       "name": "Gemini 3 6 FLASH"
     },
@@ -327,25 +324,11 @@
         "max_output_tokens": 64000
       }
     },
-    "gemini-2.5-flash": {
-      "name": "Gemini 2 5 FLASH",
-      "context_window": {
-        "context_length": 1065535,
-        "max_output_tokens": 65535
-      }
-    },
     "kling-o3": {
       "name": "Kling O3",
       "context_window": {
         "context_length": 256,
         "max_output_tokens": null
-      }
-    },
-    "gemini-2.5-pro": {
-      "name": "Gemini 2 5 PRO",
-      "context_window": {
-        "context_length": 1065535,
-        "max_output_tokens": 65535
       }
     },
     "gpt-5.2-pro": {
@@ -395,13 +378,6 @@
         "max_output_tokens": null
       }
     },
-    "nano-banana": {
-      "name": "Nano Banana",
-      "context_window": {
-        "context_length": 65536,
-        "max_output_tokens": null
-      }
-    },
     "gpt-5": {
       "name": "Gpt 5",
       "context_window": {
@@ -426,13 +402,6 @@
         "max_output_tokens": 128000
       }
     },
-    "gemini-2.5-flash-lite": {
-      "name": "Gemini 2 5 FLASH LITE",
-      "context_window": {
-        "context_length": 1024000,
-        "max_output_tokens": 64000
-      }
-    },
     "qwen3-next-80b-think": {
       "name": "Qwen3 Next 80B Think"
     },
@@ -444,9 +413,6 @@
     },
     "nova-pro-1.0": {
       "name": "Nova PRO 1 0"
-    },
-    "nova-premier-1.0": {
-      "name": "Nova Premier 1 0"
     },
     "nova-micro-1.0": {
       "name": "Nova Micro 1 0"
@@ -779,20 +745,6 @@
         "max_output_tokens": null
       }
     },
-    "sora-2-pro": {
-      "name": "Sora 2 PRO",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
-    "sora-2": {
-      "name": "Sora 2",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
     "kling-2.5-turbo-std": {
       "name": "Kling 2 5 TURBO Std"
     },
@@ -1051,13 +1003,6 @@
     },
     "mochi-preview": {
       "name": "Mochi Preview"
-    },
-    "gpt-3.5-turbo-instruct": {
-      "name": "Gpt 3 5 TURBO Instruct",
-      "context_window": {
-        "context_length": 3500,
-        "max_output_tokens": 1024
-      }
     },
     "gpt-3.5-turbo-raw": {
       "name": "Gpt 3 5 TURBO Raw",
@@ -1328,6 +1273,61 @@
     },
     "deepseek-v4.1-flash": {
       "name": "Deepseek V4 1 FLASH"
+    },
+    "gemini-omni-flash": {
+      "name": "Gemini Omni FLASH"
+    },
+    "gemini-2.5-flash": {
+      "name": "Gemini 2 5 FLASH",
+      "context_window": {
+        "context_length": 1065535,
+        "max_output_tokens": 65535
+      }
+    },
+    "gemini-2.5-pro": {
+      "name": "Gemini 2 5 PRO",
+      "context_window": {
+        "context_length": 1065535,
+        "max_output_tokens": 65535
+      }
+    },
+    "nano-banana": {
+      "name": "Nano Banana",
+      "context_window": {
+        "context_length": 65536,
+        "max_output_tokens": null
+      }
+    },
+    "gemini-2.5-flash-lite": {
+      "name": "Gemini 2 5 FLASH LITE",
+      "context_window": {
+        "context_length": 1024000,
+        "max_output_tokens": 64000
+      }
+    },
+    "nova-premier-1.0": {
+      "name": "Nova Premier 1 0"
+    },
+    "sora-2-pro": {
+      "name": "Sora 2 PRO",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
+    "sora-2": {
+      "name": "Sora 2",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
+    "gpt-3.5-turbo-instruct": {
+      "name": "Gpt 3 5 TURBO Instruct",
+      "context_window": {
+        "context_length": 3500,
+        "max_output_tokens": 1024
+      }
     },
     "pixverse-v4.5": {
       "name": "Pixverse V4 5"
@@ -1805,5 +1805,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-13T14:53:27.100Z"
+  "_syncedAt": "2026-09-16T13:49:38.798Z"
 }

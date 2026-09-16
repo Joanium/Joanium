@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "tencent/Hy4-preview": {
+      "name": "Hy4 Preview"
+    },
     "deepseek-ai/DeepSeek-V4.1-Flash": {
       "name": "DeepSeek V4 1 FLASH"
     },
@@ -236,5 +239,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-09-13T14:53:15.662Z"
+  "_syncedAt": "2026-09-16T13:49:26.090Z"
 }

@@ -30,9 +30,6 @@
     "deepseek-ai/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731"
     },
-    "deepseek-ai/deepseek-v4-pro-0813": {
-      "name": "Deepseek V4 PRO 0813"
-    },
     "google/codegemma-1.1-7b": {
       "name": "google/codegemma-1.1-7b"
     },
@@ -295,11 +292,17 @@
     "writer/palmyra-med-70b-32k": {
       "name": "writer/palmyra-med-70b-32k"
     },
+    "z-ai/glm-5.3": {
+      "name": "Glm 5 3"
+    },
     "z-ai/glm-5.3-flash": {
       "name": "Glm 5 3 FLASH"
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "deepseek-ai/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813"
     },
     "minimaxai/minimax-m3": {
       "name": "Minimax M3"
@@ -484,5 +487,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-13T14:52:53.442Z"
+  "_syncedAt": "2026-09-16T13:49:06.374Z"
 }

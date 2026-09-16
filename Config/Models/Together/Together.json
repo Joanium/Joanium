@@ -53,24 +53,12 @@
       "name": "MiniMax M3",
       "context_window": 524288
     },
-    "thinkingmachines/Inkling-Small": {
-      "name": "Inkling Small",
-      "context_window": 524288
-    },
     "Qwen/Qwen3.7-Max": {
       "name": "Qwen3.7 Max",
       "context_window": 1000000
     },
-    "google/gemma-4-31B-it": {
-      "name": "Gemma 4 31B-it FP8",
-      "context_window": 262144
-    },
     "openai/gpt-oss-120b": {
       "name": "OpenAI GPT-OSS 120B",
-      "context_window": 131072
-    },
-    "openai/gpt-oss-20b": {
-      "name": "OpenAI GPT-OSS 20B",
       "context_window": 131072
     },
     "Qwen/Qwen3.5-9B": {
@@ -96,6 +84,14 @@
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
+    },
+    "google/gemma-4-31B-it": {
+      "name": "Gemma 4 31B-it FP8",
+      "context_window": 262144
+    },
+    "openai/gpt-oss-20b": {
+      "name": "OpenAI GPT-OSS 20B",
+      "context_window": 131072
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -783,6 +779,10 @@
       "name": "GLM 5.3 FP8 Lora",
       "context_window": 1048576
     },
+    "thinkingmachines/Inkling-Small": {
+      "name": "Inkling Small",
+      "context_window": 524288
+    },
     "deepseek-ai/DeepSeek-V4-Pro": {
       "name": "Deepseek V4 Pro",
       "context_window": 512000
@@ -848,5 +848,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-09-13T14:53:07.376Z"
+  "_syncedAt": "2026-09-16T13:49:16.539Z"
 }

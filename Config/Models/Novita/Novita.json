@@ -15,6 +15,15 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4.1-flash-z": {
+      "name": "DS F41 Flash",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai-org/glm-5.3-p": {
       "name": "zai-org/glm-5.3-p",
       "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
@@ -1072,16 +1081,6 @@
         "text": true
       }
     },
-    "gt-4p": {
-      "name": "gt-4p",
-      "description": "chatgpt-4o",
-      "context_window": 0,
-      "max_output": 131072,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "meta-llama/llama-3.2-1b-instruct": {
       "name": "Llama 3.2 1B Instruct\t",
       "description": "The Meta Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (text in/text out).",
@@ -1098,6 +1097,16 @@
       "max_output": 8192,
       "inputs": {
         "text": true
+      }
+    },
+    "gt-4p": {
+      "name": "gt-4p",
+      "description": "chatgpt-4o",
+      "context_window": 0,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "inclusionai/ling-3.0-flash-fast": {
@@ -1487,5 +1496,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-13T14:53:20.813Z"
+  "_syncedAt": "2026-09-16T13:49:33.233Z"
 }

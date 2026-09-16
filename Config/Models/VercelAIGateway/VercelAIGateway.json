@@ -1229,6 +1229,32 @@
         "image": true
       }
     },
+    "inference-net/schematron-v2-small": {
+      "name": "Schematron V2 Small",
+      "description": "Schematron V2 Small is a specialized model from Inference.net for extracting structured data from HTML. It uses a supplied JSON Schema to produce conforming JSON and is designed for complex schemas and long pages.",
+      "context_window": 128000,
+      "max_output": 4096,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.23
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inference-net/schematron-v2-turbo": {
+      "name": "Schematron V2 Turbo",
+      "description": "Schematron V2 Turbo is a specialized model from Inference.net for extracting structured data from HTML. It uses a supplied JSON Schema to produce conforming JSON and is optimized for high-throughput extraction.",
+      "context_window": 128000,
+      "max_output": 8192,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "interfaze/interfaze-beta": {
       "name": "Interfaze Beta",
       "description": "Interfaze is an AI model built on a new architecture that merges specialized DNN/CNN models with LLMs for developer tasks that require deterministic output and high consistency like OCR, scraping, classification, STT and more.",
@@ -1564,32 +1590,6 @@
         "text": true
       }
     },
-    "mistral/devstral-2": {
-      "name": "Devstral 2",
-      "description": "An enterprise-grade text model that excels at using tools to explore codebases, editing multiple files, and powering software engineering agents.",
-      "context_window": 256000,
-      "max_output": 256000,
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "mistral/devstral-small-2": {
-      "name": "Devstral Small 2",
-      "description": "Our open source model that excels at using tools to explore codebases, editing multiple files, and powering software engineering agents.",
-      "context_window": 256000,
-      "max_output": 256000,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "mistral/ministral-14b": {
       "name": "Ministral 14B",
       "description": "Ministral 3 14B is the largest model in the Ministral 3 family, offering state-of-the-art capabilities and performance comparable to its larger Mistral Small 3.2 24B counterpart. Optimized for local deployment, it delivers high performance across diverse hardware, including local setups.",
@@ -1644,20 +1644,6 @@
         "image": true
       }
     },
-    "mistral/mistral-medium": {
-      "name": "Mistral Medium 3.1",
-      "description": "Mistral Medium 3 delivers frontier performance while being an order of magnitude less expensive. For instance, the model performs at or above 90% of Claude Sonnet 3.7 on benchmarks across the board at a significantly lower cost.",
-      "context_window": 128000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistral/mistral-medium-3.5": {
       "name": "Mistral Medium Latest",
       "description": "Mistral's frontier-class multimodal model optimized for agentic and coding use cases.",
@@ -1692,20 +1678,6 @@
       "pricing": {
         "input": 0.1,
         "output": 0.3
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistral/pixtral-12b": {
-      "name": "Pixtral 12B 2409",
-      "description": "A 12B model with image understanding capabilities in addition to text.",
-      "context_window": 128000,
-      "max_output": 4000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.15
       },
       "inputs": {
         "text": true,
@@ -3371,6 +3343,60 @@
         "image": true
       }
     },
+    "mistral/devstral-2": {
+      "name": "Devstral 2",
+      "description": "An enterprise-grade text model that excels at using tools to explore codebases, editing multiple files, and powering software engineering agents.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/devstral-small-2": {
+      "name": "Devstral Small 2",
+      "description": "Our open source model that excels at using tools to explore codebases, editing multiple files, and powering software engineering agents.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/mistral-medium": {
+      "name": "Mistral Medium 3.1",
+      "description": "Mistral Medium 3 delivers frontier performance while being an order of magnitude less expensive. For instance, the model performs at or above 90% of Claude Sonnet 3.7 on benchmarks across the board at a significantly lower cost.",
+      "context_window": 128000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistral/pixtral-12b": {
+      "name": "Pixtral 12B 2409",
+      "description": "A 12B model with image understanding capabilities in addition to text.",
+      "context_window": 128000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.8-flash-next": {
       "name": "Qwen 3.8 Flash Next",
       "description": "Qwen3.8-Flash-Next is Qwen’s experimental open-weight multimodal language model, pairing 125B parameters with just 6B activated for efficient reasoning and generation. With native 262K-token context extensible to 1M, vision support, and an architecture optimized for lower long-context latency, it is",
@@ -4012,5 +4038,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-13T14:53:25.632Z"
+  "_syncedAt": "2026-09-16T13:49:37.430Z"
 }
