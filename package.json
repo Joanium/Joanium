@@ -10,7 +10,7 @@
     "@huggingface/transformers": "4.2.0",
     "electron-updater": "6.8.9",
     "exceljs": "^4.4.0",
-    "jszip": "^3.10.1",
+    "jszip": "^3.10.2",
     "katex": "0.18.7",
     "mammoth": "^1.12.1",
     "pdf-parse": "^2.4.5",
