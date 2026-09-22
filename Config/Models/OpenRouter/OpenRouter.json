@@ -5,6 +5,97 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+      "description": "MiMo-V2.6-Pro-UltraSpeed is the fast speed edition of Xiaomi's flagship foundation model, MiMo-V2.6-Pro. Built from the same 1T MiMo-V2.6-Pro checkpoint, it matches the original model in quality while delivering roughly 10x...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 4.35,
+        "output": 8.7
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.6-flash": {
+      "name": "Xiaomi: MiMo-V2.6-Flash",
+      "description": "MiMo-V2.6-Flash is an open-source foundation model developed by Xiaomi. Built on a Mixture-of-Experts architecture with 309B total parameters and 15B activated per token, it employs a hybrid attention mechanism for...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.6-pro": {
+      "name": "Xiaomi: MiMo-V2.6-Pro",
+      "description": "MiMo-V2.6-Pro is the flagship foundation model developed by Xiaomi. Built at a scale of over 1T parameters, it is designed to push the ceiling of capability for the most demanding...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "x-ai/grok-4.7": {
+      "name": "SpaceXAI: Grok 4.7",
+      "description": "Grok 4.7 is SpaceXAI's flagship model for coding, agentic tasks, and knowledge work, succeeding Grok 4.6. It is particularly strong at long-running software engineering tasks, verifying its own work, and...",
+      "context_window": 500000,
+      "pricing": {
+        "input": 1.6,
+        "output": 4.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "prism-ml/ternary-bonsai-2-27b": {
+      "name": "PrismML: Ternary Bonsai 2 27B",
+      "description": "Bonsai 2 27B is a 27B-parameter reasoning model from PrismML derived from Qwen3.8-27B. It supports coding, mathematics, tool calling, and image understanding with a 262K-token context window. Ternary compression shrinks...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "z-ai/glm-5.3-flashx": {
+      "name": "Z.ai: GLM 5.3 FlashX",
+      "description": "GLM-5.3-FlashX is the high-speed variant of Z.ai's GLM-5.3-Flash, a native multimodal model delivering inference speeds of up to 200 tokens/s. Built on the same hybrid sparse and linear attention architecture...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.37,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto": {
+      "name": "Pareto",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "~deepseek/deepseek-pro-latest": {
       "name": "DeepSeek: DeepSeek Pro Latest",
       "description": "This model always redirects to the latest model in the DeepSeek Pro family.",
@@ -183,6 +274,19 @@
         "text": true
       }
     },
+    "nex-agi/nex-n2.5-mini": {
+      "name": "Nex AGI: Nex-N2.5-Mini",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "nex-agi/nex-n2.5-mini:free": {
       "name": "Nex AGI: Nex-N2.5-Mini (free)",
       "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
@@ -190,6 +294,19 @@
       "pricing": {
         "input": 0,
         "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nex-agi/nex-n2.5-pro": {
+      "name": "Nex AGI: Nex-N2.5-Pro",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.25
       },
       "inputs": {
         "text": true,
@@ -588,6 +705,19 @@
         "image": true
       }
     },
+    "qwen/qwen3.8-27b:free": {
+      "name": "Qwen: Qwen3.8 27B (free)",
+      "description": "Qwen3.8 27B is an open-weight dense vision-language model from Qwen. It is suited for coding, professional workflows, research, multimodal interaction, and long-running agent tasks, with flexible thinking that can be...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "dots-studio/dots-3-note-preview:free": {
       "name": "Dots Studio: Dots3-Note Preview (free)",
       "description": "Dots3-Note Preview is an open-weight mixture-of-experts model from Dots Studio, with 16B active parameters out of 280B total. It is the lightest model in the Dots 3 family and is...",
@@ -644,18 +774,6 @@
       "name": "Qwen: Qwen3.8 2.4T A95B",
       "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
       "context_window": 1048576,
-      "pricing": {
-        "input": 2,
-        "output": 6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3.8-2.4t-a95b:batch": {
-      "name": "Qwen: Qwen3.8 2.4T A95B (batch)",
-      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
-      "context_window": 1010000,
       "pricing": {
         "input": 2,
         "output": 6
@@ -1028,19 +1146,6 @@
         "image": true
       }
     },
-    "thinkingmachines/inkling:batch": {
-      "name": "Thinking Machines: Inkling (batch)",
-      "description": "Inkling is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 41B active parameters out of 975B total. It is designed for general-purpose reasoning, coding, agentic and tool-use systems,...",
-      "context_window": 524288,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.03
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "thinkingmachines/inkling:free": {
       "name": "Thinking Machines: Inkling (free)",
       "description": "Inkling is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 41B active parameters out of 975B total. It is designed for general-purpose reasoning, coding, agentic and tool-use systems,...",
@@ -1069,19 +1174,6 @@
     },
     "moonshotai/kimi-k3": {
       "name": "MoonshotAI: Kimi K3",
-      "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "moonshotai/kimi-k3:batch": {
-      "name": "MoonshotAI: Kimi K3 (batch)",
       "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
       "context_window": 1048576,
       "pricing": {
@@ -1580,19 +1672,6 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "minimax/minimax-m3:batch": {
-      "name": "MiniMax: MiniMax M3 (batch)",
-      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding,...",
-      "context_window": 524288,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
       },
       "inputs": {
         "text": true,
@@ -2282,18 +2361,6 @@
         "image": true
       }
     },
-    "kwaipilot/kat-coder-pro-v2": {
-      "name": "Kwaipilot: KAT-Coder-Pro V2",
-      "description": "KAT-Coder-Pro V2 is the latest high-performance model in KwaiKAT’s KAT-Coder series, designed for complex enterprise-grade software engineering and SaaS integration. It builds on the agentic coding strengths of earlier versions,...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "rekaai/reka-edge": {
       "name": "Reka Edge",
       "description": "Reka Edge is an extremely efficient 7B multimodal vision-language model that accepts image/video+text inputs and generates text outputs. This model is optimized specifically to deliver industry-leading performance in image understanding,...",
@@ -2453,19 +2520,6 @@
       "pricing": {
         "input": 0.04,
         "output": 0.15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3.5-9b:batch": {
-      "name": "Qwen: Qwen3.5-9B (batch)",
-      "description": "Qwen3.5-9B is a multimodal foundation model from the Qwen3.5 family, designed to deliver strong reasoning, coding, and visual understanding in an efficient 9B-parameter architecture. It uses a unified vision-language design...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.17,
-        "output": 0.25
       },
       "inputs": {
         "text": true,
@@ -3189,19 +3243,6 @@
         "image": true
       }
     },
-    "mistralai/mistral-large-2512": {
-      "name": "Mistral: Mistral Large 3 2512",
-      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistralai/mistral-large-2512:batch": {
       "name": "Mistral: Mistral Large 3 2512 (batch)",
       "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
@@ -3869,18 +3910,6 @@
         "text": true
       }
     },
-    "openai/gpt-oss-120b:batch": {
-      "name": "OpenAI: gpt-oss-120b (batch)",
-      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-oss-20b": {
       "name": "OpenAI: gpt-oss-20b",
       "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
@@ -4252,19 +4281,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "anthropic/claude-opus-4": {
-      "name": "Anthropic: Claude Opus 4",
-      "description": "Claude Opus 4 is benchmarked as the world’s best coding model, at time of release, bringing sustained performance on complex, long-running tasks and agent workflows. It sets new benchmarks in...",
-      "context_window": 200000,
-      "pricing": {
-        "input": 15,
-        "output": 75
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "anthropic/claude-sonnet-4": {
@@ -5482,6 +5498,120 @@
         "text": true
       }
     },
+    "qwen/qwen3.8-2.4t-a95b:batch": {
+      "name": "Qwen: Qwen3.8 2.4T A95B (batch)",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
+      "context_window": 1010000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "thinkingmachines/inkling:batch": {
+      "name": "Thinking Machines: Inkling (batch)",
+      "description": "Inkling is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 41B active parameters out of 975B total. It is designed for general-purpose reasoning, coding, agentic and tool-use systems,...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.03
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3:batch": {
+      "name": "MoonshotAI: Kimi K3 (batch)",
+      "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimax/minimax-m3:batch": {
+      "name": "MiniMax: MiniMax M3 (batch)",
+      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding,...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v2": {
+      "name": "Kwaipilot: KAT-Coder-Pro V2",
+      "description": "KAT-Coder-Pro V2 is the latest high-performance model in KwaiKAT’s KAT-Coder series, designed for complex enterprise-grade software engineering and SaaS integration. It builds on the agentic coding strengths of earlier versions,...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.5-9b:batch": {
+      "name": "Qwen: Qwen3.5-9B (batch)",
+      "description": "Qwen3.5-9B is a multimodal foundation model from the Qwen3.5 family, designed to deliver strong reasoning, coding, and visual understanding in an efficient 9B-parameter architecture. It uses a unified vision-language design...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.17,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-large-2512": {
+      "name": "Mistral: Mistral Large 3 2512",
+      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-oss-120b:batch": {
+      "name": "OpenAI: gpt-oss-120b (batch)",
+      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "anthropic/claude-opus-4": {
+      "name": "Anthropic: Claude Opus 4",
+      "description": "Claude Opus 4 is benchmarked as the world’s best coding model, at time of release, bringing sustained performance on complex, long-running tasks and agent workflows. It sets new benchmarks in...",
+      "context_window": 200000,
+      "pricing": {
+        "input": 15,
+        "output": 75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "thinkingmachines/inkling-small:batch": {
       "name": "Thinking Machines: Inkling Small (batch)",
       "description": "Inkling Small is an open-weight multimodal mixture-of-experts model from Thinking Machines Lab, with 12B active parameters out of 276B total. It is positioned as the smaller, more efficient member of...",
@@ -6494,5 +6624,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-16T13:49:09.321Z"
+  "_syncedAt": "2026-09-22T14:43:34.348Z"
 }

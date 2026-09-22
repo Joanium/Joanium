@@ -12,8 +12,8 @@
         "max_output_tokens": 128000
       }
     },
-    "grok-4.6": {
-      "name": "Grok 4 6",
+    "grok-4.7": {
+      "name": "Grok 4 7",
       "context_window": {
         "context_length": 500000,
         "max_output_tokens": null
@@ -73,6 +73,13 @@
     },
     "muse-spark-1-1": {
       "name": "Muse Spark 1 1"
+    },
+    "grok-4.6": {
+      "name": "Grok 4 6",
+      "context_window": {
+        "context_length": 500000,
+        "max_output_tokens": null
+      }
     },
     "grok-4.5": {
       "name": "Grok 4 5"
@@ -285,9 +292,6 @@
     },
     "qwen3-coder-next-n": {
       "name": "Qwen3 Coder Next N"
-    },
-    "gemma-4-31b-t": {
-      "name": "Gemma 4 31B T"
     },
     "claude-code": {
       "name": "Claude Code"
@@ -1274,6 +1278,26 @@
     "deepseek-v4.1-flash": {
       "name": "Deepseek V4 1 FLASH"
     },
+    "ds-v4.1-flash-el": {
+      "name": "Ds V4 1 FLASH El",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "hy4-preview": {
+      "name": "Hy4 Preview"
+    },
+    "step-5-preview-el": {
+      "name": "Step 5 Preview El",
+      "context_window": {
+        "context_length": 1024000,
+        "max_output_tokens": null
+      }
+    },
+    "gemma-4-31b-t": {
+      "name": "Gemma 4 31B T"
+    },
     "gemini-omni-flash": {
       "name": "Gemini Omni FLASH"
     },
@@ -1805,5 +1829,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-16T13:49:38.798Z"
+  "_syncedAt": "2026-09-22T14:44:15.599Z"
 }

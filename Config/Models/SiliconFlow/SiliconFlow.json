@@ -82,9 +82,6 @@
     "zai-org/GLM-5V-Turbo": {
       "name": "GLM 5V TURBO"
     },
-    "Qwen/Qwen3.5-397B-A17B": {
-      "name": "Qwen3 5 397B A17B"
-    },
     "Qwen/Qwen3.5-122B-A10B": {
       "name": "Qwen3 5 122B A10B"
     },
@@ -96,9 +93,6 @@
     },
     "Qwen/Qwen3.5-9B": {
       "name": "Qwen3 5 9B"
-    },
-    "MiniMaxAI/MiniMax-M2.5": {
-      "name": "MiniMax M2 5"
     },
     "zai-org/GLM-5": {
       "name": "GLM 5"
@@ -232,6 +226,12 @@
     "Qwen/Qwen2.5-7B-Instruct": {
       "name": "Qwen2 5 7B Instruct"
     },
+    "Qwen/Qwen3.5-397B-A17B": {
+      "name": "Qwen3 5 397B A17B"
+    },
+    "MiniMaxAI/MiniMax-M2.5": {
+      "name": "MiniMax M2 5"
+    },
     "nex-agi/Nex-N2-Pro": {
       "name": "Nex N2 PRO"
     },
@@ -239,5 +239,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-09-16T13:49:26.090Z"
+  "_syncedAt": "2026-09-22T14:44:02.858Z"
 }

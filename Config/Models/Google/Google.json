@@ -182,6 +182,11 @@
       "context_window": 1048576,
       "max_output": 65536
     },
+    "antigravity-preview-latest": {
+      "name": "Antigravity Agent Preview Latest",
+      "context_window": 1048576,
+      "max_output": 65536
+    },
     "deep-research-max-preview-04-2026": {
       "name": "Deep Research Max Preview (Apr-21-2026)",
       "context_window": 131072,
@@ -235,5 +240,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-09-16T13:49:11.575Z"
+  "_syncedAt": "2026-09-22T14:43:37.348Z"
 }

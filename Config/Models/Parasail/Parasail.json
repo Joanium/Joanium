@@ -275,6 +275,9 @@
     "deepseek-ai/DeepSeek-V4.1-Flash": {
       "name": "DeepSeek V4 1 FLASH"
     },
+    "daim2xqktvqo-qwen38-flash-next-fp8": {
+      "name": "Daim2xqktvqo Qwen38 FLASH Next FP8"
+    },
     "parasail-trinity-large-thinking": {
       "name": "Parasail Trinity Large Thinking"
     },
@@ -363,5 +366,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-09-16T13:49:42.513Z"
+  "_syncedAt": "2026-09-22T14:44:18.503Z"
 }

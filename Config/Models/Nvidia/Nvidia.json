@@ -27,8 +27,8 @@
     "deepseek-ai/deepseek-coder-6.7b-instruct": {
       "name": "deepseek-ai/deepseek-coder-6.7b-instruct"
     },
-    "deepseek-ai/deepseek-v4-flash-0731": {
-      "name": "Deepseek V4 FLASH 0731"
+    "deepseek-ai/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH"
     },
     "google/codegemma-1.1-7b": {
       "name": "google/codegemma-1.1-7b"
@@ -301,6 +301,9 @@
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
     },
+    "deepseek-ai/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 FLASH 0731"
+    },
     "deepseek-ai/deepseek-v4-pro-0813": {
       "name": "Deepseek V4 PRO 0813"
     },
@@ -487,5 +490,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-16T13:49:06.374Z"
+  "_syncedAt": "2026-09-22T14:43:31.359Z"
 }

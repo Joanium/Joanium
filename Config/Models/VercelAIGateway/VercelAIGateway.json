@@ -410,6 +410,20 @@
         "image": true
       }
     },
+    "alibaba/qwen3.8-omni-flash": {
+      "name": "Qwen 3.8 Omni Flash",
+      "description": "Qwen3.8-Omni-Flash is Alibaba’s native multimodal model for understanding text, images, audio, and video and generating text. Built on Qwen3.8-Flash-Next, it supports a 1M-token context window, reasoning, and tool calling for coding, knowledge work, and multimedia analysis.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.47
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "amazon/nova-2-lite": {
       "name": "Nova 2 Lite",
       "description": "Nova 2 Lite is a fast, cost-effective reasoning model for everyday workloads that can process text, images, and videos to generate text.",
@@ -1268,58 +1282,6 @@
         "text": true
       }
     },
-    "kwaipilot/kat-coder-air-v2.5": {
-      "name": "Kat Coder Air V2.5",
-      "description": "Fast response version of Kat Coder V2.5 optimized for Agent and Claw use cases.",
-      "context_window": 256000,
-      "max_output": 80000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "kwaipilot/kat-coder-pro-v1": {
-      "name": "KAT-Coder-Pro V1",
-      "description": "KAT-Coder-Pro V1 is KwaiKAT's most advanced agentic coding model in the KwaiKAT series. Designed specifically for agentic coding tasks, it excels in real-world software engineering scenarios, achieving a remarkable 73.4% solve rate on the SWE-Bench Verified benchmark. KAT-Coder-Pro V1 delivers top-t",
-      "context_window": 256000,
-      "max_output": 32000,
-      "pricing": {
-        "input": 0.03,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "kwaipilot/kat-coder-pro-v2": {
-      "name": "Kat Coder Pro V2",
-      "description": "A high-performance edition designed for complex enterprise projects and SaaS integration.",
-      "context_window": 256000,
-      "max_output": 256000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "kwaipilot/kat-coder-pro-v2.5": {
-      "name": "Kat Coder Pro V2.5",
-      "description": "KAT-Coder-V2.5 is a coding-focused agentic model trained to act autonomously inside real, executable repositories rather than as a single-turn code generator.",
-      "context_window": 256000,
-      "max_output": 80000,
-      "pricing": {
-        "input": 0.74,
-        "output": 2.96
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "meta/llama-3.1-70b": {
       "name": "Llama 3.1 70B Instruct",
       "description": "An update to Meta Llama 3 70B Instruct that includes an expanded 128K context length, multilinguality and improved reasoning capabilities.",
@@ -1682,6 +1644,19 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "mixedbread/toast-1": {
+      "name": "Toast 1",
+      "description": "Built for knowledge-intensive questions, multi-step retrieval, and evidence synthesis. Toast 1 can work with any backend exposed through function calling.",
+      "context_window": 131000,
+      "max_output": 4000,
+      "pricing": {
+        "input": 0.3,
+        "output": 0.72
+      },
+      "inputs": {
+        "text": true
       }
     },
     "moonshotai/kimi-k2": {
@@ -2762,6 +2737,34 @@
         "text": true
       }
     },
+    "quiverai/arrow-2": {
+      "name": "Arrow 2",
+      "description": "SVG generation model with agentic refinement and tool calling.",
+      "context_window": 131072,
+      "max_output": 131072,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "quiverai/arrow-2-telos": {
+      "name": "Arrow 2 Telos",
+      "description": "Higher-refinement Arrow 2 variant combining Arrow's speed with frontier-model reasoning.",
+      "context_window": 131072,
+      "max_output": 131072,
+      "pricing": {
+        "input": 6,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "sakana/fugu-max": {
       "name": "Fugu Max",
       "description": "Fugu Max orchestrates our largest pool of models to push the cost–performance Pareto frontier. It dynamically finds efficient combinations of expert agents, aiming to improve model performance and cost efficiency together.",
@@ -2839,6 +2842,20 @@
       "pricing": {
         "input": 0.2,
         "output": 1.15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stepfun/step-5-preview": {
+      "name": "Step 5 Preview",
+      "description": "Step 5 Preview is StepFun’s flagship AI model for agentic coding, professional knowledge work, and financial analysis. Built on a sparse Mixture-of-Experts architecture with 600B total parameters and 27B active per token, it combines a 1M-token context window with vision input. From building interac",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 1,
+        "output": 2.7
       },
       "inputs": {
         "text": true,
@@ -3090,6 +3107,20 @@
         "image": true
       }
     },
+    "spacexai/grok-4.7": {
+      "name": "Grok 4.7",
+      "description": "Grok 4.7 is SpaceXAI’s advanced AI model for coding and professional knowledge work, built to tackle complex, multi-hour tasks with improved self-verification and long-context handling. It strengthens software engineering, document creation, and presentation workflows while maintaining Grok 4.6’s sp",
+      "context_window": 500000,
+      "max_output": 500000,
+      "pricing": {
+        "input": 1.2,
+        "output": 3.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "spacexai/grok-build-0.1": {
       "name": "Grok Build 0.1",
       "description": "xAI's fast coding model trained specifically for agentic coding.",
@@ -3126,6 +3157,48 @@
       "pricing": {
         "input": 0.44,
         "output": 0.87
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.6-flash": {
+      "name": "MiMo V2.6 Flash",
+      "description": "MiMo V2.6 Flash is Xiaomi's efficient multimodal reasoning model for coding, automation, and everyday agent workflows. It accepts text, images, audio, and video within a 1M-token context window, with up to 128K tokens of output. Deep thinking, tool calling, JSON mode, and prompt caching make it suit",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.6-pro": {
+      "name": "MiMo V2.6 Pro",
+      "description": "MiMo V2.6 Pro is Xiaomi's flagship multimodal reasoning model for complex software engineering, long-running agent tasks, and professional workflows. It supports text, image, audio, and video inputs with a 1M-token context window and up to 128K tokens of output. Deep thinking, tool calling, JSON mod",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "name": "MiMo V2.6 Pro UltraSpeed",
+      "description": "MiMo V2.6 Pro UltraSpeed is Xiaomi's accelerated inference offering for MiMo V2.6 Pro, designed for interactive agents and workflows where response latency matters. It combines multimodal understanding of text, images, audio, and video with a 1M-token context window and up to 128K tokens of output. ",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 4.35,
+        "output": 8.7
       },
       "inputs": {
         "text": true,
@@ -3329,6 +3402,20 @@
         "image": true
       }
     },
+    "zai/glm-5.3-flashx": {
+      "name": "GLM 5.3 FlashX",
+      "description": "GLM-5.3-FlashX is the high-speed serving option for Z.ai’s native multimodal coding model, featuring 320B total parameters, 18B activated parameters, and a 1M-token context window. Its efficient hybrid attention architecture supports visual coding, tool use, and end-to-end professional workflows acr",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.37,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai/glm-5v-turbo": {
       "name": "GLM 5V Turbo",
       "description": "GLM-5V-Turbo is Z.AI’s first multimodal coding foundation model, built for vision-based coding tasks. It can natively process multimodal inputs such as images, video, and text, while also excelling at long-horizon planning, complex coding, and action execution. Deeply optimized for agent workflows, ",
@@ -3341,6 +3428,58 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "kwaipilot/kat-coder-air-v2.5": {
+      "name": "Kat Coder Air V2.5",
+      "description": "Fast response version of Kat Coder V2.5 optimized for Agent and Claw use cases.",
+      "context_window": 256000,
+      "max_output": 80000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v1": {
+      "name": "KAT-Coder-Pro V1",
+      "description": "KAT-Coder-Pro V1 is KwaiKAT's most advanced agentic coding model in the KwaiKAT series. Designed specifically for agentic coding tasks, it excels in real-world software engineering scenarios, achieving a remarkable 73.4% solve rate on the SWE-Bench Verified benchmark. KAT-Coder-Pro V1 delivers top-t",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0.03,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v2": {
+      "name": "Kat Coder Pro V2",
+      "description": "A high-performance edition designed for complex enterprise projects and SaaS integration.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v2.5": {
+      "name": "Kat Coder Pro V2.5",
+      "description": "KAT-Coder-V2.5 is a coding-focused agentic model trained to act autonomously inside real, executable repositories rather than as a single-turn code generator.",
+      "context_window": 256000,
+      "max_output": 80000,
+      "pricing": {
+        "input": 0.74,
+        "output": 2.96
+      },
+      "inputs": {
+        "text": true
       }
     },
     "mistral/devstral-2": {
@@ -4038,5 +4177,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-16T13:49:37.430Z"
+  "_syncedAt": "2026-09-22T14:44:14.755Z"
 }

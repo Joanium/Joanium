@@ -15,6 +15,15 @@
         "image": true
       }
     },
+    "tencent/hy4-preview": {
+      "name": "Hy4 Preview",
+      "description": "Tencent: Hy4 preview is a mixture-of-experts model from Tencent, with 49B active parameters out of 770B total. It is designed for coding agents, complex tool-use workflows, and productivity tasks that require planning, context continuity, and sustained multi-step execution.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "inputs": {
+        "text": true
+      }
+    },
     "deepseek/deepseek-v4.1-flash-z": {
       "name": "DS F41 Flash",
       "context_window": 1048576,
@@ -1496,5 +1505,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-16T13:49:33.233Z"
+  "_syncedAt": "2026-09-22T14:44:08.930Z"
 }
