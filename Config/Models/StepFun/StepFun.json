@@ -37,7 +37,10 @@
         "pdf": false,
         "docx": false
       }
+    },
+    "step-5-preview": {
+      "name": "Step 5 Preview"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:42.063Z"
+  "_syncedAt": "2026-09-22T14:44:17.324Z"
 }

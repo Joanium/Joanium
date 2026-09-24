@@ -1,9 +1,12 @@
+import { app } from 'electron';
 import { readUserState, writeUserState } from '../../Shared/UserData/UserData.js';
 import {
   readProviderCatalog,
   invalidateProviderCatalogCache,
 } from '../../Shared/ProviderCatalog/ProviderCatalog.js';
 import { backgroundSyncAllProviders } from '../../Shared/ProviderCatalog/ModelSync.js';
+import { createLiveModelFilter } from '../../Shared/ProviderCatalog/LiveModelFilter.js';
+import { normalizeLocalEndpoint } from '../../Shared/ProviderCatalog/ProviderEndpointUtils.js';
 
 function isProviderConfigured(provider, details) {
   if (provider.requiresApiKey) {
@@ -11,10 +14,10 @@ function isProviderConfigured(provider, details) {
   }
 
   try {
-    const endpoint = typeof details.endpoint === 'string' ? details.endpoint.trim() : '';
+    const endpoint = normalizeLocalEndpoint(details.endpoint);
     if (!endpoint) return false;
-    new URL(endpoint);
-    return true;
+    const url = new URL(endpoint);
+    return url.protocol === 'http:' || url.protocol === 'https:';
   } catch {
     return false;
   }
@@ -25,17 +28,20 @@ export function createProviderStateManager({ rootDirectory }) {
   // The chat:health-probe fires very frequently; without this cache it causes EMFILE.
   // Invalidated whenever provider data changes (save, remove) or after a sync writes new data.
   let catalogCache = null;
+  const liveModelFilter = createLiveModelFilter();
 
   function invalidateCatalogCache() {
     catalogCache = null;
     invalidateProviderCatalogCache();
   }
 
-  async function getCatalogCached() {
+  async function getCatalogCached(user = null) {
     if (!catalogCache) {
       catalogCache = await readProviderCatalog(rootDirectory);
     }
-    return catalogCache;
+    return app.isPackaged && user
+      ? liveModelFilter.filterProviders(catalogCache, user)
+      : catalogCache;
   }
 
   async function readState() {
@@ -50,11 +56,12 @@ export function createProviderStateManager({ rootDirectory }) {
 
   return {
     async getCatalog() {
-      return getCatalogCached();
+      return getCatalogCached(await readState());
     },
 
     async getConfigured() {
-      const [state, catalog] = await Promise.all([readState(), getCatalogCached()]);
+      const state = await readState();
+      const catalog = await getCatalogCached(state);
 
       return catalog.map((provider) => {
         const details = state.providers.details[provider.id] ?? {};
@@ -72,7 +79,7 @@ export function createProviderStateManager({ rootDirectory }) {
     },
 
     async saveProvider(providerId, incoming) {
-      const catalog = await getCatalogCached();
+      const catalog = await getCatalogCached(await readState());
       const provider = catalog.find((p) => p.id === providerId);
 
       if (!provider) {
@@ -88,8 +95,9 @@ export function createProviderStateManager({ rootDirectory }) {
             nextDetails.apiKey = incoming.apiKey.trim();
           }
         } else {
-          if (typeof incoming.endpoint === 'string' && incoming.endpoint.trim()) {
-            nextDetails.endpoint = incoming.endpoint.trim();
+          const endpoint = normalizeLocalEndpoint(incoming.endpoint);
+          if (endpoint) {
+            nextDetails.endpoint = endpoint;
           }
         }
 
@@ -106,13 +114,14 @@ export function createProviderStateManager({ rootDirectory }) {
         };
       });
 
+      liveModelFilter.clear(providerId);
       const updated = await this.getConfigured();
       return updated.find((p) => p.id === providerId) ?? null;
     },
 
     async removeProvider(providerId) {
       const state = await readState();
-      const catalog = await getCatalogCached();
+      const catalog = await getCatalogCached(state);
 
       const configuredIds = state.providers.selected.filter((id) => {
         const provider = catalog.find((p) => p.id === id);
@@ -134,6 +143,7 @@ export function createProviderStateManager({ rootDirectory }) {
         },
       }));
 
+      liveModelFilter.clear(providerId);
       invalidateCatalogCache();
       return { ok: true };
     },

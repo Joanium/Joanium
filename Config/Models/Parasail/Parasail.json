@@ -230,12 +230,6 @@
     "google/gemma-3-4b-it": {
       "name": "Gemma 3 4B It"
     },
-    "parasail-deepseek-v4-flash-0731": {
-      "name": "Parasail Deepseek V4 FLASH 0731"
-    },
-    "deepseek-ai/DeepSeek-V4-Flash-0731": {
-      "name": "DeepSeek V4 FLASH 0731"
-    },
     "parasail-sao10kl3-lunaris-8b": {
       "name": "Parasail Sao10kl3 Lunaris 8B"
     },
@@ -268,6 +262,21 @@
     },
     "z-ai/glm-5.3": {
       "name": "Glm 5 3"
+    },
+    "parasail-deepseek-v4-flash-0731": {
+      "name": "Parasail Deepseek V4 FLASH 0731"
+    },
+    "deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "name": "DeepSeek V4 FLASH 0731"
+    },
+    "parasail-deepseek-v41-flash": {
+      "name": "Parasail Deepseek V41 FLASH"
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash": {
+      "name": "DeepSeek V4 1 FLASH"
+    },
+    "daim2xqktvqo-qwen38-flash-next-fp8": {
+      "name": "Daim2xqktvqo Qwen38 FLASH Next FP8"
     },
     "parasail-trinity-large-thinking": {
       "name": "Parasail Trinity Large Thinking"
@@ -357,5 +366,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:43.873Z"
+  "_syncedAt": "2026-09-22T14:44:18.503Z"
 }

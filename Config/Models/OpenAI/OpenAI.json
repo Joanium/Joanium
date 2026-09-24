@@ -442,6 +442,9 @@
     "gpt-6-astra": {
       "name": "Gpt 6 Astra"
     },
+    "gpt-live-1": {
+      "name": "Gpt Live 1"
+    },
     "gpt-realtime-mini-2025-10-06": {
       "name": "gpt-realtime-mini-2025-10-06"
     },
@@ -449,5 +452,5 @@
       "name": "Ra Gpt 5 6 Sol"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:18.269Z"
+  "_syncedAt": "2026-09-22T14:43:39.254Z"
 }

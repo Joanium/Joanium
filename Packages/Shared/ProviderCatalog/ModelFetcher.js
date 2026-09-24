@@ -8,6 +8,8 @@
 
 // No filtering — all models returned by the API are included (chat, image, video, audio, etc.).
 
+import { resolveLmStudioBaseUrl, resolveOllamaBaseUrl } from './ProviderEndpointUtils.js';
+
 // ── HTTP helper ───────────────────────────────────────────────────────────────
 
 async function fetchJson(url, headers = {}) {
@@ -364,7 +366,7 @@ async function fetchTogetherModels(apiKey) {
  * Ollama (local): GET {endpoint}/api/tags → { models: [{ name }] }
  */
 async function fetchOllamaModels(endpoint) {
-  const base = (endpoint ?? 'http://localhost:11434').replace(/\/$/, '');
+  const base = resolveOllamaBaseUrl(endpoint);
   const body = await fetchJson(`${base}/api/tags`);
   const items = Array.isArray(body?.models) ? body.models : [];
   return items.map((m) => compact({ id: String(m.name), name: String(m.name) }));
@@ -374,7 +376,7 @@ async function fetchOllamaModels(endpoint) {
  * LM Studio (local): GET {endpoint}/v1/models → { data: [{ id }] }
  */
 async function fetchLmStudioModels(endpoint) {
-  const base = (endpoint ?? 'http://localhost:1234').replace(/\/$/, '');
+  const base = resolveLmStudioBaseUrl(endpoint);
   const body = await fetchJson(`${base}/v1/models`);
   const items = Array.isArray(body?.data) ? body.data : [];
   return items.map((m) => compact({ id: String(m.id), name: String(m.id) }));

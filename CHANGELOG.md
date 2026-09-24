@@ -6,6 +6,26 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.916.0] - 2026-09-16
+
+* Updated AI Models
+* Chore(deps-dev): Bump electron from 44.1.0 to 44.3.0
+
+---
+
+## [2026.913.0] - 2026-09-13
+
+* Updated AI Models
+* feat: enhance provider management with model discovery and endpoint resolution #243
+* Chore(deps): Bump katex from 0.18.6 to 0.18.7
+* Chore(deps): Bump katex from 0.18.4 to 0.18.6
+* Chore(deps-dev): Bump lint-staged from 17.4.1 to 17.5.0
+* Chore(deps): Bump github/codeql-action from 4.37.7 to 4.37.9
+* Chore(deps): Bump github/codeql-action/init from 4.37.7 to 4.37.9
+* Chore(deps-dev): Bump electron from 44.0.0 to 44.1.0
+
+---
+
 ## [2026.906.0] - 2026-09-06
 
 * feat: add button to showcase other products with link

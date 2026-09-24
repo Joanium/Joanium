@@ -1,8 +1,8 @@
 /**
  * LiveModelFilter.js
  *
- * Fetches the live model list from each provider API in memory and filters
- * the bundled provider catalog down to only models that are currently active.
+ * Fetches the live model list from each provider API in memory and refreshes
+ * the bundled provider catalog with the models that are currently active.
  *
  * Design rules:
  *  - One HTTP request per provider, not one per model.
@@ -15,46 +15,52 @@
  */
 
 import { fetchProviderModels } from './ModelFetcher.js';
+import { normalizeLocalEndpoint } from './ProviderEndpointUtils.js';
 
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 export function createLiveModelFilter() {
-  // Map<providerId, { ids: Set<string>, cachedAt: number }>
+  // Map<credentialsKey, { models: Array, cachedAt: number }>
   const cache = new Map();
 
-  // Map<providerId, Promise<Set<string> | null>> — deduplicates concurrent fetches.
+  // Map<credentialsKey, Promise<Array | null>> — deduplicates concurrent fetches.
   const pending = new Map();
 
-  async function fetchLiveIds(providerId, credentials) {
+  function credentialsKey(providerId, credentials) {
+    return `${providerId}\u0000${credentials.apiKey}\u0000${credentials.endpoint}`;
+  }
+
+  async function fetchLiveModels(providerId, credentials) {
+    const key = credentialsKey(providerId, credentials);
+
     // Return cached result if still fresh.
-    const cached = cache.get(providerId);
+    const cached = cache.get(key);
     if (cached && Date.now() - cached.cachedAt < CACHE_TTL_MS) {
-      return cached.ids;
+      return cached.models;
     }
 
-    // Reuse an in-flight fetch for the same provider.
-    if (pending.has(providerId)) {
-      return pending.get(providerId);
+    // Reuse an in-flight fetch for the same provider and connection.
+    if (pending.has(key)) {
+      return pending.get(key);
     }
 
     const promise = fetchProviderModels(providerId, credentials)
       .then((models) => {
         if (!Array.isArray(models) || models.length === 0) return null;
-        const ids = new Set(models.map((m) => m.id));
-        cache.set(providerId, { ids, cachedAt: Date.now() });
-        return ids;
+        cache.set(key, { models, cachedAt: Date.now() });
+        return models;
       })
       .catch(() => null) // fail-safe: keep all models on error
-      .finally(() => pending.delete(providerId));
+      .finally(() => pending.delete(key));
 
-    pending.set(providerId, promise);
+    pending.set(key, promise);
     return promise;
   }
 
   return {
     /**
      * Returns a new providers array where each provider's model list is
-     * filtered to only models present in the provider's live API response.
+     * replaced with models present in the provider's live API response.
      * Providers whose API doesn't support listing (null) or whose fetch fails
      * are returned unchanged.
      *
@@ -64,34 +70,55 @@ export function createLiveModelFilter() {
      */
     async filterProviders(providers, user) {
       const userDetails = user?.providers?.details ?? {};
+      const selectedProviderIds = new Set(user?.providers?.selected ?? []);
 
       const results = await Promise.all(
         providers.map(async (provider) => {
+          if (!selectedProviderIds.has(provider.id)) return provider;
+
           const details = userDetails[provider.id] ?? {};
           const apiKey = (details.apiKey ?? '').trim();
-          const endpoint = (details.endpoint ?? '').trim() || (provider.endpoint ?? '').trim();
+          const savedEndpoint = (details.endpoint ?? '').trim();
+          const endpoint = provider.requiresApiKey
+            ? savedEndpoint || (provider.endpoint ?? '').trim()
+            : normalizeLocalEndpoint(savedEndpoint || (provider.endpoint ?? '').trim());
 
           // Skip providers the user hasn't configured — nothing to filter against.
           if (provider.requiresApiKey && !apiKey) return provider;
           if (!endpoint && !provider.requiresApiKey) return provider;
 
           const credentials = { apiKey, endpoint };
-          const liveIds = await fetchLiveIds(provider.id, credentials);
+          const liveModels = await fetchLiveModels(provider.id, credentials);
 
           // No live list available — return provider unchanged (fail-safe).
-          if (!liveIds) return provider;
+          if (!liveModels) return provider;
 
-          const filteredModels = (provider.models ?? []).filter((m) => liveIds.has(m.id));
+          const bundledModels = new Map((provider.models ?? []).map((model) => [model.id, model]));
+          const models = liveModels.map((model) => ({
+            ...model,
+            ...(bundledModels.get(model.id) ?? {}),
+          }));
 
-          // If filtering removed everything, keep original list — probably a
-          // mismatch in ID format rather than all models being gone.
-          if (filteredModels.length === 0) return provider;
-
-          return { ...provider, models: filteredModels };
+          return {
+            ...provider,
+            models,
+            modelCount: models.length,
+            featuredModels: models.slice(0, 3).map((model) => model.name ?? model.id),
+            summary: models[0]?.description ?? provider.summary,
+          };
         }),
       );
 
       return results;
+    },
+    clear(providerId) {
+      const prefix = `${providerId}\u0000`;
+
+      for (const key of cache.keys()) {
+        if (key.startsWith(prefix)) {
+          cache.delete(key);
+        }
+      }
     },
   };
 }

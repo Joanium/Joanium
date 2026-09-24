@@ -127,13 +127,15 @@ It stores:
 
 `saveProvider()` writes only the relevant field for the provider type: `apiKey` for providers that require one, or `endpoint` for local providers. The implementation does not persist a `selectedModel` field.
 
-### Background Sync
+### Model discovery
 
 - delayed by 15 seconds on startup to avoid boot interference
-- no-op in packaged builds
-- runs with a 1-hour TTL per provider (tracked by `_syncedAt` inside each provider JSON)
-- fetches the latest model list from the provider API
-- invalidates the in-memory catalog cache after sync
+- development builds sync model lists to the provider JSON files with a 1-hour TTL
+- packaged builds keep those files read-only and discover models in memory for enabled providers
+- live discovery is cached for one hour and falls back to the bundled catalog on an API error
+- local endpoints without a scheme, such as `127.0.0.1:11434`, are treated as HTTP endpoints
+- Ollama and LM Studio accept either a server base URL or their OpenAI-compatible chat URL
+- disabled providers are never probed, so unavailable local servers cannot delay startup
 
 ---
 

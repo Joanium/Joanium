@@ -12,8 +12,8 @@
         "max_output_tokens": 128000
       }
     },
-    "grok-4.6": {
-      "name": "Grok 4 6",
+    "grok-4.7": {
+      "name": "Grok 4 7",
       "context_window": {
         "context_length": 500000,
         "max_output_tokens": null
@@ -74,11 +74,15 @@
     "muse-spark-1-1": {
       "name": "Muse Spark 1 1"
     },
+    "grok-4.6": {
+      "name": "Grok 4 6",
+      "context_window": {
+        "context_length": 500000,
+        "max_output_tokens": null
+      }
+    },
     "grok-4.5": {
       "name": "Grok 4 5"
-    },
-    "gemini-omni-flash": {
-      "name": "Gemini Omni FLASH"
     },
     "gemini-3.6-flash": {
       "name": "Gemini 3 6 FLASH"
@@ -289,9 +293,6 @@
     "qwen3-coder-next-n": {
       "name": "Qwen3 Coder Next N"
     },
-    "gemma-4-31b-t": {
-      "name": "Gemma 4 31B T"
-    },
     "claude-code": {
       "name": "Claude Code"
     },
@@ -327,25 +328,11 @@
         "max_output_tokens": 64000
       }
     },
-    "gemini-2.5-flash": {
-      "name": "Gemini 2 5 FLASH",
-      "context_window": {
-        "context_length": 1065535,
-        "max_output_tokens": 65535
-      }
-    },
     "kling-o3": {
       "name": "Kling O3",
       "context_window": {
         "context_length": 256,
         "max_output_tokens": null
-      }
-    },
-    "gemini-2.5-pro": {
-      "name": "Gemini 2 5 PRO",
-      "context_window": {
-        "context_length": 1065535,
-        "max_output_tokens": 65535
       }
     },
     "gpt-5.2-pro": {
@@ -395,13 +382,6 @@
         "max_output_tokens": null
       }
     },
-    "nano-banana": {
-      "name": "Nano Banana",
-      "context_window": {
-        "context_length": 65536,
-        "max_output_tokens": null
-      }
-    },
     "gpt-5": {
       "name": "Gpt 5",
       "context_window": {
@@ -426,13 +406,6 @@
         "max_output_tokens": 128000
       }
     },
-    "gemini-2.5-flash-lite": {
-      "name": "Gemini 2 5 FLASH LITE",
-      "context_window": {
-        "context_length": 1024000,
-        "max_output_tokens": 64000
-      }
-    },
     "qwen3-next-80b-think": {
       "name": "Qwen3 Next 80B Think"
     },
@@ -444,9 +417,6 @@
     },
     "nova-pro-1.0": {
       "name": "Nova PRO 1 0"
-    },
-    "nova-premier-1.0": {
-      "name": "Nova Premier 1 0"
     },
     "nova-micro-1.0": {
       "name": "Nova Micro 1 0"
@@ -779,20 +749,6 @@
         "max_output_tokens": null
       }
     },
-    "sora-2-pro": {
-      "name": "Sora 2 PRO",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
-    "sora-2": {
-      "name": "Sora 2",
-      "context_window": {
-        "context_length": 480,
-        "max_output_tokens": null
-      }
-    },
     "kling-2.5-turbo-std": {
       "name": "Kling 2 5 TURBO Std"
     },
@@ -826,9 +782,6 @@
     },
     "wan-2.5": {
       "name": "Wan 2 5"
-    },
-    "pixverse-v4.5": {
-      "name": "Pixverse V4 5"
     },
     "lyria-3": {
       "name": "Lyria 3"
@@ -1054,13 +1007,6 @@
     },
     "mochi-preview": {
       "name": "Mochi Preview"
-    },
-    "gpt-3.5-turbo-instruct": {
-      "name": "Gpt 3 5 TURBO Instruct",
-      "context_window": {
-        "context_length": 3500,
-        "max_output_tokens": 1024
-      }
     },
     "gpt-3.5-turbo-raw": {
       "name": "Gpt 3 5 TURBO Raw",
@@ -1319,6 +1265,96 @@
         "context_length": 1000000,
         "max_output_tokens": null
       }
+    },
+    "ling-3.0-flash-fin": {
+      "name": "Ling 3 0 FLASH Fin"
+    },
+    "minimax-h3-n": {
+      "name": "Minimax H3 N"
+    },
+    "ling-3.0-flash-vl": {
+      "name": "Ling 3 0 FLASH VL"
+    },
+    "deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH"
+    },
+    "ds-v4.1-flash-el": {
+      "name": "Ds V4 1 FLASH El",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "hy4-preview": {
+      "name": "Hy4 Preview"
+    },
+    "step-5-preview-el": {
+      "name": "Step 5 Preview El",
+      "context_window": {
+        "context_length": 1024000,
+        "max_output_tokens": null
+      }
+    },
+    "gemma-4-31b-t": {
+      "name": "Gemma 4 31B T"
+    },
+    "gemini-omni-flash": {
+      "name": "Gemini Omni FLASH"
+    },
+    "gemini-2.5-flash": {
+      "name": "Gemini 2 5 FLASH",
+      "context_window": {
+        "context_length": 1065535,
+        "max_output_tokens": 65535
+      }
+    },
+    "gemini-2.5-pro": {
+      "name": "Gemini 2 5 PRO",
+      "context_window": {
+        "context_length": 1065535,
+        "max_output_tokens": 65535
+      }
+    },
+    "nano-banana": {
+      "name": "Nano Banana",
+      "context_window": {
+        "context_length": 65536,
+        "max_output_tokens": null
+      }
+    },
+    "gemini-2.5-flash-lite": {
+      "name": "Gemini 2 5 FLASH LITE",
+      "context_window": {
+        "context_length": 1024000,
+        "max_output_tokens": 64000
+      }
+    },
+    "nova-premier-1.0": {
+      "name": "Nova Premier 1 0"
+    },
+    "sora-2-pro": {
+      "name": "Sora 2 PRO",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
+    "sora-2": {
+      "name": "Sora 2",
+      "context_window": {
+        "context_length": 480,
+        "max_output_tokens": null
+      }
+    },
+    "gpt-3.5-turbo-instruct": {
+      "name": "Gpt 3 5 TURBO Instruct",
+      "context_window": {
+        "context_length": 3500,
+        "max_output_tokens": 1024
+      }
+    },
+    "pixverse-v4.5": {
+      "name": "Pixverse V4 5"
     },
     "grok-4.1-fast-reasoning": {
       "name": "Grok 4 1 FAST Reasoning",
@@ -1793,5 +1829,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-06T11:12:40.679Z"
+  "_syncedAt": "2026-09-22T14:44:15.599Z"
 }

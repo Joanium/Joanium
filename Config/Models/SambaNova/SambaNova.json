@@ -77,7 +77,16 @@
         "input": 0.2,
         "output": 0.6
       }
+    },
+    "Llama-3.3-Ricoh-70B-20250325": {
+      "name": "Llama 3 3 Ricoh 70B 20250325"
+    },
+    "Llama-3.3-Ricoh-70B-20251001": {
+      "name": "Llama 3 3 Ricoh 70B 20251001"
+    },
+    "Qwen-2.5-VL-Ricoh-32B-20250918": {
+      "name": "Qwen 2 5 VL Ricoh 32B 20250918"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:25.170Z"
+  "_syncedAt": "2026-09-22T14:43:59.931Z"
 }

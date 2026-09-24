@@ -27,11 +27,8 @@
     "deepseek-ai/deepseek-coder-6.7b-instruct": {
       "name": "deepseek-ai/deepseek-coder-6.7b-instruct"
     },
-    "deepseek-ai/deepseek-v4-flash-0731": {
-      "name": "Deepseek V4 FLASH 0731"
-    },
-    "deepseek-ai/deepseek-v4-pro-0813": {
-      "name": "Deepseek V4 PRO 0813"
+    "deepseek-ai/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH"
     },
     "google/codegemma-1.1-7b": {
       "name": "google/codegemma-1.1-7b"
@@ -111,9 +108,6 @@
     },
     "microsoft/phi-3.5-moe-instruct": {
       "name": "microsoft/phi-3.5-moe-instruct"
-    },
-    "minimaxai/minimax-m3": {
-      "name": "Minimax M3"
     },
     "mistralai/codestral-22b-instruct-v0.1": {
       "name": "mistralai/codestral-22b-instruct-v0.1"
@@ -240,6 +234,9 @@
     "nvidia/nemotron-parse": {
       "name": "nvidia/nemotron-parse"
     },
+    "nvidia/nemotron-parse-2.0": {
+      "name": "Nemotron Parse 2 0"
+    },
     "nvidia/neva-22b": {
       "name": "nvidia/neva-22b"
     },
@@ -295,8 +292,23 @@
     "writer/palmyra-med-70b-32k": {
       "name": "writer/palmyra-med-70b-32k"
     },
+    "z-ai/glm-5.3": {
+      "name": "Glm 5 3"
+    },
+    "z-ai/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH"
+    },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "deepseek-ai/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 FLASH 0731"
+    },
+    "deepseek-ai/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813"
+    },
+    "minimaxai/minimax-m3": {
+      "name": "Minimax M3"
     },
     "openai/gpt-oss-120b": {
       "name": "openai/gpt-oss-120b"
@@ -478,5 +490,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-06T11:12:12.161Z"
+  "_syncedAt": "2026-09-22T14:43:31.359Z"
 }
