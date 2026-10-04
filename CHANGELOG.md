@@ -6,6 +6,21 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1004.0] - 2026-10-04
+
+* Updated AI Models
+* Chore(deps): Bump mammoth from 1.12.2 to 1.13.0
+* Chore(deps-dev): Bump prettier from 3.9.6 to 3.9.9
+* Chore(deps-dev): Bump jscpd from 5.1.0 to 5.3.2
+* Chore(deps): Bump jszip from 3.10.1 to 3.10.2
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action from 4.37.9 to 4.38.0
+* Chore(deps): Bump github/codeql-action/init from 4.37.9 to 4.38.0
+* Chore(deps-dev): Bump lint-staged from 17.5.0 to 17.5.1
+* Chore(deps): Bump mammoth from 1.12.1 to 1.12.2
+
+---
+
 ## [2026.916.0] - 2026-09-16
 
 * Updated AI Models
