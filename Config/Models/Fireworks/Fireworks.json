@@ -113,14 +113,23 @@
     "accounts/fireworks/models/deepseek-v4p1-flash": {
       "name": "Deepseek V4P1 FLASH"
     },
-    "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
-      "name": "Qwen3p8 2p4t A95b"
+    "accounts/fireworks/models/ember-1": {
+      "name": "Ember 1"
     },
     "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
       "name": "Nemotron Lightning 3p5 30B A3b"
     },
     "accounts/fireworks/models/inkling": {
       "name": "Inkling"
+    },
+    "auto": {
+      "name": "Auto"
+    },
+    "firerouter/auto": {
+      "name": "Auto"
+    },
+    "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
+      "name": "Qwen3p8 2p4t A95b"
     },
     "accounts/fireworks/routers/kimi-k2p6-turbo": {
       "name": "Kimi K2p6 TURBO"
@@ -144,5 +153,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-09-22T14:43:59.178Z"
+  "_syncedAt": "2026-10-04T10:15:21.143Z"
 }

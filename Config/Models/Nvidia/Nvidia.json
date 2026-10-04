@@ -121,9 +121,6 @@
     "mistralai/mistral-large-2-instruct": {
       "name": "mistralai/mistral-large-2-instruct"
     },
-    "mistralai/mistral-nemotron": {
-      "name": "mistralai/mistral-nemotron"
-    },
     "mistralai/mixtral-8x22b-v0.1": {
       "name": "mistralai/mixtral-8x22b-v0.1"
     },
@@ -300,6 +297,9 @@
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "mistralai/mistral-nemotron": {
+      "name": "mistralai/mistral-nemotron"
     },
     "deepseek-ai/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731"
@@ -490,5 +490,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-09-22T14:43:31.359Z"
+  "_syncedAt": "2026-10-04T10:15:08.092Z"
 }

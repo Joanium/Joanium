@@ -15,6 +15,52 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4-pro-0813-p": {
+      "name": "deepseek/deepseek-v4-pro-0813-p",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-dst": {
+      "name": "DeepSeek V4.1 Flash DST",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-p": {
+      "name": "DeepSeek V4.1 Flash",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomimimo/mimo-v2.6-flash": {
+      "name": "MiMo V2.6 Flash",
+      "description": "MiMo V2.6 Flash is Xiaomi's cost-efficient open-source reasoning model for high-frequency calls and large-scale professional workflows. It combines native text, image, video, and audio understanding with a 1M-token context window and up to 128K output tokens, while supporting controllable deep think",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomimimo/mimo-v2.6-pro": {
+      "name": "MiMo V2.6 Pro",
+      "description": "MiMo V2.6 Pro is Xiaomi's flagship open-source reasoning model for complex projects, long-horizon agent tasks, cybersecurity, research, and high-value professional work. It natively understands text, images, video, and audio, supports a 1M-token context window and up to 128K output tokens, and provi",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tencent/hy4-preview": {
       "name": "Hy4 Preview",
       "description": "Tencent: Hy4 preview is a mixture-of-experts model from Tencent, with 49B active parameters out of 770B total. It is designed for coding agents, complex tool-use workflows, and productivity tasks that require planning, context continuity, and sustained multi-step execution.",
@@ -22,15 +68,6 @@
       "max_output": 64000,
       "inputs": {
         "text": true
-      }
-    },
-    "deepseek/deepseek-v4.1-flash-z": {
-      "name": "DS F41 Flash",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "zai-org/glm-5.3-p": {
@@ -46,6 +83,16 @@
       "name": "DeepSeek V4.1 Flash",
       "context_window": 1048576,
       "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3-p": {
+      "name": "Kimi K3",
+      "description": "Kimi K3 is Kimi’s most capable model to date, with 2.8 trillion parameters. Built on Kimi Delta Attention, a hybrid linear attention mechanism, and Attention Residuals, it offers native visual understanding and a 1M-token context window for frontier intelligence scenarios such as software engineerin",
+      "context_window": 1048576,
+      "max_output": 1048576,
       "inputs": {
         "text": true,
         "image": true
@@ -104,6 +151,15 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-0731-p": {
+      "name": "deepseek/deepseek-v4-flash-0731-p",
+      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows.",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
       }
     },
     "qwen/qwen3.8-flash": {
@@ -177,11 +233,20 @@
         "docx": false
       }
     },
-    "deepseek/deepseek-v3.2": {
-      "name": "Deepseek V3.2",
-      "description": "We introduce DeepSeek-V3.2, a next-generation foundation model designed to unify high computational efficiency with state-of-the-art reasoning and agentic performance. DeepSeek-V3.2 is built upon three core technical breakthroughs:\n\n• DeepSeek Sparse Attention (DSA):\nA new highly efficient attention",
-      "context_window": 163840,
-      "max_output": 65536,
+    "apodex/apodex-1.1-mini": {
+      "name": "Apodex 1.1 Mini",
+      "description": "Apodex-1.1-mini is a reasoning-first model by Apodex for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to deliver verifiable results, and ranks at the top of ProphetArena, the leading live forecasting benchmark.",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.1-flash": {
+      "name": "Ling 3.1 Flash",
+      "description": "Hybrid reasoning model with a 1M-token context window, featuring 560B total parameters and 25B activated parameters.",
+      "context_window": 262144,
+      "max_output": 32768,
       "inputs": {
         "text": true
       }
@@ -570,15 +635,6 @@
         "image": true
       }
     },
-    "deepseek/deepseek-v3.2-exp": {
-      "name": "Deepseek V3.2 Exp",
-      "description": "DeepSeek-V3.2-Exp is an experimental model introducing the groundbreaking DeepSeek Sparse Attention (DSA) mechanism for enhanced long-context processing efficiency.\n\nBuilt on V3.1-Terminus, DSA achieves fine-grained sparse attention while maintaining identical output quality. This delivers substanti",
-      "context_window": 163840,
-      "max_output": 65536,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-vl-235b-a22b-thinking": {
       "name": "Qwen3 VL 235B A22B Thinking",
       "context_window": 131072,
@@ -636,15 +692,6 @@
         "text": true
       }
     },
-    "deepseek/deepseek-v3.1-terminus": {
-      "name": "Deepseek V3.1 Terminus",
-      "description": "DeepSeek-V3.1-Terminus preserves all original model capabilities while resolving key user-reported issues, including:\n- Language consistency: Significantly reducing mixed Chinese-English output and eliminating abnormal character occurrences\n- Agent performance: Enhanced optimization of both Code Age",
-      "context_window": 131072,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-vl-235b-a22b-instruct": {
       "name": "Qwen3 VL 235B A22B Instruct",
       "context_window": 131072,
@@ -659,15 +706,6 @@
       "description": "Qwen/qwen3-max, Enhanced with specialized upgrades in agent programming and tool calling. This official release achieves domain SOTA performance, supporting more complex agent scenarios.",
       "context_window": 262144,
       "max_output": 65536,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v3.1": {
-      "name": "DeepSeek V3.1",
-      "description": "DeepSeek-V3.1 is a hybrid model that supports both thinking mode and non-thinking mode.DeepSeek-V3.1 is post-trained on the top of DeepSeek-V3.1-Base, which is built upon the original V3 base checkpoint through a two-phase long context extension approach, following the methodology outlined in the or",
-      "context_window": 131072,
-      "max_output": 32768,
       "inputs": {
         "text": true
       }
@@ -847,32 +885,11 @@
         "text": true
       }
     },
-    "deepseek/deepseek-r1-distill-llama-70b": {
-      "name": "DeepSeek R1 Distill LLama 70B",
-      "description": "DeepSeek R1 Distill LLama 70B",
-      "context_window": 8192,
-      "max_output": 8192,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-235b-a22b-fp8": {
       "name": "Qwen3 235B A22B",
       "description": "Large Qwen reasoning and instruction model on Novita for multilingual chat and technical tasks",
       "context_window": 40960,
       "max_output": 20000,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      }
-    },
-    "deepseek/deepseek-r1": {
-      "name": "DeepSeek R1",
-      "description": "Open reasoning model on Novita for math, coding, and multi-step logic tasks",
-      "context_window": 64000,
-      "max_output": 16000,
       "inputs": {
         "text": true,
         "image": false,
@@ -961,14 +978,6 @@
       "description": "DeepSeek R1 is the latest open-source model released by the DeepSeek team, featuring impressive reasoning capabilities, particularly achieving performance comparable to OpenAI's o1 model in mathematics, coding, and reasoning tasks.",
       "context_window": 64000,
       "max_output": 16000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v3/community": {
-      "name": "DeepSeek V3",
-      "context_window": 64000,
-      "max_output": 8000,
       "inputs": {
         "text": true
       }
@@ -1104,6 +1113,80 @@
       "description": "Euryale L3.1 70B v2.2 is a model focused on creative roleplay from Sao10k. It is the successor of Euryale L3 70B v2.1.",
       "context_window": 8192,
       "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-z": {
+      "name": "DS F41 Flash",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v3.2": {
+      "name": "Deepseek V3.2",
+      "description": "We introduce DeepSeek-V3.2, a next-generation foundation model designed to unify high computational efficiency with state-of-the-art reasoning and agentic performance. DeepSeek-V3.2 is built upon three core technical breakthroughs:\n\n• DeepSeek Sparse Attention (DSA):\nA new highly efficient attention",
+      "context_window": 163840,
+      "max_output": 65536,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v3.2-exp": {
+      "name": "Deepseek V3.2 Exp",
+      "description": "DeepSeek-V3.2-Exp is an experimental model introducing the groundbreaking DeepSeek Sparse Attention (DSA) mechanism for enhanced long-context processing efficiency.\n\nBuilt on V3.1-Terminus, DSA achieves fine-grained sparse attention while maintaining identical output quality. This delivers substanti",
+      "context_window": 163840,
+      "max_output": 65536,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v3.1-terminus": {
+      "name": "Deepseek V3.1 Terminus",
+      "description": "DeepSeek-V3.1-Terminus preserves all original model capabilities while resolving key user-reported issues, including:\n- Language consistency: Significantly reducing mixed Chinese-English output and eliminating abnormal character occurrences\n- Agent performance: Enhanced optimization of both Code Age",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v3.1": {
+      "name": "DeepSeek V3.1",
+      "description": "DeepSeek-V3.1 is a hybrid model that supports both thinking mode and non-thinking mode.DeepSeek-V3.1 is post-trained on the top of DeepSeek-V3.1-Base, which is built upon the original V3 base checkpoint through a two-phase long context extension approach, following the methodology outlined in the or",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-r1-distill-llama-70b": {
+      "name": "DeepSeek R1 Distill LLama 70B",
+      "description": "DeepSeek R1 Distill LLama 70B",
+      "context_window": 8192,
+      "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-r1": {
+      "name": "DeepSeek R1",
+      "description": "Open reasoning model on Novita for math, coding, and multi-step logic tasks",
+      "context_window": 64000,
+      "max_output": 16000,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      }
+    },
+    "deepseek/deepseek-v3/community": {
+      "name": "DeepSeek V3",
+      "context_window": 64000,
+      "max_output": 8000,
       "inputs": {
         "text": true
       }
@@ -1505,5 +1588,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-22T14:44:08.930Z"
+  "_syncedAt": "2026-10-04T10:15:33.945Z"
 }

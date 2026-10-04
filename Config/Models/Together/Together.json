@@ -33,6 +33,10 @@
       "name": "Muse Glimmer 30B",
       "context_window": 131072
     },
+    "together/Tev1-4B-experimental": {
+      "name": "Tev1 4B Experimental",
+      "context_window": 32768
+    },
     "Qwen/Qwen3.8-2.4T-A95B": {
       "name": "Qwen3.8-2.4T-A95B",
       "context_window": 1010000
@@ -84,14 +88,6 @@
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
-    },
-    "google/gemma-4-31B-it": {
-      "name": "Gemma 4 31B-it FP8",
-      "context_window": 262144
-    },
-    "openai/gpt-oss-20b": {
-      "name": "OpenAI GPT-OSS 20B",
-      "context_window": 131072
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -521,6 +517,10 @@
       "name": "Qwen3 Coder 30B A3b Instruct",
       "context_window": 262144
     },
+    "openai/gpt-oss-20b": {
+      "name": "OpenAI GPT-OSS 20B",
+      "context_window": 131072
+    },
     "Qwen/Qwen3-4B-Instruct-2507": {
       "name": "Qwen3 4B Instruct 2507",
       "context_window": 262144
@@ -674,6 +674,10 @@
     },
     "Hcompany/Holo3-35B-A3B": {
       "name": "Holo3 35B A3b",
+      "context_window": 262144
+    },
+    "google/gemma-4-31B-it": {
+      "name": "Gemma 4 31B-it FP8",
       "context_window": 262144
     },
     "zai-org/GLM-5.1": {
@@ -848,5 +852,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-09-16T13:49:16.539Z"
+  "_syncedAt": "2026-10-04T10:15:17.467Z"
 }

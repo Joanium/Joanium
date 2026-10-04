@@ -5,6 +5,12 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "Qwen/Qwen3.8-27B": {
+      "name": "Qwen3 8 27B"
+    },
+    "Kev-4B": {
+      "name": "Kev 4B"
+    },
     "tencent/Hy4-preview": {
       "name": "Hy4 Preview"
     },
@@ -239,5 +245,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-09-22T14:44:02.858Z"
+  "_syncedAt": "2026-10-04T10:15:26.242Z"
 }

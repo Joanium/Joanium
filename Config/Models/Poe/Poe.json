@@ -26,6 +26,20 @@
         "max_output_tokens": null
       }
     },
+    "claude-sonnet-5.5": {
+      "name": "Claude Sonnet 5 5",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "gpt-6.1-sol": {
+      "name": "Gpt 6 1 Sol",
+      "context_window": {
+        "context_length": 1050000,
+        "max_output_tokens": null
+      }
+    },
     "gemini-3.8-flash": {
       "name": "Gemini 3 8 FLASH",
       "context_window": {
@@ -182,9 +196,6 @@
     },
     "mistral-small-4": {
       "name": "Mistral Small 4"
-    },
-    "mimo-v2-flash": {
-      "name": "Mimo V2 FLASH"
     },
     "qwen3.5-plus-el": {
       "name": "Qwen3 5 PLUS El"
@@ -412,9 +423,6 @@
     "qwen3-next-80b": {
       "name": "Qwen3 Next 80B"
     },
-    "deepseek-v3.2-exp": {
-      "name": "Deepseek V3 2 Exp"
-    },
     "nova-pro-1.0": {
       "name": "Nova PRO 1 0"
     },
@@ -452,9 +460,6 @@
     },
     "amazon-nova-reel-1.1": {
       "name": "Amazon Nova Reel 1 1"
-    },
-    "amazon-nova-canvas": {
-      "name": "Amazon Nova Canvas"
     },
     "pika-v1.5-effects": {
       "name": "Pika V1 5 Effects"
@@ -843,9 +848,6 @@
     "gptzero": {
       "name": "Gptzero"
     },
-    "kling-pro-effects": {
-      "name": "Kling PRO Effects"
-    },
     "hailuo-ai": {
       "name": "Hailuo Ai"
     },
@@ -1133,9 +1135,6 @@
     "qwen3.7-flash-el": {
       "name": "Qwen3 7 FLASH El"
     },
-    "deepseek-v3.1-terminus": {
-      "name": "Deepseek V3 1 Terminus"
-    },
     "deepseek-v3.2": {
       "name": "Deepseek V3 2",
       "context_window": {
@@ -1143,17 +1142,11 @@
         "max_output_tokens": null
       }
     },
-    "minimax-m2": {
-      "name": "Minimax M2"
-    },
     "minimax-m2.1": {
       "name": "Minimax M2 1"
     },
     "minimax-m2.5": {
       "name": "Minimax M2 5"
-    },
-    "minimax-m2.7": {
-      "name": "Minimax M2 7"
     },
     "kimi-k2-thinking": {
       "name": "Kimi K2 Thinking"
@@ -1172,12 +1165,6 @@
     },
     "glm-4.6": {
       "name": "Glm 4 6"
-    },
-    "glm-4.7": {
-      "name": "Glm 4 7"
-    },
-    "glm-5": {
-      "name": "Glm 5"
     },
     "glm-5.1": {
       "name": "Glm 5 1"
@@ -1294,6 +1281,60 @@
         "context_length": 1024000,
         "max_output_tokens": null
       }
+    },
+    "mimo-v2.6-pro-el": {
+      "name": "Mimo V2 6 PRO El",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
+    },
+    "mimo-v2.6-pro-ultraspeed-el": {
+      "name": "Mimo V2 6 PRO Ultraspeed El",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
+    },
+    "mimo-v2.6-flash-el": {
+      "name": "Mimo V2 6 FLASH El",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
+    },
+    "mimo-v2.6-pro": {
+      "name": "Mimo V2 6 PRO"
+    },
+    "mimo-v2.6-flash": {
+      "name": "Mimo V2 6 FLASH"
+    },
+    "mimo-v2-flash": {
+      "name": "Mimo V2 FLASH"
+    },
+    "deepseek-v3.2-exp": {
+      "name": "Deepseek V3 2 Exp"
+    },
+    "amazon-nova-canvas": {
+      "name": "Amazon Nova Canvas"
+    },
+    "kling-pro-effects": {
+      "name": "Kling PRO Effects"
+    },
+    "deepseek-v3.1-terminus": {
+      "name": "Deepseek V3 1 Terminus"
+    },
+    "minimax-m2": {
+      "name": "Minimax M2"
+    },
+    "minimax-m2.7": {
+      "name": "Minimax M2 7"
+    },
+    "glm-4.7": {
+      "name": "Glm 4 7"
+    },
+    "glm-5": {
+      "name": "Glm 5"
     },
     "gemma-4-31b-t": {
       "name": "Gemma 4 31B T"
@@ -1829,5 +1870,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-22T14:44:15.599Z"
+  "_syncedAt": "2026-10-04T10:15:40.746Z"
 }

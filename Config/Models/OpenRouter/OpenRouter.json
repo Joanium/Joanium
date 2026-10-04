@@ -5,6 +5,363 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "inclusionai/ling-3.1-flash": {
+      "name": "inclusionAI: Ling 3.1 Flash",
+      "description": "Ling 3.1 Flash is a hybrid reasoning mixture-of-experts model from inclusionAI, with 25B active parameters out of 560B total.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "apodex/apodex-1.1-mini:free": {
+      "name": "Apodex: Apodex 1.1 Mini (free)",
+      "description": "Apodex 1.1 Mini is a reasoning-first model from Apodex, built for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to produce verifiable results,...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "unbiased/pareto-26.10-preview": {
+      "name": "Pareto 26.10 Preview",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks. This is a preview of the...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol-pro": {
+      "name": "OpenAI: GPT-6.1 Sol Pro",
+      "description": "GPT-6.1 Sol Pro is the same underlying model as [GPT-6.1 Sol](https://openrouter.ai/openai/gpt-6.1-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol": {
+      "name": "OpenAI: GPT-6.1 Sol",
+      "description": "GPT-6.1 Sol is an upgrade to GPT-6 Sol from OpenAI, positioned below the flagship GPT-6 Astra in the GPT-6 series. It is suited for agentic coding, computer use, document-heavy professional...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-5.5": {
+      "name": "Anthropic: Claude Sonnet 5.5",
+      "description": "Claude Sonnet 5.5 is Anthropic's Sonnet-class model for well-scoped everyday work, succeeding Claude Sonnet 5 as a direct upgrade. It is especially strong at building features, fixing bugs, and producing...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-5.5:batch": {
+      "name": "Anthropic: Claude Sonnet 5.5 (batch)",
+      "description": "Claude Sonnet 5.5 is Anthropic's Sonnet-class model for well-scoped everyday work, succeeding Claude Sonnet 5 as a direct upgrade. It is especially strong at building features, fixing bugs, and producing...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "typesafe/jev-router": {
+      "name": "TypeSafe: Jev Router",
+      "description": "Jev Router picks the best model and reasoning effort for each request, balancing quality, speed, and cost. It runs on [Jev](https://openrouter.ai/~typesafe/jev-latest), TypeSafe's first System One model, and adapts as your...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": -1000000,
+        "output": -1000000
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "perceptron/perceptron-mk1.5": {
+      "name": "Perceptron: Perceptron Mk1.5",
+      "description": "Perceptron Mk1.5 is Perceptron's embodied reasoning model for physical agents. It accepts text, image, video, and audio input, and answers with text plus optional structured annotations: points, boxes, polygons, tracks,...",
+      "context_window": 36864,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "fireworks/ember-1": {
+      "name": "Fireworks: Ember-1",
+      "description": "Ember-1 is a specialized reasoning model from Fireworks Research, built on [Kimi K3](https://openrouter.ai/moonshotai/kimi-k3). It is designed to make every token go further: it produces shorter reasoning traces, using roughly 40%...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "z-ai/glm-5.3-prime": {
+      "name": "Z.ai: GLM 5.3 Prime",
+      "description": "GLM-5.3-Prime is the high-speed variant of Z.ai's GLM-5.3, inheriting its full capabilities while delivering 1.5–2× the output throughput through inference acceleration. It supports text input and output with a 1M-token...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2.8,
+        "output": 8.8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.8-max-prime": {
+      "name": "Qwen: Qwen3.8 Max Prime",
+      "description": "Qwen3.8 Max Prime is a higher-throughput variant of Qwen3.8 Max from Alibaba's Qwen team, served as a separate SKU at a higher price point. It accepts text, image, and video...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stealth/space-bunny-alpha": {
+      "name": "Space Bunny Alpha",
+      "description": "Space Bunny Alpha is an anonymous large model with blazing-fast inference, strong coding capabilities and native multimodal input support. It delivers adjustable reasoning effort, and a 1M-token context window. Space...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "aion-labs/aion-3.5-mini": {
+      "name": "AionLabs: Aion 3.5 Mini",
+      "description": "Aion 3.5 Mini is a multi-model roleplaying and storytelling system from AionLabs, built on the GLM family of models. It is the smaller, lower-cost sibling of Aion 3.5 and uses...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.7,
+        "output": 1.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "aion-labs/aion-3.5": {
+      "name": "AionLabs: Aion 3.5",
+      "description": "Aion 3.5 is a multi-model roleplaying and storytelling system from AionLabs, built on the GLM family of models. It uses a collaborative generation process in which multiple specialized models each...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 3,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "upstage/solar-mini4": {
+      "name": "Upstage: Solar Mini 4",
+      "description": "Solar Mini 4 is Upstage's compact, cost-efficient language model, a 35B-parameter mixture-of-experts with 3B active parameters and a 524K context window. It is built for agentic use cases where response...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "cohere/command-a-plus": {
+      "name": "Cohere: Command A+",
+      "description": "Command A+ is Cohere's flagship model for enterprise agentic workflows. It accepts text and image inputs with a 192K context window, supports native tool calling with strict tool schemas, structured...",
+      "context_window": 192000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-luna-pro": {
+      "name": "OpenAI: GPT-6 Luna Pro",
+      "description": "GPT-6 Luna Pro is the same underlying model as [GPT-6 Luna](https://openrouter.ai/openai/gpt-6-luna), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-luna-pro:batch": {
+      "name": "OpenAI: GPT-6 Luna Pro (batch)",
+      "description": "GPT-6 Luna Pro is the same underlying model as [GPT-6 Luna](https://openrouter.ai/openai/gpt-6-luna), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-luna": {
+      "name": "OpenAI: GPT-6 Luna",
+      "description": "GPT-6 Luna is the fast, cost-efficient model in OpenAI's GPT-6 series, positioned below GPT-6 Sol. It is suited for high-volume and latency-sensitive workloads such as chat, classification, and lightweight agentic...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-luna:batch": {
+      "name": "OpenAI: GPT-6 Luna (batch)",
+      "description": "GPT-6 Luna is the fast, cost-efficient model in OpenAI's GPT-6 series, positioned below GPT-6 Sol. It is suited for high-volume and latency-sensitive workloads such as chat, classification, and lightweight agentic...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol-pro": {
+      "name": "OpenAI: GPT-6 Sol Pro",
+      "description": "GPT-6 Sol Pro is the same underlying model as [GPT-6 Sol](https://openrouter.ai/openai/gpt-6-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol-pro:batch": {
+      "name": "OpenAI: GPT-6 Sol Pro (batch)",
+      "description": "GPT-6 Sol Pro is the same underlying model as [GPT-6 Sol](https://openrouter.ai/openai/gpt-6-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol": {
+      "name": "OpenAI: GPT-6 Sol",
+      "description": "GPT-6 Sol is the cost-efficient high-end model in OpenAI's GPT-6 series, positioned below the flagship GPT-6 Astra and above the fast GPT-6 Luna tier. It is suited for demanding professional...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol:batch": {
+      "name": "OpenAI: GPT-6 Sol (batch)",
+      "description": "GPT-6 Sol is the cost-efficient high-end model in OpenAI's GPT-6 series, positioned below the flagship GPT-6 Astra and above the fast GPT-6 Luna tier. It is suited for demanding professional...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5.5": {
+      "name": "Anthropic: Claude Opus 5.5",
+      "description": "Claude Opus 5.5 is Anthropic's flagship model for demanding reasoning, coding, and long-horizon agentic work, succeeding Claude Opus 5. It is particularly strong at multi-step changes in large codebases, code...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5.5:batch": {
+      "name": "Anthropic: Claude Opus 5.5 (batch)",
+      "description": "Claude Opus 5.5 is Anthropic's flagship model for demanding reasoning, coding, and long-horizon agentic work, succeeding Claude Opus 5. It is particularly strong at multi-step changes in large codebases, code...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvidia/switchyard": {
+      "name": "NVIDIA: Switchyard",
+      "description": "Switchyard is an open-source model router that switches between multiple models to optimize the cost of requests. By default it will use OpenRouter market data to select the most popular...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": -1000000,
+        "output": -1000000
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "xiaomi/mimo-v2.6-pro-ultraspeed": {
       "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
       "description": "MiMo-V2.6-Pro-UltraSpeed is the fast speed edition of Xiaomi's flagship foundation model, MiMo-V2.6-Pro. Built from the same 1T MiMo-V2.6-Pro checkpoint, it matches the original model in quality while delivering roughly 10x...",
@@ -51,6 +408,19 @@
       "pricing": {
         "input": 1.6,
         "output": 4.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3.8-omni-flash": {
+      "name": "Qwen: Qwen3.8 Omni Flash",
+      "description": "Qwen3.8 Omni Flash is an omni-modal reasoning model from Alibaba, the first Qwen model built around agentic capabilities with native audio-video understanding. It is suited for audio-video analysis and summarization,...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.47
       },
       "inputs": {
         "text": true,
@@ -236,19 +606,6 @@
         "image": true
       }
     },
-    "inclusionai/ling-3.0-flash-vl:free": {
-      "name": "inclusionAI: Ling 3.0 Flash VL (free)",
-      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash (124B total / 5.5B active MoE from InclusionAI), further strengthening its language capabilities while adding native visual perception and advanced visual...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepseek/deepseek-v4.1-flash": {
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on...",
@@ -256,6 +613,19 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash:batch": {
+      "name": "DeepSeek: DeepSeek V4.1 Flash (batch)",
+      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.34
       },
       "inputs": {
         "text": true,
@@ -287,19 +657,6 @@
         "image": true
       }
     },
-    "nex-agi/nex-n2.5-mini:free": {
-      "name": "Nex AGI: Nex-N2.5-Mini (free)",
-      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "nex-agi/nex-n2.5-pro": {
       "name": "Nex AGI: Nex-N2.5-Pro",
       "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
@@ -307,19 +664,6 @@
       "pricing": {
         "input": 0.08,
         "output": 0.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "nex-agi/nex-n2.5-pro:free": {
-      "name": "Nex AGI: Nex-N2.5-Pro (free)",
-      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -517,18 +861,6 @@
         "text": true
       }
     },
-    "inclusionai/ling-3.0-flash-fin:free": {
-      "name": "Ling 3.0 Flash Fin (free)",
-      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "~z-ai/glm-flash-latest": {
       "name": "Z.ai: GLM Flash Latest",
       "description": "This model always redirects to the latest model in the GLM Flash family.",
@@ -601,19 +933,6 @@
       "pricing": {
         "input": 0.44,
         "output": 1.32
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepseek/deepseek-v4-flash-vision-exp:batch": {
-      "name": "DeepSeek: DeepSeek V4 Flash Vision Exp (batch)",
-      "description": "DeepSeek V4 Flash Vision Exp is an experimental vision-enabled version of [DeepSeek V4 Flash 0731](https://openrouter.ai/deepseek/deepseek-v4-flash-0731) from DeepSeek, adding image understanding while matching the base model on text capabilities including agents,...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.11,
-        "output": 0.33
       },
       "inputs": {
         "text": true,
@@ -807,18 +1126,6 @@
         "text": true
       }
     },
-    "deepseek/deepseek-v4-pro-0813:batch": {
-      "name": "DeepSeek: DeepSeek V4 Pro 0813 (batch)",
-      "description": "DeepSeek V4 Pro 0813 is a large-scale mixture-of-experts model from DeepSeek. This is the GA release of DeepSeek V4 Pro.",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 1.32,
-        "output": 3.96
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "x-ai/grok-4.6": {
       "name": "SpaceXAI: Grok 4.6",
       "description": "Grok 4.6 is SpaceXAI's smartest model with frontier performance on coding, knowledge work, and STEM.",
@@ -906,19 +1213,6 @@
         "image": true
       }
     },
-    "meta/muse-glimmer-30b:batch": {
-      "name": "Meta: Muse Glimmer 30B (batch)",
-      "description": "Muse Glimmer 30B is a dense, open-weight multimodal model from Meta Superintelligence Labs, distilled from Muse Spark and optimized for autonomous agents on consumer hardware. It is suited for long-horizon...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.35,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "meta/muse-spark-1.2": {
       "name": "Meta: Muse Spark 1.2",
       "description": "Muse Spark 1.2 is a reasoning model from Meta, designed for complex agentic tasks. It accepts text, images, video, audio, and PDF documents, returns text, and offers a 1M-token context...",
@@ -947,18 +1241,6 @@
     "deepseek/deepseek-v4-flash-0731": {
       "name": "DeepSeek: DeepSeek V4 Flash 0731",
       "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows.",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v4-flash-0731:batch": {
-      "name": "DeepSeek: DeepSeek V4 Flash 0731 (batch)",
-      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows....",
       "context_window": 1048576,
       "pricing": {
         "input": 0.14,
@@ -1174,6 +1456,19 @@
     },
     "moonshotai/kimi-k3": {
       "name": "MoonshotAI: Kimi K3",
+      "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3:batch": {
+      "name": "MoonshotAI: Kimi K3 (batch)",
       "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
       "context_window": 1048576,
       "pricing": {
@@ -1509,30 +1804,6 @@
       "pricing": {
         "input": 1.4,
         "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "z-ai/glm-5.2:batch": {
-      "name": "Z.ai: GLM 5.2 (batch)",
-      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
-      "context_window": 512000,
-      "pricing": {
-        "input": 0.7,
-        "output": 2.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "z-ai/glm-5.2:free": {
-      "name": "Z.ai: GLM 5.2 (free)",
-      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -3243,6 +3514,19 @@
         "image": true
       }
     },
+    "mistralai/mistral-large-2512": {
+      "name": "Mistral: Mistral Large 3 2512",
+      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "mistralai/mistral-large-2512:batch": {
       "name": "Mistral: Mistral Large 3 2512 (batch)",
       "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
@@ -3910,6 +4194,18 @@
         "text": true
       }
     },
+    "openai/gpt-oss-120b:batch": {
+      "name": "OpenAI: gpt-oss-120b (batch)",
+      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-oss-20b": {
       "name": "OpenAI: gpt-oss-20b",
       "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
@@ -3917,6 +4213,18 @@
       "pricing": {
         "input": 0.03,
         "output": 0.14
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-oss-20b:batch": {
+      "name": "OpenAI: gpt-oss-20b (batch)",
+      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
       },
       "inputs": {
         "text": true
@@ -4822,18 +5130,6 @@
         "image": true
       }
     },
-    "deepseek/deepseek-r1-distill-llama-70b": {
-      "name": "DeepSeek: R1 Distill Llama 70B",
-      "description": "DeepSeek R1 Distill Llama 70B is a distilled large language model based on [Llama-3.3-70B-Instruct](/meta-llama/llama-3.3-70b-instruct), using outputs from [DeepSeek R1](/deepseek/deepseek-r1). The model combines advanced distillation techniques to achieve high performance across...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.7,
-        "output": 0.8
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepseek/deepseek-r1": {
       "name": "DeepSeek R1",
       "description": "State-of-the-art open reasoning model — rivaling o1 at a fraction of the cost",
@@ -5348,19 +5644,6 @@
         "image": true
       }
     },
-    "anthropic/claude-3-haiku": {
-      "name": "Anthropic: Claude 3 Haiku",
-      "description": "Claude 3 Haiku is Anthropic's fastest and most compact model for\nnear-instant responsiveness. Quick and accurate targeted performance.\n\nSee the launch announcement and benchmark results [here](https://www.anthropic.com/news/claude-3-haiku)\n\n#multimodal",
-      "context_window": 200000,
-      "pricing": {
-        "input": 0.25,
-        "output": 1.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistralai/mistral-large": {
       "name": "Mistral Large 3",
       "description": "Mistral's open-weight flagship — top-tier reasoning and multilingual support",
@@ -5498,6 +5781,156 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.0-flash-vl:free": {
+      "name": "inclusionAI: Ling 3.0 Flash VL (free)",
+      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash (124B total / 5.5B active MoE from InclusionAI), further strengthening its language capabilities while adding native visual perception and advanced visual...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nex-agi/nex-n2.5-mini:free": {
+      "name": "Nex AGI: Nex-N2.5-Mini (free)",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nex-agi/nex-n2.5-pro:free": {
+      "name": "Nex AGI: Nex-N2.5-Pro (free)",
+      "description": "Nex-N2.5 is an agentic model built to turn goals into working, verified outcomes. Its core strength is agentic coding within a visual feedback loop: it can explore codebases, implement multi-file...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin:free": {
+      "name": "Ling 3.0 Flash Fin (free)",
+      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-vision-exp:batch": {
+      "name": "DeepSeek: DeepSeek V4 Flash Vision Exp (batch)",
+      "description": "DeepSeek V4 Flash Vision Exp is an experimental vision-enabled version of [DeepSeek V4 Flash 0731](https://openrouter.ai/deepseek/deepseek-v4-flash-0731) from DeepSeek, adding image understanding while matching the base model on text capabilities including agents,...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.33
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-pro-0813:batch": {
+      "name": "DeepSeek: DeepSeek V4 Pro 0813 (batch)",
+      "description": "DeepSeek V4 Pro 0813 is a large-scale mixture-of-experts model from DeepSeek. This is the GA release of DeepSeek V4 Pro.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.32,
+        "output": 3.96
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meta/muse-glimmer-30b:batch": {
+      "name": "Meta: Muse Glimmer 30B (batch)",
+      "description": "Muse Glimmer 30B is a dense, open-weight multimodal model from Meta Superintelligence Labs, distilled from Muse Spark and optimized for autonomous agents on consumer hardware. It is suited for long-horizon...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.35,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-0731:batch": {
+      "name": "DeepSeek: DeepSeek V4 Flash 0731 (batch)",
+      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows....",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.2:batch": {
+      "name": "Z.ai: GLM 5.2 (batch)",
+      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
+      "context_window": 512000,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "z-ai/glm-5.2:free": {
+      "name": "Z.ai: GLM 5.2 (free)",
+      "description": "GLM 5.2 is a large-scale reasoning model from Z.ai. It supports text input and output with a 1M-token context window, and is suited for long-horizon agent workflows, project-level software engineering,...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-r1-distill-llama-70b": {
+      "name": "DeepSeek: R1 Distill Llama 70B",
+      "description": "DeepSeek R1 Distill Llama 70B is a distilled large language model based on [Llama-3.3-70B-Instruct](/meta-llama/llama-3.3-70b-instruct), using outputs from [DeepSeek R1](/deepseek/deepseek-r1). The model combines advanced distillation techniques to achieve high performance across...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.7,
+        "output": 0.8
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "anthropic/claude-3-haiku": {
+      "name": "Anthropic: Claude 3 Haiku",
+      "description": "Claude 3 Haiku is Anthropic's fastest and most compact model for\nnear-instant responsiveness. Quick and accurate targeted performance.\n\nSee the launch announcement and benchmark results [here](https://www.anthropic.com/news/claude-3-haiku)\n\n#multimodal",
+      "context_window": 200000,
+      "pricing": {
+        "input": 0.25,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "qwen/qwen3.8-2.4t-a95b:batch": {
       "name": "Qwen: Qwen3.8 2.4T A95B (batch)",
       "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of [Qwen3.8 Max](/qwen/qwen3.8-max), with 95 billion active parameters out of 2.4 trillion total. It is...",
@@ -5517,19 +5950,6 @@
       "pricing": {
         "input": 0.5,
         "output": 2.03
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "moonshotai/kimi-k3:batch": {
-      "name": "MoonshotAI: Kimi K3 (batch)",
-      "description": "Kimi K3 is a 2.8T parameter open-weight multimodal reasoning model from Moonshot AI. It is suited for complex coding, knowledge work, and long-horizon agentic workflows, and is particularly strong at...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 3,
-        "output": 15
       },
       "inputs": {
         "text": true,
@@ -5574,31 +5994,6 @@
         "image": true
       }
     },
-    "mistralai/mistral-large-2512": {
-      "name": "Mistral: Mistral Large 3 2512",
-      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-oss-120b:batch": {
-      "name": "OpenAI: gpt-oss-120b (batch)",
-      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "anthropic/claude-opus-4": {
       "name": "Anthropic: Claude Opus 4",
       "description": "Claude Opus 4 is benchmarked as the world’s best coding model, at time of release, bringing sustained performance on complex, long-running tasks and agent workflows. It sets new benchmarks in...",
@@ -5636,18 +6031,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "openai/gpt-oss-20b:batch": {
-      "name": "OpenAI: gpt-oss-20b (batch)",
-      "description": "gpt-oss-20b is an open-weight 21B parameter model released by OpenAI under the Apache 2.0 license. It uses a Mixture-of-Experts (MoE) architecture with 3.6B active parameters per forward pass, optimized for...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.2
-      },
-      "inputs": {
-        "text": true
       }
     },
     "google/gemini-2.5-pro-preview-05-06": {
@@ -6624,5 +7007,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-22T14:43:34.348Z"
+  "_syncedAt": "2026-10-04T10:15:10.237Z"
 }

@@ -40,22 +40,6 @@
         "output": 1.2
       }
     },
-    "MiniMax-M2.7": {
-      "name": "MiniMax M2.7",
-      "description": "MiniMax's latest model — 192K context, top intelligence scores on SambaNova with low latency",
-      "context_window": 196608,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.53,
-        "output": 1.5
-      }
-    },
     "MiniMax-M3": {
       "name": "MiniMax M3"
     },
@@ -78,6 +62,22 @@
         "output": 0.6
       }
     },
+    "MiniMax-M2.7": {
+      "name": "MiniMax M2.7",
+      "description": "MiniMax's latest model — 192K context, top intelligence scores on SambaNova with low latency",
+      "context_window": 196608,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.53,
+        "output": 1.5
+      }
+    },
     "Llama-3.3-Ricoh-70B-20250325": {
       "name": "Llama 3 3 Ricoh 70B 20250325"
     },
@@ -88,5 +88,5 @@
       "name": "Qwen 2 5 VL Ricoh 32B 20250918"
     }
   },
-  "_syncedAt": "2026-09-22T14:43:59.931Z"
+  "_syncedAt": "2026-10-04T10:15:22.544Z"
 }

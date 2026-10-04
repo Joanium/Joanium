@@ -5,44 +5,63 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "text-embedding-ada-002": {
-      "name": "text-embedding-ada-002"
+    "omni-moderation-latest": {
+      "name": "omni-moderation-latest"
     },
-    "gpt-3.5-turbo": {
-      "name": "gpt-3.5-turbo"
+    "gpt-5.4-mini": {
+      "name": "GPT-5.4 Mini",
+      "description": "Fast and efficient GPT-5.4 distillation — 400K context, 2x faster at a fraction of flagship cost",
+      "context_window": 400000,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.75,
+        "output": 4.5
+      }
     },
-    "gpt-3.5-turbo-16k": {
-      "name": "gpt-3.5-turbo-16k"
+    "o4-mini-2025-04-16": {
+      "name": "o4-mini-2025-04-16"
     },
-    "davinci-002": {
-      "name": "davinci-002"
+    "gpt-4o-2024-11-20": {
+      "name": "gpt-4o-2024-11-20"
     },
-    "babbage-002": {
-      "name": "babbage-002"
+    "gpt-realtime-1.5": {
+      "name": "gpt-realtime-1.5"
     },
-    "gpt-3.5-turbo-instruct": {
-      "name": "gpt-3.5-turbo-instruct"
+    "gpt-realtime-2": {
+      "name": "gpt-realtime-2"
     },
-    "gpt-3.5-turbo-instruct-0914": {
-      "name": "gpt-3.5-turbo-instruct-0914"
+    "gpt-realtime": {
+      "name": "gpt-realtime"
     },
-    "gpt-3.5-turbo-1106": {
-      "name": "gpt-3.5-turbo-1106"
+    "gpt-5.1": {
+      "name": "gpt-5.1"
     },
-    "text-embedding-3-small": {
-      "name": "text-embedding-3-small"
+    "gpt-5-search-api": {
+      "name": "gpt-5-search-api"
     },
-    "text-embedding-3-large": {
-      "name": "text-embedding-3-large"
+    "gpt-5.5-2026-04-23": {
+      "name": "gpt-5.5-2026-04-23"
     },
-    "gpt-3.5-turbo-0125": {
-      "name": "gpt-3.5-turbo-0125"
+    "gpt-realtime-mini": {
+      "name": "gpt-realtime-mini"
     },
-    "gpt-4o": {
-      "name": "GPT-4o (Legacy)",
-      "description": "Previous-generation flagship — multimodal with 128K context (legacy)",
-      "context_window": 128000,
-      "max_output": 16384,
+    "gpt-4o-transcribe-diarize": {
+      "name": "gpt-4o-transcribe-diarize"
+    },
+    "o3-mini-2025-01-31": {
+      "name": "o3-mini-2025-01-31"
+    },
+    "gpt-5.4": {
+      "name": "GPT-5.4",
+      "description": "Latest flagship (Mar 2026) — native computer use, 1M context, best coding and reasoning",
+      "context_window": 1048576,
+      "max_output": 128000,
       "inputs": {
         "text": true,
         "image": true,
@@ -54,85 +73,59 @@
         "output": 10
       }
     },
-    "gpt-4o-2024-05-13": {
-      "name": "gpt-4o-2024-05-13"
+    "gpt-5-codex": {
+      "name": "gpt-5-codex"
     },
-    "gpt-4o-mini-2024-07-18": {
-      "name": "gpt-4o-mini-2024-07-18"
+    "gpt-4o-search-preview-2025-03-11": {
+      "name": "gpt-4o-search-preview-2025-03-11"
     },
-    "gpt-4o-mini": {
-      "name": "GPT-4o Mini (Legacy)",
-      "description": "Budget multimodal model — fast and cost-efficient for focused tasks (legacy)",
-      "context_window": 128000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      }
+    "gpt-5.1-2025-11-13": {
+      "name": "gpt-5.1-2025-11-13"
     },
-    "gpt-4o-2024-08-06": {
-      "name": "gpt-4o-2024-08-06"
+    "text-embedding-3-small": {
+      "name": "text-embedding-3-small"
     },
-    "omni-moderation-latest": {
-      "name": "omni-moderation-latest"
+    "gpt-4o-search-preview": {
+      "name": "gpt-4o-search-preview"
     },
-    "omni-moderation-2024-09-26": {
-      "name": "omni-moderation-2024-09-26"
+    "gpt-5.6-terra": {
+      "name": "Gpt 5 6 Terra"
     },
-    "o1-2024-12-17": {
-      "name": "o1-2024-12-17"
+    "gpt-3.5-turbo-instruct-0914": {
+      "name": "gpt-3.5-turbo-instruct-0914"
     },
-    "o1": {
-      "name": "o1"
+    "gpt-6-astra": {
+      "name": "Gpt 6 Astra"
     },
-    "o3-mini": {
-      "name": "o3-mini"
+    "gpt-5.1-codex": {
+      "name": "gpt-5.1-codex"
     },
-    "o3-mini-2025-01-31": {
-      "name": "o3-mini-2025-01-31"
+    "gpt-5-pro": {
+      "name": "gpt-5-pro"
     },
-    "gpt-4o-2024-11-20": {
-      "name": "gpt-4o-2024-11-20"
+    "gpt-5.2-pro": {
+      "name": "gpt-5.2-pro"
     },
-    "gpt-4o-mini-search-preview-2025-03-11": {
-      "name": "gpt-4o-mini-search-preview-2025-03-11"
+    "gpt-5-chat-latest": {
+      "name": "gpt-5-chat-latest"
     },
-    "gpt-4o-mini-search-preview": {
-      "name": "gpt-4o-mini-search-preview"
+    "gpt-live-1": {
+      "name": "Gpt Live 1"
+    },
+    "gpt-5.2-codex": {
+      "name": "gpt-5.2-codex"
+    },
+    "gpt-5-nano-2025-08-07": {
+      "name": "gpt-5-nano-2025-08-07"
+    },
+    "gpt-3.5-turbo-1106": {
+      "name": "gpt-3.5-turbo-1106"
     },
     "gpt-4o-transcribe": {
       "name": "gpt-4o-transcribe"
     },
-    "gpt-4o-mini-transcribe": {
-      "name": "gpt-4o-mini-transcribe"
-    },
-    "o3-2025-04-16": {
-      "name": "o3-2025-04-16"
-    },
-    "o4-mini-2025-04-16": {
-      "name": "o4-mini-2025-04-16"
-    },
-    "o3": {
-      "name": "o3",
-      "description": "Frontier reasoning model — best for math, logic, and multi-step problems",
-      "context_window": 200000,
-      "max_output": 100000,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 2,
-        "output": 8
-      }
+    "gpt-5.2": {
+      "name": "gpt-5.2"
     },
     "o4-mini": {
       "name": "o4 Mini",
@@ -150,32 +143,34 @@
         "output": 4.4
       }
     },
+    "gpt-4o-mini-2024-07-18": {
+      "name": "gpt-4o-mini-2024-07-18"
+    },
     "gpt-4.1-2025-04-14": {
       "name": "gpt-4.1-2025-04-14"
-    },
-    "gpt-4.1": {
-      "name": "GPT-4.1",
-      "description": "Production workhorse with 1M context — reliable and well-tested for most workflows",
-      "context_window": 1000000,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 2,
-        "output": 8
-      }
     },
     "gpt-4.1-mini-2025-04-14": {
       "name": "gpt-4.1-mini-2025-04-14"
     },
-    "gpt-4.1-mini": {
-      "name": "GPT-4.1 Mini",
-      "description": "Fast and affordable with 1M context — great for most tasks",
-      "context_window": 1000000,
+    "gpt-5.1-codex-mini": {
+      "name": "gpt-5.1-codex-mini"
+    },
+    "gpt-5.4-nano-2026-03-17": {
+      "name": "gpt-5.4-nano-2026-03-17"
+    },
+    "o1": {
+      "name": "o1"
+    },
+    "gpt-6.1-sol": {
+      "name": "Gpt 6 1 Sol"
+    },
+    "o1-2024-12-17": {
+      "name": "o1-2024-12-17"
+    },
+    "gpt-5": {
+      "name": "GPT-5",
+      "description": "Original GPT-5 (Aug 2025) — strong and affordable, now superseded by the 5.4 series",
+      "context_window": 400000,
       "max_output": 32768,
       "inputs": {
         "text": true,
@@ -184,9 +179,68 @@
         "docx": false
       },
       "pricing": {
-        "input": 0.4,
-        "output": 1.6
+        "input": 0.63,
+        "output": 5
       }
+    },
+    "gpt-4o": {
+      "name": "GPT-4o (Legacy)",
+      "description": "Previous-generation flagship — multimodal with 128K context (legacy)",
+      "context_window": 128000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2.5,
+        "output": 10
+      }
+    },
+    "gpt-4o-mini-transcribe": {
+      "name": "gpt-4o-mini-transcribe"
+    },
+    "davinci-002": {
+      "name": "davinci-002"
+    },
+    "gpt-5.2-chat-latest": {
+      "name": "gpt-5.2-chat-latest"
+    },
+    "gpt-5.4-nano": {
+      "name": "GPT-5.4 Nano",
+      "description": "Cheapest GPT-5.4 variant — 400K context, ideal for classification and high-volume tasks",
+      "context_window": 400000,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.2,
+        "output": 1.25
+      }
+    },
+    "gpt-5.3-codex": {
+      "name": "gpt-5.3-codex"
+    },
+    "o3-mini": {
+      "name": "o3-mini"
+    },
+    "sora-2-pro": {
+      "name": "sora-2-pro"
+    },
+    "gpt-3.5-turbo-instruct": {
+      "name": "gpt-3.5-turbo-instruct"
+    },
+    "gpt-5-search-api-2025-10-14": {
+      "name": "gpt-5-search-api-2025-10-14"
+    },
+    "gpt-transcribe": {
+      "name": "Gpt Transcribe"
     },
     "gpt-4.1-nano-2025-04-14": {
       "name": "gpt-4.1-nano-2025-04-14"
@@ -207,243 +261,198 @@
         "output": 0.4
       }
     },
-    "gpt-4o-transcribe-diarize": {
-      "name": "gpt-4o-transcribe-diarize"
+    "gpt-5.4-mini-2026-03-17": {
+      "name": "gpt-5.4-mini-2026-03-17"
     },
-    "gpt-5-chat-latest": {
-      "name": "gpt-5-chat-latest"
+    "babbage-002": {
+      "name": "babbage-002"
     },
-    "gpt-5-2025-08-07": {
-      "name": "gpt-5-2025-08-07"
-    },
-    "gpt-5": {
-      "name": "GPT-5",
-      "description": "Original GPT-5 (Aug 2025) — strong and affordable, now superseded by the 5.4 series",
-      "context_window": 400000,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.63,
-        "output": 5
-      }
-    },
-    "gpt-5-mini-2025-08-07": {
-      "name": "gpt-5-mini-2025-08-07"
-    },
-    "gpt-5-mini": {
-      "name": "gpt-5-mini"
-    },
-    "gpt-5-nano-2025-08-07": {
-      "name": "gpt-5-nano-2025-08-07"
-    },
-    "gpt-5-nano": {
-      "name": "gpt-5-nano"
-    },
-    "gpt-realtime": {
-      "name": "gpt-realtime"
-    },
-    "gpt-realtime-2025-08-28": {
-      "name": "gpt-realtime-2025-08-28"
-    },
-    "gpt-5-codex": {
-      "name": "gpt-5-codex"
-    },
-    "gpt-5-pro-2025-10-06": {
-      "name": "gpt-5-pro-2025-10-06"
-    },
-    "gpt-5-pro": {
-      "name": "gpt-5-pro"
-    },
-    "gpt-5-search-api": {
-      "name": "gpt-5-search-api"
-    },
-    "gpt-realtime-mini": {
-      "name": "gpt-realtime-mini"
-    },
-    "sora-2": {
-      "name": "sora-2"
-    },
-    "sora-2-pro": {
-      "name": "sora-2-pro"
-    },
-    "gpt-5-search-api-2025-10-14": {
-      "name": "gpt-5-search-api-2025-10-14"
-    },
-    "gpt-5.1-chat-latest": {
-      "name": "gpt-5.1-chat-latest"
-    },
-    "gpt-5.1-2025-11-13": {
-      "name": "gpt-5.1-2025-11-13"
-    },
-    "gpt-5.1": {
-      "name": "gpt-5.1"
-    },
-    "gpt-5.1-codex": {
-      "name": "gpt-5.1-codex"
-    },
-    "gpt-5.1-codex-mini": {
-      "name": "gpt-5.1-codex-mini"
-    },
-    "gpt-5.1-codex-max": {
-      "name": "gpt-5.1-codex-max"
-    },
-    "gpt-5.2-2025-12-11": {
-      "name": "gpt-5.2-2025-12-11"
-    },
-    "gpt-5.2": {
-      "name": "gpt-5.2"
-    },
-    "gpt-5.2-pro-2025-12-11": {
-      "name": "gpt-5.2-pro-2025-12-11"
-    },
-    "gpt-5.2-pro": {
-      "name": "gpt-5.2-pro"
-    },
-    "gpt-5.2-chat-latest": {
-      "name": "gpt-5.2-chat-latest"
-    },
-    "gpt-4o-mini-transcribe-2025-12-15": {
-      "name": "gpt-4o-mini-transcribe-2025-12-15"
-    },
-    "gpt-4o-mini-transcribe-2025-03-20": {
-      "name": "gpt-4o-mini-transcribe-2025-03-20"
-    },
-    "gpt-realtime-mini-2025-12-15": {
-      "name": "gpt-realtime-mini-2025-12-15"
-    },
-    "gpt-5.2-codex": {
-      "name": "gpt-5.2-codex"
-    },
-    "gpt-5.3-codex": {
-      "name": "gpt-5.3-codex"
-    },
-    "gpt-realtime-1.5": {
-      "name": "gpt-realtime-1.5"
-    },
-    "gpt-4o-search-preview": {
-      "name": "gpt-4o-search-preview"
-    },
-    "gpt-4o-search-preview-2025-03-11": {
-      "name": "gpt-4o-search-preview-2025-03-11"
-    },
-    "gpt-5.3-chat-latest": {
-      "name": "gpt-5.3-chat-latest"
-    },
-    "gpt-5.4-2026-03-05": {
-      "name": "gpt-5.4-2026-03-05"
+    "gpt-3.5-turbo-16k": {
+      "name": "gpt-3.5-turbo-16k"
     },
     "gpt-5.4-pro": {
       "name": "gpt-5.4-pro"
     },
-    "gpt-5.4-pro-2026-03-05": {
-      "name": "gpt-5.4-pro-2026-03-05"
+    "gpt-4o-2024-05-13": {
+      "name": "gpt-4o-2024-05-13"
     },
-    "gpt-5.4": {
-      "name": "GPT-5.4",
-      "description": "Latest flagship (Mar 2026) — native computer use, 1M context, best coding and reasoning",
-      "context_window": 1048576,
-      "max_output": 128000,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 2.5,
-        "output": 10
-      }
+    "gpt-realtime-mini-2025-12-15": {
+      "name": "gpt-realtime-mini-2025-12-15"
     },
-    "gpt-5.4-nano-2026-03-17": {
-      "name": "gpt-5.4-nano-2026-03-17"
+    "text-embedding-ada-002": {
+      "name": "text-embedding-ada-002"
     },
-    "gpt-5.4-nano": {
-      "name": "GPT-5.4 Nano",
-      "description": "Cheapest GPT-5.4 variant — 400K context, ideal for classification and high-volume tasks",
-      "context_window": 400000,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.2,
-        "output": 1.25
-      }
+    "gpt-4o-2024-08-06": {
+      "name": "gpt-4o-2024-08-06"
     },
-    "gpt-5.4-mini-2026-03-17": {
-      "name": "gpt-5.4-mini-2026-03-17"
-    },
-    "gpt-5.4-mini": {
-      "name": "GPT-5.4 Mini",
-      "description": "Fast and efficient GPT-5.4 distillation — 400K context, 2x faster at a fraction of flagship cost",
-      "context_window": 400000,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.75,
-        "output": 4.5
-      }
-    },
-    "gpt-5.5": {
-      "name": "gpt-5.5"
-    },
-    "gpt-5.5-2026-04-23": {
-      "name": "gpt-5.5-2026-04-23"
-    },
-    "gpt-5.5-pro": {
-      "name": "gpt-5.5-pro"
-    },
-    "gpt-5.5-pro-2026-04-23": {
-      "name": "gpt-5.5-pro-2026-04-23"
-    },
-    "chat-latest": {
-      "name": "chat-latest"
-    },
-    "gpt-realtime-translate": {
-      "name": "gpt-realtime-translate"
-    },
-    "gpt-realtime-2": {
-      "name": "gpt-realtime-2"
-    },
-    "gpt-5.6-sol": {
-      "name": "Gpt 5 6 Sol"
-    },
-    "gpt-5.6-terra": {
-      "name": "Gpt 5 6 Terra"
-    },
-    "gpt-5.6-luna": {
-      "name": "Gpt 5 6 Luna"
+    "gpt-5.1-codex-max": {
+      "name": "gpt-5.1-codex-max"
     },
     "gpt-realtime-2.1": {
       "name": "Gpt Realtime 2 1"
     },
+    "o3": {
+      "name": "o3",
+      "description": "Frontier reasoning model — best for math, logic, and multi-step problems",
+      "context_window": 200000,
+      "max_output": 100000,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2,
+        "output": 8
+      }
+    },
+    "gpt-4.1": {
+      "name": "GPT-4.1",
+      "description": "Production workhorse with 1M context — reliable and well-tested for most workflows",
+      "context_window": 1000000,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 2,
+        "output": 8
+      }
+    },
+    "text-embedding-3-large": {
+      "name": "text-embedding-3-large"
+    },
+    "gpt-5.5": {
+      "name": "gpt-5.5"
+    },
+    "gpt-4o-mini-search-preview-2025-03-11": {
+      "name": "gpt-4o-mini-search-preview-2025-03-11"
+    },
+    "gpt-4o-mini-search-preview": {
+      "name": "gpt-4o-mini-search-preview"
+    },
+    "gpt-6-sol": {
+      "name": "Gpt 6 Sol"
+    },
+    "omni-moderation-2024-09-26": {
+      "name": "omni-moderation-2024-09-26"
+    },
     "gpt-realtime-2.1-mini": {
       "name": "Gpt Realtime 2 1 MINI"
     },
-    "gpt-transcribe": {
-      "name": "Gpt Transcribe"
+    "gpt-realtime-2025-08-28": {
+      "name": "gpt-realtime-2025-08-28"
     },
     "gpt-live-transcribe": {
       "name": "Gpt Live Transcribe"
     },
-    "gpt-6-astra": {
-      "name": "Gpt 6 Astra"
+    "gpt-3.5-turbo-0125": {
+      "name": "gpt-3.5-turbo-0125"
     },
-    "gpt-live-1": {
-      "name": "Gpt Live 1"
+    "gpt-5-mini": {
+      "name": "gpt-5-mini"
+    },
+    "gpt-5.4-2026-03-05": {
+      "name": "gpt-5.4-2026-03-05"
+    },
+    "gpt-5-mini-2025-08-07": {
+      "name": "gpt-5-mini-2025-08-07"
+    },
+    "gpt-5-nano": {
+      "name": "gpt-5-nano"
+    },
+    "gpt-5.6-luna": {
+      "name": "Gpt 5 6 Luna"
+    },
+    "gpt-5-2025-08-07": {
+      "name": "gpt-5-2025-08-07"
+    },
+    "gpt-4o-mini-transcribe-2025-12-15": {
+      "name": "gpt-4o-mini-transcribe-2025-12-15"
+    },
+    "chat-latest": {
+      "name": "chat-latest"
+    },
+    "gpt-5.5-pro": {
+      "name": "gpt-5.5-pro"
+    },
+    "gpt-realtime-translate": {
+      "name": "gpt-realtime-translate"
+    },
+    "gpt-4o-mini-transcribe-2025-03-20": {
+      "name": "gpt-4o-mini-transcribe-2025-03-20"
+    },
+    "gpt-5.4-pro-2026-03-05": {
+      "name": "gpt-5.4-pro-2026-03-05"
+    },
+    "gpt-5-pro-2025-10-06": {
+      "name": "gpt-5-pro-2025-10-06"
+    },
+    "gpt-5.5-pro-2026-04-23": {
+      "name": "gpt-5.5-pro-2026-04-23"
+    },
+    "gpt-5.2-pro-2025-12-11": {
+      "name": "gpt-5.2-pro-2025-12-11"
+    },
+    "gpt-5.6-sol": {
+      "name": "Gpt 5 6 Sol"
+    },
+    "gpt-5.1-chat-latest": {
+      "name": "gpt-5.1-chat-latest"
+    },
+    "gpt-5.3-chat-latest": {
+      "name": "gpt-5.3-chat-latest"
+    },
+    "o3-2025-04-16": {
+      "name": "o3-2025-04-16"
+    },
+    "gpt-4.1-mini": {
+      "name": "GPT-4.1 Mini",
+      "description": "Fast and affordable with 1M context — great for most tasks",
+      "context_window": 1000000,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.4,
+        "output": 1.6
+      }
+    },
+    "gpt-5.2-2025-12-11": {
+      "name": "gpt-5.2-2025-12-11"
+    },
+    "sora-2": {
+      "name": "sora-2"
+    },
+    "gpt-3.5-turbo": {
+      "name": "gpt-3.5-turbo"
+    },
+    "gpt-4o-mini": {
+      "name": "GPT-4o Mini (Legacy)",
+      "description": "Budget multimodal model — fast and cost-efficient for focused tasks (legacy)",
+      "context_window": 128000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      }
+    },
+    "gpt-6-luna": {
+      "name": "Gpt 6 Luna"
     },
     "gpt-realtime-mini-2025-10-06": {
       "name": "gpt-realtime-mini-2025-10-06"
@@ -452,5 +461,5 @@
       "name": "Ra Gpt 5 6 Sol"
     }
   },
-  "_syncedAt": "2026-09-22T14:43:39.254Z"
+  "_syncedAt": "2026-10-04T10:15:14.085Z"
 }

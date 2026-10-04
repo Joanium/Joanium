@@ -410,6 +410,20 @@
         "image": true
       }
     },
+    "alibaba/qwen3.8-max-prime": {
+      "name": "Qwen 3.8 Max Prime",
+      "description": "Qwen 3.8 Max Prime is the high-speed edition of Qwen 3.8 Max, retaining its 2.4-trillion-parameter MoE architecture and full capabilities while delivering 1.5–2× higher output throughput. Built for coding, office automation, and long-running agent workflows, it supports autonomous multi-day developm",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.8-omni-flash": {
       "name": "Qwen 3.8 Omni Flash",
       "description": "Qwen3.8-Omni-Flash is Alibaba’s native multimodal model for understanding text, images, audio, and video and generating text. Built on Qwen3.8-Flash-Next, it supports a 1M-token context window, reasoning, and tool calling for coding, knowledge work, and multimedia analysis.",
@@ -645,6 +659,34 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-5.5": {
+      "name": "Claude Opus 5.5",
+      "description": "Claude Opus 5.5 is a step-change improvement over Opus 5 for agentic coding, long-running agentic tasks, knowledge work, communication, and vision. It is more token-efficient per completed task and reports progress, findings, and next steps in clear language.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5.5-fast": {
+      "name": "Claude Opus 5.5 (Fast)",
+      "description": "Claude Opus 5.5 is a step-change improvement over Opus 5 for agentic coding, long-running agentic tasks, knowledge work, communication, and vision. It is more token-efficient per completed task and reports progress, findings, and next steps in clear language.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-sonnet-4": {
       "name": "Claude Sonnet 4",
       "description": "Claude Sonnet 4 significantly improves on Sonnet 3.7's industry-leading capabilities, excelling in coding with a state-of-the-art 72.7% on SWE-bench. The model balances performance and efficiency for internal and external use cases, with enhanced steerability for greater control over implementations",
@@ -692,6 +734,20 @@
     "anthropic/claude-sonnet-5": {
       "name": "Claude Sonnet 5",
       "description": "Sonnet 5 is an upgrade to Sonnet 4.6, with gains across agentic coding and professional work. It builds on the strengths of previous Sonnet models, bringing top-tier intelligence at Sonnet pricing for coding, agents, and everyday professional work at scale.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-5.5": {
+      "name": "Claude Sonnet 5.5",
+      "description": "Claude Sonnet 5.5 is a step-change improvement over Sonnet 5 for well-scoped everyday work like building features, fixing bugs, and creating polished documents, slides, and spreadsheets. It also writes more clearly than Sonnet 5.",
       "context_window": 1000000,
       "max_output": 128000,
       "pricing": {
@@ -908,6 +964,34 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-fast": {
+      "name": "DeepSeek V4.1 Flash Fast",
+      "description": "Speed-optimized deployment of DeepSeek V4.1 Flash using tensor parallelism and DSpark speculative decoding for faster token output and lower latency.",
+      "context_window": 1048576,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "fireworks/ember-1": {
+      "name": "Ember-1",
+      "description": "Ember-1 is Fireworks’ research-preview reasoning model built on Kimi K3 for coding and agentic workflows. It supports image input, function calling, and a 1M-token context window. Fireworks reports approximately 40% fewer generated tokens while maintaining comparable quality across its evaluations, ",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
       },
       "inputs": {
         "text": true,
@@ -1176,19 +1260,6 @@
         "text": true
       }
     },
-    "inclusionai/ling-3.0-flash-fin-free": {
-      "name": "Ling 3.0 Flash Fin (Free)",
-      "description": "Ling 3.0 Flash Fin is InclusionAI’s finance-enhanced MoE language model, combining 124 billion total parameters with approximately 5.1 billion active parameters for efficient financial reasoning. Its 256K context window, function calling, and support for complex, multi-step investment workflows make",
-      "context_window": 256000,
-      "max_output": 32000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "inclusionai/ling-3.0-flash-sante": {
       "name": "Ling 3.0 Flash Sante",
       "description": "Ling-3.0-Flash-Sante is inclusionAI’s language model specialized for health and medicine, built on a Mixture-of-Experts architecture with 124 billion total parameters and approximately 5.1 billion active per token. With a 256K context window and function calling, it supports medical knowledge reason",
@@ -1229,18 +1300,30 @@
         "image": true
       }
     },
-    "inclusionai/ling-3.0-flash-vl-free": {
-      "name": "Ling 3.0 Flash VL (Free)",
-      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash with stronger language capabilities, native visual perception, and visual agent capabilities. It supports text, image, and video inputs with text output, reasoning, and function calling.",
-      "context_window": 256000,
-      "max_output": 32000,
+    "inclusionai/ling-3.1-flash": {
+      "name": "Ling 3.1 Flash",
+      "description": "Ling 3.1 Flash is InclusionAI's hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. It has 560B total parameters with 25B activated parameters and supports long-context text workflows.",
+      "context_window": 262144,
+      "max_output": 32768,
       "pricing": {
         "input": 0,
         "output": 0
       },
       "inputs": {
-        "text": true,
-        "image": true
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.1-flash-free": {
+      "name": "Ling 3.1 Flash (Free)",
+      "description": "Ling 3.1 Flash is InclusionAI's hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. It has 560B total parameters with 25B activated parameters and supports long-context text workflows.",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
       }
     },
     "inference-net/schematron-v2-small": {
@@ -1280,6 +1363,20 @@
       },
       "inputs": {
         "text": true
+      }
+    },
+    "meituan/longcat-2.5-preview": {
+      "name": "LongCat 2.5 Preview",
+      "description": "LongCat-2.5-Preview is Meituan’s multimodal reasoning model for coding and agentic workflows, with a 1M-token context window and support for text and image inputs. It combines image understanding, visual question answering, and content summarization with code generation, code understanding, and auto",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "meta/llama-3.1-70b": {
@@ -2533,6 +2630,90 @@
         "image": true
       }
     },
+    "openai/gpt-6-luna": {
+      "name": "GPT-6 Luna",
+      "description": "GPT-6 Luna is OpenAI's efficient reasoning model for focused, high-volume tasks. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools supp",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-luna-fast": {
+      "name": "GPT-6 Luna (Fast)",
+      "description": "GPT-6 Luna is OpenAI's efficient reasoning model for focused, high-volume tasks. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools supp",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.2,
+        "output": 1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol": {
+      "name": "GPT-6 Sol",
+      "description": "GPT-6 Sol is OpenAI's reasoning model for complex coding and agentic workflows. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools make ",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-sol-fast": {
+      "name": "GPT-6 Sol (Fast)",
+      "description": "GPT-6 Sol is OpenAI's reasoning model for complex coding and agentic workflows. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools make ",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol": {
+      "name": "GPT-6.1 Sol",
+      "description": "GPT-6.1 Sol is OpenAI's reasoning model for complex coding, computer use, and professional work. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Response",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol-fast": {
+      "name": "GPT-6.1 Sol (Fast)",
+      "description": "GPT-6.1 Sol is OpenAI's reasoning model for complex coding, computer use, and professional work. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Response",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -2690,25 +2871,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "perplexity/sonar-pro": {
-      "name": "Sonar Pro",
-      "description": "Perplexity's premier offering with search grounding, supporting advanced queries and follow-ups.",
-      "context_window": 200000,
-      "max_output": 8000,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "perplexity/sonar-reasoning-pro": {
-      "name": "Sonar Reasoning Pro",
-      "description": "A premium reasoning-focused model that outputs Chain of Thought (CoT) in responses, providing comprehensive explanations with enhanced search capabilities and multiple search queries per request.",
-      "context_window": 127000,
-      "max_output": 8000,
-      "inputs": {
-        "text": true
       }
     },
     "poolside/laguna-s-2.1": {
@@ -3428,6 +3590,52 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin-free": {
+      "name": "Ling 3.0 Flash Fin (Free)",
+      "description": "Ling 3.0 Flash Fin is InclusionAI’s finance-enhanced MoE language model, combining 124 billion total parameters with approximately 5.1 billion active parameters for efficient financial reasoning. Its 256K context window, function calling, and support for complex, multi-step investment workflows make",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-vl-free": {
+      "name": "Ling 3.0 Flash VL (Free)",
+      "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash with stronger language capabilities, native visual perception, and visual agent capabilities. It supports text, image, and video inputs with text output, reasoning, and function calling.",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "perplexity/sonar-pro": {
+      "name": "Sonar Pro",
+      "description": "Perplexity's premier offering with search grounding, supporting advanced queries and follow-ups.",
+      "context_window": 200000,
+      "max_output": 8000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "perplexity/sonar-reasoning-pro": {
+      "name": "Sonar Reasoning Pro",
+      "description": "A premium reasoning-focused model that outputs Chain of Thought (CoT) in responses, providing comprehensive explanations with enhanced search capabilities and multiple search queries per request.",
+      "context_window": 127000,
+      "max_output": 8000,
+      "inputs": {
+        "text": true
       }
     },
     "kwaipilot/kat-coder-air-v2.5": {
@@ -4177,5 +4385,5 @@
       }
     }
   },
-  "_syncedAt": "2026-09-22T14:44:14.755Z"
+  "_syncedAt": "2026-10-04T10:15:39.352Z"
 }
