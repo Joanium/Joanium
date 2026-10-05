@@ -685,8 +685,7 @@ export const CLOUDFLARE_TOOLS = [
   },
   {
     name: 'cloudflare_list_tunnels',
-    description:
-      'List all Cloudflare Tunnels (cloudflared) in an account, showing their status and active connections.',
+    description: 'List all Cloudflare Tunnels (cloudflared) in an account, showing their status.',
     category: 'cloudflare',
     connectorId: 'cloudflare',
     parameters: {

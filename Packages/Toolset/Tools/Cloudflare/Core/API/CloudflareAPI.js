@@ -634,18 +634,21 @@ export async function listTunnels(creds, accountId) {
     status: t.status,
     createdAt: t.created_at,
     deletedAt: t.deleted_at,
-    connections: t.connections?.length ?? 0,
   }));
 }
 
 export async function getTunnel(creds, accountId, tunnelId) {
   const t = await cfFetch(`/accounts/${accountId}/cfd_tunnel/${tunnelId}`, creds);
+  const connectors = await cfFetch(
+    `/accounts/${accountId}/cfd_tunnel/${tunnelId}/connections`,
+    creds,
+  );
   return {
     id: t.id,
     name: t.name,
     status: t.status,
     createdAt: t.created_at,
-    connections: t.connections ?? [],
+    connections: (connectors ?? []).flatMap((connector) => connector.conns ?? []),
   };
 }
 
