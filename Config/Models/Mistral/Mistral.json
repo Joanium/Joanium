@@ -30,42 +30,17 @@
     "mistral-code-fim-latest": {
       "name": "Mistral Code Fim Latest"
     },
-    "mistral-small-2603": {
-      "name": "mistral-small-2603"
-    },
-    "mistral-small-latest": {
-      "name": "Mistral Small 4",
-      "description": "Unified model (Mar 2026) — reasoning, vision, and coding in one endpoint at Apache 2.0, very fast MoE",
-      "context_window": 256000,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": true,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      }
-    },
-    "mistral-vibe-cli-fast": {
-      "name": "mistral-vibe-cli-fast"
-    },
-    "magistral-small-latest": {
-      "name": "magistral-small-latest"
-    },
-    "voxtral-small-2507": {
-      "name": "voxtral-small-2507"
-    },
-    "voxtral-small-latest": {
-      "name": "voxtral-small-latest"
-    },
     "labs-leanstral-1-5-1": {
       "name": "Labs Leanstral 1 5 1"
     },
     "labs-leanstral-1-5": {
       "name": "Labs Leanstral 1 5"
+    },
+    "ministral-14b-2512": {
+      "name": "ministral-14b-2512"
+    },
+    "ministral-14b-latest": {
+      "name": "ministral-14b-latest"
     },
     "ministral-3b-2512": {
       "name": "ministral-3b-2512"
@@ -78,12 +53,6 @@
     },
     "ministral-8b-latest": {
       "name": "ministral-8b-latest"
-    },
-    "ministral-14b-2512": {
-      "name": "ministral-14b-2512"
-    },
-    "ministral-14b-latest": {
-      "name": "ministral-14b-latest"
     },
     "mistral-medium-latest": {
       "name": "Mistral Medium 3.1",
@@ -138,17 +107,48 @@
         "output": 5
       }
     },
-    "mistral-embed-2312": {
-      "name": "mistral-embed-2312"
+    "mistral-small-2603": {
+      "name": "mistral-small-2603"
     },
-    "mistral-embed": {
-      "name": "mistral-embed"
+    "mistral-small-latest": {
+      "name": "Mistral Small 4",
+      "description": "Unified model (Mar 2026) — reasoning, vision, and coding in one endpoint at Apache 2.0, very fast MoE",
+      "context_window": 256000,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": true,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      }
+    },
+    "mistral-vibe-cli-fast": {
+      "name": "mistral-vibe-cli-fast"
+    },
+    "magistral-small-latest": {
+      "name": "magistral-small-latest"
+    },
+    "voxtral-small-2507": {
+      "name": "voxtral-small-2507"
+    },
+    "voxtral-small-latest": {
+      "name": "voxtral-small-latest"
     },
     "codestral-embed": {
       "name": "codestral-embed"
     },
     "codestral-embed-2505": {
       "name": "codestral-embed-2505"
+    },
+    "mistral-embed-2312": {
+      "name": "mistral-embed-2312"
+    },
+    "mistral-embed": {
+      "name": "mistral-embed"
     },
     "mistral-moderation-2603": {
       "name": "mistral-moderation-2603"
@@ -161,9 +161,6 @@
     },
     "mistral-ocr-3": {
       "name": "Mistral Ocr 3"
-    },
-    "mistral-ocr-4-0": {
-      "name": "Mistral Ocr 4 0"
     },
     "mistral-ocr-latest": {
       "name": "mistral-ocr-latest"
@@ -188,6 +185,9 @@
     },
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
+    },
+    "mistral-ocr-4-0": {
+      "name": "Mistral Ocr 4 0"
     },
     "mistral-large-2512": {
       "name": "mistral-large-2512"
@@ -288,5 +288,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-10-04T10:15:11.220Z"
+  "_syncedAt": "2026-10-18T10:41:52.811Z"
 }

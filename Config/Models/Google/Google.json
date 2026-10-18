@@ -107,6 +107,11 @@
       "context_window": 131072,
       "max_output": 32768
     },
+    "gemini-nano-banana-2.1": {
+      "name": "Nano Banana 2.1",
+      "context_window": 65536,
+      "max_output": 65536
+    },
     "gemini-3.5-flash": {
       "name": "Gemini 3.5 Flash",
       "context_window": 1048576,
@@ -146,6 +151,11 @@
       "name": "Gemini 3.8 Flash",
       "context_window": 1048576,
       "max_output": 65536
+    },
+    "gemini-4-argon": {
+      "name": "Gemini 4 Argon",
+      "context_window": 1048576,
+      "max_output": 32768
     },
     "lyria-3-clip-preview": {
       "name": "Lyria 3 Clip Preview",
@@ -240,5 +250,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-10-04T10:15:12.089Z"
+  "_syncedAt": "2026-10-18T10:41:53.920Z"
 }

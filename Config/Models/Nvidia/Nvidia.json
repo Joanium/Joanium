@@ -140,9 +140,6 @@
         "output": 3
       }
     },
-    "moonshotai/kimi-k3": {
-      "name": "Kimi K3"
-    },
     "nv-mistralai/mistral-nemo-12b-instruct": {
       "name": "nv-mistralai/mistral-nemo-12b-instruct"
     },
@@ -219,6 +216,9 @@
     "nvidia/nemotron-3.5-lightning-30b-a3b": {
       "name": "Nemotron 3 5 Lightning 30B A3b"
     },
+    "nvidia/nemotron-3.5-super-vl-120b-a12b": {
+      "name": "Nemotron 3 5 Super VL 120B A12b"
+    },
     "nvidia/nemotron-4-340b-instruct": {
       "name": "nvidia/nemotron-4-340b-instruct"
     },
@@ -245,9 +245,6 @@
     },
     "nvidia/riva-translate-4b-instruct": {
       "name": "nvidia/riva-translate-4b-instruct"
-    },
-    "nvidia/riva-translate-4b-instruct-v1.1": {
-      "name": "nvidia/riva-translate-4b-instruct-v1.1"
     },
     "nvidia/riva-translate-4b-instruct-v2": {
       "name": "Riva Translate 4B Instruct V2"
@@ -277,6 +274,9 @@
     "snowflake/arctic-embed-l": {
       "name": "snowflake/arctic-embed-l"
     },
+    "stepfun-ai/step-5-preview": {
+      "name": "Step 5 Preview"
+    },
     "writer/palmyra-creative-122b": {
       "name": "writer/palmyra-creative-122b"
     },
@@ -297,6 +297,12 @@
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "moonshotai/kimi-k3": {
+      "name": "Kimi K3"
+    },
+    "nvidia/riva-translate-4b-instruct-v1.1": {
+      "name": "nvidia/riva-translate-4b-instruct-v1.1"
     },
     "mistralai/mistral-nemotron": {
       "name": "mistralai/mistral-nemotron"
@@ -490,5 +496,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-10-04T10:15:08.092Z"
+  "_syncedAt": "2026-10-18T10:41:48.966Z"
 }

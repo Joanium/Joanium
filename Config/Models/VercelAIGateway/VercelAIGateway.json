@@ -56,34 +56,6 @@
         "text": true
       }
     },
-    "alibaba/qwen-3.6-max-preview": {
-      "name": "Qwen 3.6 Max Preview",
-      "description": "Compared with the previously released Qwen3-Max and Qwen3.6-Plus, this model features enhanced vibe coding abilities, more efficient coding agent execution, and significantly improved front-end development skills. Additionally, its long-tail knowledge retention has been further upgraded.",
-      "context_window": 240000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 1.3,
-        "output": 7.8
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "alibaba/qwen3-235b-a22b-thinking": {
-      "name": "Qwen3 VL 235B A22B Thinking",
-      "description": "Qwen3 series VL models feature significantly enhanced multimodal reasoning capabilities, with a particular focus on optimizing the model for STEM and mathematical reasoning. Visual perception and recognition abilities have been comprehensively improved, and OCR capabilities have undergone a major up",
-      "context_window": 131072,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0.4,
-        "output": 4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "alibaba/qwen3-coder": {
       "name": "Qwen3 Coder 480B A35B Instruct",
       "description": "Qwen3-Coder-480B-A35B-Instruct is a cutting-edge open coding model from Qwen, matching Claude Sonnet’s performance in agentic programming, browser automation, and core development tasks.",
@@ -118,45 +90,6 @@
       "pricing": {
         "input": 0.5,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "alibaba/qwen3-coder-plus": {
-      "name": "Qwen3 Coder Plus",
-      "description": "Powered by Qwen3 this is a powerful Coding Agent that excels in tool calling and environment interaction to achieve autonomous programming. It combines outstanding coding proficiency with versatile general-purpose abilities.",
-      "context_window": 1000000,
-      "max_output": 65536,
-      "pricing": {
-        "input": 1,
-        "output": 5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "alibaba/qwen3-max": {
-      "name": "Qwen3 Max",
-      "description": "The Qwen 3 series Max model has undergone specialized upgrades in agent programming and tool invocation compared to the preview version. The officially released model this time has achieved state-of-the-art (SOTA) performance in its field and is better suited to meet the demands of agents operating ",
-      "context_window": 262144,
-      "max_output": 32768,
-      "pricing": {
-        "input": 1.2,
-        "output": 6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "alibaba/qwen3-max-preview": {
-      "name": "Qwen3 Max Preview",
-      "description": "Qwen3-Max-Preview shows substantial gains over the 2.5 series in overall capability, with significant enhancements in Chinese-English text understanding, complex instruction following, handling of subjective open-ended tasks, multilingual ability, and tool invocation; model knowledge hallucinations ",
-      "context_window": 262144,
-      "max_output": 32768,
-      "pricing": {
-        "input": 1.2,
-        "output": 6
       },
       "inputs": {
         "text": true
@@ -201,20 +134,6 @@
         "text": true
       }
     },
-    "alibaba/qwen3-vl-235b-a22b-instruct": {
-      "name": "Qwen3 VL 235B A22B Instruct",
-      "description": "The Qwen3 series VL models has been comprehensively upgraded in areas such as visual coding and spatial perception. Its visual perception and recognition capabilities have significantly improved, supporting the understanding of ultra-long videos, and its OCR functionality has undergone a major enhan",
-      "context_window": 131072,
-      "max_output": 129024,
-      "pricing": {
-        "input": 0.4,
-        "output": 1.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "alibaba/qwen3-vl-instruct": {
       "name": "Qwen3 VL 235B A22B Instruct",
       "description": "The Qwen3 series VL models has been comprehensively upgraded in areas such as visual coding and spatial perception. Its visual perception and recognition capabilities have significantly improved, supporting the understanding of ultra-long videos, and its OCR functionality has undergone a major enhan",
@@ -223,20 +142,6 @@
       "pricing": {
         "input": 0.4,
         "output": 1.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "alibaba/qwen3-vl-thinking": {
-      "name": "Qwen3 VL 235B A22B Thinking",
-      "description": "Qwen3 series VL models feature significantly enhanced multimodal reasoning capabilities, with a particular focus on optimizing the model for STEM and mathematical reasoning. Visual perception and recognition abilities have been comprehensively improved, and OCR capabilities have undergone a major up",
-      "context_window": 131072,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0.4,
-        "output": 4
       },
       "inputs": {
         "text": true,
@@ -491,20 +396,6 @@
         "text": true
       }
     },
-    "anthropic/claude-3-haiku": {
-      "name": "Claude 3 Haiku",
-      "description": "Claude 3 Haiku is Anthropic's fastest, most compact model for near-instant responsiveness. It answers simple queries and requests with speed. Customers will be able to build seamless AI experiences that mimic human interactions. Claude 3 Haiku can process images and return text outputs, and features",
-      "context_window": 200000,
-      "max_output": 4096,
-      "pricing": {
-        "input": 0.25,
-        "output": 1.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-fable-5": {
       "name": "Claude Fable 5",
       "description": "Claude Fable 5 is a Mythos-class model with robust safeguards. It can handle long-running, complex, and asynchronous tasks where previous models would have needed more frequent check-ins.",
@@ -513,6 +404,20 @@
       "pricing": {
         "input": 10,
         "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5-batch": {
+      "name": "Claude Fable 5 (Batch)",
+      "description": "Claude Fable 5 is a Mythos-class model with robust safeguards. It can handle long-running, complex, and asynchronous tasks where previous models would have needed more frequent check-ins.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 25
       },
       "inputs": {
         "text": true,
@@ -533,6 +438,20 @@
         "image": true
       }
     },
+    "anthropic/claude-fable-5.1-batch": {
+      "name": "Claude Fable 5.1 (Batch)",
+      "description": "Claude Fable 5.1 improves on Fable 5 across long-running agentic coding, knowledge work, and research, following instructions precisely over sessions that run unattended for hours.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-haiku-4.5": {
       "name": "Claude Haiku 4.5",
       "description": "Claude Haiku 4.5 matches Sonnet 4's performance on coding, computer use, and agent tasks at substantially lower cost and faster speeds. It delivers near-frontier performance and Claude’s unique character at a price point that works for scaled sub-agent deployments, free tier products, and intelligen",
@@ -547,14 +466,42 @@
         "image": true
       }
     },
-    "anthropic/claude-opus-4": {
-      "name": "Claude Opus 4",
-      "description": "Claude Opus 4 is Anthropic's most powerful model yet and the best coding model in the world, leading on SWE-bench (72.5%) and Terminal-bench (43.2%). It delivers sustained performance on long-running tasks that require focused effort and thousands of steps, with the ability to work continuously for ",
+    "anthropic/claude-haiku-4.5-batch": {
+      "name": "Claude Haiku 4.5 (Batch)",
+      "description": "Claude Haiku 4.5 matches Sonnet 4's performance on coding, computer use, and agent tasks at substantially lower cost and faster speeds. It delivers near-frontier performance and Claude’s unique character at a price point that works for scaled sub-agent deployments, free tier products, and intelligen",
       "context_window": 200000,
-      "max_output": 32000,
+      "max_output": 64000,
       "pricing": {
-        "input": 15,
-        "output": 75
+        "input": 0.5,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-haiku-5.5": {
+      "name": "Claude Haiku 5.5",
+      "description": "Claude Haiku 5.5 brings adaptive reasoning to Anthropic’s low-cost Haiku family for everyday tasks, tool use, and scaled sub-agent deployments. It is the first Haiku with adjustable effort levels, letting developers balance reasoning depth and token usage for each task, with the option to turn think",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-haiku-5.5-batch": {
+      "name": "Claude Haiku 5.5 (Batch)",
+      "description": "Claude Haiku 5.5 brings adaptive reasoning to Anthropic’s low-cost Haiku family for everyday tasks, tool use, and scaled sub-agent deployments. It is the first Haiku with adjustable effort levels, letting developers balance reasoning depth and token usage for each task, with the option to turn think",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.25
       },
       "inputs": {
         "text": true,
@@ -575,6 +522,20 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.5-batch": {
+      "name": "Claude Opus 4.5 (Batch)",
+      "description": "Claude Opus 4.5 is Anthropic’s latest model in the Opus series, meant for demanding reasoning tasks and complex problem solving. This model has improvements in general intelligence and vision compared to previous iterations. In addition, it is suited for difficult coding tasks and agentic workflows,",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 2.5,
+        "output": 12.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-4.6": {
       "name": "Claude Opus 4.6",
       "description": "Opus 4.6 is the world’s best model for coding and professional work, built to power agents that take on whole categories of real-world work. It excels across the entire SDLC, breaking through on hard problems, identifying complex bugs, and demonstrating deeper codebase understanding. It also deliver",
@@ -589,6 +550,20 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.6-batch": {
+      "name": "Claude Opus 4.6 (Batch)",
+      "description": "Opus 4.6 is the world’s best model for coding and professional work, built to power agents that take on whole categories of real-world work. It excels across the entire SDLC, breaking through on hard problems, identifying complex bugs, and demonstrating deeper codebase understanding. It also deliver",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 12.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-4.7": {
       "name": "Claude Opus 4.7",
       "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
@@ -597,6 +572,20 @@
       "pricing": {
         "input": 5,
         "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4.7-batch": {
+      "name": "Claude Opus 4.7 (Batch)",
+      "description": "Opus 4.7 builds on the coding and agentic strengths of Opus 4.6 with stronger performance on complex, multi-step tasks and more reliable agentic execution. It also brings improved performance on knowledge work, from drafting documents to building presentations and analyzing data.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 12.5
       },
       "inputs": {
         "text": true,
@@ -631,6 +620,20 @@
         "image": true
       }
     },
+    "anthropic/claude-opus-4.8-batch": {
+      "name": "Claude Opus 4.8 (Batch)",
+      "description": "Opus 4.8 is a focused upgrade to Opus 4.7 and is Anthropic's best generally available model for coding, agentic tasks, and enterprise workflows. It builds on the strengths of previous Opus models with stronger performance on complex, multi-step coding tasks. Anthropic recommends using it on long-hor",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 12.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-opus-5": {
       "name": "Claude Opus 5",
       "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
@@ -653,6 +656,20 @@
       "pricing": {
         "input": 10,
         "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-5-batch": {
+      "name": "Claude Opus 5 (Batch)",
+      "description": "Claude Opus 5 is the latest model in Anthropic's Opus family and a step-change improvement over Opus 4.8. It delivers major gains over Opus 4.8 in agentic coding, professional knowledge work, and long-horizon reasoning, and it is stronger per token across effort levels.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 12.5
       },
       "inputs": {
         "text": true,
@@ -687,14 +704,14 @@
         "image": true
       }
     },
-    "anthropic/claude-sonnet-4": {
-      "name": "Claude Sonnet 4",
-      "description": "Claude Sonnet 4 significantly improves on Sonnet 3.7's industry-leading capabilities, excelling in coding with a state-of-the-art 72.7% on SWE-bench. The model balances performance and efficiency for internal and external use cases, with enhanced steerability for greater control over implementations",
+    "anthropic/claude-opus-5.5-batch": {
+      "name": "Claude Opus 5.5 (Batch)",
+      "description": "Claude Opus 5.5 is a step-change improvement over Opus 5 for agentic coding, long-running agentic tasks, knowledge work, communication, and vision. It is more token-efficient per completed task and reports progress, findings, and next steps in clear language.",
       "context_window": 1000000,
-      "max_output": 64000,
+      "max_output": 128000,
       "pricing": {
-        "input": 3,
-        "output": 15
+        "input": 2,
+        "output": 10
       },
       "inputs": {
         "text": true,
@@ -709,6 +726,20 @@
       "pricing": {
         "input": 3,
         "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-4.5-batch": {
+      "name": "Claude Sonnet 4.5 (Batch)",
+      "description": "Claude Sonnet 4.5 is the newest model in the Sonnet series, offering improvements and updates over Sonnet 4.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
       },
       "inputs": {
         "text": true,
@@ -731,6 +762,20 @@
         "output": 15
       }
     },
+    "anthropic/claude-sonnet-4.6-batch": {
+      "name": "Claude Sonnet 4.6 (Batch)",
+      "description": "Claude Sonnet 4.6 is the most capable Sonnet-class model yet, with frontier performance across coding, agents, and professional work. It excels at iterative development, complex codebase navigation, end-to-end project management with memory, polished document creation, and confident computer use for",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-sonnet-5": {
       "name": "Claude Sonnet 5",
       "description": "Sonnet 5 is an upgrade to Sonnet 4.6, with gains across agentic coding and professional work. It builds on the strengths of previous Sonnet models, bringing top-tier intelligence at Sonnet pricing for coding, agents, and everyday professional work at scale.",
@@ -745,6 +790,20 @@
         "image": true
       }
     },
+    "anthropic/claude-sonnet-5-batch": {
+      "name": "Claude Sonnet 5 (Batch)",
+      "description": "Sonnet 5 is an upgrade to Sonnet 4.6, with gains across agentic coding and professional work. It builds on the strengths of previous Sonnet models, bringing top-tier intelligence at Sonnet pricing for coding, agents, and everyday professional work at scale.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-sonnet-5.5": {
       "name": "Claude Sonnet 5.5",
       "description": "Claude Sonnet 5.5 is a step-change improvement over Sonnet 5 for well-scoped everyday work like building features, fixing bugs, and creating polished documents, slides, and spreadsheets. It also writes more clearly than Sonnet 5.",
@@ -753,6 +812,20 @@
       "pricing": {
         "input": 2,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-5.5-batch": {
+      "name": "Claude Sonnet 5.5 (Batch)",
+      "description": "Claude Sonnet 5.5 is a step-change improvement over Sonnet 5 for well-scoped everyday work like building features, fixing bugs, and creating polished documents, slides, and spreadsheets. It also writes more clearly than Sonnet 5.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -813,6 +886,20 @@
         "image": true
       }
     },
+    "callstack/apex": {
+      "name": "Apex",
+      "description": "Apex is Callstack’s agentic coding model for mobile and web development, optimized for React Native, React, and Next.js. With a 256K context window, it supports feature development, debugging, code reviews, testing, and large refactors.",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.5,
+        "output": 3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "cohere/command-a": {
       "name": "Command A",
       "description": "Command A is Cohere's most performant model to date, excelling at tool use, agents, retrieval augmented generation (RAG), and multilingual use cases. Command A has a context length of 256K, only requires two GPUs to run, and has 150% higher throughput compared to Command R+ 08-2024.",
@@ -847,19 +934,6 @@
       "pricing": {
         "input": 0.56,
         "output": 1.68
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v3.1-terminus": {
-      "name": "DeepSeek V3.1 Terminus",
-      "description": "DeepSeek-V3.1-Terminus delivers more stable & reliable outputs across benchmarks compared to the previous version and addresses user feedback (i.e. language consistency and agent upgrades).",
-      "context_window": 131072,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.27,
-        "output": 1
       },
       "inputs": {
         "text": true
@@ -970,6 +1044,34 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4.1-flash-1017": {
+      "name": "DeepSeek V4.1 Flash 1017",
+      "description": "DeepSeek V4.1 Flash is an AI model from DeepSeek designed for fast, efficient multimodal interactions. It combines native multimodal capabilities with a new architecture focused on stronger performance, faster responses, and lower computational cost.",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-1017-fast": {
+      "name": "DeepSeek V4.1 Flash 1017 Fast",
+      "description": "Higher-throughput variant of DeepSeek V4.1 Flash 1017 served by Baseten for multimodal reasoning, tool calling, and structured output, with automatic prefix caching.",
+      "context_window": 1048576,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepseek/deepseek-v4.1-flash-fast": {
       "name": "DeepSeek V4.1 Flash Fast",
       "description": "Speed-optimized deployment of DeepSeek V4.1 Flash using tensor parallelism and DSpark speculative decoding for faster token output and lower latency.",
@@ -978,6 +1080,20 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "elorian/glimpse": {
+      "name": "Glimpse",
+      "description": "Glimpse is Elorian's visual reasoning model for image and video understanding, with a 220,000-token context window. It tracks objects across motion and viewpoints, interprets spatial relationships, and reasons about physical cause and effect. Designed for scientific chart analysis, video captioning,",
+      "context_window": 220000,
+      "max_output": 4096,
+      "pricing": {
+        "input": 0.6,
+        "output": 3
       },
       "inputs": {
         "text": true,
@@ -1012,6 +1128,20 @@
         "image": true
       }
     },
+    "google/gemini-2.5-flash-batch": {
+      "name": "Gemini 2.5 Flash (Batch)",
+      "description": "Gemini 2.5 Flash is a thinking model that offers great, well-rounded capabilities. It is designed to offer a balance between price and performance with multimodal support and a 1M token context window.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-2.5-flash-lite": {
       "name": "Gemini 2.5 Flash Lite",
       "description": "Gemini 2.5 Flash-Lite is a balanced, low-latency model with configurable thinking budgets and tool connectivity (e.g., Google Search grounding and code execution). It supports multimodal input and offers a 1M-token context window.",
@@ -1026,6 +1156,20 @@
         "image": true
       }
     },
+    "google/gemini-2.5-flash-lite-batch": {
+      "name": "Gemini 2.5 Flash Lite (Batch)",
+      "description": "Gemini 2.5 Flash-Lite is a balanced, low-latency model with configurable thinking budgets and tool connectivity (e.g., Google Search grounding and code execution). It supports multimodal input and offers a 1M-token context window.",
+      "context_window": 1048576,
+      "max_output": 65535,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-2.5-pro": {
       "name": "Gemini 2.5 Pro",
       "description": "Gemini 2.5 Pro is our most advanced reasoning Gemini model, capable of solving complex problems. Gemini 2.5 Pro can comprehend vast datasets and challenging problems from different information sources, including text, audio, images, video, and even entire code repositories.",
@@ -1034,6 +1178,20 @@
       "pricing": {
         "input": 1.25,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-2.5-pro-batch": {
+      "name": "Gemini 2.5 Pro (Batch)",
+      "description": "Gemini 2.5 Pro is our most advanced reasoning Gemini model, capable of solving complex problems. Gemini 2.5 Pro can comprehend vast datasets and challenging problems from different information sources, including text, audio, images, video, and even entire code repositories.",
+      "context_window": 1048576,
+      "max_output": 65535,
+      "pricing": {
+        "input": 0.63,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -1056,6 +1214,20 @@
         "output": 3
       }
     },
+    "google/gemini-3-flash-batch": {
+      "name": "Gemini 3 Flash (Batch)",
+      "description": "Google's most intelligent model built for speed, combining frontier intelligence with superior search and grounding.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.25,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-3.1-flash-lite": {
       "name": "Gemini 3.1 Flash Lite",
       "description": "Gemini 3.1 Flash Lite outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code completio",
@@ -1064,6 +1236,20 @@
       "pricing": {
         "input": 0.25,
         "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.1-flash-lite-batch": {
+      "name": "Gemini 3.1 Flash Lite (Batch)",
+      "description": "Gemini 3.1 Flash Lite outperforms 2.5 Flash Lite on overall quality and lands close to 2.5 Flash performance across key capability areas. It is a workhorse model for high-volume use cases, with improvements across audio input/ASR, RAG snippet ranking, translation, data extraction, and code completio",
+      "context_window": 1000000,
+      "max_output": 65000,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.75
       },
       "inputs": {
         "text": true,
@@ -1084,6 +1270,20 @@
         "image": true
       }
     },
+    "google/gemini-3.1-pro-preview-batch": {
+      "name": "Gemini 3.1 Pro Preview (Batch)",
+      "description": "Improved SWE and agentic capabilities, improved token efficiency and thinking, and expanded thinking levels.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-3.5-flash": {
       "name": "Gemini 3.5 Flash",
       "description": "Google's latest model, highly optimized for coding proficiency and parallel agentic execution loops. Defaults to medium thinking effort for faster and more cost-efficient responses.",
@@ -1092,6 +1292,20 @@
       "pricing": {
         "input": 1.5,
         "output": 9
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.5-flash-batch": {
+      "name": "Gemini 3.5 Flash (Batch)",
+      "description": "Google's latest model, highly optimized for coding proficiency and parallel agentic execution loops. Defaults to medium thinking effort for faster and more cost-efficient responses.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.75,
+        "output": 4.5
       },
       "inputs": {
         "text": true,
@@ -1112,6 +1326,20 @@
         "image": true
       }
     },
+    "google/gemini-3.5-flash-lite-batch": {
+      "name": "Gemini 3.5 Flash Lite (Batch)",
+      "description": "Gemini 3.5 Flash Lite features upgraded agentic capabilities, making the model ideal for subagents in complex workflows.",
+      "context_window": 1000000,
+      "max_output": 65000,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-3.6-flash": {
       "name": "Gemini 3.6 Flash",
       "description": "Gemini 3.6 Flash delivers higher quality across coding, agentic workflows, and web development with reduced token consumption and fewer model calls compared to previous model iterations.",
@@ -1120,6 +1348,20 @@
       "pricing": {
         "input": 1.5,
         "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.6-flash-batch": {
+      "name": "Gemini 3.6 Flash (Batch)",
+      "description": "Gemini 3.6 Flash delivers higher quality across coding, agentic workflows, and web development with reduced token consumption and fewer model calls compared to previous model iterations.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.88
       },
       "inputs": {
         "text": true,
@@ -1139,6 +1381,20 @@
         "image": true
       }
     },
+    "google/gemini-3.7-flash-batch": {
+      "name": "Gemini 3.7 Flash (Batch)",
+      "description": "Gemini 3.7 Flash is the next iteration in the Gemini 3 model family, featuring algorithmic improvements to its core reasoning foundation. It supports customizable thinking configurations to control the mix of quality, cost and latency.",
+      "context_window": 1000000,
+      "max_output": 65535,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.88
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-3.8-flash": {
       "name": "Gemini 3.8 Flash",
       "description": "Gemini 3.8 Flash is the high-efficiency, cost-effective powerhouse of the Gemini 3 family. It delivers Pro-level agentic capabilities, major leaps in code generation and terminal execution. 3.8 Flash serves as the primary agentic workhorse in the Gemini 3 family, bridging the gap between deep-reason",
@@ -1147,6 +1403,34 @@
       "pricing": {
         "input": 0.75,
         "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-argon": {
+      "name": "Gemini 4 Argon",
+      "description": "Gemini 4 Argon is Google’s multimodal reasoning model, supporting text, image, and file inputs with configurable reasoning levels. It combines tool calling, structured outputs, and Google Search and Maps grounding to support document analysis and agent workflows. Long-form generation supports contin",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-nano-banana-2.1": {
+      "name": "Gemini Nano Banana 2.1",
+      "description": "Gemini Nano Banana 2.1 is optimized for image understanding and generation and offers a balance of price and performance.",
+      "context_window": 131072,
+      "max_output": 32768,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
       },
       "inputs": {
         "text": true,
@@ -1273,19 +1557,6 @@
         "text": true
       }
     },
-    "inclusionai/ling-3.0-flash-sante-free": {
-      "name": "Ling 3.0 Flash Sante (Free)",
-      "description": "Ling-3.0-Flash-Sante is inclusionAI’s language model specialized for health and medicine, built on a Mixture-of-Experts architecture with 124 billion total parameters and approximately 5.1 billion active per token. With a 256K context window and function calling, it supports medical knowledge reason",
-      "context_window": 256000,
-      "max_output": 32000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "inclusionai/ling-3.0-flash-vl": {
       "name": "Ling 3.0 Flash VL",
       "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash with stronger language capabilities, native visual perception, and visual agent capabilities. It supports text, image, and video inputs with text output, reasoning, and function calling.",
@@ -1302,19 +1573,6 @@
     },
     "inclusionai/ling-3.1-flash": {
       "name": "Ling 3.1 Flash",
-      "description": "Ling 3.1 Flash is InclusionAI's hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. It has 560B total parameters with 25B activated parameters and supports long-context text workflows.",
-      "context_window": 262144,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.1-flash-free": {
-      "name": "Ling 3.1 Flash (Free)",
       "description": "Ling 3.1 Flash is InclusionAI's hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. It has 560B total parameters with 25B activated parameters and supports long-context text workflows.",
       "context_window": 262144,
       "max_output": 32768,
@@ -1360,6 +1618,19 @@
       "pricing": {
         "input": 1.5,
         "output": 3.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "liquid/lfm2.5-24b-a2b": {
+      "name": "LFM2.5-24B-A2B",
+      "description": "LFM2.5-24B-A2B is a text-generation model from Liquid AI with a 128,000-token context window.",
+      "context_window": 128000,
+      "max_output": 8200,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.7
       },
       "inputs": {
         "text": true
@@ -1523,6 +1794,34 @@
       "pricing": {
         "input": 0.1,
         "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-open": {
+      "name": "Muse Spark Open",
+      "description": "Muse Spark Open is Meta’s open-weight reasoning model for coding and agentic workflows. Its sparse mixture-of-experts architecture has 816 billion total parameters with approximately 42 billion active per token, combining code generation, tool use, and image understanding. A one-million-token contex",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-wonder-1.0": {
+      "name": "Muse Wonder",
+      "description": "Muse Wonder is Meta’s model for frontier coding, long-running agents, and advanced computer use. It plans long tasks, delegates work to sub-agents, and recovers from errors.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 4,
+        "output": 20
       },
       "inputs": {
         "text": true,
@@ -1703,6 +2002,20 @@
         "image": true
       }
     },
+    "mistral/mistral-large-4": {
+      "name": "Mistral Large 4",
+      "description": "Mistral Large 4 is Mistral AI's open-weight, natively multimodal model, available in public preview with 1.05 trillion total parameters and 49 billion active parameters. It leads aggregated benchmarks among open-weight models from the US and Europe, with strengths in cyber defense, manufacturing, fi",
+      "context_window": 524288,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.68,
+        "output": 2.09
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "mistral/mistral-medium-3.5": {
       "name": "Mistral Medium Latest",
       "description": "Mistral's frontier-class multimodal model optimized for agentic and coding use cases.",
@@ -1764,19 +2077,6 @@
       "pricing": {
         "input": 0.57,
         "output": 2.3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "moonshotai/kimi-k2-thinking": {
-      "name": "Kimi K2 Thinking",
-      "description": "Kimi K2 Thinking is an advanced open-source thinking model by Moonshot AI. It can execute up to 200 – 300 sequential tool calls without human interference, reasoning coherently across hundreds of steps to solve complex problems. Built as a thinking agent, it reasons step by step while using tools, a",
-      "context_window": 262114,
-      "max_output": 262114,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.5
       },
       "inputs": {
         "text": true
@@ -1944,6 +2244,33 @@
         "text": true
       }
     },
+    "nvidia/nemotron-3.5-lightning-free": {
+      "name": "Nemotron 3.5 Lightning Free",
+      "description": "Nemotron 3.5 Lightning is an open-weight reasoning and chat model for long-running agents, sub-agent work, chatbots, and RAG systems. The model has 30B parameters with 3B active per token, in a hybrid Mixture-of-Experts design that interleaves Mamba-2 and MoE layers with a few attention layers. It h",
+      "context_window": 1000000,
+      "max_output": 65000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nvidia/nemotron-3.5-super-vl": {
+      "name": "NVIDIA Nemotron 3.5 Super VL",
+      "description": "NVIDIA Nemotron 3.5 Super VL is a vision-language model for reasoning, coding, tool use, and document understanding. Its hybrid Mamba-2, attention, and Mixture-of-Experts architecture has 120B total parameters with 12B active per token. Baseten serves text and image inputs with up to one million tok",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "nvidia/nemotron-nano-12b-v2-vl": {
       "name": "Nvidia Nemotron Nano 12B V2 VL",
       "description": "The model is an auto-regressive vision language model that uses an optimized transformer architecture. The model enables multi-image reasoning and video understanding, along with strong document intelligence, visual Q&A and summarization capabilities.",
@@ -2026,6 +2353,20 @@
         "image": true
       }
     },
+    "openai/gpt-4.1-batch": {
+      "name": "GPT-4.1 (Batch)",
+      "description": "GPT 4.1 is OpenAI's flagship model for complex tasks. It is well suited for problem solving across domains.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 1,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-4.1-mini": {
       "name": "GPT-4.1 mini",
       "description": "GPT 4.1 mini provides a balance between intelligence, speed, and cost that makes it an attractive model for many use cases.",
@@ -2048,6 +2389,20 @@
       "pricing": {
         "input": 0.7,
         "output": 2.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4.1-mini-batch": {
+      "name": "GPT-4.1 mini (Batch)",
+      "description": "GPT 4.1 mini provides a balance between intelligence, speed, and cost that makes it an attractive model for many use cases.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8
       },
       "inputs": {
         "text": true,
@@ -2082,6 +2437,20 @@
         "image": true
       }
     },
+    "openai/gpt-4.1-nano-batch": {
+      "name": "GPT-4.1 nano (Batch)",
+      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-4o": {
       "name": "GPT-4o",
       "description": "GPT-4o from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It matches GPT-4 Turbo performance with a faster and cheaper API.",
@@ -2104,6 +2473,20 @@
       "pricing": {
         "input": 4.25,
         "output": 17
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4o-batch": {
+      "name": "GPT-4o (Batch)",
+      "description": "GPT-4o from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It matches GPT-4 Turbo performance with a faster and cheaper API.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 1.25,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -2138,6 +2521,20 @@
         "image": true
       }
     },
+    "openai/gpt-4o-mini-batch": {
+      "name": "GPT-4o mini (Batch)",
+      "description": "GPT-4o mini from OpenAI is their most advanced and cost-efficient small model. It is multi-modal (accepting text or image inputs and outputting text) and has higher intelligence than gpt-3.5-turbo but is just as fast.",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5": {
       "name": "GPT-5",
       "description": "GPT-5 is OpenAI's flagship language model that excels at complex reasoning, broad real-world knowledge, code-intensive, and multi-step agentic tasks.",
@@ -2160,6 +2557,20 @@
       "pricing": {
         "input": 2.5,
         "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5-batch": {
+      "name": "GPT-5 (Batch)",
+      "description": "GPT-5 is OpenAI's flagship language model that excels at complex reasoning, broad real-world knowledge, code-intensive, and multi-step agentic tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.63,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -2207,6 +2618,20 @@
         "image": true
       }
     },
+    "openai/gpt-5-mini-batch": {
+      "name": "GPT-5 mini (Batch)",
+      "description": "GPT-5 mini is a cost optimized model that excels at reasoning/chat tasks. It offers an optimal balance between speed, cost, and capability.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.13,
+        "output": 1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5-nano": {
       "name": "GPT-5 nano",
       "description": "GPT-5 nano is a high throughput model that excels at simple instruction or classification tasks.",
@@ -2221,6 +2646,20 @@
         "image": true
       }
     },
+    "openai/gpt-5-nano-batch": {
+      "name": "GPT-5 nano (Batch)",
+      "description": "GPT-5 nano is a high throughput model that excels at simple instruction or classification tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5-pro": {
       "name": "GPT-5 pro",
       "description": "GPT-5 pro uses more compute to think harder and provide consistently better answers. Since GPT-5 pro is designed to tackle tough problems, some requests may take several minutes to finish.",
@@ -2229,6 +2668,20 @@
       "pricing": {
         "input": 15,
         "output": 120
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5-pro-batch": {
+      "name": "GPT-5 pro (Batch)",
+      "description": "GPT-5 pro uses more compute to think harder and provide consistently better answers. Since GPT-5 pro is designed to tackle tough problems, some requests may take several minutes to finish.",
+      "context_window": 400000,
+      "max_output": 272000,
+      "pricing": {
+        "input": 7.5,
+        "output": 60
       },
       "inputs": {
         "text": true,
@@ -2333,6 +2786,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.2-batch": {
+      "name": "GPT 5.2 (Batch)",
+      "description": "GPT-5.2 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.88,
+        "output": 7
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.2-codex": {
       "name": "GPT 5.2 Codex",
       "description": "GPT‑5.2-Codex is a version of GPT‑5.2⁠ further optimized for agentic coding in Codex, including improvements on long-horizon work through context compaction, stronger performance on large code changes like refactors and migrations, improved performance in Windows environments, and significantly stro",
@@ -2419,6 +2886,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.4-batch": {
+      "name": "GPT 5.4 (Batch)",
+      "description": "GPT-5.4 is OpenAI's best general-purpose model, part of the GPT-5 flagship model family. It's their most intelligent model yet for both general and agentic tasks.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.25,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.4-mini": {
       "name": "GPT 5.4 Mini",
       "description": "Fast GPT-5.4 variant through Vercel AI Gateway for high-volume assistant workflows",
@@ -2449,6 +2930,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.4-mini-batch": {
+      "name": "GPT 5.4 Mini (Batch)",
+      "description": "GPT-5.4 Mini brings the strengths of GPT-5.4 to a faster, more efficient model designed for high-volume workloads.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.38,
+        "output": 2.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.4-nano": {
       "name": "GPT 5.4 Nano",
       "description": "GPT-5.4 Nano is designed for tasks where speed and cost matter most like classification, data extraction, ranking, and sub-agents.",
@@ -2457,6 +2952,20 @@
       "pricing": {
         "input": 0.2,
         "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.4-nano-batch": {
+      "name": "GPT 5.4 Nano (Batch)",
+      "description": "GPT-5.4 Nano is designed for tasks where speed and cost matter most like classification, data extraction, ranking, and sub-agents.",
+      "context_window": 400000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.63
       },
       "inputs": {
         "text": true,
@@ -2505,6 +3014,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.5-batch": {
+      "name": "GPT 5.5 (Batch)",
+      "description": "GPT‑5.5 understands what you’re trying to do faster and can carry more of the work itself. It excels at writing and debugging code, researching online, analyzing data, creating documents and spreadsheets, operating software, and moving across tools until a task is finished. Instead of carefully mana",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.5,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.5-pro": {
       "name": "GPT 5.5 Pro",
       "context_window": 1000000,
@@ -2512,6 +3035,19 @@
       "pricing": {
         "input": 30,
         "output": 180
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.5-pro-batch": {
+      "name": "GPT 5.5 Pro (Batch)",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 15,
+        "output": 90
       },
       "inputs": {
         "text": true,
@@ -2546,6 +3082,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-luna-batch": {
+      "name": "GPT 5.6 Luna (Batch)",
+      "description": "GPT-5.6 Luna is a fast, affordable GPT-5.6 model that brings strong capability at the lowest cost in the series.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.6-sol": {
       "name": "GPT 5.6 Sol",
       "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
@@ -2568,6 +3118,20 @@
       "pricing": {
         "input": 4,
         "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-5.6-sol-batch": {
+      "name": "GPT 5.6 Sol (Batch)",
+      "description": "GPT-5.6 Sol is the flagship of OpenAI's GPT-5.6 series, its most capable model for long-horizon agentic work across coding, biology, and cybersecurity.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
       },
       "inputs": {
         "text": true,
@@ -2602,6 +3166,20 @@
         "image": true
       }
     },
+    "openai/gpt-5.6-terra-batch": {
+      "name": "GPT 5.6 Terra (Batch)",
+      "description": "GPT-5.6 Terra is a balanced GPT-5.6 model for everyday work, with performance comparable to the previous generation at half the cost.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6-astra": {
       "name": "GPT-6 Astra",
       "description": "GPT-6 Astra is OpenAI's most capable model for complex reasoning, coding, computer use, research, and document creation.",
@@ -2624,6 +3202,20 @@
       "pricing": {
         "input": 20,
         "output": 100
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6-astra-batch": {
+      "name": "GPT-6 Astra (Batch)",
+      "description": "GPT-6 Astra is OpenAI's most capable model for complex reasoning, coding, computer use, research, and document creation.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 25
       },
       "inputs": {
         "text": true,
@@ -2658,6 +3250,20 @@
         "image": true
       }
     },
+    "openai/gpt-6-luna-batch": {
+      "name": "GPT-6 Luna (Batch)",
+      "description": "GPT-6 Luna is OpenAI's efficient reasoning model for focused, high-volume tasks. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools supp",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6-sol": {
       "name": "GPT-6 Sol",
       "description": "GPT-6 Sol is OpenAI's reasoning model for complex coding and agentic workflows. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools make ",
@@ -2686,6 +3292,20 @@
         "image": true
       }
     },
+    "openai/gpt-6-sol-batch": {
+      "name": "GPT-6 Sol (Batch)",
+      "description": "GPT-6 Sol is OpenAI's reasoning model for complex coding and agentic workflows. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Responses API tools make ",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6.1-sol": {
       "name": "GPT-6.1 Sol",
       "description": "GPT-6.1 Sol is OpenAI's reasoning model for complex coding, computer use, and professional work. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Response",
@@ -2708,6 +3328,20 @@
       "pricing": {
         "input": 4,
         "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol-batch": {
+      "name": "GPT-6.1 Sol (Batch)",
+      "description": "GPT-6.1 Sol is OpenAI's reasoning model for complex coding, computer use, and professional work. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Configurable reasoning effort, structured outputs, prompt caching, and Response",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -2927,6 +3561,32 @@
         "image": true
       }
     },
+    "reflection/beam": {
+      "name": "Beam 1.0",
+      "description": "Beam is Reflection’s reasoning model for coding and agentic workflows, combining strong coding capabilities with fast, low-latency inference.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "reflection/beam-free": {
+      "name": "Beam 1.0 (Free)",
+      "description": "Beam is Reflection’s reasoning model for coding and agentic workflows, combining strong coding capabilities with fast, low-latency inference.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "sakana/fugu-max": {
       "name": "Fugu Max",
       "description": "Fugu Max orchestrates our largest pool of models to push the cost–performance Pareto frontier. It dynamically finds efficient combinations of expert agents, aiming to improve model performance and cost efficiency together.",
@@ -2983,14 +3643,27 @@
         "image": true
       }
     },
-    "stepfun/step-3.5-flash": {
-      "name": "StepFun 3.5 Flash",
-      "description": "Step 3.5 Flash is an open-source reasoning model by StepFun with 196B total parameters (11B active) using Mixture of Experts. It features a 256K context window, deep reasoning, tool calling, and agentic capabilities, achieving 97.3 on AIME 2025 and 74.4% on SWE-bench Verified.",
-      "context_window": 262114,
-      "max_output": 262114,
+    "stealth/cat-jam": {
+      "name": "Cat Jam",
+      "description": "Cat Jam is a reasoning model for coding and agentic workflows, combining strong coding capabilities with fast, low-latency inference. Prompts and responses may be used for training and model improvement.",
+      "context_window": 1048576,
+      "max_output": 131072,
       "pricing": {
-        "input": 0.09,
-        "output": 0.3
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "stealth/glyph-cluster": {
+      "name": "Glyph Cluster",
+      "description": "Glyph Cluster is an anonymous reasoning model in early access. Prompts and outputs may be retained by the provider.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
       },
       "inputs": {
         "text": true
@@ -3157,6 +3830,20 @@
         "image": true
       }
     },
+    "spacexai/grok-4.20-multi-agent-batch": {
+      "name": "Grok 4.20 Multi-Agent (Batch)",
+      "description": "Multiple agents collaborate in parallel to perform deep research tasks.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "spacexai/grok-4.20-multi-agent-beta": {
       "name": "Grok 4.20 Multi Agent Beta",
       "description": "Multiple agents collaborate in parallel to perform deep research tasks.",
@@ -3179,6 +3866,20 @@
       "pricing": {
         "input": 1.25,
         "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.20-non-reasoning-batch": {
+      "name": "Grok 4.20 Non-Reasoning (Batch)",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherence, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1,
+        "output": 2
       },
       "inputs": {
         "text": true,
@@ -3213,6 +3914,20 @@
         "image": true
       }
     },
+    "spacexai/grok-4.20-reasoning-batch": {
+      "name": "Grok 4.20 Reasoning (Batch)",
+      "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherence, delivering consistently precise and truthful responses.",
+      "context_window": 2000000,
+      "max_output": 2000000,
+      "pricing": {
+        "input": 1,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "spacexai/grok-4.20-reasoning-beta": {
       "name": "Grok 4.20 Beta Reasoning",
       "description": "Grok 4.20 Beta is the newest flagship model from xAI with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherance, delivering consistently precise and truthful responses.",
@@ -3235,6 +3950,20 @@
       "pricing": {
         "input": 1.25,
         "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.3-batch": {
+      "name": "Grok 4.3 (Batch)",
+      "description": "Grok 4.3 is a new model matching the scale of Grok 4.20 with an improved architecture and a December 2025 knowledge cutoff.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 1,
+        "output": 2
       },
       "inputs": {
         "text": true,
@@ -3590,6 +4319,208 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "alibaba/qwen-3.6-max-preview": {
+      "name": "Qwen 3.6 Max Preview",
+      "description": "Compared with the previously released Qwen3-Max and Qwen3.6-Plus, this model features enhanced vibe coding abilities, more efficient coding agent execution, and significantly improved front-end development skills. Additionally, its long-tail knowledge retention has been further upgraded.",
+      "context_window": 240000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1.3,
+        "output": 7.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3-235b-a22b-thinking": {
+      "name": "Qwen3 VL 235B A22B Thinking",
+      "description": "Qwen3 series VL models feature significantly enhanced multimodal reasoning capabilities, with a particular focus on optimizing the model for STEM and mathematical reasoning. Visual perception and recognition abilities have been comprehensively improved, and OCR capabilities have undergone a major up",
+      "context_window": 131072,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.4,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3-coder-plus": {
+      "name": "Qwen3 Coder Plus",
+      "description": "Powered by Qwen3 this is a powerful Coding Agent that excels in tool calling and environment interaction to achieve autonomous programming. It combines outstanding coding proficiency with versatile general-purpose abilities.",
+      "context_window": 1000000,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-max": {
+      "name": "Qwen3 Max",
+      "description": "The Qwen 3 series Max model has undergone specialized upgrades in agent programming and tool invocation compared to the preview version. The officially released model this time has achieved state-of-the-art (SOTA) performance in its field and is better suited to meet the demands of agents operating ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 1.2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-max-preview": {
+      "name": "Qwen3 Max Preview",
+      "description": "Qwen3-Max-Preview shows substantial gains over the 2.5 series in overall capability, with significant enhancements in Chinese-English text understanding, complex instruction following, handling of subjective open-ended tasks, multilingual ability, and tool invocation; model knowledge hallucinations ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 1.2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-vl-235b-a22b-instruct": {
+      "name": "Qwen3 VL 235B A22B Instruct",
+      "description": "The Qwen3 series VL models has been comprehensively upgraded in areas such as visual coding and spatial perception. Its visual perception and recognition capabilities have significantly improved, supporting the understanding of ultra-long videos, and its OCR functionality has undergone a major enhan",
+      "context_window": 131072,
+      "max_output": 129024,
+      "pricing": {
+        "input": 0.4,
+        "output": 1.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3-vl-thinking": {
+      "name": "Qwen3 VL 235B A22B Thinking",
+      "description": "Qwen3 series VL models feature significantly enhanced multimodal reasoning capabilities, with a particular focus on optimizing the model for STEM and mathematical reasoning. Visual perception and recognition abilities have been comprehensively improved, and OCR capabilities have undergone a major up",
+      "context_window": 131072,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.4,
+        "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-3-haiku": {
+      "name": "Claude 3 Haiku",
+      "description": "Claude 3 Haiku is Anthropic's fastest, most compact model for near-instant responsiveness. It answers simple queries and requests with speed. Customers will be able to build seamless AI experiences that mimic human interactions. Claude 3 Haiku can process images and return text outputs, and features",
+      "context_window": 200000,
+      "max_output": 4096,
+      "pricing": {
+        "input": 0.25,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4": {
+      "name": "Claude Opus 4",
+      "description": "Claude Opus 4 is Anthropic's most powerful model yet and the best coding model in the world, leading on SWE-bench (72.5%) and Terminal-bench (43.2%). It delivers sustained performance on long-running tasks that require focused effort and thousands of steps, with the ability to work continuously for ",
+      "context_window": 200000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 15,
+        "output": 75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-4": {
+      "name": "Claude Sonnet 4",
+      "description": "Claude Sonnet 4 significantly improves on Sonnet 3.7's industry-leading capabilities, excelling in coding with a state-of-the-art 72.7% on SWE-bench. The model balances performance and efficiency for internal and external use cases, with enhanced steerability for greater control over implementations",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v3.1-terminus": {
+      "name": "DeepSeek V3.1 Terminus",
+      "description": "DeepSeek-V3.1-Terminus delivers more stable & reliable outputs across benchmarks compared to the previous version and addresses user feedback (i.e. language consistency and agent upgrades).",
+      "context_window": 131072,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.27,
+        "output": 1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-sante-free": {
+      "name": "Ling 3.0 Flash Sante (Free)",
+      "description": "Ling-3.0-Flash-Sante is inclusionAI’s language model specialized for health and medicine, built on a Mixture-of-Experts architecture with 124 billion total parameters and approximately 5.1 billion active per token. With a 256K context window and function calling, it supports medical knowledge reason",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.1-flash-free": {
+      "name": "Ling 3.1 Flash (Free)",
+      "description": "Ling 3.1 Flash is InclusionAI's hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. It has 560B total parameters with 25B activated parameters and supports long-context text workflows.",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k2-thinking": {
+      "name": "Kimi K2 Thinking",
+      "description": "Kimi K2 Thinking is an advanced open-source thinking model by Moonshot AI. It can execute up to 200 – 300 sequential tool calls without human interference, reasoning coherently across hundreds of steps to solve complex problems. Built as a thinking agent, it reasons step by step while using tools, a",
+      "context_window": 262114,
+      "max_output": 262114,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "stepfun/step-3.5-flash": {
+      "name": "StepFun 3.5 Flash",
+      "description": "Step 3.5 Flash is an open-source reasoning model by StepFun with 196B total parameters (11B active) using Mixture of Experts. It features a 256K context window, deep reasoning, tool calling, and agentic capabilities, achieving 97.3 on AIME 2025 and 74.4% on SWE-bench Verified.",
+      "context_window": 262114,
+      "max_output": 262114,
+      "pricing": {
+        "input": 0.09,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
       }
     },
     "inclusionai/ling-3.0-flash-fin-free": {
@@ -4385,5 +5316,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-04T10:15:39.352Z"
+  "_syncedAt": "2026-10-18T10:42:18.503Z"
 }

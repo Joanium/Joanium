@@ -5,11 +5,84 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
-    "accounts/fireworks/models/glm-5p2": {
-      "name": "Glm 5p2"
-    },
     "accounts/fireworks/routers/glm-5p2-fast": {
       "name": "Glm 5p2 FAST"
+    },
+    "accounts/fireworks/models/minimax-m3": {
+      "name": "Minimax M3"
+    },
+    "accounts/fireworks/models/gpt-oss-120b": {
+      "name": "GPT OSS 120B",
+      "description": "OpenAI's open-weight 120B model — blazing-fast inference on Fireworks, outperforms many proprietary models",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      }
+    },
+    "accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
+      "name": "Nemotron 3 ULTRA Nvfp4"
+    },
+    "accounts/fireworks/models/qwen3-reranker-8b": {
+      "name": "Qwen3 Reranker 8B"
+    },
+    "accounts/fireworks/models/qwen3-embedding-8b": {
+      "name": "Qwen3 Embedding 8B"
+    },
+    "accounts/fireworks/models/kimi-k3": {
+      "name": "Kimi K3"
+    },
+    "accounts/fireworks/routers/kimi-k3-fast": {
+      "name": "Kimi K3 FAST"
+    },
+    "accounts/fireworks/models/qwen3p8-max": {
+      "name": "Qwen3p8 MAX"
+    },
+    "accounts/fireworks/models/glm-5p3": {
+      "name": "Glm 5p3"
+    },
+    "accounts/fireworks/routers/glm-5p3-fast": {
+      "name": "Glm 5p3 FAST"
+    },
+    "accounts/fireworks/models/glm-5p3-flash": {
+      "name": "Glm 5p3 FLASH"
+    },
+    "accounts/fireworks/models/deepseek-v4p1-flash": {
+      "name": "Deepseek V4P1 FLASH"
+    },
+    "accounts/fireworks/models/ember-1": {
+      "name": "Ember 1"
+    },
+    "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
+      "name": "Nemotron Lightning 3p5 30B A3b"
+    },
+    "accounts/fireworks/models/inkling": {
+      "name": "Inkling"
+    },
+    "accounts/fireworks/models/muse-spark-open": {
+      "name": "Muse Spark Open"
+    },
+    "accounts/fireworks/models/deepseek-v4p1-flash-1017": {
+      "name": "Deepseek V4P1 FLASH 1017"
+    },
+    "auto": {
+      "name": "Auto"
+    },
+    "firerouter/auto": {
+      "name": "Auto"
+    },
+    "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
+      "name": "Qwen3p8 2p4t A95b"
+    },
+    "accounts/fireworks/models/glm-5p2": {
+      "name": "Glm 5p2"
     },
     "accounts/fireworks/models/kimi-k2p6": {
       "name": "Kimi K2.6",
@@ -33,25 +106,6 @@
     "accounts/fireworks/models/minimax-m2p7": {
       "name": "Minimax M2p7"
     },
-    "accounts/fireworks/models/minimax-m3": {
-      "name": "Minimax M3"
-    },
-    "accounts/fireworks/models/gpt-oss-120b": {
-      "name": "GPT OSS 120B",
-      "description": "OpenAI's open-weight 120B model — blazing-fast inference on Fireworks, outperforms many proprietary models",
-      "context_window": 131072,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      }
-    },
     "accounts/fireworks/models/deepseek-v4-pro": {
       "name": "DeepSeek V4 Pro",
       "description": "DeepSeek's latest frontier model — strong reasoning, coding, and math at competitive pricing with 1M context",
@@ -71,65 +125,17 @@
     "accounts/fireworks/models/qwen3p7-plus": {
       "name": "Qwen3p7 PLUS"
     },
-    "accounts/fireworks/models/nemotron-3-ultra-nvfp4": {
-      "name": "Nemotron 3 ULTRA Nvfp4"
-    },
-    "accounts/fireworks/models/qwen3-reranker-8b": {
-      "name": "Qwen3 Reranker 8B"
-    },
-    "accounts/fireworks/models/qwen3-embedding-8b": {
-      "name": "Qwen3 Embedding 8B"
-    },
-    "accounts/fireworks/models/kimi-k3": {
-      "name": "Kimi K3"
-    },
-    "accounts/fireworks/routers/kimi-k3-fast": {
-      "name": "Kimi K3 FAST"
-    },
     "accounts/fireworks/models/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731"
     },
     "accounts/fireworks/models/muse-glimmer-30b": {
       "name": "Muse Glimmer 30B"
     },
-    "accounts/fireworks/models/qwen3p8-max": {
-      "name": "Qwen3p8 MAX"
-    },
     "accounts/fireworks/models/deepseek-v4-pro-0813": {
       "name": "Deepseek V4 PRO 0813"
     },
-    "accounts/fireworks/models/glm-5p3": {
-      "name": "Glm 5p3"
-    },
-    "accounts/fireworks/routers/glm-5p3-fast": {
-      "name": "Glm 5p3 FAST"
-    },
-    "accounts/fireworks/models/glm-5p3-flash": {
-      "name": "Glm 5p3 FLASH"
-    },
     "accounts/fireworks/models/deepseek-v4-flash-vision-exp": {
       "name": "Deepseek V4 FLASH Vision Exp"
-    },
-    "accounts/fireworks/models/deepseek-v4p1-flash": {
-      "name": "Deepseek V4P1 FLASH"
-    },
-    "accounts/fireworks/models/ember-1": {
-      "name": "Ember 1"
-    },
-    "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b": {
-      "name": "Nemotron Lightning 3p5 30B A3b"
-    },
-    "accounts/fireworks/models/inkling": {
-      "name": "Inkling"
-    },
-    "auto": {
-      "name": "Auto"
-    },
-    "firerouter/auto": {
-      "name": "Auto"
-    },
-    "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
-      "name": "Qwen3p8 2p4t A95b"
     },
     "accounts/fireworks/routers/kimi-k2p6-turbo": {
       "name": "Kimi K2p6 TURBO"
@@ -153,5 +159,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-10-04T10:15:21.143Z"
+  "_syncedAt": "2026-10-18T10:42:03.244Z"
 }

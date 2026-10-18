@@ -275,6 +275,18 @@
     "deepseek-ai/DeepSeek-V4.1-Flash": {
       "name": "DeepSeek V4 1 FLASH"
     },
+    "parasail-kimi-k3-fast": {
+      "name": "Parasail Kimi K3 FAST"
+    },
+    "parasail-glm-53-flash-fast": {
+      "name": "Parasail Glm 53 FLASH FAST"
+    },
+    "parasail-deepseek-v41-flash-1017": {
+      "name": "Parasail Deepseek V41 FLASH 1017"
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash-1017": {
+      "name": "DeepSeek V4 1 FLASH 1017"
+    },
     "daim2xqktvqo-qwen38-flash-next-fp8": {
       "name": "Daim2xqktvqo Qwen38 FLASH Next FP8"
     },
@@ -329,9 +341,6 @@
     "Qwen/Qwen3-Embedding-8B": {
       "name": "Qwen3 Embedding 8B"
     },
-    "parasail-kimi-k3-fast": {
-      "name": "Parasail Kimi K3 FAST"
-    },
     "moonshotai/kimi-K3": {
       "name": "Kimi K3"
     },
@@ -366,5 +375,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-10-04T10:15:43.938Z"
+  "_syncedAt": "2026-10-18T10:42:23.150Z"
 }

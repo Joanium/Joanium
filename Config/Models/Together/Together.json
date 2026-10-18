@@ -21,6 +21,14 @@
       "name": "GLM 5.3 Flash",
       "context_window": 1048575
     },
+    "meta-models/Muse-Spark-Open-816B-A42B": {
+      "name": "Muse Spark Open 816B A42B",
+      "context_window": 1048576
+    },
+    "nvidia/NVIDIA-Nemotron-3.5-Super-VL": {
+      "name": "NVIDIA Nemotron 3.5 Super VL",
+      "context_window": 262144
+    },
     "zai-org/GLM-5.2": {
       "name": "GLM 5.2",
       "context_window": 262144
@@ -88,6 +96,14 @@
     "Prism-ML/Ternary-Bonsai-27B": {
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
+    },
+    "meta-models/Muse-Spark-Open-816B-A42B-promo": {
+      "name": "Muse Spark Open 816B A42B Promo (Free until 10/18)",
+      "context_window": 1048576
+    },
+    "reflection/Beam-1.0-501B-A23B": {
+      "name": "Beam 1.0 501B A23B",
+      "context_window": 1048576
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -852,5 +868,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-10-04T10:15:17.467Z"
+  "_syncedAt": "2026-10-18T10:41:57.662Z"
 }

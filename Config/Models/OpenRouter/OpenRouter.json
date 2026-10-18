@@ -5,6 +5,302 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek/deepseek-v4.1-flash-1017": {
+      "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
+      "description": "DeepSeek V4.1 Flash 1017 is the October 17, 2026 snapshot of DeepSeek V4.1 Flash, served by DeepSeek under the `deepseek-flash` API model name. V4.1 Flash is a sparse mixture-of-experts model...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "elorian/glimpse": {
+      "name": "Elorian: Glimpse",
+      "description": "Glimpse is a multimodal visual reasoning model from Elorian, built for visual understanding and complex visual reasoning in the physical world. It reasons directly over images and video rather than...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.6,
+        "output": 3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xingchen-agi/xing4.0-29b-a4b:free": {
+      "name": "XingChen: Xing4.0 29B A4B (free)",
+      "description": "Xing4.0-29B-A4B is an open-weight mixture-of-experts language model from China Telecom's AI team (TeleAI) and the successor to the TeleChat series. It has 29B total parameters with 4B active per token...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "reflection/beam-1.0-501b-a23b": {
+      "name": "Reflection: Beam 1.0 501B A23B",
+      "description": "Beam 1.0 is Reflection's open-weight reasoning model for coding and long-horizon agentic workflows. It uses a sparse mixture-of-experts architecture with 501B total and 23B active parameters per token, and a...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "moondream/moondream3-preview": {
+      "name": "Moondream: Moondream 3 Preview",
+      "description": "Moondream 3 Preview is a vision-language model from Moondream with 9B total parameters and 2B active (mixture-of-experts). It handles visual question answering, captioning, OCR, and visual reasoning over images, with...",
+      "context_window": 32000,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moondream/moondream3.1-9b-a2b": {
+      "name": "Moondream: Moondream 3.1",
+      "description": "Moondream 3.1 is a vision-language model from Moondream, the successor to Moondream 3 Preview, with 9B total parameters and 2B active (mixture-of-experts). It handles visual question answering, captioning, OCR, and...",
+      "context_window": 32000,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-open": {
+      "name": "Meta: Muse Spark Open",
+      "description": "Muse Spark Open is a coding-optimized open-weight model. Trained specifically for agentic coding workflows, it delivers higher first-attempt accuracy, reliable tool calling, and deep codebase understanding across the repos developers...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvidia/nemotron-3.5-super-vl": {
+      "name": "NVIDIA: Nemotron 3.5 Super VL",
+      "description": "NVIDIA Nemotron 3.5 Super VL is an open multimodal mixture-of-experts model from NVIDIA, with 12B active parameters out of 120B total. It takes text, images, documents, GUI screenshots, and video...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvidia/nemotron-3.5-super-vl:free": {
+      "name": "NVIDIA: Nemotron 3.5 Super VL (free)",
+      "description": "NVIDIA Nemotron 3.5 Super VL is an open multimodal mixture-of-experts model from NVIDIA, with 12B active parameters out of 120B total. It takes text, images, documents, GUI screenshots, and video...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto-26.10": {
+      "name": "Pareto 26.10",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~unbiased/pareto-latest": {
+      "name": "Pareto Latest",
+      "description": "This model always redirects to the latest model in the Pareto family.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto-26.9": {
+      "name": "Pareto 26.9",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "liquid/lfm-2.5-24b-a2b": {
+      "name": "LiquidAI: LFM2.5-24B-A2B",
+      "description": "LFM2.5-24B-A2B is a mixture-of-experts reasoning model from Liquid AI with 24B total and 2.45B active parameters. It always reasons before answering and is built for agents that call tools. Liquid...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.7
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "google/gemini-4-argon": {
+      "name": "Google: Gemini 4 Argon",
+      "description": "Gemini 4 Argon is Google's flagship reasoning model, built for complex software engineering, deep mathematical and scientific problem solving, and autonomous multi-step agents. Google trained it to keep context across...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-argon:batch": {
+      "name": "Google: Gemini 4 Argon (batch)",
+      "description": "Gemini 4 Argon is Google's flagship reasoning model, built for complex software engineering, deep mathematical and scientific problem solving, and autonomous multi-step agents. Google trained it to keep context across...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "scaledown/summarize": {
+      "name": "ScaleDown: Summarize",
+      "description": "Summarize is an abstractive summarization model from ScaleDown. It condenses long text and documents into a fluent, faithful rewrite rather than lifting sentences from the source, and is suited for...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "scaledown/extract": {
+      "name": "ScaleDown: Extract",
+      "description": "Extract is a description-driven entity extraction model from ScaleDown. Instead of a fixed set of entity types, callers describe the fields they want in plain English through `provider.options.scaledown.entities`, and the...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-wonder": {
+      "name": "Meta: Muse Wonder",
+      "description": "Muse Wonder is a frontier reasoning model from Meta, designed for complex personal and professional agentic tasks. It accepts text, images, video, audio, and PDF documents and returns text, with...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stepfun/step-5-preview": {
+      "name": "StepFun: Step 5 Preview",
+      "description": "Step 5 Preview is StepFun's flagship model for agentic work, built on a sparse Mixture-of-Experts architecture (27B active / 600B total parameters). It performs strongly in software engineering and professional...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 2.7
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-haiku-5.5": {
+      "name": "Anthropic: Claude Haiku 5.5",
+      "description": "Claude Haiku 5.5 is Anthropic's small, fast model for high-volume, cost-sensitive work such as summarization, subagents, and browser use. It succeeds Claude Haiku 4.5 with stronger coding, computer use, and...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-haiku-5.5:batch": {
+      "name": "Anthropic: Claude Haiku 5.5 (batch)",
+      "description": "Claude Haiku 5.5 is Anthropic's small, fast model for high-volume, cost-sensitive work such as summarization, subagents, and browser use. It succeeds Claude Haiku 4.5 with stronger coding, computer use, and...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-nano-banana-2.1": {
+      "name": "Google: Nano Banana 2.1",
+      "description": "Nano Banana 2.1 (Gemini Nano Banana 2.1) is Google's image generation and editing model on the Flash tier, succeeding Nano Banana 2 and Nano Banana Pro. It improves product recontextualization,...",
+      "context_window": 65536,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-large-4-0": {
+      "name": "Mistral: Mistral Large 4",
+      "description": "Mistral Large 4 is a frontier multimodal (text and image input) model from Mistral AI built for reasoning, coding, and agentic workloads. It offers a 1M-token context window with up...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.68,
+        "output": 2.09
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ling-3.1-flash": {
       "name": "inclusionAI: Ling 3.1 Flash",
       "description": "Ling 3.1 Flash is a hybrid reasoning mixture-of-experts model from inclusionAI, with 25B active parameters out of 560B total.",
@@ -15,31 +311,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "apodex/apodex-1.1-mini:free": {
-      "name": "Apodex: Apodex 1.1 Mini (free)",
-      "description": "Apodex 1.1 Mini is a reasoning-first model from Apodex, built for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to produce verifiable results,...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "unbiased/pareto-26.10-preview": {
-      "name": "Pareto 26.10 Preview",
-      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks. This is a preview of the...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.8,
-        "output": 3.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "openai/gpt-6.1-sol-pro": {
@@ -55,6 +326,19 @@
         "image": true
       }
     },
+    "openai/gpt-6.1-sol-pro:batch": {
+      "name": "OpenAI: GPT-6.1 Sol Pro (batch)",
+      "description": "GPT-6.1 Sol Pro is the same underlying model as [GPT-6.1 Sol](https://openrouter.ai/openai/gpt-6.1-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6.1-sol": {
       "name": "OpenAI: GPT-6.1 Sol",
       "description": "GPT-6.1 Sol is an upgrade to GPT-6 Sol from OpenAI, positioned below the flagship GPT-6 Astra in the GPT-6 series. It is suited for agentic coding, computer use, document-heavy professional...",
@@ -62,6 +346,19 @@
       "pricing": {
         "input": 2,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol:batch": {
+      "name": "OpenAI: GPT-6.1 Sol (batch)",
+      "description": "GPT-6.1 Sol is an upgrade to GPT-6 Sol from OpenAI, positioned below the flagship GPT-6 Astra in the GPT-6 series. It is suited for agentic coding, computer use, document-heavy professional...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
       },
       "inputs": {
         "text": true,
@@ -152,19 +449,6 @@
       "pricing": {
         "input": 4,
         "output": 12
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "stealth/space-bunny-alpha": {
-      "name": "Space Bunny Alpha",
-      "description": "Space Bunny Alpha is an anonymous large model with blazing-fast inference, strong coding capabilities and native multimodal input support. It delivers adjustable reasoning effort, and a 1M-token context window. Space...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -453,19 +737,6 @@
         "image": true
       }
     },
-    "unbiased/pareto": {
-      "name": "Pareto",
-      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 2.5,
-        "output": 7.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "~deepseek/deepseek-pro-latest": {
       "name": "DeepSeek: DeepSeek Pro Latest",
       "description": "This model always redirects to the latest model in the DeepSeek Pro family.",
@@ -722,18 +993,6 @@
         "image": true
       }
     },
-    "inclusionai/ling-3.0-flash-sante:free": {
-      "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
-      "description": "Ling 3.0 Flash Sante is a health and medicine-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3.8-max-0902": {
       "name": "Qwen: Qwen3.8 Max (0902)",
       "description": "Qwen3.8 Max 0902 is an updated snapshot of Qwen3.8 Max from Alibaba's Qwen team. It is a 2.4-trillion-parameter mixture-of-experts model that accepts text, image, and video input and returns text,...",
@@ -844,18 +1103,6 @@
       "pricing": {
         "input": 0.83,
         "output": 2.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inclusionai/ling-3.0-flash-fin": {
-      "name": "Ling 3.0 Flash Fin",
-      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.06,
-        "output": 0.18
       },
       "inputs": {
         "text": true
@@ -1018,19 +1265,6 @@
       "pricing": {
         "input": 0.45,
         "output": 3.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3.8-27b:free": {
-      "name": "Qwen: Qwen3.8 27B (free)",
-      "description": "Qwen3.8 27B is an open-weight dense vision-language model from Qwen. It is suited for coding, professional workflows, research, multimodal interaction, and long-running agent tasks, with flexible thinking that can be...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -1493,17 +1727,6 @@
         "image": true
       }
     },
-    "kwaipilot/kat-coder-pro-v2.5": {
-      "name": "Kwaipilot: KAT-Coder-Pro V2.5",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0.74,
-        "output": 2.96
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-5.6-luna-pro": {
       "name": "OpenAI: GPT-5.6 Luna Pro",
       "description": "GPT-5.6 Luna Pro is the same underlying model as [GPT-5.6 Luna](https://openrouter.ai/openai/gpt-5.6-luna), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks.\n\nLearn more in OpenAI's docs: https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode",
@@ -1936,6 +2159,19 @@
         "image": true
       }
     },
+    "qwen/qwen3.7-plus:batch": {
+      "name": "Qwen: Qwen3.7 Plus (batch)",
+      "description": "Qwen3.7-Plus is a cost-effective model in Alibaba's Qwen3.7 series. It supports text and image input with text output, building on the series' text capabilities with a comprehensive upgrade to its...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.23,
+        "output": 0.92
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "minimax/minimax-m3": {
       "name": "MiniMax: MiniMax M3",
       "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding,...",
@@ -2271,18 +2507,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "qwen/qwen3.6-max-preview": {
-      "name": "Qwen: Qwen3.6 Max Preview",
-      "description": "Qwen3.6-Max-Preview is a proprietary frontier model from Alibaba Cloud built on a sparse mixture-of-experts architecture with approximately 1 trillion total parameters. It is optimized for agentic coding, tool use, and...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 1.04,
-        "output": 6.24
-      },
-      "inputs": {
-        "text": true
       }
     },
     "qwen/qwen3.6-27b": {
@@ -3085,18 +3309,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-max-thinking": {
-      "name": "Qwen: Qwen3 Max Thinking",
-      "description": "Qwen3-Max-Thinking is the flagship reasoning model in the Qwen3 series, designed for high-stakes cognitive tasks that require deep, multi-step reasoning. By significantly scaling model capacity and reinforcement learning compute, it...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.78,
-        "output": 3.9
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "anthropic/claude-opus-4.6": {
       "name": "Anthropic: Claude Opus 4.6",
       "description": "Opus 4.6 is Anthropic’s strongest model for coding and long-running professional tasks. It is built for agents that operate across entire workflows rather than single prompts, making it especially effective...",
@@ -3704,19 +3916,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-vl-32b-instruct": {
-      "name": "Qwen: Qwen3 VL 32B Instruct",
-      "description": "Qwen3-VL-32B-Instruct is a large-scale multimodal vision-language model designed for high-precision understanding and reasoning across text, images, and video. With 32 billion parameters, it combines deep visual perception with advanced text...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.42
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "ibm-granite/granite-4.0-h-micro": {
       "name": "IBM: Granite 4.0 Micro",
       "description": "Granite-4.0-H-Micro is a 3B parameter from the Granite 4 family of models. These models are the latest in a series of models released by IBM. They are fine-tuned for long...",
@@ -3749,19 +3948,6 @@
       "pricing": {
         "input": 0.5,
         "output": 2.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3-vl-8b-thinking": {
-      "name": "Qwen: Qwen3 VL 8B Thinking",
-      "description": "Qwen3-VL-8B-Thinking is the reasoning-optimized variant of the Qwen3-VL-8B multimodal model, designed for advanced visual and textual reasoning across complex scenes, documents, and temporal sequences. It integrates enhanced multimodal alignment and...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0.12,
-        "output": 1.37
       },
       "inputs": {
         "text": true,
@@ -3907,19 +4093,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-vl-235b-a22b-thinking": {
-      "name": "Qwen: Qwen3 VL 235B A22B Thinking",
-      "description": "Qwen3-VL-235B-A22B Thinking is a multimodal model that unifies strong text generation with visual understanding across images and video. The Thinking model is optimized for multimodal reasoning in STEM and math....",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.26,
-        "output": 2.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "qwen/qwen3-vl-235b-a22b-instruct": {
       "name": "Qwen: Qwen3 VL 235B A22B Instruct",
       "description": "Qwen3-VL-235B-A22B Instruct is an open-weight multimodal model that unifies strong text generation with visual understanding across images and video. The Instruct model targets general vision-language use (VQA, document parsing, chart/table...",
@@ -3931,30 +4104,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "qwen/qwen3-max": {
-      "name": "Qwen: Qwen3 Max",
-      "description": "Qwen3-Max is an updated release built on the Qwen3 series, offering major improvements in reasoning, instruction following, multilingual support, and long-tail knowledge coverage compared to the January 2025 version. It...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.78,
-        "output": 3.9
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-coder-plus": {
-      "name": "Qwen: Qwen3 Coder Plus",
-      "description": "Qwen3 Coder Plus is Alibaba's proprietary version of the Open Source Qwen3 Coder 480B A35B. It is a powerful coding agent model specializing in autonomous programming via tool calling and...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0.65,
-        "output": 3.25
-      },
-      "inputs": {
-        "text": true
       }
     },
     "deepseek/deepseek-v3.1-terminus": {
@@ -4005,18 +4154,6 @@
         "text": true
       }
     },
-    "qwen/qwen-plus-2025-07-28": {
-      "name": "Qwen: Qwen Plus 0728",
-      "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 0.26,
-        "output": 0.78
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "moonshotai/kimi-k2-0905": {
       "name": "MoonshotAI: Kimi K2 0905",
       "description": "Kimi K2 0905 is the September update of [Kimi K2 0711](moonshotai/kimi-k2). It is a large-scale Mixture-of-Experts (MoE) language model developed by Moonshot AI, featuring 1 trillion total parameters with 32...",
@@ -4024,18 +4161,6 @@
       "pricing": {
         "input": 0.6,
         "output": 2.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-30b-a3b-thinking-2507": {
-      "name": "Qwen: Qwen3 30B A3B Thinking 2507",
-      "description": "Qwen3-30B-A3B-Thinking-2507 is a 30B parameter Mixture-of-Experts reasoning model optimized for complex tasks requiring extended multi-step thinking. The model is designed specifically for “thinking mode,” where internal reasoning traces are separated...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.4
       },
       "inputs": {
         "text": true
@@ -4463,19 +4588,6 @@
         "text": true
       }
     },
-    "baidu/ernie-4.5-vl-424b-a47b": {
-      "name": "Baidu: ERNIE 4.5 VL 424B A47B ",
-      "description": "ERNIE-4.5-VL-424B-A47B is a multimodal Mixture-of-Experts (MoE) model from Baidu’s ERNIE 4.5 series, featuring 424B total parameters with 47B active per token. It is trained jointly on text and image data...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.42,
-        "output": 1.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistralai/mistral-small-3.2-24b-instruct": {
       "name": "Mistral: Mistral Small 3.2 24B",
       "description": "Mistral-Small-3.2-24B-Instruct-2506 is an updated 24B parameter model from Mistral optimized for instruction following, repetition reduction, and improved function calling. Compared to the 3.1 release, version 3.2 significantly improves accuracy on...",
@@ -4591,19 +4703,6 @@
         "text": true
       }
     },
-    "anthropic/claude-sonnet-4": {
-      "name": "Anthropic: Claude Sonnet 4",
-      "description": "Claude Sonnet 4 significantly enhances the capabilities of its predecessor, Sonnet 3.7, excelling in both coding and reasoning tasks with improved precision and controllability. Achieving state-of-the-art performance on SWE-bench (72.7%),...",
-      "context_window": 1000000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "mistralai/mistral-medium-3": {
       "name": "Mistral: Mistral Medium 3",
       "description": "Mistral Medium 3 is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances state-of-the-art reasoning and multimodal performance with 8× lower cost...",
@@ -4642,18 +4741,6 @@
         "text": true
       }
     },
-    "qwen/qwen3-8b": {
-      "name": "Qwen: Qwen3 8B",
-      "description": "Qwen3-8B is a dense 8.2B parameter causal language model from the Qwen3 series, designed for both reasoning-heavy tasks and efficient dialogue. It supports seamless switching between \"thinking\" mode for math,...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3-14b": {
       "name": "Qwen: Qwen3 14B",
       "description": "Qwen3-14B is a dense 14.8B parameter causal language model from the Qwen3 series, designed for both complex reasoning and efficient dialogue. It supports seamless switching between a \"thinking\" mode for...",
@@ -4676,22 +4763,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "qwen/qwen3-235b-a22b": {
-      "name": "Qwen 3 235B A22B",
-      "description": "Alibaba's large MoE — strong reasoning with hybrid thinking mode",
-      "context_window": 131072,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.14,
-        "output": 0.6
       }
     },
     "openai/o4-mini-high": {
@@ -5779,6 +5850,270 @@
       },
       "inputs": {
         "text": true
+      }
+    },
+    "apodex/apodex-1.1-mini:free": {
+      "name": "Apodex: Apodex 1.1 Mini (free)",
+      "description": "Apodex 1.1 Mini is a reasoning-first model from Apodex, built for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to produce verifiable results,...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "unbiased/pareto-26.10-preview": {
+      "name": "Pareto 26.10 Preview",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks. This is a preview of the...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stealth/space-bunny-alpha": {
+      "name": "Space Bunny Alpha",
+      "description": "Space Bunny Alpha is an anonymous large model with blazing-fast inference, strong coding capabilities and native multimodal input support. It delivers adjustable reasoning effort, and a 1M-token context window. Space...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto": {
+      "name": "Pareto",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-sante:free": {
+      "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
+      "description": "Ling 3.0 Flash Sante is a health and medicine-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-fin": {
+      "name": "Ling 3.0 Flash Fin",
+      "description": "Ling 3.0 Flash Fin is a finance-focused mixture-of-experts model from InclusionAI, built on Ling 3.0 Flash with 5.1B active parameters out of 124B total. It is designed for real-world investment...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.8-27b:free": {
+      "name": "Qwen: Qwen3.8 27B (free)",
+      "description": "Qwen3.8 27B is an open-weight dense vision-language model from Qwen. It is suited for coding, professional workflows, research, multimodal interaction, and long-running agent tasks, with flexible thinking that can be...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "kwaipilot/kat-coder-pro-v2.5": {
+      "name": "Kwaipilot: KAT-Coder-Pro V2.5",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.74,
+        "output": 2.96
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.6-max-preview": {
+      "name": "Qwen: Qwen3.6 Max Preview",
+      "description": "Qwen3.6-Max-Preview is a proprietary frontier model from Alibaba Cloud built on a sparse mixture-of-experts architecture with approximately 1 trillion total parameters. It is optimized for agentic coding, tool use, and...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 1.04,
+        "output": 6.24
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-max-thinking": {
+      "name": "Qwen: Qwen3 Max Thinking",
+      "description": "Qwen3-Max-Thinking is the flagship reasoning model in the Qwen3 series, designed for high-stakes cognitive tasks that require deep, multi-step reasoning. By significantly scaling model capacity and reinforcement learning compute, it...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.78,
+        "output": 3.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-vl-32b-instruct": {
+      "name": "Qwen: Qwen3 VL 32B Instruct",
+      "description": "Qwen3-VL-32B-Instruct is a large-scale multimodal vision-language model designed for high-precision understanding and reasoning across text, images, and video. With 32 billion parameters, it combines deep visual perception with advanced text...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.42
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-vl-8b-thinking": {
+      "name": "Qwen: Qwen3 VL 8B Thinking",
+      "description": "Qwen3-VL-8B-Thinking is the reasoning-optimized variant of the Qwen3-VL-8B multimodal model, designed for advanced visual and textual reasoning across complex scenes, documents, and temporal sequences. It integrates enhanced multimodal alignment and...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.12,
+        "output": 1.37
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-vl-235b-a22b-thinking": {
+      "name": "Qwen: Qwen3 VL 235B A22B Thinking",
+      "description": "Qwen3-VL-235B-A22B Thinking is a multimodal model that unifies strong text generation with visual understanding across images and video. The Thinking model is optimized for multimodal reasoning in STEM and math....",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.26,
+        "output": 2.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-max": {
+      "name": "Qwen: Qwen3 Max",
+      "description": "Qwen3-Max is an updated release built on the Qwen3 series, offering major improvements in reasoning, instruction following, multilingual support, and long-tail knowledge coverage compared to the January 2025 version. It...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.78,
+        "output": 3.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-coder-plus": {
+      "name": "Qwen: Qwen3 Coder Plus",
+      "description": "Qwen3 Coder Plus is Alibaba's proprietary version of the Open Source Qwen3 Coder 480B A35B. It is a powerful coding agent model specializing in autonomous programming via tool calling and...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.65,
+        "output": 3.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen-plus-2025-07-28": {
+      "name": "Qwen: Qwen Plus 0728",
+      "description": "Qwen Plus 0728, based on the Qwen3 foundation model, is a 1 million context hybrid reasoning model with a balanced performance, speed, and cost combination.",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.26,
+        "output": 0.78
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-30b-a3b-thinking-2507": {
+      "name": "Qwen: Qwen3 30B A3B Thinking 2507",
+      "description": "Qwen3-30B-A3B-Thinking-2507 is a 30B parameter Mixture-of-Experts reasoning model optimized for complex tasks requiring extended multi-step thinking. The model is designed specifically for “thinking mode,” where internal reasoning traces are separated...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "baidu/ernie-4.5-vl-424b-a47b": {
+      "name": "Baidu: ERNIE 4.5 VL 424B A47B ",
+      "description": "ERNIE-4.5-VL-424B-A47B is a multimodal Mixture-of-Experts (MoE) model from Baidu’s ERNIE 4.5 series, featuring 424B total parameters with 47B active per token. It is trained jointly on text and image data...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.42,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-sonnet-4": {
+      "name": "Anthropic: Claude Sonnet 4",
+      "description": "Claude Sonnet 4 significantly enhances the capabilities of its predecessor, Sonnet 3.7, excelling in both coding and reasoning tasks with improved precision and controllability. Achieving state-of-the-art performance on SWE-bench (72.7%),...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen3-8b": {
+      "name": "Qwen: Qwen3 8B",
+      "description": "Qwen3-8B is a dense 8.2B parameter causal language model from the Qwen3 series, designed for both reasoning-heavy tasks and efficient dialogue. It supports seamless switching between \"thinking\" mode for math,...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-235b-a22b": {
+      "name": "Qwen 3 235B A22B",
+      "description": "Alibaba's large MoE — strong reasoning with hybrid thinking mode",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.14,
+        "output": 0.6
       }
     },
     "inclusionai/ling-3.0-flash-vl:free": {
@@ -7007,5 +7342,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-04T10:15:10.237Z"
+  "_syncedAt": "2026-10-18T10:41:51.785Z"
 }
