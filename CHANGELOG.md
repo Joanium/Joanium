@@ -6,6 +6,24 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1018.0] - 2026-10-18
+
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action from 4.38.0 to 4.38.3
+* Chore(deps): Bump ossf/scorecard-action from 2.4.4 to 2.5.0
+* Chore(deps-dev): Bump jscpd from 5.4.0 to 5.4.1
+* Chore(deps-dev): Bump prettier from 3.9.9 to 3.9.10
+* Chore(deps): Bump uuid from 14.0.2 to 14.0.3
+* Chore(deps-dev): Bump electron from 44.5.1 to 44.7.0
+* Chore(deps): Bump @huggingface/transformers from 4.2.0 to 4.3.1
+* Chore(deps-dev): Bump lint-staged from 17.5.1 to 17.6.0
+* Chore(deps-dev): Bump jscpd from 5.3.2 to 5.4.0
+* Chore(deps-dev): Bump electron from 44.3.0 to 44.5.1
+* Chore(deps): Bump katex from 0.18.7 to 0.19.0
+* Chore(deps-dev): Bump eslint from 10.9.1 to 10.12.0
+
+---
+
 ## [2026.1005.0] - 2026-10-05
 
 * Updated Cloudflare Endpoints
