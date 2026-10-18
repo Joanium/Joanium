@@ -3,18 +3,17 @@
 Thanks to everyone who has contributed to **Joanium**!
 This file is automatically regenerated every week. 🤖
 
-> **Total contributors:** 9  
-> **Last updated:** Sun, 04 Oct 2026 10:16:46 GMT
+> **Total contributors:** 8  
+> **Last updated:** Sun, 18 Oct 2026 10:40:38 GMT
 
 ---
 
 | | Contributor | Commits |
 |---|---|---|
-| <img src="https://avatars.githubusercontent.com/u/128782382?v=4&s=32" width="32" height="32" alt="withinJoel avatar" style="border-radius:50%"/> | [@withinJoel](https://github.com/withinJoel) | 1283 |
+| <img src="https://avatars.githubusercontent.com/u/128782382?v=4&s=32" width="32" height="32" alt="withinJoel avatar" style="border-radius:50%"/> | [@withinJoel](https://github.com/withinJoel) | 1298 |
 | <img src="https://avatars.githubusercontent.com/u/176266976?v=4&s=32" width="32" height="32" alt="Jessiescookbook avatar" style="border-radius:50%"/> | [@Jessiescookbook](https://github.com/Jessiescookbook) | 2 |
 | <img src="https://avatars.githubusercontent.com/u/176211197?v=4&s=32" width="32" height="32" alt="Jessiejollyrose avatar" style="border-radius:50%"/> | [@Jessiejollyrose](https://github.com/Jessiejollyrose) | 1 |
 | <img src="https://avatars.githubusercontent.com/u/274259721?v=4&s=32" width="32" height="32" alt="joaniumhere avatar" style="border-radius:50%"/> | [@joaniumhere](https://github.com/joaniumhere) | 1 |
-| <img src="https://avatars.githubusercontent.com/u/177291397?v=4&s=32" width="32" height="32" alt="joeljollyhere avatar" style="border-radius:50%"/> | [@joeljollyhere](https://github.com/joeljollyhere) | 1 |
 | <img src="https://avatars.githubusercontent.com/u/274267737?v=4&s=32" width="32" height="32" alt="babuhere avatar" style="border-radius:50%"/> | [@babuhere](https://github.com/babuhere) | 1 |
 | <img src="https://avatars.githubusercontent.com/u/274267202?v=4&s=32" width="32" height="32" alt="coonoorbabu avatar" style="border-radius:50%"/> | [@coonoorbabu](https://github.com/coonoorbabu) | 1 |
 | <img src="https://avatars.githubusercontent.com/u/274233490?v=4&s=32" width="32" height="32" alt="evelinahere avatar" style="border-radius:50%"/> | [@evelinahere](https://github.com/evelinahere) | 1 |

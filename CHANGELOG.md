@@ -6,6 +6,12 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1005.0] - 2026-10-05
+
+* Updated Cloudflare Endpoints
+
+---
+
 ## [2026.1004.0] - 2026-10-04
 
 * Updated AI Models
