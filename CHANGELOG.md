@@ -6,6 +6,23 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1025.0] - 2026-10-25
+
+* Fixed the nav bar style issue
+* Chore(deps): Bump github/codeql-action/autobuild from 4.38.3 to 4.39.0
+* Chore(deps): Bump github/codeql-action from 4.38.3 to 4.39.0
+* Chore(deps): Bump actions/setup-node from 7.0.0 to 7.1.0
+* Chore(deps-dev): Bump electron from 44.9.0 to 44.9.1
+* Chore(deps-dev): Bump eslint from 10.12.0 to 10.13.0
+* Chore(deps-dev): Bump electron from 44.8.0 to 44.9.0
+* Chore(deps): Bump github/codeql-action/analyze from 4.37.9 to 4.39.0
+* Chore(deps-dev): Bump electron from 44.7.0 to 44.8.0
+* Chore(deps): Bump github/codeql-action/init from 4.38.2 to 4.38.3
+* Chore(deps): Bump github/codeql-action/autobuild from 4.37.9 to 4.38.3
+* Chore(deps-dev): Bump fast-uri
+
+---
+
 ## [2026.1018.0] - 2026-10-18
 
 * Updated AI Models
