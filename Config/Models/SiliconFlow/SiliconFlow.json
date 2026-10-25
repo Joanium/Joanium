@@ -5,6 +5,12 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "MiniMaxAI/MiniMax-M3.1-Flash": {
+      "name": "MiniMax M3 1 FLASH"
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash-1017": {
+      "name": "DeepSeek V4 1 FLASH 1017"
+    },
     "Qwen/Qwen3.8-27B": {
       "name": "Qwen3 8 27B"
     },
@@ -245,5 +251,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-10-18T10:42:06.986Z"
+  "_syncedAt": "2026-10-25T07:47:40.388Z"
 }

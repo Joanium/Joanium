@@ -1505,6 +1505,19 @@
         "text": true
       }
     },
+    "inception/mercury-3": {
+      "name": "Mercury 3",
+      "description": "Mercury 3 is Inception’s most capable model for agentic workflows and real-time applications. It is one of the world’s fastest models, powered by diffusion.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.35
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "inception/mercury-coder-small": {
       "name": "Mercury Coder Small Beta",
       "description": "Mercury Coder Small is ideal for code generation, debugging, and refactoring tasks with minimal latency.",
@@ -1935,6 +1948,20 @@
         "image": true
       }
     },
+    "minimax/minimax-m3.1-flash": {
+      "name": "MiniMax-M3.1-Flash",
+      "description": "MiniMax-M3.1-Flash is MiniMax’s multimodal M-series model for agent reasoning, tool use, coding, and long-context tasks. Fireworks serves the final weights with hybrid MXFP8 and NVFP4 expert precision, text and image inputs, structured outputs, and implicit prompt caching.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "mistral/codestral": {
       "name": "Mistral Codestral",
       "description": "Mistral's cutting-edge language model for coding released end of July 2025, Codestral specializes in low-latency, high-frequency tasks such as fill-in-the-middle (FIM), code correction and test generation.",
@@ -2166,6 +2193,34 @@
         "image": true
       }
     },
+    "moonshotai/kimi-k3.1-pro": {
+      "name": "Kimi K3.1 Pro",
+      "description": "Kimi K3.1 Pro is a frontier model from Moonshot AI for complex reasoning, coding, and agentic workflows, with support for vision, tool use, structured outputs, and long-context tasks.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3.1-pro-highspeed": {
+      "name": "Kimi K3.1 Pro Highspeed",
+      "description": "Kimi K3.1 Pro Highspeed is the high-speed variant of Moonshot AI’s frontier Kimi K3.1 Pro model for complex reasoning, coding, and agentic workflows, with vision, tool use, structured outputs, and long-context support.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "morph/morph-v3-fast": {
       "name": "Morph V3 Fast",
       "description": "Morph offers a specialized AI model that applies code changes suggested by frontier models (like Claude or GPT-4o) to your existing code files FAST - 4500+ tokens/second. It acts as the final step in the AI coding workflow. Supports 16k input tokens and 16k output tokens.",
@@ -2298,33 +2353,6 @@
         "text": true
       }
     },
-    "openai/gpt-3.5-turbo": {
-      "name": "GPT-3.5 Turbo",
-      "description": "OpenAI's most capable and cost effective model in the GPT-3.5 family optimized for chat purposes, but also works well for traditional completions tasks.",
-      "context_window": 16385,
-      "max_output": 4096,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/gpt-4-turbo": {
-      "name": "GPT-4 Turbo",
-      "description": "gpt-4-turbo from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It has a knowledge cutoff of April 2023 and a 128,000 token context window.",
-      "context_window": 128000,
-      "max_output": 4096,
-      "pricing": {
-        "input": 10,
-        "output": 30
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "openai/gpt-4.1": {
       "name": "GPT-4.1",
       "description": "GPT 4.1 is OpenAI's flagship model for complex tasks. It is well suited for problem solving across domains.",
@@ -2417,34 +2445,6 @@
       "pricing": {
         "input": 0.1,
         "output": 0.4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-4.1-nano-fast": {
-      "name": "GPT-4.1 nano (Fast)",
-      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
-      "context_window": 1047576,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.8
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-4.1-nano-batch": {
-      "name": "GPT-4.1 nano (Batch)",
-      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
-      "context_window": 1047576,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.2
       },
       "inputs": {
         "text": true,
@@ -3483,20 +3483,6 @@
         "image": true
       }
     },
-    "openai/o4-mini-fast": {
-      "name": "o4-mini (Fast)",
-      "description": "OpenAI's o4-mini delivers fast, cost-efficient reasoning with exceptional performance for its size, particularly excelling in math (best-performing on AIME benchmarks), coding, and visual tasks.",
-      "context_window": 200000,
-      "max_output": 100000,
-      "pricing": {
-        "input": 2,
-        "output": 8
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "perplexity/sonar": {
       "name": "Sonar",
       "description": "Perplexity's lightweight offering with search grounding, quicker and cheaper than Sonar Pro.",
@@ -3643,13 +3629,26 @@
         "image": true
       }
     },
-    "stealth/cat-jam": {
-      "name": "Cat Jam",
-      "description": "Cat Jam is a reasoning model for coding and agentic workflows, combining strong coding capabilities with fast, low-latency inference. Prompts and responses may be used for training and model improvement.",
-      "context_window": 1048576,
-      "max_output": 131072,
+    "scaledown/scaledown-extract-1": {
+      "name": "Extract-1",
+      "description": "ScaleDown Extract-1 is a task-specific language model for extracting structured data from unstructured text using a custom JSON schema. It identifies domain-specific entities with confidence scores, character offsets, and surrounding context, and supports nested objects and arrays for workflows such",
+      "context_window": 1000000,
+      "max_output": 1000000,
       "pricing": {
-        "input": 0,
+        "input": 0.05,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "scaledown/scaledown-summarize-1": {
+      "name": "Summarize-1",
+      "description": "ScaleDown Summarize-1 is a task-specific language model for abstractive summarization of long documents, transcripts, and conversations. It rewrites source text into concise summaries and accepts instructions for format, language, length, and focus, making it useful for document processing, meeting ",
+      "context_window": 1000000,
+      "max_output": 1000,
+      "pricing": {
+        "input": 0.05,
         "output": 0
       },
       "inputs": {
@@ -3784,32 +3783,6 @@
       "pricing": {
         "input": 0.5,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "spacexai/grok-4.1-fast-non-reasoning": {
-      "name": "Grok 4.1 Fast Non-Reasoning",
-      "context_window": 1000000,
-      "max_output": 1000000,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "spacexai/grok-4.1-fast-reasoning": {
-      "name": "Grok 4.1 Fast Reasoning",
-      "context_window": 1000000,
-      "max_output": 1000000,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.5
       },
       "inputs": {
         "text": true,
@@ -4315,6 +4288,114 @@
       "pricing": {
         "input": 1.2,
         "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-3.5-turbo": {
+      "name": "GPT-3.5 Turbo",
+      "description": "OpenAI's most capable and cost effective model in the GPT-3.5 family optimized for chat purposes, but also works well for traditional completions tasks.",
+      "context_window": 16385,
+      "max_output": 4096,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-4-turbo": {
+      "name": "GPT-4 Turbo",
+      "description": "gpt-4-turbo from OpenAI has broad general knowledge and domain expertise allowing it to follow complex instructions in natural language and solve difficult problems accurately. It has a knowledge cutoff of April 2023 and a 128,000 token context window.",
+      "context_window": 128000,
+      "max_output": 4096,
+      "pricing": {
+        "input": 10,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4.1-nano-fast": {
+      "name": "GPT-4.1 nano (Fast)",
+      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-4.1-nano-batch": {
+      "name": "GPT-4.1 nano (Batch)",
+      "description": "GPT-4.1 nano is the fastest, most cost-effective GPT 4.1 model.",
+      "context_window": 1047576,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/o4-mini-fast": {
+      "name": "o4-mini (Fast)",
+      "description": "OpenAI's o4-mini delivers fast, cost-efficient reasoning with exceptional performance for its size, particularly excelling in math (best-performing on AIME benchmarks), coding, and visual tasks.",
+      "context_window": 200000,
+      "max_output": 100000,
+      "pricing": {
+        "input": 2,
+        "output": 8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stealth/cat-jam": {
+      "name": "Cat Jam",
+      "description": "Cat Jam is a reasoning model for coding and agentic workflows, combining strong coding capabilities with fast, low-latency inference. Prompts and responses may be used for training and model improvement.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "spacexai/grok-4.1-fast-non-reasoning": {
+      "name": "Grok 4.1 Fast Non-Reasoning",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "spacexai/grok-4.1-fast-reasoning": {
+      "name": "Grok 4.1 Fast Reasoning",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.5
       },
       "inputs": {
         "text": true,
@@ -5316,5 +5397,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-18T10:42:18.503Z"
+  "_syncedAt": "2026-10-25T07:47:51.016Z"
 }

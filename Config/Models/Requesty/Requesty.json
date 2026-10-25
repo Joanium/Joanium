@@ -5,6 +5,72 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "moonshot/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshot/kimi-k3.1-pro-highspeed": {
+      "name": "Kimi K3 1 PRO Highspeed",
+      "description": "Kimi K3.1 Pro Highspeed is the high speed variant of Kimi K3.1 Pro, with the same intelligence and 1M token context window at roughly 3x the output speed. Built for latency sensitive coding agents, interactive assistants and real time knowledge work.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "melious/clef": {
+      "name": "Clef",
+      "context_window": 0,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.24,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "melious/clef-flash": {
+      "name": "Clef FLASH",
+      "context_window": 0,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.09,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimaxi/minimax-m3.1-flash": {
+      "name": "Minimax M3 1 FLASH",
+      "description": "MiniMax M3.1 Flash is a fast multimodal model in the MiniMax M3 family, built for agentic cowork automation, coding and visual tasks. It scores 72.5% on AutomationBench AA (best among open models), 73.67% on DeepSWE, 91.0 on BabyVision with tools, 82.5 on CharXiv RQ, 56% on AA Omniscience and 48% on",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepinfra/deepseek-v4.1-flash-1017": {
       "name": "Deepseek V4 1 FLASH 1017",
       "description": "DeepSeek V4.1 Flash 1017 is a minor update to DeepSeek V4.1 Flash with substantial gains in reasoning, coding, agentic tasks and visual benchmarks, plus shorter outputs and faster task completion. 552B parameter Mixture of Experts with native vision, 1M token context, thinking and non thinking modes",
@@ -61,6 +127,34 @@
         "image": true
       }
     },
+    "melious/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash is a 552B MoE hybrid reasoning model with image input and a 1M token context, suited for agentic coding and long context work. Served from the EU by Melious.",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.23,
+        "output": 1.14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "runware/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017 is the October 2026 checkpoint of DeepSeek V4.1 Flash, a multimodal mixture of experts model for coding, reasoning, visual understanding and tool using agents. It reads text and images, writes text, and combines a 1M token context window with adjustable reasoning effort and ",
+      "context_window": 1048576,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "sference/deepseek-v4.1-flash-1017": {
       "name": "Deepseek V4 1 FLASH 1017",
       "description": "DeepSeek V4.1 Flash 1017 is the October 2026 refresh of DeepSeek V4.1 Flash, a 552B parameter Mixture of Experts model with native vision. 1M token context window, 384K max output, thinking and non thinking modes, tool calling, structured JSON output and prompt caching. Served in the EU via Sference",
@@ -83,6 +177,20 @@
       "pricing": {
         "input": 0.5,
         "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "together/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017 is a minor update to DeepSeek V4.1 Flash with substantial gains in reasoning, coding, agentic tasks and visual benchmarks, plus shorter outputs and faster task completion. 552B parameter Mixture of Experts with native vision, 1M token context, thinking and non thinking modes",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
       },
       "inputs": {
         "text": true,
@@ -9083,118 +9191,6 @@
         "image": true
       }
     },
-    "bedrock/claude-sonnet-4": {
-      "name": "Claude Sonnet 4",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@eu-central-1": {
-      "name": "Claude Sonnet 4@eu Central 1",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@eu-north-1": {
-      "name": "Claude Sonnet 4@eu North 1",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@eu-west-1": {
-      "name": "Claude Sonnet 4@eu West 1",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@eu-west-3": {
-      "name": "Claude Sonnet 4@eu West 3",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@us-east-1": {
-      "name": "Claude Sonnet 4@us East 1",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@us-east-2": {
-      "name": "Claude Sonnet 4@us East 2",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-sonnet-4@us-west-2": {
-      "name": "Claude Sonnet 4@us West 2",
-      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 3,
-        "output": 15
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "vertex/claude-opus-4": {
       "name": "Claude Opus 4",
       "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
@@ -10656,6 +10652,118 @@
       },
       "inputs": {
         "text": true
+      }
+    },
+    "bedrock/claude-sonnet-4": {
+      "name": "Claude Sonnet 4",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@eu-central-1": {
+      "name": "Claude Sonnet 4@eu Central 1",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@eu-north-1": {
+      "name": "Claude Sonnet 4@eu North 1",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@eu-west-1": {
+      "name": "Claude Sonnet 4@eu West 1",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@eu-west-3": {
+      "name": "Claude Sonnet 4@eu West 3",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@us-east-1": {
+      "name": "Claude Sonnet 4@us East 1",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@us-east-2": {
+      "name": "Claude Sonnet 4@us East 2",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-sonnet-4@us-west-2": {
+      "name": "Claude Sonnet 4@us West 2",
+      "description": "Anthropic's most intelligent model. The first hybrid reasoning model on the market with the highest level of intelligence and capability with toggleable extended thinking. Top-tier results in reasoning, coding, multilingual tasks, long-context handling, honesty, and image processing.",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "azure/gpt-4.1-nano@uksouth": {
@@ -12512,5 +12620,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-18T10:42:15.887Z"
+  "_syncedAt": "2026-10-25T07:47:48.662Z"
 }

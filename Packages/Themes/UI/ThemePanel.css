@@ -711,9 +711,11 @@ html.joanium-theme-dark .chat-sidebar__avatar-divider {
 /* Sidebar tab / avatar tooltip pill */
 html.joanium-theme-dark .chat-sidebar__tab::after,
 html.joanium-theme-dark .chat-sidebar__avatar::after {
-  background: rgba(38, 30, 46, 0.94);
-  color: var(--color-chat-text-title);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: rgba(31, 23, 42, 0.98);
+  color: rgba(255, 250, 255, 0.98);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.32);
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -1123,9 +1125,9 @@ html.joanium-theme-dark .channels-field__textarea,
 html.joanium-theme-dark .events-row,
 html.joanium-theme-dark .events-detail__meta-item,
 html.joanium-theme-dark .events-detail__section {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.035);
   color: var(--color-chat-text-title);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 
 /* Filter bar + filter buttons */
@@ -1155,17 +1157,18 @@ html.joanium-theme-dark .events-action:hover {
 
 /* Event row states */
 html.joanium-theme-dark .events-row:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 6px 20px rgba(0, 0, 0, 0.18);
+    inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.22),
+    0 8px 18px rgba(0, 0, 0, 0.22);
 }
 
 html.joanium-theme-dark .events-row--active {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(var(--color-accent-rgb), 0.16);
+  border-color: rgba(var(--color-accent-rgb), 0.36);
   box-shadow:
-    inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.22),
-    0 8px 18px rgba(0, 0, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 10px 20px rgba(0, 0, 0, 0.24);
 }
 
 /* Detail pane borders */
@@ -1194,7 +1197,6 @@ html.joanium-theme-dark .events-tool-call__params {
   border-top-color: rgba(255, 255, 255, 0.07);
 }
 
-html.joanium-theme-dark .events-row--active,
 html.joanium-theme-dark .channels-card__steps {
   background: rgba(var(--color-accent-rgb), 0.24);
 }

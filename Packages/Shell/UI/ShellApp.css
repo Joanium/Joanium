@@ -93,6 +93,8 @@ textarea {
 
 .chat-sidebar {
   animation: chat-fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,16 +159,18 @@ textarea {
   top: 50%;
   transform: translateY(-50%) translateX(-4px);
   white-space: nowrap;
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(22px) saturate(1.5);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
   color: var(--color-chat-text-title);
-  font-size: 12px;
-  font-weight: 580;
-  letter-spacing: -0.015em;
-  box-shadow: var(--shadow-chat-pill);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 0 0 1px rgba(80, 48, 102, 0.1),
+    0 10px 24px rgba(27, 12, 39, 0.18);
   opacity: 0;
   pointer-events: none;
   transition:

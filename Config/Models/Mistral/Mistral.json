@@ -177,6 +177,12 @@
     "voxtral-mini-latest": {
       "name": "voxtral-mini-latest"
     },
+    "voxtral-mini-transcribe-3": {
+      "name": "Voxtral MINI Transcribe 3"
+    },
+    "voxtral-mini-transcribe-3-0": {
+      "name": "Voxtral MINI Transcribe 3 0"
+    },
     "voxtral-mini-transcribe-realtime-2602": {
       "name": "voxtral-mini-transcribe-realtime-2602"
     },
@@ -185,6 +191,18 @@
     },
     "voxtral-mini-realtime-latest": {
       "name": "voxtral-mini-realtime-latest"
+    },
+    "voxtral-mini-transcribe-realtime-3": {
+      "name": "Voxtral MINI Transcribe Realtime 3"
+    },
+    "voxtral-mini-transcribe-realtime-3-0": {
+      "name": "Voxtral MINI Transcribe Realtime 3 0"
+    },
+    "voxtral-small-transcribe-3": {
+      "name": "Voxtral Small Transcribe 3"
+    },
+    "voxtral-small-transcribe-3-0": {
+      "name": "Voxtral Small Transcribe 3 0"
     },
     "mistral-ocr-4-0": {
       "name": "Mistral Ocr 4 0"
@@ -288,5 +306,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-10-18T10:41:52.811Z"
+  "_syncedAt": "2026-10-25T07:47:27.033Z"
 }

@@ -269,8 +269,8 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px;
+  gap: 8px;
+  padding: 12px;
   overflow-y: auto;
 }
 
@@ -279,14 +279,16 @@
 .events-row {
   width: 100%;
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
-  gap: 10px;
-  padding: 11px 12px;
-  border-radius: 14px;
-  background: transparent;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.2);
   color: var(--color-chat-text-title);
   text-align: left;
-  box-shadow: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition:
     transform 130ms ease,
     box-shadow 130ms ease,
@@ -295,26 +297,27 @@
 
 .events-row:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   box-shadow:
-    inset 0 0 0 1px rgba(175, 139, 104, 0.1),
-    0 4px 10px rgba(130, 95, 65, 0.07);
+    inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.12),
+    0 8px 16px rgba(130, 95, 65, 0.09);
 }
 
 .events-row--active {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(var(--color-accent-rgb), 0.1);
+  border-color: rgba(var(--color-accent-rgb), 0.24);
   box-shadow:
-    inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.22),
-    0 8px 18px rgba(130, 95, 65, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 8px 18px rgba(130, 95, 65, 0.1);
 }
 
 .events-row__icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 15px;
   background: rgba(var(--color-accent-rgb), 0.09);
   color: var(--color-accent);
   flex-shrink: 0;
@@ -365,7 +368,7 @@
 
 .events-row__body {
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .events-row__top {
@@ -380,7 +383,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 650;
   color: var(--color-chat-text-title);
   letter-spacing: -0.015em;
 }
@@ -437,7 +440,7 @@
   align-items: center;
   gap: 6px;
   color: var(--color-chat-text-muted);
-  font-size: 11px;
+  font-size: 11.5px;
 }
 
 .events-row__dot {
@@ -455,8 +458,8 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   color: var(--color-chat-text-muted);
-  font-size: 12px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.4;
 }
 
 .events-row__reply-preview {

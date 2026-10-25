@@ -5,6 +5,10 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek-ai/DeepSeek-V4.1-Flash-1017": {
+      "name": "DeepSeek V4.1 Flash 1017",
+      "context_window": 1048576
+    },
     "deepseek-ai/DeepSeek-V4.1-Flash": {
       "name": "DeepSeek V4.1 Flash",
       "context_window": 1048576
@@ -49,10 +53,6 @@
       "name": "Qwen3.8-2.4T-A95B",
       "context_window": 1010000
     },
-    "deepseek-ai/DeepSeek-V4-Flash-0731": {
-      "name": "Deepseek V4 Flash 0731",
-      "context_window": 1048576
-    },
     "thinkingmachines/Inkling": {
       "name": "Inkling FP4",
       "context_window": 524288
@@ -77,10 +77,6 @@
       "name": "Qwen3.5 9B FP8",
       "context_window": 262144
     },
-    "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
-      "name": "Meta Llama 3.3 70B Instruct Turbo",
-      "context_window": 131072
-    },
     "arize-ai/qwen-2-1.5b-instruct": {
       "name": "Arize AI Qwen 2 1.5B Instruct",
       "context_window": 32768
@@ -97,13 +93,17 @@
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
     },
-    "meta-models/Muse-Spark-Open-816B-A42B-promo": {
-      "name": "Muse Spark Open 816B A42B Promo (Free until 10/18)",
-      "context_window": 1048576
-    },
     "reflection/Beam-1.0-501B-A23B": {
       "name": "Beam 1.0 501B A23B",
       "context_window": 1048576
+    },
+    "MiniMaxAI/MiniMax-M3.1-Flash": {
+      "name": "MiniMax M3.1 Flash",
+      "context_window": 1048576
+    },
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+      "name": "Meta Llama 3.3 70B Instruct Turbo",
+      "context_window": 131072
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -799,6 +799,14 @@
       "name": "GLM 5.3 FP8 Lora",
       "context_window": 1048576
     },
+    "deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "name": "Deepseek V4 Flash 0731",
+      "context_window": 1048576
+    },
+    "meta-models/Muse-Spark-Open-816B-A42B-promo": {
+      "name": "Muse Spark Open 816B A42B Promo (Free until 10/18)",
+      "context_window": 1048576
+    },
     "thinkingmachines/Inkling-Small": {
       "name": "Inkling Small",
       "context_window": 524288
@@ -868,5 +876,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-10-18T10:41:57.662Z"
+  "_syncedAt": "2026-10-25T07:47:32.536Z"
 }

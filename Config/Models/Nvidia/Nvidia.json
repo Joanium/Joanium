@@ -109,6 +109,9 @@
     "microsoft/phi-3.5-moe-instruct": {
       "name": "microsoft/phi-3.5-moe-instruct"
     },
+    "minimaxai/minimax-m3.1-flash": {
+      "name": "Minimax M3 1 FLASH"
+    },
     "mistralai/codestral-22b-instruct-v0.1": {
       "name": "mistralai/codestral-22b-instruct-v0.1"
     },
@@ -210,8 +213,17 @@
     "nvidia/nemotron-3-ultra-550b-a55b": {
       "name": "Nemotron 3 ULTRA 550B A55b"
     },
+    "nvidia/nemotron-3.5-bolt-e4b": {
+      "name": "Nemotron 3 5 Bolt E4b"
+    },
     "nvidia/nemotron-3.5-content-safety": {
       "name": "Nemotron 3 5 Content Safety"
+    },
+    "nvidia/nemotron-3.5-embed-1b": {
+      "name": "Nemotron 3 5 Embed 1B"
+    },
+    "nvidia/nemotron-3.5-embed-8b": {
+      "name": "Nemotron 3 5 Embed 8B"
     },
     "nvidia/nemotron-3.5-lightning-30b-a3b": {
       "name": "Nemotron 3 5 Lightning 30B A3b"
@@ -496,5 +508,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-10-18T10:41:48.966Z"
+  "_syncedAt": "2026-10-25T07:47:21.810Z"
 }

@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "MiniMax-M3.1-Flash": {
+      "name": "MiniMax M3 1 FLASH"
+    },
     "MiniMax-M3": {
       "name": "MiniMax M3"
     },
@@ -121,5 +124,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-18T10:42:00.569Z"
+  "_syncedAt": "2026-10-25T07:47:33.452Z"
 }

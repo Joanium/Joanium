@@ -5,6 +5,44 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "moonshotai/kimi-k3.1-pro": {
+      "name": "MoonshotAI: Kimi K3.1 Pro",
+      "description": "Kimi K3.1 Pro is Moonshot AI's flagship open-weight multimodal reasoning model and a post-trained successor to Kimi K3, with a 1M-token context window. It is built for long-horizon coding, 3D...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "recursive/flint-v1.0:free": {
+      "name": "Recursive: Flint (free)",
+      "description": "Flint is an open-weight mixture-of-experts model from Recursive, with about 2.5B active parameters out of 40B total, built by Recursive's autoresearch system Eureka Machine for coding agents. It is suited...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m3.1-flash": {
+      "name": "MiniMax: MiniMax M3.1 Flash",
+      "description": "MiniMax-M3.1-Flash is a multimodal model from MiniMax. Compared with M3, it delivers significant improvements across multiple benchmarks, particularly in complex agentic tasks, coding, and cybersecurity. It is built for complex,...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepseek/deepseek-v4.1-flash-1017": {
       "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
       "description": "DeepSeek V4.1 Flash 1017 is the October 17, 2026 snapshot of DeepSeek V4.1 Flash, served by DeepSeek under the `deepseek-flash` API model name. V4.1 Flash is a sparse mixture-of-experts model...",
@@ -50,6 +88,18 @@
       "pricing": {
         "input": 1,
         "output": 3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inception/mercury-3": {
+      "name": "Inception: Mercury 3",
+      "description": "Mercury 3 is a diffusion-based language model from Inception, and the lab's most capable model to date. It is suited for agentic workflows and real-time applications where latency compounds, such...",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.35
       },
       "inputs": {
         "text": true
@@ -1371,6 +1421,18 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "liquid/lfm-2.5-2.6b": {
+      "name": "LiquidAI: LFM2.5-2.6B",
+      "description": "LFM2.5-2.6B is a compact reasoning model from Liquid AI. It is suited for agent workflows, data extraction, RAG, and long-context processing. Liquid advises against using it for agentic coding or...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0.35,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true
       }
     },
     "liquid/lfm-2.5-2.6b:free": {
@@ -4503,19 +4565,6 @@
         "image": true
       }
     },
-    "google/gemini-2.5-flash-lite:batch": {
-      "name": "Google: Gemini 2.5 Flash Lite (batch)",
-      "description": "Gemini 2.5 Flash-Lite is a lightweight reasoning model in the Gemini 2.5 family, optimized for ultra-low latency and cost efficiency. It offers improved throughput, faster token generation, and better performance...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "qwen/qwen3-235b-a22b-2507": {
       "name": "Qwen: Qwen3 235B A22B Instruct 2507",
       "description": "Qwen3-235B-A22B-Instruct-2507 is a multilingual, instruction-tuned mixture-of-experts language model based on the Qwen3-235B architecture, with 22B active parameters per forward pass. It is optimized for general-purpose text generation, including instruction following,...",
@@ -4626,19 +4675,6 @@
         "image": true
       }
     },
-    "google/gemini-2.5-flash:batch": {
-      "name": "Google: Gemini 2.5 Flash (batch)",
-      "description": "Gemini 2.5 Flash is Google's state-of-the-art workhorse model, specifically designed for advanced reasoning, coding, mathematics, and scientific tasks. It includes built-in \"thinking\" capabilities, enabling it to provide responses with greater...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.15,
-        "output": 1.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-2.5-pro": {
       "name": "Google: Gemini 2.5 Pro",
       "description": "Gemini 2.5 Pro is Google’s state-of-the-art AI model designed for advanced reasoning, coding, mathematics, and scientific tasks. It employs “thinking” capabilities, enabling it to reason through responses with enhanced accuracy...",
@@ -4646,19 +4682,6 @@
       "pricing": {
         "input": 1.25,
         "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "google/gemini-2.5-pro:batch": {
-      "name": "Google: Gemini 2.5 Pro (batch)",
-      "description": "Gemini 2.5 Pro is Google’s state-of-the-art AI model designed for advanced reasoning, coding, mathematics, and scientific tasks. It employs “thinking” capabilities, enabling it to reason through responses with enhanced accuracy...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.63,
-        "output": 5
       },
       "inputs": {
         "text": true,
@@ -5201,22 +5224,6 @@
         "image": true
       }
     },
-    "deepseek/deepseek-r1": {
-      "name": "DeepSeek R1",
-      "description": "State-of-the-art open reasoning model — rivaling o1 at a fraction of the cost",
-      "context_window": 164000,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.55,
-        "output": 2.19
-      }
-    },
     "minimax/minimax-01": {
       "name": "MiniMax: MiniMax-01",
       "description": "MiniMax-01 is a combines MiniMax-Text-01 for text generation and MiniMax-VL-01 for image understanding. It has 456 billion parameters, with 45.9 billion parameters activated per inference, and can handle a context...",
@@ -5249,18 +5256,6 @@
       "pricing": {
         "input": 0.32,
         "output": 0.89
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "sao10k/l3.3-euryale-70b": {
-      "name": "Sao10K: Llama 3.3 Euryale 70B",
-      "description": "Euryale L3.3 70B is a model focused on creative roleplay from [Sao10k](https://ko-fi.com/sao10k). It is the successor of [Euryale L3 70B v2.2](/models/sao10k/l3-euryale-70b).",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.65,
-        "output": 0.75
       },
       "inputs": {
         "text": true
@@ -5677,18 +5672,6 @@
         "text": true
       }
     },
-    "microsoft/wizardlm-2-8x22b": {
-      "name": "WizardLM-2 8x22B",
-      "description": "WizardLM-2 8x22B is Microsoft AI's most advanced Wizard model. It demonstrates highly competitive performance compared to leading proprietary models, and it consistently outperforms all existing state-of-the-art opensource models. It is...",
-      "context_window": 65536,
-      "pricing": {
-        "input": 0.62,
-        "output": 0.62
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-4-turbo": {
       "name": "OpenAI: GPT-4 Turbo",
       "description": "The latest GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling.\n\nTraining data: up to December 2023.",
@@ -5756,18 +5739,6 @@
         "image": true
       }
     },
-    "openai/gpt-3.5-turbo-instruct": {
-      "name": "OpenAI: GPT-3.5 Turbo Instruct",
-      "description": "This model is a variant of GPT-3.5 Turbo tuned for instructional prompts and omitting chat-related optimizations. Training data: up to Sep 2021.",
-      "context_window": 4095,
-      "pricing": {
-        "input": 1.5,
-        "output": 2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-3.5-turbo-16k": {
       "name": "OpenAI: GPT-3.5 Turbo 16k",
       "description": "This model offers four times the context length of gpt-3.5-turbo, allowing it to support approximately 20 pages of text in a single request at a higher cost. Training data: up...",
@@ -5816,6 +5787,109 @@
         "text": true
       }
     },
+    "openai/gpt-4": {
+      "name": "OpenAI: GPT-4",
+      "description": "OpenAI's flagship model, GPT-4 is a large-scale multimodal language model capable of solving difficult problems with greater accuracy than previous models due to its broader general knowledge and advanced reasoning...",
+      "context_window": 8191,
+      "pricing": {
+        "input": 30,
+        "output": 60
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "google/gemini-2.5-flash-lite:batch": {
+      "name": "Google: Gemini 2.5 Flash Lite (batch)",
+      "description": "Gemini 2.5 Flash-Lite is a lightweight reasoning model in the Gemini 2.5 family, optimized for ultra-low latency and cost efficiency. It offers improved throughput, faster token generation, and better performance...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-2.5-flash:batch": {
+      "name": "Google: Gemini 2.5 Flash (batch)",
+      "description": "Gemini 2.5 Flash is Google's state-of-the-art workhorse model, specifically designed for advanced reasoning, coding, mathematics, and scientific tasks. It includes built-in \"thinking\" capabilities, enabling it to provide responses with greater...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-2.5-pro:batch": {
+      "name": "Google: Gemini 2.5 Pro (batch)",
+      "description": "Gemini 2.5 Pro is Google’s state-of-the-art AI model designed for advanced reasoning, coding, mathematics, and scientific tasks. It employs “thinking” capabilities, enabling it to reason through responses with enhanced accuracy...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.63,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-r1": {
+      "name": "DeepSeek R1",
+      "description": "State-of-the-art open reasoning model — rivaling o1 at a fraction of the cost",
+      "context_window": 164000,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.55,
+        "output": 2.19
+      }
+    },
+    "sao10k/l3.3-euryale-70b": {
+      "name": "Sao10K: Llama 3.3 Euryale 70B",
+      "description": "Euryale L3.3 70B is a model focused on creative roleplay from [Sao10k](https://ko-fi.com/sao10k). It is the successor of [Euryale L3 70B v2.2](/models/sao10k/l3-euryale-70b).",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.65,
+        "output": 0.75
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "microsoft/wizardlm-2-8x22b": {
+      "name": "WizardLM-2 8x22B",
+      "description": "WizardLM-2 8x22B is Microsoft AI's most advanced Wizard model. It demonstrates highly competitive performance compared to leading proprietary models, and it consistently outperforms all existing state-of-the-art opensource models. It is...",
+      "context_window": 65536,
+      "pricing": {
+        "input": 0.62,
+        "output": 0.62
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-3.5-turbo-instruct": {
+      "name": "OpenAI: GPT-3.5 Turbo Instruct",
+      "description": "This model is a variant of GPT-3.5 Turbo tuned for instructional prompts and omitting chat-related optimizations. Training data: up to Sep 2021.",
+      "context_window": 4095,
+      "pricing": {
+        "input": 1.5,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "openai/gpt-3.5-turbo": {
       "name": "OpenAI: GPT-3.5 Turbo",
       "description": "GPT-3.5 Turbo is OpenAI's fastest model. It can understand and generate natural language or code, and is optimized for chat and traditional completion tasks.\n\nTraining data up to Sep 2021.",
@@ -5835,18 +5909,6 @@
       "pricing": {
         "input": 0.25,
         "output": 0.75
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "openai/gpt-4": {
-      "name": "OpenAI: GPT-4",
-      "description": "OpenAI's flagship model, GPT-4 is a large-scale multimodal language model capable of solving difficult problems with greater accuracy than previous models due to its broader general knowledge and advanced reasoning...",
-      "context_window": 8191,
-      "pricing": {
-        "input": 30,
-        "output": 60
       },
       "inputs": {
         "text": true
@@ -7342,5 +7404,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-18T10:41:51.785Z"
+  "_syncedAt": "2026-10-25T07:47:25.320Z"
 }
