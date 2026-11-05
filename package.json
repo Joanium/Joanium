@@ -4,7 +4,7 @@
   "description": "Joanium - Agentic AI Desktop Assistant",
   "type": "module",
   "engines": {
-    "node": "^24.18.0"
+    "node": ">=24.18.0 <27"
   },
   "dependencies": {
     "@huggingface/transformers": "4.3.2",
