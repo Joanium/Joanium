@@ -6,6 +6,23 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1105.0] - 2026-11-05
+
+* Updated AI Models
+* chore: update Node.js version references to 26.x in configuration files
+* Chore(deps-dev): Bump electron from 45.1.0 to 45.2.1
+* Chore(deps-dev): Bump electron from 45.0.0 to 45.1.0
+* Chore(deps): Bump @huggingface/transformers from 4.3.1 to 4.3.2
+* Chore(deps): Bump github/codeql-action from 4.39.0 to 4.39.1
+* Chore(deps-dev): Bump markdownlint-cli from 0.49.1 to 0.50.0
+* Chore(deps): Bump katex from 0.19.0 to 0.19.1
+* Chore(deps-dev): Bump jscpd from 5.4.1 to 5.4.2
+* Chore(deps): Bump electron-updater from 6.8.9 to 6.8.11
+* Chore(deps-dev): Bump electron from 44.9.1 to 45.0.0
+* Chore(deps): Bump github/codeql-action/init from 4.38.3 to 4.39.0
+
+---
+
 ## [2026.1025.0] - 2026-10-25
 
 * Fixed the nav bar style issue
