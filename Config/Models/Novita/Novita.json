@@ -5,10 +5,30 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "tencent/hy4": {
+      "name": "Hy4",
+      "description": "Tencent: The official release of Hy4 delivers comprehensive and substantial improvements over Hy4 Preview, with particularly strong gains in agentic capabilities and performance across a wide range of long-horizon, real-world productivity tasks. It also introduces visual understanding for the first ",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepseek/deepseek-v4.1-flash-1017": {
       "name": "DeepSeek V4.1 Flash 1017",
       "context_window": 1048576,
       "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai-org/glm-5.3-flashX": {
+      "name": "GLM 5.3 FlashX",
+      "description": "GLM-5.3-FlashX is a speed-optimized version built on the same foundation as GLM-5.3-Flash. Targeted at low-latency use cases including programming, Agents and real-time customer service, it features a 1 million token context window.",
+      "context_window": 1048576,
+      "max_output": 131072,
       "inputs": {
         "text": true,
         "image": true
@@ -811,6 +831,25 @@
         "text": true
       }
     },
+    "nvrouter/auto": {
+      "name": "Auto",
+      "description": "智能网关 Auto 模型",
+      "context_window": 1000000,
+      "max_output": 328000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvrouter/fusion": {
+      "name": "Fusion",
+      "context_window": 1000000,
+      "max_output": 328000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "inclusionai/ling-3.0-flash-vl": {
       "name": "Ling 3.0 Flash VL",
       "description": "Ling-3.0-flash-VL builds on Ling-3.0-flash, further strengthening its language capabilities while adding native visual perception and advanced visual agent capabilities. ",
@@ -874,20 +913,20 @@
         "text": true
       }
     },
-    "baidu/ernie-4.5-21B-a3b": {
-      "name": "ERNIE 4.5 21B A3B",
-      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
-      "context_window": 120000,
-      "max_output": 8000,
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.2-1b-instruct": {
       "name": "Llama 3.2 1B Instruct\t",
       "description": "The Meta Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (text in/text out).",
       "context_window": 131000,
       "max_output": 32000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "baidu/ernie-4.5-21B-a3b": {
+      "name": "ERNIE 4.5 21B A3B",
+      "description": "The ERNIE 4.5 series of open-source models adopts a Mixture-of-Experts (MoE) architecture, representing an innovative multimodal heterogeneous model structure. It achieves cross-modal knowledge fusion through a parameter-sharing mechanism while retaining dedicated parameter spaces for individual mod",
+      "context_window": 120000,
+      "max_output": 8000,
       "inputs": {
         "text": true
       }
@@ -1637,5 +1676,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-25T07:47:46.942Z"
+  "_syncedAt": "2026-11-05T12:39:51.049Z"
 }

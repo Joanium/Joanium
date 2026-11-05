@@ -85,9 +85,6 @@
     "meta/codellama-70b": {
       "name": "meta/codellama-70b"
     },
-    "meta/llama-3.2-11b-vision-instruct": {
-      "name": "meta/llama-3.2-11b-vision-instruct"
-    },
     "meta/llama-3.2-90b-vision-instruct": {
       "name": "meta/llama-3.2-90b-vision-instruct"
     },
@@ -123,6 +120,9 @@
     },
     "mistralai/mistral-large-2-instruct": {
       "name": "mistralai/mistral-large-2-instruct"
+    },
+    "mistralai/mistral-large-4-1t-a52b": {
+      "name": "Mistral Large 4 1t A52b"
     },
     "mistralai/mixtral-8x22b-v0.1": {
       "name": "mistralai/mixtral-8x22b-v0.1"
@@ -301,14 +301,17 @@
     "writer/palmyra-med-70b-32k": {
       "name": "writer/palmyra-med-70b-32k"
     },
-    "z-ai/glm-5.3": {
-      "name": "Glm 5 3"
-    },
     "z-ai/glm-5.3-flash": {
       "name": "Glm 5 3 FLASH"
     },
     "zyphra/zamba2-7b-instruct": {
       "name": "zyphra/zamba2-7b-instruct"
+    },
+    "meta/llama-3.2-11b-vision-instruct": {
+      "name": "meta/llama-3.2-11b-vision-instruct"
+    },
+    "z-ai/glm-5.3": {
+      "name": "Glm 5 3"
     },
     "moonshotai/kimi-k3": {
       "name": "Kimi K3"
@@ -508,5 +511,5 @@
       "name": "z-ai/glm-5.1"
     }
   },
-  "_syncedAt": "2026-10-25T07:47:21.810Z"
+  "_syncedAt": "2026-11-05T12:39:26.646Z"
 }

@@ -290,11 +290,44 @@
     "parasail-cope-b-s1": {
       "name": "Parasail Cope B S1"
     },
+    "parasail-glm-53-fast": {
+      "name": "Parasail Glm 53 FAST"
+    },
+    "parasail-deepseek-v41-flash-fast": {
+      "name": "Parasail Deepseek V41 FLASH FAST"
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash-fast": {
+      "name": "DeepSeek V4 1 FLASH FAST"
+    },
+    "parasail-deepseek-v4-pro-0813-fast": {
+      "name": "Parasail Deepseek V4 PRO 0813 FAST"
+    },
+    "deepseek-ai/DeepSeek-V4-Pro-0813-fast": {
+      "name": "DeepSeek V4 PRO 0813 FAST"
+    },
+    "parasail-minimax-m3-fast": {
+      "name": "Parasail Minimax M3 FAST"
+    },
+    "MiniMaxAI/MiniMax-M3-fast": {
+      "name": "MiniMax M3 FAST"
+    },
     "parasail-minimax-m31-flash": {
       "name": "Parasail Minimax M31 FLASH"
     },
     "MiniMaxAI/MiniMax-M3.1-Flash": {
       "name": "MiniMax M3 1 FLASH"
+    },
+    "parasail-kimi-k3-p2p": {
+      "name": "Parasail Kimi K3 P2p"
+    },
+    "parasail-kimi-k31-pro": {
+      "name": "Parasail Kimi K31 PRO"
+    },
+    "moonshotai/Kimi-K3.1-Pro": {
+      "name": "Kimi K3 1 PRO"
+    },
+    "moonshotai/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO"
     },
     "parasail-deepseek-v4-pro": {
       "name": "Parasail Deepseek V4 PRO"
@@ -390,5 +423,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-10-25T07:47:55.942Z"
+  "_syncedAt": "2026-11-05T12:39:59.477Z"
 }

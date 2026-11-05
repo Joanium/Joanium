@@ -54,6 +54,12 @@
     "ministral-8b-latest": {
       "name": "ministral-8b-latest"
     },
+    "mistral-large-4": {
+      "name": "Mistral Large 4"
+    },
+    "mistral-large-4-0": {
+      "name": "Mistral Large 4 0"
+    },
     "mistral-medium-latest": {
       "name": "Mistral Medium 3.1",
       "description": "Frontier-class multimodal model — strong coding and STEM at a fraction of Large's cost",
@@ -306,5 +312,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-10-25T07:47:27.033Z"
+  "_syncedAt": "2026-11-05T12:39:31.656Z"
 }

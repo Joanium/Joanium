@@ -1147,13 +1147,6 @@
         "max_output_tokens": null
       }
     },
-    "ds-v4.1-flash-el": {
-      "name": "Ds V4 1 FLASH El",
-      "context_window": {
-        "context_length": 1000000,
-        "max_output_tokens": null
-      }
-    },
     "step-5-preview-el": {
       "name": "Step 5 Preview El",
       "context_window": {
@@ -1201,6 +1194,13 @@
     },
     "mercury-3-vercel": {
       "name": "Mercury 3 Vercel",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "ds-v4.1-flash-el": {
+      "name": "Ds V4 1 FLASH El",
       "context_window": {
         "context_length": 1000000,
         "max_output_tokens": null
@@ -1984,5 +1984,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-25T07:47:52.484Z"
+  "_syncedAt": "2026-11-05T12:39:57.135Z"
 }

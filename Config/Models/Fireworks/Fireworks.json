@@ -87,8 +87,17 @@
     "accounts/fireworks/routers/deepseek-v4p1-flash-1017-spot": {
       "name": "Deepseek V4P1 FLASH 1017 Spot"
     },
+    "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast": {
+      "name": "Deepseek V4P1 FLASH 1017 Ultrafast"
+    },
     "accounts/fireworks/models/minimax-m3p1-flash": {
       "name": "Minimax M3p1 FLASH"
+    },
+    "accounts/fireworks/routers/rune": {
+      "name": "Rune"
+    },
+    "accounts/fireworks/models/kimi-k3p1-pro": {
+      "name": "Kimi K3p1 PRO"
     },
     "auto": {
       "name": "Auto"
@@ -98,6 +107,9 @@
     },
     "accounts/fireworks/models/qwen3p8-2p4t-a95b": {
       "name": "Qwen3p8 2p4t A95b"
+    },
+    "accounts/fireworks/models/rune": {
+      "name": "Rune"
     },
     "accounts/fireworks/models/glm-5p2": {
       "name": "Glm 5p2"
@@ -177,5 +189,5 @@
       "name": "Kimi K2p5"
     }
   },
-  "_syncedAt": "2026-10-25T07:47:35.244Z"
+  "_syncedAt": "2026-11-05T12:39:41.118Z"
 }

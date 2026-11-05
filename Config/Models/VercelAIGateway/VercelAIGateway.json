@@ -832,19 +832,6 @@
         "image": true
       }
     },
-    "arcee-ai/trinity-large-thinking": {
-      "name": "Trinity Large Thinking",
-      "description": "Trinity-Large-Thinking is a reasoning-optimized variant of Arcee AI's Trinity-Large family — a 398B-parameter sparse Mixture-of-Experts (MoE) model with approximately 13B active parameters per token. Built on Trinity-Large-Base and post-trained with extended chain-of-thought reasoning and agentic RL",
-      "context_window": 262100,
-      "max_output": 80000,
-      "pricing": {
-        "input": 0.25,
-        "output": 0.9
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "bytedance/seed-1.6": {
       "name": "Seed 1.6",
       "description": "ByteDance's new multimodal deep-thinking model, supporting both text and visual inputs with enhanced reasoning capabilities.",
@@ -1597,6 +1584,19 @@
         "text": true
       }
     },
+    "inclusionai/ling-3.1-flash-1019": {
+      "name": "Ling 3.1 Flash 1019",
+      "description": "Ling 3.1 Flash 1019 is InclusionAI's updated hybrid reasoning language model for coding, multi-step analysis, and tool-using agents. Its mixture-of-experts architecture has 560B total parameters with 25B active per token, and its 1M-token context window supports long-document analysis and extended a",
+      "context_window": 1000000,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.3,
+        "output": 0.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "inference-net/schematron-v2-small": {
       "name": "Schematron V2 Small",
       "description": "Schematron V2 Small is a specialized model from Inference.net for extracting structured data from HTML. It uses a supplied JSON Schema to produce conforming JSON and is designed for complex schemas and long pages.",
@@ -1649,9 +1649,9 @@
         "text": true
       }
     },
-    "meituan/longcat-2.5-preview": {
-      "name": "LongCat 2.5 Preview",
-      "description": "LongCat-2.5-Preview is Meituan’s multimodal reasoning model for coding and agentic workflows, with a 1M-token context window and support for text and image inputs. It combines image understanding, visual question answering, and content summarization with code generation, code understanding, and auto",
+    "meituan/longcat-2.5": {
+      "name": "LongCat 2.5",
+      "description": "LongCat 2.5 is Meituan’s native multimodal model for coding and long-running agent workflows. It combines visual understanding with multi-step reasoning and tool use to work across complex codebases and full-project development. Its 1M-token context window supports tasks involving large documents, c",
       "context_window": 1048576,
       "max_output": 131072,
       "pricing": {
@@ -3348,6 +3348,34 @@
         "image": true
       }
     },
+    "openai/gpt-6.1-terra": {
+      "name": "GPT-6.1 Terra",
+      "description": "GPT-6.1 Terra is OpenAI’s model for visual reasoning, precise computer use, and natural writing. It accepts text and images and generates text, with configurable reasoning effort, structured outputs, tool calling through the Responses API, and implicit and explicit prompt caching.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-terra-fast": {
+      "name": "GPT-6.1 Terra (Fast)",
+      "description": "GPT-6.1 Terra is OpenAI’s model for visual reasoning, precise computer use, and natural writing. It accepts text and images and generates text, with configurable reasoning effort, structured outputs, tool calling through the Responses API, and implicit and explicit prompt caching.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -3483,6 +3511,20 @@
         "image": true
       }
     },
+    "particle/particle-1": {
+      "name": "Particle-1",
+      "description": "Particle-1 is Particle AI’s model for agentic coding and software engineering, post-trained on DeepSeek V4.1 Flash to complete tasks with fewer tokens. It supports text and image inputs, reasoning, tool use, and implicit prompt caching.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "perplexity/sonar": {
       "name": "Sonar",
       "description": "Perplexity's lightweight offering with search grounding, quicker and cheaper than Sonar Pro.",
@@ -3501,19 +3543,6 @@
       "pricing": {
         "input": 0.1,
         "output": 0.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "poolside/laguna-s-2.1-free": {
-      "name": "Laguna S 2.1 Free",
-      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
-      "context_window": 256000,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true
@@ -3746,6 +3775,20 @@
       },
       "inputs": {
         "text": true
+      }
+    },
+    "tencent/hy4": {
+      "name": "Tencent Hy4",
+      "description": "Tencent Hy4 is a text model for coding, reasoning, and agentic workflows. It supports tool calling, structured outputs, and prompt caching, with a 1M-token context window for tasks such as software engineering, document analysis, and office automation.",
+      "context_window": 1024000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.42,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
       }
     },
     "tencent/hy4-preview": {
@@ -3993,34 +4036,6 @@
       "pricing": {
         "input": 1,
         "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "xiaomi/mimo-v2.5": {
-      "name": "MiMo M2.5",
-      "description": "A native full-modal model supporting text, image, video, and audio understanding, with powerful Agent capabilities.",
-      "context_window": 1050000,
-      "max_output": 131100,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "xiaomi/mimo-v2.5-pro": {
-      "name": "MiMo V2.5 Pro",
-      "description": "MiMo V2.5 Pro delivers significant improvements over its predecessor, MiMo-V2-Pro, in general agentic capabilities, complex software engineering, and long-horizon tasks. MiMo-V2.5-Pro is a 1.02T-parameter Mixture-of-Experts model with 42B active parameters, built on a hybrid-attention architecture w",
-      "context_window": 1050000,
-      "max_output": 131000,
-      "pricing": {
-        "input": 0.44,
-        "output": 0.87
       },
       "inputs": {
         "text": true,
@@ -4280,6 +4295,20 @@
         "image": true
       }
     },
+    "zai/glm-5.3-flashx-legal": {
+      "name": "GLM 5.3 FlashX Legal",
+      "description": "GLM 5.3 FlashX Legal is Z.ai’s model optimized for legal workflows, including contract review, evidence analysis, and compliance research. It helps teams analyze legal documents, cross-check records, and prepare structured findings for further review.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.37,
+        "output": 1.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "zai/glm-5v-turbo": {
       "name": "GLM 5V Turbo",
       "description": "GLM-5V-Turbo is Z.AI’s first multimodal coding foundation model, built for vision-based coding tasks. It can natively process multimodal inputs such as images, video, and text, while also excelling at long-horizon planning, complex coding, and action execution. Deeply optimized for agent workflows, ",
@@ -4288,6 +4317,74 @@
       "pricing": {
         "input": 1.2,
         "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "arcee-ai/trinity-large-thinking": {
+      "name": "Trinity Large Thinking",
+      "description": "Trinity-Large-Thinking is a reasoning-optimized variant of Arcee AI's Trinity-Large family — a 398B-parameter sparse Mixture-of-Experts (MoE) model with approximately 13B active parameters per token. Built on Trinity-Large-Base and post-trained with extended chain-of-thought reasoning and agentic RL",
+      "context_window": 262100,
+      "max_output": 80000,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meituan/longcat-2.5-preview": {
+      "name": "LongCat 2.5 Preview",
+      "description": "LongCat-2.5-Preview is Meituan’s multimodal reasoning model for coding and agentic workflows, with a 1M-token context window and support for text and image inputs. It combines image understanding, visual question answering, and content summarization with code generation, code understanding, and auto",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "poolside/laguna-s-2.1-free": {
+      "name": "Laguna S 2.1 Free",
+      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
+      "context_window": 256000,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.5": {
+      "name": "MiMo M2.5",
+      "description": "A native full-modal model supporting text, image, video, and audio understanding, with powerful Agent capabilities.",
+      "context_window": 1050000,
+      "max_output": 131100,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xiaomi/mimo-v2.5-pro": {
+      "name": "MiMo V2.5 Pro",
+      "description": "MiMo V2.5 Pro delivers significant improvements over its predecessor, MiMo-V2-Pro, in general agentic capabilities, complex software engineering, and long-horizon tasks. MiMo-V2.5-Pro is a 1.02T-parameter Mixture-of-Experts model with 42B active parameters, built on a hybrid-attention architecture w",
+      "context_window": 1050000,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
       },
       "inputs": {
         "text": true,
@@ -5397,5 +5494,5 @@
       }
     }
   },
-  "_syncedAt": "2026-10-25T07:47:51.016Z"
+  "_syncedAt": "2026-11-05T12:39:56.322Z"
 }

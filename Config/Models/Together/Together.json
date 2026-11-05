@@ -49,10 +49,6 @@
       "name": "Tev1 4B Experimental",
       "context_window": 32768
     },
-    "Qwen/Qwen3.8-2.4T-A95B": {
-      "name": "Qwen3.8-2.4T-A95B",
-      "context_window": 1010000
-    },
     "thinkingmachines/Inkling": {
       "name": "Inkling FP4",
       "context_window": 524288
@@ -100,6 +96,14 @@
     "MiniMaxAI/MiniMax-M3.1-Flash": {
       "name": "MiniMax M3.1 Flash",
       "context_window": 1048576
+    },
+    "moonshotai/Kimi-K3.1-Pro": {
+      "name": "Kimi K3.1 Pro",
+      "context_window": 1048576
+    },
+    "ricursive-ai/Ripple-65B-Preview": {
+      "name": "Ripple 65B Preview",
+      "context_window": 131072
     },
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
       "name": "Meta Llama 3.3 70B Instruct Turbo",
@@ -799,6 +803,10 @@
       "name": "GLM 5.3 FP8 Lora",
       "context_window": 1048576
     },
+    "Qwen/Qwen3.8-2.4T-A95B": {
+      "name": "Qwen3.8-2.4T-A95B",
+      "context_window": 1010000
+    },
     "deepseek-ai/DeepSeek-V4-Flash-0731": {
       "name": "Deepseek V4 Flash 0731",
       "context_window": 1048576
@@ -876,5 +884,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-10-25T07:47:32.536Z"
+  "_syncedAt": "2026-11-05T12:39:38.335Z"
 }
