@@ -1059,6 +1059,20 @@
         "image": true
       }
     },
+    "deepseek/deepseek-v4.1-flash-1017-ultrafast": {
+      "name": "DeepSeek V4.1 Flash 1017 Ultrafast",
+      "description": "DeepSeek V4.1 Flash 1017 Ultrafast serves the October 17, 2026 update of DeepSeek V4.1 Flash through Fireworks' accelerated serverless endpoint. It supports text and image input, configurable reasoning, tool calling, structured outputs, and automatic prefix caching. Available in public preview witho",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 2.4,
+        "output": 9.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepseek/deepseek-v4.1-flash-fast": {
       "name": "DeepSeek V4.1 Flash Fast",
       "description": "Speed-optimized deployment of DeepSeek V4.1 Flash using tensor parallelism and DSpark speculative decoding for faster token output and lower latency.",
@@ -1285,20 +1299,6 @@
         "image": true
       }
     },
-    "google/gemini-3.5-flash-batch": {
-      "name": "Gemini 3.5 Flash (Batch)",
-      "description": "Google's latest model, highly optimized for coding proficiency and parallel agentic execution loops. Defaults to medium thinking effort for faster and more cost-efficient responses.",
-      "context_window": 1000000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 0.75,
-        "output": 4.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-3.5-flash-lite": {
       "name": "Gemini 3.5 Flash Lite",
       "description": "Gemini 3.5 Flash Lite features upgraded agentic capabilities, making the model ideal for subagents in complex workflows.",
@@ -1368,20 +1368,6 @@
         "image": true
       }
     },
-    "google/gemini-3.7-flash-batch": {
-      "name": "Gemini 3.7 Flash (Batch)",
-      "description": "Gemini 3.7 Flash is the next iteration in the Gemini 3 model family, featuring algorithmic improvements to its core reasoning foundation. It supports customizable thinking configurations to control the mix of quality, cost and latency.",
-      "context_window": 1000000,
-      "max_output": 65535,
-      "pricing": {
-        "input": 0.38,
-        "output": 1.88
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-3.8-flash": {
       "name": "Gemini 3.8 Flash",
       "description": "Gemini 3.8 Flash is the high-efficiency, cost-effective powerhouse of the Gemini 3 family. It delivers Pro-level agentic capabilities, major leaps in code generation and terminal execution. 3.8 Flash serves as the primary agentic workhorse in the Gemini 3 family, bridging the gap between deep-reason",
@@ -1418,6 +1404,20 @@
       "pricing": {
         "input": 1.5,
         "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-omni-1.2-flash": {
+      "name": "Gemini Omni 1.2 Flash",
+      "description": "Gemini Omni 1.2 Flash is Google’s multimodal model for video generation and visual content creation. It combines text, image, and video inputs with text and video outputs, helping developers build creative applications that work across multiple media formats.",
+      "context_window": 131072,
+      "max_output": 260640,
+      "pricing": {
+        "input": 1.5,
+        "output": 9
       },
       "inputs": {
         "text": true,
@@ -1464,6 +1464,19 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "humansand/ampersand-v0.1": {
+      "name": "Ampersand v0.1",
+      "description": "Ampersand v0.1 is a collaborator model from Humans& for shared goals, group conversations, and long-running collaboration. Its Responses API supports text, reasoning, client-side function tools, and implicit prompt caching.",
+      "context_window": 1000000,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
       }
     },
     "inception/mercury-2": {
@@ -4323,6 +4336,34 @@
         "image": true
       }
     },
+    "google/gemini-3.5-flash-batch": {
+      "name": "Gemini 3.5 Flash (Batch)",
+      "description": "Google's latest model, highly optimized for coding proficiency and parallel agentic execution loops. Defaults to medium thinking effort for faster and more cost-efficient responses.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.75,
+        "output": 4.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3.7-flash-batch": {
+      "name": "Gemini 3.7 Flash (Batch)",
+      "description": "Gemini 3.7 Flash is the next iteration in the Gemini 3 model family, featuring algorithmic improvements to its core reasoning foundation. It supports customizable thinking configurations to control the mix of quality, cost and latency.",
+      "context_window": 1000000,
+      "max_output": 65535,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.88
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "arcee-ai/trinity-large-thinking": {
       "name": "Trinity Large Thinking",
       "description": "Trinity-Large-Thinking is a reasoning-optimized variant of Arcee AI's Trinity-Large family — a 398B-parameter sparse Mixture-of-Experts (MoE) model with approximately 13B active parameters per token. Built on Trinity-Large-Base and post-trained with extended chain-of-thought reasoning and agentic RL",
@@ -5494,5 +5535,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-05T12:39:56.322Z"
+  "_syncedAt": "2026-11-07T12:20:39.163Z"
 }

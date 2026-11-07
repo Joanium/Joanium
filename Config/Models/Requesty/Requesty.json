@@ -173,6 +173,20 @@
         "image": true
       }
     },
+    "lyceum/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
+      "context_window": 1048576,
+      "max_output": 262144,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "moonshot/kimi-k3.1-pro": {
       "name": "Kimi K3 1 PRO",
       "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
@@ -12942,5 +12956,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-05T12:39:52.936Z"
+  "_syncedAt": "2026-11-07T12:20:35.279Z"
 }

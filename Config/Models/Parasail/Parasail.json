@@ -329,6 +329,12 @@
     "moonshotai/kimi-k3.1-pro": {
       "name": "Kimi K3 1 PRO"
     },
+    "parasail-deepseek-v41-flash-p2p": {
+      "name": "Parasail Deepseek V41 FLASH P2p"
+    },
+    "parasail-glm-53-flash-h200-hongbo-1106": {
+      "name": "Parasail Glm 53 FLASH H200 Hongbo 1106"
+    },
     "parasail-deepseek-v4-pro": {
       "name": "Parasail Deepseek V4 PRO"
     },
@@ -423,5 +429,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-11-05T12:39:59.477Z"
+  "_syncedAt": "2026-11-07T12:20:43.905Z"
 }

@@ -47,8 +47,8 @@
         "max_output_tokens": null
       }
     },
-    "gemini-omni-1.1-flash": {
-      "name": "Gemini Omni 1 1 FLASH",
+    "gemini-omni-1.2-flash": {
+      "name": "Gemini Omni 1 2 FLASH",
       "context_window": {
         "context_length": 131072,
         "max_output_tokens": null
@@ -121,6 +121,13 @@
     },
     "nano-banana-2.1": {
       "name": "Nano Banana 2 1"
+    },
+    "gemini-omni-1.1-flash": {
+      "name": "Gemini Omni 1 1 FLASH",
+      "context_window": {
+        "context_length": 131072,
+        "max_output_tokens": null
+      }
     },
     "grok-4.3": {
       "name": "Grok 4 3"
@@ -1067,9 +1074,6 @@
     "kimi-k2.6": {
       "name": "Kimi K2 6"
     },
-    "hy3": {
-      "name": "Hy3"
-    },
     "glm-4.6": {
       "name": "Glm 4 6"
     },
@@ -1198,6 +1202,9 @@
         "context_length": 1000000,
         "max_output_tokens": null
       }
+    },
+    "hy3": {
+      "name": "Hy3"
     },
     "ds-v4.1-flash-el": {
       "name": "Ds V4 1 FLASH El",
@@ -1984,5 +1991,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-05T12:39:57.135Z"
+  "_syncedAt": "2026-11-07T12:20:40.559Z"
 }

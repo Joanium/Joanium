@@ -132,6 +132,11 @@
       "context_window": 131072,
       "max_output": 65536
     },
+    "gemini-omni-1.2-flash": {
+      "name": "Gemini Omni 1.2 Flash",
+      "context_window": 131072,
+      "max_output": 65536
+    },
     "gemini-3.5-transcribe": {
       "name": "Gemini 3.5 Transcribe",
       "context_window": 98304,
@@ -250,5 +255,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-11-05T12:39:32.339Z"
+  "_syncedAt": "2026-11-07T12:20:14.092Z"
 }
