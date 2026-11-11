@@ -115,9 +115,6 @@
     "stepfun-ai/Step-3.5-Flash": {
       "name": "Step 3 5 FLASH"
     },
-    "google/gemma-4-12B-it": {
-      "name": "Gemma 4 12B It"
-    },
     "moonshotai/Kimi-K2.5": {
       "name": "Kimi K2 5"
     },
@@ -183,12 +180,6 @@
     "zai-org/GLM-4.5-Air": {
       "name": "GLM 4 5 Air"
     },
-    "Wan-AI/Wan2.2-I2V-A14B": {
-      "name": "Wan2 2 I2V A14B"
-    },
-    "Wan-AI/Wan2.2-T2V-A14B": {
-      "name": "Wan2 2 T2V A14B"
-    },
     "inclusionAI/Ling-flash-2.0": {
       "name": "Ling FLASH 2 0"
     },
@@ -241,6 +232,15 @@
     "Qwen/Qwen2.5-7B-Instruct": {
       "name": "Qwen2 5 7B Instruct"
     },
+    "google/gemma-4-12B-it": {
+      "name": "Gemma 4 12B It"
+    },
+    "Wan-AI/Wan2.2-I2V-A14B": {
+      "name": "Wan2 2 I2V A14B"
+    },
+    "Wan-AI/Wan2.2-T2V-A14B": {
+      "name": "Wan2 2 T2V A14B"
+    },
     "Qwen/Qwen3.5-397B-A17B": {
       "name": "Qwen3 5 397B A17B"
     },
@@ -254,5 +254,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-11-07T12:20:26.563Z"
+  "_syncedAt": "2026-11-11T10:10:33.513Z"
 }

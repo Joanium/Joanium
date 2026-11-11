@@ -101,6 +101,10 @@
       "name": "Ternary Bonsai 27B",
       "context_window": 262144
     },
+    "elorian-labs/glimpse-1.0": {
+      "name": "Elorian Glimpse 1.0",
+      "context_window": 262144
+    },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
       "context_window": 32768
@@ -884,5 +888,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-11-07T12:20:18.048Z"
+  "_syncedAt": "2026-11-11T10:10:27.529Z"
 }

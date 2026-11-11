@@ -162,6 +162,11 @@
       "context_window": 1048576,
       "max_output": 32768
     },
+    "gemini-4-carbon": {
+      "name": "Gemini 4 Carbon",
+      "context_window": 1048576,
+      "max_output": 32768
+    },
     "lyria-3-clip-preview": {
       "name": "Lyria 3 Clip Preview",
       "context_window": 1048576,
@@ -255,5 +260,5 @@
       "max_output": 65536
     }
   },
-  "_syncedAt": "2026-11-07T12:20:14.092Z"
+  "_syncedAt": "2026-11-11T10:10:21.469Z"
 }
