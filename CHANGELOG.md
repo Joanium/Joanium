@@ -6,6 +6,19 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1111.0] - 2026-11-11
+
+* Updated AI Models
+* Chore(deps-dev): Bump jscpd from 5.4.2 to 5.4.3
+* Chore(deps-dev): Bump electron from 45.2.1 to 45.2.3
+* Chore(deps): Bump the npm_and_yarn group across 1 directory with 4 updates
+* Updated AI Models
+* Chore(deps): Bump github/codeql-action from 4.39.1 to 4.39.2
+* Chore(deps-dev): Bump eslint from 10.13.0 to 10.14.0
+* Chore(deps): Bump the npm_and_yarn group across 1 directory with 6 updates
+
+---
+
 ## [2026.1105.0] - 2026-11-05
 
 * Updated AI Models
