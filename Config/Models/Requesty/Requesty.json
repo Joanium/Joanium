@@ -5,6 +5,342 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "vertex/gemini-4-neon": {
+      "name": "Gemini 4 Neon",
+      "description": "Gemini 4 Neon is Google's balanced Gemini 4 model for complex coding, multi step reasoning and agentic enterprise workflows, with frontier level reasoning at lower latency and cost than Carbon over a unified 1M token context.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-4-neon@eu": {
+      "name": "Gemini 4 Neon@eu",
+      "description": "Gemini 4 Neon is Google's balanced Gemini 4 model for complex coding, multi step reasoning and agentic enterprise workflows, with frontier level reasoning at lower latency and cost than Carbon over a unified 1M token context.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 3.3,
+        "output": 16.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-4-neon@us": {
+      "name": "Gemini 4 Neon@us",
+      "description": "Gemini 4 Neon is Google's balanced Gemini 4 model for complex coding, multi step reasoning and agentic enterprise workflows, with frontier level reasoning at lower latency and cost than Carbon over a unified 1M token context.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 3.3,
+        "output": 16.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@eastus": {
+      "name": "Gpt 6 2 Astra@eastus",
+      "description": "GPT-6.2 Astra is OpenAI's most capable model, built for the hardest end-to-end work. It is suited for complex reasoning, coding, computer use, research, and document creation, with reasoning effort levels from low up to xhigh and max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@eastus": {
+      "name": "Gpt 6 2 Sol@eastus",
+      "description": "GPT-6.2 Sol delivers near-Astra performance at a lower cost for complex coding, computer use, and professional work. It succeeds GPT-6.1 Sol with the same 1M context and 128K output, cheaper cached input, and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@francecentral": {
+      "name": "Gpt 6 2 Astra@francecentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 9.6,
+        "output": 48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@germanywestcentral": {
+      "name": "Gpt 6 2 Astra@germanywestcentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 9.6,
+        "output": 48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@polandcentral": {
+      "name": "Gpt 6 2 Astra@polandcentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 9.6,
+        "output": 48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@swedencentral": {
+      "name": "Gpt 6 2 Astra@swedencentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 9.6,
+        "output": 48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-astra@westeurope": {
+      "name": "Gpt 6 2 Astra@westeurope",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 9.6,
+        "output": 48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@francecentral": {
+      "name": "Gpt 6 2 Sol@francecentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@germanywestcentral": {
+      "name": "Gpt 6 2 Sol@germanywestcentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@polandcentral": {
+      "name": "Gpt 6 2 Sol@polandcentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@swedencentral": {
+      "name": "Gpt 6 2 Sol@swedencentral",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-6.2-sol@westeurope": {
+      "name": "Gpt 6 2 Sol@westeurope",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2.4,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol": {
+      "name": "Gpt 6 2 Sol",
+      "description": "GPT-6.2 Sol balances intelligence and cost for coding agents, tool use and everyday complex work. It succeeds GPT-6.1 Sol at the same token prices with 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra": {
+      "name": "Gpt 6 2 Astra",
+      "description": "GPT-6.2 Astra is OpenAI's flagship reasoning model for complex coding, computer use and professional work. It beats GPT-6 Astra at a fraction of the cost per task, with 20% cheaper tokens, 60% cheaper cached input, 1M context, 128K output and reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy4-flash": {
+      "name": "Hy4 FLASH",
+      "description": "Hy4 flash is a faster, cheaper variant of Tencent's Hy4 with roughly a quarter of the flagship's active parameters and the same 1M token context window. It supports image input, optional reasoning, tool calling and structured outputs, and suits high volume workloads such as coding assistance, agent ",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "fireworks/qwen4-max": {
+      "name": "Qwen4 MAX",
+      "description": "Alibaba's Qwen4 flagship mixture-of-experts model, served via Fireworks Serverless with text and image input.",
+      "context_window": 262144,
+      "max_output": 0,
+      "pricing": {
+        "input": 1.5,
+        "output": 4.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-4-hydrogen@eu": {
+      "name": "Gemini 4 Hydrogen@eu",
+      "description": "Gemini 4 Hydrogen is the high efficiency workhorse of Google's Gemini 4 family, built for high throughput agentic workflows, coding and routing at lower cost and latency, with a unified 1M token context window.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.65,
+        "output": 8.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-4-hydrogen": {
+      "name": "Gemini 4 Hydrogen",
+      "description": "Gemini 4 Hydrogen is the high efficiency workhorse of Google's Gemini 4 family, built for high throughput agentic workflows, coding and routing at lower cost and latency, with a unified 1M token context window.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-4-hydrogen@us": {
+      "name": "Gemini 4 Hydrogen@us",
+      "description": "Gemini 4 Hydrogen is the high efficiency workhorse of Google's Gemini 4 family, built for high throughput agentic workflows, coding and routing at lower cost and latency, with a unified 1M token context window.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.65,
+        "output": 8.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-hydrogen": {
+      "name": "Gemini 4 Hydrogen",
+      "description": "Gemini 4 Hydrogen is the high efficiency workhorse of Google's Gemini 4 family, built for high throughput agentic workflows, coding and routing at lower cost and latency, with a unified 1M token context window.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-hydrogen:flex": {
+      "name": "Gemini 4 Hydrogen:flex",
+      "description": "Gemini 4 Hydrogen is the high efficiency workhorse of Google's Gemini 4 family, built for high throughput agentic workflows, coding and routing at lower cost and latency, with a unified 1M token context window.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "vertex/gemini-4-carbon": {
       "name": "Gemini 4 Carbon",
       "description": "Gemini 4 Carbon is Google's strongest Gemini 4 reasoning model, built for complex multi-step coding and debugging, long-horizon agentic workflows, cybersecurity and open-ended scientific research. It reasons more deeply than Gemini 4 Argon over a 1M token context.",
@@ -47,10 +383,66 @@
         "image": true
       }
     },
+    "nebius/inkling-2-small": {
+      "name": "Inkling 2 Small",
+      "description": "Thinking Machines Lab's multimodal model. It accepts text and images and generates text, with a 1M-token context window and 594B total parameters. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 0.3,
+        "output": 1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "anthropic/claude-fable-5.2": {
       "name": "Claude Fable 5 2",
       "description": "Claude Fable 5.2 is Anthropic's most capable model, built for demanding reasoning and long horizon agentic work such as agent sessions that run for hours, multistep deep research, and analysis carried through to a finished document, spreadsheet, or deck. It improves on Claude Fable 5.1 in coding, re",
       "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy4": {
+      "name": "Hy4",
+      "description": "Hy4 is Tencent's flagship model and the official release after Hy4 Preview, with stronger agentic capabilities and better performance on long-horizon, real-world productivity tasks. It adds image input for the first time and supports a 1M token context window, optional reasoning, tool calling and st",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.83,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol-healthcare": {
+      "name": "Gpt 6 2 Sol Healthcare",
+      "description": "GPT-6.2 Sol Healthcare pairs GPT-6.2 Sol with OpenAI's harness for clinical questions; its web search uses a dedicated index of medical sources. 1M context, 128K output, reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra-healthcare": {
+      "name": "Gpt 6 2 Astra Healthcare",
+      "description": "GPT-6.2 Astra Healthcare pairs GPT-6.2 Astra with OpenAI's harness for clinical questions; its web search uses a dedicated index of medical sources. 1M context, 128K output, reasoning effort from low to max.",
+      "context_window": 1050000,
       "max_output": 128000,
       "pricing": {
         "input": 8,
@@ -83,6 +475,20 @@
       "pricing": {
         "input": 0.22,
         "output": 0.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.1-sol-healthcare": {
+      "name": "Gpt 6 1 Sol Healthcare",
+      "description": "GPT-6.1 Sol Healthcare pairs GPT-6.1 Sol with OpenAI's harness for clinical questions; its web search uses a dedicated index of medical sources. 1M context, 128K output, reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
       },
       "inputs": {
         "text": true,
@@ -201,6 +607,62 @@
         "image": true
       }
     },
+    "doubleword/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro is an open-weight multimodal reasoning model from Moonshot AI, the successor to Kimi K3, with a one-million-token context window.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "doubleword/kimi-k3.1-pro:flex": {
+      "name": "Kimi K3 1 Pro:flex",
+      "description": "Kimi K3.1 Pro is an open-weight multimodal reasoning model from Moonshot AI, the successor to Kimi K3, with a one-million-token context window.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 1.4,
+        "output": 7
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Moonshot AI’s open-weight multimodal mixture-of-experts model for reasoning, coding and agentic tool use. It accepts text and images and generates text, with a 1M-token context window, 2.8T total parameters and 104B active parameters. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "parasail/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "deepinfra/kimi-k3.1-pro": {
       "name": "Kimi K3 1 PRO",
       "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
@@ -220,6 +682,20 @@
       "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
       "context_window": 1048576,
       "max_output": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "lyceum/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
+      "context_window": 1048576,
+      "max_output": 262144,
       "pricing": {
         "input": 2,
         "output": 10
@@ -251,20 +727,6 @@
       "pricing": {
         "input": 4,
         "output": 20
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/kimi-k3.1-pro": {
-      "name": "Kimi K3 1 PRO",
-      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
-      "context_window": 1048576,
-      "max_output": 1048576,
-      "pricing": {
-        "input": 2,
-        "output": 10
       },
       "inputs": {
         "text": true,
@@ -313,18 +775,6 @@
         "image": true
       }
     },
-    "melious/clef": {
-      "name": "Clef",
-      "context_window": 0,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.24,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "melious/clef-flash": {
       "name": "Clef FLASH",
       "context_window": 0,
@@ -337,11 +787,25 @@
         "text": true
       }
     },
-    "minimaxi/minimax-m3.1-flash": {
+    "tensorx/minimax-m3.1-flash": {
       "name": "Minimax M3 1 FLASH",
       "description": "MiniMax M3.1 Flash is a fast multimodal model in the MiniMax M3 family, built for agentic cowork automation, coding and visual tasks. It scores 72.5% on AutomationBench AA (best among open models), 73.67% on DeepSWE, 91.0 on BabyVision with tools, 82.5 on CharXiv RQ, 56% on AA Omniscience and 48% on",
-      "context_window": 1000000,
-      "max_output": 128000,
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "fireworks/minimax-m3.1-flash": {
+      "name": "Minimax M3 1 FLASH",
+      "description": "MiniMax's multimodal model for coding, tool use and long-context reasoning, served via Fireworks Serverless.",
+      "context_window": 1048576,
+      "max_output": 943718,
       "pricing": {
         "input": 0.15,
         "output": 0.6
@@ -351,14 +815,124 @@
         "image": true
       }
     },
-    "tensorx/minimax-m3.1-flash": {
+    "nebius/minimax-m3.1-flash": {
       "name": "Minimax M3 1 FLASH",
-      "description": "MiniMax M3.1 Flash is a fast multimodal model in the MiniMax M3 family, built for agentic cowork automation, coding and visual tasks. It scores 72.5% on AutomationBench AA (best among open models), 73.67% on DeepSWE, 91.0 on BabyVision with tools, 82.5 on CharXiv RQ, 56% on AA Omniscience and 48% on",
+      "description": "MiniMax-M3.1-Flash is a native multimodal mixture-of-experts model for coding, agentic workflows, computer use, and cybersecurity. It supports text, image, and video inputs with a context window of up to 1M tokens. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "parasail/minimax-m3.1-flash": {
+      "name": "Minimax M3 1 FLASH",
+      "description": "MiniMax M3.1 Flash",
+      "context_window": 1048576,
+      "max_output": 524288,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "doubleword/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017 is the October 17, 2026 update for coding, reasoning, tool use, and long-context analysis, with text and image input.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "doubleword/deepseek-v4.1-flash-1017:flex": {
+      "name": "Deepseek V4 1 FLASH 1017:flex",
+      "description": "DeepSeek V4.1 Flash 1017 is the October 17, 2026 update for coding, reasoning, tool use, and long-context analysis, with text and image input.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.12,
+        "output": 0.48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inceptron/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017 updates V4.1 Flash for coding, reasoning, tool use, and visual understanding.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek’s multimodal Flash model for reasoning, coding and tool-driven workflows, with text and image input and text output. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "parasail/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017",
       "context_window": 1048576,
       "max_output": 1048576,
       "pricing": {
         "input": 0.3,
         "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "relace/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "scaleway/deepseek-v4.1-flash-1017": {
+      "name": "Deepseek V4 1 FLASH 1017",
+      "description": "DeepSeek V4.1 Flash 1017 is DeepSeek's multimodal Flash model for reasoning, coding and agent workflows, with text and image input. 256K context during Scaleway preview (1M native). EU-hosted by Scaleway.",
+      "context_window": 256000,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.09
       },
       "inputs": {
         "text": true,
@@ -491,6 +1065,61 @@
         "image": true
       }
     },
+    "openai/gpt-6-astra-healthcare": {
+      "name": "Gpt 6 Astra Healthcare",
+      "description": "GPT-6 Astra Healthcare pairs GPT-6 Astra with OpenAI's harness for clinical questions; its web search uses a dedicated index of medical sources. 1M context, 128K output, reasoning effort from low to max.",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 10,
+        "output": 50
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/beam-1.0-501b-a23b": {
+      "name": "Beam 1 0 501B A23b",
+      "description": "Beam is Reflection’s open-weight, instruction-tuned text model for coding, reasoning and agentic tool use. Its mixture-of-experts architecture has 501.3B total parameters and 23.4B active parameters. It supports a 1M-token context window, was developed predominantly for English, and has a knowledge ",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.25,
+        "output": 1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nebius/muse-spark-open": {
+      "name": "Muse Spark Open",
+      "description": "Meta’s 816B-parameter mixture-of-experts model for coding and agentic workflows, with about 42B active parameters, image and video input, reasoning and tool use. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/nemotron-3.5-super-vl": {
+      "name": "Nemotron 3 5 Super VL",
+      "description": "NVIDIA's multimodal model for visual understanding, coding, reasoning, and tool use. It processes text, images, and video to generate text responses. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 0.3,
+        "output": 0.9
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "fireworks/muse-spark-open": {
       "name": "Muse Spark Open",
       "description": "Muse Spark Open is an open weights reasoning model from Meta optimized for agentic coding, with reliable tool calling, deep codebase understanding and native image understanding. Sparse MoE with 816B total and 42B active parameters, 1M token context.",
@@ -554,20 +1183,6 @@
       "pricing": {
         "input": 2.2,
         "output": 11
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "meta/muse-spark-1.3": {
-      "name": "Muse Spark 1 3",
-      "description": "Muse Spark 1.3 is a reasoning model from Meta built for long horizon coding and multi step agentic work, with improved tool, browser and computer use, native tool calling and MCP support, and fewer tokens than 1.2. It accepts text, images, video and PDF documents with a 1M token context and returns ",
-      "context_window": 1048576,
-      "max_output": 943718,
-      "pricing": {
-        "input": 1.25,
-        "output": 4.25
       },
       "inputs": {
         "text": true,
@@ -795,6 +1410,18 @@
         "image": true
       }
     },
+    "melious/clef": {
+      "name": "Clef",
+      "context_window": 0,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.24,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "perplexity/pplx-decider-v1-27b": {
       "name": "Pplx Decider V1 27B",
       "description": "Perplexity decision model. Answers typed questions (noul, choice, score) about the provided state with probabilities instead of text.",
@@ -1004,19 +1631,6 @@
         "image": true
       }
     },
-    "novita/ling-3.1-flash": {
-      "name": "Ling 3 1 FLASH",
-      "description": "Ling 3.1 Flash is a hybrid reasoning MoE model from inclusionAI with 560B total and 25B active parameters. Served by Novita with a 256K context window and 32K max output, supporting reasoning and function calling. Free tier.",
-      "context_window": 262144,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "vertex/claude-sonnet-5-5": {
       "name": "Claude Sonnet 5 5",
       "description": "Claude Sonnet 5.5 is a step-change improvement over Sonnet 5. It performs great with well-scoped everyday tasks like building features, fixing bugs, and creating polished documents, slides, and spreadsheets. Sonnet 5.5 also improves on communication and writes more clearly than Sonnet 5.",
@@ -1053,34 +1667,6 @@
       "pricing": {
         "input": 2.2,
         "output": 11
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepinfra/mimo-v2.6-flash": {
-      "name": "Mimo V2 6 FLASH",
-      "description": "MiMo-V2.6-Flash is the efficiency-balanced model in Xiaomi's MiMo-V2.6 series: a sparse Mixture-of-Experts model with 309B total and 15B activated parameters, natively omnimodal across text, image, video and audio, with a 1M-token context window. Trained with large-scale mixed reinforcement learning",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepinfra/mimo-v2.6-pro": {
-      "name": "Mimo V2 6 PRO",
-      "description": "MiMo-V2.6-Pro is the flagship of Xiaomi's MiMo-V2.6 series: a sparse Mixture-of-Experts model with 1.02T total and 42B activated parameters, natively omnimodal across text, image, video and audio, with a 1M-token context window. Trained with large-scale mixed reinforcement learning and groupwise age",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.43,
-        "output": 0.87
       },
       "inputs": {
         "text": true,
@@ -1549,6 +2135,34 @@
         "image": true
       }
     },
+    "deepinfra/mimo-v2.6-flash": {
+      "name": "Mimo V2 6 FLASH",
+      "description": "MiMo-V2.6-Flash is the efficiency-balanced model in Xiaomi's MiMo-V2.6 series: a sparse Mixture-of-Experts model with 309B total and 15B activated parameters, natively omnimodal across text, image, video and audio, with a 1M-token context window. Trained with large-scale mixed reinforcement learning",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepinfra/mimo-v2.6-pro": {
+      "name": "Mimo V2 6 PRO",
+      "description": "MiMo-V2.6-Pro is the flagship of Xiaomi's MiMo-V2.6 series: a sparse Mixture-of-Experts model with 1.02T total and 42B activated parameters, natively omnimodal across text, image, video and audio, with a 1M-token context window. Trained with large-scale mixed reinforcement learning and groupwise age",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.43,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "xai/grok-4.7": {
       "name": "Grok 4 7",
       "description": "Grok 4.7 is SpaceXAI's flagship model for coding, agentic tasks, and knowledge work, succeeding Grok 4.6. It is particularly strong at long-running software engineering tasks, verifying its own work, and managing long context, and it improves on its predecessor at professional knowledge work such as",
@@ -1590,80 +2204,11 @@
         "image": true
       }
     },
-    "runware/deepseek-v4.1-flash": {
+    "parasail/deepseek-v4.1-flash": {
       "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on output from a 552B-parameter backbone, an asymmetric split that keeps per-token compute low relative ",
+      "description": "DeepSeek V4.1 Flash",
       "context_window": 1048576,
-      "max_output": 384000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistral/glm-5-3": {
-      "name": "Glm 5 3",
-      "description": "GLM 5.3 by Z.ai is an open weights model served by Mistral on EU infrastructure with no Mistral modifications. 1M token context window, 128K max output. Text only. Supports reasoning, function calling, structured outputs, predicted outputs and prefix. Built for long context coding and agentic workfl",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 1.54,
-        "output": 4.84
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "sference/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "tensorx/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "fireworks/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "pricing": {
-        "input": 0.22,
-        "output": 0.66
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
-      "context_window": 1048576,
-      "max_output": 393216,
+      "max_output": 1048576,
       "pricing": {
         "input": 0.3,
         "output": 1.2
@@ -1671,6 +2216,18 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "relace/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true
       }
     },
     "deepseek/deepseek-v4.1-flash": {
@@ -1701,19 +2258,6 @@
         "image": true
       }
     },
-    "tencent/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek-V4.1-Flash is DeepSeek's efficient production model with a 1M token context window, configurable thinking mode and strong tool calling for high-concurrency, low-latency workloads.",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepinfra/deepseek-v4.1-flash": {
       "name": "Deepseek V4 1 FLASH",
       "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
@@ -1736,6 +2280,76 @@
       "pricing": {
         "input": 0.16,
         "output": 0.48
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "fireworks/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.22,
+        "output": 0.66
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "lyceum/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on output from a 552B-parameter backbone, an asymmetric split that keeps per-token compute low relative ",
+      "context_window": 1048576,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "runware/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on output from a 552B-parameter backbone, an asymmetric split that keeps per-token compute low relative ",
+      "context_window": 1048576,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "sference/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tensorx/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5
       },
       "inputs": {
         "text": true,
@@ -1792,6 +2406,20 @@
       "pricing": {
         "input": 5,
         "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta/muse-spark-1.3": {
+      "name": "Muse Spark 1 3",
+      "description": "Muse Spark 1.3 is a reasoning model from Meta built for long horizon coding and multi step agentic work, with improved tool, browser and computer use, native tool calling and MCP support, and fewer tokens than 1.2. It accepts text, images, video and PDF documents with a 1M token context and returns ",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 1.25,
+        "output": 4.25
       },
       "inputs": {
         "text": true,
@@ -1868,20 +2496,6 @@
         "image": true
       }
     },
-    "runware/glm-5.3-flash": {
-      "name": "Glm 5 3 FLASH",
-      "description": "GLM 5.3 Flash is Z.ai's lower-cost model from the GLM 5.3 family for coding and long-horizon agent workflows, with reasoning and efficient long-context serving. Image input is not supported on this deployment. Served via Runware.",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "tencent/hy4-preview": {
       "name": "Hy4 Preview",
       "description": "Hy4 preview is Tencent's flagship class MoE model with 770B total parameters and 49B activated, supporting a 1M token context window. It is optimized for agent, coding, and productivity scenarios, with strong task decomposition, context tracking, instruction following, and long chain execution. It i",
@@ -1893,34 +2507,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "tensorx/qwen3.8": {
-      "name": "Qwen3 8",
-      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.",
-      "context_window": 1000000,
-      "max_output": 262144,
-      "pricing": {
-        "input": 2.5,
-        "output": 6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "tensorx/qwen3.8-2.4t-a95b": {
-      "name": "Qwen3 8 2 4t A95b",
-      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.",
-      "context_window": 1000000,
-      "max_output": 262144,
-      "pricing": {
-        "input": 2.5,
-        "output": 6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "fireworks/glm-5.3-flash": {
@@ -1977,6 +2563,76 @@
         "image": true
       }
     },
+    "doubleword/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "GLM-5.3-Flash is Z.ai's natively multimodal model (320B total, 18B active) for coding, reasoning, and agentic workflows.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "doubleword/glm-5.3-flash:flex": {
+      "name": "Glm 5 3 Flash:flex",
+      "description": "GLM-5.3-Flash is Z.ai's natively multimodal model (320B total, 18B active) for coding, reasoning, and agentic workflows.",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.11,
+        "output": 0.38
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inceptron/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "GLM-5.3 Flash is a lower-cost Z.ai reasoning model for coding and tool use. This Inceptron endpoint accepts text input.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.19,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "Z.ai's 320B-parameter, 18B-active mixture-of-experts model for coding, agentic workflows, reasoning, tool use, and long-context tasks. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "parasail/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "GLM-5.3 Flash",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "alibaba/qwen3.8-flash": {
       "name": "Qwen3 8 FLASH",
       "description": "Qwen3.8 Flash is a multimodal reasoning model from Alibaba. It is suited for coding assistance, agentic workflows, visual understanding, document and codebase analysis, desktop interaction, chart analysis, and long video analysis.",
@@ -2005,13 +2661,13 @@
         "image": true
       }
     },
-    "novita/glm-5.3-flash": {
+    "lyceum/glm-5.3-flash": {
       "name": "Glm 5 3 FLASH",
-      "description": "GLM-5.3-Flash is a native multimodal model from Z.ai, suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while reducing compute overhead. Accepts text, image and video input.",
+      "description": "ZAI's fast GLM-5.3 variant with hybrid reasoning, vision input, a 1M token context window, and tool use at a fraction of the flagship price. Served by Lyceum in the EU.",
       "context_window": 1048576,
-      "max_output": 131072,
+      "max_output": 65536,
       "pricing": {
-        "input": 0.15,
+        "input": 0.2,
         "output": 0.5
       },
       "inputs": {
@@ -2061,19 +2717,6 @@
         "image": true
       }
     },
-    "melious/glm-5.3": {
-      "name": "Glm 5 3",
-      "description": "GLM-5.3 is Z.ai's flagship 744B MoE hybrid reasoning model for complex coding and long-horizon agent tasks, with a 1M token context. Served from the EU by Melious.",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "pricing": {
-        "input": 1.14,
-        "output": 3.42
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "melious/glm-5.3-flash": {
       "name": "Glm 5 3 FLASH",
       "description": "GLM-5.3-Flash is a native multimodal model from Z.ai, suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while reducing compute overhead. Accepts text, image and video input. Served from the EU by Mel",
@@ -2088,14 +2731,66 @@
         "image": true
       }
     },
-    "sference/glm-5.3": {
+    "runware/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "GLM 5.3 Flash is Z.ai's lower-cost model from the GLM 5.3 family for coding and long-horizon agent workflows, with reasoning and efficient long-context serving. Image input is not supported on this deployment. Served via Runware.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inceptron/glm-5.3": {
       "name": "Glm 5 3",
-      "description": "GLM 5.3 is the latest Z.ai flagship model for long horizon coding, reasoning, and agentic workflows. It builds on GLM 5.2 with a 1M token context window, stronger engineering task performance, and multiple thinking effort levels. Released under the MIT license. Served via Sference.",
+      "description": "GLM-5.3 is Z.ai's text reasoning model, post-trained from the GLM-5.2 base for complex coding, long-running tasks, and tool use.",
       "context_window": 1048576,
       "max_output": 1048576,
       "pricing": {
-        "input": 1.2,
-        "output": 4.2
+        "input": 1,
+        "output": 3.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nebius/glm-5.3": {
+      "name": "Glm 5 3",
+      "description": "Z.ai's GLM-5.3 in NVFP4 with DFlash2 speculative decoding: a 750B-parameter mixture-of-experts model for coding, agentic workflows, reasoning, tool use, and long-context tasks over a 1M-token window. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "relace/glm-5.3": {
+      "name": "Glm 5 3",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.75,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "scaleway/glm-5.3": {
+      "name": "Glm 5 3",
+      "description": "GLM-5.3 is Z.ai's flagship open-weight model for long-horizon coding, agentic engineering, and tool use. 256K context during Scaleway preview (1M native). EU-hosted by Scaleway.",
+      "context_window": 256000,
+      "max_output": 24576,
+      "pricing": {
+        "input": 2.09,
+        "output": 6.38
       },
       "inputs": {
         "text": true
@@ -2184,6 +2879,58 @@
         "image": true
       }
     },
+    "lyceum/glm-5.3": {
+      "name": "Glm 5 3",
+      "description": "ZAI's newest GLM-5.3 flagship MoE model with strong bilingual reasoning, a 1M token context window, long-context understanding, and tool use. Served by Lyceum in the EU.",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.75,
+        "output": 4.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "melious/glm-5.3": {
+      "name": "Glm 5 3",
+      "description": "GLM-5.3 is Z.ai's flagship 744B MoE hybrid reasoning model for complex coding and long-horizon agent tasks, with a 1M token context. Served from the EU by Melious.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 1.14,
+        "output": 3.42
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/glm-5-3": {
+      "name": "Glm 5 3",
+      "description": "GLM 5.3 by Z.ai is an open weights model served by Mistral on EU infrastructure with no Mistral modifications. 1M token context window, 128K max output. Text only. Supports reasoning, function calling, structured outputs, predicted outputs and prefix. Built for long context coding and agentic workfl",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.54,
+        "output": 4.84
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "sference/glm-5.3": {
+      "name": "Glm 5 3",
+      "description": "GLM 5.3 is the latest Z.ai flagship model for long horizon coding, reasoning, and agentic workflows. It builds on GLM 5.2 with a 1M token context window, stronger engineering task performance, and multiple thinking effort levels. Released under the MIT license. Served via Sference.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 1.2,
+        "output": 4.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "tencent/glm-5.3": {
       "name": "Glm 5 3",
       "description": "GLM-5.3 is Zhipu's latest flagship model with a 1M token context window, built for deep reasoning, complex agent and coding tasks and long-running workflows.",
@@ -2211,17 +2958,18 @@
         "image": true
       }
     },
-    "fireworks/nemotron-lightning-3.5-30b-a3b": {
-      "name": "Nemotron Lightning 3 5 30B A3b",
-      "description": "Nemotron-Lightning-3.5-30B-A3B is a 30B-parameter Mixture-of-Experts language model (3B active) from NVIDIA's Nemotron-H family, built on a hybrid Mamba-Transformer architecture for efficient long-context inference. Like other models in the family, it responds to queries by first generating a reason",
-      "context_window": 262144,
-      "max_output": 262144,
+    "nebius/qwen3.8-27b": {
+      "name": "Qwen3 8 27B",
+      "description": "Qwen3.8-27B is Qwen's dense 27B-parameter reasoning model for coding, professional work, research, and long-horizon agentic tasks. This NVFP4 serverless deployment supports tool calling and a 1M-token context window. Hosted on Nebius.",
+      "context_window": 1000000,
+      "max_output": 900000,
       "pricing": {
-        "input": 0.05,
-        "output": 0.18
+        "input": 0.45,
+        "output": 3
       },
       "inputs": {
-        "text": true
+        "text": true,
+        "image": true
       }
     },
     "vertex/gemini-3.7-flash": {
@@ -2304,6 +3052,58 @@
         "text": true
       }
     },
+    "tensorx/qwen3.8": {
+      "name": "Qwen3 8",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.",
+      "context_window": 1000000,
+      "max_output": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813",
+      "description": "DeepSeek v4 Pro - 1.6T total / 49B active params. Performance rivaling the world's top closed-source models.",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nebius/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813",
+      "description": "DeepSeek V4 Pro 0813 is DeepSeek's official V4 Pro release for advanced reasoning, coding, tool use, and long-horizon agentic workflows. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 943718,
+      "pricing": {
+        "input": 1.32,
+        "output": 3.96
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "relace/deepseek-v4-pro-0813": {
+      "name": "Deepseek V4 PRO 0813",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.5,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "xai/grok-4.6": {
       "name": "Grok 4 6",
       "description": "Grok 4.6 is xAI's smartest frontier model, with leading performance on coding, knowledge work, and STEM. It accepts text and image inputs with text output, and supports tool calling, structured outputs, web search, prompt caching, and extended reasoning. 500k token context window. Pricing is tiered:",
@@ -2326,6 +3126,32 @@
       "pricing": {
         "input": 0,
         "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "fireworks/nemotron-lightning-3.5-30b-a3b": {
+      "name": "Nemotron Lightning 3 5 30B A3b",
+      "description": "Nemotron-Lightning-3.5-30B-A3B is a 30B-parameter Mixture-of-Experts language model (3B active) from NVIDIA's Nemotron-H family, built on a hybrid Mamba-Transformer architecture for efficient long-context inference. Like other models in the family, it responds to queries by first generating a reason",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "nebius/nemotron-3.5-lightning-30b-a3b": {
+      "name": "Nemotron 3 5 Lightning 30B A3b",
+      "description": "NVIDIA's 30B-parameter hybrid MoE model with 3B active parameters per token, designed for efficient agentic reasoning, tool use, coding, and long-context workflows. Hosted on Nebius.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.24
       },
       "inputs": {
         "text": true
@@ -2372,20 +3198,6 @@
         "image": true
       }
     },
-    "novita/qwen/qwen3.8-max": {
-      "name": "Qwen3 8 MAX",
-      "description": "A 2.4T-parameter MoE flagship for coding and knowledge work. Programs autonomously for days to deliver complete projects end to end, with native visual understanding across planning, execution, and verification, plus deep semantic analysis of ultra-long documents and video.",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "pricing": {
-        "input": 2,
-        "output": 6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepinfra/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731",
       "description": "DeepSeek V4 Flash 0731 is the official release of DeepSeek V4 Flash, superseding the preview version, with substantially enhanced agentic capabilities. A 304B parameter open-source MoE model with a 1M token context window, tuned for fast inference and high-throughput use cases with strong reasoning,",
@@ -2412,14 +3224,14 @@
         "text": true
       }
     },
-    "novita/deepseek/deepseek-v4-flash-0731": {
+    "inceptron/deepseek-v4-flash-0731": {
       "name": "Deepseek V4 FLASH 0731",
-      "description": "DeepSeek V4 Flash 0731 is the official release of DeepSeek V4 Flash, superseding the preview version, with substantially enhanced agentic capabilities. A sparse MoE model with 13B active parameters out of 284B total, 1M token context window, suited for coding, reasoning, and agent workflows with fun",
+      "description": "DeepSeek V4 Flash 0731 is the stable successor to the V4 Flash preview, with improved coding, reasoning, and tool use.",
       "context_window": 1048576,
-      "max_output": 393216,
+      "max_output": 1048576,
       "pricing": {
-        "input": 0.14,
-        "output": 0.28
+        "input": 0.13,
+        "output": 0.5
       },
       "inputs": {
         "text": true
@@ -2824,19 +3636,6 @@
         "text": true
       }
     },
-    "sference/kimi-k3": {
-      "name": "Kimi K3",
-      "description": "Kimi K3 is Moonshot AI's flagship reasoning model with a 1M token context window, strong agentic tool use, and long horizon task execution. Served via Sference.",
-      "context_window": 1048576,
-      "max_output": 262144,
-      "pricing": {
-        "input": 2.25,
-        "output": 11.25
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "tensorx/kimi-k3": {
       "name": "Kimi K3",
       "description": "Kimi K3 is Moonshot AI's flagship reasoning model with a 1M token context window, vision input, strong agentic tool use, and long horizon task execution. Served via TensorX.",
@@ -2891,19 +3690,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "fireworks/glm-5.2-fast": {
-      "name": "Glm 5 2 FAST",
-      "description": "GLM-5.2 introduces a robust 1M-token context and advanced, multi-effort coding capabilities to significantly enhance performance on long-horizon tasks. Its new IndexShare architecture and improved MTP layer simultaneously boost efficiency by reducing per-token FLOPs and increasing speculative decodi",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "pricing": {
-        "input": 2.1,
-        "output": 6.6
-      },
-      "inputs": {
-        "text": true
       }
     },
     "azure/gpt-5.6-luna@eastus2": {
@@ -3396,19 +4182,6 @@
         "image": true
       }
     },
-    "novita/tencent/hy3": {
-      "name": "Hy3",
-      "description": "Hy3 is built for real world business scenarios with a 295B total, 21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long form comprehension, multi turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across high",
-      "context_window": 262144,
-      "max_output": 262144,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "tencent/hy3": {
       "name": "Hy3",
       "description": "Hy3 is Tencent's open-weight (Apache 2.0) MoE model with a 256K context window, optimized for agentic workflows, coding and productivity tasks with strong token efficiency.",
@@ -3612,46 +4385,6 @@
       "pricing": {
         "input": 2.2,
         "output": 11
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "doubleword/nvidia-nemotron-3-ultra:flex": {
-      "name": "Nvidia Nemotron 3 Ultra:flex",
-      "description": "NVIDIA Nemotron 3 Ultra is NVIDIA's strongest open-weights reasoning model, positioned near GPT-5.4 Mini (xhigh) and ahead of DeepSeek V4-Flash and Qwen3.5-397B-A17B.",
-      "context_window": 262144,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.37,
-        "output": 1.87
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "doubleword/nvidia-nemotron-3-ultra": {
-      "name": "Nvidia Nemotron 3 ULTRA",
-      "description": "NVIDIA Nemotron 3 Ultra is NVIDIA's strongest open-weights reasoning model, positioned near GPT-5.4 Mini (xhigh) and ahead of DeepSeek V4-Flash and Qwen3.5-397B-A17B.",
-      "context_window": 262144,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "tencent/kimi-k2.7-code-highspeed": {
-      "name": "Kimi K2 7 Code Highspeed",
-      "description": "Kimi K2.7 Code HighSpeed is the higher-throughput variant of Kimi K2.7 Code, Moonshot's coding model with a 256K context window that follows instructions reliably across long agentic sessions.",
-      "context_window": 262144,
-      "max_output": 262144,
-      "pricing": {
-        "input": 1.9,
-        "output": 8
       },
       "inputs": {
         "text": true,
@@ -3909,6 +4642,20 @@
         "image": true
       }
     },
+    "tencent/kimi-k2.7-code-highspeed": {
+      "name": "Kimi K2 7 Code Highspeed",
+      "description": "Kimi K2.7 Code HighSpeed is the higher-throughput variant of Kimi K2.7 Code, Moonshot's coding model with a 256K context window that follows instructions reliably across long agentic sessions.",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 1.9,
+        "output": 8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tensorx/kimi-k2.7-code": {
       "name": "Kimi K2 7 Code",
       "description": "Kimi K2.7 Code is a coding focused model in Moonshot AI Kimi K2 family, built to complete end to end programming tasks reliably over long contexts. It uses a native multimodal mixture of experts architecture that accepts text and image input, and it always operates in a thinking mode, preserving ful",
@@ -3931,20 +4678,6 @@
       "pricing": {
         "input": 11,
         "output": 55
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
-      "name": "Nemotron 3 Nano Omni 30B A3b Reasoning",
-      "description": "NVIDIA Nemotron 3 Nano Omni 30B-A3B (reasoning) is a multimodal MoE model unifying video, audio, image, and text understanding for enterprise Q&A, summarization, transcription, OCR, GUI automation, and document intelligence. Supports chain-of-thought reasoning, tool calling, and up to 256k context.",
-      "context_window": 131072,
-      "max_output": 20480,
-      "pricing": {
-        "input": 0,
-        "output": 0
       },
       "inputs": {
         "text": true,
@@ -3991,6 +4724,32 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "doubleword/nvidia-nemotron-3-ultra": {
+      "name": "Nvidia Nemotron 3 ULTRA",
+      "description": "NVIDIA Nemotron 3 Ultra is NVIDIA's strongest open-weights reasoning model, positioned near GPT-5.4 Mini (xhigh) and ahead of DeepSeek V4-Flash and Qwen3.5-397B-A17B.",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "doubleword/nvidia-nemotron-3-ultra:flex": {
+      "name": "Nvidia Nemotron 3 Ultra:flex",
+      "description": "NVIDIA Nemotron 3 Ultra is NVIDIA's strongest open-weights reasoning model, positioned near GPT-5.4 Mini (xhigh) and ahead of DeepSeek V4-Flash and Qwen3.5-397B-A17B.",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.37,
+        "output": 1.87
+      },
+      "inputs": {
+        "text": true
       }
     },
     "nebius/nvidia/nemotron-3-ultra-550b-a55b": {
@@ -4047,20 +4806,6 @@
         "image": true
       }
     },
-    "minimaxi/minimax-m3": {
-      "name": "Minimax M3",
-      "description": "MiniMax M3 is a frontier multimodal model with a 1M-token context window built on MiniMax Sparse Attention (MSA). It reaches frontier-level performance on coding and agentic tasks, surpassing GPT-5.5 and Gemini 3.1 Pro on SWE-Bench Pro and approaching Claude Opus 4.7. It natively supports image and ",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "tencent/minimax-m3": {
       "name": "Minimax M3",
       "description": "MiniMax-M3 is MiniMax's latest model, achieving frontier capabilities in professional tasks such as programming and agents. It uses the new attention architecture MSA (MiniMax Sparse Attention), supports up to 1M ultra-long context, and is a native multimodal model supporting image and video input.",
@@ -4087,19 +4832,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "novita/stepfun/step-3.7-flash": {
-      "name": "Step 3 7 FLASH",
-      "description": "Step 3.7 Flash is a fast reasoning model from StepFun with a 256K context window, supporting function calling and structured output for high volume agentic workloads.",
-      "context_window": 262144,
-      "max_output": 256000,
-      "pricing": {
-        "input": 0.2,
-        "output": 1.15
-      },
-      "inputs": {
-        "text": true
       }
     },
     "anthropic/claude-opus-4-8": {
@@ -4132,6 +4864,34 @@
     },
     "bedrock/claude-opus-4-8@ap-northeast-1": {
       "name": "Claude Opus 4 8@ap Northeast 1",
+      "description": "Claude Opus 4.8 is Anthropic's most capable generally available model, advancing performance across coding, enterprise workflows, and long-running agentic tasks. Coding: Claude Opus 4.8 is built for agentic coding at scale, excelling at long-horizon projects, complex implementations, and polished UI",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5.5,
+        "output": 27.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-opus-4-8@ap-northeast-3": {
+      "name": "Claude Opus 4 8@ap Northeast 3",
+      "description": "Claude Opus 4.8 is Anthropic's most capable generally available model, advancing performance across coding, enterprise workflows, and long-running agentic tasks. Coding: Claude Opus 4.8 is built for agentic coding at scale, excelling at long-horizon projects, complex implementations, and polished UI",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5.5,
+        "output": 27.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bedrock/claude-opus-4-8@ap-southeast-2": {
+      "name": "Claude Opus 4 8@ap Southeast 2",
       "description": "Claude Opus 4.8 is Anthropic's most capable generally available model, advancing performance across coding, enterprise workflows, and long-running agentic tasks. Coding: Claude Opus 4.8 is built for agentic coding at scale, excelling at long-horizon projects, complex implementations, and polished UI",
       "context_window": 1000000,
       "max_output": 128000,
@@ -4269,19 +5029,6 @@
         "text": true
       }
     },
-    "mistral/leanstral-1-5": {
-      "name": "Leanstral 1 5",
-      "description": "Leanstral 1.5 is an updated Lean 4 formal proof engineering model from Mistral AI, optimized for automated theorem proving and autoformalization. It has 119B total parameters with 6.5B active and supports a 256K token context window. It supports native function calling and structured output.",
-      "context_window": 262144,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "alibaba/qwen3.7-max": {
       "name": "Qwen3 7 MAX",
       "description": "Qwen3.7-Max is the flagship model in Alibaba's Qwen3.7 series. It supports text input and output and is designed for agent-centric workloads, with particular strengths in coding, office and productivity tasks, and long-horizon autonomous execution. The model offers notable gains in coding and agenti",
@@ -4290,19 +5037,6 @@
       "pricing": {
         "input": 2.5,
         "output": 7.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "xai/grok-build-0.1": {
-      "name": "Grok Build 0 1",
-      "description": "Grok Build 0.1 is xAI's dedicated coding model optimized for software engineering tasks including code generation, review, debugging, and technical problem solving.",
-      "context_window": 256000,
-      "max_output": 0,
-      "pricing": {
-        "input": 1,
-        "output": 2
       },
       "inputs": {
         "text": true
@@ -4490,34 +5224,6 @@
         "image": true
       }
     },
-    "bedrock/claude-opus-4-8@ap-northeast-3": {
-      "name": "Claude Opus 4 8@ap Northeast 3",
-      "description": "Claude Opus 4.8 is Anthropic's most capable generally available model, advancing performance across coding, enterprise workflows, and long-running agentic tasks. Coding: Claude Opus 4.8 is built for agentic coding at scale, excelling at long-horizon projects, complex implementations, and polished UI",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 5.5,
-        "output": 27.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bedrock/claude-opus-4-8@ap-southeast-2": {
-      "name": "Claude Opus 4 8@ap Southeast 2",
-      "description": "Claude Opus 4.8 is Anthropic's most capable generally available model, advancing performance across coding, enterprise workflows, and long-running agentic tasks. Coding: Claude Opus 4.8 is built for agentic coding at scale, excelling at long-horizon projects, complex implementations, and polished UI",
-      "context_window": 1000000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 5.5,
-        "output": 27.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "xai/grok-4.3": {
       "name": "Grok 4 3",
       "description": "Grok 4.3 is a reasoning model from xAI. It accepts text and image inputs with text output, and is suited for agentic workflows, instruction-following tasks, and applications requiring high factual accuracy. Reasoning is always active and cannot be disabled or configured by effort level. It supports ",
@@ -4559,6 +5265,20 @@
         "text": true
       }
     },
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+      "name": "Nemotron 3 Nano Omni 30B A3b Reasoning",
+      "description": "NVIDIA Nemotron 3 Nano Omni 30B-A3B (reasoning) is a multimodal MoE model unifying video, audio, image, and text understanding for enterprise Q&A, summarization, transcription, OCR, GUI automation, and document intelligence. Supports chain-of-thought reasoning, tool calling, and up to 256k context.",
+      "context_window": 131072,
+      "max_output": 20480,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-5.5-pro": {
       "name": "Gpt 5 5 PRO",
       "description": "GPT-5.5 Pro is OpenAI's high-capability model optimized for deep reasoning and accuracy on complex, high-stakes workloads. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, and is designed for long-horizon problem solving, agentic coding, and pr",
@@ -4587,36 +5307,8 @@
         "image": true
       }
     },
-    "azure/gpt-5.5@germanywestcentral": {
-      "name": "Gpt 5 5@germanywestcentral",
-      "description": "GPT-5.5 is OpenAI's frontier model designed for complex professional workloads, building on GPT-5.4 with stronger reasoning, higher reliability, and improved token efficiency on hard tasks. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, enabl",
-      "context_window": 1050000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 5,
-        "output": 30
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "azure/gpt-5.5@swedencentral": {
       "name": "Gpt 5 5@swedencentral",
-      "description": "GPT-5.5 is OpenAI's frontier model designed for complex professional workloads, building on GPT-5.4 with stronger reasoning, higher reliability, and improved token efficiency on hard tasks. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, enabl",
-      "context_window": 1050000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 5,
-        "output": 30
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "azure/gpt-5.5@westeurope": {
-      "name": "Gpt 5 5@westeurope",
       "description": "GPT-5.5 is OpenAI's frontier model designed for complex professional workloads, building on GPT-5.4 with stronger reasoning, higher reliability, and improved token efficiency on hard tasks. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, enabl",
       "context_window": 1050000,
       "max_output": 128000,
@@ -4711,27 +5403,13 @@
         "text": true
       }
     },
-    "deepseek/deepseek-v4-pro-0813": {
-      "name": "Deepseek V4 PRO 0813",
-      "description": "DeepSeek v4 Pro - 1.6T total / 49B active params. Performance rivaling the world's top closed-source models.",
-      "context_window": 1000000,
-      "max_output": 384000,
-      "pricing": {
-        "input": 0.44,
-        "output": 0.87
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "nebius/deepseek-v4-pro-0424": {
+    "relace/deepseek-v4-pro-0424": {
       "name": "Deepseek V4 PRO 0424",
-      "description": "DeepSeek-V4 is designed for advanced reasoning, coding, and long-horizon agent workflows, with strong performance across knowledge, math, and software engineering benchmarks.",
-      "context_window": 164000,
-      "max_output": 128000,
+      "context_window": 1048576,
+      "max_output": 393216,
       "pricing": {
-        "input": 1.75,
-        "output": 3.5
+        "input": 0.5,
+        "output": 2
       },
       "inputs": {
         "text": true
@@ -4776,19 +5454,6 @@
         "text": true
       }
     },
-    "novita/deepseek/deepseek-v4-flash-0424": {
-      "name": "Deepseek V4 FLASH 0424",
-      "description": "DeepSeek-V4-Flash is a lightweight model meticulously designed by DeepSeek to deliver the ultimate combination of lightning-fast response times and unmatched cost-effectiveness. Engineered with fewer parameters and significantly lower activation overhead, V4-Flash provides an exceptionally fast and ",
-      "context_window": 1048576,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "parasail/deepseek-v4-flash-0424": {
       "name": "Deepseek V4 FLASH 0424",
       "description": "DeepSeek-V4-Flash",
@@ -4828,19 +5493,6 @@
         "text": true
       }
     },
-    "xiaomi/mimo-v2.5-pro": {
-      "name": "Mimo V2 5 PRO",
-      "description": "Xiaomi MiMo v2.5 Pro. 1M token context window, 128K max output. OpenAI-compatible.",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.44,
-        "output": 0.87
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepinfra/XiaomiMiMo/MiMo-V2.5": {
       "name": "MiMo V2 5",
       "description": "MiMo-V2.5 is a native omnimodal model with strong agentic capabilities, supporting text, image, video, and audio understanding within a unified architecture. Built upon the MiMo-V2-Flash backbone and extended with dedicated vision and audio encoders, it delivers robust performance across multimodal ",
@@ -4863,20 +5515,6 @@
       "pricing": {
         "input": 0.32,
         "output": 1.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "xiaomi/mimo-v2.5": {
-      "name": "Mimo V2 5",
-      "description": "Xiaomi MiMo v2.5. Native omni-modal model: text, image, video, and audio input, text output. 1M context window for multimodal agent scenarios. OpenAI-compatible.",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28
       },
       "inputs": {
         "text": true,
@@ -5119,32 +5757,6 @@
         "text": true
       }
     },
-    "nebius/zai-org/glm-5.1": {
-      "name": "Glm 5 1",
-      "description": "Zhipu AI flagship multimodal model with strong bilingual Chinese English reasoning, long context understanding, advanced tool use, and agent oriented capabilities.",
-      "context_window": 200000,
-      "max_output": 0,
-      "pricing": {
-        "input": 1.4,
-        "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "novita/zai-org/glm-5.1": {
-      "name": "Glm 5 1",
-      "description": "GLM-5.1 is Z.AI's latest flagship model, meticulously engineered for long-horizon autonomous tasks. Capable of working continuously on a single assignment for up to 8 hours, it autonomously manages the entire workflow—from initial planning and execution to iterative optimization and the delivery of ",
-      "context_window": 204800,
-      "max_output": 0,
-      "pricing": {
-        "input": 1.38,
-        "output": 4.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "zai/glm-5.1": {
       "name": "Glm 5 1",
       "description": "Compared with GLM-5, GLM-5.1 delivers significant improvements in coding, agentic tool usage, reasoning, role-play, and general chat quality. Besides, GLM-5.1 has outstanding capabilities in long-horizon agentic tasks like CUDA kernel optimization.",
@@ -5181,20 +5793,6 @@
       "pricing": {
         "input": 0.06,
         "output": 0.27
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/google/gemma-4-26b-a4b-it": {
-      "name": "Gemma 4 26B A4b It",
-      "description": "Gemma 4 26B A4B is a Mixture of Experts model from Google DeepMind built for scalable performance with a 256K context window. Supports text and image input, native thinking mode, function calling, structured output, and 140+ languages. Ideal for long context RAG, agentic workflows, coding, and multi",
-      "context_window": 262144,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.13,
-        "output": 0.4
       },
       "inputs": {
         "text": true,
@@ -5298,20 +5896,6 @@
         "image": true
       }
     },
-    "deepinfra/moonshotai/Kimi-K2.5": {
-      "name": "Kimi K2 5",
-      "description": "Kimi K2.5 is an open-source, native multimodal agentic model built through continual pretraining on approximately 15 trillion mixed visual and text tokens atop Kimi-K2-Base. It seamlessly integrates vision and language understanding with advanced agentic capabilities, instant and thinking modes, as ",
-      "context_window": 262100,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.45,
-        "output": 2.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "xai/grok-4.2-beta": {
       "name": "Grok 4 2 Beta",
       "description": "Grok 4.20 Beta is xAI's newest flagship model with industry-leading speed and agentic tool calling capabilities. It combines the lowest hallucination rate on the market with strict prompt adherance, delivering consistently precise and truthful responses.",
@@ -5324,61 +5908,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "minimaxi/minimax-m2.7-highspeed": {
-      "name": "Minimax M2 7 Highspeed",
-      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "minimaxi/minimax-m2.7": {
-      "name": "Minimax M2 7",
-      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/minimax/minimax-m2.7": {
-      "name": "Minimax M2 7",
-      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/minimax/minimax-m2.7-highspeed": {
-      "name": "Minimax M2 7 Highspeed",
-      "description": "MiniMax M2.7-highspeed is an accelerated SOTA model engineered for scenarios demanding extreme efficiency. It perfectly inherits the core intelligence and robust digital workspace capabilities of the standard M2.7. In real-world software engineering, M2.7 excels by independently driving end-to-end p",
-      "context_window": 204800,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
-      },
-      "inputs": {
-        "text": true
       }
     },
     "openai/gpt-5.4-nano": {
@@ -5457,20 +5986,6 @@
       "pricing": {
         "input": 0.38,
         "output": 2.25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistral/mistral-small-2603": {
-      "name": "Mistral Small 2603",
-      "description": "Mistral's powerful hybrid model unifying instruct, reasoning, and coding capabilities in a single model. 119B parameters with 6.5B active.",
-      "context_window": 256000,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
       },
       "inputs": {
         "text": true,
@@ -5853,34 +6368,6 @@
         "image": true
       }
     },
-    "google/gemini-3-pro-preview": {
-      "name": "Gemini 3 PRO Preview",
-      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
-      "context_window": 1048576,
-      "max_output": 65535,
-      "pricing": {
-        "input": 2,
-        "output": 12
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "google/gemini-3-pro-preview:flex": {
-      "name": "Gemini 3 PRO Preview:flex",
-      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
-      "context_window": 1048576,
-      "max_output": 65535,
-      "pricing": {
-        "input": 1,
-        "output": 6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-3.1-pro-preview": {
       "name": "Gemini 3 1 PRO Preview",
       "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
@@ -5903,20 +6390,6 @@
       "pricing": {
         "input": 1,
         "output": 6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "vertex/gemini-3-pro-preview": {
-      "name": "Gemini 3 PRO Preview",
-      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
-      "context_window": 1048576,
-      "max_output": 65535,
-      "pricing": {
-        "input": 2,
-        "output": 12
       },
       "inputs": {
         "text": true,
@@ -6161,20 +6634,6 @@
         "image": true
       }
     },
-    "novita/qwen/qwen3.5-397b-a17b": {
-      "name": "Qwen3 5 397B A17b",
-      "description": "The Qwen3.5 series 397B-A17B native vision-language model is based on a hybrid architecture design that integrates linear attention mechanisms with sparse Mixture-of-Experts (MoE), achieving higher inference efficiency. Across a variety of tasks—including language understanding, logical reasoning, c",
-      "context_window": 262144,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.6,
-        "output": 3.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "bedrock/minimax-m2.5@eu-central-1": {
       "name": "Minimax M2 5@eu Central 1",
       "description": "MiniMax M2.5 is MiniMax's latest large language model, delivering strong performance across reasoning, coding, and tool use with improved efficiency for production workloads.",
@@ -6261,47 +6720,6 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "minimaxi/minimax-m2.5": {
-      "name": "Minimax M2 5",
-      "description": "MiniMax-M2.5 is a SOTA large language model designed for real-world productivity. Trained in a diverse range of complex real-world digital working environments, M2.5 builds upon the coding expertise of M2.1 to extend into general office work, reaching fluency in generating and operating Word, Excel,",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "minimaxi/minimax-m2.5-highspeed": {
-      "name": "Minimax M2 5 Highspeed",
-      "description": "MiniMax-M2.5 is a SOTA large language model designed for real-world productivity. Trained in a diverse range of complex real-world digital working environments, M2.5 builds upon the coding expertise of M2.1 to extend into general office work, reaching fluency in generating and operating Word, Excel,",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "novita/GLM-5": {
-      "name": "GLM 5",
-      "description": "GLM-5 is an open-source foundation model engineered for complex system engineering and long-horizon Agent tasks, delivering reliable productivity for top-tier programmers. Transcending the boundary from \"writing code\" to \"building systems,\" it moves beyond traditional snippet generation to offer sen",
-      "context_window": 202800,
-      "max_output": 131072,
-      "pricing": {
-        "input": 1,
-        "output": 3.2
       },
       "inputs": {
         "text": true
@@ -6463,14 +6881,14 @@
         "image": true
       }
     },
-    "moonshot/kimi-k2.5": {
+    "deepinfra/moonshotai/Kimi-K2.5": {
       "name": "Kimi K2 5",
-      "description": "Kimi K2.5 is Moonshot AI's native multimodal model, delivering state-of-the-art visual coding capability and a self-directed agent swarm paradigm. Built on Kimi K2 with continued pretraining over approximately 15T mixed visual and text tokens, it delivers strong performance in general reasoning, vis",
-      "context_window": 262144,
-      "max_output": 262144,
+      "description": "Kimi K2.5 is an open-source, native multimodal agentic model built through continual pretraining on approximately 15 trillion mixed visual and text tokens atop Kimi-K2-Base. It seamlessly integrates vision and language understanding with advanced agentic capabilities, instant and thinking modes, as ",
+      "context_window": 262100,
+      "max_output": 131072,
       "pricing": {
-        "input": 0.6,
-        "output": 3
+        "input": 0.45,
+        "output": 2.25
       },
       "inputs": {
         "text": true,
@@ -6586,19 +7004,6 @@
         "text": true
       }
     },
-    "nvidia/nemotron-3-nano-30b-a3b": {
-      "name": "Nemotron 3 Nano 30B A3b",
-      "description": "NVIDIA Nemotron 3 Nano 30B-A3B is a small language MoE model offering high compute efficiency and accuracy for building specialized agentic AI systems. Fully open weights, datasets, and recipes. Text in/out, up to 256K context.",
-      "context_window": 262144,
-      "max_output": 0,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "azure/gpt-5.2@eastus2": {
       "name": "Gpt 5 2@eastus2",
       "description": "GPT-5.2 is the latest frontier-grade model in the GPT-5 series, offering stronger agentic and long context perfomance compared to GPT-5.1. It uses adaptive reasoning to allocate computation dynamically, responding quickly to simple queries while spending more depth on complex tasks.\n\nBuilt for broad",
@@ -6651,34 +7056,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "vertex/deepseek-v3.2": {
-      "name": "Deepseek V3 2",
-      "description": "DeepSeek-V3.2 is a model that harmonizes high computational efficiency with superior reasoning and agent performance. DeepSeek's approach is built upon three key technical breakthroughs: DeepSeek Sparse Attention (DSA), scalable reinforcement learning framework, and large scale agentic task synthesi",
-      "context_window": 163840,
-      "max_output": 65535,
-      "pricing": {
-        "input": 0.56,
-        "output": 1.68
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "anthropic/claude-opus-4-5": {
-      "name": "Claude Opus 4 5",
-      "description": "Claude Opus 4.5 is Anthropic's flagship AI model, celebrated as an industry leader for complex coding, autonomous agent tasks, and deep analysis. It combines extreme reasoning capabilities with high token efficiency, making multi-day engineering projects and routine office tasks drastically faster a",
-      "context_window": 200000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 5,
-        "output": 25
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "bedrock/claude-opus-4-5": {
@@ -6947,19 +7324,6 @@
         "image": true
       }
     },
-    "minimaxi/minimax-m2": {
-      "name": "Minimax M2",
-      "description": "MiniMax-M2 is a compact, high-efficiency large language model optimized for end-to-end coding and agentic workflows. With 10 billion activated parameters (230 billion total), it delivers near-frontier intelligence across general reasoning, tool use, and multi-step task execution while maintaining lo",
-      "context_window": 200000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "anthropic/claude-haiku-4-5": {
       "name": "Claude Haiku 4 5",
       "description": "Claude Haiku 4.5 is Anthropic's fastest and most cost-effective AI model, offering near-frontier intelligence. It matches the coding and computer-use performance of older flagship models like Sonnet 4, but runs at a fraction of the price.",
@@ -7156,19 +7520,6 @@
         "image": true
       }
     },
-    "novita/zai-org/glm-4.6": {
-      "name": "Glm 4 6",
-      "description": "GLM-4.6 is Z AI’s latest flagship model, designed to push agentic and coding performance further. It expands the context window from 128K to 200K tokens, improves reasoning and tool-use capabilities, and delivers stronger results in coding benchmarks and real-world development workflows. GLM-4.6 dem",
-      "context_window": 204800,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "zai/GLM-4.6": {
       "name": "GLM 4 6",
       "description": "GLM-4.6 is Z AI’s latest flagship model, designed to push agentic and coding performance further. It expands the context window from 128K to 200K tokens, improves reasoning and tool-use capabilities, and delivers stronger results in coding benchmarks and real-world development workflows. GLM-4.6 dem",
@@ -7336,20 +7687,6 @@
         "image": true
       }
     },
-    "alibaba/qwen3-max": {
-      "name": "Qwen3 MAX",
-      "description": "This is the best-performing model in the Qwen series. It is ideal for complex, multi-step tasks.",
-      "context_window": 262144,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.86,
-        "output": 3.44
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepinfra/Qwen/Qwen3-Max": {
       "name": "Qwen3 MAX",
       "description": "The latest flagship model in the Qwen family. State-of-the-art results across a comprehensive suite of benchmarks — including knowledge, reasoning, coding, instruction following, human preference alignment, agent tasks, and multilingual understanding.",
@@ -7361,20 +7698,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "alibaba/qwen3-coder-plus": {
-      "name": "Qwen3 Coder PLUS",
-      "description": "Qwen3 Coder Plus",
-      "context_window": 1048576,
-      "max_output": 65536,
-      "pricing": {
-        "input": 1,
-        "output": 5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "xai/grok-4-fast": {
@@ -7417,20 +7740,6 @@
         "image": true
       }
     },
-    "xai/grok-code-fast-1": {
-      "name": "Grok Code FAST 1",
-      "description": "A speedy and economical reasoning model that excels at agentic coding",
-      "context_window": 256000,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.2,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "nebius/nousresearch/hermes-4-405b": {
       "name": "Hermes 4 405B",
       "description": "Hybrid reasoning model trained on verified CoT traces for strong math, coding, and step by step reliability.",
@@ -7465,19 +7774,6 @@
       "pricing": {
         "input": 0.2,
         "output": 0.76
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "novita/baichuan/baichuan-m2-32b": {
-      "name": "Baichuan M2 32B",
-      "description": "Baichuan-M2 is a medically-enhanced reasoning model specifically designed for real-world medical reasoning tasks. We begin with real-world medical questions and conduct reinforcement learning training based on a large-scale verifier system. While maintaining the model's general capabilities, the med",
-      "context_window": 131072,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.07,
-        "output": 0.07
       },
       "inputs": {
         "text": true
@@ -7837,19 +8133,6 @@
         "image": true
       }
     },
-    "fireworks/gpt-oss-120b": {
-      "name": "Gpt OSS 120B",
-      "description": "GPT-OSS-120B is OpenAI's open-weight large language model with 116 billion total parameters (5.1 billion active, Mixture-of-Experts). Designed for high-performance reasoning, agentic tasks, function calling, and general-purpose applications. Supports configurable reasoning depth and chain-of-thought",
-      "context_window": 131072,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "groq/openai/gpt-oss-120b": {
       "name": "Gpt OSS 120B",
       "description": "OpenAI's gpt-oss-120b is a powerful open-weight Large Language Model (LLM) designed for advanced chain-of-thought reasoning, agentic workflows, and complex tool-calling.",
@@ -7902,19 +8185,6 @@
         "text": true
       }
     },
-    "sail/gpt-oss-120b": {
-      "name": "Gpt OSS 120B",
-      "description": "gpt-oss-120b is OpenAI's open-weight flagship reasoning MoE model with configurable reasoning effort, native tool use, and structured output. Served via Sail Research.",
-      "context_window": 131072,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.06,
-        "output": 0.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "scaleway/gpt-oss-120b": {
       "name": "Gpt OSS 120B",
       "description": "gpt-oss-120b is OpenAI's open-weight flagship reasoning MoE model with configurable reasoning effort, native tool use, and structured output. EU-hosted by Scaleway.",
@@ -7939,20 +8209,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "alibaba/qwen3-30b-a3b-instruct-2507": {
-      "name": "Qwen3 30B A3b Instruct 2507",
-      "description": "Qwen3-30B-A3B-Instruct-2507 is a 30.5B-parameter mixture-of-experts language model from Qwen, with 3.3B active parameters per inference. It operates in non-thinking mode and is designed for high-quality instruction following, multilingual understanding, and agentic tool use. Post-trained on instruct",
-      "context_window": 131072,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.8
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "nebius/qwen/qwen3-30b-a3b-instruct-2507": {
@@ -8288,19 +8544,6 @@
       "pricing": {
         "input": 0.15,
         "output": 0.85
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "novita/moonshotai/kimi-k2-instruct": {
-      "name": "Kimi K2 Instruct",
-      "description": "Kimi K2 Instruct",
-      "context_window": 131072,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.57,
-        "output": 2.3
       },
       "inputs": {
         "text": true
@@ -9432,19 +9675,6 @@
         "image": true
       }
     },
-    "novita/meta-llama/llama-4-maverick-17b-128e-instruct-fp8": {
-      "name": "Llama 4 Maverick 17B 128e Instruct FP8",
-      "description": "A lightweight and ultra-fast variant of Llama 3.3 70B, for use when quick response times are needed most.",
-      "context_window": 1048576,
-      "max_output": 1048576,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.85
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "mistral/mistral-small-2503": {
       "name": "Mistral Small 2503",
       "description": "Mistral Small 3.1 (2503) is a powerful 24-billion parameter multimodal AI model developed by Mistral AI that processes both text and image inputs. Designed for enterprise efficiency and fast-response agents, it is highly sought after for its exceptional long-context processing, function calling, and",
@@ -9654,19 +9884,6 @@
         "text": true
       }
     },
-    "novita/deepseek/deepseek-r1-turbo": {
-      "name": "Deepseek R1 TURBO",
-      "description": "DeepSeek R1 is the latest open-source model released by the DeepSeek team, featuring impressive reasoning capabilities, particularly achieving performance comparable to OpenAI's o1 model in mathematics, coding, and reasoning tasks.",
-      "context_window": 64000,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.7,
-        "output": 2.5
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepinfra/microsoft/phi-4": {
       "name": "Phi 4",
       "description": "Phi-4-reasoning-plus is an enhanced 14B parameter model from Microsoft, fine-tuned from Phi-4 with additional reinforcement learning to boost accuracy on math, science, and code reasoning tasks. It uses the same dense decoder-only transformer architecture as Phi-4, but generates longer, more compreh",
@@ -9735,32 +9952,6 @@
         "output": 0.28
       }
     },
-    "novita/deepseek/deepseek_v3": {
-      "name": "Deepseek V3",
-      "description": "DeepSeek-V3 is the latest model from the DeepSeek team, building upon the instruction following and coding abilities of the previous versions. Pre-trained on nearly 15 trillion tokens, the reported evaluations reveal that the model outperforms other open-source models and rivals leading closed-sourc",
-      "context_window": 64000,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.89,
-        "output": 0.89
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "novita/sao10k/l3-8b-stheno-v3.2": {
-      "name": "L3 8B Stheno V3 2",
-      "description": "Sao10K/L3-8B-Stheno-v3.2 is a highly skilled actor that excels at fully immersing itself in any role assigned.",
-      "context_window": 8192,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.05
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "deepinfra/meta-llama/Llama-3.3-70B-Instruct": {
       "name": "Llama 3 3 70B Instruct",
       "description": "A lightweight and ultra-fast variant of Llama 3.3 70B, for use when quick response times are needed most.",
@@ -9800,35 +9991,8 @@
         "text": true
       }
     },
-    "novita/meta-llama/llama-3.3-70b-instruct": {
-      "name": "Llama 3 3 70B Instruct",
-      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed c",
-      "context_window": 131072,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.39,
-        "output": 0.39
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-4o": {
       "name": "Gpt 4o",
-      "description": "The 2024-11-20 version of GPT-4o offers a leveled-up creative writing ability with more natural, engaging, and tailored writing to improve relevance & readability. It’s also better at working with uploaded files, providing deeper insights & more thorough responses.\n\nGPT-4o (\"o\" for \"omni\") is OpenAI",
-      "context_window": 128000,
-      "max_output": 16384,
-      "pricing": {
-        "input": 2.5,
-        "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "openai/gpt-4o-2024-11-20": {
-      "name": "Gpt 4o 2024 11 20",
       "description": "The 2024-11-20 version of GPT-4o offers a leveled-up creative writing ability with more natural, engaging, and tailored writing to improve relevance & readability. It’s also better at working with uploaded files, providing deeper insights & more thorough responses.\n\nGPT-4o (\"o\" for \"omni\") is OpenAI",
       "context_window": 128000,
       "max_output": 16384,
@@ -9946,19 +10110,6 @@
         "text": true
       }
     },
-    "novita/meta-llama/llama-3.1-8b-instruct": {
-      "name": "Llama 3 1 8B Instruct",
-      "description": "Meta's latest class of models, Llama 3.1, launched with a variety of sizes and configurations. The 8B instruct-tuned version is particularly fast and efficient. It has demonstrated strong performance in human evaluations, outperforming several leading closed-source models.",
-      "context_window": 16384,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.05
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "openai/gpt-4o-mini": {
       "name": "GPT-4o Mini",
       "description": "Cost-efficient OpenAI multimodal model routed through Requesty for everyday assistant work",
@@ -9989,20 +10140,6 @@
         "image": true
       }
     },
-    "azure/gpt-4o-mini@germanywestcentral": {
-      "name": "Gpt 4o Mini@germanywestcentral",
-      "description": "GPT-4o mini is a fast, affordable small model for lightweight tasks. Supports vision, tools, and caching.",
-      "context_window": 128000,
-      "max_output": 16000,
-      "pricing": {
-        "input": 0.17,
-        "output": 0.66
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "azure/gpt-4o-mini@swedencentral": {
       "name": "Gpt 4o Mini@swedencentral",
       "description": "GPT-4o mini is a fast, affordable small model for lightweight tasks. Supports vision, tools, and caching.",
@@ -10011,6 +10148,816 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistral/open-mistral-7b": {
+      "name": "Open Mistral 7B",
+      "description": "OpenMistral-7B (officially Mistral 7B) is a highly efficient, 7.3-billion parameter open-weight language model released by Mistral AI. Praised for its excellent performance-to-size ratio, it frequently outperforms much larger proprietary and open-source models while being light enough to run on stan",
+      "context_window": 32768,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/kimi-k3.1-pro": {
+      "name": "Kimi K3 1 PRO",
+      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m3.1-flash": {
+      "name": "Minimax M3 1 FLASH",
+      "description": "MiniMax M3.1 Flash is a fast multimodal model in the MiniMax M3 family, built for agentic cowork automation, coding and visual tasks. It scores 72.5% on AutomationBench AA (best among open models), 73.67% on DeepSWE, 91.0 on BabyVision with tools, 82.5 on CharXiv RQ, 56% on AA Omniscience and 48% on",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/ling-3.1-flash": {
+      "name": "Ling 3 1 FLASH",
+      "description": "Ling 3.1 Flash is a hybrid reasoning MoE model from inclusionAI with 560B total and 25B active parameters. Served by Novita with a 256K context window and 32K max output, supporting reasoning and function calling. Free tier.",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek V4.1 Flash is a 552B parameter Mixture of Experts model built on a new Causal Encoder Decoder architecture that activates only 8B parameters for input and 16B for output, giving frontier level intelligence at a fraction of the cost. It is the smallest model in the new DeepSeek architecture ",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/deepseek-v4.1-flash": {
+      "name": "Deepseek V4 1 FLASH",
+      "description": "DeepSeek-V4.1-Flash is DeepSeek's efficient production model with a 1M token context window, configurable thinking mode and strong tool calling for high-concurrency, low-latency workloads.",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "tensorx/qwen3.8-2.4t-a95b": {
+      "name": "Qwen3 8 2 4t A95b",
+      "description": "Qwen3.8 2.4T A95B is an open-weight sparse mixture-of-experts model from Qwen and the open-weight variant of Qwen3.8 Max, with 95 billion active parameters out of 2.4 trillion total. It is suited for coding, research, complex reasoning, and agentic workflows.",
+      "context_window": 1000000,
+      "max_output": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/glm-5.3-flash": {
+      "name": "Glm 5 3 FLASH",
+      "description": "GLM-5.3-Flash is a native multimodal model from Z.ai, suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while reducing compute overhead. Accepts text, image and video input.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/qwen/qwen3.8-max": {
+      "name": "Qwen3 8 MAX",
+      "description": "A 2.4T-parameter MoE flagship for coding and knowledge work. Programs autonomously for days to deliver complete projects end to end, with native visual understanding across planning, execution, and verification, plus deep semantic analysis of ultra-long documents and video.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/deepseek/deepseek-v4-flash-0731": {
+      "name": "Deepseek V4 FLASH 0731",
+      "description": "DeepSeek V4 Flash 0731 is the official release of DeepSeek V4 Flash, superseding the preview version, with substantially enhanced agentic capabilities. A sparse MoE model with 13B active parameters out of 284B total, 1M token context window, suited for coding, reasoning, and agent workflows with fun",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "sference/kimi-k3": {
+      "name": "Kimi K3",
+      "description": "Kimi K3 is Moonshot AI's flagship reasoning model with a 1M token context window, strong agentic tool use, and long horizon task execution. Served via Sference.",
+      "context_window": 1048576,
+      "max_output": 262144,
+      "pricing": {
+        "input": 2.25,
+        "output": 11.25
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "fireworks/glm-5.2-fast": {
+      "name": "Glm 5 2 FAST",
+      "description": "GLM-5.2 introduces a robust 1M-token context and advanced, multi-effort coding capabilities to significantly enhance performance on long-horizon tasks. Its new IndexShare architecture and improved MTP layer simultaneously boost efficiency by reducing per-token FLOPs and increasing speculative decodi",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 2.1,
+        "output": 6.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/tencent/hy3": {
+      "name": "Hy3",
+      "description": "Hy3 is built for real world business scenarios with a 295B total, 21B active MoE architecture, native 256K context support, and three reasoning modes. It enhances coding, long form comprehension, multi turn dialogue, and agentic task execution, balancing reliability, efficiency, and cost across high",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimaxi/minimax-m3": {
+      "name": "Minimax M3",
+      "description": "MiniMax M3 is a frontier multimodal model with a 1M-token context window built on MiniMax Sparse Attention (MSA). It reaches frontier-level performance on coding and agentic tasks, surpassing GPT-5.5 and Gemini 3.1 Pro on SWE-Bench Pro and approaching Claude Opus 4.7. It natively supports image and ",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/stepfun/step-3.7-flash": {
+      "name": "Step 3 7 FLASH",
+      "description": "Step 3.7 Flash is a fast reasoning model from StepFun with a 256K context window, supporting function calling and structured output for high volume agentic workloads.",
+      "context_window": 262144,
+      "max_output": 256000,
+      "pricing": {
+        "input": 0.2,
+        "output": 1.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/leanstral-1-5": {
+      "name": "Leanstral 1 5",
+      "description": "Leanstral 1.5 is an updated Lean 4 formal proof engineering model from Mistral AI, optimized for automated theorem proving and autoformalization. It has 119B total parameters with 6.5B active and supports a 256K token context window. It supports native function calling and structured output.",
+      "context_window": 262144,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xai/grok-build-0.1": {
+      "name": "Grok Build 0 1",
+      "description": "Grok Build 0.1 is xAI's dedicated coding model optimized for software engineering tasks including code generation, review, debugging, and technical problem solving.",
+      "context_window": 256000,
+      "max_output": 0,
+      "pricing": {
+        "input": 1,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "azure/gpt-5.5@germanywestcentral": {
+      "name": "Gpt 5 5@germanywestcentral",
+      "description": "GPT-5.5 is OpenAI's frontier model designed for complex professional workloads, building on GPT-5.4 with stronger reasoning, higher reliability, and improved token efficiency on hard tasks. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, enabl",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "azure/gpt-5.5@westeurope": {
+      "name": "Gpt 5 5@westeurope",
+      "description": "GPT-5.5 is OpenAI's frontier model designed for complex professional workloads, building on GPT-5.4 with stronger reasoning, higher reliability, and improved token efficiency on hard tasks. It features a 1M+ token context window (922K input, 128K output) with support for text and image inputs, enabl",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 5,
+        "output": 30
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/deepseek-v4-pro-0424": {
+      "name": "Deepseek V4 PRO 0424",
+      "description": "DeepSeek-V4 is designed for advanced reasoning, coding, and long-horizon agent workflows, with strong performance across knowledge, math, and software engineering benchmarks.",
+      "context_window": 164000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 1.75,
+        "output": 3.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/deepseek/deepseek-v4-flash-0424": {
+      "name": "Deepseek V4 FLASH 0424",
+      "description": "DeepSeek-V4-Flash is a lightweight model meticulously designed by DeepSeek to deliver the ultimate combination of lightning-fast response times and unmatched cost-effectiveness. Engineered with fewer parameters and significantly lower activation overhead, V4-Flash provides an exceptionally fast and ",
+      "context_window": 1048576,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.5-pro": {
+      "name": "Mimo V2 5 PRO",
+      "description": "Xiaomi MiMo v2.5 Pro. 1M token context window, 128K max output. OpenAI-compatible.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.44,
+        "output": 0.87
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.5": {
+      "name": "Mimo V2 5",
+      "description": "Xiaomi MiMo v2.5. Native omni-modal model: text, image, video, and audio input, text output. 1M context window for multimodal agent scenarios. OpenAI-compatible.",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nebius/zai-org/glm-5.1": {
+      "name": "Glm 5 1",
+      "description": "Zhipu AI flagship multimodal model with strong bilingual Chinese English reasoning, long context understanding, advanced tool use, and agent oriented capabilities.",
+      "context_window": 200000,
+      "max_output": 0,
+      "pricing": {
+        "input": 1.4,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/zai-org/glm-5.1": {
+      "name": "Glm 5 1",
+      "description": "GLM-5.1 is Z.AI's latest flagship model, meticulously engineered for long-horizon autonomous tasks. Capable of working continuously on a single assignment for up to 8 hours, it autonomously manages the entire workflow—from initial planning and execution to iterative optimization and the delivery of ",
+      "context_window": 204800,
+      "max_output": 0,
+      "pricing": {
+        "input": 1.38,
+        "output": 4.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/google/gemma-4-26b-a4b-it": {
+      "name": "Gemma 4 26B A4b It",
+      "description": "Gemma 4 26B A4B is a Mixture of Experts model from Google DeepMind built for scalable performance with a 256K context window. Supports text and image input, native thinking mode, function calling, structured output, and 140+ languages. Ideal for long context RAG, agentic workflows, coding, and multi",
+      "context_window": 262144,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m2.7-highspeed": {
+      "name": "Minimax M2 7 Highspeed",
+      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m2.7": {
+      "name": "Minimax M2 7",
+      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/minimax/minimax-m2.7": {
+      "name": "Minimax M2 7",
+      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and r",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/minimax/minimax-m2.7-highspeed": {
+      "name": "Minimax M2 7 Highspeed",
+      "description": "MiniMax M2.7-highspeed is an accelerated SOTA model engineered for scenarios demanding extreme efficiency. It perfectly inherits the core intelligence and robust digital workspace capabilities of the standard M2.7. In real-world software engineering, M2.7 excels by independently driving end-to-end p",
+      "context_window": 204800,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistral/mistral-small-2603": {
+      "name": "Mistral Small 2603",
+      "description": "Mistral's powerful hybrid model unifying instruct, reasoning, and coding capabilities in a single model. 119B parameters with 6.5B active.",
+      "context_window": 256000,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3-pro-preview": {
+      "name": "Gemini 3 PRO Preview",
+      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
+      "context_window": 1048576,
+      "max_output": 65535,
+      "pricing": {
+        "input": 2,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-3-pro-preview:flex": {
+      "name": "Gemini 3 PRO Preview:flex",
+      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
+      "context_window": 1048576,
+      "max_output": 65535,
+      "pricing": {
+        "input": 1,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "vertex/gemini-3-pro-preview": {
+      "name": "Gemini 3 PRO Preview",
+      "description": "Gemini 3.1 Pro is the next iteration in the Gemini 3 series of models, a suite of highly capable, natively multimodal reasoning models. As of this model card’s date of publication, Gemini 3.1 Pro is Google’s most advanced model for complex tasks. Geminin 3.1 Pro can comprehend vast datasets and chal",
+      "context_window": 1048576,
+      "max_output": 65535,
+      "pricing": {
+        "input": 2,
+        "output": 12
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/qwen/qwen3.5-397b-a17b": {
+      "name": "Qwen3 5 397B A17b",
+      "description": "The Qwen3.5 series 397B-A17B native vision-language model is based on a hybrid architecture design that integrates linear attention mechanisms with sparse Mixture-of-Experts (MoE), achieving higher inference efficiency. Across a variety of tasks—including language understanding, logical reasoning, c",
+      "context_window": 262144,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.6,
+        "output": 3.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m2.5": {
+      "name": "Minimax M2 5",
+      "description": "MiniMax-M2.5 is a SOTA large language model designed for real-world productivity. Trained in a diverse range of complex real-world digital working environments, M2.5 builds upon the coding expertise of M2.1 to extend into general office work, reaching fluency in generating and operating Word, Excel,",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m2.5-highspeed": {
+      "name": "Minimax M2 5 Highspeed",
+      "description": "MiniMax-M2.5 is a SOTA large language model designed for real-world productivity. Trained in a diverse range of complex real-world digital working environments, M2.5 builds upon the coding expertise of M2.1 to extend into general office work, reaching fluency in generating and operating Word, Excel,",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/GLM-5": {
+      "name": "GLM 5",
+      "description": "GLM-5 is an open-source foundation model engineered for complex system engineering and long-horizon Agent tasks, delivering reliable productivity for top-tier programmers. Transcending the boundary from \"writing code\" to \"building systems,\" it moves beyond traditional snippet generation to offer sen",
+      "context_window": 202800,
+      "max_output": 131072,
+      "pricing": {
+        "input": 1,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshot/kimi-k2.5": {
+      "name": "Kimi K2 5",
+      "description": "Kimi K2.5 is Moonshot AI's native multimodal model, delivering state-of-the-art visual coding capability and a self-directed agent swarm paradigm. Built on Kimi K2 with continued pretraining over approximately 15T mixed visual and text tokens, it delivers strong performance in general reasoning, vis",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.6,
+        "output": 3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvidia/nemotron-3-nano-30b-a3b": {
+      "name": "Nemotron 3 Nano 30B A3b",
+      "description": "NVIDIA Nemotron 3 Nano 30B-A3B is a small language MoE model offering high compute efficiency and accuracy for building specialized agentic AI systems. Fully open weights, datasets, and recipes. Text in/out, up to 256K context.",
+      "context_window": 262144,
+      "max_output": 0,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "vertex/deepseek-v3.2": {
+      "name": "Deepseek V3 2",
+      "description": "DeepSeek-V3.2 is a model that harmonizes high computational efficiency with superior reasoning and agent performance. DeepSeek's approach is built upon three key technical breakthroughs: DeepSeek Sparse Attention (DSA), scalable reinforcement learning framework, and large scale agentic task synthesi",
+      "context_window": 163840,
+      "max_output": 65535,
+      "pricing": {
+        "input": 0.56,
+        "output": 1.68
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-opus-4-5": {
+      "name": "Claude Opus 4 5",
+      "description": "Claude Opus 4.5 is Anthropic's flagship AI model, celebrated as an industry leader for complex coding, autonomous agent tasks, and deep analysis. It combines extreme reasoning capabilities with high token efficiency, making multi-day engineering projects and routine office tasks drastically faster a",
+      "context_window": 200000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 5,
+        "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "minimaxi/minimax-m2": {
+      "name": "Minimax M2",
+      "description": "MiniMax-M2 is a compact, high-efficiency large language model optimized for end-to-end coding and agentic workflows. With 10 billion activated parameters (230 billion total), it delivers near-frontier intelligence across general reasoning, tool use, and multi-step task execution while maintaining lo",
+      "context_window": 200000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/zai-org/glm-4.6": {
+      "name": "Glm 4 6",
+      "description": "GLM-4.6 is Z AI’s latest flagship model, designed to push agentic and coding performance further. It expands the context window from 128K to 200K tokens, improves reasoning and tool-use capabilities, and delivers stronger results in coding benchmarks and real-world development workflows. GLM-4.6 dem",
+      "context_window": 204800,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-max": {
+      "name": "Qwen3 MAX",
+      "description": "This is the best-performing model in the Qwen series. It is ideal for complex, multi-step tasks.",
+      "context_window": 262144,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.86,
+        "output": 3.44
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3-coder-plus": {
+      "name": "Qwen3 Coder PLUS",
+      "description": "Qwen3 Coder Plus",
+      "context_window": 1048576,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "xai/grok-code-fast-1": {
+      "name": "Grok Code FAST 1",
+      "description": "A speedy and economical reasoning model that excels at agentic coding",
+      "context_window": 256000,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.2,
+        "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/baichuan/baichuan-m2-32b": {
+      "name": "Baichuan M2 32B",
+      "description": "Baichuan-M2 is a medically-enhanced reasoning model specifically designed for real-world medical reasoning tasks. We begin with real-world medical questions and conduct reinforcement learning training based on a large-scale verifier system. While maintaining the model's general capabilities, the med",
+      "context_window": 131072,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.07
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "fireworks/gpt-oss-120b": {
+      "name": "Gpt OSS 120B",
+      "description": "GPT-OSS-120B is OpenAI's open-weight large language model with 116 billion total parameters (5.1 billion active, Mixture-of-Experts). Designed for high-performance reasoning, agentic tasks, function calling, and general-purpose applications. Supports configurable reasoning depth and chain-of-thought",
+      "context_window": 131072,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "sail/gpt-oss-120b": {
+      "name": "Gpt OSS 120B",
+      "description": "gpt-oss-120b is OpenAI's open-weight flagship reasoning MoE model with configurable reasoning effort, native tool use, and structured output. Served via Sail Research.",
+      "context_window": 131072,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-30b-a3b-instruct-2507": {
+      "name": "Qwen3 30B A3b Instruct 2507",
+      "description": "Qwen3-30B-A3B-Instruct-2507 is a 30.5B-parameter mixture-of-experts language model from Qwen, with 3.3B active parameters per inference. It operates in non-thinking mode and is designed for high-quality instruction following, multilingual understanding, and agentic tool use. Post-trained on instruct",
+      "context_window": 131072,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/moonshotai/kimi-k2-instruct": {
+      "name": "Kimi K2 Instruct",
+      "description": "Kimi K2 Instruct",
+      "context_window": 131072,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.57,
+        "output": 2.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/meta-llama/llama-4-maverick-17b-128e-instruct-fp8": {
+      "name": "Llama 4 Maverick 17B 128e Instruct FP8",
+      "description": "A lightweight and ultra-fast variant of Llama 3.3 70B, for use when quick response times are needed most.",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.85
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/deepseek/deepseek-r1-turbo": {
+      "name": "Deepseek R1 TURBO",
+      "description": "DeepSeek R1 is the latest open-source model released by the DeepSeek team, featuring impressive reasoning capabilities, particularly achieving performance comparable to OpenAI's o1 model in mathematics, coding, and reasoning tasks.",
+      "context_window": 64000,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.7,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/deepseek/deepseek_v3": {
+      "name": "Deepseek V3",
+      "description": "DeepSeek-V3 is the latest model from the DeepSeek team, building upon the instruction following and coding abilities of the previous versions. Pre-trained on nearly 15 trillion tokens, the reported evaluations reveal that the model outperforms other open-source models and rivals leading closed-sourc",
+      "context_window": 64000,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.89,
+        "output": 0.89
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/sao10k/l3-8b-stheno-v3.2": {
+      "name": "L3 8B Stheno V3 2",
+      "description": "Sao10K/L3-8B-Stheno-v3.2 is a highly skilled actor that excels at fully immersing itself in any role assigned.",
+      "context_window": 8192,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.05
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "novita/meta-llama/llama-3.3-70b-instruct": {
+      "name": "Llama 3 3 70B Instruct",
+      "description": "The Meta Llama 3.3 multilingual large language model (LLM) is a pretrained and instruction tuned generative model in 70B (text in/text out). The Llama 3.3 instruction tuned text only model is optimized for multilingual dialogue use cases and outperforms many of the available open source and closed c",
+      "context_window": 131072,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.39,
+        "output": 0.39
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "openai/gpt-4o-2024-11-20": {
+      "name": "Gpt 4o 2024 11 20",
+      "description": "The 2024-11-20 version of GPT-4o offers a leveled-up creative writing ability with more natural, engaging, and tailored writing to improve relevance & readability. It’s also better at working with uploaded files, providing deeper insights & more thorough responses.\n\nGPT-4o (\"o\" for \"omni\") is OpenAI",
+      "context_window": 128000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 2.5,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "novita/meta-llama/llama-3.1-8b-instruct": {
+      "name": "Llama 3 1 8B Instruct",
+      "description": "Meta's latest class of models, Llama 3.1, launched with a variety of sizes and configurations. The 8B instruct-tuned version is particularly fast and efficient. It has demonstrated strong performance in human evaluations, outperforming several leading closed-source models.",
+      "context_window": 16384,
+      "max_output": 0,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.05
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "azure/gpt-4o-mini@germanywestcentral": {
+      "name": "Gpt 4o Mini@germanywestcentral",
+      "description": "GPT-4o mini is a fast, affordable small model for lightweight tasks. Supports vision, tools, and caching.",
+      "context_window": 128000,
+      "max_output": 16000,
+      "pricing": {
+        "input": 0.17,
+        "output": 0.66
       },
       "inputs": {
         "text": true,
@@ -10058,19 +11005,6 @@
         "text": true
       }
     },
-    "mistral/open-mistral-7b": {
-      "name": "Open Mistral 7B",
-      "description": "OpenMistral-7B (officially Mistral 7B) is a highly efficient, 7.3-billion parameter open-weight language model released by Mistral AI. Praised for its excellent performance-to-size ratio, it frequently outperforms much larger proprietary and open-source models while being light enough to run on stan",
-      "context_window": 32768,
-      "max_output": 0,
-      "pricing": {
-        "input": 0.25,
-        "output": 0.25
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "novita/gryphe/mythomax-l2-13b": {
       "name": "Mythomax L2 13B",
       "description": "The idea behind this merge is that each layer is composed of several tensors, which are in turn responsible for specific functions. Using MythoLogic-L2's robust understanding as its input and Huginn's extensive writing capability as its output seems to have resulted in a model that exceeds at both, ",
@@ -10082,20 +11016,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "lyceum/kimi-k3.1-pro": {
-      "name": "Kimi K3 1 PRO",
-      "description": "Kimi K3.1 Pro is the first model in the K3.1 series and Kimi's most capable flagship to date, a 3T class model with native visual understanding and a 1M token context window. It brings substantial gains in coding, 3D creation, financial research and modeling, and suits software engineering, knowledg",
-      "context_window": 1048576,
-      "max_output": 262144,
-      "pricing": {
-        "input": 2,
-        "output": 10
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "fireworks/deepseek-v4-flash-vision-exp": {
@@ -10110,33 +11030,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "lyceum/glm-5.3-flash": {
-      "name": "Glm 5 3 FLASH",
-      "description": "ZAI's fast GLM-5.3 variant with hybrid reasoning, vision input, a 1M token context window, and tool use at a fraction of the flagship price. Served by Lyceum in the EU.",
-      "context_window": 1048576,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "lyceum/glm-5.3": {
-      "name": "Glm 5 3",
-      "description": "ZAI's newest GLM-5.3 flagship MoE model with strong bilingual reasoning, a 1M token context window, long-context understanding, and tool use. Served by Lyceum in the EU.",
-      "context_window": 1048576,
-      "max_output": 65536,
-      "pricing": {
-        "input": 1.75,
-        "output": 4.5
-      },
-      "inputs": {
-        "text": true
       }
     },
     "fireworks/deepseek-v4-pro-0813": {
@@ -10389,20 +11282,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "lyceum/deepseek-v4.1-flash": {
-      "name": "Deepseek V4 1 FLASH",
-      "description": "DeepSeek V4.1 Flash is a sparse mixture-of-experts model from DeepSeek, and the first built on the company's Causal Encoder-Decoder (CED) architecture. It activates 8B parameters on input and 16B on output from a 552B-parameter backbone, an asymmetric split that keeps per-token compute low relative ",
-      "context_window": 1048576,
-      "max_output": 384000,
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "novita/inclusionai/ling-2.6-1t": {
@@ -13012,5 +13891,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-11T10:10:40.850Z"
+  "_syncedAt": "2026-11-27T10:48:37.369Z"
 }

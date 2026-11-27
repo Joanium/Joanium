@@ -21,21 +21,33 @@
       "name": "Muse Spark Open 816B A42B",
       "context_window": 1048576
     },
+    "deepseek-ai/DeepSeek-V4.1-Flash-1017-fast": {
+      "name": "DeepSeek V4.1 Flash 1017 Fast",
+      "context_window": 1048576
+    },
     "deepseek-ai/DeepSeek-V4.1-Flash": {
       "name": "DeepSeek V4.1 Flash",
       "context_window": 1048576
+    },
+    "zai-org/GLM-5.3-Flash": {
+      "name": "GLM 5.3 Flash",
+      "context_window": 1048575
     },
     "zai-org/GLM-5.3": {
       "name": "GLM 5.3",
       "context_window": 1048575
     },
+    "thinkingmachines/Inkling-2-Small": {
+      "name": "Inkling 2 Small",
+      "context_window": 1048576
+    },
+    "Qwen/Qwen4-Max": {
+      "name": "Qwen4 Max",
+      "context_window": 1000000
+    },
     "moonshotai/Kimi-K3": {
       "name": "Kimi K3",
       "context_window": 1000000
-    },
-    "zai-org/GLM-5.3-Flash": {
-      "name": "GLM 5.3 Flash",
-      "context_window": 1048575
     },
     "reflection/Beam-1.0-501B-A23B": {
       "name": "Beam 1.0 501B A23B",
@@ -104,6 +116,10 @@
     "elorian-labs/glimpse-1.0": {
       "name": "Elorian Glimpse 1.0",
       "context_window": 262144
+    },
+    "tencent/Hy4": {
+      "name": "Tencent Hy4",
+      "context_window": 1048576
     },
     "mistralai/Mistral-7B-Instruct-v0.1": {
       "name": "Mistral (7B) Instruct v0.1",
@@ -888,5 +904,5 @@
       "context_window": 262144
     }
   },
-  "_syncedAt": "2026-11-11T10:10:27.529Z"
+  "_syncedAt": "2026-11-27T10:48:25.148Z"
 }

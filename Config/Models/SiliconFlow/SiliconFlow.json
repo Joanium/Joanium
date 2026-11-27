@@ -5,6 +5,9 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "MiniMaxAI/MiniMax-H3": {
+      "name": "MiniMax H3"
+    },
     "moonshotai/Kimi-K3.1-Pro": {
       "name": "Kimi K3 1 PRO"
     },
@@ -254,5 +257,5 @@
       "name": "Hy3 Preview"
     }
   },
-  "_syncedAt": "2026-11-11T10:10:33.513Z"
+  "_syncedAt": "2026-11-27T10:48:31.710Z"
 }

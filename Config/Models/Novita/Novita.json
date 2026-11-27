@@ -5,6 +5,15 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "deepseek/deepseek-v4.1-flash-1017": {
+      "name": "DeepSeek V4.1 Flash 1017",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tencent/hy4": {
       "name": "Hy4",
       "description": "Tencent: The official release of Hy4 delivers comprehensive and substantial improvements over Hy4 Preview, with particularly strong gains in agentic capabilities and performance across a wide range of long-horizon, real-world productivity tasks. It also introduces visual understanding for the first ",
@@ -15,10 +24,11 @@
         "image": true
       }
     },
-    "deepseek/deepseek-v4.1-flash-1017": {
-      "name": "DeepSeek V4.1 Flash 1017",
-      "context_window": 1048576,
-      "max_output": 393216,
+    "tencent/hy4-flash": {
+      "name": "Hy4 Flash",
+      "description": "Tencent: The official release of Hy4 delivers comprehensive and substantial improvements over Hy4 Preview, with particularly strong gains in agentic capabilities and performance across a wide range of long-horizon, real-world productivity tasks. It also introduces visual understanding for the first ",
+      "context_window": 1000000,
+      "max_output": 64000,
       "inputs": {
         "text": true,
         "image": true
@@ -54,47 +64,11 @@
         "image": true
       }
     },
-    "minimax/minimax-m3.1-flash": {
-      "name": "MiniMax M3.1 Flash",
-      "description": "MiniMax M3.1 Flash is positioned as a lightweight model optimized for Coding/Agent scenarios, boasting a 1 million-token context window. It supports both text and image inputs, and delivers enhanced performance in agentic tasks, programming, computer use, and cybersecurity capabilities.",
-      "context_window": 1000000,
-      "max_output": 524288,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "zai-org/glm-5.3-flash": {
       "name": "GLM 5.3 Flash",
       "description": "GLM-5.3-Flash is a native multimodal model from Z.ai. It is suited for efficient coding and long-horizon agent tasks. Its hybrid sparse and linear attention architecture maintains accurate long-context behavior while reducing compute overhead.",
       "context_window": 1048576,
       "max_output": 131072,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepseek/deepseek-v4-pro-0813-p": {
-      "name": "deepseek/deepseek-v4-pro-0813-p",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "inputs": {
-        "text": true
-      }
-    },
-    "deepseek/deepseek-v4.1-flash-dst": {
-      "name": "DeepSeek V4.1 Flash DST",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepseek/deepseek-v4.1-flash-p": {
-      "name": "DeepSeek V4.1 Flash",
-      "context_window": 1048576,
-      "max_output": 393216,
       "inputs": {
         "text": true,
         "image": true
@@ -120,38 +94,10 @@
         "image": true
       }
     },
-    "tencent/hy4-preview": {
-      "name": "Hy4 Preview",
-      "description": "Tencent: Hy4 preview is a mixture-of-experts model from Tencent, with 49B active parameters out of 770B total. It is designed for coding agents, complex tool-use workflows, and productivity tasks that require planning, context continuity, and sustained multi-step execution.",
-      "context_window": 1000000,
-      "max_output": 64000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai-org/glm-5.3-p": {
-      "name": "zai-org/glm-5.3-p",
-      "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
-      "context_window": 1048576,
-      "max_output": 131072,
-      "inputs": {
-        "text": true
-      }
-    },
     "deepseek/deepseek-v4.1-flash": {
       "name": "DeepSeek V4.1 Flash",
       "context_window": 1048576,
       "max_output": 393216,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "moonshotai/kimi-k3-p": {
-      "name": "Kimi K3",
-      "description": "Kimi K3 is Kimi’s most capable model to date, with 2.8 trillion parameters. Built on Kimi Delta Attention, a hybrid linear attention mechanism, and Attention Residuals, it offers native visual understanding and a 1M-token context window for frontier intelligence scenarios such as software engineerin",
-      "context_window": 1048576,
-      "max_output": 1048576,
       "inputs": {
         "text": true,
         "image": true
@@ -202,25 +148,6 @@
         "text": true
       }
     },
-    "moonshotai/kimi-k2.7-code": {
-      "name": "Kimi K2.7 Code",
-      "description": "Kimi K2.7 Code is MoonshotAI's strongest coding & agentic model — a 1T-parameter MoE (32B activated) , 256K context and interleaved thinking with multi-step tool calling. It delivers major gains on long-horizon coding tasks while cutting thinking-token usage by ~30% vs K2.6, and accepts text, image ",
-      "context_window": 262144,
-      "max_output": 262144,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "deepseek/deepseek-v4-flash-0731-p": {
-      "name": "deepseek/deepseek-v4-flash-0731-p",
-      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows.",
-      "context_window": 1048576,
-      "max_output": 393216,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3.8-flash": {
       "name": "Qwen3.8 Flash",
       "description": "Qwen3.8-Flash is Alibaba's multimodal MoE model and an early preview of the Qwen4 architecture: 125B total parameters with only 6B activated per token, plus a 51B N-gram embedding, built on GDN + QSA hybrid attention. It accepts text, image and video input across a 1M-token context and emits up to 1",
@@ -249,16 +176,6 @@
         "text": true
       }
     },
-    "minimax/minimax-m3": {
-      "name": "MiniMax M3",
-      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding, and tool use. It is built on MiniMax Sparse Attention (MSA), which replaces full attention with KV-blo",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepseek/deepseek-v4-pro": {
       "name": "DeepSeek V4 Pro",
       "description": "Novita-hosted DeepSeek flagship model for agentic coding, reasoning, and long-context professional work",
@@ -271,13 +188,24 @@
         "docx": false
       }
     },
-    "apodex/apodex-1.1-mini": {
-      "name": "Apodex 1.1 Mini",
-      "description": "Apodex-1.1-mini is a reasoning-first model by Apodex for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to deliver verifiable results, and ranks at the top of ProphetArena, the leading live forecasting benchmark.",
-      "context_window": 262144,
+    "qwen/qwen3-vl-plus": {
+      "name": "Qwen3 VL Plus",
+      "description": "The Qwen3 series VL models effectively integrates thinking and non-thinking modes, achieving world-leading performance in visual agent capabilities on public benchmark datasets such as OS World. This version features comprehensive upgrades in areas like visual coding, spatial perception, and multimo",
+      "context_window": 262000,
+      "max_output": 32000,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen4-max": {
+      "name": "Qwen4 Max",
+      "description": "Qwen4‑max is the new‑generation MoE flagship model of the Qwen4 family, with 2.4T total parameters and 71B activated parameters. Boasting million‑token context window and native vision capability, it delivers major improvements in coding and office productivity. It can autonomously drive long‑cycle ",
+      "context_window": 1000000,
       "max_output": 262144,
       "inputs": {
-        "text": true
+        "text": true,
+        "image": true
       }
     },
     "stepfun/step-5-preview": {
@@ -364,6 +292,237 @@
         "image": true
       }
     },
+    "moonshotai/kimi-k2.6": {
+      "name": "Kimi K2.6",
+      "description": "Kimi K2.6 is an open-source, native multimodal agentic model that significantly advances practical capabilities in long-horizon coding, coding-driven design, and swarm-based task orchestration. It robustly executes complex, end-to-end development tasks across multiple programming languages and domai",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai-org/glm-5.1": {
+      "name": "GLM-5.1",
+      "description": "GLM-5.1 is Z.AI's latest flagship model, meticulously engineered for long-horizon autonomous tasks. Capable of working continuously on a single assignment for up to 8 hours, it autonomously manages the entire workflow—from initial planning and execution to iterative optimization and the delivery of ",
+      "context_window": 204800,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3.5-27b": {
+      "name": "Qwen3.5-27B",
+      "description": "The Qwen3.5 27B native vision-language Dense model incorporates a linear attention mechanism, delivering fast response times while balancing inference speed and performance. Its overall capabilities are comparable to those of the Qwen3.5-122B-A10B.",
+      "context_window": 262144,
+      "max_output": 65536,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai-org/glm-5": {
+      "name": "GLM-5",
+      "description": "GLM-5 is an open-source foundation model engineered for complex system engineering and long-horizon Agent tasks, delivering reliable productivity for top-tier programmers. Transcending the boundary from \"writing code\" to \"building systems,\" it moves beyond traditional snippet generation to offer sen",
+      "context_window": 202800,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k2.5": {
+      "name": "Kimi K2.5",
+      "description": "Kimi K2.5 is the latest flagship iteration of Moonshot AI's large language model series, representing a significant leap in multimodal and agentic capabilities. It features a native multimodal architecture supporting both visual and text inputs, alongside versatile thinking and non-thinking modes. T",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "zai-org/glm-4.7": {
+      "name": "GLM-4.7",
+      "description": "GLM-4.7 is Z.AI's latest flagship model, with major upgrades focused on advanced coding capabilities and more reliable multi-step reasoning and execution. It shows clear gains in complex agent workflows, while delivering a more natural conversational experience and stronger front-end design sensibil",
+      "context_window": 204800,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai-org/glm-4.6": {
+      "name": "GLM 4.6",
+      "description": "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications. ",
+      "context_window": 204800,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k2-0905": {
+      "name": "Kimi K2 0905",
+      "description": "Kimi K2 0905 is the September update of Kimi K2 0711. It is a large-scale Mixture-of-Experts (MoE) language model developed by Moonshot AI, featuring 1 trillion total parameters with 32 billion active per forward pass. It supports long-context inference up to 256k tokens, extended from the previous ",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k2-instruct": {
+      "name": "Kimi K2 Instruct",
+      "description": "Kimi K2 is a state-of-the-art mixture-of-experts (MoE) language model with 32 billion activated parameters and 1 trillion total parameters. Trained with the Muon optimizer, Kimi K2 achieves exceptional performance across frontier knowledge, reasoning, and coding tasks while being meticulously optimi",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-vl": {
+      "name": "Ling 3.0 Flash VL",
+      "description": "Ling-3.0-flash-VL builds on Ling-3.0-flash, further strengthening its language capabilities while adding native visual perception and advanced visual agent capabilities. ",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.0-flash-sante": {
+      "name": "Ling 3.0 Flash Sante",
+      "description": "Ling-3.0-Flash-Sante is a Mixture-of-Experts (MoE) model with enhanced capabilities across health and medicine. Built on Ling-3.0-Flash, it has 124 billion total parameters and activates approximately 5.1 billion parameters per token. The model excels in medical knowledge reasoning, clinical safety,",
+      "context_window": 262144,
+      "max_output": 32768,
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai-org/glm-4.5-air": {
+      "name": "zai-org/glm-4.5-air",
+      "context_window": 131072,
+      "max_output": 98304,
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-vl-30b-a3b-instruct": {
+      "name": "qwen/qwen3-vl-30b-a3b-instruct",
+      "context_window": 131072,
+      "max_output": 32768,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen-mt-plus": {
+      "name": "Qwen MT Plus",
+      "description": "Qwen-MT is a large language model optimized for machine translation, built upon the foundation of the Tongyi Qianwen model. It supports translation across 92 languages — including Chinese, English, Japanese, Korean, French, Spanish, German, Thai, Indonesian, Vietnamese, Arabic, and more — enabling s",
+      "context_window": 16384,
+      "max_output": 8192,
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m3.1-flash": {
+      "name": "MiniMax M3.1 Flash",
+      "description": "MiniMax M3.1 Flash is positioned as a lightweight model optimized for Coding/Agent scenarios, boasting a 1 million-token context window. It supports both text and image inputs, and delivers enhanced performance in agentic tasks, programming, computer use, and cybersecurity capabilities.",
+      "context_window": 1000000,
+      "max_output": 524288,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-pro-0813-p": {
+      "name": "deepseek/deepseek-v4-pro-0813-p",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-dst": {
+      "name": "DeepSeek V4.1 Flash DST",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4.1-flash-p": {
+      "name": "DeepSeek V4.1 Flash",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy4-preview": {
+      "name": "Hy4 Preview",
+      "description": "Tencent: Hy4 preview is a mixture-of-experts model from Tencent, with 49B active parameters out of 770B total. It is designed for coding agents, complex tool-use workflows, and productivity tasks that require planning, context continuity, and sustained multi-step execution.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "inputs": {
+        "text": true
+      }
+    },
+    "zai-org/glm-5.3-p": {
+      "name": "zai-org/glm-5.3-p",
+      "description": "GLM-5.3 is Z.ai’s latest flagship model, delivering comprehensive advancements in complex software engineering and agent capabilities. It uses the same base model as GLM-5.2, with all improvements driven by post-training. ",
+      "context_window": 1048576,
+      "max_output": 131072,
+      "inputs": {
+        "text": true
+      }
+    },
+    "moonshotai/kimi-k3-p": {
+      "name": "Kimi K3",
+      "description": "Kimi K3 is Kimi’s most capable model to date, with 2.8 trillion parameters. Built on Kimi Delta Attention, a hybrid linear attention mechanism, and Attention Residuals, it offers native visual understanding and a 1M-token context window for frontier intelligence scenarios such as software engineerin",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k2.7-code": {
+      "name": "Kimi K2.7 Code",
+      "description": "Kimi K2.7 Code is MoonshotAI's strongest coding & agentic model — a 1T-parameter MoE (32B activated) , 256K context and interleaved thinking with multi-step tool calling. It delivers major gains on long-horizon coding tasks while cutting thinking-token usage by ~30% vs K2.6, and accepts text, image ",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "deepseek/deepseek-v4-flash-0731-p": {
+      "name": "deepseek/deepseek-v4-flash-0731-p",
+      "description": "DeepSeek V4 Flash 0731 is a sparse mixture-of-experts model from DeepSeek, with 13B active parameters out of 284B total. This re-post-trained revision is suited for coding, reasoning, and agent workflows.",
+      "context_window": 1048576,
+      "max_output": 393216,
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m3": {
+      "name": "MiniMax M3",
+      "description": "MiniMax-M3 is a multimodal foundation model from MiniMax. It supports text, image, and video inputs with text output, a 1M-token context window, and is suited for long-horizon agentic work, coding, and tool use. It is built on MiniMax Sparse Attention (MSA), which replaces full attention with KV-blo",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "apodex/apodex-1.1-mini": {
+      "name": "Apodex 1.1 Mini",
+      "description": "Apodex-1.1-mini is a reasoning-first model by Apodex for complex, long-horizon research and forecasting tasks. It works directly with files, data, code, and tools to deliver verifiable results, and ranks at the top of ProphetArena, the leading live forecasting benchmark.",
+      "context_window": 262144,
+      "max_output": 262144,
+      "inputs": {
+        "text": true
+      }
+    },
     "nvidia/nemotron-3-nano-30b-a3b": {
       "name": "Nemotron 3 Nano 30B A3B",
       "description": "Nemotron-3-Nano-30B-A3B is NVIDIA's compute-efficient, open-weight reasoning model built for agentic AI. Its Mixture-of-Experts design (30B total / 3.5B active) with a hybrid Mamba-2 + Transformer architecture delivers strong reasoning and tool use at a fraction of the compute required by comparable",
@@ -401,29 +560,10 @@
         "image": true
       }
     },
-    "moonshotai/kimi-k2.6": {
-      "name": "Kimi K2.6",
-      "description": "Kimi K2.6 is an open-source, native multimodal agentic model that significantly advances practical capabilities in long-horizon coding, coding-driven design, and swarm-based task orchestration. It robustly executes complex, end-to-end development tasks across multiple programming languages and domai",
-      "context_window": 262144,
-      "max_output": 262144,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "bunny": {
       "name": "Bunny",
       "context_window": 262144,
       "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai-org/glm-5.1": {
-      "name": "GLM-5.1",
-      "description": "GLM-5.1 is Z.AI's latest flagship model, meticulously engineered for long-horizon autonomous tasks. Capable of working continuously on a single assignment for up to 8 hours, it autonomously manages the entire workflow—from initial planning and execution to iterative optimization and the delivery of ",
-      "context_window": 204800,
-      "max_output": 131072,
       "inputs": {
         "text": true
       }
@@ -466,16 +606,6 @@
         "text": true
       }
     },
-    "qwen/qwen3.5-27b": {
-      "name": "Qwen3.5-27B",
-      "description": "The Qwen3.5 27B native vision-language Dense model incorporates a linear attention mechanism, delivering fast response times while balancing inference speed and performance. Its overall capabilities are comparable to those of the Qwen3.5-122B-A10B.",
-      "context_window": 262144,
-      "max_output": 65536,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "qwen/qwen3.5-122b-a10b": {
       "name": "Qwen3.5-122B-A10B",
       "description": "The Qwen3.5-122B-A10B native vision-language model is built on a hybrid architecture that integrates a linear attention mechanism with a sparse mixture-of-experts model, achieving higher inference efficiency. In terms of overall performance, this model is second only to Qwen3.5-397B-A17B. Its text c",
@@ -515,30 +645,11 @@
         "text": true
       }
     },
-    "zai-org/glm-5": {
-      "name": "GLM-5",
-      "description": "GLM-5 is an open-source foundation model engineered for complex system engineering and long-horizon Agent tasks, delivering reliable productivity for top-tier programmers. Transcending the boundary from \"writing code\" to \"building systems,\" it moves beyond traditional snippet generation to offer sen",
-      "context_window": 202800,
-      "max_output": 131072,
-      "inputs": {
-        "text": true
-      }
-    },
     "deepseek/deepseek-ocr-2": {
       "name": "DeepSeek-OCR 2",
       "description": "DeepSeek-OCR 2 is a multimodal document recognition model released by DeepSeek AI, serving as an upgrade to DeepSeek-OCR. By introducing the DeepEncoder V2 architecture, it achieves a paradigm shift in visual encoding from \"fixed scanning\" to \"semantic reasoning.\" The model replaces the original CLI",
       "context_window": 8192,
       "max_output": 8192,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "moonshotai/kimi-k2.5": {
-      "name": "Kimi K2.5",
-      "description": "Kimi K2.5 is the latest flagship iteration of Moonshot AI's large language model series, representing a significant leap in multimodal and agentic capabilities. It features a native multimodal architecture supporting both visual and text inputs, alongside versatile thinking and non-thinking modes. T",
-      "context_window": 262144,
-      "max_output": 262144,
       "inputs": {
         "text": true,
         "image": true
@@ -558,15 +669,6 @@
       "description": "GLM-4.7-Flash, a state-of-the-art model in the 30B class, delivers a compelling balance of high performance and efficiency. Tailored for Agentic Coding, it strengthens coding proficiency, long-horizon planning, and tool synergy, securing top-tier results on public benchmarks among similarly sized op",
       "context_window": 200000,
       "max_output": 128000,
-      "inputs": {
-        "text": true
-      }
-    },
-    "zai-org/glm-4.7": {
-      "name": "GLM-4.7",
-      "description": "GLM-4.7 is Z.AI's latest flagship model, with major upgrades focused on advanced coding capabilities and more reliable multi-step reasoning and execution. It shows clear gains in complex agent workflows, while delivering a more natural conversational experience and stronger front-end design sensibil",
-      "context_window": 204800,
-      "max_output": 131072,
       "inputs": {
         "text": true
       }
@@ -609,15 +711,6 @@
         "image": true
       }
     },
-    "zai-org/glm-4.6": {
-      "name": "GLM 4.6",
-      "description": "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications. ",
-      "context_window": 204800,
-      "max_output": 131072,
-      "inputs": {
-        "text": true
-      }
-    },
     "qwen/qwen3.6-35b-a3b": {
       "name": "Qwen3.6-35B-A3B",
       "description": "The Qwen3.6 35B-A3B native vision-language model is built on a hybrid architecture that integrates linear attention mechanisms with a sparse mixture-of-experts framework, achieving higher inference efficiency. Compared with the 3.5-35B-A3B, this model demonstrates significantly improved agentic codi",
@@ -626,15 +719,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "moonshotai/kimi-k2-0905": {
-      "name": "Kimi K2 0905",
-      "description": "Kimi K2 0905 is the September update of Kimi K2 0711. It is a large-scale Mixture-of-Experts (MoE) language model developed by Moonshot AI, featuring 1 trillion total parameters with 32 billion active per forward pass. It supports long-context inference up to 256k tokens, extended from the previous ",
-      "context_window": 262144,
-      "max_output": 262144,
-      "inputs": {
-        "text": true
       }
     },
     "openai/gpt-oss-120b": {
@@ -646,15 +730,6 @@
         "image": false,
         "pdf": false,
         "docx": false
-      }
-    },
-    "moonshotai/kimi-k2-instruct": {
-      "name": "Kimi K2 Instruct",
-      "description": "Kimi K2 is a state-of-the-art mixture-of-experts (MoE) language model with 32 billion activated parameters and 1 trillion total parameters. Trained with the Muon optimizer, Kimi K2 achieves exceptional performance across frontier knowledge, reasoning, and coding tasks while being meticulously optimi",
-      "context_window": 131072,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
       }
     },
     "deepseek/deepseek_v3": {
@@ -850,48 +925,12 @@
         "image": true
       }
     },
-    "inclusionai/ling-3.0-flash-vl": {
-      "name": "Ling 3.0 Flash VL",
-      "description": "Ling-3.0-flash-VL builds on Ling-3.0-flash, further strengthening its language capabilities while adding native visual perception and advanced visual agent capabilities. ",
-      "context_window": 262144,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "inclusionai/ling-3.0-flash-sante": {
-      "name": "Ling 3.0 Flash Sante",
-      "description": "Ling-3.0-Flash-Sante is a Mixture-of-Experts (MoE) model with enhanced capabilities across health and medicine. Built on Ling-3.0-Flash, it has 124 billion total parameters and activates approximately 5.1 billion parameters per token. The model excels in medical knowledge reasoning, clinical safety,",
-      "context_window": 262144,
-      "max_output": 32768,
-      "inputs": {
-        "text": true
-      }
-    },
     "dev/glm46": {
       "name": "dev/glm46",
       "context_window": 256000,
       "max_output": 256000,
       "inputs": {
         "text": true
-      }
-    },
-    "zai-org/glm-4.5-air": {
-      "name": "zai-org/glm-4.5-air",
-      "context_window": 131072,
-      "max_output": 98304,
-      "inputs": {
-        "text": true
-      }
-    },
-    "qwen/qwen3-vl-30b-a3b-instruct": {
-      "name": "qwen/qwen3-vl-30b-a3b-instruct",
-      "context_window": 131072,
-      "max_output": 32768,
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "qwen/qwen3-omni-30b-a3b-thinking": {
@@ -902,15 +941,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "qwen/qwen-mt-plus": {
-      "name": "Qwen MT Plus",
-      "description": "Qwen-MT is a large language model optimized for machine translation, built upon the foundation of the Tongyi Qianwen model. It supports translation across 92 languages — including Chinese, English, Japanese, Korean, French, Spanish, German, Thai, Indonesian, Vietnamese, Arabic, and more — enabling s",
-      "context_window": 16384,
-      "max_output": 8192,
-      "inputs": {
-        "text": true
       }
     },
     "meta-llama/llama-3.2-1b-instruct": {
@@ -1676,5 +1706,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-11T10:10:39.067Z"
+  "_syncedAt": "2026-11-27T10:48:34.888Z"
 }

@@ -317,9 +317,6 @@
     "MiniMaxAI/MiniMax-M3.1-Flash": {
       "name": "MiniMax M3 1 FLASH"
     },
-    "parasail-kimi-k3-p2p": {
-      "name": "Parasail Kimi K3 P2p"
-    },
     "parasail-kimi-k31-pro": {
       "name": "Parasail Kimi K31 PRO"
     },
@@ -328,6 +325,9 @@
     },
     "moonshotai/kimi-k3.1-pro": {
       "name": "Kimi K3 1 PRO"
+    },
+    "parasail-kimi-k3-p2p": {
+      "name": "Parasail Kimi K3 P2p"
     },
     "parasail-deepseek-v41-flash-p2p": {
       "name": "Parasail Deepseek V41 FLASH P2p"
@@ -429,5 +429,5 @@
       "name": "GLM 5 2 NVFP4"
     }
   },
-  "_syncedAt": "2026-11-07T12:20:43.905Z"
+  "_syncedAt": "2026-11-27T10:48:42.936Z"
 }

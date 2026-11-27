@@ -30,12 +30,6 @@
     "mistral-code-fim-latest": {
       "name": "Mistral Code Fim Latest"
     },
-    "labs-leanstral-1-5-1": {
-      "name": "Labs Leanstral 1 5 1"
-    },
-    "labs-leanstral-1-5": {
-      "name": "Labs Leanstral 1 5"
-    },
     "ministral-14b-2512": {
       "name": "ministral-14b-2512"
     },
@@ -53,12 +47,6 @@
     },
     "ministral-8b-latest": {
       "name": "ministral-8b-latest"
-    },
-    "mistral-large-4": {
-      "name": "Mistral Large 4"
-    },
-    "mistral-large-4-0": {
-      "name": "Mistral Large 4 0"
     },
     "mistral-medium-latest": {
       "name": "Mistral Medium 3.1",
@@ -210,6 +198,18 @@
     "voxtral-small-transcribe-3-0": {
       "name": "Voxtral Small Transcribe 3 0"
     },
+    "labs-leanstral-1-5-1": {
+      "name": "Labs Leanstral 1 5 1"
+    },
+    "labs-leanstral-1-5": {
+      "name": "Labs Leanstral 1 5"
+    },
+    "mistral-large-4": {
+      "name": "Mistral Large 4"
+    },
+    "mistral-large-4-0": {
+      "name": "Mistral Large 4 0"
+    },
     "mistral-ocr-4-0": {
       "name": "Mistral Ocr 4 0"
     },
@@ -312,5 +312,5 @@
       "name": "mistral-moderation-latest"
     }
   },
-  "_syncedAt": "2026-11-11T10:10:20.362Z"
+  "_syncedAt": "2026-11-27T10:48:21.254Z"
 }

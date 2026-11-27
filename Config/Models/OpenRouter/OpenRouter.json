@@ -5,6 +5,290 @@
   "auth_header": "Authorization",
   "auth_prefix": "Bearer ",
   "models": {
+    "inclusionai/lingsante-3.1-air-vl": {
+      "name": "inclusionAI: LingSante 3.1 Air VL",
+      "description": "LingSante 3.1 Air VL is inclusionAI's medical vision-language model, a 124B total / 5.5B active MoE. It takes text and up to 16 images (scans, skin and meal photos, lab...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.18
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "upstage/solar-mini-4-5": {
+      "name": "Upstage: Solar Mini 4.5 (Preview)",
+      "description": "Solar Mini 4.5 is Upstage's compact language model, built on a proprietary mixture-of-experts architecture with 35B total and 3B active parameters and a 524K context window. It is a step...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.01,
+        "output": 0.04
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "upstage/solar-pro-4-contributor": {
+      "name": "Upstage: Solar Pro 4 Contributor",
+      "description": "Solar Pro 4 Contributor is the same Solar Pro 4 model from Upstage, offered at a lower rate in exchange for allowing Upstage to use interaction data to improve its...",
+      "context_window": 524288,
+      "pricing": {
+        "input": 0.09,
+        "output": 0.36
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.6-flash-mopd": {
+      "name": "Xiaomi: MiMo-V2.6-Flash-MOPD",
+      "description": "MiMo-V2.6-Flash-MOPD is an updated checkpoint of Xiaomi's MiMo-V2.6-Flash, a Mixture-of-Experts model with 309B total and 15B active parameters, a 1M-token context window, and native multimodal input. It adds a multi-teacher...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.5,
+        "output": 1
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "thinkingmachines/inkling-2-mini": {
+      "name": "Thinking Machines: Inkling 2 Mini",
+      "description": "Inkling 2 Mini is an open-weight multimodal looped transformer from Thinking Machines Lab, with 3.4B active parameters out of 26.4B total (MoE). Its middle layers run three times with shared...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.06,
+        "output": 0.24
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "radixark/daisyrose-27b": {
+      "name": "RadixArk: DaisyRose 27B",
+      "description": "DaisyRose 27B is an open-weight multimodal reasoning model from RadixArk, trained from [Qwen3.8 27B](https://openrouter.ai/qwen/qwen3.8-27b) using reinforcement learning only on long-horizon agent tasks, with no supervised fine-tuning or distillation. It is...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.88
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/pixtral-large-2502": {
+      "name": "Mistral: Pixtral Large 2502",
+      "description": "Pixtral Large 2502 is the February 2025 version of Mistral AI's large multimodal model, following [Pixtral Large 2411](https://openrouter.ai/mistralai/pixtral-large-2411). It accepts text and image input, including documents, charts, and natural images,...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-neon": {
+      "name": "Google: Gemini 4 Neon",
+      "description": "Gemini 4 Neon is a fast, mid-priced model in the Gemini 4 family from Google, built for coding and agentic work. It is suited for repository and terminal coding, web...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-neon:batch": {
+      "name": "Google: Gemini 4 Neon (batch)",
+      "description": "Gemini 4 Neon is a fast, mid-priced model in the Gemini 4 family from Google, built for coding and agentic work. It is suited for repository and terminal coding, web...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra-pro": {
+      "name": "OpenAI: GPT-6.2 Astra Pro",
+      "description": "GPT-6.2 Astra Pro is the same underlying model as [GPT-6.2 Astra](https://openrouter.ai/openai/gpt-6.2-astra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra-pro:batch": {
+      "name": "OpenAI: GPT-6.2 Astra Pro (batch)",
+      "description": "GPT-6.2 Astra Pro is the same underlying model as [GPT-6.2 Astra](https://openrouter.ai/openai/gpt-6.2-astra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra": {
+      "name": "OpenAI: GPT-6.2 Astra",
+      "description": "GPT-6.2 Astra is the flagship model in the GPT-6.2 series from OpenAI, built for the hardest projects. It is suited for real-world engineering, professional work and scientific research, with stronger...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra:batch": {
+      "name": "OpenAI: GPT-6.2 Astra (batch)",
+      "description": "GPT-6.2 Astra is the flagship model in the GPT-6.2 series from OpenAI, built for the hardest projects. It is suited for real-world engineering, professional work and scientific research, with stronger...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol-pro": {
+      "name": "OpenAI: GPT-6.2 Sol Pro",
+      "description": "GPT-6.2 Sol Pro is the same underlying model as [GPT-6.2 Sol](https://openrouter.ai/openai/gpt-6.2-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol-pro:batch": {
+      "name": "OpenAI: GPT-6.2 Sol Pro (batch)",
+      "description": "GPT-6.2 Sol Pro is the same underlying model as [GPT-6.2 Sol](https://openrouter.ai/openai/gpt-6.2-sol), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol": {
+      "name": "OpenAI: GPT-6.2 Sol",
+      "description": "GPT-6.2 Sol is an upgrade to GPT-6.1 Sol from OpenAI, positioned below the flagship GPT-6.2 Astra in the GPT-6.2 series. It is an efficient, versatile model for everyday work, suited...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol:batch": {
+      "name": "OpenAI: GPT-6.2 Sol (batch)",
+      "description": "GPT-6.2 Sol is an upgrade to GPT-6.1 Sol from OpenAI, positioned below the flagship GPT-6.2 Astra in the GPT-6.2 series. It is an efficient, versatile model for everyday work, suited...",
+      "context_window": 1050000,
+      "pricing": {
+        "input": 1,
+        "output": 5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy4-flash": {
+      "name": "Tencent: Hy4 flash",
+      "description": "Hy4 flash is a cost-efficient variant of [Hy4](https://openrouter.ai/tencent/hy4) from Tencent, served with roughly a quarter of the flagship's parameter count for lower latency and cost. It targets code assistance, agent...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "qwen/qwen4-max": {
+      "name": "Qwen: Qwen4 Max",
+      "description": "Qwen4 Max is the flagship model in Alibaba's Qwen4 series. It accepts text, image, and video input and returns text, with a 1M-token context window and reasoning enabled by default....",
+      "context_window": 1000000,
+      "pricing": {
+        "input": 1.42,
+        "output": 4.27
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inclusionai/ling-3.2-flash:free": {
+      "name": "inclusionAI: Ling 3.2 Flash (free)",
+      "description": "Ling 3.2 Flash is a hybrid reasoning model from inclusionAI that accepts text and image input, with a 1M-token context window and up to 200 images per request. Thinking can...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-hydrogen": {
+      "name": "Google: Gemini 4 Hydrogen",
+      "description": "Gemini 4 Hydrogen is the high-efficiency workhorse model of the Gemini 4 family from Google, built for high-throughput agentic workflows, coding and multi-model routing at lower cost and latency than...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-hydrogen:batch": {
+      "name": "Google: Gemini 4 Hydrogen (batch)",
+      "description": "Gemini 4 Hydrogen is the high-efficiency workhorse model of the Gemini 4 family from Google, built for high-throughput agentic workflows, coding and multi-model routing at lower cost and latency than...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.75,
+        "output": 3.75
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "baidu/ernie-5.5-flash-preview:free": {
       "name": "Baidu: ERNIE-5.5-Flash-Preview (free)",
       "description": "ERNIE 5.5 Flash Preview is the latest foundation model in the ERNIE family, with comprehensive improvements in coding, agentic capabilities, knowledge work, and deep research. It has 280 billion total...",
@@ -68,13 +352,13 @@
         "image": true
       }
     },
-    "thinkingmachines/inkling-2-small:free": {
-      "name": "Thinking Machines: Inkling 2 Small (free)",
-      "description": "Inkling 2 Small is a multimodal mixture-of-experts reasoning model from Thinking Machines Lab, with 17B active parameters out of 594B total. It is the first model in the second Inkling...",
+    "thinkingmachines/inkling-2-small": {
+      "name": "Thinking Machines: Inkling 2 Small",
+      "description": "Inkling 2 Small is an open-weight multimodal mixture-of-experts reasoning model from Thinking Machines Lab, with 17B active parameters out of 594B total. It is the first model in the second...",
       "context_window": 1048576,
       "pricing": {
-        "input": 0,
-        "output": 0
+        "input": 0.3,
+        "output": 1
       },
       "inputs": {
         "text": true,
@@ -245,6 +529,19 @@
         "image": true
       }
     },
+    "particle-ai/particle-1:free": {
+      "name": "Particle AI: Particle-1 (free)",
+      "description": "Particle-1 is a token-efficient agentic coding model from Particle AI, post-trained on DeepSeek V4.1 Flash. It is suited for software engineering work such as terminal workflows, codebase changes, and data...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-6.1-terra-pro": {
       "name": "OpenAI: GPT-6.1 Terra Pro",
       "description": "GPT-6.1 Terra Pro is the same underlying model as [GPT-6.1 Terra](https://openrouter.ai/openai/gpt-6.1-terra), served with `reasoning.mode` set to `pro` for higher-quality responses on complex tasks. **Cost note:** pro mode spends far more...",
@@ -304,6 +601,19 @@
       "pricing": {
         "input": 2,
         "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k3.1-pro:batch": {
+      "name": "MoonshotAI: Kimi K3.1 Pro (batch)",
+      "description": "Kimi K3.1 Pro is Moonshot AI's flagship open-weight multimodal reasoning model and a post-trained successor to Kimi K3, with a 1M-token context window. It is built for long-horizon coding, 3D...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.37,
+        "output": 5.58
       },
       "inputs": {
         "text": true,
@@ -458,45 +768,6 @@
       "pricing": {
         "input": 0,
         "output": 0
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "unbiased/pareto-26.10": {
-      "name": "Pareto 26.10",
-      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.8,
-        "output": 3.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "~unbiased/pareto-latest": {
-      "name": "Pareto Latest",
-      "description": "This model always redirects to the latest model in the Pareto family.",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.8,
-        "output": 3.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "unbiased/pareto-26.9": {
-      "name": "Pareto 26.9",
-      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 2.5,
-        "output": 7.5
       },
       "inputs": {
         "text": true,
@@ -1591,19 +1862,6 @@
         "image": true
       }
     },
-    "dots-studio/dots-3-note-preview:free": {
-      "name": "Dots Studio: Dots3-Note Preview (free)",
-      "description": "Dots3-Note Preview is an open-weight mixture-of-experts model from Dots Studio, with 16B active parameters out of 280B total. It is the lightest model in the Dots 3 family and is...",
-      "context_window": 512000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "google/gemini-3.7-flash": {
       "name": "Google: Gemini 3.7 Flash",
       "description": "Gemini 3.7 Flash is a multimodal model from Google for fast agentic workflows, coding, and complex multi-step reasoning. It is designed for tasks that require responsive performance and reliable multi-step...",
@@ -1655,19 +1913,6 @@
         "text": true
       }
     },
-    "bytedance-seed/seed-2.0-code": {
-      "name": "ByteDance Seed: Seed-2.0-Code",
-      "description": "Seed 2.0 Code is a model from ByteDance Seed optimized for agentic coding. It is suited for frontend development, multilingual programming tasks, and coding-agent workflows in tools such as Claude...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.5,
-        "output": 3
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "deepseek/deepseek-v4-pro-0813": {
       "name": "DeepSeek: DeepSeek V4 Pro 0813",
       "description": "DeepSeek V4 Pro 0813 is a large-scale mixture-of-experts model from DeepSeek. This is the GA release of DeepSeek V4 Pro.",
@@ -1704,18 +1949,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "liquid/lfm-2.5-2.6b:free": {
-      "name": "LiquidAI: LFM2.5-2.6B (free)",
-      "description": "LFM2.5-2.6B is a compact reasoning model from Liquid AI. It is suited for agent workflows, data extraction, RAG, and long-context processing. Liquid advises against using it for agentic coding or...",
-      "context_window": 128000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
       }
     },
     "nvidia/nemotron-3.5-lightning": {
@@ -1968,18 +2201,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "meituan/longcat-2.0": {
-      "name": "Meituan: LongCat 2.0",
-      "description": "LongCat 2.0 is a sparse mixture-of-experts language model from Meituan, with 48B active parameters out of 1.6T total. It is suited for coding, repository-level changes, long-horizon problem solving, and agentic...",
-      "context_window": 1048756,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
       }
     },
     "thinkingmachines/inkling": {
@@ -2278,18 +2499,6 @@
         "image": true
       }
     },
-    "cohere/north-mini-code:free": {
-      "name": "Cohere: North Mini Code (free)",
-      "description": "North Mini Code is Cohere's first agentic coding model and the debut of its North family. A sparse mixture-of-experts model with 30B total parameters and 3B active, it is optimized...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0,
-        "output": 0
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "z-ai/glm-5.2": {
       "name": "Z.ai: GLM 5.2",
       "description": "GLM-5.2 is Z.ai’s flagship model for the era of long-horizon tasks. With a truly usable 1M-token context window, it can handle project-level engineering context, execute long-running tasks more reliably, follow...",
@@ -2478,19 +2687,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "x-ai/grok-build-0.1": {
-      "name": "xAI: Grok Build 0.1",
-      "description": "Grok Build 0.1 is xAI’s fast coding model trained specifically for agentic software engineering workflows. It supports text and image inputs with text output, and is optimized for interactive coding...",
-      "context_window": 256000,
-      "pricing": {
-        "input": 1,
-        "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "google/gemini-3.5-flash": {
@@ -2816,43 +3012,6 @@
         "text": true
       }
     },
-    "tencent/hy3-preview": {
-      "name": "Tencent: Hy3 preview",
-      "description": "Hy3 preview is a high-efficiency Mixture-of-Experts model from Tencent designed for agentic workflows and production use. It supports configurable reasoning levels across disabled, low, and high modes, allowing it to...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.07,
-        "output": 0.26
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "xiaomi/mimo-v2.5-pro": {
-      "name": "Xiaomi: MiMo-V2.5-Pro",
-      "description": "MiMo-V2.5-Pro is Xiaomi’s flagship model, delivering strong performance in general agentic capabilities, complex software engineering, and long-horizon tasks, with top rankings on benchmarks such as ClawEval, GDPVal, and SWE-bench Pro....",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 1,
-        "output": 3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "xiaomi/mimo-v2.5": {
-      "name": "Xiaomi: MiMo-V2.5",
-      "description": "MiMo-V2.5 is a native omnimodal model by Xiaomi. It delivers Pro-level agentic performance at roughly half the inference cost, while surpassing MiMo-V2-Omni in multimodal perception across image and video understanding...",
-      "context_window": 1048576,
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "~anthropic/claude-opus-latest": {
       "name": "Anthropic: Claude Opus Latest",
       "description": "This model always redirects to the latest model in the Claude Opus family.",
@@ -3095,6 +3254,19 @@
       "pricing": {
         "input": 0.15,
         "output": 0.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-small-2603:batch": {
+      "name": "Mistral: Mistral Small 4 (batch)",
+      "description": "Mistral Small 4 is the next major release in the Mistral Small family, unifying the capabilities of several flagship Mistral models into a single system. It combines strong reasoning from...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
       },
       "inputs": {
         "text": true,
@@ -3413,18 +3585,6 @@
         "text": true
       }
     },
-    "stepfun/step-3.5-flash": {
-      "name": "StepFun: Step 3.5 Flash",
-      "description": "Step 3.5 Flash is StepFun's most capable open-source foundation model. Built on a sparse Mixture of Experts (MoE) architecture, it selectively activates only 11B of its 196B parameters per token....",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.3
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "moonshotai/kimi-k2.5": {
       "name": "MoonshotAI: Kimi K2.5",
       "description": "Kimi K2.5 is Moonshot AI's native multimodal model, delivering state-of-the-art visual coding capability and a self-directed agent swarm paradigm. Built on Kimi K2 with continued pretraining over approximately 15T mixed...",
@@ -3469,32 +3629,6 @@
       "pricing": {
         "input": 1.75,
         "output": 14
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bytedance-seed/seed-1.6-flash": {
-      "name": "ByteDance Seed: Seed 1.6 Flash",
-      "description": "Seed 1.6 Flash is an ultra-fast multimodal deep thinking model by ByteDance Seed, supporting both text and visual understanding. It features a 256k context window and can generate outputs of...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.3
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bytedance-seed/seed-1.6": {
-      "name": "ByteDance Seed: Seed 1.6",
-      "description": "Seed 1.6 is a general-purpose model released by the ByteDance Seed team. It incorporates multimodal capabilities and adaptive deep thinking with a 256K context window.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.25,
-        "output": 2
       },
       "inputs": {
         "text": true,
@@ -3666,6 +3800,19 @@
         "image": true
       }
     },
+    "mistralai/ministral-8b-2512:batch": {
+      "name": "Mistral: Ministral 3 8B 2512 (batch)",
+      "description": "A balanced model in the Ministral 3 family, Ministral 3 8B is a powerful, efficient tiny language model with vision capabilities.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.08
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "mistralai/ministral-3b-2512": {
       "name": "Mistral: Ministral 3 3B 2512",
       "description": "The smallest model in the Ministral 3 family, Ministral 3 3B is a powerful, efficient tiny language model with vision capabilities.",
@@ -3686,6 +3833,19 @@
       "pricing": {
         "input": 0.5,
         "output": 1.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-large-2512:batch": {
+      "name": "Mistral: Mistral Large 3 2512 (batch)",
+      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.75
       },
       "inputs": {
         "text": true,
@@ -3754,18 +3914,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "moonshotai/kimi-k2-thinking": {
-      "name": "MoonshotAI: Kimi K2 Thinking",
-      "description": "Kimi K2 Thinking is Moonshot AI’s most advanced open reasoning model to date, extending the K2 series into agentic, long-horizon reasoning. Built on the trillion-parameter Mixture-of-Experts (MoE) architecture introduced in...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.5
-      },
-      "inputs": {
-        "text": true
       }
     },
     "amazon/nova-premier-v1": {
@@ -3838,19 +3986,6 @@
       "pricing": {
         "input": 0.08,
         "output": 0.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "qwen/qwen3-vl-30b-a3b-thinking": {
-      "name": "Qwen: Qwen3 VL 30B A3B Thinking",
-      "description": "Qwen3-VL-30B-A3B-Thinking is a multimodal model that unifies strong text generation with visual understanding for images and videos. Its Thinking variant enhances reasoning in STEM, math, and complex tasks. It excels...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.13,
-        "output": 1.56
       },
       "inputs": {
         "text": true,
@@ -4029,19 +4164,6 @@
         "text": true
       }
     },
-    "mistralai/mistral-medium-3.1": {
-      "name": "Mistral: Mistral Medium 3.1",
-      "description": "Mistral Medium 3.1 is an updated version of Mistral Medium 3, which is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "z-ai/glm-4.5v": {
       "name": "Z.ai: GLM 4.5V",
       "description": "GLM-4.5V is a vision-language foundation model for multimodal agent applications. Built on a Mixture-of-Experts (MoE) architecture with 106B parameters and 12B activated parameters, it achieves state-of-the-art results in video understanding,...",
@@ -4175,6 +4297,18 @@
       "pricing": {
         "input": 0.3,
         "output": 0.9
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistralai/codestral-2508:batch": {
+      "name": "Mistral: Codestral 2508 (batch)",
+      "description": "Mistral's cutting-edge language model for coding released end of July 2025. Codestral specializes in low-latency, high-frequency tasks such as fill-in-the-middle (FIM), code correction and test generation.\n\n[Blog Post](https://mistral.ai/news/codestral-25-08)",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.45
       },
       "inputs": {
         "text": true
@@ -4314,13 +4448,13 @@
         "text": true
       }
     },
-    "tencent/hunyuan-a13b-instruct": {
-      "name": "Tencent: Hunyuan A13B Instruct",
-      "description": "Hunyuan-A13B is a 13B active parameter Mixture-of-Experts (MoE) language model developed by Tencent, with a total parameter count of 80B and support for reasoning via Chain-of-Thought. It offers competitive benchmark...",
+    "tngtech/deepseek-r1t2-chimera": {
+      "name": "TNG: DeepSeek R1T2 Chimera",
+      "description": "DeepSeek-TNG-R1T2-Chimera is the second-generation Chimera model from TNG Tech. It is a 671 B-parameter mixture-of-experts text-generation model assembled from DeepSeek-AI’s R1-0528, R1, and V3-0324 checkpoints with an Assembly-of-Experts merge. The...",
       "context_window": 131072,
       "pricing": {
-        "input": 0.14,
-        "output": 0.57
+        "input": 1,
+        "output": 2.63
       },
       "inputs": {
         "text": true
@@ -4449,19 +4583,6 @@
       },
       "inputs": {
         "text": true
-      }
-    },
-    "mistralai/mistral-medium-3": {
-      "name": "Mistral: Mistral Medium 3",
-      "description": "Mistral Medium 3 is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances state-of-the-art reasoning and multimodal performance with 8× lower cost...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.4,
-        "output": 2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
       }
     },
     "meta-llama/llama-guard-4-12b": {
@@ -4960,18 +5081,6 @@
         "text": true
       }
     },
-    "meta-llama/llama-3.2-1b-instruct": {
-      "name": "Meta: Llama 3.2 1B Instruct",
-      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate...",
-      "context_window": 131072,
-      "pricing": {
-        "input": 0.03,
-        "output": 0.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "meta-llama/llama-3.2-3b-instruct": {
       "name": "Meta: Llama 3.2 3B Instruct",
       "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it...",
@@ -5370,6 +5479,283 @@
         "text": true
       }
     },
+    "thinkingmachines/inkling-2-small:free": {
+      "name": "Thinking Machines: Inkling 2 Small (free)",
+      "description": "Inkling 2 Small is a multimodal mixture-of-experts reasoning model from Thinking Machines Lab, with 17B active parameters out of 594B total. It is the first model in the second Inkling...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto-26.10": {
+      "name": "Pareto 26.10",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "~unbiased/pareto-latest": {
+      "name": "Pareto Latest",
+      "description": "This model always redirects to the latest model in the Pareto family.",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.8,
+        "output": 3.2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "unbiased/pareto-26.9": {
+      "name": "Pareto 26.9",
+      "description": "Pareto is a multimodal composite model built for research, coding, and agentic workflows, while delivering frontier-level performance across a broad range of general-purpose tasks.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 2.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "dots-studio/dots-3-note-preview:free": {
+      "name": "Dots Studio: Dots3-Note Preview (free)",
+      "description": "Dots3-Note Preview is an open-weight mixture-of-experts model from Dots Studio, with 16B active parameters out of 280B total. It is the lightest model in the Dots 3 family and is...",
+      "context_window": 512000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bytedance-seed/seed-2.0-code": {
+      "name": "ByteDance Seed: Seed-2.0-Code",
+      "description": "Seed 2.0 Code is a model from ByteDance Seed optimized for agentic coding. It is suited for frontend development, multilingual programming tasks, and coding-agent workflows in tools such as Claude...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "liquid/lfm-2.5-2.6b:free": {
+      "name": "LiquidAI: LFM2.5-2.6B (free)",
+      "description": "LFM2.5-2.6B is a compact reasoning model from Liquid AI. It is suited for agent workflows, data extraction, RAG, and long-context processing. Liquid advises against using it for agentic coding or...",
+      "context_window": 128000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "meituan/longcat-2.0": {
+      "name": "Meituan: LongCat 2.0",
+      "description": "LongCat 2.0 is a sparse mixture-of-experts language model from Meituan, with 48B active parameters out of 1.6T total. It is suited for coding, repository-level changes, long-horizon problem solving, and agentic...",
+      "context_window": 1048756,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "cohere/north-mini-code:free": {
+      "name": "Cohere: North Mini Code (free)",
+      "description": "North Mini Code is Cohere's first agentic coding model and the debut of its North family. A sparse mixture-of-experts model with 30B total parameters and 3B active, it is optimized...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "x-ai/grok-build-0.1": {
+      "name": "xAI: Grok Build 0.1",
+      "description": "Grok Build 0.1 is xAI’s fast coding model trained specifically for agentic software engineering workflows. It supports text and image inputs with text output, and is optimized for interactive coding...",
+      "context_window": 256000,
+      "pricing": {
+        "input": 1,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hy3-preview": {
+      "name": "Tencent: Hy3 preview",
+      "description": "Hy3 preview is a high-efficiency Mixture-of-Experts model from Tencent designed for agentic workflows and production use. It supports configurable reasoning levels across disabled, low, and high modes, allowing it to...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.26
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.5-pro": {
+      "name": "Xiaomi: MiMo-V2.5-Pro",
+      "description": "MiMo-V2.5-Pro is Xiaomi’s flagship model, delivering strong performance in general agentic capabilities, complex software engineering, and long-horizon tasks, with top rankings on benchmarks such as ClawEval, GDPVal, and SWE-bench Pro....",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "xiaomi/mimo-v2.5": {
+      "name": "Xiaomi: MiMo-V2.5",
+      "description": "MiMo-V2.5 is a native omnimodal model by Xiaomi. It delivers Pro-level agentic performance at roughly half the inference cost, while surpassing MiMo-V2-Omni in multimodal perception across image and video understanding...",
+      "context_window": 1048576,
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "stepfun/step-3.5-flash": {
+      "name": "StepFun: Step 3.5 Flash",
+      "description": "Step 3.5 Flash is StepFun's most capable open-source foundation model. Built on a sparse Mixture of Experts (MoE) architecture, it selectively activates only 11B of its 196B parameters per token....",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "bytedance-seed/seed-1.6-flash": {
+      "name": "ByteDance Seed: Seed 1.6 Flash",
+      "description": "Seed 1.6 Flash is an ultra-fast multimodal deep thinking model by ByteDance Seed, supporting both text and visual understanding. It features a 256k context window and can generate outputs of...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bytedance-seed/seed-1.6": {
+      "name": "ByteDance Seed: Seed 1.6",
+      "description": "Seed 1.6 is a general-purpose model released by the ByteDance Seed team. It incorporates multimodal capabilities and adaptive deep thinking with a 256K context window.",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.25,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "moonshotai/kimi-k2-thinking": {
+      "name": "MoonshotAI: Kimi K2 Thinking",
+      "description": "Kimi K2 Thinking is Moonshot AI’s most advanced open reasoning model to date, extending the K2 series into agentic, long-horizon reasoning. Built on the trillion-parameter Mixture-of-Experts (MoE) architecture introduced in...",
+      "context_window": 262144,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "qwen/qwen3-vl-30b-a3b-thinking": {
+      "name": "Qwen: Qwen3 VL 30B A3B Thinking",
+      "description": "Qwen3-VL-30B-A3B-Thinking is a multimodal model that unifies strong text generation with visual understanding for images and videos. Its Thinking variant enhances reasoning in STEM, math, and complex tasks. It excels...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.13,
+        "output": 1.56
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "mistralai/mistral-medium-3.1": {
+      "name": "Mistral: Mistral Medium 3.1",
+      "description": "Mistral Medium 3.1 is an updated version of Mistral Medium 3, which is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "tencent/hunyuan-a13b-instruct": {
+      "name": "Tencent: Hunyuan A13B Instruct",
+      "description": "Hunyuan-A13B is a 13B active parameter Mixture-of-Experts (MoE) language model developed by Tencent, with a total parameter count of 80B and support for reasoning via Chain-of-Thought. It offers competitive benchmark...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.57
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "mistralai/mistral-medium-3": {
+      "name": "Mistral: Mistral Medium 3",
+      "description": "Mistral Medium 3 is a high-performance enterprise-grade language model designed to deliver frontier-level capabilities at significantly reduced operational cost. It balances state-of-the-art reasoning and multimodal performance with 8× lower cost...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.4,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "meta-llama/llama-3.2-1b-instruct": {
+      "name": "Meta: Llama 3.2 1B Instruct",
+      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate...",
+      "context_window": 131072,
+      "pricing": {
+        "input": 0.03,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
     "stealth/crouton-alpha": {
       "name": "Crouton Alpha",
       "description": "Crouton Alpha is a lightweight model built for scalable coding, agentic, and multimodal workflows. It's ideal for executing agentic sub-tasks, tool use, and document analysis in high-volume, repeated work. Developers...",
@@ -5758,19 +6144,6 @@
         "image": true
       }
     },
-    "mistralai/mistral-small-2603:batch": {
-      "name": "Mistral: Mistral Small 4 (batch)",
-      "description": "Mistral Small 4 is the next major release in the Mistral Small family, unifying the capabilities of several flagship Mistral models into a single system. It combines strong reasoning from...",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.3
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "nvidia/nemotron-3-super-120b-a12b:free": {
       "name": "NVIDIA: Nemotron 3 Super (free)",
       "description": "NVIDIA Nemotron 3 Super is a 120B-parameter open hybrid MoE model, activating just 12B parameters for maximum compute efficiency and accuracy in complex multi-agent applications. Built on a hybrid Mamba-Transformer...",
@@ -5880,32 +6253,6 @@
       "pricing": {
         "input": 0.88,
         "output": 7
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistralai/ministral-8b-2512:batch": {
-      "name": "Mistral: Ministral 3 8B 2512 (batch)",
-      "description": "A balanced model in the Ministral 3 family, Ministral 3 8B is a powerful, efficient tiny language model with vision capabilities.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.08
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "mistralai/mistral-large-2512:batch": {
-      "name": "Mistral: Mistral Large 3 2512 (batch)",
-      "description": "Mistral Large 3 2512 is Mistral’s most capable model to date, featuring a sparse mixture-of-experts architecture with 41B active parameters (675B total), and released under the Apache 2.0 license.",
-      "context_window": 262144,
-      "pricing": {
-        "input": 0.25,
-        "output": 0.75
       },
       "inputs": {
         "text": true,
@@ -6051,18 +6398,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "mistralai/codestral-2508:batch": {
-      "name": "Mistral: Codestral 2508 (batch)",
-      "description": "Mistral's cutting-edge language model for coding released end of July 2025. Codestral specializes in low-latency, high-frequency tasks such as fill-in-the-middle (FIM), code correction and test generation.\n\n[Blog Post](https://mistral.ai/news/codestral-25-08)",
-      "context_window": 256000,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.45
-      },
-      "inputs": {
-        "text": true
       }
     },
     "openai/o4-mini-high": {
@@ -7836,5 +8171,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-11T10:10:18.671Z"
+  "_syncedAt": "2026-11-27T10:48:19.516Z"
 }

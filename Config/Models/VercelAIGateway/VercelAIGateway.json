@@ -18,18 +18,6 @@
         "text": true
       }
     },
-    "alibaba/qwen-3-235b": {
-      "name": "Qwen3 235B A22B",
-      "context_window": 262144,
-      "max_output": 16384,
-      "pricing": {
-        "input": 0.22,
-        "output": 0.88
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "alibaba/qwen-3-30b": {
       "name": "Qwen3-30B-A3B",
       "description": "Qwen3 is the latest generation of large language models in Qwen series, offering a comprehensive suite of dense and mixture-of-experts (MoE) models. Built upon extensive training, Qwen3 delivers groundbreaking advancements in reasoning, instruction-following, agent capabilities, and multilingual sup",
@@ -51,19 +39,6 @@
       "pricing": {
         "input": 0.16,
         "output": 0.64
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "alibaba/qwen3-coder": {
-      "name": "Qwen3 Coder 480B A35B Instruct",
-      "description": "Qwen3-Coder-480B-A35B-Instruct is a cutting-edge open coding model from Qwen, matching Claude Sonnet’s performance in agentic programming, browser automation, and core development tasks.",
-      "context_window": 262144,
-      "max_output": 65536,
-      "pricing": {
-        "input": 1.5,
-        "output": 7.5
       },
       "inputs": {
         "text": true
@@ -95,35 +70,9 @@
         "text": true
       }
     },
-    "alibaba/qwen3-max-thinking": {
-      "name": "Qwen 3 Max Thinking",
-      "description": "Compared with the snapshot as of September 23, 2025, the Qwen-3 series Max model in this release achieves an effective integration of thinking and non-thinking modes, resulting in a comprehensive and substantial improvement in the model’s overall performance. In thinking mode, the model simultaneous",
-      "context_window": 256000,
-      "max_output": 65536,
-      "pricing": {
-        "input": 1.2,
-        "output": 6
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "alibaba/qwen3-next-80b-a3b-instruct": {
       "name": "Qwen3 Next 80B A3B Instruct",
       "description": "A new generation of open-source, non-thinking mode model powered by Qwen3. This version demonstrates superior Chinese text understanding, augmented logical reasoning, and enhanced capabilities in text generation tasks over the previous iteration (Qwen3-235B-A22B-Instruct-2507).",
-      "context_window": 131072,
-      "max_output": 32768,
-      "pricing": {
-        "input": 0.15,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "alibaba/qwen3-next-80b-a3b-thinking": {
-      "name": "Qwen3 Next 80B A3B Thinking",
-      "description": "A new generation of Qwen3-based open-source thinking mode models. This version offers improved instruction following and streamlined summary responses over the previous iteration (Qwen3-235B-A22B-Thinking-2507).",
       "context_window": 131072,
       "max_output": 32768,
       "pricing": {
@@ -184,6 +133,20 @@
       "pricing": {
         "input": 0.6,
         "output": 3.6
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen3.6-35b-a3b": {
+      "name": "Qwen 3.6 35B A3B",
+      "description": "Qwen 3.6 35B A3B is a mixture-of-experts model with 35 billion total parameters and 3 billion active parameters, built for coding, reasoning, and tool-based workflows.",
+      "context_window": 262144,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.38,
+        "output": 2.25
       },
       "inputs": {
         "text": true,
@@ -343,6 +306,20 @@
         "image": true
       }
     },
+    "alibaba/qwen4-max": {
+      "name": "Qwen 4 Max",
+      "description": "Qwen 4 Max brings deeper knowledge, richer world understanding, and stronger coding and agentic capabilities. It is built for real-world tasks, from complex coding and knowledge work to front-end builds and professional software workflows.",
+      "context_window": 1000000,
+      "max_output": 384000,
+      "pricing": {
+        "input": 1.5,
+        "output": 4.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "amazon/nova-2-lite": {
       "name": "Nova 2 Lite",
       "description": "Nova 2 Lite is a fast, cost-effective reasoning model for everyday workloads that can process text, images, and videos to generate text.",
@@ -446,6 +423,48 @@
       "pricing": {
         "input": 5,
         "output": 25
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5.2": {
+      "name": "Claude Fable 5.2",
+      "description": "Claude Fable 5.2 supports agentic coding, knowledge work, and research with always-on adaptive thinking and adjustable reasoning effort from low through max.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5.2-fast": {
+      "name": "Claude Fable 5.2 (Fast)",
+      "description": "Claude Fable 5.2 supports agentic coding, knowledge work, and research with always-on adaptive thinking and adjustable reasoning effort from low through max.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 16,
+        "output": 80
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "anthropic/claude-fable-5.2-batch": {
+      "name": "Claude Fable 5.2 (Batch)",
+      "description": "Claude Fable 5.2 supports agentic coding, knowledge work, and research with always-on adaptive thinking and adjustable reasoning effort from low through max.",
+      "context_window": 1000000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
       },
       "inputs": {
         "text": true,
@@ -732,20 +751,6 @@
         "image": true
       }
     },
-    "anthropic/claude-sonnet-4.5-batch": {
-      "name": "Claude Sonnet 4.5 (Batch)",
-      "description": "Claude Sonnet 4.5 is the newest model in the Sonnet series, offering improvements and updates over Sonnet 4.",
-      "context_window": 1000000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 1.5,
-        "output": 7.5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
     "anthropic/claude-sonnet-4.6": {
       "name": "Claude Sonnet 4.6",
       "description": "Anthropic Sonnet routed through Vercel AI Gateway for coding, agents, document work, and vision tasks",
@@ -826,33 +831,6 @@
       "pricing": {
         "input": 1,
         "output": 5
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "bytedance/seed-1.6": {
-      "name": "Seed 1.6",
-      "description": "ByteDance's new multimodal deep-thinking model, supporting both text and visual inputs with enhanced reasoning capabilities.",
-      "context_window": 256000,
-      "max_output": 32000,
-      "pricing": {
-        "input": 0.25,
-        "output": 2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "bytedance/seed-1.8": {
-      "name": "Bytedance Seed 1.8",
-      "description": "Bytedance Seed 1.8 features stronger multimodal understanding and agent capabilities. The model delivers superior performance across a wide range of complex real-world tasks, helping enterprises create greater value.",
-      "context_window": 256000,
-      "max_output": 64000,
-      "pricing": {
-        "input": 0.25,
-        "output": 2
       },
       "inputs": {
         "text": true,
@@ -1396,6 +1374,62 @@
         "image": true
       }
     },
+    "google/gemini-4-carbon": {
+      "name": "Gemini 4 Carbon",
+      "description": "Gemini 4 Carbon is Google’s reasoning model for complex software engineering, sustained agentic workflows, and cybersecurity defense. It combines a 1M-token context window with multimodal understanding, tool calling, and structured outputs for working across large codebases and documents. Carbon emp",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-hydrogen": {
+      "name": "Gemini 4 Hydrogen",
+      "description": "Gemini 4 Hydrogen is Google's fast multimodal model for reasoning, coding, and agentic workflows. It supports understanding text, images, video, and documents, with tool calling and structured outputs for building responsive applications.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-neon": {
+      "name": "Gemini 4 Neon",
+      "description": "Gemini 4 Neon is Google's fast multimodal reasoning model for coding, agentic workflows, and complex tasks, delivering high-quality results with low latency. It accepts text, images, video, and documents, with tool calling and structured outputs for building responsive applications.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 3,
+        "output": 15
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "google/gemini-4-neon-fast": {
+      "name": "Gemini 4 Neon (Fast)",
+      "description": "Gemini 4 Neon is Google's fast multimodal reasoning model for coding, agentic workflows, and complex tasks, delivering high-quality results with low latency. It accepts text, images, video, and documents, with tool calling and structured outputs for building responsive applications.",
+      "context_window": 1000000,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 5.4,
+        "output": 27
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "google/gemini-nano-banana-2.1": {
       "name": "Gemini Nano Banana 2.1",
       "description": "Gemini Nano Banana 2.1 is optimized for image understanding and generation and offers a balance of price and performance.",
@@ -1479,32 +1513,6 @@
         "text": true
       }
     },
-    "inception/mercury-2": {
-      "name": "Mercury 2",
-      "description": "A diffusion-based reasoning LLM that generates text via parallel refinement (not token-by-token), delivering real-time latency with ~1k tokens/sec plus 128K context and built-in tool/JSON support.",
-      "context_window": 128000,
-      "max_output": 128000,
-      "pricing": {
-        "input": 0.25,
-        "output": 0.75
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inception/mercury-2.5": {
-      "name": "Mercury 2.5",
-      "description": "Mercury 2.5 is Inception’s diffusion-based reasoning model for chat, agents, and structured workflows, with tool calling, structured outputs, and a 260K context window.",
-      "context_window": 260000,
-      "max_output": 65536,
-      "pricing": {
-        "input": 0.04,
-        "output": 0.15
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "inception/mercury-3": {
       "name": "Mercury 3",
       "description": "Mercury 3 is Inception’s most capable model for agentic workflows and real-time applications. It is one of the world’s fastest models, powered by diffusion.",
@@ -1513,19 +1521,6 @@
       "pricing": {
         "input": 0.1,
         "output": 0.35
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "inception/mercury-coder-small": {
-      "name": "Mercury Coder Small Beta",
-      "description": "Mercury Coder Small is ideal for code generation, debugging, and refactoring tasks with minimal latency.",
-      "context_window": 32000,
-      "max_output": 16384,
-      "pricing": {
-        "input": 0.25,
-        "output": 1
       },
       "inputs": {
         "text": true
@@ -1743,6 +1738,20 @@
         "image": true
       }
     },
+    "meta/muse-ember": {
+      "name": "Muse Ember",
+      "description": "Muse Ember is Meta’s multimodal language model for conversational, reasoning, and agentic applications. It supports text and image understanding, tool calling, structured outputs, and document input, with a 1,048,576-token context window for working with large prompts and extended conversations. Imp",
+      "context_window": 1048576,
+      "max_output": 1048576,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "meta/muse-glimmer-30b": {
       "name": "Muse Glimmer 30B",
       "context_window": 131072,
@@ -1854,19 +1863,6 @@
         "image": true
       }
     },
-    "minimax/minimax-m2": {
-      "name": "MiniMax M2",
-      "description": "MiniMax-M2 redefines efficiency for agents. It is a compact, fast, and cost-effective MoE model (230 billion total parameters with 10 billion active parameters) built for elite performance in coding and agentic tasks, all while maintaining powerful general intelligence.",
-      "context_window": 205000,
-      "max_output": 205000,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "minimax/minimax-m2.1": {
       "name": "MiniMax M2.1",
       "description": "MiniMax 2.1 is MiniMax's latest model, optimized specifically for robustness in coding, tool use, instruction following, and long-horizon planning.",
@@ -1875,19 +1871,6 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "minimax/minimax-m2.1-lightning": {
-      "name": "MiniMax M2.1 Lightning",
-      "description": "MiniMax-M2.1-lightning is a faster version of MiniMax-M2.1, offering the same performance but with significantly higher throughput (output speed ~100 TPS, MiniMax-M2 output speed ~60 TPS).",
-      "context_window": 204800,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.3,
-        "output": 2.4
       },
       "inputs": {
         "text": true
@@ -1906,19 +1889,6 @@
         "text": true
       }
     },
-    "minimax/minimax-m2.5-highspeed": {
-      "name": "MiniMax M2.5 High Speed",
-      "description": "M2.5 highspeed: Same performance, faster and more agile (output speed approximately 100 tps)",
-      "context_window": 204800,
-      "max_output": 131000,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
-      },
-      "inputs": {
-        "text": true
-      }
-    },
     "minimax/minimax-m2.7": {
       "name": "MiniMax M2.7",
       "description": "M2.7 delivers outstanding performance in real-world software engineering, including end-to-end full project delivery, log analysis and bug troubleshooting, code security, machine learning, and more.",
@@ -1927,20 +1897,6 @@
       "pricing": {
         "input": 0.3,
         "output": 1.2
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "minimax/minimax-m2.7-highspeed": {
-      "name": "MiniMax M2.7 High Speed",
-      "description": "M2.7 Highspeed: Same performance, faster and more agile (output speed approximately 100 tps)",
-      "context_window": 204800,
-      "max_output": 131100,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.4
       },
       "inputs": {
         "text": true,
@@ -2255,19 +2211,6 @@
       "pricing": {
         "input": 0.9,
         "output": 1.9
-      },
-      "inputs": {
-        "text": true
-      }
-    },
-    "nvidia/nemotron-3-nano-30b-a3b": {
-      "name": "Nemotron 3 Nano 30B A3B",
-      "description": "NVIDIA Nemotron 3 Nano is an open reasoning model optimized for fast, cost-efficient inference. Built with a hybrid MoE and Mamba architecture and trained on NVIDIA-curated synthetic reasoning data, it delivers strong multi-step reasoning with stable latency and predictable performance for agentic a",
-      "context_window": 262144,
-      "max_output": 262144,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.24
       },
       "inputs": {
         "text": true
@@ -3389,6 +3332,62 @@
         "image": true
       }
     },
+    "openai/gpt-6.2-astra": {
+      "name": "GPT-6.2 Astra",
+      "description": "GPT-6.2 Astra is OpenAI's frontier reasoning model for coding and professional work. It can build and revise software, use a computer, and work with documents. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens, along with struc",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 8,
+        "output": 40
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-astra-fast": {
+      "name": "GPT-6.2 Astra (Fast)",
+      "description": "GPT-6.2 Astra is OpenAI's frontier reasoning model for coding and professional work. It can build and revise software, use a computer, and work with documents. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens, along with struc",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 16,
+        "output": 80
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol": {
+      "name": "GPT-6.2 Sol",
+      "description": "GPT-6.2 Sol is OpenAI's reasoning model for text, images, and tool use. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Structured outputs, prompt caching, and Responses API tools such as web search and computer use support ",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 2,
+        "output": 10
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "openai/gpt-6.2-sol-fast": {
+      "name": "GPT-6.2 Sol (Fast)",
+      "description": "GPT-6.2 Sol is OpenAI's reasoning model for text, images, and tool use. It accepts text and images, generates text, and supports a 1,050,000-token context window with up to 128,000 output tokens. Structured outputs, prompt caching, and Responses API tools such as web search and computer use support ",
+      "context_window": 1050000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 4,
+        "output": 20
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "openai/gpt-oss-120b": {
       "name": "GPT OSS 120B",
       "description": "This model excels at efficient reasoning across science, math, and coding applications. It’s ideal for real-time coding assistance, processing large documents for Q&A and summarization, agentic research workflows, and regulated on-premises workloads.",
@@ -3524,6 +3523,20 @@
         "image": true
       }
     },
+    "paperinstruments/ultramarine-1-flash": {
+      "name": "Ultramarine 1 Flash",
+      "description": "Ultramarine 1 Flash is an open-weight multimodal reasoning model from Paper Instruments, post-trained from GLM-5.3 Flash for knowledge work in enterprise operations, finance, law, and consulting. It supports long-context document analysis and agentic workflows.",
+      "context_window": 1048576,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "particle/particle-1": {
       "name": "Particle-1",
       "description": "Particle-1 is Particle AI’s model for agentic coding and software engineering, post-trained on DeepSeek V4.1 Flash to complete tasks with fewer tokens. It supports text and image inputs, reasoning, tool use, and implicit prompt caching.",
@@ -3546,19 +3559,6 @@
       "inputs": {
         "text": true,
         "image": true
-      }
-    },
-    "poolside/laguna-s-2.1": {
-      "name": "Laguna S 2.1",
-      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
-      "context_window": 1000000,
-      "max_output": 131072,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.2
-      },
-      "inputs": {
-        "text": true
       }
     },
     "quiverai/arrow-2": {
@@ -3587,6 +3587,19 @@
       "inputs": {
         "text": true,
         "image": true
+      }
+    },
+    "recursive/flint-v1.0": {
+      "name": "Flint",
+      "description": "Flint is Recursive's open-weight mixture-of-experts model for agentic coding, with 40 billion total parameters and 2.5 billion active per token. It returns its reasoning alongside the answer and supports tool calling and structured outputs.",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0,
+        "output": 0
+      },
+      "inputs": {
+        "text": true
       }
     },
     "reflection/beam": {
@@ -3804,6 +3817,20 @@
         "image": true
       }
     },
+    "tencent/hy4-flash": {
+      "name": "Hy4 Flash",
+      "description": "Tencent Hy4 Flash is a lower-cost model in the Hy4 family for coding, reasoning, and agentic workflows. It supports deep reasoning with preserved thinking, tool calling, structured outputs, prompt caching, and image understanding, with a 1M-token context window.",
+      "context_window": 1024000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.14
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
     "tencent/hy4-preview": {
       "name": "Tencent Hy4 Preview",
       "description": "Tencent Hy4 preview is Tencent Hy’s open-source large language model, featuring 770B total parameters, 49B active parameters, and a context window exceeding 1 million tokens. Built for real-world productivity, it supports long-horizon coding, cross-document analysis, office content creation, game de",
@@ -3825,6 +3852,34 @@
       "pricing": {
         "input": 1,
         "output": 4.05
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "thinkingmachines/inkling-2-mini": {
+      "name": "Inkling 2 Mini",
+      "description": "Inkling 2 Mini is Thinking Machines Lab's small multimodal Mixture-of-Experts model, with 26.4 billion total parameters and 3.4 billion active per token. Its looped architecture runs the middle layers three times per token for stronger reasoning at low cost, and it accepts text and image input with ",
+      "context_window": 1048576,
+      "max_output": 1000000,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.3
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "thinkingmachines/inkling-2-small": {
+      "name": "Inkling 2 Small",
+      "description": "Inkling 2 Small is Thinking Machines Lab’s second-generation multimodal Mixture-of-Experts model, with 594 billion total parameters and 17 billion active per token. It combines text and image understanding with controllable reasoning for coding, tool use, and professional knowledge work.",
+      "context_window": 1048576,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.3,
+        "output": 1
       },
       "inputs": {
         "text": true,
@@ -4035,20 +4090,6 @@
       "pricing": {
         "input": 1.2,
         "output": 3.6
-      },
-      "inputs": {
-        "text": true,
-        "image": true
-      }
-    },
-    "spacexai/grok-build-0.1": {
-      "name": "Grok Build 0.1",
-      "description": "xAI's fast coding model trained specifically for agentic coding.",
-      "context_window": 256000,
-      "max_output": 256000,
-      "pricing": {
-        "input": 1,
-        "output": 2
       },
       "inputs": {
         "text": true,
@@ -4330,6 +4371,230 @@
       "pricing": {
         "input": 1.2,
         "output": 4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "alibaba/qwen-3-235b": {
+      "name": "Qwen3 235B A22B",
+      "context_window": 262144,
+      "max_output": 16384,
+      "pricing": {
+        "input": 0.22,
+        "output": 0.88
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-coder": {
+      "name": "Qwen3 Coder 480B A35B Instruct",
+      "description": "Qwen3-Coder-480B-A35B-Instruct is a cutting-edge open coding model from Qwen, matching Claude Sonnet’s performance in agentic programming, browser automation, and core development tasks.",
+      "context_window": 262144,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-max-thinking": {
+      "name": "Qwen 3 Max Thinking",
+      "description": "Compared with the snapshot as of September 23, 2025, the Qwen-3 series Max model in this release achieves an effective integration of thinking and non-thinking modes, resulting in a comprehensive and substantial improvement in the model’s overall performance. In thinking mode, the model simultaneous",
+      "context_window": 256000,
+      "max_output": 65536,
+      "pricing": {
+        "input": 1.2,
+        "output": 6
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "alibaba/qwen3-next-80b-a3b-thinking": {
+      "name": "Qwen3 Next 80B A3B Thinking",
+      "description": "A new generation of Qwen3-based open-source thinking mode models. This version offers improved instruction following and streamlined summary responses over the previous iteration (Qwen3-235B-A22B-Thinking-2507).",
+      "context_window": 131072,
+      "max_output": 32768,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "anthropic/claude-sonnet-4.5-batch": {
+      "name": "Claude Sonnet 4.5 (Batch)",
+      "description": "Claude Sonnet 4.5 is the newest model in the Sonnet series, offering improvements and updates over Sonnet 4.",
+      "context_window": 1000000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 1.5,
+        "output": 7.5
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "bytedance/seed-1.6": {
+      "name": "Seed 1.6",
+      "description": "ByteDance's new multimodal deep-thinking model, supporting both text and visual inputs with enhanced reasoning capabilities.",
+      "context_window": 256000,
+      "max_output": 32000,
+      "pricing": {
+        "input": 0.25,
+        "output": 2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "bytedance/seed-1.8": {
+      "name": "Bytedance Seed 1.8",
+      "description": "Bytedance Seed 1.8 features stronger multimodal understanding and agent capabilities. The model delivers superior performance across a wide range of complex real-world tasks, helping enterprises create greater value.",
+      "context_window": 256000,
+      "max_output": 64000,
+      "pricing": {
+        "input": 0.25,
+        "output": 2
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "inception/mercury-2": {
+      "name": "Mercury 2",
+      "description": "A diffusion-based reasoning LLM that generates text via parallel refinement (not token-by-token), delivering real-time latency with ~1k tokens/sec plus 128K context and built-in tool/JSON support.",
+      "context_window": 128000,
+      "max_output": 128000,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.75
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inception/mercury-2.5": {
+      "name": "Mercury 2.5",
+      "description": "Mercury 2.5 is Inception’s diffusion-based reasoning model for chat, agents, and structured workflows, with tool calling, structured outputs, and a 260K context window.",
+      "context_window": 260000,
+      "max_output": 65536,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.15
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "inception/mercury-coder-small": {
+      "name": "Mercury Coder Small Beta",
+      "description": "Mercury Coder Small is ideal for code generation, debugging, and refactoring tasks with minimal latency.",
+      "context_window": 32000,
+      "max_output": 16384,
+      "pricing": {
+        "input": 0.25,
+        "output": 1
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m2": {
+      "name": "MiniMax M2",
+      "description": "MiniMax-M2 redefines efficiency for agents. It is a compact, fast, and cost-effective MoE model (230 billion total parameters with 10 billion active parameters) built for elite performance in coding and agentic tasks, all while maintaining powerful general intelligence.",
+      "context_window": 205000,
+      "max_output": 205000,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m2.1-lightning": {
+      "name": "MiniMax M2.1 Lightning",
+      "description": "MiniMax-M2.1-lightning is a faster version of MiniMax-M2.1, offering the same performance but with significantly higher throughput (output speed ~100 TPS, MiniMax-M2 output speed ~60 TPS).",
+      "context_window": 204800,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m2.5-highspeed": {
+      "name": "MiniMax M2.5 High Speed",
+      "description": "M2.5 highspeed: Same performance, faster and more agile (output speed approximately 100 tps)",
+      "context_window": 204800,
+      "max_output": 131000,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "minimax/minimax-m2.7-highspeed": {
+      "name": "MiniMax M2.7 High Speed",
+      "description": "M2.7 Highspeed: Same performance, faster and more agile (output speed approximately 100 tps)",
+      "context_window": 204800,
+      "max_output": 131100,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.4
+      },
+      "inputs": {
+        "text": true,
+        "image": true
+      }
+    },
+    "nvidia/nemotron-3-nano-30b-a3b": {
+      "name": "Nemotron 3 Nano 30B A3B",
+      "description": "NVIDIA Nemotron 3 Nano is an open reasoning model optimized for fast, cost-efficient inference. Built with a hybrid MoE and Mamba architecture and trained on NVIDIA-curated synthetic reasoning data, it delivers strong multi-step reasoning with stable latency and predictable performance for agentic a",
+      "context_window": 262144,
+      "max_output": 262144,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.24
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "poolside/laguna-s-2.1": {
+      "name": "Laguna S 2.1",
+      "description": "Laguna S 2.1 is Poolside's new open-weight model for agentic coding and long-horizon work.",
+      "context_window": 1000000,
+      "max_output": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.2
+      },
+      "inputs": {
+        "text": true
+      }
+    },
+    "spacexai/grok-build-0.1": {
+      "name": "Grok Build 0.1",
+      "description": "xAI's fast coding model trained specifically for agentic coding.",
+      "context_window": 256000,
+      "max_output": 256000,
+      "pricing": {
+        "input": 1,
+        "output": 2
       },
       "inputs": {
         "text": true,
@@ -5535,5 +5800,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-07T12:20:39.163Z"
+  "_syncedAt": "2026-11-27T10:48:39.885Z"
 }

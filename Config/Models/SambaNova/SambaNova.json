@@ -8,22 +8,6 @@
     "GLM-5.3": {
       "name": "GLM 5 3"
     },
-    "Meta-Llama-3.3-70B-Instruct": {
-      "name": "Llama 3.3 70B",
-      "description": "Meta's flagship 70B model on SambaNova — battle-tested, supports tool use and structured outputs at high speed",
-      "context_window": 131072,
-      "max_output": 16384,
-      "inputs": {
-        "text": true,
-        "image": false,
-        "pdf": false,
-        "docx": false
-      },
-      "pricing": {
-        "input": 0.6,
-        "output": 1.2
-      }
-    },
     "MiniMax-M3.1-Flash": {
       "name": "MiniMax M3 1 FLASH"
     },
@@ -44,6 +28,22 @@
       "pricing": {
         "input": 0.2,
         "output": 0.6
+      }
+    },
+    "Meta-Llama-3.3-70B-Instruct": {
+      "name": "Llama 3.3 70B",
+      "description": "Meta's flagship 70B model on SambaNova — battle-tested, supports tool use and structured outputs at high speed",
+      "context_window": 131072,
+      "max_output": 16384,
+      "inputs": {
+        "text": true,
+        "image": false,
+        "pdf": false,
+        "docx": false
+      },
+      "pricing": {
+        "input": 0.6,
+        "output": 1.2
       }
     },
     "DeepSeek-V3.1": {
@@ -97,5 +97,5 @@
       "name": "Qwen 2 5 VL Ricoh 32B 20250918"
     }
   },
-  "_syncedAt": "2026-11-11T10:10:31.041Z"
+  "_syncedAt": "2026-11-27T10:48:28.760Z"
 }

@@ -12,6 +12,13 @@
         "max_output_tokens": 128000
       }
     },
+    "gemini-4-hydrogen": {
+      "name": "Gemini 4 Hydrogen",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
+    },
     "grok-4.7": {
       "name": "Grok 4 7",
       "context_window": {
@@ -92,6 +99,13 @@
         "max_output_tokens": null
       }
     },
+    "muse-ember": {
+      "name": "Muse Ember",
+      "context_window": {
+        "context_length": 1048576,
+        "max_output_tokens": null
+      }
+    },
     "muse-spark-open": {
       "name": "Muse Spark Open",
       "context_window": {
@@ -115,9 +129,6 @@
     },
     "grok-4.5": {
       "name": "Grok 4 5"
-    },
-    "gemini-3.6-flash": {
-      "name": "Gemini 3 6 FLASH"
     },
     "nano-banana-2.1": {
       "name": "Nano Banana 2 1"
@@ -544,15 +555,22 @@
         "max_output_tokens": null
       }
     },
+    "qwen4-max": {
+      "name": "Qwen4 MAX",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "qwen3-coder-next": {
+      "name": "Qwen3 Coder Next"
+    },
     "qwen3.8-max-0902": {
       "name": "Qwen3 8 MAX 0902",
       "context_window": {
         "context_length": 991000,
         "max_output_tokens": null
       }
-    },
-    "qwen3-coder-next": {
-      "name": "Qwen3 Coder Next"
     },
     "qwen3-235b-a22b-di": {
       "name": "Qwen3 235B A22b Di",
@@ -573,13 +591,6 @@
       "context_window": {
         "context_length": 128000,
         "max_output_tokens": null
-      }
-    },
-    "mistral-medium": {
-      "name": "Mistral Medium",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 4096
       }
     },
     "llama-3.3-70b-t": {
@@ -615,16 +626,6 @@
     },
     "gpt-researcher": {
       "name": "Gpt Researcher"
-    },
-    "gpt-4o-search": {
-      "name": "Gpt 4o Search",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 8192
-      }
-    },
-    "reka-research": {
-      "name": "Reka Research"
     },
     "perplexity-sonar": {
       "name": "Perplexity Sonar",
@@ -849,16 +850,6 @@
     "deepreasoning": {
       "name": "Deepreasoning"
     },
-    "gemma-3-27b": {
-      "name": "Gemma 3 27B"
-    },
-    "mistral-small-3": {
-      "name": "Mistral Small 3",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 4096
-      }
-    },
     "deepseek-v3-di": {
       "name": "Deepseek V3 Di",
       "context_window": {
@@ -893,13 +884,6 @@
     "stablediffusion3-2b": {
       "name": "Stablediffusion3 2B"
     },
-    "mistral-large-2": {
-      "name": "Mistral Large 2",
-      "context_window": {
-        "context_length": 128000,
-        "max_output_tokens": 4096
-      }
-    },
     "reka-core": {
       "name": "Reka Core",
       "context_window": {
@@ -921,22 +905,8 @@
         "max_output_tokens": 8192
       }
     },
-    "solar-pro-2": {
-      "name": "Solar PRO 2",
-      "context_window": {
-        "context_length": 4096,
-        "max_output_tokens": 1024
-      }
-    },
     "remove-background": {
       "name": "Remove Background"
-    },
-    "tako": {
-      "name": "Tako",
-      "context_window": {
-        "context_length": 2048,
-        "max_output_tokens": null
-      }
     },
     "llama-3.1-8b-fp16": {
       "name": "Llama 3 1 8B FP16",
@@ -1005,13 +975,6 @@
     },
     "qwen3.7-max-t": {
       "name": "Qwen3 7 MAX T"
-    },
-    "perplexity-sonar-pro": {
-      "name": "Perplexity Sonar PRO",
-      "context_window": {
-        "context_length": 200000,
-        "max_output_tokens": null
-      }
     },
     "minimax-m3-t": {
       "name": "Minimax M3 T"
@@ -1141,9 +1104,6 @@
         "max_output_tokens": null
       }
     },
-    "ling-3.0-flash-fin": {
-      "name": "Ling 3 0 FLASH Fin"
-    },
     "deepseek-v4.1-flash-1017": {
       "name": "Deepseek V4 1 FLASH 1017",
       "context_window": {
@@ -1179,6 +1139,9 @@
         "max_output_tokens": null
       }
     },
+    "mimo-v2.6-flash": {
+      "name": "Mimo V2 6 FLASH"
+    },
     "aplomb-1": {
       "name": "Aplomb 1",
       "context_window": {
@@ -1202,6 +1165,102 @@
         "context_length": 1000000,
         "max_output_tokens": null
       }
+    },
+    "qwen4-max-el": {
+      "name": "Qwen4 MAX El",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "minimax-m3.1-flash-e": {
+      "name": "Minimax M3 1 FLASH E",
+      "context_window": {
+        "context_length": 1000000,
+        "max_output_tokens": null
+      }
+    },
+    "seedream-5.5-el": {
+      "name": "Seedream 5 5 El",
+      "context_window": {
+        "context_length": 32768,
+        "max_output_tokens": null
+      }
+    },
+    "seedance-2.5-flash": {
+      "name": "Seedance 2 5 FLASH",
+      "context_window": {
+        "context_length": 32768,
+        "max_output_tokens": null
+      }
+    },
+    "pixverse-v6-max": {
+      "name": "Pixverse V6 MAX",
+      "context_window": {
+        "context_length": 32768,
+        "max_output_tokens": null
+      }
+    },
+    "gemini-3.6-flash": {
+      "name": "Gemini 3 6 FLASH"
+    },
+    "mistral-medium": {
+      "name": "Mistral Medium",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 4096
+      }
+    },
+    "gpt-4o-search": {
+      "name": "Gpt 4o Search",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 8192
+      }
+    },
+    "reka-research": {
+      "name": "Reka Research"
+    },
+    "gemma-3-27b": {
+      "name": "Gemma 3 27B"
+    },
+    "mistral-small-3": {
+      "name": "Mistral Small 3",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 4096
+      }
+    },
+    "mistral-large-2": {
+      "name": "Mistral Large 2",
+      "context_window": {
+        "context_length": 128000,
+        "max_output_tokens": 4096
+      }
+    },
+    "solar-pro-2": {
+      "name": "Solar PRO 2",
+      "context_window": {
+        "context_length": 4096,
+        "max_output_tokens": 1024
+      }
+    },
+    "tako": {
+      "name": "Tako",
+      "context_window": {
+        "context_length": 2048,
+        "max_output_tokens": null
+      }
+    },
+    "perplexity-sonar-pro": {
+      "name": "Perplexity Sonar PRO",
+      "context_window": {
+        "context_length": 200000,
+        "max_output_tokens": null
+      }
+    },
+    "ling-3.0-flash-fin": {
+      "name": "Ling 3 0 FLASH Fin"
     },
     "hy3": {
       "name": "Hy3"
@@ -1381,9 +1440,6 @@
     },
     "mimo-v2.6-pro": {
       "name": "Mimo V2 6 PRO"
-    },
-    "mimo-v2.6-flash": {
-      "name": "Mimo V2 6 FLASH"
     },
     "ling-3.1-flash": {
       "name": "Ling 3 1 FLASH"
@@ -1991,5 +2047,5 @@
       }
     }
   },
-  "_syncedAt": "2026-11-07T12:20:40.559Z"
+  "_syncedAt": "2026-11-27T10:48:40.543Z"
 }
