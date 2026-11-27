@@ -6,6 +6,22 @@ Versions use `YYYY.MMDD.PATCH` (e.g. `2026.511.0`).
 
 ---
 
+## [2026.1127.0] - 2026-11-27
+
+* Updated AI Models
+* Chore(deps-dev): Bump lint-staged from 17.6.1 to 17.6.2
+* Chore(deps-dev): Bump fast-check from 4.10.2 to 4.11.0
+* Chore(deps-dev): Bump electron from 45.3.3 to 45.4.1
+* Chore(deps-dev): Bump prettier from 3.9.10 to 3.10.1
+* Chore(deps-dev): Bump lint-staged from 17.6.0 to 17.6.1
+* Chore(deps-dev): Bump electron from 45.3.1 to 45.3.3
+* Chore(deps-dev): Bump eslint from 10.14.0 to 10.15.0
+* Chore(deps-dev): Bump electron from 45.2.3 to 45.3.1
+* Chore(deps): Bump github/codeql-action from 4.39.2 to 4.39.3
+* Chore(deps): Bump github/codeql-action/init from 4.39.0 to 4.39.2
+
+---
+
 ## [2026.1111.0] - 2026-11-11
 
 * Updated AI Models
